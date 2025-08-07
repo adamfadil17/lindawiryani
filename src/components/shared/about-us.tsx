@@ -1,6 +1,10 @@
 import Image from "next/image";
 
 export default function AboutUs() {
+  const loremIpsum = `Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book.`;
   return (
     <section className="bg-white py-16 lg:py-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
@@ -29,10 +33,7 @@ export default function AboutUs() {
               </h2>
 
               <p className="text-primary leading-relaxed text-sm md:text-base max-w-lg">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                {loremIpsum}
               </p>
             </div>
             <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-px bg-primary"></div>

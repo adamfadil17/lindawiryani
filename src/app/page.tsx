@@ -4,6 +4,10 @@ import Services from "@/components/shared/services";
 import Venues from "@/components/shared/venues";
 
 export default function Page() {
+  const loremIpsum = `Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book.`;
   return (
     <div className="min-h-screen">
       {/* Background image for demonstration */}
@@ -31,10 +35,7 @@ export default function Page() {
                 ELEVATED DESIGN
               </h1>
               <p className="text-sm md:text-base leading-relaxed mb-8 font-light max-w-lg">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                {loremIpsum}
               </p>
               <button className="border border-white rounded-[4px] text-white px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-black transition-colors duration-300">
                 JOIN THE EXPERIENCE

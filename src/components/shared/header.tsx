@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, MessageCircle, Mail, Instagram } from "lucide-react";
+import { Menu, X} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -28,7 +28,7 @@ export default function Header() {
         <div className="relative flex items-center justify-center">
           {/* Logo */}
           <div className="text-center">
-            <img
+            <Image
               src="/images/logo-white.png"
               alt="Linda Wygant Wedding Planning"
               className="h-12 md:h-16 lg:h-20 w-auto mx-auto"
