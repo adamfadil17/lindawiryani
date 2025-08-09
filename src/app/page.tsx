@@ -1,5 +1,10 @@
 import AboutUs from "@/components/shared/about-us";
+import Contact from "@/components/shared/contact";
+import Footer from "@/components/shared/footer";
+import Gallery from "@/components/shared/gallery";
 import Header from "@/components/shared/header";
+import Instagram from "@/components/shared/instagram";
+import Quote from "@/components/shared/quote";
 import Services from "@/components/shared/services";
 import Venues from "@/components/shared/venues";
 
@@ -9,7 +14,7 @@ export default function Page() {
                 text ever since the 1500s, when an unknown printer took a galley
                 of type and scrambled it to make a type specimen book.`;
   return (
-    <div className="min-h-screen">
+    <div id="home" className="min-h-screen">
       {/* Background image for demonstration */}
       <div
         className="min-h-screen bg-cover bg-center bg-no-repeat relative"
@@ -30,23 +35,29 @@ export default function Page() {
               <p className="text-sm md:text-base tracking-widest mb-8 font-light">
                 DESIGN • EVENT PLANNING
               </p>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif mb-6 leading-tight">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight">
                 BESPOKE WEDDING CREATION &<br />
                 ELEVATED DESIGN
               </h1>
               <p className="text-sm md:text-base leading-relaxed mb-8 font-light max-w-lg">
                 {loremIpsum}
               </p>
-              <button className="border border-white rounded-[4px] text-white px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-black transition-colors duration-300">
+              <button className="border border-white text-white px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white hover:text-primary transition-colors duration-300">
                 JOIN THE EXPERIENCE
               </button>
             </div>
           </div>
         </div>
       </div>
+
       <AboutUs />
       <Services />
       <Venues />
+      <Quote />
+      <Gallery />
+      <Instagram />
+      <Contact />
+      <Footer />
     </div>
   );
 }

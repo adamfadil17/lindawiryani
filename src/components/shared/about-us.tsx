@@ -6,7 +6,7 @@ export default function AboutUs() {
                 text ever since the 1500s, when an unknown printer took a galley
                 of type and scrambled it to make a type specimen book.`;
   return (
-    <section className="bg-white py-16 lg:py-24">
+    <section id="about" className="bg-white py-16 lg:py-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
@@ -22,17 +22,17 @@ export default function AboutUs() {
             </div>
 
             <div className="space-y-4">
-              <p className="text-2xl text-primary tracking-wider font-serif italic font-light">
+              <p className="text-2xl text-primary tracking-wider italic font-semibold">
                 ABOUT US
               </p>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-primary leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary leading-tight">
                 Elegant Celebrations,
                 <br />
                 Thoughtfully Designed
               </h2>
 
-              <p className="text-primary leading-relaxed text-sm md:text-base max-w-lg">
+              <p className="text-primary text-justify leading-relaxed text-base md:text-base max-w-lg">
                 {loremIpsum}
               </p>
             </div>
