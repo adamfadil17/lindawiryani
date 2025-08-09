@@ -15,9 +15,11 @@ export default function Page() {
                 of type and scrambled it to make a type specimen book.`;
   return (
     <div id="home" className="min-h-screen">
-      {/* Background image for demonstration */}
+      <Header />
+
+      {/* Hero Section dengan padding-top untuk kompensasi sticky navbar */}
       <div
-        className="min-h-screen bg-cover bg-center bg-no-repeat relative"
+        className="min-h-screen bg-cover bg-center bg-no-repeat relative pt-28 md:pt-32 lg:pt-48"
         style={{
           backgroundImage: `url('/images/hero.png')`,
         }}
@@ -27,8 +29,6 @@ export default function Page() {
 
         {/* Content wrapper with relative positioning */}
         <div className="relative z-10">
-          <Header />
-
           {/* Hero content positioned on the left */}
           <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-16 lg:py-24">
             <div className="max-w-2xl text-white">
@@ -50,6 +50,7 @@ export default function Page() {
         </div>
       </div>
 
+      {/* Sections lainnya tidak perlu padding karena sudah tidak overlap dengan navbar */}
       <AboutUs />
       <Services />
       <Venues />
