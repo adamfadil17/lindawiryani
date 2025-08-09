@@ -3,7 +3,6 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import { MapPin, Users, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export default function Venues() {
   const [selectedLocation, setSelectedLocation] = useState("All");
