@@ -277,7 +277,7 @@ export default function Header() {
                 {/* Mobile Social Icons */}
                 <div
                   className={`flex items-center space-x-6 pt-4 border-t ${
-                    isScrolled ? "border-primary/20" : "border-white/20"
+                    isScrolled ? "border-white/20" : "border-white/20"
                   }`}
                 >
                   {/* WhatsApp Icons */}
