@@ -98,9 +98,9 @@ export default function Instagram() {
               {/* Video Play Button Overlay */}
               {instagramPosts[currentSlide].isVideo && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center group-hover:bg-white/90 transition-colors">
+                  <div className="w-16 h-16 bg-primary/70 rounded-full flex items-center justify-center group-hover:bg-white/90 transition-colors">
                     <Play
-                      className="w-6 h-6 text-stone-700 ml-1"
+                      className="w-6 h-6 text-white ml-1"
                       fill="currentColor"
                     />
                   </div>
@@ -162,7 +162,7 @@ export default function Instagram() {
               href="https://instagram.com/lindawiryanievent"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xl md:text-2xl font-light text-primary hover:cursor-pointer hover:text-stone-600 transition-colors font-serif italic"
+              className="text-xl md:text-2xl font-light text-primary hover:cursor-pointer hover:text-primary/80 transition-colors font-serif italic"
             >
               @lindawiryanievent
             </a>

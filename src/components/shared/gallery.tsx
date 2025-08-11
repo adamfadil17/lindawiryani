@@ -38,7 +38,7 @@ export default function Gallery() {
     <section id="gallery" className="bg-white py-16 lg:py-24 relative">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-16 relative">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 relative">
           {/* Gallery Title - Left */}
           <div className="mb-8 md:mb-0">
             <p className="text-2xl text-primary tracking-wider italic font-semibold">
@@ -48,7 +48,7 @@ export default function Gallery() {
 
           {/* Main Title - Right */}
           <div className="flex-1 md:text-right">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary leading-tight">
+            <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold text-primary leading-tight">
               Timeless Moments, Beautifully Preserved
             </h2>
           </div>

@@ -81,7 +81,7 @@ export default function Contact() {
                   />
                   <a
                     href="mailto:lindawiryanievent@gmail.com"
-                    className="text-primary text-lg hover:text-stone-600 transition-colors"
+                    className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
                     @lindawiryanievent
                   </a>
@@ -99,7 +99,7 @@ export default function Contact() {
                     href="https://instagram.com/lindawiryanievent"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary text-lg hover:text-stone-600 transition-colors"
+                    className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
                     @lindawiryanievent
                   </a>
@@ -117,7 +117,7 @@ export default function Contact() {
                     href="https://wa.me/6282717765489"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary text-lg hover:text-stone-600 transition-colors"
+                    className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
                     082717765489
                   </a>
@@ -135,7 +135,7 @@ export default function Contact() {
                     href="https://pinterest.com/lindaeventlens"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary text-lg hover:text-stone-600 transition-colors"
+                    className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
                     lindaeventlens
                   </a>
@@ -169,7 +169,7 @@ export default function Contact() {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors"
+                    className="w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                   />
                   <input
                     type="text"
@@ -178,7 +178,7 @@ export default function Contact() {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors"
+                    className="w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                   />
                 </div>
               </div>
@@ -196,7 +196,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors"
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                   />
                 </div>
                 <div className="space-y-2">
@@ -208,7 +208,7 @@ export default function Contact() {
                       name="countryCode"
                       value={formData.countryCode}
                       onChange={handleInputChange}
-                      className="text-primary px-3 py-3 border border-primary border-r-0 rounded-none focus:outline-none focus:border-stone-600 transition-colors bg-white"
+                      className="text-primary px-3 py-3 border border-primary border-r-0 rounded-none focus:outline-none focus:border-primary/80 transition-colors bg-white"
                     >
                       <option value="+62">+62</option>
                       <option value="+1">+1</option>
@@ -222,7 +222,7 @@ export default function Contact() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      className="flex-1 px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors"
+                      className="flex-1 px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                     />
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export default function Contact() {
                     placeholder="Mention Your Inquiry"
                     value={formData.inquiryType}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors"
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                   />
                 </div>
                 <div className="space-y-2">
@@ -248,7 +248,7 @@ export default function Contact() {
                     name="date"
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors"
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                   />
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function Contact() {
                   placeholder="Mention Your Budget"
                   value={formData.budget}
                   onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors"
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                 />
               </div>
 
@@ -277,14 +277,14 @@ export default function Contact() {
                   value={formData.additionalInfo}
                   onChange={handleInputChange}
                   rows={6}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-stone-600 transition-colors resize-vertical"
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors resize-vertical"
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="bg-primary border border-primary text-white px-8 py-3 text-sm tracking-widest hover:cursor-pointer"
+                className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer"
               >
                 SEND INQUIRY
               </button>

@@ -42,7 +42,7 @@ export default function Page() {
               <p className="text-sm md:text-base leading-relaxed mb-8 font-light max-w-lg">
                 {loremIpsum}
               </p>
-              <button className="border border-white text-white px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white hover:text-primary transition-colors duration-300">
+              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white hover:text-primary transition-colors duration-300">
                 JOIN THE EXPERIENCE
               </button>
             </div>

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-stone-50 pt-16 lg:pt-20 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+    <footer className="bg-white/95 backdrop-blur-sm pt-16 lg:pt-20 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-4 lg:py-8 border-primary border-b-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left Section - Logo, Tagline, and Address */}
@@ -37,37 +37,37 @@ export default function Footer() {
             <div className="grid grid-cols-3 gap-x-8 gap-y-3 justify-items-center lg:justify-items-start">
               <a
                 href="#home"
-                className="text-primary hover:text-stone-600 transition-colors text-sm tracking-wider font-light"
+                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
               >
                 HOME
               </a>
               <a
                 href="#about"
-                className="text-primary hover:text-stone-600 transition-colors text-sm tracking-wider font-light"
+                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
               >
                 ABOUT
               </a>
               <a
                 href="#services"
-                className="text-primary hover:text-stone-600 transition-colors text-sm tracking-wider font-light"
+                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
               >
                 SERVICES
               </a>
               <a
                 href="#venues"
-                className="text-primary hover:text-stone-600 transition-colors text-sm tracking-wider font-light"
+                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
               >
                 VENUES
               </a>
               <a
                 href="#gallery"
-                className="text-primary hover:text-stone-600 transition-colors text-sm tracking-wider font-light"
+                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
               >
                 GALLERY
               </a>
               <a
                 href="#contact"
-                className="text-primary hover:text-stone-600 transition-colors text-sm tracking-wider font-light"
+                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
               >
                 CONTACT
               </a>
@@ -85,7 +85,7 @@ export default function Footer() {
                   href="https://wa.me/6282717765489"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-stone-400 hover:text-stone-600 transition-colors"
+                  className="text-stone-400 hover:text-primary/80 transition-colors"
                   aria-label="WhatsApp"
                 >
                   <Image
@@ -98,7 +98,7 @@ export default function Footer() {
 
                 <a
                   href="mailto:lindawiryanievent@gmail.com"
-                  className="text-stone-400 hover:text-stone-600 transition-colors"
+                  className="text-stone-400 hover:text-primary/80 transition-colors"
                   aria-label="Email"
                 >
                   <Image
@@ -113,7 +113,7 @@ export default function Footer() {
                   href="https://instagram.com/lindawiryanievent"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-stone-400 hover:text-stone-600 transition-colors"
+                  className="text-stone-400 hover:text-primary/80 transition-colors"
                   aria-label="Instagram"
                 >
                   <Image
@@ -128,7 +128,7 @@ export default function Footer() {
                   href="https://pinterest.com/lindaeventlens"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-stone-400 hover:text-stone-600 transition-colors"
+                  className="text-stone-400 hover:text-primary/80 transition-colors"
                   aria-label="Pinterest"
                 >
                   <Image

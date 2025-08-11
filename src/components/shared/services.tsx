@@ -84,7 +84,7 @@ export default function Services() {
               className={`transition-colors pb-1 ${
                 activeService === service
                   ? "text-primary border-b border-primary hover:cursor-pointer"
-                  : "text-primary hover:text-stone-600 hover:cursor-pointer"
+                  : "text-primary hover:text-primary/80 hover:cursor-pointer"
               }`}
             >
               {service}
@@ -120,7 +120,7 @@ export default function Services() {
               {loremIpsum}
             </p>
 
-            <button className="mb-12 border border-primary text-primary px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300">
+            <button className="mb-12 border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300">
               PLAN YOUR DREAM
             </button>
 
