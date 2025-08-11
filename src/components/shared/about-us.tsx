@@ -8,9 +8,12 @@ export default function AboutUs() {
   return (
     <section id="about" className="bg-white py-16 lg:py-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative">
+          {/* Centered Vertical Divider Line */}
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-primary transform -translate-x-1/2 z-10"></div>
+
           {/* Left Content */}
-          <div className="space-y-6 relative">
+          <div className="space-y-6 relative pr-0 lg:pr-8">
             {/* Decorative Floral Element */}
             <div className="w-24 h-24 mb-8">
               <Image
@@ -36,11 +39,10 @@ export default function AboutUs() {
                 {loremIpsum}
               </p>
             </div>
-            <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-px bg-primary"></div>
           </div>
 
           {/* Right Images Grid - 3 Column Layout with transform offset */}
-          <div className="relative grid grid-cols-3 gap-4 h-[420px]">
+          <div className="relative grid grid-cols-3 gap-4 h-[420px] pl-0 lg:pl-8">
             {/* Left image - Castle couple */}
             <div className="col-span-1">
               <div className="relative h-full overflow-hidden">

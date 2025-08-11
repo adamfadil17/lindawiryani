@@ -72,8 +72,14 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      {/* Top section with logo and social icons */}
-      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-6">
+      {/* Top section with logo and social icons - Hidden on desktop when scrolled */}
+      <div
+        className={`container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-6 transition-all duration-300 ${
+          isScrolled
+            ? "md:opacity-0 md:invisible md:h-0 md:py-0 md:overflow-hidden"
+            : "opacity-100 visible"
+        }`}
+      >
         <div className="relative flex items-center justify-center">
           {/* Logo */}
           <div className="text-center relative">

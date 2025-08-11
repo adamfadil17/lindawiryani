@@ -146,7 +146,7 @@ export default function Services() {
                         src={image.src}
                         alt={image.alt}
                         fill
-                        className="object-cover rounded"
+                        className="object-cover"
                         sizes="(max-width: 640px) 80px, (max-width: 1024px) 96px, (max-width: 1280px) 128px, 160px"
                       />
                     </div>

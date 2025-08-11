@@ -191,7 +191,7 @@ export default function Venues() {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 rounded shadow-lg z-10 min-w-[120px]">
+                <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px]">
                   {locations.map((location) => (
                     <button
                       key={location}
@@ -234,7 +234,7 @@ export default function Venues() {
           {visibleVenues.map((venue) => (
             <div
               key={venue.id}
-              className="relative group overflow-hidden rounded-lg aspect-[4/5] cursor-pointer"
+              className="relative group overflow-hidden aspect-[4/5] cursor-pointer"
             >
               <Image
                 src={venue.image}
@@ -281,7 +281,7 @@ export default function Venues() {
           <div className="lg:hidden mb-12">
             <div className="relative">
               {/* Single Venue Display */}
-              <div className="relative group overflow-hidden rounded-lg aspect-[4/5] cursor-pointer">
+              <div className="relative group overflow-hidden aspect-[4/5] cursor-pointer">
                 <Image
                   src={visibleVenues[currentSlide].image}
                   alt={visibleVenues[currentSlide].name}

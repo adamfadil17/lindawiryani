@@ -52,107 +52,181 @@ export default function Gallery() {
               Timeless Moments, Beautifully Preserved
             </h2>
           </div>
-
-          {/* Decorative Floral Element
-          <div className="absolute top-0 right-0 w-16 h-16 opacity-30">
-            <Image
-              src="/placeholder.svg?height=64&width=64&text=Floral+Branch"
-              alt="Decorative floral branch"
-              width={64}
-              height={64}
-              className="object-contain"
-            />
-          </div> */}
         </div>
 
-        {/* Gallery Grid - 2 rows, 3 images each */}
-        <div className="space-y-6">
-          {/* Row 1: Landscape + Portrait + Portrait */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]">
-            {/* Landscape image spanning 2 columns */}
-            <div className="lg:col-span-2">
-              <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+        {/* Mobile Layout - 2 Columns with Staggered/Offset Layout */}
+        <div className="block md:hidden">
+          <div className="grid grid-cols-2 gap-3">
+            {/* Left Column - starts from top */}
+            <div className="space-y-3">
+              {/* Image 1 */}
+              <div className="relative h-[280px] overflow-hidden group">
                 <Image
                   src={galleryImages[0].src}
                   alt={galleryImages[0].alt}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            </div>
 
-            {/* Portrait image 1 */}
-            <div className="lg:col-span-1">
-              <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+              {/* Image 2 */}
+              <div className="relative h-[280px] overflow-hidden group ">
                 <Image
                   src={galleryImages[1].src}
                   alt={galleryImages[1].alt}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 25vw"
+                  sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            </div>
 
-            {/* Portrait image 2 */}
-            <div className="lg:col-span-1">
-              <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+              {/* Image 3 */}
+              <div className="relative h-[280px] overflow-hidden group">
                 <Image
                   src={galleryImages[2].src}
                   alt={galleryImages[2].alt}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 25vw"
+                  sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </div>
-          </div>
 
-          {/* Row 2: Portrait + Portrait + Landscape */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]">
-            {/* Portrait image 1 */}
-            <div className="lg:col-span-1">
-              <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+            {/* Right Column - starts with offset/padding top */}
+            <div className="space-y-3 pt-20">
+              {/* Image 4 */}
+              <div className="relative h-[280px] overflow-hidden group">
                 <Image
                   src={galleryImages[3].src}
                   alt={galleryImages[3].alt}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 25vw"
+                  sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            </div>
 
-            {/* Portrait image 2 */}
-            <div className="lg:col-span-1">
-              <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+              {/* Image 5 */}
+              <div className="relative h-[280px] overflow-hidden group">
                 <Image
                   src={galleryImages[4].src}
                   alt={galleryImages[4].alt}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 25vw"
+                  sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            </div>
 
-            {/* Landscape image spanning 2 columns */}
-            <div className="lg:col-span-2">
-              <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+              {/* Image 6 */}
+              <div className="relative h-[280px] overflow-hidden group">
                 <Image
                   src={galleryImages[5].src}
                   alt={galleryImages[5].alt}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Layout - Original Grid */}
+        <div className="hidden md:block">
+          <div className="space-y-6">
+            {/* Row 1: Landscape + Portrait + Portrait */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]">
+              {/* Landscape image spanning 2 columns */}
+              <div className="lg:col-span-2">
+                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                  <Image
+                    src={galleryImages[0].src}
+                    alt={galleryImages[0].alt}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </div>
+
+              {/* Portrait image 1 */}
+              <div className="lg:col-span-1">
+                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                  <Image
+                    src={galleryImages[1].src}
+                    alt={galleryImages[1].alt}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </div>
+
+              {/* Portrait image 2 */}
+              <div className="lg:col-span-1">
+                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                  <Image
+                    src={galleryImages[2].src}
+                    alt={galleryImages[2].alt}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </div>
+            </div>
+
+            {/* Row 2: Portrait + Portrait + Landscape */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]">
+              {/* Portrait image 1 */}
+              <div className="lg:col-span-1">
+                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                  <Image
+                    src={galleryImages[3].src}
+                    alt={galleryImages[3].alt}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </div>
+
+              {/* Portrait image 2 */}
+              <div className="lg:col-span-1">
+                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                  <Image
+                    src={galleryImages[4].src}
+                    alt={galleryImages[4].alt}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </div>
+
+              {/* Landscape image spanning 2 columns */}
+              <div className="lg:col-span-2">
+                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                  <Image
+                    src={galleryImages[5].src}
+                    alt={galleryImages[5].alt}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
               </div>
             </div>
           </div>
