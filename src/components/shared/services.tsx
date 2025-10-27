@@ -72,7 +72,7 @@ export default function Services() {
           SERVICES
         </p>
         <h1 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight">
-          Designing Unforgettable Moments, Seamlessly
+          WHERE REFINED HOSPITALITY MEETS ARTFUL DESIGN
         </h1>
 
         {/* Service Categories */}
