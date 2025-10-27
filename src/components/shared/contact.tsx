@@ -80,10 +80,10 @@ export default function Contact() {
                     height={24}
                   />
                   <a
-                    href="mailto:lindawiryanievent@gmail.com"
+                    href="mailto: lindawiryanievents@gmail.com"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
-                    @lindawiryanievent
+                    lindawiryanievents@gmail.com
                   </a>
                 </div>
 
@@ -101,7 +101,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
-                    @lindawiryanievent
+                    @lindawiryanievents
                   </a>
                 </div>
 
@@ -119,7 +119,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
-                    082717765489
+                    +62 811 3980 998
                   </a>
                 </div>
 
@@ -137,7 +137,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
                   >
-                    lindaeventlens
+                    lindawiryanievents
                   </a>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function Contact() {
                 CONTACT US
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold max-w-4xl mx-auto leading-tight">
-                Your Story. Your Style. Let's Design It.
+                Your Story. Your Style. Let’s Design Your Dream Bali Wedding.
               </h2>
             </div>
 

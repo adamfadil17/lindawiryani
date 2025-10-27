@@ -169,7 +169,8 @@ export default function Venues() {
             VENUES
           </p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight">
-            Elegant Spaces for Timeless Vows
+            Curated Bali Wedding Venues for Luxury, Intimate, and Private Villa
+            Celebrations
           </h1>
 
           {/* Location Filter */}

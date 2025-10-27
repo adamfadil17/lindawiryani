@@ -26,7 +26,7 @@ export default function Footer() {
 
             {/* Address */}
             <p className="text-primary text-md font-light max-w-md mx-auto lg:mx-0">
-              © 2025 Jalan Trengguli IV Gang IVB No 11 Denpasar Timur, Bali
+              © 2025 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali
               80239, Indonesia.
             </p>
           </div>
@@ -82,7 +82,7 @@ export default function Footer() {
               {/* Social Media Icons */}
               <div className="flex space-x-4 justify-center lg:justify-start">
                 <a
-                  href="https://wa.me/6282717765489"
+                  href="https://wa.me/628113980998"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-stone-400 hover:text-primary/80 transition-colors"
@@ -97,7 +97,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="mailto:lindawiryanievent@gmail.com"
+                  href="mailto: lindawiryanievents@gmail.com"
                   className="text-stone-400 hover:text-primary/80 transition-colors"
                   aria-label="Email"
                 >
@@ -110,7 +110,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="https://instagram.com/lindawiryanievent"
+                  href="https://instagram.com/lindawiryanievents"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-stone-400 hover:text-primary/80 transition-colors"
@@ -125,7 +125,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="https://pinterest.com/lindaeventlens"
+                  href="https://pinterest.com/lindawiryanievents"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-stone-400 hover:text-primary/80 transition-colors"

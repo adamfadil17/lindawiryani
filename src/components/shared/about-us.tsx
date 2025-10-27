@@ -30,13 +30,13 @@ export default function AboutUs() {
               </p>
 
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary leading-tight">
-                Elegant Celebrations,
+                WHERE ARCHITECTURE, ART, AND HOSPITALITY
                 <br />
-                Thoughtfully Designed
+                CREATE TIMELESS WEDDINGS
               </h2>
 
-              <p className="text-primary text-justify leading-relaxed text-base md:text-base max-w-lg">
-                {loremIpsum}
+              <p className="text-primary text-justify leading-relaxed text-base md:text-base">
+                {`At Linda Wiryani Design & Event Planning, every celebration begins with a story — yours. With nearly two decades in Bali’s five-star hospitality industry, Linda combines her expertise in luxury events, public relations, sales and marketing with her refined eye for detail to create weddings defined by grace, warmth, and seamless execution. Her deep knowledge of Bali’s villa industry allows her to design intimate private villa weddings that blend exclusivity with authenticity. As the Creative Director of her fashion brand, My Lindway, Linda brings artistry and local craftsmanship into every element, from curated table settings to bespoke visual concepts , often enriched through creative collaboration with her architect husband. Beyond her professional world, she finds joy in family life with her two sons and their cheerful fur baby, a balance of love and inspiration that shines through every timeless celebration she designs.`}
               </p>
             </div>
           </div>

@@ -7,9 +7,8 @@ export default function Quote() {
         {/* Quote Text */}
         <div className="text-center mb-24">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary leading-relaxed max-w-5xl mx-auto italic">
-            We bring timeless elegance to life — not just in appearance,
-            <br className="hidden md:block" />
-            but in the way your day feels: calm, graceful, and unforgettable.
+            Because true elegance is not only seen
+            <br className="hidden md:block" />— it’s felt, lived, and remembered
           </h2>
         </div>
 

@@ -48,8 +48,9 @@ export default function Gallery() {
 
           {/* Main Title - Right */}
           <div className="flex-1 md:text-right">
-            <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold text-primary leading-tight">
-              Timeless Moments, Beautifully Preserved
+            <h2 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
+              Bali Wedding Gallery — Real Celebrations, Artful Design, and
+              Timeless Inspiration
             </h2>
           </div>
         </div>

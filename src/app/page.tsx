@@ -36,11 +36,11 @@ export default function Page() {
                 DESIGN • EVENT PLANNING
               </p>
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight">
-                BESPOKE WEDDING CREATION &<br />
-                ELEVATED DESIGN
+                WHERE EVERY DETAIL
+                <br />& REFLECTS YOUR STORY
               </h1>
-              <p className="text-sm md:text-base leading-relaxed mb-8 font-light max-w-lg">
-                {loremIpsum}
+              <p className="text-sm md:text-base leading-relaxed mb-8 font-light">
+                {`Luxury-inspired Bali wedding styling and event planning with five-star hospitality standards.`}
               </p>
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white hover:text-primary transition-colors duration-300">
                 JOIN THE EXPERIENCE

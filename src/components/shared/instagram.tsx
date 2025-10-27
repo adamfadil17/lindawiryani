@@ -45,7 +45,8 @@ export default function Instagram() {
         {/* Title */}
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-2xl lg:text-3xl italic text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight">
-            SEE WHAT'S BLOOMING LATELY ON OUR INSTAGRAM
+            Discover What’s Blooming — Our Latest Bali Wedding Inspirations on
+            Instagram
           </h2>
         </div>
 
