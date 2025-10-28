@@ -7,6 +7,7 @@ import Instagram from "@/components/shared/instagram";
 import Quote from "@/components/shared/quote";
 import Services from "@/components/shared/services";
 import Venues from "@/components/shared/venues";
+import Link from "next/link";
 
 export default function Page() {
   const loremIpsum = `Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -42,9 +43,11 @@ export default function Page() {
               <p className="text-sm md:text-base leading-relaxed mb-8 font-light">
                 {`Luxury-inspired Bali wedding styling and event planning with five-star hospitality standards.`}
               </p>
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white hover:text-primary transition-colors duration-300">
-                JOIN THE EXPERIENCE
-              </button>
+              <Link href="#instagram">
+                <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white hover:text-primary transition-colors duration-300">
+                  JOIN THE EXPERIENCE
+                </button>
+              </Link>
             </div>
           </div>
         </div>

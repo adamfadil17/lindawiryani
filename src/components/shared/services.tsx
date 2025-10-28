@@ -3,9 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export default function Services() {
-  const [activeService, setActiveService] = useState("WEDDING DESIGN");
+  const [activeService, setActiveService] = useState(
+    "Full Wedding Planning & Coordination"
+  );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedLargeImage, setSelectedLargeImage] = useState(0);
 
@@ -20,7 +23,46 @@ export default function Services() {
               publishing software like Aldus PageMaker including versions of
               Lorem Ipsum.`;
 
-  const services = ["WEDDING DESIGN", "PHOTO STYLING", "CREATIVE DIRECTION"];
+  const services = [
+    "Full Wedding Planning & Coordination",
+    "Wedding Styling & Creative Direction",
+    "Private Villa Weddings",
+    "Intimate Weddings & Elopements",
+    "Concept & Design Consultation",
+    "Event & Table Styling",
+    "Destination Guest Management (Optional Add-On)",
+  ];
+
+  const descServices = [
+    {
+      services: "Full Wedding Planning & Coordination",
+      desc: "From the first idea to the final toast, we guide you through every step of your wedding journey — venue selection, vendor management,timeline creation, and on-the-day coordination. With our five-star hospitality background, every detail is executed with care, precision, and grace to ensure your celebration unfolds effortlessly.",
+    },
+    {
+      services: "Wedding Styling & Creative Direction",
+      desc: "Your wedding should feel like you. We craft bespoke design concepts inspired by your story — from mood boards and colour palettes to tablestyling and floral direction. Each element is curated to create a cohesive atmosphere that reflects your personality, style, and emotion.",
+    },
+    {
+      services: "Private Villa Weddings",
+      desc: "Drawing from our expertise in Bali’s villa industry, we design and manage intimate celebrations in exclusive private villas. Each setting is thoughtfully transformed into an elegant, comfortable, and romantic space — ideal for couples seeking privacy and authenticity.",
+    },
+    {
+      services: "Intimate Weddings & Elopements",
+      desc: "For those who believe less can mean more — we create intimate, heartfelt celebrations that focus on connection and meaning. Whether it’s just the two of you or a few cherished guests, your day will feel personal, timeless, and beautifully yours.",
+    },
+    {
+      services: "Concept & Design Consultation",
+      desc: "For couples who already have some plans but need creative direction, we offer personalized consultations. From visual storytelling and spatial flow to bespoke design sketches, we help refine your ideas into a cohesive and elevated concept.",
+    },
+    {
+      services: "Event & Table Styling",
+      desc: "We believe beauty is found in the details. Our team curates table settings, décor elements, and visual compositions that harmonize with youroverall theme — turning each celebration into an artful expression of style and atmosphere.",
+    },
+    {
+      services: "Destination Guest Management (Optional Add-On)",
+      desc: "Ensure your guests experience Bali at its best. From accommodation arrangements to airport transfers and itinerary planning, our team handles the details so everyone enjoys a seamless and memorable stay.",
+    },
+  ];
 
   const galleryImages = [
     {
@@ -76,7 +118,7 @@ export default function Services() {
         </h1>
 
         {/* Service Categories */}
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-12">
           {services.map((service) => (
             <button
               key={service}
@@ -117,12 +159,15 @@ export default function Services() {
             </h2>
 
             <p className="text-primary text-justify leading-relaxed mb-8 text-sm lg:text-base max-w-3xl">
-              {loremIpsum}
+              {descServices.find((item) => item.services === activeService)
+                ?.desc || loremIpsum}
             </p>
 
-            <button className="mb-12 border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300">
-              PLAN YOUR DREAM
-            </button>
+            <Link href="#contact">
+              <button className="mb-12 border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300">
+                PLAN YOUR DREAM
+              </button>
+            </Link>
 
             {/* Image Gallery */}
             {/* Image Gallery */}

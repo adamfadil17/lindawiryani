@@ -40,7 +40,7 @@ export default function Instagram() {
   };
 
   return (
-    <section className="bg-white pb-16 lg:pb-24">
+    <section id="instagram" className="bg-white pb-16 lg:pb-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Title */}
         <div className="text-center mb-16">

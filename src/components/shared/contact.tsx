@@ -70,7 +70,7 @@ export default function Contact() {
                 KEEP IN TOUCH
               </h3>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 {/* Email */}
                 <div className="flex items-center space-x-3">
                   <Image
