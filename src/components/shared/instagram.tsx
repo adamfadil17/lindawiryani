@@ -165,7 +165,7 @@ export default function Instagram() {
               rel="noopener noreferrer"
               className="text-xl md:text-2xl font-light text-primary hover:cursor-pointer hover:text-primary/80 transition-colors font-serif italic"
             >
-              @lindawiryanievent
+              @lindawiryanievents
             </a>
           </div>
 

@@ -37,8 +37,9 @@ export default function Page() {
                 DESIGN • EVENT PLANNING
               </p>
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight">
-                WHERE EVERY DETAIL
-                <br />& REFLECTS YOUR STORY
+                EVERY DETAIL
+                <br />
+                REFLECTS YOUR STORY
               </h1>
               <p className="text-sm md:text-base leading-relaxed mb-8 font-light">
                 {`Luxury-inspired Bali wedding styling and event planning with five-star hospitality standards.`}
