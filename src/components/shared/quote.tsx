@@ -1,23 +1,84 @@
+"use client";
+
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+
+const fadeInUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 80,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const scaleIn: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.85,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 export default function Quote() {
   return (
     <section className="bg-white pb-16 lg:pb-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Quote Text */}
-        <div className="text-center mb-24">
+        <motion.div
+          className="text-center mb-24"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={fadeInUp}
+        >
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary leading-relaxed max-w-5xl mx-auto italic">
             Because true elegance is not only seen
-            <br className="hidden md:block" />— it’s felt, lived, and remembered
+            <br className="hidden md:block" />— it's felt, lived, and remembered
           </h2>
-        </div>
+        </motion.div>
 
         {/* Images Layout */}
         <div className="relative">
           {/* Desktop Layout - 3 columns with middle offset */}
-          <div className="hidden md:grid md:grid-cols-3 gap-6">
+          <motion.div
+            className="hidden md:grid md:grid-cols-3 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={staggerContainer}
+          >
             {/* Left Image - Couple in field with veil */}
-            <div className="relative aspect-[3/4] overflow-hidden">
+            <motion.div
+              variants={fadeInUp}
+              className="relative aspect-[3/4] overflow-hidden"
+            >
               <Image
                 src="/images/quotes1.png"
                 alt="Couple embracing in field with flowing veil"
@@ -25,10 +86,13 @@ export default function Quote() {
                 className="object-cover"
                 sizes="33vw"
               />
-            </div>
+            </motion.div>
 
             {/* Center Image - Wedding ceremony with petals (offset down) */}
-            <div className="relative aspect-[3/4] overflow-hidden transform translate-y-12">
+            <motion.div
+              variants={fadeInUp}
+              className="relative aspect-[3/4] overflow-hidden transform translate-y-12"
+            >
               <Image
                 src="/images/quotes2.png"
                 alt="Wedding ceremony with guests throwing petals"
@@ -36,10 +100,13 @@ export default function Quote() {
                 className="object-cover"
                 sizes="33vw"
               />
-            </div>
+            </motion.div>
 
             {/* Right Image - Couple dancing */}
-            <div className="relative aspect-[3/4] overflow-hidden">
+            <motion.div
+              variants={fadeInUp}
+              className="relative aspect-[3/4] overflow-hidden"
+            >
               <Image
                 src="/images/quotes3.png"
                 alt="Couple dancing with flowing wedding dress"
@@ -47,15 +114,24 @@ export default function Quote() {
                 className="object-cover"
                 sizes="33vw"
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Mobile Layout - 2+1 arrangement */}
-          <div className="md:hidden space-y-6">
+          <motion.div
+            className="md:hidden space-y-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            variants={staggerContainer}
+          >
             {/* Top Row - Two images side by side */}
             <div className="grid grid-cols-2 gap-4">
               {/* Left Image - Couple in field with veil */}
-              <div className="relative aspect-[3/4] overflow-hidden">
+              <motion.div
+                variants={fadeInUp}
+                className="relative aspect-[3/4] overflow-hidden"
+              >
                 <Image
                   src="/images/quotes1.png"
                   alt="Couple embracing in field with flowing veil"
@@ -63,10 +139,13 @@ export default function Quote() {
                   className="object-cover"
                   sizes="50vw"
                 />
-              </div>
+              </motion.div>
 
               {/* Right Image - Couple dancing */}
-              <div className="relative aspect-[3/4] overflow-hidden">
+              <motion.div
+                variants={fadeInUp}
+                className="relative aspect-[3/4] overflow-hidden"
+              >
                 <Image
                   src="/images/quotes2.png"
                   alt="Couple dancing with flowing wedding dress"
@@ -74,12 +153,15 @@ export default function Quote() {
                   className="object-cover"
                   sizes="50vw"
                 />
-              </div>
+              </motion.div>
             </div>
 
             {/* Bottom Row - Centered single image */}
             <div className="flex justify-center">
-              <div className="relative aspect-[3/4] overflow-hidden w-1/2">
+              <motion.div
+                variants={fadeInUp}
+                className="relative aspect-[3/4] overflow-hidden w-1/2"
+              >
                 <Image
                   src="/images/quotes3.png"
                   alt="Wedding ceremony with guests throwing petals"
@@ -87,9 +169,9 @@ export default function Quote() {
                   className="object-cover"
                   sizes="50vw"
                 />
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,9 +1,51 @@
 "use client";
 
 import { useState } from "react";
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Mail, MessageCircle, Instagram } from "lucide-react";
+
+const fadeInUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 80,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const fadeIn: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -38,23 +80,21 @@ export default function Contact() {
 
   return (
     <section id="contact" className="pb-16 lg:pb-24 relative">
-      {/* Decorative Floral Element */}
-      {/* <div className="absolute top-4 left-0 w-32 h-32">
-        <Image
-          src="/images/floral3.svg"
-          alt="Decorative floral branch"
-          width={128}
-          height={128}
-          className="object-contain"
-        />
-      </div> */}
-
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left Side - Image and Contact Info */}
-          <div className="space-y-12">
+          <motion.div
+            className="space-y-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={staggerContainer}
+          >
             {/* Wedding Photo */}
-            <div className="relative aspect-[4/5] overflow-hidden rounded-lg rounded-t-[3000px]">
+            <motion.div
+              variants={fadeIn}
+              className="relative aspect-[4/5] overflow-hidden rounded-lg rounded-t-[3000px]"
+            >
               <Image
                 src="/images/contact.png"
                 alt="Happy wedding couple with bouquet"
@@ -62,10 +102,10 @@ export default function Contact() {
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-            </div>
+            </motion.div>
 
             {/* Keep In Touch Section */}
-            <div className="space-y-6">
+            <motion.div variants={fadeInUp} className="space-y-6">
               <h3 className="text-xl md:text-2xl font-semibold text-primary italic">
                 KEEP IN TOUCH
               </h3>
@@ -141,23 +181,33 @@ export default function Contact() {
                   </a>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Side - Contact Form */}
-          <div className="space-y-8">
+          <motion.div
+            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={staggerContainer}
+          >
             {/* Header */}
-            <div className="space-y-4">
+            <motion.div variants={fadeInUp} className="space-y-4">
               <p className="text-2xl text-primary tracking-wider italic font-semibold">
                 CONTACT US
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold max-w-4xl mx-auto leading-tight">
-                Your Story. Your Style. Let’s Design Your Dream Bali Wedding.
+                Your Story. Your Style. Let's Design Your Dream Bali Wedding.
               </h2>
-            </div>
+            </motion.div>
 
             {/* Contact Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <motion.form
+              variants={fadeInUp}
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
               {/* Name Fields */}
               <div className="space-y-2">
                 <label className="text-primary text-md">Name (required)</label>
@@ -288,8 +338,8 @@ export default function Contact() {
               >
                 SEND INQUIRY
               </button>
-            </form>
-          </div>
+            </motion.form>
+          </motion.div>
         </div>
       </div>
     </section>

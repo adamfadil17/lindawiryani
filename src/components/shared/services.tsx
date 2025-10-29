@@ -1,9 +1,81 @@
 "use client";
 
 import { useState } from "react";
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+
+const fadeInUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 80,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const scaleIn: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.85,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const fadeIn: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const slideInRight: Variants = {
+  hidden: {
+    opacity: 0,
+    x: 80,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.25,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 export default function Services() {
   const [activeService, setActiveService] = useState(
@@ -36,19 +108,19 @@ export default function Services() {
   const descServices = [
     {
       services: "Full Wedding Planning & Coordination",
-      desc: "From the first idea to the final toast, we guide you through every step of your wedding journey — venue selection, vendor management,timeline creation, and on-the-day coordination. With our five-star hospitality background, every detail is executed with care, precision, and grace to ensure your celebration unfolds effortlessly.",
+      desc: "From the first idea to the final toast, we guide you through every step of your wedding journey – venue selection, vendor management,timeline creation, and on-the-day coordination. With our five-star hospitality background, every detail is executed with care, precision, and grace to ensure your celebration unfolds effortlessly.",
     },
     {
       services: "Wedding Styling & Creative Direction",
-      desc: "Your wedding should feel like you. We craft bespoke design concepts inspired by your story — from mood boards and colour palettes to tablestyling and floral direction. Each element is curated to create a cohesive atmosphere that reflects your personality, style, and emotion.",
+      desc: "Your wedding should feel like you. We craft bespoke design concepts inspired by your story – from mood boards and colour palettes to tablestyling and floral direction. Each element is curated to create a cohesive atmosphere that reflects your personality, style, and emotion.",
     },
     {
       services: "Private Villa Weddings",
-      desc: "Drawing from our expertise in Bali’s villa industry, we design and manage intimate celebrations in exclusive private villas. Each setting is thoughtfully transformed into an elegant, comfortable, and romantic space — ideal for couples seeking privacy and authenticity.",
+      desc: "Drawing from our expertise in Bali's villa industry, we design and manage intimate celebrations in exclusive private villas. Each setting is thoughtfully transformed into an elegant, comfortable, and romantic space – ideal for couples seeking privacy and authenticity.",
     },
     {
       services: "Intimate Weddings & Elopements",
-      desc: "For those who believe less can mean more — we create intimate, heartfelt celebrations that focus on connection and meaning. Whether it’s just the two of you or a few cherished guests, your day will feel personal, timeless, and beautifully yours.",
+      desc: "For those who believe less can mean more – we create intimate, heartfelt celebrations that focus on connection and meaning. Whether it's just the two of you or a few cherished guests, your day will feel personal, timeless, and beautifully yours.",
     },
     {
       services: "Concept & Design Consultation",
@@ -56,7 +128,7 @@ export default function Services() {
     },
     {
       services: "Event & Table Styling",
-      desc: "We believe beauty is found in the details. Our team curates table settings, décor elements, and visual compositions that harmonize with youroverall theme — turning each celebration into an artful expression of style and atmosphere.",
+      desc: "We believe beauty is found in the details. Our team curates table settings, décor elements, and visual compositions that harmonize with youroverall theme – turning each celebration into an artful expression of style and atmosphere.",
     },
     {
       services: "Destination Guest Management (Optional Add-On)",
@@ -98,27 +170,32 @@ export default function Services() {
 
   return (
     <section id="services" className="relative">
-      {/* Decorative Floral Element */}
-      {/* <div className="absolute top-4 right-0 w-32 h-32">
-        <Image
-          src="/images/floral2.svg"
-          alt="Decorative floral element"
-          width={120}
-          height={120}
-          className="object-contain"
-        />
-      </div> */}
       {/* Header Section */}
-      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center py-16">
-        <p className="text-2xl text-primary tracking-wider italic font-semibold mb-4">
+      <motion.div
+        className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center py-16"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.3 }}
+        variants={staggerContainer}
+      >
+        <motion.p
+          variants={fadeInUp}
+          className="text-2xl text-primary tracking-wider italic font-semibold mb-4"
+        >
           SERVICES
-        </p>
-        <h1 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight">
+        </motion.p>
+        <motion.h1
+          variants={fadeInUp}
+          className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
+        >
           WHERE REFINED HOSPITALITY MEETS ARTFUL DESIGN
-        </h1>
+        </motion.h1>
 
         {/* Service Categories */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-12">
+        <motion.div
+          variants={fadeInUp}
+          className="flex flex-wrap justify-center gap-6 md:gap-12"
+        >
           {services.map((service) => (
             <button
               key={service}
@@ -132,13 +209,19 @@ export default function Services() {
               {service}
             </button>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Main Content Section */}
       <div className="flex flex-col xl:flex-row">
         {/* Large Image - Responsive Width */}
-        <div className="w-full xl:w-[600px] flex-shrink-0 relative">
+        <motion.div
+          className="w-full xl:w-[600px] flex-shrink-0 relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={fadeIn}
+        >
           <div className="h-[50vh] md:h-[60vh] xl:h-screen relative">
             <Image
               src={galleryImages[selectedLargeImage].src || "/placeholder.svg"}
@@ -149,29 +232,42 @@ export default function Services() {
               sizes="(max-width: 1280px) 100vw, 480px"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Content Section */}
-        <div className="flex-1 bg-[#E9E1DC] flex flex-col justify-center min-h-[50vh] xl:min-h-screen">
+        <motion.div
+          className="flex-1 bg-[#E9E1DC] flex flex-col justify-center min-h-[50vh] xl:min-h-screen"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={staggerContainer}
+        >
           <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-8 lg:py-16">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-primary mb-8 italic">
+            <motion.h2
+              variants={fadeInUp}
+              className="text-3xl lg:text-4xl font-semibold text-primary mb-8 italic"
+            >
               {activeService}
-            </h2>
+            </motion.h2>
 
-            <p className="text-primary text-justify leading-relaxed mb-8 text-sm lg:text-base max-w-3xl">
+            <motion.p
+              variants={fadeInUp}
+              className="text-primary text-justify leading-relaxed mb-8 text-sm lg:text-base max-w-3xl"
+            >
               {descServices.find((item) => item.services === activeService)
                 ?.desc || loremIpsum}
-            </p>
+            </motion.p>
 
-            <Link href="#contact">
-              <button className="mb-12 border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300">
-                PLAN YOUR DREAM
-              </button>
-            </Link>
+            <motion.div variants={fadeInUp}>
+              <Link href="#contact">
+                <button className="mb-12 border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300">
+                  PLAN YOUR DREAM
+                </button>
+              </Link>
+            </motion.div>
 
             {/* Image Gallery */}
-            {/* Image Gallery */}
-            <div className="max-w-3xl">
+            <motion.div variants={scaleIn} className="max-w-3xl">
               <div className="relative inline-block">
                 <div className="flex gap-4 overflow-hidden">
                   {galleryImages.map((image, index) => (
@@ -213,9 +309,9 @@ export default function Services() {
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,8 +1,50 @@
 "use client";
 
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+
+const fadeInUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 80,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const fadeIn: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 export default function Instagram() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -43,18 +85,31 @@ export default function Instagram() {
     <section id="instagram" className="bg-white pb-16 lg:pb-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Title */}
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={fadeInUp}
+        >
           <h2 className="text-2xl md:text-2xl lg:text-3xl italic text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight">
-            Discover What’s Blooming — Our Latest Bali Wedding Inspirations on
+            Discover What's Blooming — Our Latest Bali Wedding Inspirations on
             Instagram
           </h2>
-        </div>
+        </motion.div>
 
         {/* Desktop Grid */}
-        <div className="hidden lg:grid lg:grid-cols-4 gap-6 mb-16">
+        <motion.div
+          className="hidden lg:grid lg:grid-cols-4 gap-6 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={staggerContainer}
+        >
           {instagramPosts.map((post, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={fadeInUp}
               className="relative h-[400px] overflow-hidden group cursor-pointer"
             >
               <Image
@@ -79,12 +134,18 @@ export default function Instagram() {
 
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Mobile Slider */}
-        <div className="lg:hidden mb-16">
+        <motion.div
+          className="lg:hidden mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={fadeIn}
+        >
           <div className="relative">
             {/* Single Image Display */}
             <div className="relative h-[400px] overflow-hidden group cursor-pointer">
@@ -142,12 +203,21 @@ export default function Instagram() {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Follow Us Section */}
-        <div className="text-center relative">
+        <motion.div
+          className="text-center relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={staggerContainer}
+        >
           {/* Decorative Lines */}
-          <div className="flex items-center justify-center mb-6">
+          <motion.div
+            variants={fadeInUp}
+            className="flex items-center justify-center mb-6"
+          >
             <div className="flex-1 h-px bg-primary max-w-screen"></div>
             <div className="px-8">
               <p className="text-xxl text-primary tracking-wider italic font-semibold">
@@ -155,10 +225,10 @@ export default function Instagram() {
               </p>
             </div>
             <div className="flex-1 h-px bg-primary max-w-screen"></div>
-          </div>
+          </motion.div>
 
           {/* Instagram Handle */}
-          <div className="mb-8">
+          <motion.div variants={fadeInUp} className="mb-8">
             <a
               href="https://instagram.com/lindawiryanievent"
               target="_blank"
@@ -167,19 +237,8 @@ export default function Instagram() {
             >
               @lindawiryanievents
             </a>
-          </div>
-
-          {/* Decorative Floral Element
-          <div className="absolute bottom-0 left-0 w-20 h-20 opacity-30">
-            <Image
-              src="/placeholder.svg?height=80&width=80&text=Floral+Decoration"
-              alt="Decorative floral element"
-              width={80}
-              height={80}
-              className="object-contain"
-            />
-          </div> */}
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

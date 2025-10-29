@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import {
   MapPin,
@@ -10,6 +11,62 @@ import {
   ChevronRight,
 } from "lucide-react";
 import VenueDetailModal from "./venue-detail-modal";
+
+const fadeInUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 80,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const fadeIn: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const scaleIn: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.85,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 export default function Venues() {
   const [selectedLocation, setSelectedLocation] = useState("All");
@@ -239,17 +296,32 @@ export default function Venues() {
       <section id="venues" className="bg-white py-16 lg:py-24 relative">
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           {/* Header Section */}
-          <div className="text-center mb-16">
-            <p className="text-2xl text-primary tracking-wider italic font-semibold mb-4">
+          <motion.div
+            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={staggerContainer}
+          >
+            <motion.p
+              variants={fadeInUp}
+              className="text-2xl text-primary tracking-wider italic font-semibold mb-4"
+            >
               VENUES
-            </p>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight">
+            </motion.p>
+            <motion.h1
+              variants={fadeInUp}
+              className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
+            >
               Curated Bali Wedding Venues for Luxury, Intimate, and Private
               Villa Celebrations
-            </h1>
+            </motion.h1>
 
             {/* Location Filter */}
-            <div className="flex items-center justify-center gap-4 mb-4">
+            <motion.div
+              variants={fadeInUp}
+              className="flex items-center justify-center gap-4 mb-4"
+            >
               <span className="text-xl text-primary tracking-wider italic font-semibold">
                 LOCATION
               </span>
@@ -287,10 +359,10 @@ export default function Venues() {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* Venue Count Display */}
-            <p className="text-md text-primary">
+            <motion.p variants={fadeInUp} className="text-md text-primary">
               {!isMobile
                 ? selectedLocation === "All"
                   ? `Showing ${visibleVenues.length} of ${venueCount} venues`
@@ -302,14 +374,21 @@ export default function Venues() {
                 : `${venueCount} venue${
                     venueCount !== 1 ? "s" : ""
                   } available in ${selectedLocation}`}
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Desktop Grid */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-6 mb-12">
+          <motion.div
+            className="hidden lg:grid lg:grid-cols-3 gap-6 mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={staggerContainer}
+          >
             {visibleVenues.map((venue) => (
-              <div
+              <motion.div
                 key={venue.id}
+                variants={scaleIn}
                 className="relative group overflow-hidden aspect-[4/5] cursor-pointer"
               >
                 <Image
@@ -351,13 +430,19 @@ export default function Venues() {
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Mobile Slider */}
           {visibleVenues.length > 0 && (
-            <div className="lg:hidden mb-12">
+            <motion.div
+              className="lg:hidden mb-12"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              variants={fadeIn}
+            >
               <div className="relative">
                 {/* Single Venue Display */}
                 <div className="relative group overflow-hidden aspect-[4/5] cursor-pointer">
@@ -441,12 +526,18 @@ export default function Venues() {
                   ))}
                 </div>
               )}
-            </div>
+            </motion.div>
           )}
 
           {/* No venues found message */}
           {filteredVenues.length === 0 && (
-            <div className="text-center py-12 mb-12">
+            <motion.div
+              className="text-center py-12 mb-12"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              variants={fadeInUp}
+            >
               <p className="text-lg text-primary mb-4">
                 No venues found in {selectedLocation}
               </p>
@@ -456,36 +547,54 @@ export default function Venues() {
               >
                 View all venues
               </button>
-            </div>
+            </motion.div>
           )}
 
           {/* View More Button - Desktop only, when there are more venues to load */}
           {!isMobile && hasMoreVenues && (
-            <div className="text-center mb-24">
+            <motion.div
+              className="text-center mb-24"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              variants={fadeInUp}
+            >
               <button
                 onClick={handleViewMore}
                 className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary/90 transition-colors"
               >
                 VIEW MORE ({filteredVenues.length - visibleCount} MORE)
               </button>
-            </div>
+            </motion.div>
           )}
 
           {/* View Less Button - Desktop only, when all venues are displayed and there are more than 6 */}
           {!isMobile && !hasMoreVenues && filteredVenues.length > 6 && (
-            <div className="text-center mb-24">
+            <motion.div
+              className="text-center mb-24"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              variants={fadeInUp}
+            >
               <button
                 onClick={() => setVisibleCount(6)}
                 className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
               >
                 VIEW LESS
               </button>
-            </div>
+            </motion.div>
           )}
         </div>
 
         {/* Two Image Layout - Full width edge to edge */}
-        <div className="absolute left-0 right-0 w-full">
+        <motion.div
+          className="absolute left-0 right-0 w-full"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={fadeIn}
+        >
           {/* Desktop Layout */}
           <div className="hidden md:block">
             <div className="flex">
@@ -526,7 +635,7 @@ export default function Venues() {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Spacer to maintain layout flow */}
         <div className="h-[428px]"></div>

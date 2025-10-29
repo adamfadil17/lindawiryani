@@ -1,4 +1,48 @@
+"use client";
+
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+
+const fadeInUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 80,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const fadeIn: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 export default function Gallery() {
   const galleryImages = [
@@ -38,30 +82,45 @@ export default function Gallery() {
     <section id="gallery" className="bg-white py-16 lg:py-24 relative">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 relative">
+        <motion.div
+          className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={staggerContainer}
+        >
           {/* Gallery Title - Left */}
-          <div className="mb-8 md:mb-0">
+          <motion.div variants={fadeInUp} className="mb-8 md:mb-0">
             <p className="text-2xl text-primary tracking-wider italic font-semibold">
               GALLERY
             </p>
-          </div>
+          </motion.div>
 
           {/* Main Title - Right */}
-          <div className="flex-1 md:text-right">
+          <motion.div variants={fadeInUp} className="flex-1 md:text-right">
             <h2 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
               Bali Wedding Gallery — Real Celebrations, Artful Design, and
               Timeless Inspiration
             </h2>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Mobile Layout - 2 Columns with Staggered/Offset Layout */}
-        <div className="block md:hidden">
+        <motion.div
+          className="block md:hidden"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={staggerContainer}
+        >
           <div className="grid grid-cols-2 gap-3">
             {/* Left Column - starts from top */}
             <div className="space-y-3">
               {/* Image 1 */}
-              <div className="relative h-[280px] overflow-hidden group">
+              <motion.div
+                variants={fadeIn}
+                className="relative h-[280px] overflow-hidden group"
+              >
                 <Image
                   src={galleryImages[0].src}
                   alt={galleryImages[0].alt}
@@ -70,10 +129,13 @@ export default function Gallery() {
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </motion.div>
 
               {/* Image 2 */}
-              <div className="relative h-[280px] overflow-hidden group ">
+              <motion.div
+                variants={fadeIn}
+                className="relative h-[280px] overflow-hidden group "
+              >
                 <Image
                   src={galleryImages[1].src}
                   alt={galleryImages[1].alt}
@@ -82,10 +144,13 @@ export default function Gallery() {
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </motion.div>
 
               {/* Image 3 */}
-              <div className="relative h-[280px] overflow-hidden group">
+              <motion.div
+                variants={fadeIn}
+                className="relative h-[280px] overflow-hidden group"
+              >
                 <Image
                   src={galleryImages[2].src}
                   alt={galleryImages[2].alt}
@@ -94,13 +159,16 @@ export default function Gallery() {
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </motion.div>
             </div>
 
             {/* Right Column - starts with offset/padding top */}
             <div className="space-y-3 pt-20">
               {/* Image 4 */}
-              <div className="relative h-[280px] overflow-hidden group">
+              <motion.div
+                variants={fadeIn}
+                className="relative h-[280px] overflow-hidden group"
+              >
                 <Image
                   src={galleryImages[3].src}
                   alt={galleryImages[3].alt}
@@ -109,10 +177,13 @@ export default function Gallery() {
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </motion.div>
 
               {/* Image 5 */}
-              <div className="relative h-[280px] overflow-hidden group">
+              <motion.div
+                variants={fadeIn}
+                className="relative h-[280px] overflow-hidden group"
+              >
                 <Image
                   src={galleryImages[4].src}
                   alt={galleryImages[4].alt}
@@ -121,10 +192,13 @@ export default function Gallery() {
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </motion.div>
 
               {/* Image 6 */}
-              <div className="relative h-[280px] overflow-hidden group">
+              <motion.div
+                variants={fadeIn}
+                className="relative h-[280px] overflow-hidden group"
+              >
                 <Image
                   src={galleryImages[5].src}
                   alt={galleryImages[5].alt}
@@ -133,19 +207,28 @@ export default function Gallery() {
                   sizes="50vw"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Desktop Layout - Original Grid */}
         <div className="hidden md:block">
           <div className="space-y-6">
             {/* Row 1: Landscape + Portrait + Portrait */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              variants={staggerContainer}
+            >
               {/* Landscape image spanning 2 columns */}
               <div className="lg:col-span-2">
-                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                <motion.div
+                  variants={fadeIn}
+                  className="relative h-[420px] overflow-hidden group cursor-pointer"
+                >
                   <Image
                     src={galleryImages[0].src}
                     alt={galleryImages[0].alt}
@@ -154,12 +237,15 @@ export default function Gallery() {
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                </motion.div>
               </div>
 
               {/* Portrait image 1 */}
               <div className="lg:col-span-1">
-                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                <motion.div
+                  variants={fadeIn}
+                  className="relative h-[420px] overflow-hidden group cursor-pointer"
+                >
                   <Image
                     src={galleryImages[1].src}
                     alt={galleryImages[1].alt}
@@ -168,12 +254,15 @@ export default function Gallery() {
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                </motion.div>
               </div>
 
               {/* Portrait image 2 */}
               <div className="lg:col-span-1">
-                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                <motion.div
+                  variants={fadeIn}
+                  className="relative h-[420px] overflow-hidden group cursor-pointer"
+                >
                   <Image
                     src={galleryImages[2].src}
                     alt={galleryImages[2].alt}
@@ -182,15 +271,24 @@ export default function Gallery() {
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Row 2: Portrait + Portrait + Landscape */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              variants={staggerContainer}
+            >
               {/* Portrait image 1 */}
               <div className="lg:col-span-1">
-                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                <motion.div
+                  variants={fadeIn}
+                  className="relative h-[420px] overflow-hidden group cursor-pointer"
+                >
                   <Image
                     src={galleryImages[3].src}
                     alt={galleryImages[3].alt}
@@ -199,12 +297,15 @@ export default function Gallery() {
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                </motion.div>
               </div>
 
               {/* Portrait image 2 */}
               <div className="lg:col-span-1">
-                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                <motion.div
+                  variants={fadeIn}
+                  className="relative h-[420px] overflow-hidden group cursor-pointer"
+                >
                   <Image
                     src={galleryImages[4].src}
                     alt={galleryImages[4].alt}
@@ -213,12 +314,15 @@ export default function Gallery() {
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                </motion.div>
               </div>
 
               {/* Landscape image spanning 2 columns */}
               <div className="lg:col-span-2">
-                <div className="relative h-[420px] overflow-hidden group cursor-pointer">
+                <motion.div
+                  variants={fadeIn}
+                  className="relative h-[420px] overflow-hidden group cursor-pointer"
+                >
                   <Image
                     src={galleryImages[5].src}
                     alt={galleryImages[5].alt}
@@ -227,9 +331,9 @@ export default function Gallery() {
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
