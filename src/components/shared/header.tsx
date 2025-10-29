@@ -110,6 +110,7 @@ export default function Header() {
             {/* WhatsApp Icons */}
             <a
               href="https://wa.me/628113980998"
+              target="_blank"
               aria-label="WhatsApp"
               className="relative"
             >
@@ -137,6 +138,7 @@ export default function Header() {
             {/* Email Icons */}
             <a
               href="mailto: lindawiryanievents@gmail.com"
+              target="_blank"
               aria-label="Email"
               className="relative"
             >
@@ -164,6 +166,7 @@ export default function Header() {
             {/* Instagram Icons */}
             <a
               href="https://instagram.com/lindawiryanievents"
+              target="_blank"
               aria-label="Instagram"
               className="relative"
             >
@@ -191,6 +194,7 @@ export default function Header() {
             {/* Pinterest Icons */}
             <a
               href="https://pinterest.com/lindawiryanievents"
+              target="_blank"
               aria-label="Pinterest"
               className="relative"
             >
@@ -299,6 +303,7 @@ export default function Header() {
                   {/* WhatsApp Icons */}
                   <a
                     href="https://wa.me/628113980998"
+                    target="_blank"
                     aria-label="WhatsApp"
                     className="relative"
                   >
@@ -313,6 +318,7 @@ export default function Header() {
                   {/* Email Icons */}
                   <a
                     href="mailto: lindawiryanievents@gmail.com"
+                    target="_blank"
                     aria-label="Email"
                     className="relative"
                   >
@@ -327,6 +333,7 @@ export default function Header() {
                   {/* Instagram Icons */}
                   <a
                     href="https://instagram.com/lindawiryanievents"
+                    target="_blank"
                     aria-label="Instagram"
                     className="relative"
                   >
@@ -341,6 +348,7 @@ export default function Header() {
                   {/* Pinterest Icons */}
                   <a
                     href="https://pinterest.com/lindawiryanievents"
+                    target="_blank"
                     aria-label="Pinterest"
                     className="relative"
                   >
