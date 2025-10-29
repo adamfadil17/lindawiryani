@@ -59,7 +59,7 @@ const fadeInUp: Variants = {
 
 export default function Page() {
   return (
-    <div id="home" className="min-h-screen">
+    <div id="home" className="min-h-screen overflow-x-hidden">
       <Header />
 
       {/* Hero Section */}
