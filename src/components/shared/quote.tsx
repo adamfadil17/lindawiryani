@@ -16,6 +16,15 @@ const fadeInUp: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    y: 20,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const scaleIn: Variants = {
@@ -31,6 +40,15 @@ const scaleIn: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const staggerContainer: Variants = {
@@ -44,6 +62,14 @@ const staggerContainer: Variants = {
       delayChildren: 0.2,
     },
   },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      staggerDirection: -1,
+      delay: 0.3,
+    },
+  },
 };
 
 export default function Quote() {
@@ -55,7 +81,11 @@ export default function Quote() {
           className="text-center mb-24"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={fadeInUp}
         >
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary leading-relaxed max-w-5xl mx-auto italic">
@@ -71,7 +101,11 @@ export default function Quote() {
             className="hidden md:grid md:grid-cols-3 gap-6"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{
+              once: false,
+              amount: 0.2,
+              margin: "0px 0px -100px 0px",
+            }}
             variants={staggerContainer}
           >
             {/* Left Image - Couple in field with veil */}
@@ -122,7 +156,11 @@ export default function Quote() {
             className="md:hidden space-y-6"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{
+              once: false,
+              amount: 0.2,
+              margin: "0px 0px -100px 0px",
+            }}
             variants={staggerContainer}
           >
             {/* Top Row - Two images side by side */}

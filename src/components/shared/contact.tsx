@@ -19,6 +19,15 @@ const fadeInUp: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    y: 20,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const fadeIn: Variants = {
@@ -32,6 +41,14 @@ const fadeIn: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const staggerContainer: Variants = {
@@ -43,6 +60,14 @@ const staggerContainer: Variants = {
     transition: {
       staggerChildren: 0.2,
       delayChildren: 0.2,
+    },
+  },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      staggerDirection: -1,
+      delay: 0.3,
     },
   },
 };
@@ -87,7 +112,11 @@ export default function Contact() {
             className="space-y-12"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{
+              once: false,
+              amount: 0.2,
+              margin: "0px 0px -100px 0px",
+            }}
             variants={staggerContainer}
           >
             {/* Wedding Photo */}
@@ -189,7 +218,11 @@ export default function Contact() {
             className="space-y-8"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{
+              once: false,
+              amount: 0.2,
+              margin: "0px 0px -100px 0px",
+            }}
             variants={staggerContainer}
           >
             {/* Header */}

@@ -19,6 +19,15 @@ const fadeInUp: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    y: 20,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const scaleIn: Variants = {
@@ -34,6 +43,15 @@ const scaleIn: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const fadeIn: Variants = {
@@ -45,6 +63,14 @@ const fadeIn: Variants = {
     transition: {
       duration: 1.2,
       ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
     },
   },
 };
@@ -62,6 +88,15 @@ const slideInRight: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    x: 40,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const staggerContainer: Variants = {
@@ -73,6 +108,14 @@ const staggerContainer: Variants = {
     transition: {
       staggerChildren: 0.25,
       delayChildren: 0.2,
+    },
+  },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      staggerDirection: -1,
+      delay: 0.3,
     },
   },
 };
@@ -175,7 +218,11 @@ export default function Services() {
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center py-16"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{
+          once: false,
+          amount: 0.2,
+          margin: "0px 0px -100px 0px",
+        }}
         variants={staggerContainer}
       >
         <motion.p
@@ -219,7 +266,11 @@ export default function Services() {
           className="w-full xl:w-[600px] flex-shrink-0 relative"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={fadeIn}
         >
           <div className="h-[50vh] md:h-[60vh] xl:h-screen relative">
@@ -239,7 +290,11 @@ export default function Services() {
           className="flex-1 bg-[#E9E1DC] flex flex-col justify-center min-h-[50vh] xl:min-h-screen"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={staggerContainer}
         >
           <div className="w-full max-w-4xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-8 lg:py-16">

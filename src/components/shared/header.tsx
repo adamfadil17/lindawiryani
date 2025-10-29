@@ -87,7 +87,7 @@ export default function Header() {
             <Image
               src="/images/logo-white.png"
               alt="Linda Wygant Wedding Planning"
-              className={`h-12 md:h-16 lg:h-20 w-auto mx-auto transition-opacity duration-300 ${
+              className={`h-16 md:h-16 lg:h-20 w-auto mx-auto transition-opacity duration-300 ${
                 isScrolled || isMenuOpen ? "opacity-0" : "opacity-100"
               }`}
               width={120}
@@ -97,7 +97,7 @@ export default function Header() {
             <Image
               src="/images/logo-brown.png"
               alt="Linda Wygant Wedding Planning"
-              className={`h-12 md:h-16 lg:h-20 w-auto mx-auto transition-opacity duration-300 absolute top-0 left-1/2 transform -translate-x-1/2 ${
+              className={`h-16 md:h-16 lg:h-20 w-auto mx-auto transition-opacity duration-300 absolute top-0 left-1/2 transform -translate-x-1/2 ${
                 isScrolled || isMenuOpen ? "opacity-100" : "opacity-0"
               }`}
               width={120}

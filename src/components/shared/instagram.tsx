@@ -18,6 +18,15 @@ const fadeInUp: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    y: 20,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const fadeIn: Variants = {
@@ -31,6 +40,14 @@ const fadeIn: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const staggerContainer: Variants = {
@@ -42,6 +59,14 @@ const staggerContainer: Variants = {
     transition: {
       staggerChildren: 0.15,
       delayChildren: 0.2,
+    },
+  },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      staggerDirection: -1,
+      delay: 0.3,
     },
   },
 };
@@ -89,7 +114,11 @@ export default function Instagram() {
           className="text-center mb-16"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={fadeInUp}
         >
           <h2 className="text-2xl md:text-2xl lg:text-3xl italic text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight">
@@ -103,7 +132,11 @@ export default function Instagram() {
           className="hidden lg:grid lg:grid-cols-4 gap-6 mb-16"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={staggerContainer}
         >
           {instagramPosts.map((post, index) => (
@@ -143,7 +176,11 @@ export default function Instagram() {
           className="lg:hidden mb-16"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={fadeIn}
         >
           <div className="relative">
@@ -210,7 +247,11 @@ export default function Instagram() {
           className="text-center relative"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={staggerContainer}
         >
           {/* Decorative Lines */}

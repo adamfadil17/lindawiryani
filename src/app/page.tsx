@@ -23,6 +23,14 @@ const staggerContainer: Variants = {
       delayChildren: 0.2,
     },
   },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      staggerDirection: -1,
+      delay: 0.3,
+    },
+  },
 };
 
 const fadeInUp: Variants = {
@@ -38,6 +46,15 @@ const fadeInUp: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    y: 20,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 export default function Page() {
@@ -49,7 +66,11 @@ export default function Page() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{
+          once: false,
+          amount: 0.2,
+          margin: "0px 0px -100px 0px",
+        }}
         variants={staggerContainer}
         className="min-h-screen bg-cover bg-center bg-no-repeat relative pt-28 md:pt-32 lg:pt-48"
         style={{

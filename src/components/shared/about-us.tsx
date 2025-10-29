@@ -16,6 +16,15 @@ const fadeInUp: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    y: 20,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const scaleIn: Variants = {
@@ -29,6 +38,15 @@ const scaleIn: Variants = {
     transition: {
       duration: 1.2,
       ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
     },
   },
 };
@@ -46,6 +64,15 @@ const slideInRight: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    x: 40,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const staggerContainer: Variants = {
@@ -59,6 +86,14 @@ const staggerContainer: Variants = {
       delayChildren: 0.2,
     },
   },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      staggerDirection: -1,
+      delay: 0.3,
+    },
+  },
 };
 
 export default function AboutUs() {
@@ -68,7 +103,11 @@ export default function AboutUs() {
       className="bg-white py-16 lg:py-24"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: false, amount: 0.3 }}
+      viewport={{
+        once: false,
+        amount: 0.2,
+        margin: "0px 0px -100px 0px",
+      }}
       variants={staggerContainer}
     >
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
@@ -108,7 +147,7 @@ export default function AboutUs() {
                 variants={fadeInUp}
                 className="text-primary text-justify leading-relaxed text-base md:text-base"
               >
-                {`At Linda Wiryani Design & Event Planning, every celebration begins with a story — yours. With nearly two decades in Bali's five-star hospitality industry, Linda combines her expertise in luxury events, public relations, sales and marketing with her refined eye for detail to create weddings defined by grace, warmth, and seamless execution. Her deep knowledge of Bali's villa industry allows her to design intimate private villa weddings that blend exclusivity with authenticity. As the Creative Director of her fashion brand, My Lindway, Linda brings artistry and local craftsmanship into every element, from curated table settings to bespoke visual concepts , often enriched through creative collaboration with her architect husband. Beyond her professional world, she finds joy in family life with her two sons and their cheerful fur baby, a balance of love and inspiration that shines through every timeless celebration she designs.`}
+                {`At Linda Wiryani Design & Event Planning, every celebration begins with a story — yours. With nearly two decades in Bali’s five-star hospitality industry, Linda combines her expertise in luxury events, public relations, sales and marketing with her refined eye for detail to create weddings defined by grace, warmth, and seamless execution. Her deep knowledge of Bali’s villa industry allows her to design intimate private villa weddings that blend exclusivity with authenticity. As the Creative Director of her fashion brand, My Lindway, Linda brings artistry and local craftsmanship into every element, from curated table settings to bespoke visual concepts , often enriched through creative collaboration with her architect husband. Beyond her professional world, she finds joy in family life with her two sons and their cheerful fur baby, a balance of love and inspiration that shines through every timeless celebration she designs.`}
               </motion.p>
             </div>
           </div>

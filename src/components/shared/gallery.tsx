@@ -16,6 +16,15 @@ const fadeInUp: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    y: 20,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const fadeIn: Variants = {
@@ -29,6 +38,14 @@ const fadeIn: Variants = {
       ease: [0.25, 0.1, 0.25, 1] as any,
     },
   },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
 };
 
 const staggerContainer: Variants = {
@@ -40,6 +57,14 @@ const staggerContainer: Variants = {
     transition: {
       staggerChildren: 0.15,
       delayChildren: 0.2,
+    },
+  },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      staggerDirection: -1,
+      delay: 0.3,
     },
   },
 };
@@ -86,7 +111,11 @@ export default function Gallery() {
           className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 relative"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={staggerContainer}
         >
           {/* Gallery Title - Left */}
@@ -110,7 +139,11 @@ export default function Gallery() {
           className="block md:hidden"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.1 }}
+          viewport={{
+            once: false,
+            amount: 0.2,
+            margin: "0px 0px -100px 0px",
+          }}
           variants={staggerContainer}
         >
           <div className="grid grid-cols-2 gap-3">
@@ -220,7 +253,11 @@ export default function Gallery() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{
+                once: false,
+                amount: 0.2,
+                margin: "0px 0px -100px 0px",
+              }}
               variants={staggerContainer}
             >
               {/* Landscape image spanning 2 columns */}
@@ -280,7 +317,11 @@ export default function Gallery() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{
+                once: false,
+                amount: 0.2,
+                margin: "0px 0px -100px 0px",
+              }}
               variants={staggerContainer}
             >
               {/* Portrait image 1 */}
