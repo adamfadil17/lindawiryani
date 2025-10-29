@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import AboutUs from "@/components/shared/about-us";
 import Contact from "@/components/shared/contact";
 import Footer from "@/components/shared/footer";
@@ -11,51 +11,7 @@ import Quote from "@/components/shared/quote";
 import Services from "@/components/shared/services";
 import Venues from "@/components/shared/venues";
 import Link from "next/link";
-
-const staggerContainer: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.25,
-      delayChildren: 0.2,
-    },
-  },
-  exit: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      staggerDirection: -1,
-      delay: 0.3,
-    },
-  },
-};
-
-const fadeInUp: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 80,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: 20,
-    transition: {
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-      delay: 0.2,
-    },
-  },
-};
+import { fadeInUp, staggerContainer } from "@/lib/motion";
 
 export default function Page() {
   return (
@@ -84,7 +40,7 @@ export default function Page() {
             <div className="max-w-2xl text-white">
               <motion.p
                 variants={fadeInUp}
-                className="text-sm md:text-base tracking-widest mb-8 font-light"
+                className="text-sm md:text-base tracking-widest my-2 font-light"
               >
                 DESIGN • EVENT PLANNING
               </motion.p>

@@ -1,101 +1,15 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-
-const fadeInUp: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 80,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: 20,
-    transition: {
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-      delay: 0.2,
-    },
-  },
-};
-
-const fadeIn: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-      delay: 0.2,
-    },
-  },
-};
-
-const staggerContainer: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-  exit: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      staggerDirection: -1,
-      delay: 0.3,
-    },
-  },
-};
+import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
+import { instagramPosts } from "@/lib/image-src";
 
 export default function Instagram() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const instagramPosts = [
-    {
-      src: "/images/instagram1.png",
-      alt: "Wedding couple on beach",
-      isVideo: true,
-    },
-    {
-      src: "/images/instagram2.png",
-      alt: "Wedding rings with bouquet",
-      isVideo: true,
-    },
-    {
-      src: "/images/instagram3.png",
-      alt: "Happy couple at reception",
-      isVideo: true,
-    },
-    {
-      src: "/images/instagram4.png",
-      alt: "Outdoor wedding ceremony",
-      isVideo: true,
-    },
-  ];
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % instagramPosts.length);
   };

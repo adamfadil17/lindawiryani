@@ -305,7 +305,7 @@ export default function Contact() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      className="flex-1 px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                      className="w-full flex-1 px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                     />
                   </div>
                 </div>

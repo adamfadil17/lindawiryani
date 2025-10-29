@@ -1,73 +1,8 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-
-const fadeInUp: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 80,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: 20,
-    transition: {
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-      delay: 0.2,
-    },
-  },
-};
-
-const fadeIn: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
-      delay: 0.2,
-    },
-  },
-};
-
-const staggerContainer: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-  exit: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      staggerDirection: -1,
-      delay: 0.3,
-    },
-  },
-};
 
 export default function Gallery() {
   const galleryImages = [
