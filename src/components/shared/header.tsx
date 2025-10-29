@@ -108,7 +108,11 @@ export default function Header() {
           {/* Social Icons - Desktop */}
           <div className="absolute right-0 hidden md:flex items-center space-x-4">
             {/* WhatsApp Icons */}
-            <a href="#" aria-label="WhatsApp" className="relative">
+            <a
+              href="https://wa.me/628113980998"
+              aria-label="WhatsApp"
+              className="relative"
+            >
               <Image
                 src="/images/ic_baseline-whatsapp.svg"
                 alt="WhatsApp"
@@ -131,7 +135,11 @@ export default function Header() {
             </a>
 
             {/* Email Icons */}
-            <a href="#" aria-label="Email" className="relative">
+            <a
+              href="mailto: lindawiryanievents@gmail.com"
+              aria-label="Email"
+              className="relative"
+            >
               <Image
                 src="/images/ic_outline-email.svg"
                 alt="Email"
@@ -154,7 +162,11 @@ export default function Header() {
             </a>
 
             {/* Instagram Icons */}
-            <a href="#" aria-label="Instagram" className="relative">
+            <a
+              href="https://instagram.com/lindawiryanievents"
+              aria-label="Instagram"
+              className="relative"
+            >
               <Image
                 src="/images/mdi_instagram.svg"
                 alt="Instagram"
@@ -177,7 +189,11 @@ export default function Header() {
             </a>
 
             {/* Pinterest Icons */}
-            <a href="#" aria-label="Pinterest" className="relative">
+            <a
+              href="https://pinterest.com/lindawiryanievents"
+              aria-label="Pinterest"
+              className="relative"
+            >
               <Image
                 src="/images/ri_pinterest-line.svg"
                 alt="Pinterest"
@@ -281,7 +297,11 @@ export default function Header() {
                 {/* Mobile Social Icons */}
                 <div className="flex items-center space-x-6 pt-4 border-t border-primary/20">
                   {/* WhatsApp Icons */}
-                  <a href="#" aria-label="WhatsApp" className="relative">
+                  <a
+                    href="https://wa.me/628113980998"
+                    aria-label="WhatsApp"
+                    className="relative"
+                  >
                     <Image
                       src="/images/whatsapp-brown.svg"
                       alt="WhatsApp"
@@ -291,7 +311,11 @@ export default function Header() {
                   </a>
 
                   {/* Email Icons */}
-                  <a href="#" aria-label="Email" className="relative">
+                  <a
+                    href="mailto: lindawiryanievents@gmail.com"
+                    aria-label="Email"
+                    className="relative"
+                  >
                     <Image
                       src="/images/email-brown.svg"
                       alt="Email"
@@ -301,7 +325,11 @@ export default function Header() {
                   </a>
 
                   {/* Instagram Icons */}
-                  <a href="#" aria-label="Instagram" className="relative">
+                  <a
+                    href="https://instagram.com/lindawiryanievents"
+                    aria-label="Instagram"
+                    className="relative"
+                  >
                     <Image
                       src="/images/instagram-brown.svg"
                       alt="Instagram"
@@ -311,7 +339,11 @@ export default function Header() {
                   </a>
 
                   {/* Pinterest Icons */}
-                  <a href="#" aria-label="Pinterest" className="relative">
+                  <a
+                    href="https://pinterest.com/lindawiryanievents"
+                    aria-label="Pinterest"
+                    className="relative"
+                  >
                     <Image
                       src="/images/pinterest-line-brown.svg"
                       alt="Pinterest"

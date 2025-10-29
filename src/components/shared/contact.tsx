@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Mail, MessageCircle, Instagram } from "lucide-react";
+("lucide-react");
 
 const fadeInUp: Variants = {
   hidden: {
@@ -165,7 +164,7 @@ export default function Contact() {
                     height={24}
                   />
                   <a
-                    href="https://instagram.com/lindawiryanievent"
+                    href="https://instagram.com/lindawiryanievents"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
@@ -183,7 +182,7 @@ export default function Contact() {
                     height={24}
                   />
                   <a
-                    href="https://wa.me/6282717765489"
+                    href="https://wa.me/628113980998"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
@@ -201,7 +200,7 @@ export default function Contact() {
                     height={24}
                   />
                   <a
-                    href="https://pinterest.com/lindaeventlens"
+                    href="https://pinterest.com/lindawiryanievents"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
