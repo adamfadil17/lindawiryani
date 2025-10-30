@@ -70,7 +70,7 @@ export default function AboutUs() {
             <motion.div variants={slideInRight} className="col-span-1">
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us1.png"
+                  src="/images/about-us/about-us1.png"
                   alt="Linda Wiryani Assets"
                   fill
                   className="object-cover"
@@ -85,7 +85,7 @@ export default function AboutUs() {
             >
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us2.png"
+                  src="/images/about-us/about-us2.png"
                   alt="Linda Wiryani Assets"
                   fill
                   className="object-cover"
@@ -97,7 +97,7 @@ export default function AboutUs() {
             <motion.div variants={slideInRight} className="col-span-1">
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us3.png"
+                  src="/images/about-us/about-us3.png"
                   alt="Linda Wiryani Assets"
                   fill
                   className="object-cover"

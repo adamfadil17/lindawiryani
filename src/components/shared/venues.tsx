@@ -409,7 +409,7 @@ export default function Venues() {
               {/* Left Image - Wedding rings and hands (840px) */}
               <div className="relative h-[428px] w-[840px] overflow-hidden flex-shrink-0">
                 <Image
-                  src="/images/banner-venues1.png"
+                  src="/images/venues/banner/banner-venues1.png"
                   alt="Wedding rings and hands with bouquet"
                   fill
                   className="object-cover"
@@ -420,7 +420,7 @@ export default function Venues() {
               {/* Right Image - Floral arrangement (fills remaining space to edge) */}
               <div className="relative h-[428px] flex-1 overflow-hidden">
                 <Image
-                  src="/images/banner-venues2.png"
+                  src="/images/venues/banner/banner-venues2.png"
                   alt="Beautiful floral arrangement"
                   fill
                   className="object-cover"
@@ -435,7 +435,7 @@ export default function Venues() {
             {/* Left Image - Full width on mobile */}
             <div className="relative h-[428px] w-full overflow-hidden">
               <Image
-                src="/images/banner-venues1.png"
+                src="/images/venues/banner/banner-venues1.png"
                 alt="Wedding rings and hands with bouquet"
                 fill
                 className="object-cover"
