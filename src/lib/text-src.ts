@@ -59,7 +59,7 @@ export const locations = [
 export const venues = [
   {
     id: 1,
-    name: "Uma Kalai, Ubud — Private Villa Wedding Venue in Bali",
+    name: "Uma Kalai — Private Villa Wedding Venue in Bali",
     city: "Ubud",
     province: "Bali",
     capacity: "40 pax",

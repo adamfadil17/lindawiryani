@@ -187,7 +187,7 @@ export default function Instagram() {
           {/* Instagram Handle */}
           <motion.div variants={fadeInUp} className="mb-8">
             <a
-              href="https://instagram.com/lindawiryanievent"
+              href="https://instagram.com/lindawiryanievents"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xl md:text-2xl font-light text-primary hover:cursor-pointer hover:text-primary/80 transition-colors font-serif italic"
