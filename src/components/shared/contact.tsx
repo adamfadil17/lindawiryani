@@ -124,7 +124,7 @@ export default function Contact() {
               className="relative aspect-[4/5] overflow-hidden rounded-lg rounded-t-[3000px]"
             >
               <Image
-                src="/images/contact.png"
+                src="/images/contact/contact1.png"
                 alt="Happy wedding couple with bouquet"
                 fill
                 className="object-cover"
