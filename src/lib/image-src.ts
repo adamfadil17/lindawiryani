@@ -1,18 +1,18 @@
 export const galleryImages = [
   {
-    src: "/images/services1.png",
+    src: "/images/service/service1.png",
     alt: "Elegant wedding table setting with floral centerpieces",
   },
   {
-    src: "/images/services2.png",
+    src: "/images/service/service2.png",
     alt: "Beautiful wedding ceremony setup",
   },
   {
-    src: "/images/services3.png",
+    src: "/images/service/service3.png",
     alt: "Wedding reception with guests celebrating",
   },
   {
-    src: "/images/services4.png",
+    src: "/images/service/service4.png",
     alt: "Bridal bouquet and wedding details",
   },
 ];
