@@ -101,22 +101,22 @@ export const venues = [
     description:
       "Hidden in the lush hills of Sayan, Uma Kalai Ubud is a luxury private villa wedding venue where romance meets nature. Set against panoramic rice field views, this exclusive estate offers an intimate setting for small weddings and elopements of up to 40 guests. Blending Balinese heritage with refined modern elegance, Uma Kalai invites couples to celebrate love surrounded by breathtaking landscapes, curated wellness experiences, and the soulful energy of Ubud — creating a truly timeless Bali wedding experience.",
   },
-  // {
-  //   id: 2,
-  //   name: "Maya Ubud Resort & Spa",
-  //   city: "Ubud",
-  //   province: "Bali",
-  //   capacity: "200 pax",
-  //   image: "/images/venue2.png",
-  //   images: [
-  //     "/images/venue2.png",
-  //     "/images/venue3.png",
-  //     "/images/venue4.png",
-  //     "/images/venue1.png",
-  //   ],
-  //   description:
-  //     "Maya Ubud Resort & Spa combines contemporary design with traditional Balinese elements. The resort features multiple event spaces and stunning views of the surrounding rice terraces.",
-  // },
+  {
+    id: 2,
+    name: "The Legian Seminyak — Timeless Beachfront Elegance",
+    city: "Seminyak",
+    province: "Bali",
+    capacity: "60 pax",
+    image: "/images/venue2.png",
+    images: [
+      "/images/venue2.png",
+      "/images/venue3.png",
+      "/images/venue4.png",
+      "/images/venue1.png",
+    ],
+    description:
+      "Nestled along Bali’s most coveted beachfront, The Legian Seminyak, Bali embodies understated luxury and timeless charm. Fusing iconic architecture with authentic Balinese heritage, this legendary hotel offers an intimate haven where every celebration feels both refined and personal.\nDesigned by world-renowned architects and visionaries of hospitality, The Legian creates bespoke wedding experiences for up to 60 guests — each moment defined by heartfelt service, exquisite cuisine, and breathtaking ocean views.\nExchange vows on the golden sands of Seminyak Beach or within lush tropical gardens, accompanied by the soft rhythm of a Balinese Gamelan orchestra. Whether an intimate beach ceremony or a private celebration at The Beach House, every detail is seamlessly curated to create a celebration that’s felt, lived, and remembered.",
+  },
   // {
   //   id: 3,
   //   name: "Griya Agung Ballroom",

@@ -213,7 +213,7 @@ export default function Venues() {
 
                 {/* Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[160px]">
+                  <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[240px]">
                     {venue.name}
                   </h3>
 
@@ -273,7 +273,7 @@ export default function Venues() {
 
                     {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <h3 className="text-xl font-semibold mb-2 leading-tight">
+                      <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[240px]">
                         {visibleVenues[currentSlide].name}
                       </h3>
 
