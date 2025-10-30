@@ -42,7 +42,7 @@ export const services = [
   },
   {
     id: 7,
-    services: "Destination Guest Management (Optional Add-On)",
+    name: "Destination Guest Management (Optional Add-On)",
     desc: "Ensure your guests experience Bali at its best. From accommodation arrangements to airport transfers and itinerary planning, our team handles the details so everyone enjoys a seamless and memorable stay.",
   },
 ];
