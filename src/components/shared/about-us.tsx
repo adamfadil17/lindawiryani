@@ -18,7 +18,7 @@ export default function AboutUs() {
       whileInView="visible"
       viewport={{
         once: false,
-        amount: 0.2,
+        amount: 0.1,
         margin: "0px 0px -100px 0px",
       }}
       variants={staggerContainer}
@@ -73,7 +73,7 @@ export default function AboutUs() {
                   src="/images/about-us/about-us1.png"
                   alt="Linda Wiryani Assets"
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                   sizes="(max-width: 768px) 33vw, 20vw"
                 />
               </div>

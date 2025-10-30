@@ -28,15 +28,15 @@ export default function Page() {
           margin: "0px 0px -100px 0px",
         }}
         variants={staggerContainer}
-        className="min-h-screen bg-cover bg-center bg-no-repeat relative pt-28 md:pt-32 lg:pt-48"
+        className="md:min-h-screen bg-cover bg-center bg-no-repeat relative pt-16 md:pt-32 lg:pt-48"
         style={{
           backgroundImage: `url('/images/hero1.png')`,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/0 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/24 via-black/10 to-transparent"></div>
 
         <div className="relative z-10">
-          <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-16 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-24 lg:py-24">
             <div className="max-w-2xl text-white">
               <motion.p
                 variants={fadeInUp}

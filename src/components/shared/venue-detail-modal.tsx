@@ -213,7 +213,7 @@ export default function VenueDetailModal({
               </p>
 
               {/* CTA Button */}
-              <Link href="#contact">
+              <Link href="https://wa.me/628113980998" target="_blank">
                 <button
                   onClick={onClose}
                   className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full md:w-auto"

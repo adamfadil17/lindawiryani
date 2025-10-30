@@ -132,7 +132,7 @@ export default function Services() {
             </motion.p>
 
             <motion.div variants={fadeInUp}>
-              <Link href="#contact">
+              <Link href="https://wa.me/628113980998" target="_blank">
                 <button className="mb-12 border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors duration-300">
                   PLAN YOUR DREAM
                 </button>
