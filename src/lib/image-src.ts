@@ -19,22 +19,22 @@ export const galleryImages = [
 
 export const instagramPosts = [
   {
-    src: "/images/instagram1.png",
+    src: "/images/instagram/instagram1.png",
     alt: "Wedding couple on beach",
     isVideo: true,
   },
   {
-    src: "/images/instagram2.png",
+    src: "/images/instagram/instagram2.png",
     alt: "Wedding rings with bouquet",
     isVideo: true,
   },
   {
-    src: "/images/instagram3.png",
+    src: "/images/instagram/instagram3.png",
     alt: "Happy couple at reception",
     isVideo: true,
   },
   {
-    src: "/images/instagram4.png",
+    src: "/images/instagram/instagram4.png",
     alt: "Outdoor wedding ceremony",
     isVideo: true,
   },
