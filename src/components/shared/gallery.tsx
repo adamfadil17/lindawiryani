@@ -7,32 +7,32 @@ import Image from "next/image";
 export default function Gallery() {
   const galleryImages = [
     {
-      src: "/images/gallery1.png",
+      src: "/images/gallery/gallery1.png",
       alt: "Wedding ceremony with guests throwing confetti",
       orientation: "landscape",
     },
     {
-      src: "/images/gallery2.png",
+      src: "/images/gallery/gallery2.png",
       alt: "Beautiful bridal bouquet with peach roses",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery3.png",
+      src: "/images/gallery/gallery3.png",
       alt: "Elegant couple portrait",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery4.png",
+      src: "/images/gallery/gallery4.png",
       alt: "Elegant outdoor wedding table setting",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery5.png",
+      src: "/images/gallery/gallery5.png",
       alt: "Romantic couple portrait on the beach",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery6.png",
+      src: "/images/gallery/gallery6.png",
       alt: "Outdoor wedding ceremony celebration",
       orientation: "landscape",
     },
