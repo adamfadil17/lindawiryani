@@ -74,7 +74,7 @@ export default function VenueDetailModal({
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col relative">
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-20 p-2 bg-white rounded-full transition-colors"
+          className="absolute top-6 right-6 z-20 p-2 hover:cursor-pointer bg-white rounded-full transition-colors"
         >
           <X className="w-6 h-6 text-primary" />
         </button>
@@ -89,6 +89,7 @@ export default function VenueDetailModal({
                 src={venue.images[currentImageIndex] || "/placeholder.svg"}
                 alt={`${venue.name} - Image ${currentImageIndex + 1}`}
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
@@ -105,17 +106,17 @@ export default function VenueDetailModal({
             {venue.images.length > 1 && (
               <div className="flex flex-col gap-3">
                 <div className="relative w-full">
-                  {/* Thumbnails Wrapper */}
                   <div
                     ref={thumbnailContainerRef}
                     className="w-full overflow-hidden"
                   >
                     <div
-                      className="flex p-2 gap-2 transition-transform duration-300"
+                      className="flex gap-2 transition-transform duration-300"
                       style={{
                         transform: `translateX(-${
                           thumbnailScrollIndex * (100 / 4)
                         }%)`,
+                        width: "100%",
                       }}
                     >
                       {venue.images.map((img, index) => (
@@ -129,19 +130,27 @@ export default function VenueDetailModal({
                               setThumbnailScrollIndex(index);
                             }
                           }}
-                          className={`relative flex-1 aspect-square rounded-lg overflow-hidden transition-all ${
-                            index === currentImageIndex
-                              ? "ring-2 ring-primary"
-                              : "opacity-60 hover:opacity-100"
-                          }`}
+                          className={`relative rounded-lg overflow-hidden transition-all flex-shrink-0`}
+                          style={{
+                            width: "calc(25% - 6px)",
+                            aspectRatio: "1",
+                          }}
                         >
-                          <Image
-                            src={img || "/placeholder.svg"}
-                            alt={`Thumbnail ${index + 1}`}
-                            fill
-                            className="object-cover"
-                            sizes="25vw"
-                          />
+                          <div
+                            className={`w-full h-full relative ${
+                              index === currentImageIndex
+                                ? "ring-2 ring-primary"
+                                : "opacity-60 hover:opacity-100"
+                            }`}
+                          >
+                            <Image
+                              src={img || "/placeholder.svg"}
+                              alt={`Thumbnail ${index + 1}`}
+                              fill
+                              className="object-cover"
+                              sizes="25vw"
+                            />
+                          </div>
                         </button>
                       ))}
                     </div>
@@ -150,7 +159,7 @@ export default function VenueDetailModal({
                   <button
                     onClick={scrollThumbnailsLeft}
                     disabled={!canScrollLeft}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary/70 hover:bg-primary/90 disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center transition-colors z-10"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary/70 hover:bg-primary/90 disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-colors z-10"
                   >
                     <ChevronLeft className="w-5 h-5 text-white" />
                   </button>
@@ -158,7 +167,7 @@ export default function VenueDetailModal({
                   <button
                     onClick={scrollThumbnailsRight}
                     disabled={!canScrollRight}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary/70 hover:bg-primary/90 disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center transition-colors z-10"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary/70 hover:bg-primary/90 disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-colors z-10"
                   >
                     <ChevronRight className="w-5 h-5 text-white" />
                   </button>

@@ -46,7 +46,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quotes1.png"
+                src="/images/quotes11.png"
                 alt="Couple embracing in field with flowing veil"
                 fill
                 className="object-cover"
@@ -60,7 +60,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden transform translate-y-12"
             >
               <Image
-                src="/images/quotes2.png"
+                src="/images/quotes12.png"
                 alt="Wedding ceremony with guests throwing petals"
                 fill
                 className="object-cover"
@@ -74,7 +74,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quotes3.png"
+                src="/images/quotes13.png"
                 alt="Couple dancing with flowing wedding dress"
                 fill
                 className="object-cover"
@@ -103,7 +103,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden"
               >
                 <Image
-                  src="/images/quotes1.png"
+                  src="/images/quotes11.png"
                   alt="Couple embracing in field with flowing veil"
                   fill
                   className="object-cover"
@@ -117,7 +117,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden"
               >
                 <Image
-                  src="/images/quotes2.png"
+                  src="/images/quotes12.png"
                   alt="Couple dancing with flowing wedding dress"
                   fill
                   className="object-cover"
@@ -133,7 +133,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden w-1/2"
               >
                 <Image
-                  src="/images/quotes3.png"
+                  src="/images/quotes13.png"
                   alt="Wedding ceremony with guests throwing petals"
                   fill
                   className="object-cover"
