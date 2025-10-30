@@ -49,6 +49,7 @@ export default function Quote() {
                 src="/images/quote/quote1.png"
                 alt="Couple embracing in field with flowing veil"
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="33vw"
               />
@@ -63,6 +64,7 @@ export default function Quote() {
                 src="/images/quote/quote2.png"
                 alt="Wedding ceremony with guests throwing petals"
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="33vw"
               />
@@ -77,6 +79,7 @@ export default function Quote() {
                 src="/images/quote/quote3.png"
                 alt="Couple dancing with flowing wedding dress"
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="33vw"
               />
@@ -106,6 +109,7 @@ export default function Quote() {
                   src="/images/quote/quote1.png"
                   alt="Couple embracing in field with flowing veil"
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="50vw"
                 />
@@ -120,6 +124,7 @@ export default function Quote() {
                   src="/images/quote/quote2.png"
                   alt="Couple dancing with flowing wedding dress"
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="50vw"
                 />
@@ -136,6 +141,7 @@ export default function Quote() {
                   src="/images/quote/quote3.png"
                   alt="Wedding ceremony with guests throwing petals"
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="50vw"
                 />

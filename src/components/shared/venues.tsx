@@ -203,6 +203,7 @@ export default function Venues() {
                   src={venue.image || "/placeholder.svg"}
                   alt={venue.name}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="33vw"
                 />
@@ -262,6 +263,7 @@ export default function Venues() {
                       }
                       alt={visibleVenues[currentSlide].name}
                       fill
+                      loading="lazy"
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="100vw"
                     />
@@ -412,6 +414,7 @@ export default function Venues() {
                   src="/images/venues/banner/banner-venues1.png"
                   alt="Wedding rings and hands with bouquet"
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="840px"
                 />
@@ -423,6 +426,7 @@ export default function Venues() {
                   src="/images/venues/banner/banner-venues2.png"
                   alt="Beautiful floral arrangement"
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="(100vw - 840px)"
                 />
@@ -438,6 +442,7 @@ export default function Venues() {
                 src="/images/venues/banner/banner-venues1.png"
                 alt="Wedding rings and hands with bouquet"
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="100vw"
               />

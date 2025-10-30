@@ -62,6 +62,7 @@ export default function Contact() {
                 src="/images/contact/contact1.png"
                 alt="Happy wedding couple with bouquet"
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />

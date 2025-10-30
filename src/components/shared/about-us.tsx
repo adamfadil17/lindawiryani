@@ -73,6 +73,7 @@ export default function AboutUs() {
                   src="/images/about-us/about-us1.png"
                   alt="Linda Wiryani Assets"
                   fill
+                  loading="lazy"
                   className="object-cover object-top"
                   sizes="(max-width: 768px) 33vw, 20vw"
                 />
@@ -88,6 +89,7 @@ export default function AboutUs() {
                   src="/images/about-us/about-us2.png"
                   alt="Linda Wiryani Assets"
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="(max-width: 768px) 33vw, 20vw"
                 />
@@ -100,6 +102,7 @@ export default function AboutUs() {
                   src="/images/about-us/about-us3.png"
                   alt="Linda Wiryani Assets"
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="(max-width: 768px) 33vw, 20vw"
                 />

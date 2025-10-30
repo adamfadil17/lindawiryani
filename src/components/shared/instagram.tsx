@@ -63,6 +63,7 @@ export default function Instagram() {
                 src={post.src || "/placeholder.svg"}
                 alt={post.alt}
                 fill
+                loading="lazy"
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="25vw"
               />
@@ -104,6 +105,7 @@ export default function Instagram() {
                 src={instagramPosts[currentSlide].src || "/placeholder.svg"}
                 alt={instagramPosts[currentSlide].alt}
                 fill
+                loading="lazy"
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="100vw"
               />

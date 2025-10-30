@@ -96,8 +96,8 @@ export default function Services() {
               src={galleryImages[selectedLargeImage].src || "/placeholder.svg"}
               alt={galleryImages[selectedLargeImage].alt}
               fill
+              loading="lazy"
               className="object-cover"
-              priority
               sizes="(max-width: 1280px) 100vw, 480px"
             />
           </div>
@@ -160,6 +160,7 @@ export default function Services() {
                         src={image.src}
                         alt={image.alt}
                         fill
+                        loading="lazy"
                         className="object-cover"
                         sizes="(max-width: 640px) 80px, (max-width: 1024px) 96px, (max-width: 1280px) 128px, 160px"
                       />
