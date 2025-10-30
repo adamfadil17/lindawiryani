@@ -93,6 +93,7 @@ export default function Gallery() {
                   src={galleryImages[0].src}
                   alt={galleryImages[0].alt}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="50vw"
                 />
@@ -108,6 +109,7 @@ export default function Gallery() {
                   src={galleryImages[1].src}
                   alt={galleryImages[1].alt}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="50vw"
                 />
@@ -123,6 +125,7 @@ export default function Gallery() {
                   src={galleryImages[2].src}
                   alt={galleryImages[2].alt}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="50vw"
                 />
@@ -141,6 +144,7 @@ export default function Gallery() {
                   src={galleryImages[3].src}
                   alt={galleryImages[3].alt}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="50vw"
                 />
@@ -156,6 +160,7 @@ export default function Gallery() {
                   src={galleryImages[4].src}
                   alt={galleryImages[4].alt}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="50vw"
                 />
@@ -171,6 +176,7 @@ export default function Gallery() {
                   src={galleryImages[5].src}
                   alt={galleryImages[5].alt}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="50vw"
                 />
@@ -205,6 +211,7 @@ export default function Gallery() {
                     src={galleryImages[0].src}
                     alt={galleryImages[0].alt}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
@@ -222,6 +229,7 @@ export default function Gallery() {
                     src={galleryImages[1].src}
                     alt={galleryImages[1].alt}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
@@ -239,6 +247,7 @@ export default function Gallery() {
                     src={galleryImages[2].src}
                     alt={galleryImages[2].alt}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
@@ -269,6 +278,7 @@ export default function Gallery() {
                     src={galleryImages[3].src}
                     alt={galleryImages[3].alt}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
@@ -286,6 +296,7 @@ export default function Gallery() {
                     src={galleryImages[4].src}
                     alt={galleryImages[4].alt}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 1024px) 100vw, 25vw"
                   />
@@ -303,6 +314,7 @@ export default function Gallery() {
                     src={galleryImages[5].src}
                     alt={galleryImages[5].alt}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
