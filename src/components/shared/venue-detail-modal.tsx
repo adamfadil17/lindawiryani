@@ -147,7 +147,7 @@ export default function VenueDetailModal({
                               src={img || "/placeholder.svg"}
                               alt={`Thumbnail ${index + 1}`}
                               fill
-                              className="object-cover"
+                              className="object-cover hover cursor-pointer"
                               sizes="25vw"
                             />
                           </div>
