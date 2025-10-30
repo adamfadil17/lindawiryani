@@ -66,6 +66,7 @@ export const venues = [
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1761790218/uma-kalai5_gkky0a.png",
     images: [
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1761790218/uma-kalai5_gkky0a.png",
       "https://res.cloudinary.com/dzerxindp/image/upload/v1761790219/uma-kalai30_rfoc2q.png",
       "https://res.cloudinary.com/dzerxindp/image/upload/v1761790218/uma-kalai3_w68pph.png",
       "https://res.cloudinary.com/dzerxindp/image/upload/v1761790217/uma-kalai29_nxkucb.png",
