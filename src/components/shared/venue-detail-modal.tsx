@@ -26,48 +26,51 @@ export default function VenueDetailModal({
   onClose,
 }: VenueDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [thumbnailScrollIndex, setThumbnailScrollIndex] = useState(0);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
-  const nextImage = () => {
-    const newIndex = (currentImageIndex + 1) % venue.images.length;
-    setCurrentImageIndex(newIndex);
-    if (newIndex >= thumbnailScrollIndex + 4) {
-      setThumbnailScrollIndex(newIndex - 3);
-    } else if (newIndex < thumbnailScrollIndex) {
-      setThumbnailScrollIndex(newIndex);
+  const totalImages = venue.images.length;
+  const visibleThumbnails = 4;
+
+  // Hitung posisi scroll berdasarkan gambar yang aktif
+  // Agar gambar terakhir bisa mepet di tepi kanan, kita perlu scroll
+  // sampai gambar terakhir berada di posisi ke-4 (paling kanan)
+  const getScrollPosition = (imageIndex: number) => {
+    if (totalImages <= visibleThumbnails) {
+      return 0; // Tidak perlu scroll jika gambar <= 4
     }
+
+    // Jika di 3 gambar terakhir, scroll ke posisi maksimal
+    // Sehingga gambar terakhir ada di tepi kanan
+    if (imageIndex >= totalImages - visibleThumbnails) {
+      return totalImages - visibleThumbnails;
+    }
+
+    // Untuk gambar lainnya, center di viewport
+    return Math.max(0, imageIndex - 1);
+  };
+
+  const thumbnailScrollIndex = getScrollPosition(currentImageIndex);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % totalImages);
   };
 
   const prevImage = () => {
-    const newIndex =
-      (currentImageIndex - 1 + venue.images.length) % venue.images.length;
-    setCurrentImageIndex(newIndex);
-    if (newIndex < thumbnailScrollIndex) {
-      setThumbnailScrollIndex(newIndex);
-    } else if (newIndex >= thumbnailScrollIndex + 4) {
-      setThumbnailScrollIndex(newIndex - 3);
-    }
+    setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
   };
 
   const scrollThumbnailsRight = () => {
-    const nextIndex = Math.min(
-      thumbnailScrollIndex + 1,
-      Math.max(0, venue.images.length - 4)
-    );
-    setThumbnailScrollIndex(nextIndex);
+    const nextIndex = Math.min(currentImageIndex + 1, totalImages - 1);
     setCurrentImageIndex(nextIndex);
   };
 
   const scrollThumbnailsLeft = () => {
-    const prevIndex = Math.max(thumbnailScrollIndex - 1, 0);
-    setThumbnailScrollIndex(prevIndex);
+    const prevIndex = Math.max(currentImageIndex - 1, 0);
     setCurrentImageIndex(prevIndex);
   };
 
-  const canScrollLeft = thumbnailScrollIndex > 0;
-  const canScrollRight =
-    thumbnailScrollIndex < Math.max(0, venue.images.length - 4);
+  const canScrollLeft = currentImageIndex > 0;
+  const canScrollRight = currentImageIndex < totalImages - 1;
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -94,91 +97,117 @@ export default function VenueDetailModal({
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
 
+              {/* Navigation Arrows for Main Image */}
+              {totalImages > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center hover:cursor-pointer transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-primary" />
+                  </button>
+
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center hover:cursor-pointer transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5 text-primary" />
+                  </button>
+                </>
+              )}
+
               {/* Image Counter */}
-              {venue.images.length > 1 && (
+              {totalImages > 1 && (
                 <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
-                  {currentImageIndex + 1} / {venue.images.length}
+                  {currentImageIndex + 1} / {totalImages}
                 </div>
               )}
             </div>
 
             {/* Thumbnail Gallery */}
-            {venue.images.length > 1 && (
-              <div className="flex flex-col gap-3">
+            {totalImages > 1 && (
+              <div className="flex flex-col gap-3 px-6 md:px-4">
                 <div className="relative w-full">
                   <div
                     ref={thumbnailContainerRef}
                     className="w-full overflow-hidden"
                   >
                     <div
-                      className="flex gap-2 transition-transform duration-300"
+                      className="flex gap-2 transition-transform duration-300 ease-out"
                       style={{
-                        transform: `translateX(-${
-                          thumbnailScrollIndex * (100 / 4)
-                        }%)`,
-                        width: "100%",
+                        transform: `translateX(calc(-${thumbnailScrollIndex} * (25% + 0.5rem)))`,
                       }}
                     >
-                      {venue.images.map((img, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            setCurrentImageIndex(index);
-                            if (index >= thumbnailScrollIndex + 4) {
-                              setThumbnailScrollIndex(index - 3);
-                            } else if (index < thumbnailScrollIndex) {
-                              setThumbnailScrollIndex(index);
-                            }
-                          }}
-                          className={`relative rounded-lg overflow-hidden transition-all flex-shrink-0`}
-                          style={{
-                            width: "calc(25% - 6px)",
-                            aspectRatio: "1",
-                          }}
-                        >
-                          <div
-                            className={`w-full h-full relative ${
-                              index === currentImageIndex
-                                ? "ring-2 ring-primary"
-                                : "opacity-60 hover:opacity-100"
-                            }`}
+                      {venue.images.map((img, index) => {
+                        // Cek apakah thumbnail ini sedang visible
+                        const isVisible =
+                          index >= thumbnailScrollIndex &&
+                          index < thumbnailScrollIndex + visibleThumbnails;
+
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentImageIndex(index)}
+                            className="relative rounded-lg overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
+                            style={{
+                              aspectRatio: "1",
+                            }}
                           >
-                            <Image
-                              src={img || "/placeholder.svg"}
-                              alt={`Thumbnail ${index + 1}`}
-                              fill
-                              loading="lazy"
-                              className="object-cover hover cursor-pointer"
-                              sizes="25vw"
-                            />
-                          </div>
-                        </button>
-                      ))}
+                            <div
+                              className={`w-full h-full relative transition-all ${
+                                index === currentImageIndex
+                                  ? "ring-2 ring-primary ring-offset-2"
+                                  : "opacity-60 hover:opacity-100"
+                              }`}
+                            >
+                              <Image
+                                src={img || "/placeholder.svg"}
+                                alt={`Thumbnail ${index + 1}`}
+                                fill
+                                loading="lazy"
+                                className="object-cover hover:cursor-pointer"
+                                sizes="25vw"
+                              />
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
-                  <button
-                    onClick={scrollThumbnailsLeft}
-                    disabled={!canScrollLeft}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary/70 hover:bg-primary/90 disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-colors z-10"
-                  >
-                    <ChevronLeft className="w-5 h-5 text-white" />
-                  </button>
+                  {/* Thumbnail Navigation Arrows */}
+                  {totalImages > visibleThumbnails && (
+                    <>
+                      <button
+                        onClick={scrollThumbnailsLeft}
+                        disabled={!canScrollLeft}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                      >
+                        <ChevronLeft className="w-5 h-5 text-white" />
+                      </button>
 
-                  <button
-                    onClick={scrollThumbnailsRight}
-                    disabled={!canScrollRight}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-primary/70 hover:bg-primary/90 disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-colors z-10"
-                  >
-                    <ChevronRight className="w-5 h-5 text-white" />
-                  </button>
+                      <button
+                        onClick={scrollThumbnailsRight}
+                        disabled={!canScrollRight}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                      >
+                        <ChevronRight className="w-5 h-5 text-white" />
+                      </button>
+                    </>
+                  )}
                 </div>
 
                 {/* Thumbnail Counter */}
-                <div className="text-center text-sm text-primary/60">
-                  {Math.min(thumbnailScrollIndex + 4, venue.images.length)} of{" "}
-                  {venue.images.length}
-                </div>
+                {totalImages > visibleThumbnails && (
+                  <div className="text-center text-sm text-primary/60">
+                    Showing {thumbnailScrollIndex + 1}-
+                    {Math.min(
+                      thumbnailScrollIndex + visibleThumbnails,
+                      totalImages
+                    )}{" "}
+                    of {totalImages}
+                  </div>
+                )}
               </div>
             )}
           </div>
