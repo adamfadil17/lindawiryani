@@ -38,7 +38,7 @@ export const services = [
   {
     id: 6,
     name: "Event & Table Styling",
-    desc: "We believe beauty is found in the details. Our team curates table settings, décor elements, and visual compositions that harmonize with youroverall theme – turning each celebration into an artful expression of style and atmosphere.",
+    desc: "We believe beauty is found in the details. Our team curates table settings, décor elements, and visual compositions that harmonize with your overall theme – turning each celebration into an artful expression of style and atmosphere.",
   },
   {
     id: 7,

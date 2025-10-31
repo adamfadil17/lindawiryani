@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import Link from "next/link";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import { loremIpsum, services } from "@/lib/text-src";
@@ -15,7 +15,20 @@ export default function Services() {
   );
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedLargeImage, setSelectedLargeImage] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const galleryRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
+
+  // Auto slide effect
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      nextImage();
+    }, 3000); // Ganti gambar setiap 3 detik
+
+    return () => clearInterval(interval);
+  }, [currentImageIndex, isAutoPlaying]);
 
   const scrollToImage = (index: number) => {
     if (galleryRef.current) {
@@ -34,6 +47,26 @@ export default function Services() {
         });
       }
     }
+  };
+
+  const scrollToMainContent = () => {
+    if (mainContentRef.current) {
+      const elementPosition = mainContentRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - 100;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleServiceClick = (serviceName: string) => {
+    setActiveService(serviceName);
+    // Delay scroll sedikit untuk memberikan waktu state update
+    setTimeout(() => {
+      scrollToMainContent();
+    }, 100);
   };
 
   const nextImage = () => {
@@ -55,6 +88,11 @@ export default function Services() {
     setCurrentImageIndex(index);
     setSelectedLargeImage(index);
     scrollToImage(index);
+    setIsAutoPlaying(false); // Stop auto play when user manually clicks
+  };
+
+  const toggleAutoPlay = () => {
+    setIsAutoPlaying(!isAutoPlaying);
   };
 
   return (
@@ -92,7 +130,7 @@ export default function Services() {
           {services.map((service) => (
             <button
               key={service.id}
-              onClick={() => setActiveService(service.name!)}
+              onClick={() => handleServiceClick(service.name!)}
               className={`transition-colors pb-1 ${
                 activeService === service.name
                   ? "text-primary border-b border-primary hover:cursor-pointer"
@@ -107,6 +145,7 @@ export default function Services() {
 
       {/* Main Content Section - Container with 2 Columns */}
       <motion.div
+        ref={mainContentRef}
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-12 lg:py-16 bg-[#E9E1DC]"
         initial="hidden"
         whileInView="visible"
@@ -120,15 +159,16 @@ export default function Services() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Large Image Column - Takes more space (60%) */}
           <motion.div variants={fadeIn} className="lg:col-span-7 relative">
-            <div className="h-[30vh] md:h-[35vh] lg:h-[450px] xl:h-[500px] relative">
+            <div className="h-[30vh] md:h-[35vh] lg:h-[450px] xl:h-[500px] relative overflow-hidden">
               <Image
+                key={selectedLargeImage}
                 src={
                   galleryImages[selectedLargeImage].src || "/placeholder.svg"
                 }
                 alt={galleryImages[selectedLargeImage].alt}
                 fill
                 loading="lazy"
-                className="object-cover"
+                className="object-cover animate-fadeIn"
                 sizes="(max-width: 1024px) 100vw, 60vw"
               />
             </div>
@@ -165,6 +205,19 @@ export default function Services() {
             {/* Image Gallery */}
             <motion.div variants={scaleIn} className="w-full overflow-hidden">
               <div className="relative">
+                {/* Auto play toggle button */}
+                <button
+                  onClick={toggleAutoPlay}
+                  className="absolute -top-10 right-2 w-8 h-8 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
+                  aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+                >
+                  {isAutoPlaying ? (
+                    <Pause className="w-4 h-4 text-white" />
+                  ) : (
+                    <Play className="w-4 h-4 text-white ml-0.5" />
+                  )}
+                </button>
+
                 <div
                   ref={galleryRef}
                   className="flex gap-3 lg:gap-4 overflow-x-auto scrollbar-hide px-2 py-2"
