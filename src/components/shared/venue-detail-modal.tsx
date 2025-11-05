@@ -89,7 +89,10 @@ export default function VenueDetailModal({
             {/* Main Image */}
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
               <Image
-                src={venue.images[currentImageIndex] || "/placeholder.svg"}
+                src={
+                  venue.images[currentImageIndex] ||
+                  "https://placehold.net/default.svg"
+                }
                 alt={`${venue.name} - Image ${currentImageIndex + 1}`}
                 fill
                 loading="lazy"
@@ -161,7 +164,7 @@ export default function VenueDetailModal({
                               }`}
                             >
                               <Image
-                                src={img || "/placeholder.svg"}
+                                src={img || "https://placehold.net/default.svg"}
                                 alt={`Thumbnail ${index + 1}`}
                                 fill
                                 loading="lazy"

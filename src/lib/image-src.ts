@@ -33,21 +33,29 @@ export const instagramPosts = [
   {
     src: "/images/instagram/instagram1.png",
     alt: "Wedding couple on beach",
+    videoUrl:
+      "https://res.cloudinary.com/dzerxindp/video/upload/v1762362089/instagram-1_qwivef.mp4",
     isVideo: true,
   },
   {
     src: "/images/instagram/instagram2.png",
     alt: "Wedding rings with bouquet",
+    videoUrl:
+      "https://res.cloudinary.com/dzerxindp/video/upload/v1762362089/instagram-1_qwivef.mp4",
     isVideo: true,
   },
   {
     src: "/images/instagram/instagram3.png",
     alt: "Happy couple at reception",
+    videoUrl:
+      "https://res.cloudinary.com/dzerxindp/video/upload/v1762362089/instagram-1_qwivef.mp4",
     isVideo: true,
   },
   {
     src: "/images/instagram/instagram4.png",
     alt: "Outdoor wedding ceremony",
+    videoUrl:
+      "https://res.cloudinary.com/dzerxindp/video/upload/v1762362089/instagram-1_qwivef.mp4",
     isVideo: true,
   },
 ];

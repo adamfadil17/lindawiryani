@@ -200,7 +200,7 @@ export default function Venues() {
                 className="relative group overflow-hidden aspect-[4/5] cursor-pointer"
               >
                 <Image
-                  src={venue.image || "/placeholder.svg"}
+                  src={venue.image || "https://placehold.net/default.svg"}
                   alt={venue.name}
                   fill
                   loading="lazy"
@@ -259,7 +259,8 @@ export default function Venues() {
                   <div className="relative group overflow-hidden aspect-[4/5] cursor-pointer">
                     <Image
                       src={
-                        visibleVenues[currentSlide].image || "/placeholder.svg"
+                        visibleVenues[currentSlide].image ||
+                        "https://placehold.net/default.svg"
                       }
                       alt={visibleVenues[currentSlide].name}
                       fill

@@ -51,7 +51,8 @@ export default function Services() {
 
   const scrollToMainContent = () => {
     if (mainContentRef.current) {
-      const elementPosition = mainContentRef.current.getBoundingClientRect().top;
+      const elementPosition =
+        mainContentRef.current.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - 100;
 
       window.scrollTo({
@@ -163,7 +164,8 @@ export default function Services() {
               <Image
                 key={selectedLargeImage}
                 src={
-                  galleryImages[selectedLargeImage].src || "/placeholder.svg"
+                  galleryImages[selectedLargeImage].src ||
+                  "https://placehold.net/default.svg"
                 }
                 alt={galleryImages[selectedLargeImage].alt}
                 fill
@@ -209,7 +211,9 @@ export default function Services() {
                 <button
                   onClick={toggleAutoPlay}
                   className="absolute -top-10 right-2 w-8 h-8 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
-                  aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+                  aria-label={
+                    isAutoPlaying ? "Pause slideshow" : "Play slideshow"
+                  }
                 >
                   {isAutoPlaying ? (
                     <Pause className="w-4 h-4 text-white" />

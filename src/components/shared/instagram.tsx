@@ -2,13 +2,16 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 import { instagramPosts } from "@/lib/image-src";
+import { VideoPlayerModal } from "./video-player-modal";
 
 export default function Instagram() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [playingVideoId, setPlayingVideoId] = useState<number | null>(null);
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState<string>("");
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % instagramPosts.length);
@@ -18,6 +21,16 @@ export default function Instagram() {
     setCurrentSlide(
       (prev) => (prev - 1 + instagramPosts.length) % instagramPosts.length
     );
+  };
+
+  const handleVideoClick = (index: number, videoUrl: string) => {
+    setPlayingVideoId(index);
+    setSelectedVideoUrl(videoUrl);
+  };
+
+  const handleCloseVideo = () => {
+    setPlayingVideoId(null);
+    setSelectedVideoUrl("");
   };
 
   return (
@@ -58,6 +71,11 @@ export default function Instagram() {
               key={index}
               variants={fadeInUp}
               className="relative h-[400px] overflow-hidden group cursor-pointer"
+              onClick={() =>
+                post.isVideo &&
+                post.videoUrl &&
+                handleVideoClick(index, post.videoUrl)
+              }
             >
               <Image
                 src={post.src || "/placeholder.svg"}
@@ -68,15 +86,29 @@ export default function Instagram() {
                 sizes="25vw"
               />
 
-              {/* Video Play Button Overlay */}
+              {/* Video Play/Pause Button Overlay */}
               {post.isVideo && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-primary/70 rounded-full flex items-center justify-center group-hover:bg-primary/90 transition-colors">
-                    <Play
-                      className="w-6 h-6 text-white ml-1"
-                      fill="currentColor"
-                    />
-                  </div>
+                  <motion.div
+                    className="w-16 h-16 bg-primary/70 rounded-full flex items-center justify-center group-hover:bg-primary/90 transition-colors"
+                    animate={playingVideoId === index ? "playing" : "idle"}
+                    variants={{
+                      idle: { scale: 1 },
+                      playing: { scale: 1.1 },
+                    }}
+                  >
+                    {playingVideoId === index ? (
+                      <Pause
+                        className="w-6 h-6 text-white ml-1"
+                        fill="currentColor"
+                      />
+                    ) : (
+                      <Play
+                        className="w-6 h-6 text-white ml-1"
+                        fill="currentColor"
+                      />
+                    )}
+                  </motion.div>
                 </div>
               )}
 
@@ -100,7 +132,17 @@ export default function Instagram() {
         >
           <div className="relative">
             {/* Single Image Display */}
-            <div className="relative h-[400px] overflow-hidden group cursor-pointer">
+            <div
+              className="relative h-[400px] overflow-hidden group cursor-pointer"
+              onClick={() =>
+                instagramPosts[currentSlide].isVideo &&
+                instagramPosts[currentSlide].videoUrl &&
+                handleVideoClick(
+                  currentSlide,
+                  instagramPosts[currentSlide].videoUrl
+                )
+              }
+            >
               <Image
                 src={instagramPosts[currentSlide].src || "/placeholder.svg"}
                 alt={instagramPosts[currentSlide].alt}
@@ -110,15 +152,31 @@ export default function Instagram() {
                 sizes="100vw"
               />
 
-              {/* Video Play Button Overlay */}
+              {/* Video Play/Pause Button Overlay */}
               {instagramPosts[currentSlide].isVideo && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-primary/70 rounded-full flex items-center justify-center group-hover:bg-white/90 transition-colors">
-                    <Play
-                      className="w-6 h-6 text-white ml-1"
-                      fill="currentColor"
-                    />
-                  </div>
+                  <motion.div
+                    className="w-16 h-16 bg-primary/70 rounded-full flex items-center justify-center group-hover:bg-white/90 transition-colors"
+                    animate={
+                      playingVideoId === currentSlide ? "playing" : "idle"
+                    }
+                    variants={{
+                      idle: { scale: 1 },
+                      playing: { scale: 1.1 },
+                    }}
+                  >
+                    {playingVideoId === currentSlide ? (
+                      <Pause
+                        className="w-6 h-6 text-white ml-1"
+                        fill="currentColor"
+                      />
+                    ) : (
+                      <Play
+                        className="w-6 h-6 text-white ml-1"
+                        fill="currentColor"
+                      />
+                    )}
+                  </motion.div>
                 </div>
               )}
 
@@ -197,6 +255,12 @@ export default function Instagram() {
           </motion.div>
         </motion.div>
       </div>
+
+      <VideoPlayerModal
+        isOpen={playingVideoId !== null}
+        onClose={handleCloseVideo}
+        videoUrl={selectedVideoUrl}
+      />
     </section>
   );
 }
