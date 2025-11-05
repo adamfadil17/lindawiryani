@@ -10,7 +10,7 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Linda Wiryani",
   description: "Linda Wiryani Design & Event Planning",
-  icons: { icon: "/public/favicon.ico" },
+  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
