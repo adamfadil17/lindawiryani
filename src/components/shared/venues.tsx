@@ -14,6 +14,14 @@ import VenueDetailModal from "./venue-detail-modal";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 import { locations, venues } from "@/lib/text-src";
 
+// Helper function untuk convert nama venue ke slug
+const createSlug = (name: string) => {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+};
+
 export default function Venues() {
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -24,6 +32,64 @@ export default function Venues() {
     null
   );
   const [hasInteracted, setHasInteracted] = useState(false);
+
+  // Effect untuk membaca URL hash dan membuka modal
+  useEffect(() => {
+    const scrollToVenues = () => {
+      const venuesSection = document.getElementById('venues');
+      if (venuesSection) {
+        // Smooth scroll ke section venues
+        venuesSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    };
+
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      
+      // Check if we're on venues section with a venue parameter
+      if (hash.includes('#venues?venue=')) {
+        const urlParams = new URLSearchParams(hash.split('?')[1]);
+        const venueSlug = urlParams.get('venue');
+        
+        if (venueSlug) {
+          // Scroll ke section venues dulu
+          scrollToVenues();
+          
+          // Delay sedikit untuk memastikan scroll selesai, baru buka modal
+          setTimeout(() => {
+            // Cari venue berdasarkan slug
+            const venue = venues.find(
+              (v) => createSlug(v.name) === venueSlug
+            );
+            
+            if (venue) {
+              setSelectedVenue(venue);
+            } else {
+              console.warn('Venue not found:', venueSlug);
+            }
+          }, 500); // Delay 500ms untuk smooth scroll
+        }
+      } else if (hash === '#venues') {
+        // Scroll ke section venues
+        scrollToVenues();
+        // Close modal if we're just on #venues without parameter
+        setSelectedVenue(null);
+      }
+    };
+
+    // Check on mount
+    handleHashChange();
+
+    // Listen to hash changes
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -56,7 +122,6 @@ export default function Venues() {
   useEffect(() => {
     setCurrentSlide(0);
     setVisibleCount(6);
-    // Mark that user has interacted with filters
     if (selectedLocation !== "All") {
       setHasInteracted(true);
     }
@@ -77,7 +142,19 @@ export default function Venues() {
     setVisibleCount(newVisibleCount);
   };
 
-  // Grid variants for filtering animation
+  // Handler untuk membuka modal dengan update URL
+  const handleOpenVenueDetail = (venue: typeof venues[0]) => {
+    const slug = createSlug(venue.name);
+    window.location.hash = `venues?venue=${slug}`;
+    setSelectedVenue(venue);
+  };
+
+  // Handler untuk menutup modal dengan menghapus parameter
+  const handleCloseVenueDetail = () => {
+    window.location.hash = 'venues';
+    setSelectedVenue(null);
+  };
+
   const gridVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -185,12 +262,12 @@ export default function Venues() {
             </motion.p>
           </motion.div>
 
-          {/* Desktop Grid - Updated to always show without viewport trigger after interaction */}
+          {/* Desktop Grid */}
           <motion.div
             className="hidden lg:grid lg:grid-cols-3 gap-6 mb-12"
-            key={selectedLocation} // Force re-render on location change
+            key={selectedLocation}
             initial="hidden"
-            animate="visible" // Changed from whileInView to animate
+            animate="visible"
             variants={gridVariants}
           >
             {visibleVenues.map((venue) => (
@@ -208,10 +285,8 @@ export default function Venues() {
                   sizes="33vw"
                 />
 
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                {/* Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                   <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[240px]">
                     {venue.name}
@@ -232,7 +307,7 @@ export default function Venues() {
                     </div>
 
                     <button
-                      onClick={() => setSelectedVenue(venue)}
+                      onClick={() => handleOpenVenueDetail(venue)}
                       className="text-white hover:text-white/90 hover:cursor-pointer transition-colors border-b border-white pb-1 text-sm font-light tracking-wider"
                     >
                       View Detail
@@ -255,7 +330,6 @@ export default function Venues() {
                 transition={{ duration: 0.3 }}
               >
                 <div className="relative">
-                  {/* Single Venue Display */}
                   <div className="relative group overflow-hidden aspect-[4/5] cursor-pointer">
                     <Image
                       src={
@@ -269,10 +343,8 @@ export default function Venues() {
                       sizes="100vw"
                     />
 
-                    {/* Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                    {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                       <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[240px]">
                         {visibleVenues[currentSlide].name}
@@ -294,7 +366,7 @@ export default function Venues() {
 
                       <button
                         onClick={() =>
-                          setSelectedVenue(visibleVenues[currentSlide])
+                          handleOpenVenueDetail(visibleVenues[currentSlide])
                         }
                         className="text-white hover:text-white/90 hover:cursor-pointer transition-colors border-b border-white pb-1 text-sm font-light tracking-wider"
                       >
@@ -303,7 +375,6 @@ export default function Venues() {
                     </div>
                   </div>
 
-                  {/* Navigation Arrows - Only show if more than 1 venue */}
                   {visibleVenues.length > 1 && (
                     <>
                       <button
@@ -323,7 +394,6 @@ export default function Venues() {
                   )}
                 </div>
 
-                {/* Slide Indicators - Only show if more than 1 venue */}
                 {visibleVenues.length > 1 && (
                   <div className="flex justify-center mt-6 space-x-2">
                     {visibleVenues.map((_, index) => (
@@ -363,7 +433,7 @@ export default function Venues() {
             </motion.div>
           )}
 
-          {/* View More Button - Desktop only, when there are more venues to load */}
+          {/* View More Button */}
           {!isMobile && hasMoreVenues && (
             <motion.div
               className="text-center mb-24"
@@ -380,7 +450,7 @@ export default function Venues() {
             </motion.div>
           )}
 
-          {/* View Less Button - Desktop only, when all venues are displayed and there are more than 6 */}
+          {/* View Less Button */}
           {!isMobile && !hasMoreVenues && filteredVenues.length > 6 && (
             <motion.div
               className="text-center mb-24"
@@ -398,7 +468,7 @@ export default function Venues() {
           )}
         </div>
 
-        {/* Two Image Layout - Full width edge to edge */}
+        {/* Two Image Layout */}
         <motion.div
           className="absolute left-0 right-0 w-full"
           initial="hidden"
@@ -406,8 +476,8 @@ export default function Venues() {
           viewport={{ once: false, amount: 0.3 }}
           variants={fadeIn}
         >
-          {/* Desktop Layout */}
-          <div className="hidden md:block">
+          {/* Desktop Layout (xl and above - 1280px+) */}
+          <div className="hidden xl:block">
             <div className="flex">
               {/* Left Image - Wedding rings and hands (840px) */}
               <div className="relative h-[428px] w-[840px] overflow-hidden flex-shrink-0">
@@ -435,30 +505,87 @@ export default function Venues() {
             </div>
           </div>
 
-          {/* Mobile Layout - Stacked full width */}
+          {/* iPad Pro & Large Tablet Layout (lg to xl - 1024px to 1279px) */}
+          <div className="hidden lg:block xl:hidden">
+            <div className="flex">
+              {/* Left Image - Proportional for iPad Pro */}
+              <div className="relative h-[400px] w-[50%] overflow-hidden flex-shrink-0">
+                <Image
+                  src="/images/venues/banner/banner-venues1.png"
+                  alt="Wedding rings and hands with bouquet"
+                  fill
+                  loading="lazy"
+                  className="object-cover object-center"
+                  sizes="55vw"
+                />
+              </div>
+
+              {/* Right Image - Proportional for iPad Pro */}
+              <div className="relative h-[400px] w-[50%] overflow-hidden flex-shrink-0">
+                <Image
+                  src="/images/venues/banner/banner-venues2.png"
+                  alt="Beautiful floral arrangement"
+                  fill
+                  loading="lazy"
+                  className="object-cover object-center"
+                  sizes="45vw"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* iPad/Tablet Layout (md to lg - 768px to 1023px) */}
+          <div className="hidden md:block lg:hidden">
+            <div className="flex">
+              {/* Left Image - Proportional for iPad */}
+              <div className="relative h-[340px] w-[50%] overflow-hidden flex-shrink-0">
+                <Image
+                  src="/images/venues/banner/banner-venues1.png"
+                  alt="Wedding rings and hands with bouquet"
+                  fill
+                  loading="lazy"
+                  className="object-cover object-center"
+                  sizes="50vw"
+                />
+              </div>
+
+              {/* Right Image - Proportional for iPad */}
+              <div className="relative h-[340px] w-[50%] overflow-hidden flex-shrink-0">
+                <Image
+                  src="/images/venues/banner/banner-venues2.png"
+                  alt="Beautiful floral arrangement"
+                  fill
+                  loading="lazy"
+                  className="object-cover object-center"
+                  sizes="50vw"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Layout (below md - below 768px) */}
           <div className="md:hidden">
-            {/* Left Image - Full width on mobile */}
-            <div className="relative h-[428px] w-full overflow-hidden">
+            <div className="relative h-[300px] w-full overflow-hidden">
               <Image
                 src="/images/venues/banner/banner-venues1.png"
                 alt="Wedding rings and hands with bouquet"
                 fill
                 loading="lazy"
-                className="object-cover"
+                className="object-cover object-center"
                 sizes="100vw"
               />
             </div>
           </div>
         </motion.div>
 
-        {/* Spacer to maintain layout flow */}
-        <div className="h-[428px]"></div>
+        {/* Spacer - Responsive height */}
+        <div className="h-[300px] md:h-[340px] lg:h-[400px] xl:h-[428px]"></div>
       </section>
 
       {selectedVenue && (
         <VenueDetailModal
           venue={selectedVenue}
-          onClose={() => setSelectedVenue(null)}
+          onClose={handleCloseVenueDetail}
         />
       )}
     </>

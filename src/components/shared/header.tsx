@@ -64,6 +64,40 @@ export default function Header() {
     };
   }, []);
 
+  // Effect untuk detect URL hash dan set active section
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      
+      // Parse hash untuk mendapatkan section ID
+      let sectionId = 'home';
+      
+      if (hash.includes('#')) {
+        // Ambil section dari hash (contoh: #venues?venue=xxx -> venues)
+        const hashPart = hash.split('?')[0].replace('#', '');
+        if (hashPart) {
+          sectionId = hashPart;
+        }
+      }
+      
+      // Update active section
+      const validSection = navigationItems.find(item => item.id === sectionId);
+      if (validSection) {
+        setActiveSection(validSection.id);
+      }
+    };
+
+    // Check on mount
+    handleHashChange();
+
+    // Listen to hash changes
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${

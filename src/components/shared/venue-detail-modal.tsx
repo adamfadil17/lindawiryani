@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { X, MapPin, Users, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -31,21 +31,40 @@ export default function VenueDetailModal({
   const totalImages = venue.images.length;
   const visibleThumbnails = 4;
 
-  // Hitung posisi scroll berdasarkan gambar yang aktif
-  // Agar gambar terakhir bisa mepet di tepi kanan, kita perlu scroll
-  // sampai gambar terakhir berada di posisi ke-4 (paling kanan)
+  // Reset image index ketika venue berubah
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [venue.id]);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
   const getScrollPosition = (imageIndex: number) => {
     if (totalImages <= visibleThumbnails) {
-      return 0; // Tidak perlu scroll jika gambar <= 4
+      return 0;
     }
 
-    // Jika di 3 gambar terakhir, scroll ke posisi maksimal
-    // Sehingga gambar terakhir ada di tepi kanan
     if (imageIndex >= totalImages - visibleThumbnails) {
       return totalImages - visibleThumbnails;
     }
 
-    // Untuk gambar lainnya, center di viewport
     return Math.max(0, imageIndex - 1);
   };
 
@@ -72,12 +91,23 @@ export default function VenueDetailModal({
   const canScrollLeft = currentImageIndex > 0;
   const canScrollRight = currentImageIndex < totalImages - 1;
 
+  // Handle backdrop click
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col relative">
         <button
           onClick={onClose}
           className="absolute top-6 right-6 z-20 p-2 hover:cursor-pointer bg-white rounded-full transition-colors"
+          aria-label="Close modal"
         >
           <X className="w-6 h-6 text-primary" />
         </button>
@@ -106,6 +136,7 @@ export default function VenueDetailModal({
                   <button
                     onClick={prevImage}
                     className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center hover:cursor-pointer transition-colors"
+                    aria-label="Previous image"
                   >
                     <ChevronLeft className="w-5 h-5 text-primary" />
                   </button>
@@ -113,6 +144,7 @@ export default function VenueDetailModal({
                   <button
                     onClick={nextImage}
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center hover:cursor-pointer transition-colors"
+                    aria-label="Next image"
                   >
                     <ChevronRight className="w-5 h-5 text-primary" />
                   </button>
@@ -142,7 +174,6 @@ export default function VenueDetailModal({
                       }}
                     >
                       {venue.images.map((img, index) => {
-                        // Cek apakah thumbnail ini sedang visible
                         const isVisible =
                           index >= thumbnailScrollIndex &&
                           index < thumbnailScrollIndex + visibleThumbnails;
@@ -155,6 +186,7 @@ export default function VenueDetailModal({
                             style={{
                               aspectRatio: "1",
                             }}
+                            aria-label={`View image ${index + 1}`}
                           >
                             <div
                               className={`w-full h-full relative transition-all ${
@@ -185,6 +217,7 @@ export default function VenueDetailModal({
                         onClick={scrollThumbnailsLeft}
                         disabled={!canScrollLeft}
                         className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                        aria-label="Scroll thumbnails left"
                       >
                         <ChevronLeft className="w-5 h-5 text-white" />
                       </button>
@@ -193,6 +226,7 @@ export default function VenueDetailModal({
                         onClick={scrollThumbnailsRight}
                         disabled={!canScrollRight}
                         className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                        aria-label="Scroll thumbnails right"
                       >
                         <ChevronRight className="w-5 h-5 text-white" />
                       </button>
