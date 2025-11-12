@@ -22,9 +22,85 @@ const createSlug = (name: string) => {
     .replace(/(^-|-$)/g, "");
 };
 
+// Currency types
+type Currency = "IDR" | "USD";
+
+// Currency converter hook dengan cache 1 jam
+const useCurrencyConverter = () => {
+  const [exchangeRate, setExchangeRate] = useState<number>(15800); // Default rate IDR to USD
+  const [lastFetch, setLastFetch] = useState<number>(0);
+  const CACHE_DURATION = 60 * 60 * 1000; // 1 jam dalam milidetik
+
+  useEffect(() => {
+    const fetchExchangeRate = async () => {
+      const now = Date.now();
+
+      // Check if we have cached data in localStorage
+      const cachedRate = localStorage.getItem("exchangeRate");
+      const cachedTime = localStorage.getItem("exchangeRateTime");
+
+      if (cachedRate && cachedTime) {
+        const timeDiff = now - parseInt(cachedTime);
+        if (timeDiff < CACHE_DURATION) {
+          setExchangeRate(parseFloat(cachedRate));
+          setLastFetch(parseInt(cachedTime));
+          return;
+        }
+      }
+
+      // Fetch new rate if cache expired or doesn't exist
+      try {
+        const response = await fetch(
+          "https://api.exchangerate-api.com/v4/latest/USD"
+        );
+        const data = await response.json();
+        const rate = data.rates.IDR;
+
+        setExchangeRate(rate);
+        setLastFetch(now);
+
+        // Save to localStorage
+        localStorage.setItem("exchangeRate", rate.toString());
+        localStorage.setItem("exchangeRateTime", now.toString());
+      } catch (error) {
+        console.error("Failed to fetch exchange rate:", error);
+        // Keep using the default or cached rate
+      }
+    };
+
+    fetchExchangeRate();
+  }, []);
+
+  return exchangeRate;
+};
+
+const formatPrice = (
+  price: number | undefined,
+  currency: Currency,
+  rate: number
+) => {
+  if (!price) return "To Be Confirmed";
+
+  let finalPrice = price;
+
+  // Convert to USD if needed
+  if (currency === "USD") {
+    finalPrice = price / rate;
+  }
+
+  // Format based on currency
+  if (currency === "USD") {
+    return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  } else {
+    return finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+};
+
 export default function Venues() {
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>("IDR");
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isMobile, setIsMobile] = useState(false);
@@ -33,61 +109,51 @@ export default function Venues() {
   );
   const [hasInteracted, setHasInteracted] = useState(false);
 
+  const exchangeRate = useCurrencyConverter();
+
   // Effect untuk membaca URL hash dan membuka modal
   useEffect(() => {
     const scrollToVenues = () => {
-      const venuesSection = document.getElementById('venues');
+      const venuesSection = document.getElementById("venues");
       if (venuesSection) {
-        // Smooth scroll ke section venues
-        venuesSection.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
+        venuesSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
         });
       }
     };
 
     const handleHashChange = () => {
       const hash = window.location.hash;
-      
-      // Check if we're on venues section with a venue parameter
-      if (hash.includes('#venues?venue=')) {
-        const urlParams = new URLSearchParams(hash.split('?')[1]);
-        const venueSlug = urlParams.get('venue');
-        
+
+      if (hash.includes("#venues?venue=")) {
+        const urlParams = new URLSearchParams(hash.split("?")[1]);
+        const venueSlug = urlParams.get("venue");
+
         if (venueSlug) {
-          // Scroll ke section venues dulu
           scrollToVenues();
-          
-          // Delay sedikit untuk memastikan scroll selesai, baru buka modal
+
           setTimeout(() => {
-            // Cari venue berdasarkan slug
-            const venue = venues.find(
-              (v) => createSlug(v.name) === venueSlug
-            );
-            
+            const venue = venues.find((v) => createSlug(v.name) === venueSlug);
+
             if (venue) {
               setSelectedVenue(venue);
             } else {
-              console.warn('Venue not found:', venueSlug);
+              console.warn("Venue not found:", venueSlug);
             }
-          }, 500); // Delay 500ms untuk smooth scroll
+          }, 500);
         }
-      } else if (hash === '#venues') {
-        // Scroll ke section venues
+      } else if (hash === "#venues") {
         scrollToVenues();
-        // Close modal if we're just on #venues without parameter
         setSelectedVenue(null);
       }
     };
 
-    // Check on mount
     handleHashChange();
-
-    // Listen to hash changes
-    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
 
     return () => {
-      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener("hashchange", handleHashChange);
     };
   }, []);
 
@@ -142,17 +208,23 @@ export default function Venues() {
     setVisibleCount(newVisibleCount);
   };
 
-  // Handler untuk membuka modal dengan update URL
-  const handleOpenVenueDetail = (venue: typeof venues[0]) => {
+  const handleOpenVenueDetail = (venue: (typeof venues)[0]) => {
     const slug = createSlug(venue.name);
     window.location.hash = `venues?venue=${slug}`;
     setSelectedVenue(venue);
   };
 
-  // Handler untuk menutup modal dengan menghapus parameter
   const handleCloseVenueDetail = () => {
-    window.location.hash = 'venues';
+    window.location.hash = "venues";
     setSelectedVenue(null);
+  };
+
+  // Props untuk VenueDetailModal
+  const venueDetailProps = {
+    venue: selectedVenue,
+    onClose: handleCloseVenueDetail,
+    selectedCurrency,
+    exchangeRate,
   };
 
   const gridVariants = {
@@ -202,47 +274,95 @@ export default function Venues() {
               Villa Celebrations
             </motion.h1>
 
-            {/* Location Filter */}
+            {/* Location and Currency Filters */}
             <motion.div
               variants={fadeInUp}
-              className="flex items-center justify-center gap-4 mb-4"
+              className="flex items-center justify-center gap-8 mb-4 flex-wrap"
             >
-              <span className="text-xl text-primary tracking-wider italic font-semibold">
-                LOCATION
-              </span>
-              <div className="relative">
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center gap-2 text-lg text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
-                >
-                  {selectedLocation}
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      isDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
+              {/* Location Filter */}
+              <div className="flex items-center gap-4">
+                <span className="text-xl text-primary tracking-wider italic font-semibold">
+                  LOCATION
+                </span>
+                <div className="relative">
+                  <button
+                    onClick={() =>
+                      setIsLocationDropdownOpen(!isLocationDropdownOpen)
+                    }
+                    className="flex items-center gap-2 text-lg text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                  >
+                    {selectedLocation}
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        isLocationDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-                {isDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px]">
-                    {locations.map((location) => (
-                      <button
-                        key={location}
-                        onClick={() => {
-                          setSelectedLocation(location);
-                          setIsDropdownOpen(false);
-                        }}
-                        className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
-                          selectedLocation === location
-                            ? "bg-primary text-white"
-                            : "text-primary hover:bg-stone-100"
-                        }`}
-                      >
-                        {location}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                  {isLocationDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px]">
+                      {locations.map((location) => (
+                        <button
+                          key={location}
+                          onClick={() => {
+                            setSelectedLocation(location);
+                            setIsLocationDropdownOpen(false);
+                          }}
+                          className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
+                            selectedLocation === location
+                              ? "bg-primary text-white"
+                              : "text-primary hover:bg-stone-100"
+                          }`}
+                        >
+                          {location}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Currency Filter */}
+              <div className="flex items-center gap-4">
+                <span className="text-xl text-primary tracking-wider italic font-semibold">
+                  CURRENCY
+                </span>
+                <div className="relative">
+                  <button
+                    onClick={() =>
+                      setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
+                    }
+                    className="flex items-center gap-2 text-lg text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                  >
+                    {selectedCurrency}
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        isCurrencyDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isCurrencyDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[100px]">
+                      {(["IDR", "USD"] as Currency[]).map((currency) => (
+                        <button
+                          key={currency}
+                          onClick={() => {
+                            setSelectedCurrency(currency);
+                            setIsCurrencyDropdownOpen(false);
+                          }}
+                          className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
+                            selectedCurrency === currency
+                              ? "bg-primary text-white"
+                              : "text-primary hover:bg-stone-100"
+                          }`}
+                        >
+                          {currency}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
 
@@ -291,6 +411,35 @@ export default function Venues() {
                   <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[240px]">
                     {venue.name}
                   </h3>
+
+                  <div className="flex items-center justify-start mb-4">
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm/4 text-white italic">
+                        Starts from
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {venue.price === 0 ? null : (
+                          <span className="text-base self-end">
+                            {selectedCurrency}
+                          </span>
+                        )}
+                        <div className="flex justify-center gap-1">
+                          <span className="text-2xl font-medium text-white">
+                            {formatPrice(
+                              venue.price,
+                              selectedCurrency,
+                              exchangeRate
+                            )}
+                          </span>
+                          {venue.price === 0 ? null : (
+                            <span className="text-sm text-white self-center">
+                              nett
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 text-base">
@@ -350,17 +499,45 @@ export default function Venues() {
                         {visibleVenues[currentSlide].name}
                       </h3>
 
-                      <div className="flex flex-col gap-2 mb-4">
-                        <div className="flex items-center gap-1 text-sm">
-                          <MapPin className="w-4 h-4" />
-                          <span>
-                            {visibleVenues[currentSlide].city},{" "}
-                            {visibleVenues[currentSlide].province}
-                          </span>
+                      <div className="flex justify-start gap-8 items-center">
+                        <div className="flex items-start justify-start flex-col mb-4">
+                          <span className="text-sm/4 italic">Starts from</span>
+                          <div className="flex items-center gap-2">
+                            {visibleVenues[currentSlide].price === 0 ? null : (
+                              <span className="text-base text-white self-end">
+                                {selectedCurrency}
+                              </span>
+                            )}
+                            <div className="flex justify-center gap-1">
+                              <span className="text-xl font-medium">
+                                {formatPrice(
+                                  visibleVenues[currentSlide].price,
+                                  selectedCurrency,
+                                  exchangeRate
+                                )}
+                              </span>
+                              {visibleVenues[currentSlide].price ===
+                              0 ? null : (
+                                <span className="text-sm text-white self-center">
+                                  nett
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1 text-sm">
-                          <Users className="w-4 h-4" />
-                          <span>{visibleVenues[currentSlide].capacity}</span>
+
+                        <div className="flex flex-col gap-2 mb-4">
+                          <div className="flex items-center gap-1 text-sm">
+                            <MapPin className="w-4 h-4" />
+                            <span>
+                              {visibleVenues[currentSlide].city},{" "}
+                              {visibleVenues[currentSlide].province}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 text-sm">
+                            <Users className="w-4 h-4" />
+                            <span>{visibleVenues[currentSlide].capacity}</span>
+                          </div>
                         </div>
                       </div>
 
@@ -426,7 +603,7 @@ export default function Venues() {
               </p>
               <button
                 onClick={() => setSelectedLocation("All")}
-                className="text-primary hover:text-primary/80 transition-colors underline"
+                className="text-primary hover:text-primary/80 transition-colors underline hover:cursor-pointer"
               >
                 View all venues
               </button>
@@ -479,7 +656,6 @@ export default function Venues() {
           {/* Desktop Layout (xl and above - 1280px+) */}
           <div className="hidden xl:block">
             <div className="flex">
-              {/* Left Image - Wedding rings and hands (840px) */}
               <div className="relative h-[428px] w-[840px] overflow-hidden flex-shrink-0">
                 <Image
                   src="/images/venues/banner/banner-venues1.png"
@@ -491,7 +667,6 @@ export default function Venues() {
                 />
               </div>
 
-              {/* Right Image - Floral arrangement (fills remaining space to edge) */}
               <div className="relative h-[428px] flex-1 overflow-hidden">
                 <Image
                   src="/images/venues/banner/banner-venues2.png"
@@ -508,7 +683,6 @@ export default function Venues() {
           {/* iPad Pro & Large Tablet Layout (lg to xl - 1024px to 1279px) */}
           <div className="hidden lg:block xl:hidden">
             <div className="flex">
-              {/* Left Image - Proportional for iPad Pro */}
               <div className="relative h-[400px] w-[50%] overflow-hidden flex-shrink-0">
                 <Image
                   src="/images/venues/banner/banner-venues1.png"
@@ -520,7 +694,6 @@ export default function Venues() {
                 />
               </div>
 
-              {/* Right Image - Proportional for iPad Pro */}
               <div className="relative h-[400px] w-[50%] overflow-hidden flex-shrink-0">
                 <Image
                   src="/images/venues/banner/banner-venues2.png"
@@ -537,7 +710,6 @@ export default function Venues() {
           {/* iPad/Tablet Layout (md to lg - 768px to 1023px) */}
           <div className="hidden md:block lg:hidden">
             <div className="flex">
-              {/* Left Image - Proportional for iPad */}
               <div className="relative h-[340px] w-[50%] overflow-hidden flex-shrink-0">
                 <Image
                   src="/images/venues/banner/banner-venues1.png"
@@ -549,7 +721,6 @@ export default function Venues() {
                 />
               </div>
 
-              {/* Right Image - Proportional for iPad */}
               <div className="relative h-[340px] w-[50%] overflow-hidden flex-shrink-0">
                 <Image
                   src="/images/venues/banner/banner-venues2.png"
@@ -586,6 +757,8 @@ export default function Venues() {
         <VenueDetailModal
           venue={selectedVenue}
           onClose={handleCloseVenueDetail}
+          selectedCurrency={selectedCurrency}
+          exchangeRate={exchangeRate}
         />
       )}
     </>

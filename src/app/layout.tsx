@@ -23,7 +23,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
 
-        <link
+        {/* <link
           rel="icon"
           type="image/png"
           sizes="32x32"
@@ -34,7 +34,7 @@ export default function RootLayout({
           type="image/png"
           sizes="16x16"
           href="/logo-lindawiryani-16x16.png"
-        />
+        /> */}
 
         <meta name="theme-color" content="#ffffff" />
         <meta name="author" content="Linda Wiryani" />

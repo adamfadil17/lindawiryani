@@ -2,8 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { X, MapPin, Users, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  X,
+  MapPin,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+} from "lucide-react";
 import Link from "next/link";
+
+type Currency = "IDR" | "USD";
 
 interface Venue {
   id: number;
@@ -11,6 +20,7 @@ interface Venue {
   city: string;
   province: string;
   capacity: string;
+  price: number | undefined;
   image: string;
   images: string[];
   description: string;
@@ -19,17 +29,51 @@ interface Venue {
 interface VenueDetailModalProps {
   venue: Venue;
   onClose: () => void;
+  selectedCurrency: Currency;
+  exchangeRate: number;
 }
+
+const formatPrice = (
+  price: number | undefined,
+  currency: Currency,
+  rate: number
+) => {
+  if (!price) return "To Be Confirmed";
+
+  let finalPrice = price;
+
+  // Convert to USD if needed
+  if (currency === "USD") {
+    finalPrice = price / rate;
+  }
+
+  // Format based on currency
+  if (currency === "USD") {
+    return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  } else {
+    return finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+};
 
 export default function VenueDetailModal({
   venue,
   onClose,
+  selectedCurrency: initialCurrency,
+  exchangeRate,
 }: VenueDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] =
+    useState<Currency>(initialCurrency);
+  const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
   const totalImages = venue.images.length;
   const visibleThumbnails = 4;
+
+  // Sync with parent currency when it changes
+  useEffect(() => {
+    setSelectedCurrency(initialCurrency);
+  }, [initialCurrency]);
 
   // Reset image index ketika venue berubah
   useEffect(() => {
@@ -250,17 +294,81 @@ export default function VenueDetailModal({
           </div>
 
           {/* Right Side - Venue Details */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col items-start gap-2 justify-start">
             {/* Header and Info Container */}
-            <div>
-              <p className="text-sm text-primary tracking-widest italic font-semibold mb-2">
-                VENUES
-              </p>
-              <h2 className="text-3xl md:text-4xl text-primary font-semibold mb-6 leading-tight">
-                {venue.name}
-              </h2>
+            <p className="text-sm text-primary tracking-widest italic font-semibold">
+              VENUES
+            </p>
 
-              {/* Venue Info */}
+            <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+              {venue.name}
+            </h2>
+
+            {/* Currency Dropdown in Modal */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-primary tracking-wider italic font-semibold">
+                CURRENCY
+              </span>
+              <div className="relative">
+                <button
+                  onClick={() =>
+                    setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
+                  }
+                  className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                >
+                  {selectedCurrency}
+                  <ChevronDown
+                    className={`w-3 h-3 transition-transform ${
+                      isCurrencyDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {isCurrencyDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[80px]">
+                    {(["IDR", "USD"] as Currency[]).map((currency) => (
+                      <button
+                        key={currency}
+                        onClick={() => {
+                          setSelectedCurrency(currency);
+                          setIsCurrencyDropdownOpen(false);
+                        }}
+                        className={`block w-full text-left px-3 py-2 text-sm transition-colors hover:cursor-pointer ${
+                          selectedCurrency === currency
+                            ? "bg-primary text-white"
+                            : "text-primary hover:bg-stone-100"
+                        }`}
+                      >
+                        {currency}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Venue Info */}
+            <div className="flex justify-start gap-8 items-center">
+              <div className="flex flex-col mb-8">
+                <span className="text-lg text-primary italic">Starts from</span>
+                <div className="flex items-center gap-2">
+                  {venue.price === 0 ? null : (
+                    <span className="text-base self-end text-primary">
+                      {selectedCurrency}
+                    </span>
+                  )}
+                  <div className="flex justify-center gap-1">
+                    <span className="text-2xl font-medium text-primary">
+                      {formatPrice(venue.price, selectedCurrency, exchangeRate)}
+                    </span>
+                    {venue.price === 0 ? null : (
+                      <span className="text-sm text-primary self-center">
+                        nett
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
               <div className="flex flex-col gap-4 mb-8">
                 <div className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
@@ -273,22 +381,22 @@ export default function VenueDetailModal({
                   <span className="text-lg text-primary">{venue.capacity}</span>
                 </div>
               </div>
-
-              {/* Description */}
-              <p className="text-base text-primary/80 leading-relaxed mb-8">
-                {venue.description}
-              </p>
-
-              {/* CTA Button */}
-              <Link href="https://wa.me/628113980998" target="_blank">
-                <button
-                  onClick={onClose}
-                  className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full md:w-auto"
-                >
-                  PLAN YOUR DREAM
-                </button>
-              </Link>
             </div>
+
+            {/* Description */}
+            <p className="text-base text-primary/80 text-justify leading-relaxed mb-8">
+              {venue.description}
+            </p>
+
+            {/* CTA Button */}
+            <Link href="https://wa.me/628113980998" target="_blank">
+              <button
+                onClick={onClose}
+                className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full md:w-auto"
+              >
+                PLAN YOUR DREAM
+              </button>
+            </Link>
           </div>
         </div>
       </div>
