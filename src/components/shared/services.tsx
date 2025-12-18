@@ -210,7 +210,7 @@ export default function Services() {
                 {/* Auto play toggle button */}
                 <button
                   onClick={toggleAutoPlay}
-                  className="absolute -top-10 right-2 w-8 h-8 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
+                  className="absolute -top-10 right-2 w-8 h-8 bg-primary/80 hover:bg-primary flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
                   aria-label={
                     isAutoPlaying ? "Pause slideshow" : "Play slideshow"
                   }
@@ -252,7 +252,7 @@ export default function Services() {
                 {/* Navigation Arrows */}
                 <button
                   onClick={prevImage}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 bg-primary/80 hover:bg-primary flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
                   aria-label="Previous image"
                 >
                   <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
@@ -260,7 +260,7 @@ export default function Services() {
 
                 <button
                   onClick={nextImage}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 bg-primary/80 hover:bg-primary rounded-full flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 bg-primary/80 hover:bg-primary flex items-center justify-center transition-colors hover:cursor-pointer z-10 shadow-lg"
                   aria-label="Next image"
                 >
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-white" />

@@ -59,7 +59,8 @@ export const locations = [
 export const venues = [
   {
     id: 1,
-    name: "Uma Kalai — Private Villa Wedding Venue in Bali",
+    name: "Uma Kalai",
+    slogan: "Private Villa Wedding Venue in Bali",
     city: "Ubud",
     province: "Bali",
     capacity: "40 pax",
@@ -123,7 +124,8 @@ export const venues = [
   },
   {
     id: 2,
-    name: "The Legian Seminyak — Timeless Beachfront Elegance",
+    name: "The Legian Seminyak",
+    slogan: "Timeless Beachfront Elegance",
     city: "Seminyak",
     province: "Bali",
     capacity: "60 pax",
@@ -187,7 +189,8 @@ export const venues = [
   },
   {
     id: 3,
-    name: "The Sanctoo — A Serene & Elegant Wedding Venue",
+    name: "The Sanctoo",
+    slogan: "A Serene & Elegant Wedding Venue",
     city: "Ubud",
     province: "Bali",
     capacity: "120 pax",

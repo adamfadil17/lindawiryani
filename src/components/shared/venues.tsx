@@ -253,25 +253,28 @@ export default function Venues() {
       <section id="venues" className="bg-white py-16 lg:py-24 relative">
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           {/* Header Section */}
-          <motion.div
+          <motion.header
             className="text-center mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
           >
+            {/* Category Label */}
             <motion.p
               variants={fadeInUp}
               className="text-2xl text-primary tracking-wider italic font-semibold mb-4"
             >
               VENUES
             </motion.p>
+
+            {/* H1 - Main Heading */}
             <motion.h1
               variants={fadeInUp}
               className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
             >
-              Curated Bali Wedding Venues for Luxury, Intimate, and Private
-              Villa Celebrations
+              CURATED BALI WEDDING VENUES FOR LUXURY, INTIMATE, AND PRIVATE
+              VILLA CELEBRATIONS
             </motion.h1>
 
             {/* Location and Currency Filters */}
@@ -281,15 +284,17 @@ export default function Venues() {
             >
               {/* Location Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-xl text-primary tracking-wider italic font-semibold">
-                  LOCATION
+                <span className="text-lg md:text-lg text-primary tracking-wider uppercase font-semibold">
+                  Location
                 </span>
                 <div className="relative">
                   <button
                     onClick={() =>
                       setIsLocationDropdownOpen(!isLocationDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-lg text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                    className="flex items-center gap-2 text-base md:text-lg text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium"
+                    aria-label="Select location"
+                    aria-expanded={isLocationDropdownOpen}
                   >
                     {selectedLocation}
                     <ChevronDown
@@ -324,15 +329,17 @@ export default function Venues() {
 
               {/* Currency Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-xl text-primary tracking-wider italic font-semibold">
-                  CURRENCY
+                <span className="text-lg md:text-lg text-primary tracking-wider uppercase font-semibold">
+                  Currency
                 </span>
                 <div className="relative">
                   <button
                     onClick={() =>
                       setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-lg text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                    className="flex items-center gap-2 text-base md:text-lg text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium"
+                    aria-label="Select currency"
+                    aria-expanded={isCurrencyDropdownOpen}
                   >
                     {selectedCurrency}
                     <ChevronDown
@@ -366,8 +373,11 @@ export default function Venues() {
               </div>
             </motion.div>
 
-            {/* Venue Count Display */}
-            <motion.p variants={fadeInUp} className="text-md text-primary">
+            {/* Venue Count Display - Caption */}
+            <motion.p
+              variants={fadeInUp}
+              className="text-sm md:text-sm text-primary"
+            >
               {!isMobile
                 ? selectedLocation === "All"
                   ? `Showing ${visibleVenues.length} of ${venueCount} venues`
@@ -380,7 +390,7 @@ export default function Venues() {
                     venueCount !== 1 ? "s" : ""
                   } available in ${selectedLocation}`}
             </motion.p>
-          </motion.div>
+          </motion.header>
 
           {/* Desktop Grid */}
           <motion.div
@@ -391,14 +401,15 @@ export default function Venues() {
             variants={gridVariants}
           >
             {visibleVenues.map((venue) => (
-              <motion.div
+              <motion.article
                 key={venue.id}
+                onClick={() => handleOpenVenueDetail(venue)}
                 variants={cardVariants}
                 className="relative group overflow-hidden aspect-[4/5] cursor-pointer"
               >
                 <Image
                   src={venue.image || "https://placehold.net/default.svg"}
-                  alt={venue.name}
+                  alt={`${venue.name} - ${venue.slogan}`}
                   fill
                   loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -408,48 +419,52 @@ export default function Venues() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[240px]">
+                  {/* H2 - Venue Name */}
+                  <h2 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[280px]">
                     {venue.name}
-                  </h3>
+                  </h2>
 
+                  {/* Slogan */}
+                  <p className="text-md font-light italic mb-4 text-white max-w-[280px]">
+                    {venue.slogan}
+                  </p>
+
+                  {/* H3 - Pricing */}
                   <div className="flex items-center justify-start mb-4">
                     <div className="flex flex-col items-start">
-                      <span className="text-sm/4 text-white italic">
+                      <span className="text-sm text-white/80 italic mb-0.5">
                         Starts from
                       </span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-baseline gap-2">
                         {venue.price === 0 ? null : (
-                          <span className="text-base self-end">
+                          <span className="text-md font-medium">
                             {selectedCurrency}
                           </span>
                         )}
-                        <div className="flex justify-center gap-1">
-                          <span className="text-2xl font-medium text-white">
-                            {formatPrice(
-                              venue.price,
-                              selectedCurrency,
-                              exchangeRate
-                            )}
-                          </span>
-                          {venue.price === 0 ? null : (
-                            <span className="text-sm text-white self-center">
-                              nett
-                            </span>
+                        <h3 className="text-xl md:text-2xl font-normal text-white">
+                          {formatPrice(
+                            venue.price,
+                            selectedCurrency,
+                            exchangeRate
                           )}
-                        </div>
+                        </h3>
+                        {venue.price === 0 ? null : (
+                          <span className="text-sm text-white">nett</span>
+                        )}
                       </div>
                     </div>
                   </div>
 
+                  {/* Location & Capacity Info */}
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 text-base">
-                      <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-4 text-md">
+                      <div className="flex items-center gap-1.5">
                         <MapPin className="w-4 h-4" />
                         <span>
                           {venue.city}, {venue.province}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         <Users className="w-4 h-4" />
                         <span>{venue.capacity}</span>
                       </div>
@@ -458,12 +473,13 @@ export default function Venues() {
                     <button
                       onClick={() => handleOpenVenueDetail(venue)}
                       className="text-white hover:text-white/90 hover:cursor-pointer transition-colors border-b border-white pb-1 text-sm font-light tracking-wider"
+                      aria-label={`View details for ${venue.name}`}
                     >
                       View Detail
                     </button>
                   </div>
                 </div>
-              </motion.div>
+              </motion.article>
             ))}
           </motion.div>
 
@@ -478,14 +494,19 @@ export default function Venues() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="relative">
-                  <div className="relative group overflow-hidden aspect-[4/5] cursor-pointer">
+                <article className="relative">
+                  <div
+                    className="relative group overflow-hidden aspect-[4/5] cursor-pointer"
+                    onClick={() =>
+                      handleOpenVenueDetail(visibleVenues[currentSlide])
+                    }
+                  >
                     <Image
                       src={
                         visibleVenues[currentSlide].image ||
                         "https://placehold.net/default.svg"
                       }
-                      alt={visibleVenues[currentSlide].name}
+                      alt={`${visibleVenues[currentSlide].name} - ${visibleVenues[currentSlide].slogan}`}
                       fill
                       loading="lazy"
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -495,46 +516,51 @@ export default function Venues() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <h3 className="text-xl font-semibold mb-2 leading-tight max-w-[240px]">
+                      {/* H2 - Venue Name */}
+                      <h2 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[280px]">
                         {visibleVenues[currentSlide].name}
-                      </h3>
+                      </h2>
 
-                      <div className="flex justify-start gap-8 items-center">
+                      {/* Slogan */}
+                      <p className="text-md font-light italic mb-4 text-white/90 max-w-[280px]">
+                        {visibleVenues[currentSlide].slogan}
+                      </p>
+
+                      <div className="flex justify-start gap-8 items-start">
+                        {/* H3 - Pricing */}
                         <div className="flex items-start justify-start flex-col mb-4">
-                          <span className="text-sm/4 italic">Starts from</span>
-                          <div className="flex items-center gap-2">
+                          <span className="text-sm italic text-white/80 mb-0.5">
+                            Starts from
+                          </span>
+                          <div className="flex items-baseline gap-2">
                             {visibleVenues[currentSlide].price === 0 ? null : (
-                              <span className="text-base text-white self-end">
+                              <span className="text-md text-white font-medium">
                                 {selectedCurrency}
                               </span>
                             )}
-                            <div className="flex justify-center gap-1">
-                              <span className="text-xl font-medium">
-                                {formatPrice(
-                                  visibleVenues[currentSlide].price,
-                                  selectedCurrency,
-                                  exchangeRate
-                                )}
-                              </span>
-                              {visibleVenues[currentSlide].price ===
-                              0 ? null : (
-                                <span className="text-sm text-white self-center">
-                                  nett
-                                </span>
+                            <h3 className="text-xl md:text-2xl font-normal">
+                              {formatPrice(
+                                visibleVenues[currentSlide].price,
+                                selectedCurrency,
+                                exchangeRate
                               )}
-                            </div>
+                            </h3>
+                            {visibleVenues[currentSlide].price === 0 ? null : (
+                              <span className="text-sm text-white">nett</span>
+                            )}
                           </div>
                         </div>
 
+                        {/* Location & Capacity Info */}
                         <div className="flex flex-col gap-2 mb-4">
-                          <div className="flex items-center gap-1 text-sm">
+                          <div className="flex items-center gap-1.5 text-md">
                             <MapPin className="w-4 h-4" />
                             <span>
                               {visibleVenues[currentSlide].city},{" "}
                               {visibleVenues[currentSlide].province}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1 text-sm">
+                          <div className="flex items-center gap-1.5 text-md">
                             <Users className="w-4 h-4" />
                             <span>{visibleVenues[currentSlide].capacity}</span>
                           </div>
@@ -545,7 +571,8 @@ export default function Venues() {
                         onClick={() =>
                           handleOpenVenueDetail(visibleVenues[currentSlide])
                         }
-                        className="text-white hover:text-white/90 hover:cursor-pointer transition-colors border-b border-white pb-1 text-sm font-light tracking-wider"
+                        className="text-white hover:text-white/90 hover:cursor-pointer transition-colors border-b border-white pb-1 text-xs font-light tracking-wider"
+                        aria-label={`View details for ${visibleVenues[currentSlide].name}`}
                       >
                         View Detail
                       </button>
@@ -556,23 +583,30 @@ export default function Venues() {
                     <>
                       <button
                         onClick={prevSlide}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary/70 hover:bg-primary/90 rounded-full flex items-center justify-center transition-colors shadow-lg"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary/70 hover:bg-primary/90 flex items-center justify-center transition-colors shadow-lg"
+                        aria-label="Previous venue"
                       >
                         <ChevronLeft className="w-6 h-6 text-white" />
                       </button>
 
                       <button
                         onClick={nextSlide}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary/70 hover:bg-primary/90 rounded-full flex items-center justify-center transition-colors shadow-lg"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary/70 hover:bg-primary/90 flex items-center justify-center transition-colors shadow-lg"
+                        aria-label="Next venue"
                       >
                         <ChevronRight className="w-6 h-6 text-white" />
                       </button>
                     </>
                   )}
-                </div>
+                </article>
 
+                {/* Slide Indicators - Caption */}
                 {visibleVenues.length > 1 && (
-                  <div className="flex justify-center mt-6 space-x-2">
+                  <div
+                    className="flex justify-center mt-6 space-x-2"
+                    role="tablist"
+                    aria-label="Venue slides"
+                  >
                     {visibleVenues.map((_, index) => (
                       <button
                         key={index}
@@ -582,6 +616,9 @@ export default function Venues() {
                             ? "bg-primary"
                             : "bg-stone-300 hover:bg-stone-400"
                         }`}
+                        role="tab"
+                        aria-selected={index === currentSlide}
+                        aria-label={`Go to slide ${index + 1}`}
                       />
                     ))}
                   </div>
@@ -598,12 +635,12 @@ export default function Venues() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <p className="text-lg text-primary mb-4">
+              <p className="text-base md:text-md text-primary mb-4">
                 No venues found in {selectedLocation}
               </p>
               <button
                 onClick={() => setSelectedLocation("All")}
-                className="text-primary hover:text-primary/80 transition-colors underline hover:cursor-pointer"
+                className="text-primary hover:text-primary/80 transition-colors underline hover:cursor-pointer text-sm"
               >
                 View all venues
               </button>
@@ -620,7 +657,7 @@ export default function Venues() {
             >
               <button
                 onClick={handleViewMore}
-                className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary/90 transition-colors"
+                className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary/90 transition-colors rounded"
               >
                 VIEW MORE ({filteredVenues.length - visibleCount} MORE)
               </button>

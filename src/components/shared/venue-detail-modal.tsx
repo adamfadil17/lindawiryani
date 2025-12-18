@@ -17,6 +17,7 @@ type Currency = "IDR" | "USD";
 interface Venue {
   id: number;
   name: string;
+  slogan: string;
   city: string;
   province: string;
   capacity: string;
@@ -146,11 +147,14 @@ export default function VenueDetailModal({
     <div
       className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="venue-modal-title"
     >
-      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col relative">
+      <div className="bg-white max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col relative">
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-20 p-2 hover:cursor-pointer bg-white rounded-full transition-colors"
+          className="absolute top-6 right-6 z-20 p-2 hover:cursor-pointer bg-white/80 transition-colors"
           aria-label="Close modal"
         >
           <X className="w-6 h-6 text-primary" />
@@ -161,7 +165,7 @@ export default function VenueDetailModal({
           {/* Left Side - Image Carousel */}
           <div className="flex flex-col gap-4">
             {/* Main Image */}
-            <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
+            <div className="relative aspect-[4/5] overflow-hidden">
               <Image
                 src={
                   venue.images[currentImageIndex] ||
@@ -179,7 +183,7 @@ export default function VenueDetailModal({
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center hover:cursor-pointer transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center hover:cursor-pointer transition-colors"
                     aria-label="Previous image"
                   >
                     <ChevronLeft className="w-5 h-5 text-primary" />
@@ -187,7 +191,7 @@ export default function VenueDetailModal({
 
                   <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center hover:cursor-pointer transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center hover:cursor-pointer transition-colors"
                     aria-label="Next image"
                   >
                     <ChevronRight className="w-5 h-5 text-primary" />
@@ -197,7 +201,7 @@ export default function VenueDetailModal({
 
               {/* Image Counter */}
               {totalImages > 1 && (
-                <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
+                <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 text-sm">
                   {currentImageIndex + 1} / {totalImages}
                 </div>
               )}
@@ -218,15 +222,11 @@ export default function VenueDetailModal({
                       }}
                     >
                       {venue.images.map((img, index) => {
-                        const isVisible =
-                          index >= thumbnailScrollIndex &&
-                          index < thumbnailScrollIndex + visibleThumbnails;
-
                         return (
                           <button
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
-                            className="relative rounded-lg overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
+                            className="relative overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
                             style={{
                               aspectRatio: "1",
                             }}
@@ -260,7 +260,7 @@ export default function VenueDetailModal({
                       <button
                         onClick={scrollThumbnailsLeft}
                         disabled={!canScrollLeft}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
                         aria-label="Scroll thumbnails left"
                       >
                         <ChevronLeft className="w-5 h-5 text-white" />
@@ -269,7 +269,7 @@ export default function VenueDetailModal({
                       <button
                         onClick={scrollThumbnailsRight}
                         disabled={!canScrollRight}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed rounded-full flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
                         aria-label="Scroll thumbnails right"
                       >
                         <ChevronRight className="w-5 h-5 text-white" />
@@ -278,36 +278,45 @@ export default function VenueDetailModal({
                   )}
                 </div>
 
-                {/* Thumbnail Counter */}
+                {/* Thumbnail Counter Caption */}
                 {totalImages > visibleThumbnails && (
-                  <div className="text-center text-sm text-primary/60">
+                  <p className="text-center text-xs text-primary/60">
                     Showing {thumbnailScrollIndex + 1}-
                     {Math.min(
                       thumbnailScrollIndex + visibleThumbnails,
                       totalImages
                     )}{" "}
                     of {totalImages}
-                  </div>
+                  </p>
                 )}
               </div>
             )}
           </div>
 
           {/* Right Side - Venue Details */}
-          <div className="flex flex-col items-start gap-2 justify-start">
-            {/* Header and Info Container */}
-            <p className="text-sm text-primary tracking-widest italic font-semibold">
-              VENUES
-            </p>
+          <article className="flex flex-col items-start gap-3 justify-start">
+            {/* Category Label */}
+            <span className="text-xs text-primary tracking-widest uppercase font-semibold">
+              Venues
+            </span>
 
-            <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+            {/* H1 - Venue Name */}
+            <h1
+              id="venue-modal-title"
+              className="text-3xl md:text-4xl text-primary font-semibold leading-tight"
+            >
               {venue.name}
+            </h1>
+
+            {/* H2 - Slogan */}
+            <h2 className="text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
+              {venue.slogan}
             </h2>
 
-            {/* Currency Dropdown in Modal */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-primary tracking-wider italic font-semibold">
-                CURRENCY
+            {/* Currency Dropdown */}
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-sm text-primary tracking-wider uppercase font-semibold">
+                Currency
               </span>
               <div className="relative">
                 <button
@@ -315,6 +324,8 @@ export default function VenueDetailModal({
                     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                   }
                   className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                  aria-label="Select currency"
+                  aria-expanded={isCurrencyDropdownOpen}
                 >
                   {selectedCurrency}
                   <ChevronDown
@@ -347,57 +358,62 @@ export default function VenueDetailModal({
               </div>
             </div>
 
-            {/* Venue Info */}
-            <div className="flex justify-start gap-8 items-center">
-              <div className="flex flex-col mb-8">
-                <span className="text-lg text-primary italic">Starts from</span>
-                <div className="flex items-center gap-2">
+            {/* Venue Info Section */}
+            <div className="flex justify-start gap-8 items-start mt-4 mb-6 w-full">
+              {/* H3 - Pricing */}
+              <div className="flex flex-col">
+                <span className="text-sm text-primary italic mb-1">
+                  Starts from
+                </span>
+                <div className="flex items-baseline gap-2">
                   {venue.price === 0 ? null : (
-                    <span className="text-base self-end text-primary">
+                    <span className="text-md text-primary font-medium">
                       {selectedCurrency}
                     </span>
                   )}
-                  <div className="flex justify-center gap-1">
-                    <span className="text-2xl font-medium text-primary">
-                      {formatPrice(venue.price, selectedCurrency, exchangeRate)}
-                    </span>
-                    {venue.price === 0 ? null : (
-                      <span className="text-sm text-primary self-center">
-                        nett
-                      </span>
-                    )}
-                  </div>
+                  <h3 className="text-2xl md:text-2xl font-medium text-primary">
+                    {formatPrice(venue.price, selectedCurrency, exchangeRate)}
+                  </h3>
+                  {venue.price === 0 ? null : (
+                    <span className="text-sm text-primary">nett</span>
+                  )}
                 </div>
               </div>
-              <div className="flex flex-col gap-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-lg text-primary">
+
+              {/* Location & Capacity Info */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span className="text-md text-primary">
                     {venue.city}, {venue.province}
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Users className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-lg text-primary">{venue.capacity}</span>
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span className="text-md text-primary">{venue.capacity}</span>
                 </div>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-base text-primary/80 text-justify leading-relaxed mb-8">
+            <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-6">
               {venue.description}
             </p>
 
             {/* CTA Button */}
-            <Link href="https://wa.me/628113980998" target="_blank">
+            <Link
+              href="https://wa.me/628113980998"
+              target="_blank"
+              className="w-full md:w-auto"
+            >
               <button
                 onClick={onClose}
-                className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full md:w-auto"
+                className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full"
               >
                 PLAN YOUR DREAM
               </button>
             </Link>
-          </div>
+          </article>
         </div>
       </div>
     </div>
