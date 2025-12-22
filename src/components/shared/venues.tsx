@@ -470,13 +470,13 @@ export default function Venues() {
                       </div>
                     </div>
 
-                    <button
+                    {/* <button
                       onClick={() => handleOpenVenueDetail(venue)}
                       className="text-white hover:text-white/90 hover:cursor-pointer transition-colors border-b border-white pb-1 text-sm font-light tracking-wider"
                       aria-label={`View details for ${venue.name}`}
                     >
                       View Detail
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </motion.article>
@@ -567,7 +567,7 @@ export default function Venues() {
                         </div>
                       </div>
 
-                      <button
+                      {/* <button
                         onClick={() =>
                           handleOpenVenueDetail(visibleVenues[currentSlide])
                         }
@@ -575,7 +575,7 @@ export default function Venues() {
                         aria-label={`View details for ${visibleVenues[currentSlide].name}`}
                       >
                         View Detail
-                      </button>
+                      </button> */}
                     </div>
                   </div>
 

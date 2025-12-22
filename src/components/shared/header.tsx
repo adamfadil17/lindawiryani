@@ -14,6 +14,7 @@ export default function Header() {
     { name: "HOME", href: "#home", id: "home" },
     { name: "ABOUT", href: "#about", id: "about" },
     { name: "SERVICES", href: "#services", id: "services" },
+    { name: "WEDDING THEMES", href: "#wedding-themes", id: "wedding-themes" },
     { name: "VENUES", href: "#venues", id: "venues" },
     { name: "GALLERY", href: "#gallery", id: "gallery" },
     { name: "CONTACT", href: "#contact", id: "contact" },

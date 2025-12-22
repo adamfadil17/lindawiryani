@@ -1,41 +1,47 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { motion, Variants } from "framer-motion";
-import Image from "next/image";
-import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
-("lucide-react");
+import type React from "react"
+
+import { useState } from "react"
+import { motion } from "framer-motion"
+import Image from "next/image"
+import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion"
+;("lucide-react")
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    countryCode: "+62",
-    phone: "",
-    inquiryType: "",
-    date: "",
-    budget: "",
-    additionalInfo: "",
-  });
+    yourName: "",
+    yourEmail: "",
+    yourAddress: "",
+    telephone: "",
+    nameOfGroom: "",
+    religionOfGroom: "",
+    nationalityOfGroom: "",
+    nameOfBride: "",
+    religionOfBride: "",
+    nationalityOfBride: "",
+    weddingDate: "",
+    weddingVenue: "",
+    numberOfAttendance: "",
+    approximateWeddingBudget: "",
+    hotelNameInBali: "",
+    arrivalDate: "",
+    departureDate: "",
+    yourMessage: "",
+  })
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-  };
+    e.preventDefault()
+    console.log("Form submitted:", formData)
+  }
 
   return (
     <section id="contact" className="pb-16 lg:pb-24 relative">
@@ -70,19 +76,12 @@ export default function Contact() {
 
             {/* Keep In Touch Section */}
             <motion.div variants={fadeInUp} className="space-y-6">
-              <h3 className="text-xl md:text-2xl font-semibold text-primary italic">
-                KEEP IN TOUCH
-              </h3>
+              <h3 className="text-xl md:text-2xl font-semibold text-primary italic">KEEP IN TOUCH</h3>
 
               <div className="grid md:grid-cols-2 gap-4">
                 {/* Email */}
                 <div className="flex items-center space-x-3">
-                  <Image
-                    src="/images/email-brown.svg"
-                    alt="Email"
-                    width={24}
-                    height={24}
-                  />
+                  <Image src="/images/email-brown.svg" alt="Email" width={24} height={24} />
                   <a
                     href="mailto: lindawiryanievents@gmail.com"
                     className="text-primary text-lg hover:text-primary/80 transition-colors"
@@ -93,12 +92,7 @@ export default function Contact() {
 
                 {/* Instagram */}
                 <div className="flex items-center space-x-3">
-                  <Image
-                    src="/images/instagram-brown.svg"
-                    alt="Instagram"
-                    width={24}
-                    height={24}
-                  />
+                  <Image src="/images/instagram-brown.svg" alt="Instagram" width={24} height={24} />
                   <a
                     href="https://instagram.com/lindawiryanievents"
                     target="_blank"
@@ -111,12 +105,7 @@ export default function Contact() {
 
                 {/* WhatsApp */}
                 <div className="flex items-center space-x-3">
-                  <Image
-                    src="/images/whatsapp-brown.svg"
-                    alt="WhatsApp"
-                    width={24}
-                    height={24}
-                  />
+                  <Image src="/images/whatsapp-brown.svg" alt="WhatsApp" width={24} height={24} />
                   <a
                     href="https://wa.me/628113980998"
                     target="_blank"
@@ -129,12 +118,7 @@ export default function Contact() {
 
                 {/* Pinterest */}
                 <div className="flex items-center space-x-3">
-                  <Image
-                    src="/images/pinterest-line-brown.svg"
-                    alt="Pinterest"
-                    width={24}
-                    height={24}
-                  />
+                  <Image src="/images/pinterest-line-brown.svg" alt="Pinterest" width={24} height={24} />
                   <a
                     href="https://pinterest.com/lindawiryanievents"
                     target="_blank"
@@ -162,137 +146,236 @@ export default function Contact() {
           >
             {/* Header */}
             <motion.div variants={fadeInUp} className="space-y-4">
-              <p className="text-2xl text-primary tracking-wider italic font-semibold">
-                CONTACT US
-              </p>
+              <p className="text-2xl text-primary tracking-wider italic font-semibold">CONTACT US</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold max-w-4xl mx-auto leading-tight">
                 Your Story. Your Style. Let's Design Your Dream Bali Wedding.
               </h2>
             </motion.div>
 
-            {/* Contact Form */}
-            <motion.form
-              variants={fadeInUp}
-              onSubmit={handleSubmit}
-              className="space-y-6"
-            >
-              {/* Name Fields */}
-              <div className="space-y-2">
-                <label className="text-primary text-md">Name (required)</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
-                  />
-                </div>
-              </div>
-
-              {/* Email and Phone */}
+            {/* Contact Form - RESTRUCTURED to match the enquiry form */}
+            <motion.form variants={fadeInUp} onSubmit={handleSubmit} className="space-y-6">
+              {/* Your Name and Your Email */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-primary text-md">
-                    Email (required)
+                    Your Name <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="yourName"
+                    value={formData.yourName}
+                    onChange={handleInputChange}
+                    required
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-primary text-md">
+                    Your Email <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="email"
-                    name="email"
-                    placeholder="Your Email"
-                    value={formData.email}
+                    name="yourEmail"
+                    value={formData.yourEmail}
                     onChange={handleInputChange}
                     required
                     className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-primary text-md">
-                    Phone (required)
-                  </label>
-                  <div className="flex mt-2">
-                    <select
-                      name="countryCode"
-                      value={formData.countryCode}
-                      onChange={handleInputChange}
-                      className="text-primary px-3 py-3 border border-primary border-r-0 rounded-none focus:outline-none focus:border-primary/80 transition-colors bg-white"
-                    >
-                      <option value="+62">+62</option>
-                      <option value="+1">+1</option>
-                      <option value="+44">+44</option>
-                      <option value="+61">+61</option>
-                    </select>
-                    <input
-                      type="tel"
-                      name="phone"
-                      placeholder="xxx-xxxx-xxxx"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full flex-1 px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
-                    />
-                  </div>
-                </div>
               </div>
 
-              {/* Inquiry Type and Date */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-primary text-md">Inquiry Type</label>
-                  <input
-                    type="text"
-                    name="inquiryType"
-                    placeholder="Mention Your Inquiry"
-                    value={formData.inquiryType}
-                    onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-primary text-md">Date</label>
-                  <input
-                    type="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
-                  />
-                </div>
-              </div>
-
-              {/* Budget */}
+              {/* Your Address */}
               <div className="space-y-2">
-                <label className="text-primary text-md">Budget</label>
+                <label className="text-primary text-md">
+                  Your Address <span className="text-red-600">*</span>
+                </label>
                 <input
                   type="text"
-                  name="budget"
-                  placeholder="Mention Your Budget"
-                  value={formData.budget}
+                  name="yourAddress"
+                  value={formData.yourAddress}
+                  onChange={handleInputChange}
+                  required
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                />
+              </div>
+
+              {/* Telephone - REMOVED country code dropdown */}
+              <div className="space-y-2">
+                <label className="text-primary text-md">Telephone</label>
+                <input
+                  type="tel"
+                  name="telephone"
+                  value={formData.telephone}
                   onChange={handleInputChange}
                   className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
                 />
               </div>
 
-              {/* Additional Information */}
+              {/* Name of Groom and Religion of Groom */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Name of Groom</label>
+                  <input
+                    type="text"
+                    name="nameOfGroom"
+                    value={formData.nameOfGroom}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Religion of Groom</label>
+                  <input
+                    type="text"
+                    name="religionOfGroom"
+                    value={formData.religionOfGroom}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Nationality of Groom */}
               <div className="space-y-2">
-                <label className="text-primary text-md">
-                  Additional Information
-                </label>
+                <label className="text-primary text-md">Nationality of Groom</label>
+                <input
+                  type="text"
+                  name="nationalityOfGroom"
+                  value={formData.nationalityOfGroom}
+                  onChange={handleInputChange}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                />
+              </div>
+
+              {/* Name of Bride and Religion of Bride */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Name of Bride</label>
+                  <input
+                    type="text"
+                    name="nameOfBride"
+                    value={formData.nameOfBride}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Religion of Bride</label>
+                  <input
+                    type="text"
+                    name="religionOfBride"
+                    value={formData.religionOfBride}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Nationality of Bride */}
+              <div className="space-y-2">
+                <label className="text-primary text-md">Nationality of Bride</label>
+                <input
+                  type="text"
+                  name="nationalityOfBride"
+                  value={formData.nationalityOfBride}
+                  onChange={handleInputChange}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                />
+              </div>
+
+              {/* Wedding Date and Wedding Venue */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Wedding Date</label>
+                  <input
+                    type="date"
+                    name="weddingDate"
+                    value={formData.weddingDate}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Wedding Venue</label>
+                  <input
+                    type="text"
+                    name="weddingVenue"
+                    value={formData.weddingVenue}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Number of Attendance */}
+              <div className="space-y-2">
+                <label className="text-primary text-md">Number of Attendance</label>
+                <input
+                  type="text"
+                  name="numberOfAttendance"
+                  placeholder="Including Bride & Groom"
+                  value={formData.numberOfAttendance}
+                  onChange={handleInputChange}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                />
+              </div>
+
+              {/* Approximate wedding budget */}
+              <div className="space-y-2">
+                <label className="text-primary text-md">Approximate wedding budget</label>
+                <input
+                  type="text"
+                  name="approximateWeddingBudget"
+                  placeholder="Including Currency"
+                  value={formData.approximateWeddingBudget}
+                  onChange={handleInputChange}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                />
+              </div>
+
+              {/* Hotel Name in Bali */}
+              <div className="space-y-2">
+                <label className="text-primary text-md">Hotel Name in Bali</label>
+                <input
+                  type="text"
+                  name="hotelNameInBali"
+                  value={formData.hotelNameInBali}
+                  onChange={handleInputChange}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                />
+              </div>
+
+              {/* Arrival Date and Departure Date */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Arrival Date</label>
+                  <input
+                    type="date"
+                    name="arrivalDate"
+                    value={formData.arrivalDate}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-primary text-md">Departure Date</label>
+                  <input
+                    type="date"
+                    name="departureDate"
+                    value={formData.departureDate}
+                    onChange={handleInputChange}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Additional Information - CHANGED label as requested */}
+              <div className="space-y-2">
+                <label className="text-primary text-md">Additional Information</label>
                 <textarea
-                  name="additionalInfo"
-                  placeholder="Describe The Information"
-                  value={formData.additionalInfo}
+                  name="yourMessage"
+                  placeholder="Introduce yourself and briefly describe your wedding"
+                  value={formData.yourMessage}
                   onChange={handleInputChange}
                   rows={6}
                   className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors resize-vertical"
@@ -311,5 +394,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-  );
+  )
 }
