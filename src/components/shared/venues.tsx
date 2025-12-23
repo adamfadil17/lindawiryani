@@ -790,14 +790,14 @@ export default function Venues() {
         <div className="h-[300px] md:h-[340px] lg:h-[400px] xl:h-[428px]"></div>
       </section>
 
-      {selectedVenue && (
+      {/* {selectedVenue && (
         <VenueDetailModal
           venue={selectedVenue}
           onClose={handleCloseVenueDetail}
           selectedCurrency={selectedCurrency}
           exchangeRate={exchangeRate}
         />
-      )}
+      )} */}
     </>
   );
 }
