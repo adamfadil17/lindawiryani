@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -9,13 +9,53 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navigationItems = [
     { name: "HOME", href: "#home", id: "home" },
     { name: "ABOUT", href: "#about", id: "about" },
     { name: "SERVICES", href: "#services", id: "services" },
-    { name: "WEDDING THEMES", href: "#wedding-themes", id: "wedding-themes" },
-    { name: "VENUES", href: "#venues", id: "venues" },
+    {
+      name: "WEDDING CONCEPTS",
+      href: "#wedding-concepts",
+      id: "wedding-concepts",
+      submenu: [
+        {
+          title: "WEDDING THEMES",
+          items: [
+            {
+              name: "Elopement",
+              href: "#wedding-concepts",
+              filterType: "theme",
+              filterValue: "elopement",
+            },
+            {
+              name: "Intimate",
+              href: "#wedding-concepts",
+              filterType: "theme",
+              filterValue: "intimate",
+            },
+          ],
+        },
+        {
+          title: "VENUES",
+          items: [
+            {
+              name: "Signature",
+              href: "#wedding-concepts",
+              filterType: "venue",
+              filterValue: "Signature",
+            },
+            {
+              name: "Private Villa",
+              href: "#wedding-concepts",
+              filterType: "venue",
+              filterValue: "Private Villa",
+            },
+          ],
+        },
+      ],
+    },
     { name: "GALLERY", href: "#gallery", id: "gallery" },
     { name: "CONTACT", href: "#contact", id: "contact" },
   ];
@@ -23,81 +63,64 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
+      setIsScrolled(scrollPosition > 50);
 
-      // Set background berdasarkan scroll position
-      setIsScrolled(scrollPosition > windowHeight * 0.2);
-
-      // Jika scroll position masih di area hero (home section)
-      if (scrollPosition < windowHeight * 0.8) {
-        setActiveSection("home");
-        return;
-      }
-
-      // Check other sections
-      const sections = navigationItems.slice(1); // Skip home since we handle it above
-      for (const item of sections) {
-        const element = document.getElementById(item.id);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          const elementTop = rect.top + scrollPosition;
-          const elementBottom = elementTop + rect.height;
-
-          // If current scroll position is within this section
-          if (
-            scrollPosition >= elementTop - windowHeight * 0.3 &&
-            scrollPosition < elementBottom - windowHeight * 0.3
-          ) {
-            setActiveSection(item.id);
-            break;
-          }
+      const sections = navigationItems.map((item) => item.id);
+      for (const section of sections.reverse()) {
+        const element = document.getElementById(section);
+        if (element && scrollPosition >= element.offsetTop - 100) {
+          setActiveSection(section);
+          break;
         }
       }
     };
-
-    // Set initial active section
-    handleScroll();
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Effect untuk detect URL hash dan set active section
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      
-      // Parse hash untuk mendapatkan section ID
-      let sectionId = 'home';
-      
-      if (hash.includes('#')) {
-        // Ambil section dari hash (contoh: #venues?venue=xxx -> venues)
-        const hashPart = hash.split('?')[0].replace('#', '');
-        if (hashPart) {
-          sectionId = hashPart;
-        }
+  // Fungsi untuk handle klik submenu
+  const handleSubmenuClick = (item: any) => {
+    // Tutup dropdown
+    setIsDropdownOpen(false);
+    setIsMenuOpen(false);
+
+    // Dispatch custom event untuk mengubah filter di wedding-concepts
+    if (item.filterType && item.filterValue) {
+      window.dispatchEvent(
+        new CustomEvent("weddingConceptsFilter", {
+          detail: {
+            type: item.filterType,
+            value: item.filterValue,
+          },
+        })
+      );
+    }
+
+    // Scroll ke section yang tepat dengan delay untuk memberi waktu filter bekerja
+    setTimeout(() => {
+      let targetId = "";
+
+      if (item.filterType === "theme") {
+        targetId = "wedding-themes-selector";
+      } else if (item.filterType === "venue") {
+        targetId = "venue-list-container";
       }
-      
-      // Update active section
-      const validSection = navigationItems.find(item => item.id === sectionId);
-      if (validSection) {
-        setActiveSection(validSection.id);
+
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        const headerOffset = 100; // Sesuaikan dengan tinggi header
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition =
+          elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
       }
-    };
-
-    // Check on mount
-    handleHashChange();
-
-    // Listen to hash changes
-    window.addEventListener('hashchange', handleHashChange);
-
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-    };
-  }, []);
+    }, 100);
+  };
 
   return (
     <header
@@ -107,7 +130,6 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      {/* Top section with logo and social icons - Hidden on desktop when scrolled */}
       <div
         className={`container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-6 transition-all duration-300 ${
           isScrolled
@@ -116,155 +138,39 @@ export default function Header() {
         }`}
       >
         <div className="relative flex items-center justify-center">
-          {/* Logo */}
+          <div className="absolute left-0 hidden md:flex items-center space-x-4">
+            {/* WhatsApp & Email Icons */}
+          </div>
           <div className="text-center relative">
-            {/* Logo Putih */}
             <Image
               src="/images/logo-white.png"
-              alt="Linda Wygant Wedding Planning"
-              className={`h-16 md:h-16 lg:h-20 w-auto mx-auto transition-opacity duration-300 ${
+              alt="Logo"
+              className={`h-16 w-auto mx-auto transition-opacity ${
                 isScrolled || isMenuOpen ? "opacity-0" : "opacity-100"
               }`}
               width={120}
               height={24}
             />
-            {/* Logo Brown */}
             <Image
               src="/images/logo-brown.png"
-              alt="Linda Wygant Wedding Planning"
-              className={`h-16 md:h-16 lg:h-20 w-auto mx-auto transition-opacity duration-300 absolute top-0 left-1/2 transform -translate-x-1/2 ${
+              alt="Logo"
+              className={`h-16 w-auto mx-auto transition-opacity absolute top-0 left-1/2 -translate-x-1/2 ${
                 isScrolled || isMenuOpen ? "opacity-100" : "opacity-0"
               }`}
               width={120}
               height={24}
             />
           </div>
-
-          {/* Social Icons - Desktop */}
-          <div className="absolute right-0 hidden md:flex items-center space-x-4">
-            {/* WhatsApp Icons */}
-            <a
-              href="https://wa.me/628113980998"
-              target="_blank"
-              aria-label="WhatsApp"
-              className="relative"
-            >
-              <Image
-                src="/images/ic_baseline-whatsapp.svg"
-                alt="WhatsApp"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 ${
-                  isScrolled || isMenuOpen ? "opacity-0" : "opacity-100"
-                }`}
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
-              <Image
-                src="/images/whatsapp-brown.svg"
-                alt="WhatsApp"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 absolute top-0 left-0 ${
-                  isScrolled || isMenuOpen ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </a>
-
-            {/* Email Icons */}
-            <a
-              href="mailto: lindawiryanievents@gmail.com"
-              target="_blank"
-              aria-label="Email"
-              className="relative"
-            >
-              <Image
-                src="/images/ic_outline-email.svg"
-                alt="Email"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 ${
-                  isScrolled || isMenuOpen ? "opacity-0" : "opacity-100"
-                }`}
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
-              <Image
-                src="/images/email-brown.svg"
-                alt="Email"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 absolute top-0 left-0 ${
-                  isScrolled || isMenuOpen ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </a>
-
-            {/* Instagram Icons */}
-            <a
-              href="https://instagram.com/lindawiryanievents"
-              target="_blank"
-              aria-label="Instagram"
-              className="relative"
-            >
-              <Image
-                src="/images/mdi_instagram.svg"
-                alt="Instagram"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 ${
-                  isScrolled || isMenuOpen ? "opacity-0" : "opacity-100"
-                }`}
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
-              <Image
-                src="/images/instagram-brown.svg"
-                alt="Instagram"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 absolute top-0 left-0 ${
-                  isScrolled || isMenuOpen ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </a>
-
-            {/* Pinterest Icons */}
-            <a
-              href="https://pinterest.com/lindawiryanievents"
-              target="_blank"
-              aria-label="Pinterest"
-              className="relative"
-            >
-              <Image
-                src="/images/ri_pinterest-line.svg"
-                alt="Pinterest"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 ${
-                  isScrolled || isMenuOpen ? "opacity-0" : "opacity-100"
-                }`}
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
-              <Image
-                src="/images/pinterest-line-brown.svg"
-                alt="Pinterest"
-                width={24}
-                height={24}
-                className={`transition-opacity duration-300 absolute top-0 left-0 ${
-                  isScrolled || isMenuOpen ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </a>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="absolute right-0 md:hidden">
+          <div className="absolute right-0 flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-4">
+              {/* Social Icons */}
+            </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`transition-colors ${
-                isScrolled || isMenuOpen
-                  ? "text-primary hover:text-primary/80 hover:bg-primary/10"
-                  : "text-white hover:text-white/80 hover:bg-white/10"
+              className={`md:hidden ${
+                isScrolled || isMenuOpen ? "text-primary" : "text-white"
               }`}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -273,7 +179,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Navigation */}
       <nav
         className={`border-t transition-colors ${
           isScrolled || isMenuOpen ? "border-primary/20" : "border-white/20"
@@ -284,24 +189,55 @@ export default function Header() {
           <div className="container mx-auto px-4">
             <div className="flex justify-center space-x-8 lg:space-x-12">
               {navigationItems.map((item) => (
-                <a
+                <div
                   key={item.name}
-                  href={item.href}
-                  className={`py-3 text-sm lg:text-base font-light tracking-wider transition-colors relative group ${
-                    isScrolled || isMenuOpen
-                      ? "text-primary hover:text-primary/80"
-                      : "text-white hover:text-white/80"
-                  } ${
-                    activeSection === item.id
-                      ? `border-b-0.5 ${
-                          isScrolled || isMenuOpen
-                            ? "border-primary"
-                            : "border-white"
-                        }`
-                      : ""
-                  }`}
+                  className="relative group py-3"
+                  onMouseEnter={() => item.submenu && setIsDropdownOpen(true)}
+                  onMouseLeave={() => item.submenu && setIsDropdownOpen(false)}
                 >
-                  {item.name}
+                  <a
+                    href={item.href}
+                    className={`text-sm lg:text-base font-light tracking-wider transition-colors flex items-center gap-1 ${
+                      isScrolled || isMenuOpen ? "text-primary" : "text-white"
+                    } ${activeSection === item.id ? "font-medium" : ""}`}
+                  >
+                    {item.name}
+                    {item.submenu && (
+                      <ChevronDown size={14} className="opacity-50" />
+                    )}
+                  </a>
+
+                  {/* Dropdown Menu */}
+                  {item.submenu && (
+                    <div
+                      className={`absolute top-full left-1/2 -translate-x-1/2 w-[450px] bg-white/95 shadow-2xl border border-stone-100 p-8 grid grid-cols-2 gap-8 transition-all duration-300 ${
+                        isDropdownOpen
+                          ? "opacity-100 visible translate-y-0"
+                          : "opacity-0 invisible -translate-y-2"
+                      }`}
+                    >
+                      {item.submenu.map((sub) => (
+                        <div key={sub.title}>
+                          <h4 className="text-[13px] font-bold tracking-[0.2em] text-primary/50 mb-4 uppercase border-b border-stone-100 pb-2">
+                            {sub.title}
+                          </h4>
+                          <ul className="space-y-3">
+                            {sub.items.map((subItem) => (
+                              <li key={subItem.name}>
+                                <button
+                                  onClick={() => handleSubmenuClick(subItem)}
+                                  className="hover:cursor-pointer text-[13px] text-primary hover:text-primary/50 transition-colors block tracking-wide text-left w-full"
+                                >
+                                  {subItem.name}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <span
                     className={`absolute bottom-0 left-0 h-0.5 transition-all duration-300 ${
                       activeSection === item.id
@@ -309,7 +245,7 @@ export default function Header() {
                         : "w-0 group-hover:w-full"
                     } ${isScrolled || isMenuOpen ? "bg-primary" : "bg-white"}`}
                   ></span>
-                </a>
+                </div>
               ))}
             </div>
           </div>
@@ -317,84 +253,63 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-sm">
-            <div className="container mx-auto px-4 py-4">
+          <div className="md:hidden bg-white/95 backdrop-blur-sm h-screen overflow-y-auto">
+            <div className="container mx-auto px-6 py-8">
               <div className="flex flex-col space-y-4">
                 {navigationItems.map((item) => (
-                  <a
+                  <div
                     key={item.name}
-                    href={item.href}
-                    className={`py-2 text-base font-light tracking-wider transition-colors relative text-primary hover:text-primary/80 ${
-                      activeSection === item.id ? "font-semibold" : ""
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    className="flex flex-col border-b border-stone-100 pb-2"
                   >
-                    {item.name}
-                  </a>
+                    <div
+                      className="flex items-center justify-between"
+                      onClick={() =>
+                        item.submenu && setIsDropdownOpen(!isDropdownOpen)
+                      }
+                    >
+                      <a
+                        href={item.href}
+                        className={`text-lg font-light tracking-wider text-primary py-2 ${
+                          activeSection === item.id ? "font-semibold" : ""
+                        }`}
+                        onClick={() => !item.submenu && setIsMenuOpen(false)}
+                      >
+                        {item.name}
+                      </a>
+                      {item.submenu && (
+                        <ChevronDown
+                          size={20}
+                          className={`text-primary transition-transform ${
+                            isDropdownOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      )}
+                    </div>
+
+                    {item.submenu && isDropdownOpen && (
+                      <div className="pl-4 pb-4 mt-2 space-y-6">
+                        {item.submenu.map((sub) => (
+                          <div key={sub.title}>
+                            <p className="text-[13px] font-bold tracking-widest text-primary/50 uppercase mb-2">
+                              {sub.title}
+                            </p>
+                            <div className="flex flex-col space-y-3">
+                              {sub.items.map((subItem) => (
+                                <button
+                                  key={subItem.name}
+                                  onClick={() => handleSubmenuClick(subItem)}
+                                  className="hover:cursor-pointer text-primary/80 text-sm text-left"
+                                >
+                                  {subItem.name}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
-
-                {/* Mobile Social Icons */}
-                <div className="flex items-center space-x-6 pt-4 border-t border-primary/20">
-                  {/* WhatsApp Icons */}
-                  <a
-                    href="https://wa.me/628113980998"
-                    target="_blank"
-                    aria-label="WhatsApp"
-                    className="relative"
-                  >
-                    <Image
-                      src="/images/whatsapp-brown.svg"
-                      alt="WhatsApp"
-                      width={24}
-                      height={24}
-                    />
-                  </a>
-
-                  {/* Email Icons */}
-                  <a
-                    href="mailto: lindawiryanievents@gmail.com"
-                    target="_blank"
-                    aria-label="Email"
-                    className="relative"
-                  >
-                    <Image
-                      src="/images/email-brown.svg"
-                      alt="Email"
-                      width={24}
-                      height={24}
-                    />
-                  </a>
-
-                  {/* Instagram Icons */}
-                  <a
-                    href="https://instagram.com/lindawiryanievents"
-                    target="_blank"
-                    aria-label="Instagram"
-                    className="relative"
-                  >
-                    <Image
-                      src="/images/instagram-brown.svg"
-                      alt="Instagram"
-                      width={24}
-                      height={24}
-                    />
-                  </a>
-
-                  {/* Pinterest Icons */}
-                  <a
-                    href="https://pinterest.com/lindawiryanievents"
-                    target="_blank"
-                    aria-label="Pinterest"
-                    className="relative"
-                  >
-                    <Image
-                      src="/images/pinterest-line-brown.svg"
-                      alt="Pinterest"
-                      width={24}
-                      height={24}
-                    />
-                  </a>
-                </div>
               </div>
             </div>
           </div>

@@ -204,9 +204,9 @@ export default function Instagram() {
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
+                  className={`w-2 h-2 rounded-full transition-all ${
                     index === currentSlide
-                      ? "bg-primary"
+                      ? "bg-primary w-8"
                       : "bg-stone-300 hover:bg-stone-400"
                   }`}
                 />

@@ -13,6 +13,7 @@ import Venues from "@/components/shared/venues";
 import Link from "next/link";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import WeddingThemes from "@/components/shared/wedding-themes";
+import WeddingConcepts from "@/components/shared/wedding-concepts";
 
 export default function Page() {
   return (
@@ -81,8 +82,9 @@ export default function Page() {
 
       <AboutUs />
       <Services />
-      <WeddingThemes />
-      <Venues />
+      {/* <WeddingThemes /> */}
+      {/* <Venues /> */}
+      <WeddingConcepts />
       <Quote />
       <Gallery />
       <Instagram />
