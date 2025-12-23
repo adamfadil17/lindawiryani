@@ -64,7 +64,7 @@ export default function Page() {
               </motion.p>
 
               <motion.div variants={fadeInUp}>
-                <Link href="#instagram">
+                <Link href="#wedding-concepts">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
