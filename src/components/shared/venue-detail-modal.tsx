@@ -284,7 +284,7 @@ export default function VenueDetailModal({
                   </span>
                 )}
                 {venue.classifications.privateVilla && (
-                  <span className="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Private Villa
                   </span>
                 )}
