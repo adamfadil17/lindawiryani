@@ -9,10 +9,8 @@ import Header from "@/components/shared/header";
 import Instagram from "@/components/shared/instagram";
 import Quote from "@/components/shared/quote";
 import Services from "@/components/shared/services";
-import Venues from "@/components/shared/venues";
 import Link from "next/link";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import WeddingThemes from "@/components/shared/wedding-themes";
 import WeddingConcepts from "@/components/shared/wedding-concepts";
 
 export default function Page() {
@@ -82,8 +80,6 @@ export default function Page() {
 
       <AboutUs />
       <Services />
-      {/* <WeddingThemes /> */}
-      {/* <Venues /> */}
       <WeddingConcepts />
       <Quote />
       <Gallery />

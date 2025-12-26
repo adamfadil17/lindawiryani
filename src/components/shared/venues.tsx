@@ -441,13 +441,13 @@ export default function Venues() {
                             {selectedCurrency}
                           </span>
                         )}
-                        <h3 className="text-xl md:text-2xl font-normal text-white">
+                        <span className="text-xl md:text-2xl font-normal text-white">
                           {formatPrice(
                             venue.price,
                             selectedCurrency,
                             exchangeRate
                           )}
-                        </h3>
+                        </span>
                         {venue.price === 0 ? null : (
                           <span className="text-sm text-white">nett</span>
                         )}
@@ -538,13 +538,13 @@ export default function Venues() {
                                 {selectedCurrency}
                               </span>
                             )}
-                            <h3 className="text-xl md:text-2xl font-normal">
+                            <span className="text-xl md:text-2xl font-normal">
                               {formatPrice(
                                 visibleVenues[currentSlide].price,
                                 selectedCurrency,
                                 exchangeRate
                               )}
-                            </h3>
+                            </span>
                             {visibleVenues[currentSlide].price === 0 ? null : (
                               <span className="text-sm text-white">nett</span>
                             )}

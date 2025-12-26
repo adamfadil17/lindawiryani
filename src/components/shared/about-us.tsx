@@ -8,8 +8,12 @@ import {
 } from "@/lib/motion";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
+import AboutUsModal from "./about-us-modal";
 
 export default function AboutUs() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <motion.section
       id="about"
@@ -44,24 +48,38 @@ export default function AboutUs() {
                 variants={fadeInUp}
                 className="text-2xl text-primary tracking-wider italic font-semibold"
               >
-                ABOUT US
+                Luxury Wedding Planner & Designer in Bali
               </motion.p>
 
               <motion.h2
                 variants={fadeInUp}
                 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary leading-tight"
               >
-                WHERE ARCHITECTURE, ART, AND HOSPITALITY
-                <br />
-                CREATE TIMELESS WEDDINGS
+                DESIGNING WEEDDING WITH INTENTION, EMOTION, AND ART
               </motion.h2>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary text-justify leading-relaxed text-base md:text-base"
+                className="text-primary text-justify leading-relaxed text-base md:text-base whitespace-pre-line"
               >
-                {`At Linda Wiryani Design & Event Planning, every celebration begins with a story — yours. With nearly two decades in Bali’s five-star hospitality industry, Linda combines her expertise in luxury events, public relations, sales and marketing with her refined eye for detail to create weddings defined by grace, warmth, and seamless execution. Her deep knowledge of Bali’s villa industry allows her to design intimate private villa weddings that blend exclusivity with authenticity. As the Creative Director of her fashion brand, My Lindway, Linda brings artistry and local craftsmanship into every element, from curated table settings to bespoke visual concepts , often enriched through creative collaboration with her architect husband. Beyond her professional world, she finds joy in family life with her two sons and their cheerful fur baby, a balance of love and inspiration that shines through every timeless celebration she designs.`}
+                {`At Linda Wiryani Design and Event Planning, each wedding begins with a story - thoughtfully designed, never templated.
+                
+                Based in Bali, the studio is known for artfully curated weddings shaped by architecture, hospitality, and refined storytelling.
+                
+                With nearly two decades of experience in five-star luxury hospitality, every celebration is created to feel seamless, calm, and deeply personal — from the first welcome to the final farewell.
+                
+                Specializing in intimate and private villa weddings in Bali, each celebration is guided by space, emotion, and human connection rather than trends.
+                
+                Rooted in a design-led approach that blends architecture, fashion, and artful detail, the studio creates weddings that feel timeless, considered, and quietly unforgettable.`}
               </motion.p>
+              <motion.div variants={fadeInUp}>
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-4 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full uppercase"
+                >
+                  ABOUT THE STUDIO
+                </button>
+              </motion.div>
             </div>
           </div>
 
@@ -111,6 +129,7 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
+      {showModal && <AboutUsModal onClose={() => setShowModal(false)} />}
     </motion.section>
   );
 }

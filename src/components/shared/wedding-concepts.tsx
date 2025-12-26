@@ -23,7 +23,7 @@ import VenueDetailModal from "./venue-detail-modal";
 import ThemeDetailModal from "./theme-detail-modal";
 
 type Currency = "IDR" | "USD";
-type VenueFilter = "Signature" | "Private Villa";
+type VenueFilter = "Signature Venues" | "Private Villas";
 
 const useCurrencyConverter = () => {
   const [exchangeRate, setExchangeRate] = useState<number>(15800);
@@ -218,7 +218,11 @@ function CategoryCard({
             src={
               images[currentImageIndex] || "https://placehold.net/default.svg"
             }
-            alt={title}
+            alt={
+              title === "Elopement Weddings"
+                ? "Elopement Weddings in Bali"
+                : "Intimate Weddings in Bali"
+            }
             fill
             loading="lazy"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -230,10 +234,13 @@ function CategoryCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
       <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-        <h3 className="text-2xl md:text-3xl font-semibold mb-4">{title}</h3>
-        <p className="text-md md:text-md text-white/90 leading-relaxed">
-          {description}
-        </p>
+        <div className="min-h-[120px] flex flex-col justify-start">
+          <h3 className="text-2xl md:text-3xl font-semibold mb-3">{title}</h3>
+
+          <p className="text-md md:text-md text-white/90 leading-relaxed">
+            {description}
+          </p>
+        </div>
       </div>
     </motion.article>
   );
@@ -274,7 +281,8 @@ function ThemeCard({ title, venue, image, onClick }: ThemeCardProps) {
 }
 
 export default function WeddingConcepts() {
-  const [selectedVenue, setSelectedVenue] = useState<VenueFilter>("Signature");
+  const [selectedVenue, setSelectedVenue] =
+    useState<VenueFilter>("Signature Venues");
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>("IDR");
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
@@ -347,9 +355,9 @@ export default function WeddingConcepts() {
   const filteredVenues = useMemo(() => {
     let venues = weddingConceptVenues;
 
-    if (selectedVenue === "Signature") {
+    if (selectedVenue === "Signature Venues") {
       venues = venues.filter((venue) => venue.classifications.signature);
-    } else if (selectedVenue === "Private Villa") {
+    } else if (selectedVenue === "Private Villas") {
       venues = venues.filter((venue) => venue.classifications.privateVilla);
     }
 
@@ -464,12 +472,12 @@ export default function WeddingConcepts() {
             WEDDING CONCEPTS
           </motion.p>
 
-          <motion.h1
+          <motion.h2
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
           >
             CURATED WEDDING CELEBRATIONS, THOUGHTFULLY DESIGNED
-          </motion.h1>
+          </motion.h2>
 
           <motion.p
             variants={fadeInUp}
@@ -495,13 +503,13 @@ export default function WeddingConcepts() {
           >
             <CategoryCard
               title="Elopement Weddings"
-              description="Intimate ceremonies designed for couples seeking a deeply personal and meaningful exchange of vows."
+              description={`Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings.`}
               images={elopementCategoryImages}
               onClick={() => handleCategoryClick("elopement")}
             />
             <CategoryCard
               title="Intimate Weddings"
-              description="Elegant celebrations for close family and friends in stunning settings that reflect your unique love story."
+              description={`Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality.`}
               images={intimateCategoryImages}
               onClick={() => handleCategoryClick("intimate")}
             />
@@ -562,6 +570,37 @@ export default function WeddingConcepts() {
               )}
             </div>
           </motion.div>
+
+          {/* Conditional Short Description based on selectedThemeCategory */}
+          <div className="mb-12 text-center">
+            <AnimatePresence mode="wait">
+              {selectedThemeCategory === "elopement" ? (
+                <motion.p
+                  key="elopement-desc"
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="text-base md:text-lg text-primary font-monomax-w-3xl mx-auto leading-relaxed"
+                >
+                  Intimate celebrations designed for couples seeking privacy,
+                  meaning, and extraordinary settings.
+                </motion.p>
+              ) : (
+                <motion.p
+                  key="intimate-desc"
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="text-base md:text-lg text-primary font-monomax-w-3xl mx-auto leading-relaxed"
+                >
+                  Thoughtfully scaled celebrations curated for connection,
+                  elegance, and refined hospitality.
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
 
           {isMobile ? (
             <div className="relative">
@@ -653,7 +692,7 @@ export default function WeddingConcepts() {
             <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[400px] overflow-hidden">
               <Image
                 src="/images/venues/banner/signature-bg.png"
-                alt="Signature Wedding Concepts"
+                alt="Signature Wedding Venues in Bali"
                 fill
                 loading="lazy"
                 className="object-cover"
@@ -662,15 +701,15 @@ export default function WeddingConcepts() {
             </div>
             <div className="flex flex-col justify-center px-6 py-10 lg:px-12 lg:py-16 bg-white">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary mb-4 lg:mb-6">
-                Signature Wedding Concepts
+                Signature Wedding Venues
               </h2>
               <p className="text-base md:text-lg text-primary/70 leading-relaxed mb-6">
-                Our signature approach to timeless weddings, thoughtfully
-                designed across Bali's most distinctive venues.
+                A curated selection of venues known for distinctive
+                architecture, setting, and experience.
               </p>
               <div className="flex">
                 <button
-                  onClick={() => handleBannerViewVenues("Signature")}
+                  onClick={() => handleBannerViewVenues("Signature Venues")}
                   className="text-primary hover:text-primary/80 transition-colors border-b border-primary pb-1 text-sm font-semibold tracking-wider hover:cursor-pointer"
                   aria-label="View Signature Venues"
                 >
@@ -688,7 +727,7 @@ export default function WeddingConcepts() {
             <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[400px] overflow-hidden lg:order-2">
               <Image
                 src="/images/venues/banner/private-bg.png"
-                alt="Private Villa Wedding Estates"
+                alt="Private Villa Weddings in Bali"
                 fill
                 loading="lazy"
                 className="object-cover"
@@ -697,15 +736,15 @@ export default function WeddingConcepts() {
             </div>
             <div className="flex flex-col justify-center px-6 py-10 lg:px-12 lg:py-16 bg-white lg:order-1">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary mb-4 lg:mb-6">
-                Private Villa Wedding Estates
+                Private Villa Weddings
               </h2>
               <p className="text-base md:text-lg text-primary/70 leading-relaxed mb-6">
-                Exclusive celebrations set within private villa estates,
-                designed for intimacy, privacy, and refined comfort.
+                Exclusive private estates offering intimacy, flexibility, and a
+                deeply personal celebration experience.
               </p>
               <div className="flex">
                 <button
-                  onClick={() => handleBannerViewVenues("Private Villa")}
+                  onClick={() => handleBannerViewVenues("Private Villas")}
                   className="text-primary hover:text-primary/80 transition-colors border-b border-primary pb-1 text-sm font-semibold tracking-wider hover:cursor-pointer"
                   aria-label="View Private Villa Venues"
                 >
@@ -739,24 +778,24 @@ export default function WeddingConcepts() {
 
                 {isVenueDropdownOpen && (
                   <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
-                    {(["Signature", "Private Villa"] as VenueFilter[]).map(
-                      (venue) => (
-                        <button
-                          key={venue}
-                          onClick={() => {
-                            setSelectedVenue(venue);
-                            setIsVenueDropdownOpen(false);
-                          }}
-                          className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
-                            selectedVenue === venue
-                              ? "bg-primary text-white"
-                              : "text-primary hover:bg-stone-100"
-                          }`}
-                        >
-                          {venue}
-                        </button>
-                      )
-                    )}
+                    {(
+                      ["Signature Venues", "Private Villas"] as VenueFilter[]
+                    ).map((venue) => (
+                      <button
+                        key={venue}
+                        onClick={() => {
+                          setSelectedVenue(venue);
+                          setIsVenueDropdownOpen(false);
+                        }}
+                        className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
+                          selectedVenue === venue
+                            ? "bg-primary text-white"
+                            : "text-primary hover:bg-stone-100"
+                        }`}
+                      >
+                        {venue}
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
@@ -849,7 +888,7 @@ export default function WeddingConcepts() {
 
           <motion.p
             variants={fadeInUp}
-            className="text-center text-sm md:text-sm text-primary/70"
+            className="text-center text-sm md:text-sm text-primary/70 mb-12"
           >
             {selectedLocation === "All"
               ? `Showing ${visibleVenues.length} of ${totalVenuesCount} venues`
@@ -861,6 +900,37 @@ export default function WeddingConcepts() {
 
         {/* Venue Cards Container */}
         <div id="venue-list-container" className="mb-24">
+          {/* Conditional Short Description based on selectedVenue filter */}
+          <div className="mb-12 text-center">
+            <AnimatePresence mode="wait">
+              {selectedVenue === "Signature Venues" ? (
+                <motion.p
+                  key="signature-desc"
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="text-base md:text-lg text-primary font-monomax-w-3xl mx-auto leading-relaxed"
+                >
+                  A curated selection of venues known for distinctive
+                  architecture, setting, and experience.
+                </motion.p>
+              ) : (
+                <motion.p
+                  key="private-villa-desc"
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="text-base md:text-lg text-primary font-monomax-w-3xl mx-auto leading-relaxed"
+                >
+                  Exclusive private estates offering intimacy, flexibility, and
+                  a deeply personal celebration experience.
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+
           {isMobile ? (
             <div className="relative">
               <AnimatePresence mode="wait">

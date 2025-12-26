@@ -116,12 +116,12 @@ export default function Services() {
         >
           SERVICES
         </motion.p>
-        <motion.h1
+        <motion.h2
           variants={fadeInUp}
           className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
         >
           WHERE REFINED HOSPITALITY MEETS ARTFUL DESIGN
-        </motion.h1>
+        </motion.h2>
 
         {/* Service Categories */}
         <motion.div

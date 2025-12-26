@@ -41,16 +41,16 @@ export default function Header() {
           title: "VENUES",
           items: [
             {
-              name: "Signature",
+              name: "Signature Venues",
               href: "#wedding-concepts",
               filterType: "venue",
-              filterValue: "Signature",
+              filterValue: "Signature Venues",
             },
             {
-              name: "Private Villa",
+              name: "Private Villas",
               href: "#wedding-concepts",
               filterType: "venue",
-              filterValue: "Private Villa",
+              filterValue: "Private Villas",
             },
           ],
         },
