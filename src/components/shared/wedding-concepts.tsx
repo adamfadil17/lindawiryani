@@ -130,9 +130,9 @@ function VenueCard({
           {venue.name}
         </h3>
 
-        <p className="text-md font-light italic mb-4 text-white max-w-[280px]">
+        <h3 className="text-md font-light italic mb-4 text-white max-w-[280px]">
           {venue.slogan}
-        </p>
+        </h3>
 
         <div className="flex items-center justify-start mb-4">
           <div className="flex flex-col items-start">
@@ -161,9 +161,9 @@ function VenueCard({
           <div className="flex items-center gap-4 text-md">
             <div className="flex items-center gap-1.5">
               <MapPin className="w-4 h-4" />
-              <span>
+              <h3>
                 {venue.city}, {venue.province}
-              </span>
+              </h3>
             </div>
             <div className="flex items-center gap-1.5">
               <Users className="w-4 h-4" />
@@ -271,9 +271,9 @@ function ThemeCard({ title, venue, image, onClick }: ThemeCardProps) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
       <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-        <h4 className="text-xl md:text-2xl font-semibold leading-tight mb-2">
+        <h3 className="text-xl md:text-2xl font-semibold leading-tight mb-2">
           {title}
-        </h4>
+        </h3>
         <p className="text-md text-white/90">{venue}</p>
       </div>
     </article>
@@ -465,19 +465,19 @@ export default function WeddingConcepts() {
           viewport={{ once: false, amount: 0.3 }}
           variants={staggerContainer}
         >
-          <motion.p
+          <motion.h2
             variants={fadeInUp}
             className="text-2xl text-primary tracking-wider italic font-semibold mb-4"
           >
             WEDDING CONCEPTS
-          </motion.p>
+          </motion.h2>
 
-          <motion.h2
+          <motion.h3
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
           >
             CURATED WEDDING CELEBRATIONS, THOUGHTFULLY DESIGNED
-          </motion.h2>
+          </motion.h3>
 
           <motion.p
             variants={fadeInUp}
@@ -539,7 +539,7 @@ export default function WeddingConcepts() {
                 aria-label="Select wedding theme"
                 aria-expanded={isThemeDropdownOpen}
               >
-                {selectedThemeCategory}
+                <h3>{selectedThemeCategory}</h3>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform ${
                     isThemeDropdownOpen ? "rotate-180" : ""
@@ -563,7 +563,7 @@ export default function WeddingConcepts() {
                           : "text-primary hover:bg-stone-100"
                       }`}
                     >
-                      {category}
+                      <h3>{category}</h3>
                     </button>
                   ))}
                 </div>
@@ -700,9 +700,9 @@ export default function WeddingConcepts() {
               />
             </div>
             <div className="flex flex-col justify-center px-6 py-10 lg:px-12 lg:py-16 bg-white">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary mb-4 lg:mb-6">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary mb-4 lg:mb-6">
                 Signature Wedding Venues
-              </h2>
+              </h3>
               <p className="text-base md:text-lg text-primary/70 leading-relaxed mb-6">
                 A curated selection of venues known for distinctive
                 architecture, setting, and experience.
@@ -735,9 +735,9 @@ export default function WeddingConcepts() {
               />
             </div>
             <div className="flex flex-col justify-center px-6 py-10 lg:px-12 lg:py-16 bg-white lg:order-1">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary mb-4 lg:mb-6">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary mb-4 lg:mb-6">
                 Private Villa Weddings
-              </h2>
+              </h3>
               <p className="text-base md:text-lg text-primary/70 leading-relaxed mb-6">
                 Exclusive private estates offering intimacy, flexibility, and a
                 deeply personal celebration experience.
@@ -768,7 +768,7 @@ export default function WeddingConcepts() {
                   onClick={() => setIsVenueDropdownOpen(!isVenueDropdownOpen)}
                   className="flex items-center gap-2 text-md md:text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
-                  {selectedVenue}
+                  <h3>{selectedVenue}</h3>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       isVenueDropdownOpen ? "rotate-180" : ""
@@ -793,7 +793,7 @@ export default function WeddingConcepts() {
                             : "text-primary hover:bg-stone-100"
                         }`}
                       >
-                        {venue}
+                        <h3>{venue}</h3>
                       </button>
                     ))}
                   </div>
@@ -812,7 +812,7 @@ export default function WeddingConcepts() {
                   }
                   className="flex items-center gap-2 text-md md:text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
-                  {selectedLocation}
+                  <h3>{selectedLocation}</h3>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       isLocationDropdownOpen ? "rotate-180" : ""
@@ -835,7 +835,7 @@ export default function WeddingConcepts() {
                             : "text-primary hover:bg-stone-100"
                         }`}
                       >
-                        {location}
+                        <h3>{location}</h3>
                       </button>
                     ))}
                   </div>
@@ -854,7 +854,7 @@ export default function WeddingConcepts() {
                   }
                   className="flex items-center gap-2 text-md md:text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
-                  {selectedCurrency}
+                  <h3>{selectedCurrency}</h3>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       isCurrencyDropdownOpen ? "rotate-180" : ""
@@ -877,7 +877,7 @@ export default function WeddingConcepts() {
                             : "text-primary hover:bg-stone-100"
                         }`}
                       >
-                        {currency}
+                        <h3>{currency}</h3>
                       </button>
                     ))}
                   </div>

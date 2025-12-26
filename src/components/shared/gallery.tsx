@@ -55,17 +55,17 @@ export default function Gallery() {
         >
           {/* Gallery Title - Left */}
           <motion.div variants={fadeInUp} className="mb-8 md:mb-0">
-            <p className="text-2xl text-primary tracking-wider italic font-semibold">
+            <h2 className="text-2xl text-primary tracking-wider italic font-semibold">
               GALLERY
-            </p>
+            </h2>
           </motion.div>
 
           {/* Main Title - Right */}
           <motion.div variants={fadeInUp} className="flex-1 md:text-right">
-            <h2 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
+            <h3 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
               Bali Wedding Gallery — Real Celebrations, Artful Design, and
               Timeless Inspiration
-            </h2>
+            </h3>
           </motion.div>
         </motion.div>
 

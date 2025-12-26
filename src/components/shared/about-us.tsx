@@ -44,19 +44,19 @@ export default function AboutUs() {
             </motion.div>
 
             <div className="space-y-4">
-              <motion.p
+              <motion.h2
                 variants={fadeInUp}
                 className="text-2xl text-primary tracking-wider italic font-semibold"
               >
                 Luxury Wedding Planner & Designer in Bali
-              </motion.p>
+              </motion.h2>
 
-              <motion.h2
+              <motion.h3
                 variants={fadeInUp}
                 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary leading-tight"
               >
                 DESIGNING WEDDINGS WITH INTENTION, EMOTION, AND ART
-              </motion.h2>
+              </motion.h3>
 
               <motion.p
                 variants={fadeInUp}

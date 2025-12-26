@@ -38,28 +38,28 @@ export default function Page() {
         <div className="relative z-10">
           <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-24 lg:py-24">
             <div className="max-w-2xl text-white">
-              <motion.p
+              <motion.h1
                 variants={fadeInUp}
                 className="text-sm md:text-base tracking-widest my-2 font-light"
               >
                 DESIGN • WEDDING PLANNING
-              </motion.p>
+              </motion.h1>
 
-              <motion.h1
+              <motion.h2
                 variants={fadeInUp}
                 className="text-3xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight"
               >
                 EVERY DETAIL
                 <br />
                 REFLECTS YOUR STORY
-              </motion.h1>
+              </motion.h2>
 
-              <motion.p
+              <motion.h3
                 variants={fadeInUp}
                 className="text-sm md:text-base leading-relaxed mb-8 font-light"
               >
                 {`Luxury wedding design and event planning in Bali, guided by five-star hospitality standards.`}
-              </motion.p>
+              </motion.h3>
 
               <motion.div variants={fadeInUp}>
                 <Link href="#wedding-concepts">

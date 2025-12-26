@@ -146,10 +146,10 @@ export default function Contact() {
           >
             {/* Header */}
             <motion.div variants={fadeInUp} className="space-y-4">
-              <p className="text-2xl text-primary tracking-wider italic font-semibold">CONTACT US</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold max-w-4xl mx-auto leading-tight">
+              <h2 className="text-2xl text-primary tracking-wider italic font-semibold">CONTACT US</h2>
+              <h3 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold max-w-4xl mx-auto leading-tight">
                 Your Story. Your Style. Let's Design Your Dream Bali Wedding.
-              </h2>
+              </h3>
             </motion.div>
 
             {/* Contact Form - RESTRUCTURED to match the enquiry form */}

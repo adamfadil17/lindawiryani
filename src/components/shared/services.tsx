@@ -110,18 +110,18 @@ export default function Services() {
         }}
         variants={staggerContainer}
       >
-        <motion.p
+        <motion.h2
           variants={fadeInUp}
           className="text-2xl text-primary tracking-wider italic font-semibold mb-4"
         >
           SERVICES
-        </motion.p>
-        <motion.h2
+        </motion.h2>
+        <motion.h3
           variants={fadeInUp}
           className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
         >
           WHERE REFINED HOSPITALITY MEETS ARTFUL DESIGN
-        </motion.h2>
+        </motion.h3>
 
         {/* Service Categories */}
         <motion.div
@@ -138,7 +138,7 @@ export default function Services() {
                   : "text-primary hover:text-primary/80 hover:cursor-pointer"
               }`}
             >
-              {service.name}
+              <h3>{service.name}</h3>
             </button>
           ))}
         </motion.div>
@@ -181,20 +181,20 @@ export default function Services() {
             variants={staggerContainer}
             className="lg:col-span-5 flex flex-col justify-between h-auto lg:h-[450px] xl:h-[500px]"
           >
-            <motion.h2
+            <motion.h3
               variants={fadeInUp}
               className="text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-semibold text-primary mb-4 lg:mb-6 italic"
             >
               {activeService}
-            </motion.h2>
+            </motion.h3>
 
-            <motion.p
+            <motion.h3
               variants={fadeInUp}
               className="text-primary text-justify leading-relaxed mb-6 lg:mb-8 text-sm lg:text-sm xl:text-base flex-1"
             >
               {services.find((service) => service.name === activeService)
                 ?.desc || loremIpsum}
-            </motion.p>
+            </motion.h3>
 
             <motion.div variants={fadeInUp} className="mb-6 lg:mb-8">
               <Link href="https://wa.me/628113980998" target="_blank">

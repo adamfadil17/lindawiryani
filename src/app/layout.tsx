@@ -17,21 +17,18 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.lindawiryani.com"),
   title: {
-    default:
-      "Linda Wiryani | Luxury Elopement & Intimate Wedding Planner Bali",
+    default: "Linda Wiryani | Luxury Wedding Planner & Designer in Bali",
     template: "%s | Linda Wiryani",
   },
   description:
-    "Linda Wiryani Design & Event Planning: Curating intimate elopements and private villa weddings in Bali. Artfully designed celebrations rooted in architecture, hospitality, and storytelling.",
+    "Linda Wiryani Design & Event Planning curates intimate elopements and private villa weddings in Bali. Artfully designed celebrations rooted in architecture, hospitality, and storytelling.",
   keywords: [
-    "Linda Wiryani",
-    "Bali Wedding Planner",
-    "Private Villa Wedding Bali",
-    "Intimate Wedding Bali",
-    "Elopement Bali",
+    "Luxury Wedding Planner Bali",
+    "Elopement Weddings Bali",
+    "Intimate Weddings Bali",
     "Signature Wedding Venues Bali",
-    "Luxury Wedding Design",
-    "Bespoke Wedding Styling Bali",
+    "Private Villa Weddings Bali",
+    "Bespoke Wedding Design",
   ],
   authors: [{ name: "Linda Wiryani" }],
   icons: {
@@ -39,8 +36,7 @@ export const metadata: Metadata = {
     shortcut: "/images/logo-lindawiryani.png",
   },
   openGraph: {
-    title:
-      "Linda Wiryani - Elopement, Intimate, Signature Venues and Private Villa Weddings in Bali",
+    title: "Linda Wiryani | Luxury Wedding Planner & Designer in Bali",
     description:
       "Bespoke Bali wedding planning for couples who value meaning over excess. Specializing in intimate celebrations, signature venues, and private estates.",
     url: "https://www.lindawiryani.com",
@@ -66,7 +62,7 @@ export default function RootLayout({
   // Structured Data (JSON-LD) updated with your specific service descriptions
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
+    "@type": "EventPlanning",
     name: "Linda Wiryani Design and Event Planning",
     url: "https://www.lindawiryani.com",
     image: "https://www.lindawiryani.com/images/logo-lindawiryani.png",
