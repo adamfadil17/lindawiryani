@@ -468,17 +468,16 @@ export default function WeddingConcepts() {
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
           >
-            CURATED WEDDING CELEBRATIONS SHAPED BY THOUGHTFUL DESIGN, REFINED
-            HOSPITALITY, AND MEANINGFUL SETTINGS
+            CURATED WEDDING CELEBRATIONS, THOUGHTFULLY DESIGNED
           </motion.h1>
 
           <motion.p
             variants={fadeInUp}
             className="text-base md:text-lg text-primary font-monomax-w-3xl mx-auto leading-relaxed"
           >
-            Begin your journey by choosing a wedding theme that reflects your
-            vision — or explore our curated venues to discover the perfect
-            setting for your celebration.
+            Begin your journey by choosing a wedding concept that reflects your
+            vision — or explore our curated venues to discover the setting that
+            best complements your celebration.
           </motion.p>
         </motion.header>
 

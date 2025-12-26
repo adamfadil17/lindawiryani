@@ -44,7 +44,7 @@ export default function Page() {
                 variants={fadeInUp}
                 className="text-sm md:text-base tracking-widest my-2 font-light"
               >
-                DESIGN • EVENT PLANNING
+                DESIGN • WEDDING PLANNING
               </motion.p>
 
               <motion.h1
@@ -60,7 +60,7 @@ export default function Page() {
                 variants={fadeInUp}
                 className="text-sm md:text-base leading-relaxed mb-8 font-light"
               >
-                {`Luxury-inspired Bali wedding styling and event planning with five-star hospitality standards.`}
+                {`Luxury wedding design and event planning in Bali, guided by five-star hospitality standards.`}
               </motion.p>
 
               <motion.div variants={fadeInUp}>
@@ -71,7 +71,7 @@ export default function Page() {
                     transition={{ duration: 0.3 }}
                     className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white hover:text-primary transition-colors duration-300"
                   >
-                    JOIN THE EXPERIENCE
+                    BEGIN YOUR WEDDING JOURNEY
                   </motion.button>
                 </Link>
               </motion.div>
