@@ -55,7 +55,7 @@ export default function AboutUs() {
                 variants={fadeInUp}
                 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary leading-tight"
               >
-                DESIGNING WEEDDING WITH INTENTION, EMOTION, AND ART
+                DESIGNING WEDDINGS WITH INTENTION, EMOTION, AND ART
               </motion.h2>
 
               <motion.p
