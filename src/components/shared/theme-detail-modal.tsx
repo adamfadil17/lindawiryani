@@ -118,9 +118,9 @@ export default function ThemeDetailModal({
                   <span className="text-xs text-primary tracking-widest uppercase font-semibold mb-2 block">
                     Wedding Theme
                   </span>
-                  <h1 className="text-3xl md:text-4xl text-primary font-semibold leading-tight mb-2">
+                  <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight mb-2">
                     {theme.title}
-                  </h1>
+                  </h2>
 
                   <button
                     onClick={() => relatedVenue && onExploreVenue(relatedVenue)}

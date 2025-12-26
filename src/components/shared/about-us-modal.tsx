@@ -39,12 +39,12 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
                 About The Studio
               </span>
-              <h1 className="text-3xl md:text-4xl text-primary font-bold leading-tight">
+              <h2 className="text-3xl md:text-4xl text-primary font-bold leading-tight">
                 About Linda Wiryani Design and Event Planning
-              </h1>
-              <h2 className="text-xl md:text-2xl text-primary font-bold leading-tight">
-                Designing Weddings with Intention, Emotion, and Art
               </h2>
+              <h3 className="text-xl md:text-2xl text-primary font-bold leading-tight">
+                Designing Weddings with Intention, Emotion, and Art
+              </h3>
             </div>
 
             {/* Content Sections */}
@@ -81,9 +81,9 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
 
               {/* Intimate Villa Weddings Section */}
               <div className="bg-stone-50 p-6 md:p-8">
-                <h2 className="text-lg md:text-xl text-primary font-bold mb-4 leading-tight">
+                <h3 className="text-lg md:text-xl text-primary font-bold mb-4 leading-tight">
                   Intimate and Private Villa Weddings in Bali
-                </h2>
+                </h3>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
                   Rather than repeating concepts, each wedding is curated
                   individually. Every celebration is designed specifically for
@@ -99,9 +99,9 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
 
               {/* Architecture & Fashion Section */}
               <div className="flex flex-col gap-4">
-                <h2 className="text-lg md:text-xl text-primary font-bold leading-tight">
+                <h3 className="text-lg md:text-xl text-primary font-bold leading-tight">
                   Where Architecture, Fashion, and Artful Design Meet
-                </h2>
+                </h3>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
                   The studio's aesthetic favors clarity over excess, restraint
                   over spectacle, and warmth over performance. Architectural

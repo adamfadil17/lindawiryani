@@ -279,28 +279,28 @@ export default function VenueDetailModal({
               </span>
               <div className="flex gap-2">
                 {venue.classifications.signature && (
-                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Signature
-                  </span>
+                  </h3>
                 )}
                 {venue.classifications.privateVilla && (
-                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Private Villa
-                  </span>
+                  </h3>
                 )}
               </div>
             </div>
 
-            <h1
+            <h3
               id="venue-modal-title"
               className="text-3xl md:text-4xl text-primary font-semibold leading-tight"
             >
               {venue.name}
-            </h1>
+            </h3>
 
-            <h2 className="text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
+            <h3 className="text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
               {venue.slogan}
-            </h2>
+            </h3>
 
             {/* Currency Dropdown */}
             <div className="flex items-center gap-2 mt-2">
@@ -357,13 +357,13 @@ export default function VenueDetailModal({
                       {selectedCurrency}
                     </span>
                   )}
-                  <h3 className="text-2xl md:text-2xl font-medium text-primary">
+                  <span className="text-2xl md:text-2xl font-medium text-primary">
                     {formatPrice(
                       venue.startingPrice,
                       selectedCurrency,
                       exchangeRate
                     )}
-                  </h3>
+                  </span>
                   {venue.startingPrice > 0 && (
                     <span className="text-sm text-primary">nett</span>
                   )}
@@ -373,9 +373,9 @@ export default function VenueDetailModal({
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="text-md text-primary">
+                  <h3 className="text-md text-primary">
                     {venue.city}, {venue.province}
-                  </span>
+                  </h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-primary flex-shrink-0" />
