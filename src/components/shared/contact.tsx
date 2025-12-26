@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import Image from "next/image"
-import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion"
-;("lucide-react")
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
+("lucide-react");
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -28,20 +28,24 @@ export default function Contact() {
     arrivalDate: "",
     departureDate: "",
     yourMessage: "",
-  })
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Form submitted:", formData)
-  }
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+  };
 
   return (
     <section id="contact" className="pb-16 lg:pb-24 relative">
@@ -76,15 +80,25 @@ export default function Contact() {
 
             {/* Keep In Touch Section */}
             <motion.div variants={fadeInUp} className="space-y-6">
-              <h3 className="text-xl md:text-2xl font-semibold text-primary italic">KEEP IN TOUCH</h3>
+              <h3 className="text-xl md:text-2xl font-semibold text-primary italic">
+                KEEP IN TOUCH
+              </h3>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              {/* Perubahan: Menggunakan grid-cols-1 secara default, dan baru menjadi 2 kolom di layar desktop (lg) */}
+              {/* Serta menambahkan break-all atau overflow-hidden untuk keamanan teks */}
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-6 gap-x-4">
                 {/* Email */}
-                <div className="flex items-center space-x-3">
-                  <Image src="/images/email-brown.svg" alt="Email" width={24} height={24} />
+                <div className="flex items-center space-x-3 min-w-0">
+                  <Image
+                    src="/images/email-brown.svg"
+                    alt="Email"
+                    width={24}
+                    height={24}
+                    className="shrink-0"
+                  />
                   <a
-                    href="mailto: lindawiryanievents@gmail.com"
-                    className="text-primary text-lg hover:text-primary/80 transition-colors"
+                    href="mailto:lindawiryanievents@gmail.com"
+                    className="text-primary text-base md:text-lg hover:text-primary/80 transition-colors break-words sm:break-normal"
                   >
                     lindawiryanievents@gmail.com
                   </a>
@@ -92,7 +106,13 @@ export default function Contact() {
 
                 {/* Instagram */}
                 <div className="flex items-center space-x-3">
-                  <Image src="/images/instagram-brown.svg" alt="Instagram" width={24} height={24} />
+                  <Image
+                    src="/images/instagram-brown.svg"
+                    alt="Instagram"
+                    width={24}
+                    height={24}
+                    className="shrink-0"
+                  />
                   <a
                     href="https://instagram.com/lindawiryanievents"
                     target="_blank"
@@ -105,7 +125,13 @@ export default function Contact() {
 
                 {/* WhatsApp */}
                 <div className="flex items-center space-x-3">
-                  <Image src="/images/whatsapp-brown.svg" alt="WhatsApp" width={24} height={24} />
+                  <Image
+                    src="/images/whatsapp-brown.svg"
+                    alt="WhatsApp"
+                    width={24}
+                    height={24}
+                    className="shrink-0"
+                  />
                   <a
                     href="https://wa.me/628113980998"
                     target="_blank"
@@ -118,7 +144,13 @@ export default function Contact() {
 
                 {/* Pinterest */}
                 <div className="flex items-center space-x-3">
-                  <Image src="/images/pinterest-line-brown.svg" alt="Pinterest" width={24} height={24} />
+                  <Image
+                    src="/images/pinterest-line-brown.svg"
+                    alt="Pinterest"
+                    width={24}
+                    height={24}
+                    className="shrink-0"
+                  />
                   <a
                     href="https://pinterest.com/lindawiryanievents"
                     target="_blank"
@@ -146,14 +178,20 @@ export default function Contact() {
           >
             {/* Header */}
             <motion.div variants={fadeInUp} className="space-y-4">
-              <h2 className="text-2xl text-primary tracking-wider italic font-semibold">CONTACT US</h2>
+              <h2 className="text-2xl text-primary tracking-wider italic font-semibold">
+                CONTACT US
+              </h2>
               <h3 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold max-w-4xl mx-auto leading-tight">
                 Your Story. Your Style. Let's Design Your Dream Bali Wedding.
               </h3>
             </motion.div>
 
             {/* Contact Form - RESTRUCTURED to match the enquiry form */}
-            <motion.form variants={fadeInUp} onSubmit={handleSubmit} className="space-y-6">
+            <motion.form
+              variants={fadeInUp}
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
               {/* Your Name and Your Email */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -224,7 +262,9 @@ export default function Contact() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-primary text-md">Religion of Groom</label>
+                  <label className="text-primary text-md">
+                    Religion of Groom
+                  </label>
                   <input
                     type="text"
                     name="religionOfGroom"
@@ -237,7 +277,9 @@ export default function Contact() {
 
               {/* Nationality of Groom */}
               <div className="space-y-2">
-                <label className="text-primary text-md">Nationality of Groom</label>
+                <label className="text-primary text-md">
+                  Nationality of Groom
+                </label>
                 <input
                   type="text"
                   name="nationalityOfGroom"
@@ -260,7 +302,9 @@ export default function Contact() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-primary text-md">Religion of Bride</label>
+                  <label className="text-primary text-md">
+                    Religion of Bride
+                  </label>
                   <input
                     type="text"
                     name="religionOfBride"
@@ -273,7 +317,9 @@ export default function Contact() {
 
               {/* Nationality of Bride */}
               <div className="space-y-2">
-                <label className="text-primary text-md">Nationality of Bride</label>
+                <label className="text-primary text-md">
+                  Nationality of Bride
+                </label>
                 <input
                   type="text"
                   name="nationalityOfBride"
@@ -309,7 +355,9 @@ export default function Contact() {
 
               {/* Number of Attendance */}
               <div className="space-y-2">
-                <label className="text-primary text-md">Number of Attendance</label>
+                <label className="text-primary text-md">
+                  Number of Attendance
+                </label>
                 <input
                   type="text"
                   name="numberOfAttendance"
@@ -322,7 +370,9 @@ export default function Contact() {
 
               {/* Approximate wedding budget */}
               <div className="space-y-2">
-                <label className="text-primary text-md">Approximate wedding budget</label>
+                <label className="text-primary text-md">
+                  Approximate wedding budget
+                </label>
                 <input
                   type="text"
                   name="approximateWeddingBudget"
@@ -335,7 +385,9 @@ export default function Contact() {
 
               {/* Hotel Name in Bali */}
               <div className="space-y-2">
-                <label className="text-primary text-md">Hotel Name in Bali</label>
+                <label className="text-primary text-md">
+                  Hotel Name in Bali
+                </label>
                 <input
                   type="text"
                   name="hotelNameInBali"
@@ -371,10 +423,16 @@ export default function Contact() {
 
               {/* Additional Information - CHANGED label as requested */}
               <div className="space-y-2">
-                <label className="text-primary text-md">Additional Information</label>
+                <label className="text-primary text-md">
+                  Additional Information
+                </label>
+                <p className="text-primary/80 text-sm italic mt-1 mb-2">
+                  This helps us understand your vision and prepare a thoughtful
+                  response.
+                </p>
                 <textarea
                   name="yourMessage"
-                  placeholder="Introduce yourself and briefly describe your wedding"
+                  placeholder="Share your story and the vision for your celebration"
                   value={formData.yourMessage}
                   onChange={handleInputChange}
                   rows={6}
@@ -394,5 +452,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-  )
+  );
 }
