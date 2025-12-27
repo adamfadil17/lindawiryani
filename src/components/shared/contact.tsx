@@ -6,7 +6,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
-("lucide-react");
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -30,6 +29,12 @@ export default function Contact() {
     yourMessage: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -42,9 +47,63 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus({
+          type: "success",
+          message:
+            "Thank you for your inquiry! We'll get back to you within 24-48 hours.",
+        });
+        // Reset form
+        setFormData({
+          yourName: "",
+          yourEmail: "",
+          yourAddress: "",
+          telephone: "",
+          nameOfGroom: "",
+          religionOfGroom: "",
+          nationalityOfGroom: "",
+          nameOfBride: "",
+          religionOfBride: "",
+          nationalityOfBride: "",
+          weddingDate: "",
+          weddingVenue: "",
+          numberOfAttendance: "",
+          approximateWeddingBudget: "",
+          hotelNameInBali: "",
+          arrivalDate: "",
+          departureDate: "",
+          yourMessage: "",
+        });
+      } else {
+        setSubmitStatus({
+          type: "error",
+          message:
+            "Failed to send your inquiry. Please try again or contact us directly.",
+        });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message:
+          "An error occurred. Please try again or contact us via WhatsApp.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -84,8 +143,6 @@ export default function Contact() {
                 KEEP IN TOUCH
               </h3>
 
-              {/* Perubahan: Menggunakan grid-cols-1 secara default, dan baru menjadi 2 kolom di layar desktop (lg) */}
-              {/* Serta menambahkan break-all atau overflow-hidden untuk keamanan teks */}
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-6 gap-x-4">
                 {/* Email */}
                 <div className="flex items-center space-x-3 min-w-0">
@@ -186,7 +243,22 @@ export default function Contact() {
               </h3>
             </motion.div>
 
-            {/* Contact Form - RESTRUCTURED to match the enquiry form */}
+            {/* Status Message */}
+            {submitStatus.type && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`p-4 rounded-md ${
+                  submitStatus.type === "success"
+                    ? "bg-green-50 text-green-800 border border-green-200"
+                    : "bg-red-50 text-red-800 border border-red-200"
+                }`}
+              >
+                {submitStatus.message}
+              </motion.div>
+            )}
+
+            {/* Contact Form */}
             <motion.form
               variants={fadeInUp}
               onSubmit={handleSubmit}
@@ -204,7 +276,8 @@ export default function Contact() {
                     value={formData.yourName}
                     onChange={handleInputChange}
                     required
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
@@ -217,7 +290,8 @@ export default function Contact() {
                     value={formData.yourEmail}
                     onChange={handleInputChange}
                     required
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
               </div>
@@ -233,11 +307,12 @@ export default function Contact() {
                   value={formData.yourAddress}
                   onChange={handleInputChange}
                   required
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                 />
               </div>
 
-              {/* Telephone - REMOVED country code dropdown */}
+              {/* Telephone */}
               <div className="space-y-2">
                 <label className="text-primary text-md">Telephone</label>
                 <input
@@ -245,7 +320,8 @@ export default function Contact() {
                   name="telephone"
                   value={formData.telephone}
                   onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                 />
               </div>
 
@@ -258,7 +334,8 @@ export default function Contact() {
                     name="nameOfGroom"
                     value={formData.nameOfGroom}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
@@ -270,7 +347,8 @@ export default function Contact() {
                     name="religionOfGroom"
                     value={formData.religionOfGroom}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
               </div>
@@ -285,7 +363,8 @@ export default function Contact() {
                   name="nationalityOfGroom"
                   value={formData.nationalityOfGroom}
                   onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                 />
               </div>
 
@@ -298,7 +377,8 @@ export default function Contact() {
                     name="nameOfBride"
                     value={formData.nameOfBride}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
@@ -310,7 +390,8 @@ export default function Contact() {
                     name="religionOfBride"
                     value={formData.religionOfBride}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
               </div>
@@ -325,7 +406,8 @@ export default function Contact() {
                   name="nationalityOfBride"
                   value={formData.nationalityOfBride}
                   onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                 />
               </div>
 
@@ -338,7 +420,8 @@ export default function Contact() {
                     name="weddingDate"
                     value={formData.weddingDate}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
@@ -348,7 +431,8 @@ export default function Contact() {
                     name="weddingVenue"
                     value={formData.weddingVenue}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
               </div>
@@ -364,7 +448,8 @@ export default function Contact() {
                   placeholder="Including Bride & Groom"
                   value={formData.numberOfAttendance}
                   onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                 />
               </div>
 
@@ -379,7 +464,8 @@ export default function Contact() {
                   placeholder="Including Currency"
                   value={formData.approximateWeddingBudget}
                   onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                 />
               </div>
 
@@ -393,7 +479,8 @@ export default function Contact() {
                   name="hotelNameInBali"
                   value={formData.hotelNameInBali}
                   onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                 />
               </div>
 
@@ -406,7 +493,8 @@ export default function Contact() {
                     name="arrivalDate"
                     value={formData.arrivalDate}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
                 <div className="space-y-2">
@@ -416,15 +504,16 @@ export default function Contact() {
                     name="departureDate"
                     value={formData.departureDate}
                     onChange={handleInputChange}
-                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors"
+                    disabled={isSubmitting}
+                    className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors disabled:bg-gray-100"
                   />
                 </div>
               </div>
 
-              {/* Additional Information - CHANGED label as requested */}
+              {/* Additional Information */}
               <div className="space-y-2">
                 <label className="text-primary text-md">
-                  Additional Information
+                  Share your story and the vision for your celebration
                 </label>
                 <p className="text-primary/80 text-sm italic mt-1 mb-2">
                   This helps us understand your vision and prepare a thoughtful
@@ -432,20 +521,22 @@ export default function Contact() {
                 </p>
                 <textarea
                   name="yourMessage"
-                  placeholder="Share your story and the vision for your celebration"
+                  placeholder="Write your story and the vision for your celebration here..."
                   value={formData.yourMessage}
                   onChange={handleInputChange}
                   rows={6}
-                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors resize-vertical"
+                  disabled={isSubmitting}
+                  className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors resize-vertical disabled:bg-gray-100"
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer"
+                disabled={isSubmitting}
+                className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer disabled:bg-primary/50 disabled:cursor-not-allowed transition-all"
               >
-                SEND INQUIRY
+                {isSubmitting ? "SENDING..." : "SEND INQUIRY"}
               </button>
             </motion.form>
           </motion.div>

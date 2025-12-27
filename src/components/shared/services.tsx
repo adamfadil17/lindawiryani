@@ -147,7 +147,7 @@ export default function Services() {
       {/* Main Content Section - Container with 2 Columns */}
       <motion.div
         ref={mainContentRef}
-        className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-12 lg:py-16 bg-[#E9E1DC]"
+        className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-12 lg:py-16 bg-primary/15"
         initial="hidden"
         whileInView="visible"
         viewport={{
