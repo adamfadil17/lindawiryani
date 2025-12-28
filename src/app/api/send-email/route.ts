@@ -52,7 +52,7 @@ export async function POST(req: Request) {
             }
             .header h1 { 
               color: #ffffff !important; 
-              font-size: 32px; 
+              font-size: 24px; 
               font-weight: 400;
               margin-bottom: 8px;
               letter-spacing: 1.5px;
@@ -119,7 +119,7 @@ export async function POST(req: Request) {
         <body>
           <div class="email-container">
             <div class="header">
-              <h1>NEW WEDDING INQUIRY</h1>
+              <h1>New Wedding Inquiry</h1>
               <p>Linda Wiryani | Luxury Wedding Planner & Designer in Bali</p>
             </div>
             
@@ -311,7 +311,7 @@ export async function POST(req: Request) {
             }
             .header h1 { 
               color: #ffffff !important; 
-              font-size: 36px; 
+              font-size: 24px; 
               font-weight: 400;
               margin-bottom: 8px;
               letter-spacing: 2px;
@@ -416,7 +416,6 @@ export async function POST(req: Request) {
           <div class="email-container">
             <div class="header">
               <img src="https://res.cloudinary.com/dzerxindp/image/upload/v1766920272/logo-white_lihqc1.png" alt="Linda Wiryani Logo" class="logo">
-              <h1>Linda Wiryani</h1>
               <p>Luxury Wedding Planner and Designer in Bali</p>
             </div>
             
