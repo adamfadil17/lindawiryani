@@ -25,90 +25,129 @@ export async function POST(req: Request) {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta name="color-scheme" content="light only">
+          <meta name="supported-color-schemes" content="light">
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { 
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+              font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
               line-height: 1.6; 
-              color: #333;
-              background-color: #f5f5f5;
+              color: #333333 !important;
+              background-color: #f5f5f5 !important;
               padding: 20px;
+              -webkit-text-size-adjust: 100%;
             }
             .email-container { 
               max-width: 600px; 
               margin: 0 auto; 
-              background-color: #ffffff;
+              background-color: #ffffff !important;
               border-radius: 8px;
               overflow: hidden;
               box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
             .header { 
-              background-color: #CDAA9E; 
+              background-color: #CDAA9E !important; 
               padding: 40px 30px; 
               text-align: center;
             }
             .header h1 { 
-              color: #ffffff; 
-              font-size: 28px; 
-              font-weight: 600;
+              color: #ffffff !important; 
+              font-size: 32px; 
+              font-weight: 700;
               margin-bottom: 8px;
-              letter-spacing: 0.5px;
+              letter-spacing: 1.5px;
+              font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
             }
             .header p { 
-              color: #ffffff; 
-              font-size: 14px;
-              opacity: 0.95;
+              color: #ffffff !important; 
+              font-size: 15px;
+              font-weight: 500;
+              letter-spacing: 0.5px;
             }
             .content { 
               padding: 40px 30px;
+              background-color: #ffffff !important;
             }
             .section { 
               margin-bottom: 35px;
             }
             .section-title { 
-              font-size: 18px; 
-              font-weight: 600; 
-              color: #CDAA9E; 
+              font-size: 20px; 
+              font-weight: 700; 
+              color: #CDAA9E !important; 
               margin-bottom: 20px;
               padding-bottom: 10px;
               border-bottom: 2px solid #CDAA9E;
+              letter-spacing: 1px;
+              font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
             }
             .field { 
               margin-bottom: 15px;
               padding: 12px;
-              background-color: #fafafa;
+              background-color: #fafafa !important;
               border-radius: 4px;
             }
             .label { 
-              font-weight: 600; 
-              color: #CDAA9E; 
+              font-weight: 700; 
+              color: #CDAA9E !important; 
               font-size: 13px;
               text-transform: uppercase;
-              letter-spacing: 0.5px;
+              letter-spacing: 1px;
               margin-bottom: 5px;
             }
             .value { 
-              color: #333;
-              font-size: 15px;
+              color: #333333 !important;
+              font-size: 16px;
               margin-top: 5px;
+              font-weight: 500;
             }
             .footer { 
-              background-color: #CDAA9E;
+              background-color: #CDAA9E !important;
               text-align: center; 
               padding: 25px 30px;
               border-top: 1px solid #e0e0e0;
             }
             .footer-text { 
-              font-size: 13px; 
-              color: #ffffff;
+              font-size: 14px; 
+              color: #ffffff !important;
               line-height: 1.5;
+              font-weight: 500;
+            }
+            
+            /* Force light mode untuk dark mode devices */
+            @media (prefers-color-scheme: dark) {
+              body { 
+                color: #333333 !important;
+                background-color: #f5f5f5 !important;
+              }
+              .email-container,
+              .content,
+              .field {
+                background-color: #ffffff !important;
+              }
+              .header,
+              .footer {
+                background-color: #CDAA9E !important;
+              }
+              .header h1,
+              .header p,
+              .footer-text {
+                color: #ffffff !important;
+              }
+              .section-title,
+              .label {
+                color: #CDAA9E !important;
+              }
+              .value {
+                color: #333333 !important;
+              }
             }
           </style>
         </head>
         <body>
           <div class="email-container">
             <div class="header">
-              <h1>New Wedding Inquiry</h1>
+              <h1>NEW WEDDING INQUIRY</h1>
               <p>Linda Wiryani | Luxury Wedding Planner & Designer in Bali</p>
             </div>
             
@@ -267,25 +306,28 @@ export async function POST(req: Request) {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta name="color-scheme" content="light only">
+          <meta name="supported-color-schemes" content="light">
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { 
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+              font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
               line-height: 1.6; 
-              color: #333;
-              background-color: #f5f5f5;
+              color: #333333 !important;
+              background-color: #f5f5f5 !important;
               padding: 20px;
+              -webkit-text-size-adjust: 100%;
             }
             .email-container { 
               max-width: 600px; 
               margin: 0 auto; 
-              background-color: #ffffff;
+              background-color: #ffffff !important;
               border-radius: 8px;
               overflow: hidden;
               box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
             .header { 
-              background-color: #CDAA9E; 
+              background-color: #CDAA9E !important; 
               padding: 50px 30px; 
               text-align: center;
             }
@@ -296,43 +338,57 @@ export async function POST(req: Request) {
               display: block;
             }
             .header h1 { 
-              color: #ffffff; 
-              font-size: 32px; 
-              font-weight: 600;
+              color: #ffffff !important; 
+              font-size: 36px; 
+              font-weight: 700;
               margin-bottom: 8px;
-              letter-spacing: 0.5px;
+              letter-spacing: 2px;
+              font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
             }
             .header p { 
-              color: #ffffff; 
-              font-size: 15px;
-              opacity: 0.95;
+              color: #ffffff !important; 
+              font-size: 16px;
+              font-weight: 500;
+              letter-spacing: 0.5px;
             }
             .content { 
               padding: 50px 40px;
+              background-color: #ffffff !important;
             }
             .greeting { 
-              font-size: 24px; 
-              font-weight: 600;
-              color: #333;
+              font-size: 26px; 
+              font-weight: 700;
+              color: #333333 !important;
               margin-bottom: 25px;
+              font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
             }
             .message { 
-              font-size: 16px;
-              color: #555;
+              font-size: 17px;
+              color: #555555 !important;
               margin-bottom: 20px;
               line-height: 1.8;
+              font-weight: 500;
             }
             .highlight-box {
-              background-color: #fafafa;
+              background-color: #fafafa !important;
               border-left: 4px solid #CDAA9E;
               padding: 20px;
               margin: 30px 0;
               border-radius: 4px;
             }
             .highlight-box p {
-              color: #666;
-              font-size: 15px;
+              color: #666666 !important;
+              font-size: 16px;
               margin: 0;
+              font-weight: 500;
+            }
+            .highlight-box strong {
+              font-weight: 700;
+            }
+            .highlight-box a {
+              color: #CDAA9E !important;
+              text-decoration: none;
+              font-weight: 700;
             }
             .signature { 
               margin-top: 40px;
@@ -340,45 +396,88 @@ export async function POST(req: Request) {
               border-top: 1px solid #e0e0e0;
             }
             .signature p { 
-              font-size: 15px;
-              color: #666;
+              font-size: 16px;
+              color: #666666 !important;
               margin-bottom: 8px;
+              font-weight: 500;
             }
             .signature strong { 
-              color: #CDAA9E;
-              font-size: 16px;
+              color: #CDAA9E !important;
+              font-size: 18px;
+              font-weight: 700;
             }
             .footer { 
-              background-color: #CDAA9E;
+              background-color: #CDAA9E !important;
               padding: 40px 30px;
               text-align: center;
             }
             .footer h3 { 
-              color: #ffffff;
-              font-size: 18px;
-              font-weight: 600;
+              color: #ffffff !important;
+              font-size: 22px;
+              font-weight: 700;
               margin-bottom: 20px;
+              letter-spacing: 1px;
+              font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
             }
             .contact-info { 
               margin: 20px 0;
             }
             .contact-item { 
-              color: #ffffff;
-              font-size: 14px;
+              color: #ffffff !important;
+              font-size: 15px;
               margin: 10px 0;
-            }
-            .social-links {
-              margin-top: 25px;
-              padding-top: 25px;
-              border-top: 1px solid #ffffff;
+              font-weight: 500;
             }
             .disclaimer { 
               margin-top: 20px;
               padding-top: 20px;
-              border-top: 1px solid #ffffff;
-              font-size: 12px; 
-              color: #ffffff;
+              border-top: 1px solid rgba(255,255,255,0.3);
+              font-size: 13px; 
+              color: #ffffff !important;
               line-height: 1.5;
+              font-weight: 500;
+            }
+            
+            /* Force light mode untuk dark mode devices */
+            @media (prefers-color-scheme: dark) {
+              body { 
+                color: #333333 !important;
+                background-color: #f5f5f5 !important;
+              }
+              .email-container,
+              .content,
+              .highlight-box {
+                background-color: #ffffff !important;
+              }
+              .header,
+              .footer {
+                background-color: #CDAA9E !important;
+              }
+              .header h1,
+              .header p,
+              .footer h3,
+              .contact-item,
+              .disclaimer {
+                color: #ffffff !important;
+              }
+              .greeting {
+                color: #333333 !important;
+              }
+              .message {
+                color: #555555 !important;
+              }
+              .highlight-box p {
+                color: #666666 !important;
+              }
+              .highlight-box a {
+                color: #CDAA9E !important;
+              }
+              .signature p {
+                color: #666666 !important;
+              }
+              .signature strong {
+                color: #CDAA9E !important;
+              }
             }
           </style>
         </head>
@@ -405,7 +504,7 @@ export async function POST(req: Request) {
               
               <div class="highlight-box">
                 <p>✨ <strong>Explore Our World</strong></p>
-                <p>Discover our inspirations and curated experiences at <a href="https://www.lindawiryani.com" style="color: #CDAA9E; text-decoration: none; font-weight: 600;">www.lindawiryani.com</a></p>
+                <p>Discover our inspirations and curated experiences at <a href="https://www.lindawiryani.com">www.lindawiryani.com</a></p>
               </div>
               
               <div class="signature">
