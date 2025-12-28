@@ -243,21 +243,6 @@ export default function Contact() {
               </h3>
             </motion.div>
 
-            {/* Status Message */}
-            {submitStatus.type && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`p-4 rounded-md ${
-                  submitStatus.type === "success"
-                    ? "bg-green-50 text-green-800 border border-green-200"
-                    : "bg-red-50 text-red-800 border border-red-200"
-                }`}
-              >
-                {submitStatus.message}
-              </motion.div>
-            )}
-
             {/* Contact Form */}
             <motion.form
               variants={fadeInUp}
@@ -529,6 +514,21 @@ export default function Contact() {
                   className="mt-2 w-full px-4 py-3 border border-primary rounded-none focus:outline-none focus:border-primary/80 transition-colors resize-vertical disabled:bg-gray-100"
                 />
               </div>
+
+              {/* Status Message */}
+              {submitStatus.type && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`p-4 rounded-md ${
+                    submitStatus.type === "success"
+                      ? "bg-green-50 text-green-800 border border-green-200"
+                      : "bg-red-50 text-red-800 border border-red-200"
+                  }`}
+                >
+                  {submitStatus.message}
+                </motion.div>
+              )}
 
               {/* Submit Button */}
               <button

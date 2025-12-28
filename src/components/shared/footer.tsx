@@ -10,8 +10,8 @@ export default function Footer() {
             {/* Logo */}
             <div className="flex justify-center lg:justify-start">
               <Image
-                src="/images/logo-brown.png"
-                alt="Linda Wiryani Logo"
+                src="/images/logo-gray.png"
+                alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
                 width={200}
                 height={80}
                 className="object-contain"

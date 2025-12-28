@@ -144,7 +144,7 @@ export default function Header() {
           <div className="text-center relative">
             <Image
               src="/images/logo-white.png"
-              alt="Logo"
+              alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
               className={`h-16 w-auto mx-auto transition-opacity ${
                 isScrolled || isMenuOpen ? "opacity-0" : "opacity-100"
               }`}
@@ -152,8 +152,8 @@ export default function Header() {
               height={24}
             />
             <Image
-              src="/images/logo-brown.png"
-              alt="Logo"
+              src="/images/logo-gray.png"
+              alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
               className={`h-16 w-auto mx-auto transition-opacity absolute top-0 left-1/2 -translate-x-1/2 ${
                 isScrolled || isMenuOpen ? "opacity-100" : "opacity-0"
               }`}
