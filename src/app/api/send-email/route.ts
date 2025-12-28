@@ -53,7 +53,7 @@ export async function POST(req: Request) {
             .header h1 { 
               color: #ffffff !important; 
               font-size: 32px; 
-              font-weight: 700;
+              font-weight: 400;
               margin-bottom: 8px;
               letter-spacing: 1.5px;
               font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
             .header p { 
               color: #ffffff !important; 
               font-size: 15px;
-              font-weight: 500;
+              font-weight: 400;
               letter-spacing: 0.5px;
             }
             .content { 
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
             }
             .section-title { 
               font-size: 20px; 
-              font-weight: 700; 
+              font-weight: 500; 
               color: #CDAA9E !important; 
               margin-bottom: 20px;
               padding-bottom: 10px;
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
               border-radius: 4px;
             }
             .label { 
-              font-weight: 700; 
+              font-weight: 600; 
               color: #CDAA9E !important; 
               font-size: 13px;
               text-transform: uppercase;
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
               color: #333333 !important;
               font-size: 16px;
               margin-top: 5px;
-              font-weight: 500;
+              font-weight: 400;
             }
             .footer { 
               background-color: #CDAA9E !important;
@@ -111,37 +111,9 @@ export async function POST(req: Request) {
               font-size: 14px; 
               color: #ffffff !important;
               line-height: 1.5;
-              font-weight: 500;
+              font-weight: 400;
             }
-            
-            /* Force light mode untuk dark mode devices */
-            @media (prefers-color-scheme: dark) {
-              body { 
-                color: #333333 !important;
-                background-color: #f5f5f5 !important;
-              }
-              .email-container,
-              .content,
-              .field {
-                background-color: #ffffff !important;
-              }
-              .header,
-              .footer {
-                background-color: #CDAA9E !important;
-              }
-              .header h1,
-              .header p,
-              .footer-text {
-                color: #ffffff !important;
-              }
-              .section-title,
-              .label {
-                color: #CDAA9E !important;
-              }
-              .value {
-                color: #333333 !important;
-              }
-            }
+
           </style>
         </head>
         <body>
@@ -340,7 +312,7 @@ export async function POST(req: Request) {
             .header h1 { 
               color: #ffffff !important; 
               font-size: 36px; 
-              font-weight: 700;
+              font-weight: 400;
               margin-bottom: 8px;
               letter-spacing: 2px;
               font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
@@ -348,7 +320,7 @@ export async function POST(req: Request) {
             .header p { 
               color: #ffffff !important; 
               font-size: 16px;
-              font-weight: 500;
+              font-weight: 400;
               letter-spacing: 0.5px;
             }
             .content { 
@@ -357,7 +329,7 @@ export async function POST(req: Request) {
             }
             .greeting { 
               font-size: 26px; 
-              font-weight: 700;
+              font-weight: 500;
               color: #333333 !important;
               margin-bottom: 25px;
               font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
@@ -367,7 +339,7 @@ export async function POST(req: Request) {
               color: #555555 !important;
               margin-bottom: 20px;
               line-height: 1.8;
-              font-weight: 500;
+              font-weight: 400;
             }
             .highlight-box {
               background-color: #fafafa !important;
@@ -380,15 +352,15 @@ export async function POST(req: Request) {
               color: #666666 !important;
               font-size: 16px;
               margin: 0;
-              font-weight: 500;
+              font-weight: 400;
             }
             .highlight-box strong {
-              font-weight: 700;
+              font-weight: 600;
             }
             .highlight-box a {
               color: #CDAA9E !important;
               text-decoration: none;
-              font-weight: 700;
+              font-weight: 600;
             }
             .signature { 
               margin-top: 40px;
@@ -399,12 +371,12 @@ export async function POST(req: Request) {
               font-size: 16px;
               color: #666666 !important;
               margin-bottom: 8px;
-              font-weight: 500;
+              font-weight: 400;
             }
             .signature strong { 
               color: #CDAA9E !important;
               font-size: 18px;
-              font-weight: 700;
+              font-weight: 600;
             }
             .footer { 
               background-color: #CDAA9E !important;
@@ -414,7 +386,7 @@ export async function POST(req: Request) {
             .footer h3 { 
               color: #ffffff !important;
               font-size: 22px;
-              font-weight: 700;
+              font-weight: 500;
               margin-bottom: 20px;
               letter-spacing: 1px;
               font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
@@ -426,7 +398,7 @@ export async function POST(req: Request) {
               color: #ffffff !important;
               font-size: 15px;
               margin: 10px 0;
-              font-weight: 500;
+              font-weight: 400;
             }
             .disclaimer { 
               margin-top: 20px;
@@ -435,50 +407,9 @@ export async function POST(req: Request) {
               font-size: 13px; 
               color: #ffffff !important;
               line-height: 1.5;
-              font-weight: 500;
+              font-weight: 400;
             }
-            
-            /* Force light mode untuk dark mode devices */
-            @media (prefers-color-scheme: dark) {
-              body { 
-                color: #333333 !important;
-                background-color: #f5f5f5 !important;
-              }
-              .email-container,
-              .content,
-              .highlight-box {
-                background-color: #ffffff !important;
-              }
-              .header,
-              .footer {
-                background-color: #CDAA9E !important;
-              }
-              .header h1,
-              .header p,
-              .footer h3,
-              .contact-item,
-              .disclaimer {
-                color: #ffffff !important;
-              }
-              .greeting {
-                color: #333333 !important;
-              }
-              .message {
-                color: #555555 !important;
-              }
-              .highlight-box p {
-                color: #666666 !important;
-              }
-              .highlight-box a {
-                color: #CDAA9E !important;
-              }
-              .signature p {
-                color: #666666 !important;
-              }
-              .signature strong {
-                color: #CDAA9E !important;
-              }
-            }
+
           </style>
         </head>
         <body>
