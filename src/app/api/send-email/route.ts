@@ -387,7 +387,7 @@ export async function POST(req: Request) {
             <div class="header">
               <img src="https://res.cloudinary.com/dzerxindp/image/upload/v1766920272/logo-white_lihqc1.png" alt="Linda Wiryani Logo" class="logo">
               <h1>Linda Wiryani</h1>
-              <p>Design & Event Planning</p>
+              <p>Luxury Wedding Planner and Designer in Bali</p>
             </div>
             
             <div class="content">
