@@ -10,7 +10,7 @@ import {
   intimateThemes,
   elopementCategoryImages,
   intimateCategoryImages,
-} from "@/lib/wedding-themes-data";
+} from "@/lib/wedding-concepts-data";
 
 interface ThemeCardProps {
   title: string;
