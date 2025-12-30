@@ -11,35 +11,16 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
+import {
+  VenueCategory,
+  VenueData,
+  WeddingConceptType,
+} from "@/lib/wedding-concepts-data";
 
 type Currency = "IDR" | "USD";
 
-// Struktur data disesuaikan dengan weddingConceptVenues
-interface Venue {
-  id: number;
-  name: string;
-  slogan: string;
-  city: string;
-  province: string;
-  capacity: number; // Disesuaikan menjadi number
-  startingPrice: number; // Menggunakan startingPrice sesuai data baru
-  classifications: {
-    signature: boolean;
-    privateVilla: boolean;
-  };
-  weddingConcept: {
-    type: "elopement" | "intimate" | null;
-    theme: string;
-  };
-  images: {
-    hero: string;
-    gallery: string[]; // Menggunakan array gallery
-  };
-  description: string;
-}
-
 interface VenueDetailModalProps {
-  venue: Venue;
+  venue: VenueData;
   onClose: () => void;
   selectedCurrency: Currency;
   exchangeRate: number;
@@ -278,12 +259,12 @@ export default function VenueDetailModal({
                 Venues
               </span>
               <div className="flex gap-2">
-                {venue.classifications.signature && (
+                {venue.category === "signature" && (
                   <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Signature
                   </h3>
                 )}
-                {venue.classifications.privateVilla && (
+                {venue.category === "private_villa" && (
                   <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Private Villa
                   </h3>

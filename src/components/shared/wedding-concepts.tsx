@@ -11,14 +11,18 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { locations, weddingConceptVenues } from "@/lib/wedding-concepts-data";
+import {
+  locations,
+  weddingConceptVenues,
+  VenueData,
+} from "@/lib/wedding-concepts-data";
 import {
   elopementThemes,
   intimateThemes,
   elopementCategoryImages,
   intimateCategoryImages,
   WeddingTheme,
-} from "@/lib/wedding-themes-data";
+} from "@/lib/wedding-concepts-data";
 import VenueDetailModal from "./venue-detail-modal";
 import ThemeDetailModal from "./theme-detail-modal";
 
@@ -89,7 +93,7 @@ const formatPrice = (
 };
 
 interface VenueCardProps {
-  venue: (typeof weddingConceptVenues)[0];
+  venue: VenueData;
   selectedCurrency: Currency;
   exchangeRate: number;
   onClick: () => void;
@@ -301,9 +305,8 @@ export default function WeddingConcepts() {
   const [selectedThemeForModal, setSelectedThemeForModal] =
     useState<WeddingTheme | null>(null);
 
-  const [selectedVenueForModal, setSelectedVenueForModal] = useState<
-    (typeof weddingConceptVenues)[0] | null
-  >(null);
+  const [selectedVenueForModal, setSelectedVenueForModal] =
+    useState<VenueData | null>(null);
 
   const exchangeRate = useCurrencyConverter();
 
@@ -355,10 +358,11 @@ export default function WeddingConcepts() {
   const filteredVenues = useMemo(() => {
     let venues = weddingConceptVenues;
 
+    // CHANGED: Now filtering by single 'category' field
     if (selectedVenue === "Signature Venues") {
-      venues = venues.filter((venue) => venue.classifications.signature);
+      venues = venues.filter((venue) => venue.category === "signature");
     } else if (selectedVenue === "Private Villas") {
-      venues = venues.filter((venue) => venue.classifications.privateVilla);
+      venues = venues.filter((venue) => venue.category === "private_villa");
     }
 
     if (selectedLocation !== "All") {
@@ -450,7 +454,7 @@ export default function WeddingConcepts() {
     },
   };
 
-  const handleVenueClick = (venue: (typeof weddingConceptVenues)[0]) => {
+  const handleVenueClick = (venue: VenueData) => {
     setSelectedVenueForModal(venue);
   };
 
@@ -988,12 +992,9 @@ export default function WeddingConcepts() {
             </div>
           ) : (
             <>
-              <motion.div
+              <div
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 key={`${selectedVenue}-${selectedLocation}`}
-                initial="hidden"
-                animate="visible"
-                variants={gridVariants}
               >
                 {visibleVenues.map((venue) => (
                   <VenueCard
@@ -1004,7 +1005,7 @@ export default function WeddingConcepts() {
                     onClick={() => handleVenueClick(venue)}
                   />
                 ))}
-              </motion.div>
+              </div>
 
               <div className="text-center mt-12">
                 {hasMoreVenues ? (
