@@ -11,7 +11,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-import { WeddingTheme } from "@/lib/wedding-themes-data";
+import { WeddingTheme } from "@/lib/wedding-concepts-data";
 import { weddingConceptVenues } from "@/lib/wedding-concepts-data";
 
 interface ThemeDetailModalProps {
