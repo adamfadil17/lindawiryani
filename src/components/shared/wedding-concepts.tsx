@@ -164,7 +164,7 @@ function VenueCard({
               <MapPin className="w-4 h-4" />
               <h3>
                 {cities.find((city) => city.id === venue.location.cityId)?.name}
-                , ,{" "}
+                , {" "}
                 {venue.location.provinceId.charAt(0).toUpperCase() +
                   venue.location.provinceId.slice(1)}
               </h3>
@@ -573,7 +573,7 @@ export default function WeddingConcepts() {
               </button>
 
               {isThemeDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
+                <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
                   {(["elopement", "intimate"] as const).map((category) => (
                     <button
                       key={category}
@@ -798,7 +798,7 @@ export default function WeddingConcepts() {
                 </button>
 
                 {isVenueDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
                     {(
                       ["Signature Venues", "Private Villas"] as VenueFilter[]
                     ).map((venue) => (
@@ -842,7 +842,7 @@ export default function WeddingConcepts() {
                 </button>
 
                 {isLocationDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px]">
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px]">
                     {locations.map((location) => (
                       <button
                         key={location}
@@ -884,7 +884,7 @@ export default function WeddingConcepts() {
                 </button>
 
                 {isCurrencyDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[100px]">
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[100px]">
                     {(["IDR", "USD"] as Currency[]).map((currency) => (
                       <button
                         key={currency}
