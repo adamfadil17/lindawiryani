@@ -11,16 +11,12 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
-import {
-  VenueCategory,
-  VenueData,
-  WeddingConceptType,
-} from "@/lib/wedding-concepts-data";
+import { Venue, cities } from "@/lib/wedding-concepts-data";
 
 type Currency = "IDR" | "USD";
 
 interface VenueDetailModalProps {
-  venue: VenueData;
+  venue: Venue;
   onClose: () => void;
   selectedCurrency: Currency;
   exchangeRate: number;
@@ -259,12 +255,12 @@ export default function VenueDetailModal({
                 Venues
               </span>
               <div className="flex gap-2">
-                {venue.category === "signature" && (
+                {venue.categoryRelations?.category === "signature" && (
                   <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Signature
                   </h3>
                 )}
-                {venue.category === "private_villa" && (
+                {venue.categoryRelations?.category  === "private_villa" && (
                   <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Private Villa
                   </h3>
@@ -355,7 +351,9 @@ export default function VenueDetailModal({
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
                   <h3 className="text-md text-primary">
-                    {venue.city}, {venue.province}
+                    {cities.find((c) => c.id === venue.location.cityId)?.name},{" "}
+                    {venue.location.provinceId.charAt(0).toUpperCase() +
+                      venue.location.provinceId.slice(1)}
                   </h3>
                 </div>
                 <div className="flex items-center gap-2">

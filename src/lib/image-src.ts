@@ -34,25 +34,26 @@ export const instagramPosts = [
     src: "/images/instagram/instagram1.png",
     alt: "Wedding couple on beach",
     videoUrl:
-      "https://res.cloudinary.com/dzerxindp/video/upload/v1762362089/instagram-1_qwivef.mp4",
+      "https://res.cloudinary.com/dzerxindp/video/upload/v1767162962/Req_2_-_30s_nrpdrq.mp4",
     isVideo: true,
   },
   {
     src: "/images/instagram/instagram2.png",
     alt: "Wedding rings with bouquet",
-    videoUrl: "",
+    videoUrl:
+      "https://res.cloudinary.com/dzerxindp/video/upload/v1767162826/Req_1_-_30s_Non_Faceless_Coloring_with_Transition_Overlay_vccwxy.mp4",
     isVideo: true,
   },
   {
     src: "/images/instagram/instagram3.png",
     alt: "Happy couple at reception",
-    videoUrl: "",
+    videoUrl: "https://res.cloudinary.com/dzerxindp/video/upload/v1767162826/Req_1_-_30s_Non_Faceless_Coloring_with_Transition_Overlay_vccwxy.mp4",
     isVideo: true,
   },
   {
     src: "/images/instagram/instagram4.png",
     alt: "Outdoor wedding ceremony",
-    videoUrl: "",
+    videoUrl: "https://res.cloudinary.com/dzerxindp/video/upload/v1767162826/Req_1_-_30s_Non_Faceless_Coloring_with_Transition_Overlay_vccwxy.mp4",
     isVideo: true,
   },
 ];

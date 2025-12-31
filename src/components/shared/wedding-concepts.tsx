@@ -11,11 +11,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import {
-  locations,
-  weddingConceptVenues,
-  VenueData,
-} from "@/lib/wedding-concepts-data";
+import { cities, venues, Venue } from "@/lib/wedding-concepts-data";
 import {
   elopementThemes,
   intimateThemes,
@@ -28,6 +24,7 @@ import ThemeDetailModal from "./theme-detail-modal";
 
 type Currency = "IDR" | "USD";
 type VenueFilter = "Signature Venues" | "Private Villas";
+const locations = ["All", ...cities.map((city) => city.name)];
 
 const useCurrencyConverter = () => {
   const [exchangeRate, setExchangeRate] = useState<number>(15800);
@@ -93,7 +90,7 @@ const formatPrice = (
 };
 
 interface VenueCardProps {
-  venue: VenueData;
+  venue: Venue;
   selectedCurrency: Currency;
   exchangeRate: number;
   onClick: () => void;
@@ -166,7 +163,10 @@ function VenueCard({
             <div className="flex items-center gap-1.5">
               <MapPin className="w-4 h-4" />
               <h3>
-                {venue.city}, {venue.province}
+                {cities.find((city) => city.id === venue.location.cityId)?.name}
+                , ,{" "}
+                {venue.location.provinceId.charAt(0).toUpperCase() +
+                  venue.location.provinceId.slice(1)}
               </h3>
             </div>
             <div className="flex items-center gap-1.5">
@@ -180,19 +180,19 @@ function VenueCard({
   );
 }
 
-interface CategoryCardProps {
+interface WeddingCategoryCategoryCardProps {
   title: string;
   description: string;
   images: string[];
   onClick: () => void;
 }
 
-function CategoryCard({
+function WeddingThemeCategoryCard({
   title,
   description,
   images,
   onClick,
-}: CategoryCardProps) {
+}: WeddingCategoryCategoryCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -250,22 +250,22 @@ function CategoryCard({
   );
 }
 
-interface ThemeCardProps {
-  title: string;
-  venue: string;
-  image: string;
+interface WeddingThemeCardProps {
+  theme: WeddingTheme;
   onClick: () => void;
 }
 
-function ThemeCard({ title, venue, image, onClick }: ThemeCardProps) {
+function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
+  const venueData = venues.find((v) => v.id === theme.venueId);
+
   return (
     <article
       className="relative overflow-hidden cursor-pointer group aspect-[16/9]"
       onClick={onClick}
     >
       <Image
-        src={image || "https://placehold.net/default.svg"}
-        alt={title}
+        src={theme.image || "https://placehold.net/default.svg"}
+        alt={theme.title}
         fill
         loading="lazy"
         className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -276,9 +276,11 @@ function ThemeCard({ title, venue, image, onClick }: ThemeCardProps) {
 
       <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
         <h3 className="text-xl md:text-2xl font-semibold leading-tight mb-2">
-          {title}
+          {theme.title}
         </h3>
-        <p className="text-md text-white/90">{venue}</p>
+        <p className="text-md text-white/90">
+          {venueData ? venueData.name : "Venue To Be Confirmed"}
+        </p>
       </div>
     </article>
   );
@@ -306,7 +308,7 @@ export default function WeddingConcepts() {
     useState<WeddingTheme | null>(null);
 
   const [selectedVenueForModal, setSelectedVenueForModal] =
-    useState<VenueData | null>(null);
+    useState<Venue | null>(null);
 
   const exchangeRate = useCurrencyConverter();
 
@@ -356,20 +358,28 @@ export default function WeddingConcepts() {
   }, []);
 
   const filteredVenues = useMemo(() => {
-    let venues = weddingConceptVenues;
+    let filteredList = venues;
 
-    // CHANGED: Now filtering by single 'category' field
+    // Filter by category
     if (selectedVenue === "Signature Venues") {
-      venues = venues.filter((venue) => venue.category === "signature");
+      filteredList = filteredList.filter(
+        (venue) => venue.categoryRelations?.category === "signature"
+      );
     } else if (selectedVenue === "Private Villas") {
-      venues = venues.filter((venue) => venue.category === "private_villa");
+      filteredList = filteredList.filter(
+        (venue) => venue.categoryRelations?.category === "private_villa"
+      );
     }
 
+    // Filter by location (city name)
     if (selectedLocation !== "All") {
-      venues = venues.filter((venue) => venue.city === selectedLocation);
+      filteredList = filteredList.filter((venue) => {
+        const city = cities.find((c) => c.id === venue.location.cityId);
+        return city?.name === selectedLocation;
+      });
     }
 
-    return venues;
+    return filteredList;
   }, [selectedVenue, selectedLocation]);
 
   useEffect(() => {
@@ -389,6 +399,17 @@ export default function WeddingConcepts() {
 
   const currentThemes =
     selectedThemeCategory === "elopement" ? elopementThemes : intimateThemes;
+
+  const themesWithVenueData = useMemo(() => {
+    return currentThemes.map((theme) => {
+      const venueData = venues.find((v) => v.id === theme.venueId);
+      return {
+        ...theme,
+        venueData,
+        venueName: venueData ? venueData.name : "Venue To Be Confirmed",
+      };
+    });
+  }, [currentThemes]);
 
   const nextThemeSlide = () => {
     setCurrentThemeSlide((prev) => (prev + 1) % currentThemes.length);
@@ -454,7 +475,7 @@ export default function WeddingConcepts() {
     },
   };
 
-  const handleVenueClick = (venue: VenueData) => {
+  const handleVenueClick = (venue: Venue) => {
     setSelectedVenueForModal(venue);
   };
 
@@ -505,13 +526,13 @@ export default function WeddingConcepts() {
             className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center"
             variants={fadeInUp}
           >
-            <CategoryCard
+            <WeddingThemeCategoryCard
               title="Elopement Weddings"
               description={`Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings.`}
               images={elopementCategoryImages}
               onClick={() => handleCategoryClick("elopement")}
             />
-            <CategoryCard
+            <WeddingThemeCategoryCard
               title="Intimate Weddings"
               description={`Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality.`}
               images={intimateCategoryImages}
@@ -616,10 +637,8 @@ export default function WeddingConcepts() {
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <ThemeCard
-                    title={currentThemes[currentThemeSlide].title}
-                    venue={currentThemes[currentThemeSlide].venue}
-                    image={currentThemes[currentThemeSlide].image}
+                  <WeddingThemeCard
+                    theme={currentThemes[currentThemeSlide]}
                     onClick={() =>
                       setSelectedThemeForModal(currentThemes[currentThemeSlide])
                     }
@@ -668,10 +687,8 @@ export default function WeddingConcepts() {
                   key={`${selectedThemeCategory}-${index}`}
                   variants={fadeInUp}
                 >
-                  <ThemeCard
-                    title={theme.title}
-                    venue={theme.venue}
-                    image={theme.image}
+                  <WeddingThemeCard
+                    theme={theme}
                     onClick={() => handleThemeClick(theme)}
                   />
                 </motion.div>

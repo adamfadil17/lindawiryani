@@ -11,13 +11,12 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-import { WeddingTheme } from "@/lib/wedding-concepts-data";
-import { weddingConceptVenues } from "@/lib/wedding-concepts-data";
+import { WeddingTheme, venues, Venue } from "@/lib/wedding-concepts-data";
 
 interface ThemeDetailModalProps {
   theme: WeddingTheme;
   onClose: () => void;
-  onExploreVenue: (venue: any) => void;
+  onExploreVenue: (venue: Venue) => void;
 }
 
 export default function ThemeDetailModal({
@@ -27,9 +26,8 @@ export default function ThemeDetailModal({
 }: ThemeDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const totalImages = theme.gallery?.length || 0;
-  const relatedVenue = weddingConceptVenues.find(
-    (v) => v.name === theme.venueName
-  );
+  const relatedVenue = venues.find((v) => v.id === theme.venueId);
+  const venueName = relatedVenue ? relatedVenue.name : "Venue To Be Confirmed";
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -41,7 +39,7 @@ export default function ThemeDetailModal({
   // Reset index saat theme berubah
   useEffect(() => {
     setCurrentImageIndex(0);
-  }, [theme.title]);
+  }, [theme.id]); // Changed from theme.title to theme.id
 
   const nextImage = () => {
     if (totalImages > 1) {
@@ -122,13 +120,21 @@ export default function ThemeDetailModal({
                     {theme.title}
                   </h2>
 
-                  <button
-                    onClick={() => relatedVenue && onExploreVenue(relatedVenue)}
-                    className="flex items-center gap-2 text-primary italic hover:text-primary/80 hover:cursor-pointer group"
-                  >
-                    <MapPin className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-md">{theme.venueName}</span>
-                  </button>
+                  {/* UPDATED: Show venue name and only make it clickable if venue exists */}
+                  {relatedVenue ? (
+                    <button
+                      onClick={() => onExploreVenue(relatedVenue)}
+                      className="flex items-center gap-2 text-primary italic hover:text-primary/80 hover:cursor-pointer group"
+                    >
+                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                      <span className="text-md">{venueName}</span>
+                    </button>
+                  ) : (
+                    <div className="flex items-center gap-2 text-primary/60 italic">
+                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                      <span className="text-md">{venueName}</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
