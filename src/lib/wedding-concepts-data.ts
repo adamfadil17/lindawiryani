@@ -177,7 +177,7 @@ export const elopementThemes: WeddingTheme[] = [
     description:
       "Intimate luxury in an exclusive villa setting, where privacy and elegance create your perfect moment.",
     themeName: "private_villa",
-    venueId: 17,
+    venueId: undefined,
     image:
       "/images/wedding-themes/luxury-private-villa-wedding-ceremony-with-infinit.jpg",
     gallery: [
@@ -199,7 +199,7 @@ export const elopementThemes: WeddingTheme[] = [
     description:
       "Feel the sand beneath your feet as you commit to forever with the gentle rhythm of waves as your witness.",
     themeName: "oceanfront",
-    venueId: 18,
+    venueId: undefined,
     image:
       "/images/wedding-themes/beachfront-wedding-ceremony-at-golden-hour-on-pris.jpg",
     gallery: [
@@ -224,7 +224,7 @@ export const intimateThemes: WeddingTheme[] = [
     description:
       "Host your closest loved ones in an exclusive villa estate featuring stunning architecture and manicured gardens.",
     themeName: "private_villa_estate",
-    venueId: 10,
+    venueId: undefined,
     image:
       "/images/wedding-themes/elegant-villa-estate-wedding-with-tropical-garden-.jpg",
     gallery: [
@@ -813,16 +813,16 @@ export const venues: Venue[] = [
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412068/Wedding-14_nixpbj.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412049/Wedding-15_w3afos.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412177/Facilities-1_ymxt1s.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762412208/Facilities-2_j7gby2.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762412208/Facilities-2_j7gby2.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412223/Facilities-3_w2lbdr.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412214/Facilities-4_c2cg5o.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762412229/Facilities-5_fqydzj.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762412230/Facilities-6_tzhdt2.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762412229/Facilities-5_fqydzj.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762412230/Facilities-6_tzhdt2.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412225/Facilities-7_j6xuzy.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412246/Facilities-8_dnhz4q.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412259/Facilities-9_blro6n.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412176/Facilities-10_qscvgy.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762412189/Facilities-11_etukal.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762412189/Facilities-11_etukal.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412174/Facilities-12_tnwula.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762411958/Room-1_s2zgqg.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412001/Room-2_ljn2ej.png",
@@ -833,16 +833,16 @@ export const venues: Venue[] = [
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412032/Room-7_epagy3.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762411953/Room-8_blsxaq.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412046/Room-9_zjuyyb.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411978/Room-10_xameee.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411978/Room-10_xameee.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762411994/Room-11_srasqm.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1762412005/Room-12_uhkprj.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411955/Lifestyle-1_mruckr.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411962/Lifestyle-2_ubs2hs.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411955/Lifestyle-3_gch7p8.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411965/Lifestyle-4_qnhyal.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411988/Lifestyle-5_p7kd7u.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411975/Lifestyle-6_xh8lms.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1762411992/Lifestyle-7_etyjwi.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411955/Lifestyle-1_mruckr.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411962/Lifestyle-2_ubs2hs.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411955/Lifestyle-3_gch7p8.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411965/Lifestyle-4_qnhyal.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411988/Lifestyle-5_p7kd7u.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411975/Lifestyle-6_xh8lms.png",
+        // "https://res.cloudinary.com/dzerxindp/image/upload/v1762411992/Lifestyle-7_etyjwi.png",
       ],
     },
     description:

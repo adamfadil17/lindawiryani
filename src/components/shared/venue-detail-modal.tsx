@@ -27,7 +27,7 @@ const formatPrice = (
   currency: Currency,
   rate: number
 ) => {
-  if (!price || price === 0) return "To Be Confirmed"; // Menangani startingPrice 0
+  if (!price || price === 0) return "To Be Confirmed";
 
   let finalPrice = price;
 
@@ -37,6 +37,15 @@ const formatPrice = (
 
   return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+// Komponen Loading Skeleton
+const ImageLoadingSkeleton = () => (
+  <div className="absolute inset-0 bg-stone-200 animate-pulse">
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+    </div>
+  </div>
+);
 
 export default function VenueDetailModal({
   venue,
@@ -48,9 +57,11 @@ export default function VenueDetailModal({
   const [selectedCurrency, setSelectedCurrency] =
     useState<Currency>(initialCurrency);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
+  const [mainImageLoaded, setMainImageLoaded] = useState(false);
+  const [loadedThumbnails, setLoadedThumbnails] = useState<Set<number>>(new Set());
+  const [mainImageError, setMainImageError] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
-  // Menggunakan gallery untuk list gambar
   const totalImages = venue.images.gallery.length;
   const visibleThumbnails = 4;
 
@@ -60,7 +71,16 @@ export default function VenueDetailModal({
 
   useEffect(() => {
     setCurrentImageIndex(0);
+    setMainImageLoaded(false);
+    setMainImageError(false);
+    setLoadedThumbnails(new Set());
   }, [venue.id]);
+
+  useEffect(() => {
+    // Reset loading state ketika image berubah
+    setMainImageLoaded(false);
+    setMainImageError(false);
+  }, [currentImageIndex]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -102,23 +122,24 @@ export default function VenueDetailModal({
     setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
   };
 
-  const scrollThumbnailsRight = () => {
-    const nextIndex = Math.min(currentImageIndex + 1, totalImages - 1);
-    setCurrentImageIndex(nextIndex);
-  };
-
-  const scrollThumbnailsLeft = () => {
-    const prevIndex = Math.max(currentImageIndex - 1, 0);
-    setCurrentImageIndex(prevIndex);
-  };
-
-  const canScrollLeft = currentImageIndex > 0;
-  const canScrollRight = currentImageIndex < totalImages - 1;
-
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
+  };
+
+  const handleMainImageLoad = () => {
+    setMainImageLoaded(true);
+    setMainImageError(false);
+  };
+
+  const handleMainImageError = () => {
+    setMainImageLoaded(true);
+    setMainImageError(true);
+  };
+
+  const handleThumbnailLoad = (index: number) => {
+    setLoadedThumbnails((prev) => new Set(prev).add(index));
   };
 
   return (
@@ -141,7 +162,21 @@ export default function VenueDetailModal({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 md:p-8 overflow-y-auto">
           {/* Left Side - Image Carousel */}
           <div className="flex flex-col gap-4">
-            <div className="relative aspect-[4/5] overflow-hidden">
+            <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
+              {/* Loading Skeleton */}
+              {!mainImageLoaded && !mainImageError && <ImageLoadingSkeleton />}
+
+              {/* Error State */}
+              {mainImageError && (
+                <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
+                  <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
+                    <X className="w-8 h-8 text-stone-500" />
+                  </div>
+                  <p className="text-stone-500 text-sm">Failed to load image</p>
+                </div>
+              )}
+
+              {/* Main Image */}
               <Image
                 src={
                   venue.images.gallery[currentImageIndex] ||
@@ -150,8 +185,12 @@ export default function VenueDetailModal({
                 alt={`${venue.name} - Image ${currentImageIndex + 1}`}
                 fill
                 loading="lazy"
-                className="object-cover"
+                className={`object-cover transition-opacity duration-300 ${
+                  mainImageLoaded ? "opacity-100" : "opacity-0"
+                }`}
                 sizes="(max-width: 768px) 100vw, 50vw"
+                onLoad={handleMainImageLoad}
+                onError={handleMainImageError}
               />
 
               {totalImages > 1 && (
@@ -194,6 +233,8 @@ export default function VenueDetailModal({
                       }}
                     >
                       {venue.images.gallery.map((img, index) => {
+                        const isLoaded = loadedThumbnails.has(index);
+                        
                         return (
                           <button
                             key={index}
@@ -201,6 +242,15 @@ export default function VenueDetailModal({
                             className="relative overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
                             style={{ aspectRatio: "1" }}
                           >
+                            {/* Thumbnail Loading Skeleton */}
+                            {!isLoaded && (
+                              <div className="absolute inset-0 bg-stone-200 animate-pulse">
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                                </div>
+                              </div>
+                            )}
+
                             <div
                               className={`w-full h-full relative transition-all ${
                                 index === currentImageIndex
@@ -213,8 +263,11 @@ export default function VenueDetailModal({
                                 alt={`Thumbnail ${index + 1}`}
                                 fill
                                 loading="lazy"
-                                className="object-cover hover:cursor-pointer"
+                                className={`object-cover hover:cursor-pointer transition-opacity duration-300 ${
+                                  isLoaded ? "opacity-100" : "opacity-0"
+                                }`}
                                 sizes="25vw"
+                                onLoad={() => handleThumbnailLoad(index)}
                               />
                             </div>
                           </button>
@@ -223,25 +276,19 @@ export default function VenueDetailModal({
                     </div>
                   </div>
 
-                  {totalImages > visibleThumbnails && (
-                    <>
-                      <button
-                        onClick={scrollThumbnailsLeft}
-                        disabled={!canScrollLeft}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
-                      >
-                        <ChevronLeft className="w-5 h-5 text-white" />
-                      </button>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-white" />
+                  </button>
 
-                      <button
-                        onClick={scrollThumbnailsRight}
-                        disabled={!canScrollRight}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary disabled:bg-stone-300 disabled:cursor-not-allowed flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
-                      >
-                        <ChevronRight className="w-5 h-5 text-white" />
-                      </button>
-                    </>
-                  )}
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                  >
+                    <ChevronRight className="w-5 h-5 text-white" />
+                  </button>
                 </div>
               </div>
             )}
@@ -260,7 +307,7 @@ export default function VenueDetailModal({
                     Signature
                   </h3>
                 )}
-                {venue.categoryRelations?.category  === "private_villa" && (
+                {venue.categoryRelations?.category === "private_villa" && (
                   <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Private Villa
                   </h3>

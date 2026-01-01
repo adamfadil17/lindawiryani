@@ -8,7 +8,6 @@ import {
   ChevronRight,
   MapPin,
   Check,
-  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { WeddingTheme, venues, Venue } from "@/lib/wedding-concepts-data";
@@ -19,12 +18,24 @@ interface ThemeDetailModalProps {
   onExploreVenue: (venue: Venue) => void;
 }
 
+// Komponen Loading Skeleton
+const ImageLoadingSkeleton = () => (
+  <div className="absolute inset-0 bg-stone-200 animate-pulse">
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+    </div>
+  </div>
+);
+
 export default function ThemeDetailModal({
   theme,
   onClose,
   onExploreVenue,
 }: ThemeDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
   const totalImages = theme.gallery?.length || 0;
   const relatedVenue = venues.find((v) => v.id === theme.venueId);
   const venueName = relatedVenue ? relatedVenue.name : "Venue To Be Confirmed";
@@ -36,10 +47,29 @@ export default function ThemeDetailModal({
     };
   }, []);
 
-  // Reset index saat theme berubah
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
+  // Reset index dan loading state saat theme berubah
   useEffect(() => {
     setCurrentImageIndex(0);
-  }, [theme.id]); // Changed from theme.title to theme.id
+    setImageLoaded(false);
+    setImageError(false);
+  }, [theme.id]);
+
+  // Reset loading state ketika image berubah
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [currentImageIndex]);
 
   const nextImage = () => {
     if (totalImages > 1) {
@@ -51,6 +81,16 @@ export default function ThemeDetailModal({
     if (totalImages > 1) {
       setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
     }
+  };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
+
+  const handleImageError = () => {
+    setImageLoaded(true);
+    setImageError(true);
   };
 
   return (
@@ -72,6 +112,20 @@ export default function ThemeDetailModal({
         <div className="overflow-y-auto p-4 md:p-8">
           <div className="flex flex-col gap-8">
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100">
+              {/* Loading Skeleton */}
+              {!imageLoaded && !imageError && <ImageLoadingSkeleton />}
+
+              {/* Error State */}
+              {imageError && (
+                <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
+                  <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
+                    <X className="w-8 h-8 text-stone-500" />
+                  </div>
+                  <p className="text-stone-500 text-sm">Failed to load image</p>
+                </div>
+              )}
+
+              {/* Main Image */}
               <Image
                 src={
                   theme.gallery[currentImageIndex] ||
@@ -79,9 +133,13 @@ export default function ThemeDetailModal({
                 }
                 alt={`${theme.title} - Image ${currentImageIndex + 1}`}
                 fill
-                className="object-cover"
+                className={`object-cover transition-opacity duration-300 ${
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
                 priority
                 sizes="(max-width: 1024px) 100vw, 80vw"
+                onLoad={handleImageLoad}
+                onError={handleImageError}
               />
 
               {/* Navigasi hanya muncul jika gambar lebih dari satu */}
@@ -120,7 +178,7 @@ export default function ThemeDetailModal({
                     {theme.title}
                   </h2>
 
-                  {/* UPDATED: Show venue name and only make it clickable if venue exists */}
+                  {/* Show venue name and only make it clickable if venue exists */}
                   {relatedVenue ? (
                     <button
                       onClick={() => onExploreVenue(relatedVenue)}
