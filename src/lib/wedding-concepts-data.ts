@@ -361,7 +361,7 @@ export const intimateThemes: WeddingTheme[] = [
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767177795/wedding_7_u5ltxb.png",
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767177791/Wedding_5_cvnerq.png",
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767177791/wedding_4_hkr0qy.png",
-      "https://res.cloudinary.com/dzerxindp/image/upload/v1767177791/wedding_6_ex3tgu.png",
+      // "https://res.cloudinary.com/dzerxindp/image/upload/v1767177791/wedding_6_ex3tgu.png",
     ],
     inclusions: [
       "Sacred forest ceremony setting",
@@ -433,15 +433,9 @@ export const venues: Venue[] = [
     description:
       "Nestled in the heart of Ubud's lush jungle, COMO Shambhala Estate offers a transformative wellness experience. This holistic sanctuary combines Balinese healing traditions with contemporary wellness practices, creating an intimate setting for couples seeking meaningful celebration.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "wellness_retreat",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -463,15 +457,9 @@ export const venues: Venue[] = [
     description:
       "An eco-luxury boutique hotel showcasing extraordinary bamboo architecture. Bambu Indah offers a unique blend of sustainability and sophistication, perfect for couples who value environmental consciousness without compromising on luxury.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "eco_luxury",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -493,15 +481,9 @@ export const venues: Venue[] = [
     description:
       "Perched above the Ayung River valley, Sayan House features striking contemporary design harmonizing with natural surroundings. The venue offers panoramic jungle views and sophisticated spaces for intimate celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "modern_tropical",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -523,15 +505,9 @@ export const venues: Venue[] = [
     description:
       "A stunning beachfront estate featuring contemporary architecture and direct beach access. Pantai Lima Estate combines modern luxury with the raw beauty of Bali's coastline, ideal for sophisticated beach celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "beachfront",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -553,15 +529,9 @@ export const venues: Venue[] = [
     description:
       "An exclusive beachfront venue offering unobstructed ocean views and contemporary tropical design. Noku Beach House provides refined elegance for intimate seaside celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "beachfront",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -583,15 +553,9 @@ export const venues: Venue[] = [
     description:
       "A beautifully designed beachfront property combining Balinese charm with modern amenities. Arnalaya Beach House offers an intimate setting with direct beach access and stunning sunset views.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "beachfront",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -650,15 +614,9 @@ export const venues: Venue[] = [
     description:
       "Perched dramatically on limestone cliffs, The Edge is one of Bali's most iconic venues. This architectural masterpiece offers breathtaking ocean views and world-class facilities for unforgettable celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "cliffside",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -680,15 +638,9 @@ export const venues: Venue[] = [
     description:
       "Set along a black sand beach with Mount Agung as backdrop, Alila Manggis offers serene luxury and authentic Balinese hospitality. The resort provides intimate spaces for meaningful celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "resort_luxury",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -710,15 +662,9 @@ export const venues: Venue[] = [
     description:
       "A collection of luxury villas perched on dramatic cliffs overlooking the Indian Ocean. The Ungasan offers unparalleled privacy and sophistication for exclusive celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "cliffside",
-      },
-    ],
     categoryRelations: {
       category: "signature",
     },
@@ -767,15 +713,9 @@ export const venues: Venue[] = [
     description:
       "Perched above Pandawa Beach, this exclusive villa offers breathtaking cliff and ocean views. The estate provides ultimate privacy for intimate celebrations with panoramic vistas.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "cliffside",
-      },
-    ],
     categoryRelations: {
       category: "private_villa",
     },
@@ -872,15 +812,9 @@ export const venues: Venue[] = [
     description:
       "A beautifully designed villa featuring lush tropical gardens and contemporary Balinese architecture. Villa Vedas offers an intimate garden setting for romantic celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "garden",
-      },
-    ],
     categoryRelations: {
       category: "private_villa",
     },
@@ -902,15 +836,9 @@ export const venues: Venue[] = [
     description:
       "An expansive beachfront estate offering direct beach access and sophisticated living spaces. Nag Shampa provides the perfect blend of privacy and luxury for intimate celebrations.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "beachfront",
-      },
-    ],
     categoryRelations: {
       category: "private_villa",
     },
@@ -932,15 +860,9 @@ export const venues: Venue[] = [
     description:
       "A stylish beachfront villa featuring contemporary design and serene coastal views. Villa Florimar offers intimate oceanfront settings for romantic elopements.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "elopement",
-        themeName: "oceanfront",
-      },
-    ],
     categoryRelations: {
       category: "private_villa",
     },
@@ -962,15 +884,9 @@ export const venues: Venue[] = [
     description:
       "A luxurious clifftop villa offering spectacular ocean views and modern amenities. Villa Kavya provides an exclusive setting for intimate celebrations with breathtaking vistas.",
     availability: {
-      forThemes: true,
+      forThemes: false,
       forVenueCategory: true,
     },
-    themeRelations: [
-      {
-        themeType: "intimate",
-        themeName: "cliffside",
-      },
-    ],
     categoryRelations: {
       category: "private_villa",
     },
@@ -1130,6 +1046,93 @@ export const venues: Venue[] = [
         themeName: "forest_jungle",
       },
     ],
+  },
+  {
+    id: 21,
+    name: "Intercontinental Bali Resort",
+    slogan: "A Luxury Beachfront Wedding Resort",
+    location: {
+      cityId: "jimbaran",
+      provinceId: "bali",
+    },
+    capacity: 0,
+    startingPrice: 0,
+    images: {
+      hero: "https://res.cloudinary.com/dzerxindp/image/upload/v1767242126/InterContinental_Bali_Resort_Aerial_umb6uc.jpg",
+      gallery: [
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242126/InterContinental_Bali_Resort_Aerial_umb6uc.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242124/Nirvana_Pool_4_oka8lw.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242127/Front_Pool_Entrance_wvfrt4.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242123/Sunset_Main_Pool_-_1_htvkrz.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242124/Fountain_Pool_1_rgaeic.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242127/Fun_Pool_1_dedh6g.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242136/Jimbaran_Bay_ql3h4f.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767242124/Entrance_to_Lobby_mpxdxe.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245405/Lobby_1_quqcb2.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241948/WB_Alun_ALun_Garden_bsoyss.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241939/Alun_Alun_Set_up_vyplwm.webp",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241945/Alun_Alun_Set_up_1_fpfvd7.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241939/Alun_Alun_Set_up_2_vxv0v6.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241942/Alun_Alun_Set_UP_3_m9ckdo.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241959/WB_Sunset_Garden_qoria2.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241951/Sunset_Garden_Wedding_Set_up_jeqgsa.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241942/Sunset_Garden_Wedding_mm8bmp.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241942/Sunset_Garden_Wedding_2_lvddou.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241946/Sunset_Garden_Wedding_7_do8zqk.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241940/Sunset_Garden_Wedding_10_zartyb.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241941/Sunset_Garden_Wedding_11_dlbh9q.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241941/Sunset_Garden_Wedding_13_aufaql.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241941/Sunset_Garden_Wedding_14_oalk43.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241949/WB_Grand_Reception_1_svg4je.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241948/WB_Outdoor_Reception_2_rivwma.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241953/WB_Grand_Reception_3_mmd7vi.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241943/WB_Wedding_Essentials_5_xxqdns.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241949/Wedding_At_Ballroom_Set_up_xjqeoj.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241943/WB_Jimbaran_Sunset_Wedding_z3jyp6.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241943/WB_Memories_to_Treasure_jqpztf.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241940/Enhance_Wedding_Ballroom_1_igcgp4.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241952/WB_Couple_on_the_beach_z3mbcb.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241944/Wedding_Photo_4_rr9uj3.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767241950/wedding_photo_5_kicnbt.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245730/1_Club_Lounge_o4e1ez.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245749/Singaraja_Lounge_3_hiuvfx.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245751/Uluwatu_Spa_2_geioje.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245745/Sauna_Uluwatu_Spa_edzln7.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245740/Jimbaran_Bicycle_Tour_ncv4ra.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245753/Outdoor_Playground_nd5d4a.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245739/IC-SPA_1_hr7x3v.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245733/Couple_Spa_czkcvh.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245737/Gebogan_Making_1_gltlzx.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245735/Family_Activity_sijp3j.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245730/Cooking_Class_3_c74gf4.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245729/Beauty_Salon_suyady.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245747/Playing_Tennis_ljcf00.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245753/Outdoor_Playground_nd5d4a.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245995/Uluwatu_Suite_-_King_Bedroom_r7c7s1.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245993/King_Premium_Living_Area_Singaraja_Lounge_Access_-_Upstair_Bed_Room_1_fn9zzo.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245990/King_Premium_Living_Area_Club_Lounge_Access_er2zv1.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245988/King_Premium_Club_-_Bed_Room_k1evlm.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245986/King_Club_Suite_-_Bed_Room_hdsnrc.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245981/King_Classic_Room_Singaraja_Lounge_Access_1_quar1t.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245981/DPRT1505-Balinese_Suite_uxrovm.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245979/DPRT1050-Jivanna_Villa_with_flower_tdtwlg.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245978/DPRT0611-Sanctuary_Suite_dredy7.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245934/Classic_Garden_View_Balcony_Singaraja_Room_fedwaj.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245932/Bukit_Suite_-_King_Bedroom_cbpqgo.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245930/1_Pecatu_Suite_Bedroom_wgg2gm.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245928/2_Single_Premium_Club_Lounge_Access_mm2ep8.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767245998/Clasicca_Villa_-_Twin_Bed_d4fjc9.jpg",
+      ],
+    },
+    description:
+      "InterContinental Bali Resort is a luxurious beachfront resort set along the pristine shores of Jimbaran Bay. Surrounded by lush tropical gardens and breathtaking ocean views, the resort offers a perfect blend of Balinese heritage and modern elegance. With a variety of spacious venues ranging from grand ballrooms to romantic beachfront settings, InterContinental Bali Resort is ideal for lavish weddings, sophisticated receptions, and unforgettable celebrations infused with five-star service and timeless coastal charm.",
+    availability: {
+      forThemes: false,
+      forVenueCategory: true,
+    },
+    categoryRelations: {
+      category: "signature",
+    },
   },
 ];
 
