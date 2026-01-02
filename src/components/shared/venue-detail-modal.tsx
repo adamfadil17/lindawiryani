@@ -58,12 +58,16 @@ export default function VenueDetailModal({
     useState<Currency>(initialCurrency);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [mainImageLoaded, setMainImageLoaded] = useState(false);
-  const [loadedThumbnails, setLoadedThumbnails] = useState<Set<number>>(new Set());
+  const [loadedThumbnails, setLoadedThumbnails] = useState<Set<number>>(
+    new Set()
+  );
   const [mainImageError, setMainImageError] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
   const totalImages = venue.images.gallery.length;
   const visibleThumbnails = 4;
+
+  const thumbnailItemRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setSelectedCurrency(initialCurrency);
@@ -101,18 +105,20 @@ export default function VenueDetailModal({
   }, [onClose]);
 
   const getScrollPosition = (imageIndex: number) => {
-    if (totalImages <= visibleThumbnails) {
-      return 0;
-    }
+    if (totalImages <= visibleThumbnails) return 0;
 
-    if (imageIndex >= totalImages - visibleThumbnails) {
-      return totalImages - visibleThumbnails;
-    }
+    const maxScrollIndex = totalImages - visibleThumbnails;
 
-    return Math.max(0, imageIndex - 1);
+    return Math.min(
+      Math.max(imageIndex - Math.floor(visibleThumbnails / 2), 0),
+      maxScrollIndex
+    );
   };
 
   const thumbnailScrollIndex = getScrollPosition(currentImageIndex);
+  const thumbnailWidth = thumbnailItemRef.current?.offsetWidth ?? 0;
+
+  const gap = 8; // gap-2 = 0.5rem = 8px
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % totalImages);
@@ -229,15 +235,18 @@ export default function VenueDetailModal({
                     <div
                       className="flex gap-2 transition-transform duration-300 ease-out"
                       style={{
-                        transform: `translateX(calc(-${thumbnailScrollIndex} * (25% + 0.5rem)))`,
+                        transform: `translateX(-${
+                          thumbnailScrollIndex * (thumbnailWidth + gap)
+                        }px)`,
                       }}
                     >
                       {venue.images.gallery.map((img, index) => {
                         const isLoaded = loadedThumbnails.has(index);
-                        
+
                         return (
                           <button
                             key={index}
+                            ref={index === 0 ? thumbnailItemRef : undefined}
                             onClick={() => setCurrentImageIndex(index)}
                             className="relative overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
                             style={{ aspectRatio: "1" }}
