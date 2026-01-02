@@ -829,7 +829,6 @@ export const venues: Venue[] = [
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767364725/Villa_Tamarama_512_MA007-6_rgb_v2_Large_buqiwu.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767364721/Villa_Tamarama_Common_Areas_MA036_rgb_tx7tve.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767364720/Villa_Tamarama_First_Floor_Master_Bedroom_510_MA106_rgb_kgccmk.jpg",
-        "",
       ],
     },
     description:
