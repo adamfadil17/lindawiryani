@@ -9,6 +9,7 @@ export type CityType =
   | "manggis"
   | "gianyar"
   | "jimbaran"
+  | "lombok-utara"
   | "all";
 
 // ============================================
@@ -37,11 +38,18 @@ export const cities: City[] = [
   { id: "manggis", name: "Manggis", provinceId: "bali", slug: "manggis" },
   { id: "gianyar", name: "Gianyar", provinceId: "bali", slug: "gianyar" },
   { id: "jimbaran", name: "Jimbaran", provinceId: "bali", slug: "jimbaran" },
+  {
+    id: "lombok-utara",
+    name: "Lombok Utara",
+    provinceId: "lombok",
+    slug: "lombok-utara",
+  },
 ];
 
 // Province data
 export const provinces: Province[] = [
   { id: "bali", name: "Bali", slug: "bali" },
+  { id: "lombok", name: "Lombok", slug: "lombok" },
 ];
 
 // ============================================
@@ -328,11 +336,18 @@ export const intimateThemes: WeddingTheme[] = [
     description:
       "Create unforgettable memories in unique destination venues that perfectly frame your love story.",
     themeName: "destination",
-    venueId: undefined,
+    venueId: 22,
     image:
-      "/images/wedding-themes/destination-wedding-venue-with-panoramic-mountain-.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511823/Wedding_2_byu1us.jpg",
     gallery: [
-      "/images/wedding-themes/destination-wedding-venue-with-panoramic-mountain-.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511823/Wedding_2_byu1us.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511815/Wedding_1_nlta08.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511826/Wedding_3_risbjp.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511813/Wedding_4_c98b0e.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511820/Wedding_5_sersgy.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511811/Wedding_6_uyayfs.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767511818/Wedding_7_f0vgit.jpg",
+      // "https://res.cloudinary.com/dzerxindp/image/upload/v1767511809/Wedding_8_fombwr.jpg",
     ],
     inclusions: [
       "Panoramic mountain/ocean view venue",
@@ -1333,6 +1348,100 @@ export const venues: Venue[] = [
     categoryRelations: {
       category: "signature",
     },
+  },
+  {
+    id: 22,
+    name: "7 Secrets Resort",
+    slogan: "Celebrate Love in Absolute Seclusion",
+    location: {
+      cityId: "lombok-utara",
+      provinceId: "lombok",
+    },
+    capacity: 0,
+    startingPrice: 0,
+    images: {
+      hero: "https://res.cloudinary.com/dzerxindp/image/upload/v1767510845/Cover_1_rkfu2c.jpg",
+      gallery: [
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767510845/Cover_1_rkfu2c.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767510942/Hero_1_g4nwlf.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767510940/Hero_2_iidpua.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767510943/Hero_3_aluho3.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767510943/Hero_4_wwtp2i.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767512727/Facilities_1_lbpqh0.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767512729/Facilities_2_o5uq6z.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767512733/Facilities_3_vfukzu.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767512784/Facilities_4_kotwiv.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767512860/Facilities_5_qrg3hq.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513327/Facilities_6_th6dt6.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513328/Facilities_7_wthkru.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513330/Facilities_8_tohzpj.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513335/Facilities_9_h8hta2.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513365/Facilities_10_hkvmqo.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513369/Facilities_11_v8x3tz.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513372/Facilities_12_kuv4ug.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513376/Facilities_13_q8nrxl.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513379/Facilities_14_iju2zi.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513382/Facilities_15_ga7bhg.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513385/Facilities_16_qkca8t.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513388/Facilities_17_ts7tg5.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513391/Facilities_18_jkkwrz.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513396/Facilities_19_zsui4w.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513399/Facilities_20_xaimlf.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513402/Facilities_21_yagmgf.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513405/Facilities_22_m7jifl.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513407/Facilities_23_hrtdzi.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513412/Facilities_24_ij4bso.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513416/Facilities_25_eqaxde.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513420/Facilities_26_gmrqlm.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513425/Facilities_27_wdp2fu.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513431/Facilities_28_zj7weu.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513439/Facilities_29_evjjxa.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767513441/Facilities_30_xap1e8.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511163/Garden_1_wzlsvh.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511123/Garden_2_hsthqo.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511104/Garden_3_jiiwaz.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511105/Garden_4_fdzfui.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511106/Garden_5_nutmup.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511173/Garden_6_cmuvmm.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511463/Mountain_1_tvxqqp.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511451/Mountain_2_npsnhi.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511452/Mountain_3_pwzgtl.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511454/Mountain_4_adjd0a.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511461/Mountain_5_paquyb.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511455/Mountain_6_iemlxn.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511457/Mountain_7_ufd8rd.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511458/Mountain_8_l4ighb.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511461/Mountain_9_rx14d6.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511547/Ocean_1_jjp6e1.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511532/Ocean_2_i2pj1q.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511550/Ocean_3_sst4h1.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511534/Ocean_4_sf0dlt.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511535/Ocean_5_zrcyka.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511525/Ocean_6_bsa1cb.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511526/Ocean_7_w8oicq.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511528/Ocean_8_jyjgzx.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511530/Ocean_9_oyqpyu.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511540/Ocean_10_glrfvo.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511542/Ocean_11_yyy7hd.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511545/Ocean_12_qlwhgr.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511538/Ocean_13_bgbpbu.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511628/Lifestyle_1_p2zp79.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767511630/Lifestyle_2_rpzkad.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767512594/Lifestyle_3_fetoji.jpg",
+      ],
+    },
+    description:
+      "Seven Secrets Lombok offers an intimate wedding experience in a secluded tropical setting, where privacy, elegance, and natural beauty come together to create a truly meaningful celebration of love.",
+    availability: {
+      forThemes: true,
+      forVenueCategory: false,
+    },
+    themeRelations: [
+      {
+        themeType: "intimate",
+        themeName: "destination",
+      },
+    ],
   },
 ];
 
