@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | Linda Wiryani",
   },
   description:
-    "Linda Wiryani Design & Event Planning curates intimate elopements and private villa weddings in Bali. Artfully designed celebrations rooted in architecture, hospitality, and storytelling.",
+    "Linda Wiryani Design & Event Planning creates intimate elopements and private villa weddings in Bali through refined design and storytelling.",
   keywords: [
     "Luxury Wedding Planner Bali",
     "Elopement Weddings Bali",
