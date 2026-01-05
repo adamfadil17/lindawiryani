@@ -174,9 +174,9 @@ export default function ThemeDetailModal({
                   <span className="text-xs text-primary tracking-widest uppercase font-semibold mb-2 block">
                     Wedding Theme
                   </span>
-                  <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight mb-2">
+                  <span className="block text-3xl md:text-4xl text-primary font-semibold leading-tight mb-2">
                     {theme.title}
-                  </h2>
+                  </span>
 
                   {/* Show venue name and only make it clickable if venue exists */}
                   {relatedVenue ? (
@@ -220,18 +220,18 @@ export default function ThemeDetailModal({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-sm text-primary tracking-widest uppercase font-bold">
+                  <span className="block text-sm text-primary tracking-widest uppercase font-bold">
                     The Experience
-                  </h3>
+                  </span>
                   <p className="text-sm md:text-base text-primary text-justify leading-relaxed italic">
                     "{theme.description}"
                   </p>
                 </div>
 
                 <div className="bg-stone-50 p-6 md:p-8">
-                  <h3 className="text-sm text-primary tracking-widest uppercase font-bold mb-6">
+                  <span className="block text-sm text-primary tracking-widest uppercase font-bold mb-6">
                     Curated Wedding Inclusions
-                  </h3>
+                  </span>
                   <ul className="grid grid-cols-1 gap-4">
                     {theme.inclusions?.map((item, idx) => (
                       <li

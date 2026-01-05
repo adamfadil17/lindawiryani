@@ -116,12 +116,12 @@ export default function Services() {
         >
           SERVICES
         </motion.h2>
-        <motion.h3
+        <motion.p
           variants={fadeInUp}
           className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold mb-12 max-w-4xl mx-auto leading-tight"
         >
           WHERE REFINED HOSPITALITY MEETS ARTFUL DESIGN
-        </motion.h3>
+        </motion.p>
 
         {/* Service Categories */}
         <motion.div
@@ -138,7 +138,7 @@ export default function Services() {
                   : "text-primary hover:text-primary/80 hover:cursor-pointer"
               }`}
             >
-              <h3>{service.name}</h3>
+              <span>{service.name}</span>
             </button>
           ))}
         </motion.div>
@@ -188,13 +188,13 @@ export default function Services() {
               {activeService}
             </motion.h3>
 
-            <motion.h3
+            <motion.p
               variants={fadeInUp}
               className="text-primary text-justify leading-relaxed mb-6 lg:mb-8 text-sm lg:text-sm xl:text-base flex-1"
             >
               {services.find((service) => service.name === activeService)
                 ?.desc || loremIpsum}
-            </motion.h3>
+            </motion.p>
 
             <motion.div variants={fadeInUp} className="mb-6 lg:mb-8">
               <Link href="https://wa.me/628113980998" target="_blank">

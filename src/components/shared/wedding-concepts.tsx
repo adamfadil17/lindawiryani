@@ -789,7 +789,7 @@ export default function WeddingConcepts() {
                   onClick={() => setIsVenueDropdownOpen(!isVenueDropdownOpen)}
                   className="flex items-center gap-2 text-md md:text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
-                  <h3>{selectedVenue}</h3>
+                  <span>{selectedVenue}</span>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       isVenueDropdownOpen ? "rotate-180" : ""
@@ -814,7 +814,7 @@ export default function WeddingConcepts() {
                             : "text-primary hover:bg-stone-100"
                         }`}
                       >
-                        <h3>{venue}</h3>
+                        <span>{venue}</span>
                       </button>
                     ))}
                   </div>
@@ -833,7 +833,7 @@ export default function WeddingConcepts() {
                   }
                   className="flex items-center gap-2 text-md md:text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
-                  <h3>{selectedLocation}</h3>
+                  <span>{selectedLocation}</span>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       isLocationDropdownOpen ? "rotate-180" : ""

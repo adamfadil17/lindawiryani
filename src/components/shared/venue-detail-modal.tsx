@@ -312,28 +312,28 @@ export default function VenueDetailModal({
               </span>
               <div className="flex gap-2">
                 {venue.categoryRelations?.category === "signature" && (
-                  <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Signature
-                  </h3>
+                  </span>
                 )}
                 {venue.categoryRelations?.category === "private_villa" && (
-                  <h3 className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                     Private Villa
-                  </h3>
+                  </span>
                 )}
               </div>
             </div>
 
-            <h3
+            <span
               id="venue-modal-title"
-              className="text-3xl md:text-4xl text-primary font-semibold leading-tight"
+              className="block text-3xl md:text-4xl text-primary font-semibold leading-tight"
             >
               {venue.name}
-            </h3>
+            </span>
 
-            <h3 className="text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
+            <span className="block text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
               {venue.slogan}
-            </h3>
+            </span>
 
             {/* Currency Dropdown */}
             <div className="flex items-center gap-2 mt-2">
@@ -406,11 +406,11 @@ export default function VenueDetailModal({
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-                  <h3 className="text-md text-primary">
+                  <span className="block text-md text-primary">
                     {cities.find((c) => c.id === venue.location.cityId)?.name},{" "}
                     {venue.location.provinceId.charAt(0).toUpperCase() +
                       venue.location.provinceId.slice(1)}
-                  </h3>
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-primary flex-shrink-0" />

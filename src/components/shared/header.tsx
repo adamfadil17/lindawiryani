@@ -218,9 +218,9 @@ export default function Header() {
                     >
                       {item.submenu.map((sub) => (
                         <div key={sub.title}>
-                          <h4 className="text-[13px] font-bold tracking-[0.2em] text-primary/50 mb-4 uppercase border-b border-stone-100 pb-2">
+                          <span className="block text-[13px] font-bold tracking-[0.2em] text-primary/50 mb-4 uppercase border-b border-stone-100 pb-2">
                             {sub.title}
-                          </h4>
+                          </span>
                           <ul className="space-y-3">
                             {sub.items.map((subItem) => (
                               <li key={subItem.name}>
@@ -290,9 +290,9 @@ export default function Header() {
                       <div className="pl-4 pb-4 mt-2 space-y-6">
                         {item.submenu.map((sub) => (
                           <div key={sub.title}>
-                            <p className="text-[13px] font-bold tracking-widest text-primary/50 uppercase mb-2">
+                            <span className="block text-[15px] font-bold tracking-widest text-primary/50 uppercase mb-2">
                               {sub.title}
-                            </p>
+                            </span>
                             <div className="flex flex-col space-y-3">
                               {sub.items.map((subItem) => (
                                 <button

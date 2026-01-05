@@ -139,9 +139,9 @@ export default function Contact() {
 
             {/* Keep In Touch Section */}
             <motion.div variants={fadeInUp} className="space-y-6">
-              <h3 className="text-xl md:text-2xl font-semibold text-primary italic">
+              <h2 className="text-xl md:text-2xl font-semibold text-primary italic">
                 KEEP IN TOUCH
-              </h3>
+              </h2>
 
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-6 gap-x-4">
                 {/* Email */}

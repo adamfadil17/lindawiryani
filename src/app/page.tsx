@@ -54,12 +54,12 @@ export default function Page() {
                 REFLECTS YOUR STORY
               </motion.h2>
 
-              <motion.h3
+              <motion.p
                 variants={fadeInUp}
                 className="text-sm md:text-base leading-relaxed mb-8 font-light"
               >
                 {`Luxury wedding design and event planning in Bali, guided by five-star hospitality standards.`}
-              </motion.h3>
+              </motion.p>
 
               <motion.div variants={fadeInUp}>
                 <Link href="#wedding-concepts">

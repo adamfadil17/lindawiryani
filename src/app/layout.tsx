@@ -34,6 +34,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/images/logo-lindawiryani.png",
     shortcut: "/images/logo-lindawiryani.png",
+    apple: "/apple-touch-icon.png.png",
   },
   openGraph: {
     title: "Linda Wiryani | Luxury Wedding Planner & Designer in Bali",
