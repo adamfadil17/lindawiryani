@@ -1,9 +1,56 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+// Fungsi untuk verifikasi reCAPTCHA
+async function verifyRecaptcha(token: string): Promise<boolean> {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  
+  if (!secretKey) {
+    console.error("RECAPTCHA_SECRET_KEY is not set");
+    return false;
+  }
+
+  try {
+    const response = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `secret=${secretKey}&response=${token}`,
+      }
+    );
+
+    const data = await response.json();
+    return data.success === true;
+  } catch (error) {
+    console.error("Error verifying reCAPTCHA:", error);
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const formData = await req.json();
+    const { recaptchaToken, ...emailData } = formData;
+
+    // Verifikasi reCAPTCHA
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { message: "reCAPTCHA token is required" },
+        { status: 400 }
+      );
+    }
+
+    const isValidRecaptcha = await verifyRecaptcha(recaptchaToken);
+    
+    if (!isValidRecaptcha) {
+      return NextResponse.json(
+        { message: "reCAPTCHA verification failed. Please try again." },
+        { status: 400 }
+      );
+    }
 
     // Konfigurasi transporter nodemailer menggunakan environment variables
     const transporter = nodemailer.createTransport({
@@ -18,7 +65,7 @@ export async function POST(req: Request) {
     const adminMailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: `New Wedding Inquiry from ${formData.yourName}`,
+      subject: `New Wedding Inquiry from ${emailData.yourName}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -128,20 +175,20 @@ export async function POST(req: Request) {
                 <div class="section-title">Contact Information</div>
                 <div class="field">
                   <div class="label">Name</div>
-                  <div class="value">${formData.yourName}</div>
+                  <div class="value">${emailData.yourName}</div>
                 </div>
                 <div class="field">
                   <div class="label">Email</div>
-                  <div class="value">${formData.yourEmail}</div>
+                  <div class="value">${emailData.yourEmail}</div>
                 </div>
                 <div class="field">
                   <div class="label">Address</div>
-                  <div class="value">${formData.yourAddress}</div>
+                  <div class="value">${emailData.yourAddress}</div>
                 </div>
                 <div class="field">
                   <div class="label">Telephone</div>
                   <div class="value">${
-                    formData.telephone || "Not provided"
+                    emailData.telephone || "Not provided"
                   }</div>
                 </div>
               </div>
@@ -151,19 +198,19 @@ export async function POST(req: Request) {
                 <div class="field">
                   <div class="label">Name</div>
                   <div class="value">${
-                    formData.nameOfGroom || "Not provided"
+                    emailData.nameOfGroom || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Religion</div>
                   <div class="value">${
-                    formData.religionOfGroom || "Not provided"
+                    emailData.religionOfGroom || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Nationality</div>
                   <div class="value">${
-                    formData.nationalityOfGroom || "Not provided"
+                    emailData.nationalityOfGroom || "Not provided"
                   }</div>
                 </div>
               </div>
@@ -173,19 +220,19 @@ export async function POST(req: Request) {
                 <div class="field">
                   <div class="label">Name</div>
                   <div class="value">${
-                    formData.nameOfBride || "Not provided"
+                    emailData.nameOfBride || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Religion</div>
                   <div class="value">${
-                    formData.religionOfBride || "Not provided"
+                    emailData.religionOfBride || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Nationality</div>
                   <div class="value">${
-                    formData.nationalityOfBride || "Not provided"
+                    emailData.nationalityOfBride || "Not provided"
                   }</div>
                 </div>
               </div>
@@ -195,25 +242,25 @@ export async function POST(req: Request) {
                 <div class="field">
                   <div class="label">Wedding Date</div>
                   <div class="value">${
-                    formData.weddingDate || "Not provided"
+                    emailData.weddingDate || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Wedding Venue</div>
                   <div class="value">${
-                    formData.weddingVenue || "Not provided"
+                    emailData.weddingVenue || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Number of Attendance</div>
                   <div class="value">${
-                    formData.numberOfAttendance || "Not provided"
+                    emailData.numberOfAttendance || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Approximate Budget</div>
                   <div class="value">${
-                    formData.approximateWeddingBudget || "Not provided"
+                    emailData.approximateWeddingBudget || "Not provided"
                   }</div>
                 </div>
               </div>
@@ -223,19 +270,19 @@ export async function POST(req: Request) {
                 <div class="field">
                   <div class="label">Hotel Name in Bali</div>
                   <div class="value">${
-                    formData.hotelNameInBali || "Not provided"
+                    emailData.hotelNameInBali || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Arrival Date</div>
                   <div class="value">${
-                    formData.arrivalDate || "Not provided"
+                    emailData.arrivalDate || "Not provided"
                   }</div>
                 </div>
                 <div class="field">
                   <div class="label">Departure Date</div>
                   <div class="value">${
-                    formData.departureDate || "Not provided"
+                    emailData.departureDate || "Not provided"
                   }</div>
                 </div>
               </div>
@@ -244,7 +291,7 @@ export async function POST(req: Request) {
                 <div class="section-title">Their Story & Vision</div>
                 <div class="field">
                   <div class="value">${
-                    formData.yourMessage || "No additional information provided"
+                    emailData.yourMessage || "No additional information provided"
                   }</div>
                 </div>
               </div>
@@ -270,7 +317,7 @@ export async function POST(req: Request) {
     // Email untuk Customer (Auto-reply)
     const customerMailOptions = {
       from: process.env.EMAIL_USER,
-      to: formData.yourEmail,
+      to: emailData.yourEmail,
       subject: "Thank You for Your Enquiry",
       html: `
         <!DOCTYPE html>
@@ -421,7 +468,7 @@ export async function POST(req: Request) {
             
             <div class="content">
               <div class="greeting">
-                Dear ${formData.yourName},
+                Dear ${emailData.yourName},
               </div>
               
               <div class="message">

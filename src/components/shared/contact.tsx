@@ -2,12 +2,15 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import ReCAPTCHA from "react-google-recaptcha";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 
 export default function Contact() {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
   const [formData, setFormData] = useState({
     yourName: "",
     yourEmail: "",
@@ -34,6 +37,7 @@ export default function Contact() {
     type: "success" | "error" | null;
     message: string;
   }>({ type: null, message: "" });
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -47,8 +51,22 @@ export default function Contact() {
     }));
   };
 
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validasi reCAPTCHA
+    if (!recaptchaToken) {
+      setSubmitStatus({
+        type: "error",
+        message: "Please complete the reCAPTCHA verification.",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
@@ -58,8 +76,13 @@ export default function Contact() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken,
+        }),
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         setSubmitStatus({
@@ -88,10 +111,14 @@ export default function Contact() {
           departureDate: "",
           yourMessage: "",
         });
+        // Reset reCAPTCHA
+        recaptchaRef.current?.reset();
+        setRecaptchaToken(null);
       } else {
         setSubmitStatus({
           type: "error",
           message:
+            data.message ||
             "Failed to send your inquiry. Please try again or contact us directly.",
         });
       }
@@ -515,6 +542,15 @@ export default function Contact() {
                 />
               </div>
 
+              {/* reCAPTCHA */}
+              <div className="flex justify-start">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                  onChange={handleRecaptchaChange}
+                />
+              </div>
+
               {/* Status Message */}
               {submitStatus.type && (
                 <motion.div
@@ -533,7 +569,7 @@ export default function Contact() {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !recaptchaToken}
                 className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer disabled:bg-primary/50 disabled:cursor-not-allowed transition-all"
               >
                 {isSubmitting ? "SENDING..." : "SEND INQUIRY"}
