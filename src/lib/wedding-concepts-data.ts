@@ -254,11 +254,16 @@ export const intimateThemes: WeddingTheme[] = [
     description:
       "Experience world-class hospitality and breathtaking venues within prestigious resort properties.",
     themeName: "resort_luxury",
-    venueId: undefined,
+    venueId: 23,
     image:
-      "/images/wedding-themes/luxury-resort-wedding-pavilion-with-ocean-views-an.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
     gallery: [
-      "/images/wedding-themes/luxury-resort-wedding-pavilion-with-ocean-views-an.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878580/BAL_1451_dhfxcj.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878569/BAL_1210_gktw4p.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878582/BAL_1330_screen-hi-res_dym0xt.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878565/BAL_1338_screen-hi-res_hf0l9e.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878570/BAL_1429_vf3mvt.jpg",
     ],
     inclusions: [
       "Luxury beachfront pavilion venue",
@@ -411,12 +416,8 @@ export const venues: Venue[] = [
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345638/Wedding_2_mpjhkn.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345594/Wedding_2_k8em3j.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345887/Wedding_3_umwzry.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1767345898/Wedding_4_qkdhxo.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1767345894/Wedding_5_lehwjl.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345898/Wedding_6_bsdksk.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1767345899/Wedding_7_nhuq25.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345904/Wedding_9_eykq3e.png",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1767345572/Wedding_11_zkszx2.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345561/Wedding_12_ucurzt.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345566/Wedding_13_kp62st.png",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1767345577/Wedding_14_b6w8hm.png",
@@ -1482,6 +1483,41 @@ export const venues: Venue[] = [
       {
         themeType: "intimate",
         themeName: "destination",
+      },
+    ],
+  },
+  {
+    id: 23,
+    name: "Four Seasons Resort",
+    slogan: "Intimate Luxury by the Ocean",
+    location: {
+      cityId: "jimbaran",
+      provinceId: "bali",
+    },
+    capacity: 0,
+    startingPrice: 0,
+    images: {
+      hero: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878630/BAL_1278_oahbcc.jpg",
+      gallery: [
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767878630/BAL_1278_oahbcc.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767878580/BAL_1451_dhfxcj.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767878569/BAL_1210_gktw4p.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767878582/BAL_1330_screen-hi-res_dym0xt.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767878565/BAL_1338_screen-hi-res_hf0l9e.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1767878570/BAL_1429_vf3mvt.jpg",
+      ],
+    },
+    description:
+      "A refined wedding experience at Four Seasons Resort Bali at Jimbaran Bay, where private beachfront villas, world-class service, and timeless ocean views create an intimate yet luxurious celebration of love.",
+    availability: {
+      forThemes: true,
+      forVenueCategory: false,
+    },
+    themeRelations: [
+      {
+        themeType: "intimate",
+        themeName: "resort_luxury",
       },
     ],
   },
