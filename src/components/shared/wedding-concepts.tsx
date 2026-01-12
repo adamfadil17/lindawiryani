@@ -119,7 +119,6 @@ function VenueCard({
         src={venue.images.hero || "https://placehold.net/default.svg"}
         alt={`${venue.name} - ${venue.slogan}`}
         fill
-        loading="lazy"
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         sizes="33vw"
       />
