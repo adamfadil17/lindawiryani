@@ -119,8 +119,9 @@ function VenueCard({
         src={venue.images.hero || "https://placehold.net/default.svg"}
         alt={`${venue.name} - ${venue.slogan}`}
         fill
+        quality={85}
         className="object-cover transition-transform duration-300 group-hover:scale-105"
-        sizes="33vw"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
