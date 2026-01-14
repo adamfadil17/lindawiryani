@@ -500,30 +500,30 @@ export const venues: Venue[] = [
       category: "signature",
     },
   },
-  {
-    id: 2,
-    name: "Bambu Indah",
-    slogan: "Sustainable Bamboo Luxury",
-    location: {
-      cityId: "ubud",
-      provinceId: "bali",
-    },
-    capacity: 0,
-    startingPrice: 0,
-    images: {
-      hero: "",
-      gallery: [""],
-    },
-    description:
-      "An eco-luxury boutique hotel showcasing extraordinary bamboo architecture. Bambu Indah offers a unique blend of sustainability and sophistication, perfect for couples who value environmental consciousness without compromising on luxury.",
-    availability: {
-      forThemes: false,
-      forVenueCategory: true,
-    },
-    categoryRelations: {
-      category: "signature",
-    },
-  },
+  // {
+  //   id: 2,
+  //   name: "Bambu Indah",
+  //   slogan: "Sustainable Bamboo Luxury",
+  //   location: {
+  //     cityId: "ubud",
+  //     provinceId: "bali",
+  //   },
+  //   capacity: 0,
+  //   startingPrice: 0,
+  //   images: {
+  //     hero: "",
+  //     gallery: [""],
+  //   },
+  //   description:
+  //     "An eco-luxury boutique hotel showcasing extraordinary bamboo architecture. Bambu Indah offers a unique blend of sustainability and sophistication, perfect for couples who value environmental consciousness without compromising on luxury.",
+  //   availability: {
+  //     forThemes: false,
+  //     forVenueCategory: true,
+  //   },
+  //   categoryRelations: {
+  //     category: "signature",
+  //   },
+  // },
   {
     id: 3,
     name: "The Sayan House",
@@ -1861,30 +1861,30 @@ export const venues: Venue[] = [
       },
     ],
   },
-  {
-    id: 24,
-    name: "Morabito Art Villa",
-    slogan: "Designed for Love, Curated Like Art",
-    location: {
-      cityId: "canggu",
-      provinceId: "bali",
-    },
-    capacity: 0,
-    startingPrice: 0,
-    images: {
-      hero: "",
-      gallery: [""],
-    },
-    description:
-      "Morabito Art Villa transforms weddings into editorial moments, framed by contemporary design and oceanfront beauty. Ideal for intimate celebrations, the venue offers a refined canvas where personal style, emotion, and artistic expression come together seamlessly.",
-    availability: {
-      forThemes: false,
-      forVenueCategory: true,
-    },
-    categoryRelations: {
-      category: "signature",
-    },
-  },
+  // {
+  //   id: 24,
+  //   name: "Morabito Art Villa",
+  //   slogan: "Designed for Love, Curated Like Art",
+  //   location: {
+  //     cityId: "canggu",
+  //     provinceId: "bali",
+  //   },
+  //   capacity: 0,
+  //   startingPrice: 0,
+  //   images: {
+  //     hero: "",
+  //     gallery: [""],
+  //   },
+  //   description:
+  //     "Morabito Art Villa transforms weddings into editorial moments, framed by contemporary design and oceanfront beauty. Ideal for intimate celebrations, the venue offers a refined canvas where personal style, emotion, and artistic expression come together seamlessly.",
+  //   availability: {
+  //     forThemes: false,
+  //     forVenueCategory: true,
+  //   },
+  //   categoryRelations: {
+  //     category: "signature",
+  //   },
+  // },
 ];
 
 // ============================================
