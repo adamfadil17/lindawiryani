@@ -607,15 +607,15 @@ export const venues: Venue[] = [
     capacity: 0,
     startingPrice: 0,
     images: {
-      hero: "https://res.cloudinary.com/dzerxindp/image/upload/v1768284611/Cover_1_irokfo.jpg",
+      hero: "https://res.cloudinary.com/dzerxindp/image/upload/v1768283851/Hero_6_ek50ay.jpg",
       gallery: [
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1768283851/Hero_6_ek50ay.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768284611/Cover_1_irokfo.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768283241/Hero_1_gwcd0j.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768283242/Hero_2_qkv80a.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768283245/Hero_3_usafwi.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768283249/Hero_4_gyyi6n.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768283252/Hero_5_ppwyah.jpg",
-        "https://res.cloudinary.com/dzerxindp/image/upload/v1768283851/Hero_6_ek50ay.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768284538/Hero_7_iawcua.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768283257/Hero_8_tvdzth.jpg",
         "https://res.cloudinary.com/dzerxindp/image/upload/v1768283260/Hero_9_me5p3s.jpg",
