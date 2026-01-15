@@ -38,7 +38,6 @@ const formatPrice = (
   return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-// Komponen Loading Skeleton
 const ImageLoadingSkeleton = () => (
   <div className="absolute inset-0 bg-stone-200 animate-pulse">
     <div className="w-full h-full flex items-center justify-center">
@@ -46,6 +45,100 @@ const ImageLoadingSkeleton = () => (
     </div>
   </div>
 );
+
+// ⭐ NEW: Optimized Thumbnail Component dengan Intersection Observer
+const ThumbnailImage = ({
+  src,
+  alt,
+  isActive,
+  onClick,
+  index,
+  currentIndex,
+}: {
+  src: string;
+  alt: string;
+  isActive: boolean;
+  onClick: () => void;
+  index: number;
+  currentIndex: number;
+}) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const thumbnailRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    // ⭐ Load thumbnails yang dekat dengan current index (±2 posisi)
+    const distanceFromCurrent = Math.abs(index - currentIndex);
+    if (distanceFromCurrent <= 2) {
+      setShouldLoad(true);
+      return;
+    }
+
+    // ⭐ Intersection Observer untuk lazy load thumbnails yang jauh
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoad(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: "50px", // Load 50px sebelum terlihat
+      }
+    );
+
+    if (thumbnailRef.current) {
+      observer.observe(thumbnailRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [index, currentIndex]);
+
+  return (
+    <button
+      ref={thumbnailRef}
+      onClick={onClick}
+      className="relative overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
+      style={{ aspectRatio: "1" }}
+    >
+      {/* Loading Skeleton */}
+      {shouldLoad && !isLoaded && (
+        <div className="absolute inset-0 bg-stone-200 animate-pulse">
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`w-full h-full relative transition-all ${
+          isActive
+            ? "ring-2 ring-primary ring-offset-2"
+            : "opacity-60 hover:opacity-100"
+        }`}
+      >
+        {shouldLoad ? (
+          <Image
+            src={src || "https://placehold.net/default.svg"}
+            alt={alt}
+            fill
+            loading="lazy"
+            className={`object-cover hover:cursor-pointer transition-opacity duration-300 ${
+              isLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            sizes="120px" // ⭐ Lebih spesifik untuk thumbnail
+            onLoad={() => setIsLoaded(true)}
+          />
+        ) : (
+          // Placeholder untuk thumbnails yang belum di-load
+          <div className="w-full h-full bg-stone-100" />
+        )}
+      </div>
+    </button>
+  );
+};
 
 export default function VenueDetailModal({
   venue,
@@ -58,16 +151,33 @@ export default function VenueDetailModal({
     useState<Currency>(initialCurrency);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [mainImageLoaded, setMainImageLoaded] = useState(false);
-  const [loadedThumbnails, setLoadedThumbnails] = useState<Set<number>>(
-    new Set()
-  );
   const [mainImageError, setMainImageError] = useState(false);
+  
+  // ⭐ Preload gambar berikutnya dan sebelumnya
+  const [preloadedImages, setPreloadedImages] = useState<Set<number>>(new Set([0]));
+  
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
+  const thumbnailItemRef = useRef<HTMLButtonElement>(null);
 
   const totalImages = venue.images.gallery.length;
   const visibleThumbnails = 4;
 
-  const thumbnailItemRef = useRef<HTMLButtonElement>(null);
+  // ⭐ Preload adjacent images untuk navigasi yang smooth
+  useEffect(() => {
+    const imagesToPreload = new Set<number>();
+    
+    // Current image
+    imagesToPreload.add(currentImageIndex);
+    
+    // Next dan previous images
+    const nextIndex = (currentImageIndex + 1) % totalImages;
+    const prevIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+    
+    imagesToPreload.add(nextIndex);
+    imagesToPreload.add(prevIndex);
+    
+    setPreloadedImages(imagesToPreload);
+  }, [currentImageIndex, totalImages]);
 
   useEffect(() => {
     setSelectedCurrency(initialCurrency);
@@ -77,11 +187,9 @@ export default function VenueDetailModal({
     setCurrentImageIndex(0);
     setMainImageLoaded(false);
     setMainImageError(false);
-    setLoadedThumbnails(new Set());
   }, [venue.id]);
 
   useEffect(() => {
-    // Reset loading state ketika image berubah
     setMainImageLoaded(false);
     setMainImageError(false);
   }, [currentImageIndex]);
@@ -117,8 +225,7 @@ export default function VenueDetailModal({
 
   const thumbnailScrollIndex = getScrollPosition(currentImageIndex);
   const thumbnailWidth = thumbnailItemRef.current?.offsetWidth ?? 0;
-
-  const gap = 8; // gap-2 = 0.5rem = 8px
+  const gap = 8;
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % totalImages);
@@ -144,10 +251,6 @@ export default function VenueDetailModal({
     setMainImageError(true);
   };
 
-  const handleThumbnailLoad = (index: number) => {
-    setLoadedThumbnails((prev) => new Set(prev).add(index));
-  };
-
   return (
     <div
       className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
@@ -156,6 +259,16 @@ export default function VenueDetailModal({
       aria-modal="true"
       aria-labelledby="venue-modal-title"
     >
+      {/* ⭐ Preload adjacent images */}
+      {Array.from(preloadedImages).map((index) => (
+        <link
+          key={index}
+          rel="preload"
+          as="image"
+          href={venue.images.gallery[index]}
+        />
+      ))}
+
       <div className="bg-white max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col relative">
         <button
           onClick={onClose}
@@ -169,10 +282,8 @@ export default function VenueDetailModal({
           {/* Left Side - Image Carousel */}
           <div className="flex flex-col gap-4">
             <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
-              {/* Loading Skeleton */}
               {!mainImageLoaded && !mainImageError && <ImageLoadingSkeleton />}
 
-              {/* Error State */}
               {mainImageError && (
                 <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
                   <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
@@ -182,7 +293,6 @@ export default function VenueDetailModal({
                 </div>
               )}
 
-              {/* Main Image */}
               <Image
                 src={
                   venue.images.gallery[currentImageIndex] ||
@@ -190,7 +300,8 @@ export default function VenueDetailModal({
                 }
                 alt={`${venue.name} - Image ${currentImageIndex + 1}`}
                 fill
-                loading="lazy"
+                priority // ⭐ Main image priority
+                quality={90} // ⭐ Higher quality untuk main image
                 className={`object-cover transition-opacity duration-300 ${
                   mainImageLoaded ? "opacity-100" : "opacity-0"
                 }`}
@@ -204,6 +315,7 @@ export default function VenueDetailModal({
                   <button
                     onClick={prevImage}
                     className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center hover:cursor-pointer transition-colors"
+                    aria-label="Previous image"
                   >
                     <ChevronLeft className="w-5 h-5 text-primary" />
                   </button>
@@ -211,6 +323,7 @@ export default function VenueDetailModal({
                   <button
                     onClick={nextImage}
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center hover:cursor-pointer transition-colors"
+                    aria-label="Next image"
                   >
                     <ChevronRight className="w-5 h-5 text-primary" />
                   </button>
@@ -224,7 +337,7 @@ export default function VenueDetailModal({
               )}
             </div>
 
-            {/* Thumbnail Gallery */}
+            {/* ⭐ Optimized Thumbnail Gallery */}
             {totalImages > 1 && (
               <div className="flex flex-col gap-3 px-6 md:px-4">
                 <div className="relative w-full">
@@ -240,54 +353,24 @@ export default function VenueDetailModal({
                         }px)`,
                       }}
                     >
-                      {venue.images.gallery.map((img, index) => {
-                        const isLoaded = loadedThumbnails.has(index);
-
-                        return (
-                          <button
-                            key={index}
-                            ref={index === 0 ? thumbnailItemRef : undefined}
-                            onClick={() => setCurrentImageIndex(index)}
-                            className="relative overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
-                            style={{ aspectRatio: "1" }}
-                          >
-                            {/* Thumbnail Loading Skeleton */}
-                            {!isLoaded && (
-                              <div className="absolute inset-0 bg-stone-200 animate-pulse">
-                                <div className="w-full h-full flex items-center justify-center">
-                                  <div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                                </div>
-                              </div>
-                            )}
-
-                            <div
-                              className={`w-full h-full relative transition-all ${
-                                index === currentImageIndex
-                                  ? "ring-2 ring-primary ring-offset-2"
-                                  : "opacity-60 hover:opacity-100"
-                              }`}
-                            >
-                              <Image
-                                src={img || "https://placehold.net/default.svg"}
-                                alt={`Thumbnail ${index + 1}`}
-                                fill
-                                loading="lazy"
-                                className={`object-cover hover:cursor-pointer transition-opacity duration-300 ${
-                                  isLoaded ? "opacity-100" : "opacity-0"
-                                }`}
-                                sizes="25vw"
-                                onLoad={() => handleThumbnailLoad(index)}
-                              />
-                            </div>
-                          </button>
-                        );
-                      })}
+                      {venue.images.gallery.map((img, index) => (
+                        <ThumbnailImage
+                          key={index}
+                          src={img}
+                          alt={`Thumbnail ${index + 1}`}
+                          isActive={index === currentImageIndex}
+                          onClick={() => setCurrentImageIndex(index)}
+                          index={index}
+                          currentIndex={currentImageIndex}
+                        />
+                      ))}
                     </div>
                   </div>
 
                   <button
                     onClick={prevImage}
                     className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                    aria-label="Previous thumbnail"
                   >
                     <ChevronLeft className="w-5 h-5 text-white" />
                   </button>
@@ -295,6 +378,7 @@ export default function VenueDetailModal({
                   <button
                     onClick={nextImage}
                     className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-primary/80 hover:bg-primary flex items-center justify-center hover:cursor-pointer transition-all shadow-lg z-10"
+                    aria-label="Next thumbnail"
                   >
                     <ChevronRight className="w-5 h-5 text-white" />
                   </button>
@@ -305,7 +389,6 @@ export default function VenueDetailModal({
 
           {/* Right Side - Venue Details */}
           <article className="flex flex-col items-start gap-3 justify-start">
-            {/* Category Label & Venue Type */}
             <div className="flex items-center gap-3">
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
                 Venues
@@ -335,7 +418,6 @@ export default function VenueDetailModal({
               {venue.slogan}
             </span>
 
-            {/* Currency Dropdown */}
             <div className="flex items-center gap-2 mt-2">
               <span className="text-sm text-primary tracking-wider uppercase font-semibold">
                 Currency
@@ -346,6 +428,8 @@ export default function VenueDetailModal({
                     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                   }
                   className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                  aria-label="Select currency"
+                  aria-expanded={isCurrencyDropdownOpen}
                 >
                   {selectedCurrency}
                   <ChevronDown
@@ -378,7 +462,6 @@ export default function VenueDetailModal({
               </div>
             </div>
 
-            {/* Venue Info Section */}
             <div className="flex justify-start gap-8 items-start mt-4 mb-6 w-full border-y border-stone-100 py-6">
               <div className="flex flex-col">
                 <span className="text-sm text-primary italic mb-1">
