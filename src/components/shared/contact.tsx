@@ -181,10 +181,10 @@ export default function Contact() {
                     className="shrink-0"
                   />
                   <a
-                    href="mailto:lindawiryanievents@gmail.com"
+                    href="mailto:hello@lindawiryani.com"
                     className="text-primary text-base md:text-lg hover:text-primary/80 transition-colors break-words sm:break-normal"
                   >
-                    lindawiryanievents@gmail.com
+                    hello@lindawiryani.com
                   </a>
                 </div>
 
