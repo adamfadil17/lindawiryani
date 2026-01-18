@@ -63,15 +63,15 @@ export default function Gallery() {
           {/* Main Title - Right */}
           <motion.div variants={fadeInUp} className="flex-1 md:text-right">
             <h3 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
-              Bali Wedding Gallery — Real Celebrations, Artful Design, and
+              Bali Wedding Gallery – Real Celebrations, Artful Design, and
               Timeless Inspiration
             </h3>
           </motion.div>
         </motion.div>
 
-        {/* Mobile Layout - 2 Columns with Staggered/Offset Layout */}
+        {/* Mobile & Tablet Layout - 2 Columns with Staggered/Offset Layout */}
         <motion.div
-          className="block md:hidden"
+          className="block lg:hidden"
           initial="hidden"
           whileInView="visible"
           viewport={{
@@ -81,13 +81,13 @@ export default function Gallery() {
           }}
           variants={staggerContainer}
         >
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 md:gap-4">
             {/* Left Column - starts from top */}
-            <div className="space-y-3">
+            <div className="space-y-3 md:space-y-4">
               {/* Image 1 */}
               <motion.div
                 variants={fadeIn}
-                className="relative h-[280px] overflow-hidden group"
+                className="relative h-[280px] md:h-[480px] overflow-hidden group"
               >
                 <Image
                   src={galleryImages[0].src}
@@ -103,7 +103,7 @@ export default function Gallery() {
               {/* Image 2 */}
               <motion.div
                 variants={fadeIn}
-                className="relative h-[280px] overflow-hidden group "
+                className="relative h-[280px] md:h-[480px] overflow-hidden group"
               >
                 <Image
                   src={galleryImages[1].src}
@@ -119,7 +119,7 @@ export default function Gallery() {
               {/* Image 3 */}
               <motion.div
                 variants={fadeIn}
-                className="relative h-[280px] overflow-hidden group"
+                className="relative h-[280px] md:h-[480px] overflow-hidden group"
               >
                 <Image
                   src={galleryImages[2].src}
@@ -134,11 +134,11 @@ export default function Gallery() {
             </div>
 
             {/* Right Column - starts with offset/padding top */}
-            <div className="space-y-3 pt-20">
+            <div className="space-y-3 md:space-y-4 pt-20 md:pt-24">
               {/* Image 4 */}
               <motion.div
                 variants={fadeIn}
-                className="relative h-[280px] overflow-hidden group"
+                className="relative h-[280px] md:h-[480px] overflow-hidden group"
               >
                 <Image
                   src={galleryImages[3].src}
@@ -154,7 +154,7 @@ export default function Gallery() {
               {/* Image 5 */}
               <motion.div
                 variants={fadeIn}
-                className="relative h-[280px] overflow-hidden group"
+                className="relative h-[280px] md:h-[480px] overflow-hidden group"
               >
                 <Image
                   src={galleryImages[4].src}
@@ -170,7 +170,7 @@ export default function Gallery() {
               {/* Image 6 */}
               <motion.div
                 variants={fadeIn}
-                className="relative h-[280px] overflow-hidden group"
+                className="relative h-[280px] md:h-[480px] overflow-hidden group"
               >
                 <Image
                   src={galleryImages[5].src}
@@ -187,7 +187,7 @@ export default function Gallery() {
         </motion.div>
 
         {/* Desktop Layout - Original Grid */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <div className="space-y-6">
             {/* Row 1: Landscape + Portrait + Portrait */}
             <motion.div
