@@ -25,7 +25,7 @@ interface VenueDetailModalProps {
 const formatPrice = (
   price: number | undefined,
   currency: Currency,
-  rate: number
+  rate: number,
 ) => {
   if (!price || price === 0) return "To Be Confirmed";
 
@@ -59,7 +59,7 @@ export default function VenueDetailModal({
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [mainImageLoaded, setMainImageLoaded] = useState(false);
   const [loadedThumbnails, setLoadedThumbnails] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
   const [mainImageError, setMainImageError] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
@@ -111,7 +111,7 @@ export default function VenueDetailModal({
 
     return Math.min(
       Math.max(imageIndex - Math.floor(visibleThumbnails / 2), 0),
-      maxScrollIndex
+      maxScrollIndex,
     );
   };
 
@@ -324,16 +324,27 @@ export default function VenueDetailModal({
               </div>
             </div>
 
-            <span
-              id="venue-modal-title"
-              className="block text-3xl md:text-4xl text-primary font-semibold leading-tight"
-            >
-              {venue.name}
-            </span>
+            {venue.categoryRelations?.category === "signature" ? (
+              <span
+                id="venue-modal-title"
+                className="block text-3xl md:text-4xl text-primary font-semibold leading-tight"
+              >
+                {venue.name}
+              </span>
+            ) : (
+              <span
+                id="venue-modal-title"
+                className="block text-3xl md:text-4xl text-primary font-semibold leading-tight"
+              >
+                {venue.slogan}
+              </span>
+            )}
 
-            <span className="block text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
-              {venue.slogan}
-            </span>
+            {venue.categoryRelations?.category === "signature" && (
+              <span className="block text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
+                {venue.slogan}
+              </span>
+            )}
 
             {/* Currency Dropdown */}
             <div className="flex items-center gap-2 mt-2">
@@ -394,7 +405,7 @@ export default function VenueDetailModal({
                     {formatPrice(
                       venue.startingPrice,
                       selectedCurrency,
-                      exchangeRate
+                      exchangeRate,
                     )}
                   </span>
                   {venue.startingPrice > 0 && (

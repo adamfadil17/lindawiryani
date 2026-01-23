@@ -48,7 +48,7 @@ const useCurrencyConverter = () => {
 
       try {
         const response = await fetch(
-          "https://api.exchangerate-api.com/v4/latest/USD"
+          "https://api.exchangerate-api.com/v4/latest/USD",
         );
         const data = await response.json();
         const rate = data.rates.IDR;
@@ -72,7 +72,7 @@ const useCurrencyConverter = () => {
 const formatPrice = (
   price: number | undefined,
   currency: Currency,
-  rate: number
+  rate: number,
 ) => {
   if (!price) return "To Be Confirmed";
 
@@ -127,13 +127,21 @@ function VenueCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
       <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-        <h3 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[280px]">
-          {venue.name}
-        </h3>
+        {venue.categoryRelations?.category === "signature" ? (
+          <h3 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[280px]">
+            {venue.name}
+          </h3>
+        ) : (
+          <h3 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[200px]">
+            {venue.slogan}
+          </h3>
+        )}
 
-        <h3 className="text-md font-light italic mb-4 text-white max-w-[280px]">
-          {venue.slogan}
-        </h3>
+        {venue.categoryRelations?.category === "signature" && (
+          <h3 className="text-md font-light italic mb-4 text-white max-w-[280px]">
+            {venue.slogan}
+          </h3>
+        )}
 
         <div className="flex items-center justify-start mb-4">
           <div className="flex flex-col items-start">
@@ -148,7 +156,7 @@ function VenueCard({
                 {formatPrice(
                   venue.startingPrice,
                   selectedCurrency,
-                  exchangeRate
+                  exchangeRate,
                 )}
               </span>
               {venue.startingPrice === 0 ? null : (
@@ -164,7 +172,7 @@ function VenueCard({
               <MapPin className="w-4 h-4" />
               <h3>
                 {cities.find((city) => city.id === venue.location.cityId)?.name}
-                , {" "}
+                ,{" "}
                 {venue.location.provinceId.charAt(0).toUpperCase() +
                   venue.location.provinceId.slice(1)}
               </h3>
@@ -335,13 +343,13 @@ export default function WeddingConcepts() {
 
     window.addEventListener(
       "weddingConceptsFilter",
-      handleFilterEvent as EventListener
+      handleFilterEvent as EventListener,
     );
 
     return () => {
       window.removeEventListener(
         "weddingConceptsFilter",
-        handleFilterEvent as EventListener
+        handleFilterEvent as EventListener,
       );
     };
   }, []);
@@ -363,11 +371,11 @@ export default function WeddingConcepts() {
     // Filter by category
     if (selectedVenue === "Signature Venues") {
       filteredList = filteredList.filter(
-        (venue) => venue.categoryRelations?.category === "signature"
+        (venue) => venue.categoryRelations?.category === "signature",
       );
     } else if (selectedVenue === "Private Villas") {
       filteredList = filteredList.filter(
-        (venue) => venue.categoryRelations?.category === "private_villa"
+        (venue) => venue.categoryRelations?.category === "private_villa",
       );
     }
 
@@ -417,7 +425,7 @@ export default function WeddingConcepts() {
 
   const prevThemeSlide = () => {
     setCurrentThemeSlide(
-      (prev) => (prev - 1 + currentThemes.length) % currentThemes.length
+      (prev) => (prev - 1 + currentThemes.length) % currentThemes.length,
     );
   };
 
@@ -427,7 +435,7 @@ export default function WeddingConcepts() {
 
   const prevVenueSlide = () => {
     setCurrentVenueSlide(
-      (prev) => (prev - 1 + filteredVenues.length) % filteredVenues.length
+      (prev) => (prev - 1 + filteredVenues.length) % filteredVenues.length,
     );
   };
 
