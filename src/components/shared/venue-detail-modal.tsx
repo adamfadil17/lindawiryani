@@ -47,6 +47,20 @@ const ImageLoadingSkeleton = () => (
   </div>
 );
 
+const VenueNameSlogan = ({ venue }: { venue: Venue }) => (
+  <div className="flex flex-col gap-3">
+    <span
+      id="venue-modal-title"
+      className="block text-3xl md:text-4xl text-primary font-semibold leading-tight"
+    >
+      {venue.name}
+    </span>
+    <span className="block text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
+      {venue.slogan}
+    </span>
+  </div>
+);
+
 export default function VenueDetailModal({
   venue,
   onClose,
@@ -324,26 +338,12 @@ export default function VenueDetailModal({
               </div>
             </div>
 
-            {venue.categoryRelations?.category === "signature" ? (
-              <span
-                id="venue-modal-title"
-                className="block text-3xl md:text-4xl text-primary font-semibold leading-tight"
-              >
-                {venue.name}
+            {venue.categoryRelations?.category === "private_villa" ? (
+              <span className="block text-3xl md:text-4xl text-primary font-semibold leading-tight">
+                {venue.slogan}
               </span>
             ) : (
-              <span
-                id="venue-modal-title"
-                className="block text-3xl md:text-4xl text-primary font-semibold leading-tight"
-              >
-                {venue.slogan}
-              </span>
-            )}
-
-            {venue.categoryRelations?.category === "signature" && (
-              <span className="block text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
-                {venue.slogan}
-              </span>
+              <VenueNameSlogan venue={venue} />
             )}
 
             {/* Currency Dropdown */}
