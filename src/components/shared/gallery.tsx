@@ -12,7 +12,7 @@ export default function Gallery() {
       orientation: "landscape",
     },
     {
-      src: "/images/gallery/gallery7.png",
+      src: "/images/gallery/gallery2.png",
       alt: "Beautiful bridal bouquet with peach roses",
       orientation: "portrait",
     },
@@ -22,7 +22,7 @@ export default function Gallery() {
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery8.png",
+      src: "/images/gallery/gallery4.png",
       alt: "Elegant outdoor wedding table setting",
       orientation: "portrait",
     },

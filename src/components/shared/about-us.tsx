@@ -104,7 +104,7 @@ export default function AboutUs() {
             >
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us/about-us4.png"
+                  src="/images/about-us/about-us2.png"
                   alt="Linda Wiryani Assets"
                   fill
                   loading="lazy"

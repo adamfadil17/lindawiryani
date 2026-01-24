@@ -850,7 +850,7 @@ export default function WeddingConcepts() {
                 </button>
 
                 {isLocationDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px]">
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px] max-h-[240px] overflow-y-auto">
                     {locations.map((location) => (
                       <button
                         key={location}

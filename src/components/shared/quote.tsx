@@ -46,7 +46,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quote/quote4.png"
+                src="/images/quote/quote1.png"
                 alt="Couple embracing in field with flowing veil"
                 fill
                 loading="lazy"
@@ -76,7 +76,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quote/quote5.png"
+                src="/images/quote/quote3.png"
                 alt="Couple dancing with flowing wedding dress"
                 fill
                 loading="lazy"
@@ -106,7 +106,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden"
               >
                 <Image
-                  src="/images/quote/quote4.png"
+                  src="/images/quote/quote1.png"
                   alt="Couple embracing in field with flowing veil"
                   fill
                   loading="lazy"
@@ -138,7 +138,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden w-1/2"
               >
                 <Image
-                  src="/images/quote/quote5.png"
+                  src="/images/quote/quote3.png"
                   alt="Wedding ceremony with guests throwing petals"
                   fill
                   loading="lazy"
