@@ -26,7 +26,7 @@ export default function Footer() {
 
             {/* Address */}
             <p className="text-primary text-md font-light max-w-md mx-auto lg:mx-0">
-              © 2025 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali
+              © 2026 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali
               80239, Indonesia.
             </p>
           </div>

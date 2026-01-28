@@ -298,9 +298,12 @@ export const intimateThemes: WeddingTheme[] = [
     themeName: "garden",
     venueId: 30,
     image:
-      "/images/wedding-themes/romantic-garden-wedding-by-riverside-with-lush-flo.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1769608324/Wedding_3_demaoq.png",
     gallery: [
-      "/images/wedding-themes/romantic-garden-wedding-by-riverside-with-lush-flo.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1769608324/Wedding_3_demaoq.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1769608323/Wedding_1_zgtm4d.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1769608331/Wedding_2_sxvamv.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1769608324/Wedding_4_wynsx3.png",
     ],
     inclusions: [
       "Riverside lawn ceremony venue",
@@ -377,9 +380,9 @@ export const intimateThemes: WeddingTheme[] = [
     themeName: "forest_jungle",
     venueId: 31,
     image:
-      "/images/wedding-themes/intimate-forest-wedding-ceremony-with-tropical-jun.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1769609440/Cover_1_py4g8y.jpg",
     gallery: [
-      "/images/wedding-themes/intimate-forest-wedding-ceremony-with-tropical-jun.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1769609440/Cover_1_py4g8y.jpg",
     ],
     inclusions: [
       "Sacred forest ceremony setting",
@@ -2326,8 +2329,17 @@ export const venues: Venue[] = [
     capacity: 0,
     startingPrice: 0,
     images: {
-      hero: "",
-      gallery: [""],
+      hero: "https://res.cloudinary.com/dzerxindp/image/upload/v1769608323/Cover_1_egefox.jpg",
+      gallery: [
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608323/Cover_1_egefox.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608323/Wedding_1_zgtm4d.png",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608331/Wedding_2_sxvamv.png",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608324/Wedding_3_demaoq.png",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608324/Wedding_4_wynsx3.png",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608322/Facilities_1_lej3x6.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608321/Room_1_caprb2.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769608326/Room_2_nkirrs.jpg",
+      ],
     },
     description:
       "An enchanting garden and riverside setting surrounded by lush landscapes, perfect for intimate weddings embraced by nature’s calm and refined luxury.",
@@ -2353,8 +2365,25 @@ export const venues: Venue[] = [
     capacity: 0,
     startingPrice: 0,
     images: {
-      hero: "",
-      gallery: [""],
+      hero: "https://res.cloudinary.com/dzerxindp/image/upload/v1769609440/Cover_1_py4g8y.jpg",
+      gallery: [
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609440/Cover_1_py4g8y.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609366/Wedding_1_wm2myk.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609391/Wedding_2_eftgip.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609392/Wedding_3_bwi6ec.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609402/Wedding_4_s4khze.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609407/Wedding_5_clinom.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609439/Wedding_6_uplvov.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609432/Wedding_7_eps9mj.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609448/Wedding_8_q9kzev.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609425/Wedding_9_thgwpm.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609356/Wedding_10_xbw4yd.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609357/Wedding_11_wcoije.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609363/Wedding_12_ugnwep.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609362/Wedding_13_s9e71c.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609386/Wedding_14_pjvt5z.jpg",
+        "https://res.cloudinary.com/dzerxindp/image/upload/v1769609388/Wedding_15_fu3fbx.jpg",
+      ],
     },
     description:
       "A secluded jungle sanctuary offering an intimate forest wedding experience, where nature, tranquility, and romance come together in perfect harmony.",
