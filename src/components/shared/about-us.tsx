@@ -62,15 +62,15 @@ export default function AboutUs() {
                 variants={fadeInUp}
                 className="text-primary text-justify leading-relaxed text-base md:text-base whitespace-pre-line"
               >
-                {`At Linda Wiryani Design and Event Planning, each wedding begins with a story - thoughtfully designed, never templated.
+                {`At Linda Wiryani Design and Event Planning, each wedding begins with a story, thoughtfully designed, never templated.
                 
-                Based in Bali, the studio is known for artfully curated weddings shaped by architecture, hospitality, and refined storytelling.
-                
-                With nearly two decades of experience in five-star luxury hospitality, every celebration is created to feel seamless, calm, and deeply personal — from the first welcome to the final farewell.
-                
-                Specializing in intimate and private villa weddings in Bali, each celebration is guided by space, emotion, and human connection rather than trends.
-                
-                Rooted in a design-led approach that blends architecture, fashion, and artful detail, the studio creates weddings that feel timeless, considered, and quietly unforgettable.`}
+                Based in Bali, we are a destination wedding planning and design studio, known for artfully curated weddings shaped by architecture, hospitality, and refined storytelling.
+
+                With nearly two decades of experience in five-star luxury hospitality, every celebration is created to feel seamless, calm, and deeply personal, from the first welcome to the final farewell.
+
+                We specialize in intimate weddings and private villa weddings in Bali, designing celebrations guided by space, emotion, and human connection rather than trends.
+
+                Rooted in a design-led approach that blends architecture, fashion, and artful detail, we create weddings that feel timeless, considered, and quietly unforgettable.`}
               </motion.p>
               <motion.div variants={fadeInUp}>
                 <button

@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png.png",
   },
   openGraph: {
-    title: "Linda Wiryani | Luxury Wedding Planner & Designer in Bali",
+    title: "Luxury Wedding Planner in Bali | Linda Wiryani Design & Event Planning",
     description:
-      "Bespoke Bali wedding planning for couples who value meaning over excess. Specializing in intimate celebrations, signature venues, and private estates.",
+      "Linda Wiryani Design and Event Planning is a luxury wedding planner and designer in Bali, specializing in destination weddings, private villa weddings, intimate celebrations, and refined elopements for international couples.",
     url: "https://www.lindawiryani.com",
     siteName: "Linda Wiryani Design & Event Planning",
     locale: "en_US",
@@ -68,7 +68,7 @@ export default function RootLayout({
     url: "https://www.lindawiryani.com",
     image: "https://www.lindawiryani.com/images/logo-lindawiryani.png",
     description:
-      "A Bali-based wedding planning and design practice specializing in intimate celebrations, private villa weddings, and signature venues.",
+      "Linda Wiryani Design and Event Planning is a luxury wedding planner and designer in Bali, specializing in destination weddings, private villa weddings, intimate celebrations, and refined elopements for international couples.",
     telephone: "+628113980998",
     address: {
       "@type": "PostalAddress",

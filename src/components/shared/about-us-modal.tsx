@@ -37,10 +37,10 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
             {/* Main Header */}
             <div className="flex flex-col gap-4 border-b border-stone-100 pb-8">
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
-                About The Studio
+                About Linda Wiryani Design and Event Planning
               </span>
               <span className="text-3xl md:text-4xl text-primary font-bold leading-tight">
-                About Linda Wiryani Design and Event Planning
+                Bali Destination Wedding Planner & Creative Studio
               </span>
               <span className="text-xl md:text-2xl text-primary font-bold leading-tight">
                 Designing Weddings with Intention, Emotion, and Art
@@ -52,26 +52,37 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
               {/* Introduction */}
               <div className="flex flex-col gap-4">
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  At Linda Wiryani Design and Event Planning, every celebration
-                  begins with a story — yours.
+                  At Linda Wiryani Design & Event Planning, every celebration
+                  begins with a story-yours.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  The studio is a Bali-based wedding planning and design
-                  practice, known for artfully designed weddings shaped by
+                  We are a Bali-based wedding planning and design studio
+                  specializing in intimate weddings, private villa weddings, and
+                  destination celebrations in Bali.
+                </p>
+                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                  Our studio is known for artfully designed weddings shaped by
                   architecture, hospitality, and thoughtful storytelling.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  Each celebration is approached as a unique design project
-                  "never a template" guided by sensitivity to space, emotion,
-                  and human connection.
+                  {`Each celebration is approached as a unique design project ‘never a template’ guided by sensitivity to space, emotion, and human connection.`}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <p className="text-lg md:text-xl text-primary font-bold leading-tight">
+                  A Design-Led Wedding Philosophy
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  Rooted in a design-led philosophy, the work is influenced by
+                  Rooted in a design-led philosophy, our work is influenced by
                   architectural balance, refined materiality, and the flow of
-                  experience. With nearly two decades of experience in Bali's
-                  five-star luxury hospitality industry, every wedding is
-                  curated not only to look beautiful, but to feel seamless — for
-                  both couples and their guests.
+                  experience.
+                </p>
+                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                  With nearly two decades of experience in Bali’s five-star
+                  luxury hospitality industry, every wedding is curated not only
+                  to look beautiful, but to feel seamless, for both couples and
+                  their guests.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
                   From the first welcome to the final farewell, each detail is
@@ -84,16 +95,15 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
                 <p className="text-lg md:text-xl text-primary font-bold mb-4 leading-tight">
                   Intimate and Private Villa Weddings in Bali
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
+                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
                   Rather than repeating concepts, each wedding is curated
-                  individually. Every celebration is designed specifically for
-                  the couple, shaped by the chosen space and its surroundings,
-                  and guided by emotion rather than trends.
+                  individually.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  This approach allows the studio to create intimate private
-                  villa weddings in Bali that feel personal, calm, and timeless
-                  — experiences remembered long after the day has passed.
+                  {`Every celebration is shaped by the chosen space, its natural surroundings, and the couple’s personal story, guided by emotion rather than trends.`}
+                </p>
+                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                  {`This approach allows us to create intimate private villa weddings in Bali that feel personal, calm, and timeless experiences remembered long after the day has passed.`}
                 </p>
               </div>
 
@@ -103,25 +113,19 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
                   Where Architecture, Fashion, and Artful Design Meet
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  The studio's aesthetic favors clarity over excess, restraint
-                  over spectacle, and warmth over performance. Architectural
-                  sensibility, refined textures, and subtle details come
-                  together to create celebrations that feel intimate and
-                  considered.
+                  Our aesthetic favors clarity over excess, restraint over spectacle, and warmth over performance.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  As the Creative Director of fashion brand My Lindway, Linda
-                  Wiryani brings an artistic sensibility and appreciation for
-                  local craftsmanship into each celebration — from bespoke
-                  styling to visual storytelling.
+                  Architectural sensibility, refined textures, and subtle details come together to create celebrations that feel intimate and considered.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  This vision is often enriched through creative collaboration
-                  with her architect husband, resulting in weddings that feel
-                  cohesive, intentional, and visually timeless.
+                  As the Creative Director of fashion brand My Lindway, Linda Wiryani brings an artistic sensibility and appreciation for craftsmanship into each celebration, from bespoke styling to visual storytelling.
+                </p>
+                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                  This vision is often enriched through creative collaboration with her architect husband, resulting in weddings that feel cohesive, intentional, and visually timeless.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed italic">
-                  Design exists to support emotion — never to overpower it.
+                  Design exists to support emotion, never to overpower it.
                 </p>
               </div>
 
@@ -131,19 +135,14 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
                   For Couples Who Value Meaning Over Excess
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
-                  Linda Wiryani Design and Event Planning works with couples who
-                  appreciate thoughtful design, subtle luxury, and authentic
-                  experiences, those who seek weddings that feel personal,
-                  unforced, and deeply connected to their story.
+                  Linda Wiryani Design & Event Planning works with couples who appreciate thoughtful design, subtle luxury, and authentic experiences, couples who seek weddings that feel personal, unforced, and deeply connected to their story.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
-                  Weddings are moments where people gather, connect, and
-                  remember.
+                  Weddings are moments where people gather, connect, and remember.
+
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  The role of the studio is to design those moments with care,
-                  transforming them into experiences that feel honest, refined,
-                  and deeply personal.
+                  Our role is to design those moments with care, transforming them into experiences that feel honest, refined, and deeply personal.
                 </p>
               </div>
             </div>
