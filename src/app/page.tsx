@@ -47,7 +47,7 @@ export default function Page() {
 
               <motion.h2
                 variants={fadeInUp}
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-5 md:mb-6 leading-tight italic"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-5 md:mb-6 leading-tight"
               >
                 Destination & Intimate Weddings in Bali – Designed with
                 Intention
@@ -55,12 +55,12 @@ export default function Page() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-7 md:mb-8 font-light max-w-xl"
+                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-6 sm:mb-7 md:mb-8 font-light max-w-xl italic"
               >
                 {`This is where you place emotion, art, storytelling, hospitality, philosophy`}
               </motion.p>
 
-              <div className="flex flex-col sm:flex-row justify-start gap-3 sm:gap-4 md:gap-4">
+              <div className="flex flex-col sm:flex-row justify-start gap-3 sm:gap-4 md:gap-4 pt-36 sm:pt-2 md:pt-2">
                 <motion.div variants={fadeInUp} className="w-full sm:w-auto">
                   <Link href="#wedding-concepts" className="block">
                     <motion.button
