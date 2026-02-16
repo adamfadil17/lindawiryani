@@ -1,0 +1,179 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+// ─────────────────────────────────────────────
+// USERS
+// ─────────────────────────────────────────────
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       String   @default("user") // admin | editor | user
+  created_at DateTime @default(now())
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────
+// GALLERIES
+// ─────────────────────────────────────────────
+model Gallery {
+  id         String  @id @default(uuid())
+  image_url  Json    // can store multiple URLs as JSON array
+  sort_order Int     @default(0)
+  category   String
+
+  images     Image[]
+
+  @@map("galleries")
+}
+
+// ─────────────────────────────────────────────
+// LOCATIONS (hierarchical – parent/child)
+// ─────────────────────────────────────────────
+model Location {
+  id         String    @id @default(uuid())
+  name       String
+  slug       String    @unique
+  parent_id  String?
+  created_at DateTime  @default(now())
+
+  parent     Location?  @relation("LocationChildren", fields: [parent_id], references: [id])
+  children   Location[] @relation("LocationChildren")
+  venues     Venue[]
+
+  @@map("locations")
+}
+
+// ─────────────────────────────────────────────
+// WEDDING THEMES
+// ─────────────────────────────────────────────
+model WeddingTheme {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  og_image    String?
+  created_at  DateTime @default(now())
+
+  venues Venue[]
+  images Image[]
+
+  @@map("wedding_themes")
+}
+
+// ─────────────────────────────────────────────
+// VENUES
+// ─────────────────────────────────────────────
+model Venue {
+  id               String   @id @default(uuid())
+  name             String
+  slug             String   @unique
+  venue_type       String
+  location_id      String
+  wedding_theme_id String?
+  description      String?
+  content          String?  // rich text / markdown
+  featured_image   String?
+  is_featured      Boolean  @default(false)
+  og_image         String?
+  created_at       DateTime @default(now())
+
+  location      Location      @relation(fields: [location_id], references: [id])
+  wedding_theme WeddingTheme? @relation(fields: [wedding_theme_id], references: [id])
+  images        Image[]
+
+  @@map("venues")
+}
+
+// ─────────────────────────────────────────────
+// SERVICES
+// ─────────────────────────────────────────────
+model Service {
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  description    String?
+  content        String?  // rich text / markdown
+  featured_image String?
+  is_active      Boolean  @default(true)
+  og_image       String?
+  created_at     DateTime @default(now())
+
+  images Image[]
+
+  @@map("services")
+}
+
+// ─────────────────────────────────────────────
+// WEDDING EXPERIENCES
+// ─────────────────────────────────────────────
+model WeddingExperience {
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  description    String?
+  content        String?
+  featured_image String?
+  created_at     DateTime @default(now())
+
+  images Image[]
+
+  @@map("wedding_experiences")
+}
+
+// ─────────────────────────────────────────────
+// INQUIRIES
+// ─────────────────────────────────────────────
+model Inquiry {
+  id                 String   @id @default(uuid())
+  name               String
+  email              String
+  phone              String?
+  wedding_date       DateTime?
+  venue_preference   String?
+  theme_preference   String?
+  service_interest   String?
+  message            String?
+  status             String   @default("pending") // pending | contacted | closed
+  created_at         DateTime @default(now())
+
+  @@map("inquiries")
+}
+
+// ─────────────────────────────────────────────
+// IMAGES  (polymorphic – FK to multiple parents)
+// ─────────────────────────────────────────────
+model Image {
+  id                    String  @id @default(uuid())
+  portfolio_id          String?  // FK → Gallery
+  venue_id              String?
+  theme_id              String?  // FK → WeddingTheme
+  service_id            String?
+  wedding_experiences_id String?
+  image_url             Json    // { url, alt, width?, height? }
+  sort_order            Int     @default(0)
+
+  gallery             Gallery?           @relation(fields: [portfolio_id], references: [id])
+  venue               Venue?             @relation(fields: [venue_id], references: [id])
+  wedding_theme       WeddingTheme?      @relation(fields: [theme_id], references: [id])
+  service             Service?           @relation(fields: [service_id], references: [id])
+  wedding_experience  WeddingExperience? @relation(fields: [wedding_experiences_id], references: [id])
+
+  @@map("images")
+}
+
