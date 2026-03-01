@@ -14,7 +14,41 @@ import Link from "next/link";
 import {
   Venue,
   cities,
+  elopementThemes,
+  intimateThemes,
 } from "@/lib/data/wedding-concepts/wedding-concepts-data";
+
+type ExperienceFilter =
+  | "Private Villa Weddings"
+  | "Intimate Weddings"
+  | "Elopement Weddings"
+  | "Luxury Weddings";
+
+const getVenueExperiences = (venue: Venue): ExperienceFilter[] => {
+  const experiences: ExperienceFilter[] = [];
+
+  const elopementVenueIds = new Set(
+    elopementThemes.map((t) => t.venueId).filter(Boolean),
+  );
+  const intimateVenueIds = new Set(
+    intimateThemes.map((t) => t.venueId).filter(Boolean),
+  );
+
+  if (venue.categoryRelations?.category === "luxury") {
+    experiences.push("Luxury Weddings");
+  }
+  if (venue.categoryRelations?.category === "private_villa") {
+    experiences.push("Private Villa Weddings");
+  }
+  if (elopementVenueIds.has(venue.id)) {
+    experiences.push("Elopement Weddings");
+  }
+  if (intimateVenueIds.has(venue.id)) {
+    experiences.push("Intimate Weddings");
+  }
+
+  return experiences;
+};
 
 type Currency = "IDR" | "USD";
 
@@ -323,21 +357,19 @@ export default function VenueDetailModal({
           {/* Right Side - Venue Details */}
           <article className="flex flex-col items-start gap-3 justify-start">
             {/* Category Label & Venue Type */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
                 Venues
               </span>
-              <div className="flex gap-2">
-                {venue.categoryRelations?.category === "signature" && (
-                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                    Signature
+              <div className="flex gap-2 flex-wrap">
+                {getVenueExperiences(venue).map((exp) => (
+                  <span
+                    key={exp}
+                    className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
+                  >
+                    {exp}
                   </span>
-                )}
-                {venue.categoryRelations?.category === "private_villa" && (
-                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                    Private Villa
-                  </span>
-                )}
+                ))}
               </div>
             </div>
 
