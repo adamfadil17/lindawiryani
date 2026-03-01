@@ -1,15 +1,30 @@
 import { NextRequest } from "next/server";
-
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
-
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 import { updateGallerySchema } from "@/utils";
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+type Context = {
+  params: {
+    id: string;
+  };
+};
+
+export async function GET(_req: NextRequest, context: Context) {
   try {
+    const { id } = context.params;
+
     const gallery = await prisma.gallery.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { images: true },
     });
+
     if (!gallery) return notFound("Gallery");
     return ok(gallery);
   } catch (error) {
@@ -17,8 +32,10 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: Context) {
   try {
+    const { id } = context.params;
+
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
@@ -26,22 +43,25 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const dto = updateGallerySchema.parse(body);
 
     const gallery = await prisma.gallery.update({
-      where: { id: params.id },
+      where: { id },
       data: dto,
       include: { images: true },
     });
+
     return ok(gallery);
   } catch (error) {
     return handleError(error);
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: Context) {
   try {
+    const { id } = context.params;
+
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.gallery.delete({ where: { id: params.id } });
+    await prisma.gallery.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);
