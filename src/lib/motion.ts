@@ -69,6 +69,30 @@ export const scaleIn: Variants = {
   },
 };
 
+export const slideInLeft: Variants = {
+  hidden: {
+    opacity: 0,
+    x: -80,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+    },
+  },
+  exit: {
+    opacity: 0,
+    x: -40,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as any,
+      delay: 0.2,
+    },
+  },
+};
+
 export const slideInRight: Variants = {
   hidden: {
     opacity: 0,

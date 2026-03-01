@@ -1,4 +1,40 @@
 import Image from "next/image";
+import Link from "next/link";
+
+const navigationItems = [
+  { name: "HOME", href: "/" },
+  { name: "OUR APPROACH", href: "/our-approach" },
+  { name: "SERVICES", href: "/services" },
+  {
+    name: "WEDDING EXPERIENCES",
+    href: "/wedding-experiences",
+    submenu: [
+      {
+        name: "Private Villa Weddings",
+        href: "/wedding-experiences/private-villa-weddings",
+      },
+      {
+        name: "Intimate Weddings",
+        href: "/wedding-experiences/intimate-weddings",
+      },
+      {
+        name: "Elopement Weddings",
+        href: "/wedding-experiences/elopement-weddings",
+      },
+      { name: "Luxury Weddings", href: "/wedding-experiences/luxury-weddings" },
+      {
+        name: "Destination Weddings",
+        href: "/wedding-experiences/bali-destination-wedding",
+      },
+    ],
+  },
+  { name: "WEDDING CONCEPTS", href: "/wedding-concepts" },
+  { name: "DESTINATIONS", href: "/destinations" },
+  { name: "PORTFOLIO", href: "/portfolio" },
+  { name: "JOURNAL", href: "/journal" },
+  { name: "WORKING WITH US", href: "/working-with-us" },
+  { name: "CONTACT", href: "/contact" },
+];
 
 export default function Footer() {
   return (
@@ -34,44 +70,51 @@ export default function Footer() {
           {/* Right Section - Navigation and Social Media */}
           <div className="space-y-12 text-center lg:text-left">
             {/* Navigation Links */}
-            <div className="grid grid-cols-3 gap-x-8 gap-y-3 justify-items-center lg:justify-items-start">
-              <a
-                href="#home"
-                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
-              >
-                HOME
-              </a>
-              <a
-                href="#about"
-                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
-              >
-                ABOUT
-              </a>
-              <a
-                href="#services"
-                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
-              >
-                SERVICES
-              </a>
-              <a
-                href="#venues"
-                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
-              >
-                VENUES
-              </a>
-              <a
-                href="#gallery"
-                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
-              >
-                GALLERY
-              </a>
-              <a
-                href="#contact"
-                className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
-              >
-                CONTACT
-              </a>
-            </div>
+            <nav className="grid grid-cols-2 gap-x-8 gap-y-0">
+              {/* Left column: main nav items */}
+              <ul className="flex flex-col gap-y-2.5 items-center lg:items-start">
+                {navigationItems
+                  .filter((item) => !item.submenu)
+                  .map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+
+              {/* Right column: Wedding Experiences + submenu */}
+              <div className="flex flex-col gap-y-2.5 items-center lg:items-start">
+                {navigationItems
+                  .filter((item) => item.submenu)
+                  .map((item) => (
+                    <div key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
+                      >
+                        {item.name}
+                      </Link>
+                      <ul className="mt-2 flex flex-col gap-y-2 pl-3 border-l border-primary/50 items-center lg:items-start">
+                        {item.submenu!.map((sub) => (
+                          <li key={sub.href}>
+                            <Link
+                              href={sub.href}
+                              className="text-primary/80 hover:text-primary transition-colors text-sm tracking-wider font-light"
+                            >
+                              {sub.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+              </div>
+            </nav>
 
             {/* Social Media Section */}
             <div className="space-y-4">
@@ -97,7 +140,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="mailto: lindawiryanievents@gmail.com"
+                  href="mailto:lindawiryanievents@gmail.com"
                   className="text-stone-400 hover:text-primary/80 transition-colors"
                   aria-label="Email"
                 >

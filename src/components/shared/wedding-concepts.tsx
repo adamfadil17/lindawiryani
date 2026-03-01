@@ -11,19 +11,23 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { cities, venues, Venue } from "@/lib/wedding-concepts-data";
+import {
+  cities,
+  venues,
+  Venue,
+} from "@/lib/data/wedding-concepts/wedding-concepts-data";
 import {
   elopementThemes,
   intimateThemes,
   elopementCategoryImages,
   intimateCategoryImages,
   WeddingTheme,
-} from "@/lib/wedding-concepts-data";
+} from "@/lib/data/wedding-concepts/wedding-concepts-data";
 import VenueDetailModal from "./venue-detail-modal";
 import ThemeDetailModal from "./theme-detail-modal";
 
 type Currency = "IDR" | "USD";
-type VenueFilter = "Signature Venues" | "Private Villas";
+type VenueFilter = "Luxury" | "Private Villas";
 const locations = ["All", ...cities.map((city) => city.name)];
 
 const useCurrencyConverter = () => {
@@ -127,7 +131,7 @@ function VenueCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
       <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-        {venue.categoryRelations?.category === "signature" ? (
+        {venue.categoryRelations?.category === "luxury" ? (
           <h3 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[280px]">
             {venue.name}
           </h3>
@@ -137,7 +141,7 @@ function VenueCard({
           </h3>
         )}
 
-        {venue.categoryRelations?.category === "signature" && (
+        {venue.categoryRelations?.category === "luxury" && (
           <h3 className="text-md font-light italic mb-4 text-white max-w-[280px]">
             {venue.slogan}
           </h3>
@@ -296,7 +300,7 @@ function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
 
 export default function WeddingConcepts() {
   const [selectedVenue, setSelectedVenue] =
-    useState<VenueFilter>("Signature Venues");
+    useState<VenueFilter>("Luxury");
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>("IDR");
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
@@ -369,9 +373,9 @@ export default function WeddingConcepts() {
     let filteredList = venues;
 
     // Filter by category
-    if (selectedVenue === "Signature Venues") {
+    if (selectedVenue === "Luxury") {
       filteredList = filteredList.filter(
-        (venue) => venue.categoryRelations?.category === "signature",
+        (venue) => venue.categoryRelations?.category === "luxury",
       );
     } else if (selectedVenue === "Private Villas") {
       filteredList = filteredList.filter(
@@ -738,7 +742,7 @@ export default function WeddingConcepts() {
               </p>
               <div className="flex">
                 <button
-                  onClick={() => handleBannerViewVenues("Signature Venues")}
+                  onClick={() => handleBannerViewVenues("Luxury")}
                   className="text-primary hover:text-primary/80 transition-colors border-b border-primary pb-1 text-sm font-semibold tracking-wider hover:cursor-pointer"
                   aria-label="View Signature Venues"
                 >
@@ -808,7 +812,7 @@ export default function WeddingConcepts() {
                 {isVenueDropdownOpen && (
                   <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
                     {(
-                      ["Signature Venues", "Private Villas"] as VenueFilter[]
+                      ["Luxury", "Private Villas"] as VenueFilter[]
                     ).map((venue) => (
                       <button
                         key={venue}
@@ -932,7 +936,7 @@ export default function WeddingConcepts() {
           {/* Conditional Short Description based on selectedVenue filter */}
           <div className="mb-12 text-center">
             <AnimatePresence mode="wait">
-              {selectedVenue === "Signature Venues" ? (
+              {selectedVenue === "Luxury" ? (
                 <motion.p
                   key="signature-desc"
                   variants={fadeInUp}

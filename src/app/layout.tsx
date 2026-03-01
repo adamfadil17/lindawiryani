@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import Header from "@/components/shared/header";
+import Footer from "@/components/shared/footer";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -37,7 +39,8 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png.png",
   },
   openGraph: {
-    title: "Luxury Wedding Planner in Bali | Linda Wiryani Design & Event Planning",
+    title:
+      "Luxury Wedding Planner in Bali | Linda Wiryani Design & Event Planning",
     description:
       "Linda Wiryani Design and Event Planning is a luxury wedding planner and designer in Bali, specializing in destination weddings, private villa weddings, intimate celebrations, and refined elopements for international couples.",
     url: "https://www.lindawiryani.com",
@@ -146,7 +149,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <div id="home" className="min-h-screen overflow-x-hidden">
+          <Header />
+
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

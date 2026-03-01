@@ -11,7 +11,10 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
-import { Venue, cities } from "@/lib/wedding-concepts-data";
+import {
+  Venue,
+  cities,
+} from "@/lib/data/wedding-concepts/wedding-concepts-data";
 
 type Currency = "IDR" | "USD";
 

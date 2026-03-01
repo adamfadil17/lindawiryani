@@ -13,7 +13,7 @@ import {
   ChevronRight,
   ArrowLeft,
 } from "lucide-react";
-import { fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
+import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import {
   cities,
   venues,
@@ -23,16 +23,16 @@ import {
   elopementCategoryImages,
   intimateCategoryImages,
   WeddingTheme,
+  conceptLayers,
+  venueCurationConsiderations,
+  stylingFocusAreas,
+  editorialSources,
   locations,
+  planningJourney,
 } from "@/lib/data/wedding-concepts/wedding-concepts-data";
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import ThemeDetailModal from "@/components/shared/theme-detail-modal";
 import { Currency } from "@/lib/types/wedding-concepts/wedding-concepts-types";
-import AboutUs from "@/components/shared/about-us";
-import { fadeInUp as fadeInUpMotion } from "@/lib/motion";
-import { venueCurationConsiderations } from "@/lib/data/wedding-concepts/wedding-concepts-data";
-import Instagram from "@/components/shared/instagram";
-import { reviews } from "@/lib/data/portfolio/portfolio-data";
 
 type ExperienceFilter =
   | "Private Villa Weddings"
@@ -267,7 +267,7 @@ function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function Page() {
+export default function WeddingConceptsPage() {
   // ── State ──────────────────────────────────────────────────────────────────
   const [selectedVenueFilter, setSelectedVenueFilter] =
     useState<ExperienceFilter>("Luxury Weddings");
@@ -294,12 +294,6 @@ export default function Page() {
 
   const exchangeRate = useCurrencyConverter();
 
-  const [reviewSlide, setReviewSlide] = useState(0);
-
-  const DESKTOP_CARDS = 3;
-  const maxDesktopSlide = reviews.length - DESKTOP_CARDS;
-  const maxMobileSlide = reviews.length - 1;
-
   // ── Effects ────────────────────────────────────────────────────────────────
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -317,6 +311,7 @@ export default function Page() {
   const filteredVenues = useMemo(() => {
     let list = venues;
 
+    // Build sets of venueIds used in theme relations
     const elopementVenueIds = new Set(
       elopementThemes.map((t) => t.venueId).filter(Boolean),
     );
@@ -331,8 +326,10 @@ export default function Page() {
         (v) => v.categoryRelations?.category === "private_villa",
       );
     } else if (selectedVenueFilter === "Elopement Weddings") {
+      // Venues used in elopement themes
       list = list.filter((v) => elopementVenueIds.has(v.id));
     } else if (selectedVenueFilter === "Intimate Weddings") {
+      // Venues used in intimate themes
       list = list.filter((v) => intimateVenueIds.has(v.id));
     }
 
@@ -355,6 +352,11 @@ export default function Page() {
   const currentThemes =
     selectedThemeCategory === "elopement" ? elopementThemes : intimateThemes;
 
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  };
+
   // ── Handlers ───────────────────────────────────────────────────────────────
   const handleExploreVenueFromTheme = (venue: Venue) => {
     setSelectedThemeForModal(null);
@@ -367,6 +369,15 @@ export default function Page() {
     setTimeout(() => {
       document
         .getElementById("wedding-themes-selector")
+        ?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }, 100);
+  };
+
+  const handleBannerViewVenues = (filter: ExperienceFilter) => {
+    setSelectedVenueFilter(filter);
+    setTimeout(() => {
+      document
+        .getElementById("venue-list-container")
         ?.scrollIntoView({ behavior: "smooth", block: "end" });
     }, 100);
   };
@@ -386,13 +397,13 @@ export default function Page() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div id="home" className="min-h-screen overflow-x-hidden">
+    <main className="relative overflow-hidden">
       {/* ── HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[75vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
+      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="/images/hero1.png"
-            alt="Luxury Wedding Planner & Designer in Bali"
+            src="https://placehold.net/default.svg"
+            alt="Wedding Concepts — Curated Wedding Celebrations"
             fill
             priority
             className="object-cover object-center"
@@ -408,49 +419,334 @@ export default function Page() {
           animate="visible"
           variants={staggerContainer}
         >
+          {/* Breadcrumb */}
+          <motion.div
+            variants={fadeInUp}
+            className="flex items-center gap-2 mb-12 mt-6"
+          >
+            <Link
+              href="/wedding-concepts"
+              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
+            >
+              Wedding Concepts
+            </Link>
+          </motion.div>
+
           <motion.p
             variants={fadeInUp}
             className="text-white tracking-[0.3em] uppercase mb-5"
           >
-            Luxury Wedding Planner & Designer in Bali
+            Curated Wedding Celebrations
           </motion.p>
           <motion.h1
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
           >
-            Destination &
+            Wedding
             <br />
-            <span className="italic font-light normal-case">
-              Intimate Weddings
-            </span>
+            <span className="italic font-light normal-case">Concepts</span>
           </motion.h1>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-xl leading-relaxed"
           >
-            Designed with intention, emotion, and art. Every celebration begins
-            with a story — thoughtfully crafted, never templated.
+            Thoughtfully designed to help couples explore possibilities, not
+            packages.
           </motion.p>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4"
-          >
-            <Link href="#wedding-themes-section">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                PLAN YOUR BALI WEDDING
-              </button>
-            </Link>
-            <Link href="#about">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                EXPLORE OUR APPROACH
-              </button>
-            </Link>
-          </motion.div>
         </motion.div>
       </section>
 
-      {/* ── ABOUT US ──────────────────────────────────────────────────── */}
-      <AboutUs />
+      {/* ── INTRO SPLIT ───────────────────────────────────────────────── */}
+      <motion.section
+        className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.15, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+          <motion.div variants={fadeInUp} className="lg:col-span-4 lg:pt-2">
+            <div className="lg:sticky lg:top-32">
+              <div className="w-16 h-px bg-primary/70 mb-6" />
+              <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+                A creative layer
+                <br />
+                for how weddings
+                <br />
+                <span className="italic font-light">are imagined.</span>
+              </h2>
+            </div>
+          </motion.div>
+
+          <div className="lg:col-span-8 space-y-10">
+            <motion.p
+              variants={fadeInUp}
+              className="text-primary leading-relaxed text-justify"
+            >
+              Our wedding concepts are designed to help couples explore
+              possibilities, not packages. Each concept acts as a creative and
+              strategic layer that supports how weddings are imagined, designed,
+              and experienced.
+            </motion.p>
+            <motion.p
+              variants={fadeInUp}
+              className="text-primary leading-relaxed text-justify"
+            >
+              These concepts are not separate steps — they are interconnected.
+              Venue curation shapes theme. Theme informs styling. Styling draws
+              from editorial inspiration. Together, they form a cohesive design
+              language that supports meaningful decision-making and refined
+              execution.
+            </motion.p>
+
+            <motion.div
+              variants={fadeInUp}
+              className="border-l-2 border-primary pl-8 py-2"
+            >
+              <p className="text-primary font-semibold tracking-widest uppercase mb-5">
+                How Concepts Support Your Journey
+              </p>
+              <div className="space-y-3">
+                {[
+                  "Meaningful decision-making",
+                  "Efficient planning",
+                  "Refined execution",
+                  "Emotionally resonant celebrations",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-4">
+                    <div className="w-5 h-px bg-primary flex-shrink-0" />
+                    <span className="text-primary">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("venue-list-section")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300"
+              >
+                EXPLORE VENUE LIST
+              </button>
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("wedding-themes-section")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300"
+              >
+                EXPLORE THEMES
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* ── CONCEPT LAYERS ────────────────────────────────────────────── */}
+      <motion.section
+        className="bg-primary py-20 lg:py-28"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          <motion.div
+            variants={fadeInUp}
+            className="mb-14 lg:mb-20 grid lg:grid-cols-12 gap-8"
+          >
+            <div className="lg:col-span-5">
+              <p className="text-white tracking-[0.25em] uppercase mb-3">
+                The Four Layers
+              </p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
+                Wedding
+                <br />
+                <span className="italic font-light">Concept Layers</span>
+              </h2>
+            </div>
+            <div className="lg:col-span-7 flex items-end">
+              <p className="text-white text-justify leading-relaxed">
+                Each concept layer supports how your celebration is imagined,
+                designed, and experienced. Explore each layer to understand how
+                they shape your wedding journey.
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 gap-10 lg:gap-12">
+            {conceptLayers.map((layer, i) => {
+              const sectionIds = [
+                "venue-curation-section",
+                "wedding-themes-section",
+                "styling-concepts-section",
+                "editorial-inspiration-section",
+              ];
+              const targetId = sectionIds[i];
+              return (
+                <motion.div key={layer.href} variants={fadeInUp} custom={i}>
+                  <button
+                    onClick={() =>
+                      document
+                        .getElementById(targetId)
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                    className="group block text-left w-full hover:cursor-pointer"
+                  >
+                    <div className="relative h-[40vh] lg:h-[380px] overflow-hidden mb-5">
+                      <Image
+                        src={layer.image}
+                        alt={layer.title}
+                        fill
+                        loading="lazy"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+                      <div className="absolute top-5 left-5">
+                        <span className="text-white/60 font-mono text-sm tracking-widest">
+                          {layer.number}
+                        </span>
+                      </div>
+                      <div className="absolute top-5 right-5">
+                        <span className="bg-white/90 text-primary text-sm tracking-widest px-3 py-1.5">
+                          {layer.tag.toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-5 right-5 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
+                        <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-white/60 text-sm tracking-[0.2em] uppercase mb-1">
+                        {layer.subtitle}
+                      </p>
+                      <h3 className="text-white font-semibold text-xl group-hover:text-white/80 transition-colors">
+                        {layer.title}
+                      </h3>
+                      <p className="text-white mt-2 leading-relaxed text-sm">
+                        {layer.desc}
+                      </p>
+                      <div className="flex items-center gap-2 mt-4 text-white text-sm tracking-wider group-hover:text-white/80 transition-colors">
+                        <span>EXPLORE</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </button>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* ── VENUE CURATION DETAIL ─────────────────────────────────────── */}
+      <motion.section
+        id="venue-curation-section"
+        className="py-20 lg:py-28"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <motion.div
+              variants={scaleIn}
+              className="lg:col-span-5 relative h-[55vh] lg:h-[600px] overflow-hidden"
+            >
+              <Image
+                src="https://placehold.net/default.svg"
+                alt="Venue Curation"
+                fill
+                loading="lazy"
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 42vw"
+              />
+              <div className="absolute bottom-6 left-6 bg-white/90 px-6 py-4">
+                <p className="text-primary text-sm tracking-widest uppercase mb-1">
+                  Our Approach
+                </p>
+                <p className="text-primary font-semibold text-2xl">Curated</p>
+                <p className="text-primary text-sm">Not a directory</p>
+              </div>
+            </motion.div>
+
+            <div className="lg:col-span-7 space-y-10">
+              <motion.div variants={fadeInUp}>
+                <p className="text-primary tracking-[0.25em] uppercase mb-3">
+                  Concept Layer 01
+                </p>
+                <h2 className="text-3xl md:text-4xl text-primary font-semibold">
+                  Venue
+                  <br />
+                  <span className="italic font-light">Curation</span>
+                </h2>
+              </motion.div>
+
+              <motion.p
+                variants={fadeInUp}
+                className="text-primary leading-relaxed text-justify"
+              >
+                Venue curation is the foundation of every wedding we design.
+                Rather than presenting an exhaustive directory, we provide a
+                carefully selected overview of venues by area — typically one to
+                five representative venues — to help couples understand location
+                character, venue style, and indicative starting budgets.
+              </motion.p>
+
+              <motion.p
+                variants={fadeInUp}
+                className="text-primary leading-relaxed text-justify"
+              >
+                Our curated venue selections are not recommendations to choose
+                from directly, but guidance tools that reflect the types of
+                spaces we work with and the experiences they support.
+              </motion.p>
+
+              <motion.div variants={fadeInUp}>
+                <p className="text-primary tracking-widest uppercase mb-5">
+                  Our Venue Curation Process Considers
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {venueCurationConsiderations.map((item) => (
+                    <div key={item} className="flex items-start gap-3">
+                      <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                      <span className="text-primary">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.p
+                variants={fadeInUp}
+                className="text-primary italic leading-relaxed"
+              >
+                We believe the right venue does more than host a wedding — it
+                shapes the entire experience.
+              </motion.p>
+
+              <motion.div variants={fadeInUp}>
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("venue-list-section")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
+                  className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300"
+                >
+                  EXPLORE VENUE LIST BY DESTINATION
+                </button>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
 
       {/* ── WEDDING THEMES ────────────────────────────────────────────── */}
       <motion.section
@@ -605,53 +901,249 @@ export default function Page() {
                     />
                   </motion.div>
                 </AnimatePresence>
-                {currentThemes.length > 1 && (
-                  <>
+                <button
+                  onClick={prevThemeSlide}
+                  className="absolute left-4 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
+                >
+                  <ArrowLeft className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
+                </button>
+                <button
+                  onClick={nextThemeSlide}
+                  className="absolute right-4 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
+                >
+                  <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
+                </button>
+                <div className="flex justify-center gap-2 mt-4">
+                  {currentThemes.map((_, index) => (
                     <button
-                      onClick={prevThemeSlide}
-                      className="absolute left-4 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
-                    >
-                      <ArrowLeft className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
-                    </button>
-                    <button
-                      onClick={nextThemeSlide}
-                      className="absolute right-4 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
-                    >
-                      <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
-                    </button>
-                    <div className="flex justify-center gap-2 mt-4">
-                      {currentThemes.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentThemeSlide(index)}
-                          className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
-                            currentThemeSlide === index
-                              ? "bg-primary w-8"
-                              : "bg-stone-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
+                      key={index}
+                      onClick={() => setCurrentThemeSlide(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        currentThemeSlide === index
+                          ? "bg-primary w-8"
+                          : "bg-stone-300"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             ) : (
               <motion.div
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                variants={staggerContainer}
+                key={selectedThemeCategory}
                 initial="hidden"
                 animate="visible"
+                variants={gridVariants}
               >
-                {currentThemes.map((theme) => (
-                  <WeddingThemeCard
-                    key={theme.id}
-                    theme={theme}
-                    onClick={() => setSelectedThemeForModal(theme)}
-                  />
+                {currentThemes.map((theme, index) => (
+                  <motion.div
+                    key={`${selectedThemeCategory}-${index}`}
+                    variants={fadeInUp}
+                  >
+                    <WeddingThemeCard
+                      theme={theme}
+                      onClick={() => setSelectedThemeForModal(theme)}
+                    />
+                  </motion.div>
                 ))}
               </motion.div>
             )}
           </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ── STYLING CONCEPTS DETAIL ───────────────────────────────────── */}
+      <motion.section
+        id="styling-concepts-section"
+        className="py-20 lg:py-28"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+            <motion.div variants={fadeInUp} className="lg:col-span-4 lg:pt-2">
+              <div className="lg:sticky lg:top-32">
+                <div className="w-16 h-px bg-primary/70 mb-6" />
+                <p className="text-primary tracking-[0.25em] uppercase mb-3">
+                  Concept Layer 03
+                </p>
+                <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+                  Styling
+                  <br />
+                  <span className="italic font-light">Concepts</span>
+                </h2>
+                <p className="mt-6 text-primary leading-relaxed italic">
+                  Styling is never about excess. It is about clarity and
+                  harmony.
+                </p>
+                <div className="mt-8">
+                  <Link href="/wedding-concepts/styling-concepts">
+                    <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
+                      VIEW STYLING
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="lg:col-span-8 space-y-10">
+              <motion.p
+                variants={fadeInUp}
+                className="text-primary leading-relaxed text-justify"
+              >
+                Styling concepts translate vision into physical form. This is
+                where atmosphere becomes visible — through composition,
+                materiality, texture, and restraint. Our styling concepts are
+                born from a deep understanding of the venue, the couple's story,
+                and the emotional arc of the entire celebration.
+              </motion.p>
+
+              <motion.div variants={fadeInUp}>
+                <p className="text-primary font-semibold tracking-widest uppercase mb-6">
+                  Our Styling Concepts Focus On
+                </p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {stylingFocusAreas.map((item, i) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-4 p-4 border border-primary/40 bg-white/40"
+                    >
+                      <span className="text-primary font-mono mt-0.5 flex-shrink-0">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-primary">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                variants={fadeInUp}
+                className="border-l-2 border-primary pl-8 py-2"
+              >
+                <p className="text-primary font-semibold tracking-widest uppercase mb-4">
+                  Styling Supports
+                </p>
+                <div className="space-y-3">
+                  {[
+                    "Private Villa Weddings",
+                    "Intimate Weddings",
+                    "Elopement Weddings",
+                    "Luxury Weddings",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-4">
+                      <div className="w-5 h-px bg-primary flex-shrink-0" />
+                      <span className="text-primary">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* ── EDITORIAL INSPIRATION ─────────────────────────────────────── */}
+      <motion.section
+        id="editorial-inspiration-section"
+        className="relative py-20 lg:py-28 overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="absolute inset-0 bg-primary/10" />
+        <div className="absolute top-0 right-0 w-1/3 h-full hidden lg:block">
+          <Image
+            src="https://placehold.net/default.svg"
+            alt="Editorial Inspiration"
+            fill
+            loading="lazy"
+            className="object-cover opacity-40"
+            sizes="33vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-transparent" />
+        </div>
+
+        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          <div className="max-w-3xl">
+            <motion.div variants={fadeInUp} className="mb-10">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
+                Concept Layer 04
+              </p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
+                Editorial
+                <br />
+                <span className="italic font-light">Inspiration</span>
+              </h2>
+            </motion.div>
+
+            <motion.p
+              variants={fadeInUp}
+              className="text-primary leading-relaxed mb-10 text-justify"
+            >
+              Editorial inspiration is where storytelling begins. Rather than
+              copying trends, we draw from a broader world of aesthetic
+              references — bridging imagination and reality, guiding both
+              creative direction and execution.
+            </motion.p>
+
+            <motion.div variants={fadeInUp} className="mb-10">
+              <p className="text-primary italic mb-6">
+                We draw inspiration from:
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {editorialSources.map((item, i) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-4 p-4 border border-primary/40 bg-white/40"
+                  >
+                    <span className="text-primary font-mono mt-0.5 flex-shrink-0">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-primary">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeInUp}>
+              <p className="text-primary font-semibold tracking-widest uppercase mb-5">
+                Editorial Inspiration Helps Couples
+              </p>
+              <div className="space-y-3">
+                {[
+                  "Visualize mood and pacing",
+                  "Understand scale and restraint",
+                  "See how design interacts with place",
+                  "Align emotionally with their vision",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <div className="w-5 h-px bg-primary/50 flex-shrink-0" />
+                    <span className="text-primary">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              className="mt-10 flex flex-wrap gap-4"
+            >
+              <Link href="/portfolio">
+                <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
+                  VIEW PORTFOLIO
+                </button>
+              </Link>
+              <Link href="/journal">
+                <button className="bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
+                  READ THE JOURNAL
+                </button>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </motion.section>
 
@@ -692,8 +1184,9 @@ export default function Page() {
 
           {/* Wedding Experiences — 4-card stack */}
           <motion.div className="mb-16" variants={fadeInUp}>
-            {/* Top row: 3 cards side-by-side on desktop */}
+            {/* Top row: 3 cards side-by-side on desktop, full-width on tablet */}
             <div className="hidden lg:grid grid-cols-3 gap-px mb-px bg-white/10">
+              {/* 01 Private Villa — desktop only 3-col */}
               <Link
                 href="/wedding-experiences/private-villa-weddings"
                 className="group relative bg-primary overflow-hidden"
@@ -730,6 +1223,7 @@ export default function Page() {
                 </div>
               </Link>
 
+              {/* 02 Intimate — desktop only */}
               <Link
                 href="/wedding-experiences/intimate-weddings"
                 className="group relative bg-primary overflow-hidden"
@@ -766,6 +1260,7 @@ export default function Page() {
                 </div>
               </Link>
 
+              {/* 03 Elopement — desktop only */}
               <Link
                 href="/wedding-experiences/elopement-weddings"
                 className="group relative bg-primary overflow-hidden"
@@ -803,8 +1298,9 @@ export default function Page() {
               </Link>
             </div>
 
-            {/* Mobile & Tablet: all cards full-width stacked */}
+            {/* Mobile & Tablet (< lg): all 4 cards full-width stacked */}
             <div className="flex flex-col gap-px lg:hidden mb-px">
+              {/* 01 Private Villa */}
               <Link
                 href="/wedding-experiences/private-villa-weddings"
                 className="group relative bg-primary overflow-hidden block"
@@ -841,6 +1337,7 @@ export default function Page() {
                 </div>
               </Link>
 
+              {/* 02 Intimate */}
               <Link
                 href="/wedding-experiences/intimate-weddings"
                 className="group relative bg-primary overflow-hidden block"
@@ -877,6 +1374,7 @@ export default function Page() {
                 </div>
               </Link>
 
+              {/* 03 Elopement */}
               <Link
                 href="/wedding-experiences/elopement-weddings"
                 className="group relative bg-primary overflow-hidden block"
@@ -914,8 +1412,9 @@ export default function Page() {
               </Link>
             </div>
 
-            {/* Bottom row: Luxury — full width */}
+            {/* Bottom row: 1 full-width card (all breakpoints) */}
             <div className="mb-12">
+              {/* 04 Luxury */}
               <Link
                 href="/wedding-experiences/luxury-weddings"
                 className="group relative bg-primary overflow-hidden block"
@@ -1015,7 +1514,7 @@ export default function Page() {
                     onClick={() =>
                       setIsLocationDropdownOpen(!isLocationDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-white hover:text-white/80  transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedLocation}</span>
                     <ChevronDown
@@ -1104,6 +1603,7 @@ export default function Page() {
 
           {/* Venue Cards */}
           <div id="venue-list-container" className="mb-24">
+            {/* Description based on filter */}
             <div className="mb-12 text-center">
               <AnimatePresence mode="wait">
                 <motion.p
@@ -1222,6 +1722,129 @@ export default function Page() {
         </div>
       </motion.section>
 
+      {/* ── FROM CONCEPT TO CELEBRATION ───────────────────────────────── */}
+      <motion.section
+        className="py-20 lg:py-28"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <motion.div variants={fadeInUp} className="lg:col-span-5">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
+                From Concept to Celebration
+              </p>
+              <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+                Every celebration
+                <br />
+                begins with
+                <br />
+                <span className="italic font-light">understanding.</span>
+              </h2>
+              <p className="mt-6 text-primary leading-relaxed italic">
+                We guide you through each step with calm precision and artistry.
+              </p>
+            </motion.div>
+
+            <div className="lg:col-span-7 space-y-10">
+              <motion.div variants={fadeInUp}>
+                <div className="space-y-4">
+                  {planningJourney.map((item, i) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-6 p-5 border border-primary/40 bg-white/40"
+                    >
+                      <span className="text-primary font-mono flex-shrink-0">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-primary">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
+                <Link href="/approach">
+                  <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
+                    EXPLORE OUR APPROACH
+                  </button>
+                </Link>
+                <Link href="/wedding-experiences">
+                  <button className="bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
+                    VIEW WEDDING EXPERIENCES
+                  </button>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* ── CLOSING CTA ───────────────────────────────────────────────── */}
+      <motion.section
+        className="relative py-24 lg:py-36 overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="absolute inset-0">
+          <Image
+            src="https://placehold.net/default.svg"
+            alt="Begin Your Wedding Concept Journey"
+            fill
+            loading="lazy"
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-primary/72" />
+        </div>
+
+        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
+          <motion.p
+            variants={fadeInUp}
+            className="text-white tracking-[0.25em] uppercase mb-4"
+          >
+            Begin Your Wedding Concept Journey
+          </motion.p>
+          <motion.h2
+            variants={fadeInUp}
+            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
+          >
+            Your wedding should feel
+            <br />
+            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
+              aligned — not selected.
+            </span>
+          </motion.h2>
+          <motion.p
+            variants={fadeInUp}
+            className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
+          >
+            We invite you to explore the concepts and venues above, or begin a
+            conversation with us to shape a celebration that reflects your
+            vision.
+          </motion.p>
+          <motion.div
+            variants={fadeInUp}
+            className="mt-10 flex flex-wrap gap-4 justify-center"
+          >
+            <Link href="https://wa.me/628113980998" target="_blank">
+              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
+                PLAN YOUR WEDDING
+              </button>
+            </Link>
+            <Link href="/portfolio">
+              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
+                VIEW OUR PORTFOLIO
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.section>
+
       {/* ── MODALS ────────────────────────────────────────────────────── */}
       {selectedVenueForModal && (
         <VenueDetailModal
@@ -1238,149 +1861,6 @@ export default function Page() {
           onExploreVenue={handleExploreVenueFromTheme}
         />
       )}
-
-      <Instagram />
-      {/* ── KIND WORDS ────────────────────────────────────────────────── */}
-            <motion.section
-              className="py-20 lg:py-28 bg-primary/10"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
-              variants={staggerContainer}
-            >
-              <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-                {/* Section Header */}
-                <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
-                  <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                    Kind Words
-                  </p>
-                  <div className="grid lg:grid-cols-12 gap-8">
-                    <div className="lg:col-span-5">
-                      <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                        What our couples
-                        <br />
-                        <span className="italic font-light">share with us</span>
-                      </h2>
-                    </div>
-                    <div className="lg:col-span-7 flex items-end">
-                      <p className="text-primary leading-relaxed text-justify">
-                        Our couples often speak not only about how their wedding
-                        looked, but how it felt — calm, meaningful, effortless,
-                        personal, and unforgettable are words that appear again and
-                        again in their reflections.
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-      
-                {/* ── Desktop Slider: 3 cards visible, slide by 1 ── */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="hidden lg:block overflow-hidden"
-                >
-                  <motion.div
-                    className="flex gap-6"
-                    animate={{
-                      x: `calc(-${reviewSlide * (100 / 3)}% - ${reviewSlide * 8}px)`,
-                    }}
-                    transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                  >
-                    {reviews.map((review, index) => (
-                      <div
-                        key={index}
-                        className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
-                      >
-                        <div>
-                          <span className="text-5xl text-primary/20 font-serif leading-none select-none">
-                            "
-                          </span>
-                          <p className="text-primary leading-relaxed italic mt-2 text-justify">
-                            {review.quote}
-                          </p>
-                        </div>
-                        <div className="mt-8 pt-6 border-t border-primary/10">
-                          <p className="text-primary font-semibold text-sm tracking-wide">
-                            {review.couple}
-                          </p>
-                          <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
-                            {review.origin}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </motion.div>
-                </motion.div>
-      
-                {/* ── Mobile Slider: 1 card visible ── */}
-                <motion.div variants={fadeInUp} className="lg:hidden overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={reviewSlide}
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -30 }}
-                      transition={{ duration: 0.35 }}
-                      className="bg-white border border-primary/10 p-8 flex flex-col justify-between"
-                    >
-                      <div>
-                        <span className="text-5xl text-primary/20 font-serif leading-none select-none">
-                          "
-                        </span>
-                        <p className="text-primary leading-relaxed italic mt-2 text-justify">
-                          {reviews[reviewSlide].quote}
-                        </p>
-                      </div>
-                      <div className="mt-8 pt-6 border-t border-primary/10">
-                        <p className="text-primary font-semibold text-sm tracking-wide">
-                          {reviews[reviewSlide].couple}
-                        </p>
-                        <p className="text-primary/50 text-xs tracking-widest uppercase mt-1">
-                          {reviews[reviewSlide].origin}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </motion.div>
-      
-                {/* ── Controls (shared) ── */}
-                <div className="flex items-center justify-between mt-10">
-                  {/* Dot indicators */}
-                  <div className="flex gap-2">
-                    {reviews.slice(0, reviews.length - 2).map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setReviewSlide(i)}
-                        className={`h-2 rounded-full transition-all hover:cursor-pointer ${
-                          reviewSlide === i
-                            ? "bg-primary w-8"
-                            : "bg-primary/30 w-2 hover:bg-primary/60"
-                        }`}
-                      />
-                    ))}
-                  </div>
-      
-                  {/* Arrow buttons */}
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => setReviewSlide((p) => Math.max(p - 1, 0))}
-                      disabled={reviewSlide === 0}
-                      className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
-                    >
-                      <ArrowLeft className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
-                    </button>
-                    <button
-                      onClick={() =>
-                        setReviewSlide((p) => Math.min(p + 1, reviews.length - 3))
-                      }
-                      disabled={reviewSlide >= reviews.length - 3}
-                      className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
-                    >
-                      <ArrowRight className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.section>
-    </div>
+    </main>
   );
 }

@@ -2,15 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  X,
-  ChevronLeft,
-  ChevronRight,
-  MapPin,
-  Check,
-} from "lucide-react";
+import { X, ChevronLeft, ChevronRight, MapPin, Check } from "lucide-react";
 import Link from "next/link";
-import { WeddingTheme, venues, Venue } from "@/lib/wedding-concepts-data";
+import {
+  WeddingTheme,
+  venues,
+  Venue,
+} from "@/lib/data/wedding-concepts/wedding-concepts-data";
 
 interface ThemeDetailModalProps {
   theme: WeddingTheme;
@@ -35,7 +33,7 @@ export default function ThemeDetailModal({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  
+
   const totalImages = theme.gallery?.length || 0;
   const relatedVenue = venues.find((v) => v.id === theme.venueId);
   const venueName = relatedVenue ? relatedVenue.name : "Venue To Be Confirmed";

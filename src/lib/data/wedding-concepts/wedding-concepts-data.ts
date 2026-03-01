@@ -1,21 +1,19 @@
 export type WeddingThemeType = "elopement" | "intimate";
-export type VenueCategoryType = "signature" | "private_villa";
+export type VenueCategoryType = "luxury" | "private_villa";
 export type CityType =
-  | "badung"
-  | "bangli"
-  | "buleleng"
-  | "denpasar"
-  | "gianyar"
-  | "jembrana"
-  | "karangasem"
-  | "klungkung"
+  | "uluwatu"
+  | "ubud"
+  | "canggu"
+  | "seminyak"
+  | "sanur"
+  | "kintamani"
+  | "nusa-dua"
+  | "east-bali"
   | "tabanan"
+  | "nusa-penida"
   | "lombok-utara"
   | "all";
 
-// ============================================
-// LOCATION DATA
-// ============================================
 export interface City {
   id: CityType;
   name: string;
@@ -29,22 +27,17 @@ export interface Province {
   slug: string;
 }
 
-// Cities data
 export const cities: City[] = [
-  { id: "badung", name: "Badung", provinceId: "bali", slug: "badung" },
-  { id: "bangli", name: "Bangli", provinceId: "bali", slug: "bangli" },
-  { id: "buleleng", name: "Buleleng", provinceId: "bali", slug: "buleleng" },
-  { id: "denpasar", name: "Denpasar", provinceId: "bali", slug: "denpasar" },
-  { id: "gianyar", name: "Gianyar", provinceId: "bali", slug: "gianyar" },
-  { id: "jembrana", name: "Jembrana", provinceId: "bali", slug: "jembrana" },
-  {
-    id: "karangasem",
-    name: "Karangasem",
-    provinceId: "bali",
-    slug: "karangasem",
-  },
-  { id: "klungkung", name: "Klungkung", provinceId: "bali", slug: "klungkung" },
+  { id: "uluwatu", name: "Uluwatu", provinceId: "bali", slug: "uluwatu" },
+  { id: "ubud", name: "Ubud", provinceId: "bali", slug: "ubud" },
+  { id: "canggu", name: "Canggu", provinceId: "bali", slug: "canggu" },
+  { id: "seminyak", name: "Seminyak", provinceId: "bali", slug: "seminyak" },
+  { id: "sanur", name: "Sanur", provinceId: "bali", slug: "sanur" },
+  { id: "kintamani", name: "Kintamani", provinceId: "bali", slug: "kintamani" },
+  { id: "nusa-dua", name: "Nusa Dua", provinceId: "bali", slug: "nusa-dua" },
+  { id: "east-bali", name: "East Bali", provinceId: "bali", slug: "east-bali" },
   { id: "tabanan", name: "Tabanan", provinceId: "bali", slug: "tabanan" },
+  { id: "nusa-penida", name: "Nusa Penida", provinceId: "bali", slug: "nusa-penida" },
   {
     id: "lombok-utara",
     name: "Lombok Utara",
@@ -58,10 +51,6 @@ export const provinces: Province[] = [
   { id: "bali", name: "Bali", slug: "bali" },
   { id: "lombok", name: "Lombok", slug: "lombok" },
 ];
-
-// ============================================
-// MASTER & RELATIONAL DATA
-// ============================================
 
 export interface Venue {
   id: number;
@@ -113,10 +102,6 @@ export interface VenueCategory {
   description: string;
   bannerImage: string;
 }
-
-// ============================================
-// WEDDING THEMES DATA
-// ============================================
 
 export const elopementThemes: WeddingTheme[] = [
   {
@@ -395,17 +380,13 @@ export const intimateThemes: WeddingTheme[] = [
   },
 ];
 
-// ============================================
-// VENUE MASTER DATA
-// ============================================
-
 export const venues: Venue[] = [
   {
     id: 1,
     name: "COMO Shambhala Estate",
     slogan: "Holistic Wellness Sanctuary",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -494,7 +475,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   // {
@@ -518,7 +499,7 @@ export const venues: Venue[] = [
   //     forVenueCategory: true,
   //   },
   //   categoryRelations: {
-  //     category: "signature",
+  //     category: "luxury",
   //   },
   // },
   {
@@ -526,7 +507,7 @@ export const venues: Venue[] = [
     name: "The Sayan House",
     slogan: "Contemporary Jungle Elegance",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -558,7 +539,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -566,7 +547,7 @@ export const venues: Venue[] = [
     name: "Pantai Lima Estate",
     slogan: "Beachfront Architectural Marvel",
     location: {
-      cityId: "badung",
+      cityId: "canggu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -590,7 +571,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -598,7 +579,7 @@ export const venues: Venue[] = [
     name: "The Surga Villa Estate",
     slogan: "A Love Story, Written in the Sky and Sea",
     location: {
-      cityId: "badung",
+      cityId: "uluwatu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -698,7 +679,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -801,7 +782,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -809,7 +790,7 @@ export const venues: Venue[] = [
     name: "The Edge Bali",
     slogan: "Cliffside Architectural Icon",
     location: {
-      cityId: "badung",
+      cityId: "uluwatu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -927,7 +908,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -935,7 +916,7 @@ export const venues: Venue[] = [
     name: "Amankila",
     slogan: "A Sacred Union Above the Sea",
     location: {
-      cityId: "karangasem",
+      cityId: "east-bali",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1039,7 +1020,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -1047,7 +1028,7 @@ export const venues: Venue[] = [
     name: "The Ungasan Clifftop Resort",
     slogan: "Cliffside Luxury Sanctuary",
     location: {
-      cityId: "badung",
+      cityId: "uluwatu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1156,7 +1137,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -1164,7 +1145,7 @@ export const venues: Venue[] = [
     name: "Jeeva Saba Estate",
     slogan: "Secluded Beachfront Paradise",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1357,7 +1338,7 @@ export const venues: Venue[] = [
     name: "Nag Shampa Private Estate",
     slogan: "Beachfront Luxury Living",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1440,7 +1421,7 @@ export const venues: Venue[] = [
     name: "Kavya Villa",
     slogan: "Clifftop Paradise",
     location: {
-      cityId: "badung",
+      cityId: "uluwatu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1496,7 +1477,7 @@ export const venues: Venue[] = [
     name: "The Iman Villa",
     slogan: "Secluded Villa Sanctuary",
     location: {
-      cityId: "badung",
+      cityId: "uluwatu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1523,7 +1504,7 @@ export const venues: Venue[] = [
     name: "Villa Ombak Biru",
     slogan: "Beachfront Intimacy",
     location: {
-      cityId: "badung",
+      cityId: "seminyak",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1550,7 +1531,7 @@ export const venues: Venue[] = [
     name: "Royal Pita Maha",
     slogan: "A Royal Union Rooted in Heritage",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1630,7 +1611,7 @@ export const venues: Venue[] = [
     name: "Hiliwatu",
     slogan: "An Intimate Jungle Forest Wedding Sanctuary",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1662,7 +1643,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
     themeRelations: [
       {
@@ -1676,7 +1657,7 @@ export const venues: Venue[] = [
     name: "Intercontinental Bali Resort Jimbaran",
     slogan: "A Luxury Beachfront Wedding Resort",
     location: {
-      cityId: "badung",
+      cityId: "nusa-dua",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1782,7 +1763,7 @@ export const venues: Venue[] = [
       forVenueCategory: true,
     },
     categoryRelations: {
-      category: "signature",
+      category: "luxury",
     },
   },
   {
@@ -1884,7 +1865,7 @@ export const venues: Venue[] = [
     name: "Four Seasons Resort",
     slogan: "Intimate Luxury by the Ocean",
     location: {
-      cityId: "badung",
+      cityId: "nusa-dua",
       provinceId: "bali",
     },
     capacity: 0,
@@ -1926,7 +1907,7 @@ export const venues: Venue[] = [
     name: "Mannao Estate",
     slogan: "Modern Elegance & Private Celebrations",
     location: {
-      cityId: "badung",
+      cityId: "canggu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2003,7 +1984,7 @@ export const venues: Venue[] = [
     name: "Alea Estate",
     slogan: "A Sanctuary for Timeless Vows",
     location: {
-      cityId: "badung",
+      cityId: "uluwatu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2073,7 +2054,7 @@ export const venues: Venue[] = [
     name: "Villa Yoga",
     slogan: "Sacred Union in Serene Surroundings",
     location: {
-      cityId: "badung",
+      cityId: "seminyak",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2134,7 +2115,7 @@ export const venues: Venue[] = [
     name: "Villa Gils",
     slogan: "Stylish Celebrations by the Sea",
     location: {
-      cityId: "karangasem",
+      cityId: "east-bali",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2192,7 +2173,7 @@ export const venues: Venue[] = [
     name: "Rumah Melati Estate",
     slogan: "Classic Romance in a Private Estate",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2265,7 +2246,7 @@ export const venues: Venue[] = [
     name: "Kubu Dewi Sri",
     slogan: "An Intimate Haven Inspired by Nature",
     location: {
-      cityId: "badung",
+      cityId: "canggu",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2323,7 +2304,7 @@ export const venues: Venue[] = [
     name: "Puri Wulandari",
     slogan: "Where Gardens Meet Flowing Romance",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2359,7 +2340,7 @@ export const venues: Venue[] = [
     name: "Nandini Jungle by Hanging Gardens",
     slogan: "Whispered Vows in the Heart of the Jungle",
     location: {
-      cityId: "gianyar",
+      cityId: "ubud",
       provinceId: "bali",
     },
     capacity: 0,
@@ -2419,7 +2400,7 @@ export const venues: Venue[] = [
   //     forVenueCategory: true,
   //   },
   //   categoryRelations: {
-  //     category: "signature",
+  //     category: "luxury",
   //   },
   // },
 ];
@@ -2446,9 +2427,9 @@ export const intimateCategoryImages = [
 
 export const venueCategories: VenueCategory[] = [
   {
-    id: "signature",
+    id: "luxury",
     name: "Signature Venues",
-    slug: "signature",
+    slug: "luxury",
     description:
       "Iconic and prestigious venues featuring world-class amenities and breathtaking locations.",
     bannerImage: "/images/categories/signature-venues-banner.jpg",
@@ -2461,4 +2442,91 @@ export const venueCategories: VenueCategory[] = [
       "Exclusive private villas offering intimate settings and complete privacy for your celebration.",
     bannerImage: "/images/categories/private-villas-banner.jpg",
   },
+];
+
+export const locations = ["All", ...cities.map((city) => city.name)];
+
+
+export const venueCurationConsiderations = [
+  "Architectural identity and setting",
+  "Atmosphere and sense of place",
+  "Ceremony and reception flow",
+  "Guest comfort and logistics",
+  "Design flexibility and restrictions",
+  "Harmony between venue and vision",
+];
+
+export const stylingFocusAreas = [
+  "Spatial balance",
+  "Natural material palettes",
+  "Layered textures",
+  "Thoughtful florals and installations",
+  "Intentional use of colour and negative space",
+  "Cohesion between ceremony and celebration areas",
+];
+
+export const editorialSources = [
+  "Architecture and landscape",
+  "Fashion and craftsmanship",
+  "Art, culture, and travel",
+  "Light, movement, and emotion",
+];
+
+export const conceptLayers = [
+  {
+    number: "01",
+    title: "Venue Curation",
+    subtitle: "The Foundation",
+    desc: "Venue curation is the foundation of every wedding we design. Rather than presenting an exhaustive directory, we provide a carefully selected overview of venues by area — to help couples understand location character, venue style, and indicative starting budgets.",
+    tag: "Venue Curation",
+    href: "/wedding-concepts/venue-curation",
+    image: "https://placehold.net/default.svg",
+    supports: [
+      "Destination Weddings in Bali",
+      "Private Villa Weddings",
+      "Intimate & Elopement Weddings",
+    ],
+  },
+  {
+    number: "02",
+    title: "Wedding Themes",
+    subtitle: "Emotional Direction",
+    desc: "Wedding themes help couples clarify the feeling of their celebration rather than dictate decoration. Our themes are not trends. They are emotional frameworks — guiding how space, pacing, and atmosphere come together.",
+    tag: "Themes",
+    href: "/wedding-concepts/wedding-themes",
+    image: "https://placehold.net/default.svg",
+    supports: ["Scale and Intimacy", "Ceremony Style", "Guest Experience"],
+  },
+  {
+    number: "03",
+    title: "Styling Concepts",
+    subtitle: "Vision Made Visible",
+    desc: "Styling concepts translate vision into physical form. This is where atmosphere becomes visible — through composition, materiality, texture, and restraint. Styling is never about excess. It is about clarity and harmony.",
+    tag: "Styling",
+    href: "/wedding-concepts/styling-concepts",
+    image: "https://placehold.net/default.svg",
+    supports: [
+      "Luxury Weddings in Bali",
+      "Private Villa Weddings",
+      "Intimate Celebrations",
+    ],
+  },
+  {
+    number: "04",
+    title: "Editorial Inspiration",
+    subtitle: "Where Storytelling Begins",
+    desc: "Editorial inspiration is where storytelling begins. Rather than copying trends, we draw inspiration from architecture, fashion, art, culture, and travel — bridging imagination and reality to guide both creative direction and execution.",
+    tag: "Editorial",
+    href: "/wedding-concepts/editorial-inspiration",
+    image: "https://placehold.net/default.svg",
+    supports: ["Portfolio Stories", "Journal Articles", "Styling Concepts"],
+  },
+];
+
+export const planningJourney = [
+  "Clarifying your concept",
+  "Discovering the right environment",
+  "Shaping your design narrative",
+  "Curating guest experience",
+  "Executing with calm precision",
 ];
