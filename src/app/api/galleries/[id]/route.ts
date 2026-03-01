@@ -10,15 +10,12 @@ import {
 } from "@/lib";
 import { updateGallerySchema } from "@/utils";
 
-type Context = {
-  params: {
-    id: string;
-  };
-};
-
-export async function GET(_req: NextRequest, context: Context) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
 
     const gallery = await prisma.gallery.findUnique({
       where: { id },
@@ -32,9 +29,12 @@ export async function GET(_req: NextRequest, context: Context) {
   }
 }
 
-export async function PATCH(req: NextRequest, context: Context) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
 
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
@@ -54,9 +54,12 @@ export async function PATCH(req: NextRequest, context: Context) {
   }
 }
 
-export async function DELETE(req: NextRequest, context: Context) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = context.params;
+    const { id } = await params;
 
     const payload = requireAuth(req);
     requireRole(payload, "admin");
