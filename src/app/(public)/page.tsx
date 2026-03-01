@@ -33,6 +33,7 @@ import { fadeInUp as fadeInUpMotion } from "@/lib/motion";
 import { venueCurationConsiderations } from "@/lib/data/wedding-concepts/wedding-concepts-data";
 import Instagram from "@/components/shared/instagram";
 import { reviews } from "@/lib/data/portfolio/portfolio-data";
+import Gallery from "@/components/shared/gallery";
 
 type ExperienceFilter =
   | "Private Villa Weddings"
@@ -1238,149 +1239,150 @@ export default function Page() {
           onExploreVenue={handleExploreVenueFromTheme}
         />
       )}
+      {/* <Gallery /> */}
 
       <Instagram />
       {/* ── KIND WORDS ────────────────────────────────────────────────── */}
-            <motion.section
-              className="py-20 lg:py-28 bg-primary/10"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
-              variants={staggerContainer}
+      <motion.section
+        className="py-20 lg:py-28 bg-primary/10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          {/* Section Header */}
+          <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
+            <p className="text-primary tracking-[0.25em] uppercase mb-3">
+              Kind Words
+            </p>
+            <div className="grid lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-5">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
+                  What our couples
+                  <br />
+                  <span className="italic font-light">share with us</span>
+                </h2>
+              </div>
+              <div className="lg:col-span-7 flex items-end">
+                <p className="text-primary leading-relaxed text-justify">
+                  Our couples often speak not only about how their wedding
+                  looked, but how it felt — calm, meaningful, effortless,
+                  personal, and unforgettable are words that appear again and
+                  again in their reflections.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── Desktop Slider: 3 cards visible, slide by 1 ── */}
+          <motion.div
+            variants={fadeInUp}
+            className="hidden lg:block overflow-hidden"
+          >
+            <motion.div
+              className="flex gap-6"
+              animate={{
+                x: `calc(-${reviewSlide * (100 / 3)}% - ${reviewSlide * 8}px)`,
+              }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-                {/* Section Header */}
-                <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
-                  <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                    Kind Words
-                  </p>
-                  <div className="grid lg:grid-cols-12 gap-8">
-                    <div className="lg:col-span-5">
-                      <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                        What our couples
-                        <br />
-                        <span className="italic font-light">share with us</span>
-                      </h2>
-                    </div>
-                    <div className="lg:col-span-7 flex items-end">
-                      <p className="text-primary leading-relaxed text-justify">
-                        Our couples often speak not only about how their wedding
-                        looked, but how it felt — calm, meaningful, effortless,
-                        personal, and unforgettable are words that appear again and
-                        again in their reflections.
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-      
-                {/* ── Desktop Slider: 3 cards visible, slide by 1 ── */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="hidden lg:block overflow-hidden"
+              {reviews.map((review, index) => (
+                <div
+                  key={index}
+                  className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
                 >
-                  <motion.div
-                    className="flex gap-6"
-                    animate={{
-                      x: `calc(-${reviewSlide * (100 / 3)}% - ${reviewSlide * 8}px)`,
-                    }}
-                    transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                  >
-                    {reviews.map((review, index) => (
-                      <div
-                        key={index}
-                        className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
-                      >
-                        <div>
-                          <span className="text-5xl text-primary/20 font-serif leading-none select-none">
-                            "
-                          </span>
-                          <p className="text-primary leading-relaxed italic mt-2 text-justify">
-                            {review.quote}
-                          </p>
-                        </div>
-                        <div className="mt-8 pt-6 border-t border-primary/10">
-                          <p className="text-primary font-semibold text-sm tracking-wide">
-                            {review.couple}
-                          </p>
-                          <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
-                            {review.origin}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </motion.div>
-                </motion.div>
-      
-                {/* ── Mobile Slider: 1 card visible ── */}
-                <motion.div variants={fadeInUp} className="lg:hidden overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={reviewSlide}
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -30 }}
-                      transition={{ duration: 0.35 }}
-                      className="bg-white border border-primary/10 p-8 flex flex-col justify-between"
-                    >
-                      <div>
-                        <span className="text-5xl text-primary/20 font-serif leading-none select-none">
-                          "
-                        </span>
-                        <p className="text-primary leading-relaxed italic mt-2 text-justify">
-                          {reviews[reviewSlide].quote}
-                        </p>
-                      </div>
-                      <div className="mt-8 pt-6 border-t border-primary/10">
-                        <p className="text-primary font-semibold text-sm tracking-wide">
-                          {reviews[reviewSlide].couple}
-                        </p>
-                        <p className="text-primary/50 text-xs tracking-widest uppercase mt-1">
-                          {reviews[reviewSlide].origin}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </motion.div>
-      
-                {/* ── Controls (shared) ── */}
-                <div className="flex items-center justify-between mt-10">
-                  {/* Dot indicators */}
-                  <div className="flex gap-2">
-                    {reviews.slice(0, reviews.length - 2).map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setReviewSlide(i)}
-                        className={`h-2 rounded-full transition-all hover:cursor-pointer ${
-                          reviewSlide === i
-                            ? "bg-primary w-8"
-                            : "bg-primary/30 w-2 hover:bg-primary/60"
-                        }`}
-                      />
-                    ))}
+                  <div>
+                    <span className="text-5xl text-primary/20 font-serif leading-none select-none">
+                      "
+                    </span>
+                    <p className="text-primary leading-relaxed italic mt-2 text-justify">
+                      {review.quote}
+                    </p>
                   </div>
-      
-                  {/* Arrow buttons */}
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => setReviewSlide((p) => Math.max(p - 1, 0))}
-                      disabled={reviewSlide === 0}
-                      className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
-                    >
-                      <ArrowLeft className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
-                    </button>
-                    <button
-                      onClick={() =>
-                        setReviewSlide((p) => Math.min(p + 1, reviews.length - 3))
-                      }
-                      disabled={reviewSlide >= reviews.length - 3}
-                      className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
-                    >
-                      <ArrowRight className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
-                    </button>
+                  <div className="mt-8 pt-6 border-t border-primary/10">
+                    <p className="text-primary font-semibold text-sm tracking-wide">
+                      {review.couple}
+                    </p>
+                    <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
+                      {review.origin}
+                    </p>
                   </div>
                 </div>
-              </div>
-            </motion.section>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* ── Mobile Slider: 1 card visible ── */}
+          <motion.div variants={fadeInUp} className="lg:hidden overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={reviewSlide}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.35 }}
+                className="bg-white border border-primary/10 p-8 flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-5xl text-primary/20 font-serif leading-none select-none">
+                    "
+                  </span>
+                  <p className="text-primary leading-relaxed italic mt-2 text-justify">
+                    {reviews[reviewSlide].quote}
+                  </p>
+                </div>
+                <div className="mt-8 pt-6 border-t border-primary/10">
+                  <p className="text-primary font-semibold text-sm tracking-wide">
+                    {reviews[reviewSlide].couple}
+                  </p>
+                  <p className="text-primary/50 text-xs tracking-widest uppercase mt-1">
+                    {reviews[reviewSlide].origin}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+
+          {/* ── Controls (shared) ── */}
+          <div className="flex items-center justify-between mt-10">
+            {/* Dot indicators */}
+            <div className="flex gap-2">
+              {reviews.slice(0, reviews.length - 2).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setReviewSlide(i)}
+                  className={`h-2 rounded-full transition-all hover:cursor-pointer ${
+                    reviewSlide === i
+                      ? "bg-primary w-8"
+                      : "bg-primary/30 w-2 hover:bg-primary/60"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Arrow buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setReviewSlide((p) => Math.max(p - 1, 0))}
+                disabled={reviewSlide === 0}
+                className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
+              </button>
+              <button
+                onClick={() =>
+                  setReviewSlide((p) => Math.min(p + 1, reviews.length - 3))
+                }
+                disabled={reviewSlide >= reviews.length - 3}
+                className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+              >
+                <ArrowRight className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.section>
     </div>
   );
 }
