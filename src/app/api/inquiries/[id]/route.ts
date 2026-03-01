@@ -1,15 +1,27 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 
 import { updateInquiryStatusSchema } from "@/utils";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
-    const inquiry = await prisma.inquiry.findUnique({ where: { id: params.id } });
+    const inquiry = await prisma.inquiry.findUnique({ where: { id } });
     if (!inquiry) return notFound("Inquiry");
     return ok(inquiry);
   } catch (error) {
@@ -17,8 +29,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
@@ -26,7 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const { status } = updateInquiryStatusSchema.parse(body);
 
     const inquiry = await prisma.inquiry.update({
-      where: { id: params.id },
+      where: { id },
       data: { status },
     });
     return ok(inquiry);
@@ -35,12 +51,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.inquiry.delete({ where: { id: params.id } });
+    await prisma.inquiry.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

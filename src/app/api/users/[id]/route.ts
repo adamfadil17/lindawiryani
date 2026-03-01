@@ -1,6 +1,14 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 
 import { updateUserSchema } from "@/utils";
 
@@ -12,13 +20,17 @@ const SELECT_PUBLIC = {
   created_at: true,
 };
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
     const user = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id },
       select: SELECT_PUBLIC,
     });
 
@@ -29,8 +41,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
@@ -38,7 +54,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const dto = updateUserSchema.parse(body);
 
     const user = await prisma.user.update({
-      where: { id: params.id },
+      where: { id },
       data: dto,
       select: SELECT_PUBLIC,
     });
@@ -49,12 +65,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.user.delete({ where: { id: params.id } });
+    await prisma.user.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

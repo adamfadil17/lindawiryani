@@ -1,13 +1,25 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 
 import { updateLocationSchema } from "@/utils";
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const location = await prisma.location.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { parent: true, children: true, venues: true },
     });
     if (!location) return notFound("Location");
@@ -17,8 +29,12 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
@@ -26,7 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const dto = updateLocationSchema.parse(body);
 
     const location = await prisma.location.update({
-      where: { id: params.id },
+      where: { id },
       data: dto,
       include: { parent: true, children: true },
     });
@@ -36,12 +52,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.location.delete({ where: { id: params.id } });
+    await prisma.location.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

@@ -1,6 +1,14 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 
 import { updateImageSchema } from "@/utils";
 
@@ -12,10 +20,14 @@ const IMAGE_INCLUDE = {
   wedding_experience: true,
 };
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const image = await prisma.image.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: IMAGE_INCLUDE,
     });
     if (!image) return notFound("Image");
@@ -25,8 +37,12 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
@@ -34,7 +50,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const dto = updateImageSchema.parse(body);
 
     const image = await prisma.image.update({
-      where: { id: params.id },
+      where: { id },
       data: dto,
       include: IMAGE_INCLUDE,
     });
@@ -44,12 +60,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.image.delete({ where: { id: params.id } });
+    await prisma.image.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

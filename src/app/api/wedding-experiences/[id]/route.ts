@@ -1,13 +1,25 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 
 import { updateWeddingExperienceSchema } from "@/utils";
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const experience = await prisma.weddingExperience.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { images: { orderBy: { sort_order: "asc" } } },
     });
     if (!experience) return notFound("Wedding Experience");
@@ -17,8 +29,12 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
@@ -26,7 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const dto = updateWeddingExperienceSchema.parse(body);
 
     const experience = await prisma.weddingExperience.update({
-      where: { id: params.id },
+      where: { id },
       data: dto,
       include: { images: { orderBy: { sort_order: "asc" } } },
     });
@@ -36,12 +52,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.weddingExperience.delete({ where: { id: params.id } });
+    await prisma.weddingExperience.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

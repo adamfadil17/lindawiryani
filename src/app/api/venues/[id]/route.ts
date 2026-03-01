@@ -1,6 +1,14 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 
 import { updateVenueSchema } from "@/utils";
 
@@ -10,10 +18,14 @@ const VENUE_INCLUDE = {
   images: { orderBy: { sort_order: "asc" as const } },
 };
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const venue = await prisma.venue.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: VENUE_INCLUDE,
     });
     if (!venue) return notFound("Venue");
@@ -23,8 +35,12 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
@@ -32,7 +48,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const dto = updateVenueSchema.parse(body);
 
     const venue = await prisma.venue.update({
-      where: { id: params.id },
+      where: { id },
       data: dto,
       include: VENUE_INCLUDE,
     });
@@ -42,12 +58,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.venue.delete({ where: { id: params.id } });
+    await prisma.venue.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);
