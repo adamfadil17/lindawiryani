@@ -442,9 +442,7 @@ export default function WeddingConceptsPage() {
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
           >
-            Wedding
-            <br />
-            <span className="italic font-light normal-case">Concepts</span>
+            Wedding Concepts
           </motion.h1>
           <motion.p
             variants={fadeInUp}
@@ -469,11 +467,7 @@ export default function WeddingConceptsPage() {
             <div className="lg:sticky lg:top-32">
               <div className="w-16 h-px bg-primary/70 mb-6" />
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                A creative layer
-                <br />
-                for how weddings
-                <br />
-                <span className="italic font-light">are imagined.</span>
+                A creative layer for how weddings are imagined.
               </h2>
             </div>
           </motion.div>
@@ -501,10 +495,10 @@ export default function WeddingConceptsPage() {
 
             <motion.div
               variants={fadeInUp}
-              className="border-l-2 border-primary pl-8 py-2"
+              className="border-l-2 border-primary/50 pl-8 py-2"
             >
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
-                How Concepts Support Your Journey
+                How Concepts Support Your Planning Journey
               </p>
               <div className="space-y-3">
                 {[
@@ -514,7 +508,7 @@ export default function WeddingConceptsPage() {
                   "Emotionally resonant celebrations",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-4">
-                    <div className="w-5 h-px bg-primary flex-shrink-0" />
+                    <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
                     <span className="text-primary">{item}</span>
                   </div>
                 ))}
@@ -565,9 +559,7 @@ export default function WeddingConceptsPage() {
                 The Four Layers
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
-                Wedding
-                <br />
-                <span className="italic font-light">Concept Layers</span>
+                Wedding Concept Layers
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
@@ -661,7 +653,7 @@ export default function WeddingConceptsPage() {
               className="lg:col-span-5 relative h-[55vh] lg:h-[600px] overflow-hidden"
             >
               <Image
-                src="https://placehold.net/default.svg"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1773156604/venue_curation2_sseeau.jpg"
                 alt="Venue Curation"
                 fill
                 loading="lazy"
@@ -683,9 +675,7 @@ export default function WeddingConceptsPage() {
                   Concept Layer 01
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  Venue
-                  <br />
-                  <span className="italic font-light">Curation</span>
+                  Venue Curation
                 </h2>
               </motion.div>
 
@@ -716,7 +706,7 @@ export default function WeddingConceptsPage() {
                 <div className="grid sm:grid-cols-2 gap-3">
                   {venueCurationConsiderations.map((item) => (
                     <div key={item} className="flex items-start gap-3">
-                      <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                      <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
                       <span className="text-primary">{item}</span>
                     </div>
                   ))}
@@ -757,7 +747,7 @@ export default function WeddingConceptsPage() {
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -100px 0px" }}
         variants={staggerContainer}
       >
-        <div className="absolute inset-0 bg-primary/10" />
+        <div className="absolute inset-0 bg-primary/15" />
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           {/* Header */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
@@ -767,9 +757,7 @@ export default function WeddingConceptsPage() {
             <div className="grid lg:grid-cols-12 gap-8">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                  Wedding
-                  <br />
-                  <span className="italic font-light">Themes</span>
+                  Wedding Themes
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
@@ -970,21 +958,19 @@ export default function WeddingConceptsPage() {
                   Concept Layer 03
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                  Styling
-                  <br />
-                  <span className="italic font-light">Concepts</span>
+                  Styling Concepts
                 </h2>
                 <p className="mt-6 text-primary leading-relaxed italic">
                   Styling is never about excess. It is about clarity and
                   harmony.
                 </p>
-                <div className="mt-8">
+                {/* <div className="mt-8">
                   <Link href="/wedding-concepts/styling-concepts">
                     <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
                       VIEW STYLING
                     </button>
                   </Link>
-                </div>
+                </div> */}
               </div>
             </motion.div>
 
@@ -1021,7 +1007,7 @@ export default function WeddingConceptsPage() {
 
               <motion.div
                 variants={fadeInUp}
-                className="border-l-2 border-primary pl-8 py-2"
+                className="border-l-2 border-primary/50 pl-8 py-2"
               >
                 <p className="text-primary font-semibold tracking-widest uppercase mb-4">
                   Styling Supports
@@ -1034,7 +1020,7 @@ export default function WeddingConceptsPage() {
                     "Luxury Weddings",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-4">
-                      <div className="w-5 h-px bg-primary flex-shrink-0" />
+                      <div className="w-3 h-px bg-primary flex-shrink-0" />
                       <span className="text-primary">{item}</span>
                     </div>
                   ))}
@@ -1057,11 +1043,11 @@ export default function WeddingConceptsPage() {
         <div className="absolute inset-0 bg-primary/10" />
         <div className="absolute top-0 right-0 w-1/3 h-full hidden lg:block">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773156603/editorial_inspiration_j5twsn.jpg"
             alt="Editorial Inspiration"
             fill
             loading="lazy"
-            className="object-cover opacity-40"
+            className="object-cover"
             sizes="33vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-transparent" />
@@ -1074,9 +1060,7 @@ export default function WeddingConceptsPage() {
                 Concept Layer 04
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                Editorial
-                <br />
-                <span className="italic font-light">Inspiration</span>
+                Editorial Inspiration
               </h2>
             </motion.div>
 
@@ -1121,7 +1105,7 @@ export default function WeddingConceptsPage() {
                   "Align emotionally with their vision",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-3">
-                    <div className="w-5 h-px bg-primary/50 flex-shrink-0" />
+                    <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
                     <span className="text-primary">{item}</span>
                   </div>
                 ))}
@@ -1150,7 +1134,7 @@ export default function WeddingConceptsPage() {
       {/* ── VENUES & SETTINGS ─────────────────────────────────────────── */}
       <motion.section
         id="venue-list-section"
-        className="bg-primary py-20 lg:py-28"
+        className="bg-primary/15 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -1163,17 +1147,15 @@ export default function WeddingConceptsPage() {
             className="mb-14 lg:mb-20 grid lg:grid-cols-12 gap-8"
           >
             <div className="lg:col-span-5">
-              <p className="text-white tracking-[0.25em] uppercase mb-3">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
                 Venues & Settings
               </p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
-                Curated
-                <br />
-                <span className="italic font-light">for Experience</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
+                Curated for Experience
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
-              <p className="text-white text-justify leading-relaxed">
+              <p className="text-primary text-justify leading-relaxed">
                 We curate venues not by popularity, but by their ability to hold
                 emotion, beauty, and experience. Each space is selected for its
                 architectural character, natural environment, privacy, and
@@ -1459,13 +1441,13 @@ export default function WeddingConceptsPage() {
             >
               {/* Experience Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+                <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   EXPERIENCE
                 </span>
                 <div className="relative">
                   <button
                     onClick={() => setIsVenueDropdownOpen(!isVenueDropdownOpen)}
-                    className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedVenueFilter}</span>
                     <ChevronDown
@@ -1506,7 +1488,7 @@ export default function WeddingConceptsPage() {
 
               {/* Location Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+                <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   LOCATION
                 </span>
                 <div className="relative">
@@ -1514,7 +1496,7 @@ export default function WeddingConceptsPage() {
                     onClick={() =>
                       setIsLocationDropdownOpen(!isLocationDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-white hover:text-white/80  transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80  transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedLocation}</span>
                     <ChevronDown
@@ -1548,7 +1530,7 @@ export default function WeddingConceptsPage() {
 
               {/* Currency Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+                <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   CURRENCY
                 </span>
                 <div className="relative">
@@ -1556,7 +1538,7 @@ export default function WeddingConceptsPage() {
                     onClick={() =>
                       setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedCurrency}</span>
                     <ChevronDown
@@ -1591,7 +1573,7 @@ export default function WeddingConceptsPage() {
 
             <motion.p
               variants={fadeInUp}
-              className="text-center text-sm text-white mb-12"
+              className="text-center text-sm text-primary mb-12"
             >
               {selectedLocation === "All"
                 ? `Showing ${visibleVenues.length} of ${totalVenuesCount} venues`
@@ -1612,7 +1594,7 @@ export default function WeddingConceptsPage() {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="text-base md:text-lg text-white max-w-3xl mx-auto leading-relaxed"
+                  className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
                 >
                   {selectedVenueFilter === "Luxury Weddings" &&
                     "A curated selection of venues known for distinctive architecture, setting, and experience."}
@@ -1671,7 +1653,7 @@ export default function WeddingConceptsPage() {
                           onClick={() => setCurrentVenueSlide(index)}
                           className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
                             currentVenueSlide === index
-                              ? "bg-white w-8"
+                              ? "bg-primary w-8"
                               : "bg-stone-300"
                           }`}
                         />
@@ -1701,7 +1683,7 @@ export default function WeddingConceptsPage() {
                   {hasMoreVenues ? (
                     <button
                       onClick={() => setVisibleCount((prev) => prev + 6)}
-                      className="bg-transparent border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors"
+                      className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                     >
                       VIEW MORE ({totalVenuesCount - visibleCount} MORE)
                     </button>
@@ -1709,7 +1691,7 @@ export default function WeddingConceptsPage() {
                     totalVenuesCount > 6 && (
                       <button
                         onClick={() => setVisibleCount(6)}
-                        className="bg-transparent border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors"
+                        className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                       >
                         VIEW LESS
                       </button>

@@ -5,8 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
-
-import type { Article } from "@/lib/types/article/article-types";
+import { Article } from "@/lib/types/new-strucutre";
 
 interface ArticleDetailProps {
   article: Article;

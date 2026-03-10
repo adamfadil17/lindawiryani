@@ -44,15 +44,13 @@ export default function Instagram() {
       <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Header — matches page.tsx section headers */}
         <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
-          <p className="text-primary/60 tracking-[0.25em] uppercase mb-3 text-sm">
+          <p className="text-primary tracking-[0.25em] uppercase mb-3">
             Follow Along
           </p>
           <div className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-5">
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                Latest
-                <br />
-                <span className="italic font-light">Inspirations</span>
+                Latest Inspirations
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
@@ -190,7 +188,7 @@ export default function Instagram() {
           className="flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-primary/20 pt-12"
         >
           <div>
-            <p className="text-primary/60 tracking-[0.25em] uppercase text-sm mb-1">
+            <p className="text-primary/80 tracking-[0.25em] uppercase text-sm mb-1">
               Stay Connected
             </p>
             <a

@@ -9,16 +9,25 @@ import {
   ArrowRight,
   MapPin,
   Users,
-  ChevronLeft,
-  ChevronRight,
+  ArrowLeft,
 } from "lucide-react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 
 import { slugData } from "@/lib/data/wedding-experiences/wedding-experiences-data";
 import type {
-  SlugKey,
-  ExperienceData,
-} from "@/lib/types/wedding-experiences/wedding-experiences-types";
+  WeddingExperience,
+  WeddingExperienceType,
+} from "@/lib/types/new-strucutre";
+
+type SlugKey =
+  | "private-villa-weddings"
+  | "intimate-weddings"
+  | "elopement-weddings"
+  | "luxury-weddings";
+type ExperienceData = Omit<
+  WeddingExperience,
+  "id" | "venues" | "themes" | "portfolios"
+>;
 import {
   cities,
   venues,
@@ -77,7 +86,7 @@ function HeroSplit({ data }: { data: ExperienceData }) {
       <div className="absolute inset-0">
         <Image
           src={data.hero.image}
-          alt={data.meta.breadcrumb}
+          alt={data.name}
           fill
           priority
           className="object-cover object-center"
@@ -96,23 +105,21 @@ function HeroSplit({ data }: { data: ExperienceData }) {
           variants={fadeInUp}
           className="flex items-center gap-2 mb-12 mt-6"
         >
-          <Breadcrumb label={data.meta.breadcrumb} />
+          <Breadcrumb label={data.name} />
         </motion.div>
         <motion.p
           variants={fadeInUp}
           className="text-white tracking-[0.3em] uppercase mb-5"
         >
-          {data.meta.eyebrow}
+          {`${data.name} Planner in Bali`}
         </motion.p>
         <motion.h1
           variants={fadeInUp}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
         >
-          {data.hero.title}
+          {data.name}
           <br />
-          <span className="italic font-light normal-case">
-            {data.hero.subtitle}
-          </span>
+          <span>{"in Bali"}</span>
         </motion.h1>
         <motion.p
           variants={fadeInUp}
@@ -138,7 +145,7 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
       <div className="absolute inset-0">
         <Image
           src={data.hero.image}
-          alt={data.meta.breadcrumb}
+          alt={data.name}
           fill
           priority
           className="object-cover object-center"
@@ -157,7 +164,7 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
           variants={fadeInUp}
           className="flex items-center gap-2 mb-12 mt-6"
         >
-          <Breadcrumb label={data.meta.breadcrumb} />
+          <Breadcrumb label={data.name} />
         </motion.div>
         <div className="grid lg:grid-cols-12 gap-8 items-end">
           <div className="lg:col-span-7">
@@ -165,17 +172,15 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
               variants={fadeInUp}
               className="text-white tracking-[0.3em] uppercase mb-5"
             >
-              {data.meta.eyebrow}
+              {`${data.name} Planner in Bali`}
             </motion.p>
             <motion.h1
               variants={fadeInUp}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
             >
-              {data.hero.title}
+              {data.name}
               <br />
-              <span className="italic font-light normal-case">
-                {data.hero.subtitle}
-              </span>
+              <span>{"in Bali"}</span>
             </motion.h1>
           </div>
           <div className="lg:col-span-5 lg:pb-2">
@@ -205,7 +210,7 @@ function HeroCentered({ data }: { data: ExperienceData }) {
       <div className="absolute inset-0">
         <Image
           src={data.hero.image}
-          alt={data.meta.breadcrumb}
+          alt={data.name}
           fill
           priority
           className="object-cover object-center"
@@ -224,21 +229,19 @@ function HeroCentered({ data }: { data: ExperienceData }) {
           variants={fadeInUp}
           className="flex items-center gap-2 mb-12 mt-6"
         >
-          <Breadcrumb label={data.meta.breadcrumb} />
+          <Breadcrumb label={data.name} />
         </motion.div>
         <motion.p
           variants={fadeInUp}
           className="text-white tracking-[0.3em] uppercase mb-5"
         >
-          {data.meta.eyebrow}
+          {`${data.name} Planner in Bali`}
         </motion.p>
         <motion.div variants={fadeInUp} className="mb-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase">
-            {data.hero.title}
+            {data.name}
             <br />
-            <span className="italic font-light normal-case">
-              {data.hero.subtitle}
-            </span>
+            <span>{"in Bali"}</span>
           </h1>
         </motion.div>
         <motion.div
@@ -269,7 +272,7 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
       <div className="absolute inset-0">
         <Image
           src={data.hero.image}
-          alt={data.meta.breadcrumb}
+          alt={data.name}
           fill
           priority
           className="object-cover object-center"
@@ -288,21 +291,19 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
           variants={fadeInUp}
           className="flex items-center gap-2 mb-12 mt-6"
         >
-          <Breadcrumb label={data.meta.breadcrumb} />
+          <Breadcrumb label={data.name} />
         </motion.div>
         <motion.p
           variants={fadeInUp}
           className="text-white tracking-[0.3em] uppercase mb-5"
         >
-          {data.meta.eyebrow}
+          {`${data.name} Planner in Bali`}
         </motion.p>
         <motion.div variants={fadeInUp}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase">
-            {data.hero.title}
+            {data.name}
             <br />
-            <span className="italic font-light normal-case">
-              {data.hero.subtitle}
-            </span>
+            <span>{"in Bali"}</span>
           </h1>
         </motion.div>
         <motion.div
@@ -349,7 +350,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
               {data.intro.heading[0]}
               <br />
-              <span className="italic font-light">{data.intro.heading[1]}</span>
+              <span>{data.intro.heading[1]}</span>
             </h2>
           </motion.div>
           <motion.div variants={fadeInUp} className="space-y-0">
@@ -389,7 +390,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
             <div className="relative aspect-[3/4] overflow-hidden">
               <Image
                 src={data.approach.image}
-                alt={data.meta.breadcrumb}
+                alt={data.name}
                 fill
                 loading="lazy"
                 className="object-cover"
@@ -399,7 +400,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
             <div className="relative aspect-[3/4] overflow-hidden mt-8">
               <Image
                 src={data.hero.image}
-                alt={data.meta.breadcrumb}
+                alt={data.name}
                 fill
                 loading="lazy"
                 className="object-cover"
@@ -416,7 +417,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
 function SectionApproach({ data }: { data: ExperienceData }) {
   return (
     <motion.section
-      className="bg-primary/10 py-20 lg:py-28"
+      className="bg-primary/15 py-20 lg:py-28"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -445,9 +446,7 @@ function SectionApproach({ data }: { data: ExperienceData }) {
               <h2 className="text-3xl md:text-4xl text-primary font-semibold">
                 {data.approach.heading[0]}
                 <br />
-                <span className="italic font-light">
-                  {data.approach.heading[1]}
-                </span>
+                <span>{data.approach.heading[1]}</span>
               </h2>
             </motion.div>
             <motion.p
@@ -465,7 +464,7 @@ function SectionApproach({ data }: { data: ExperienceData }) {
               <div className="space-y-3">
                 {data.approach.list.map((item, i) => (
                   <div key={item} className="flex items-center gap-4">
-                    <div className="w-5 h-px bg-primary/50 flex-shrink-0" />
+                    <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
                     <span className="text-primary">{item}</span>
                   </div>
                 ))}
@@ -493,11 +492,7 @@ function SectionServices({ data }: { data: ExperienceData }) {
             {data.services.label}
           </p>
           <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-            {data.services.heading[0]}
-            <br />
-            <span className="italic font-light">
-              {data.services.heading[1]}
-            </span>
+            {`${data.services.heading[0]} ${data.services.heading[1]}`}
           </h2>
         </motion.div>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
@@ -599,7 +594,7 @@ function SectionClosing({ data }: { data: ExperienceData }) {
                 <h2 className="text-3xl md:text-4xl text-white uppercase font-semibold">
                   {data.closing.heading[0]}
                   <br />
-                  <span className="italic font-light">
+                  <span>
                     {data.closing.heading[1]}
                   </span>
                 </h2>
@@ -637,7 +632,7 @@ function SectionClosing({ data }: { data: ExperienceData }) {
                       key={v}
                       className="flex items-center gap-4 py-3 border-b border-white/40"
                     >
-                      <div className="w-5 h-px bg-white/80 flek-shrink-0" />
+                      <div className="w-3 h-px bg-white/80 flek-shrink-0" />
                       <span className="text-white">{v}</span>
                     </div>
                   ))}
@@ -706,9 +701,9 @@ function SectionFaq({ data }: { data: ExperienceData }) {
           <motion.div variants={fadeInUp} className="lg:col-span-4">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">FAQ</p>
             <h2 className="text-2xl md:text-3xl text-primary font-semibold">
-              {data.meta.breadcrumb}
+              {data.name}
               <br />
-              <span className="italic font-light">Questions</span>
+              <span>Questions</span>
             </h2>
           </motion.div>
           <motion.div variants={fadeIn} className="lg:col-span-8">
@@ -831,7 +826,11 @@ function VenueCard({
                 <span className="text-md font-medium">{selectedCurrency}</span>
               )}
               <span className="text-xl md:text-2xl font-normal text-white">
-                {formatPrice(venue.startingPrice, selectedCurrency, exchangeRate)}
+                {formatPrice(
+                  venue.startingPrice,
+                  selectedCurrency,
+                  exchangeRate,
+                )}
               </span>
               {venue.startingPrice !== 0 && (
                 <span className="text-sm text-white">nett</span>
@@ -948,7 +947,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
   return (
     <>
       <motion.section
-        className="bg-primary py-20 lg:py-28"
+        className="bg-primary/15 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -961,17 +960,15 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
             className="mb-14 lg:mb-20 grid lg:grid-cols-12 gap-8"
           >
             <div className="lg:col-span-5">
-              <p className="text-white tracking-[0.25em] uppercase mb-3">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
                 Venues & Settings
               </p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
-                Curated
-                <br />
-                <span className="italic font-light">for Experience</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
+                Curated for Experience
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
-              <p className="text-white text-justify leading-relaxed">
+              <p className="text-primary text-justify leading-relaxed">
                 We curate venues not by popularity, but by their ability to hold
                 emotion, beauty, and experience. Each space is selected for its
                 architectural character, natural environment, privacy, and
@@ -987,7 +984,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
           >
             {/* Location Filter */}
             <div className="flex items-center gap-4">
-              <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+              <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                 LOCATION
               </span>
               <div className="relative">
@@ -995,7 +992,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
                   onClick={() =>
                     setIsLocationDropdownOpen(!isLocationDropdownOpen)
                   }
-                  className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                  className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
                   <span>{selectedLocation}</span>
                   <ChevronDown
@@ -1029,7 +1026,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
 
             {/* Currency Filter */}
             <div className="flex items-center gap-4">
-              <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+              <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                 CURRENCY
               </span>
               <div className="relative">
@@ -1037,7 +1034,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
                   onClick={() =>
                     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                   }
-                  className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                  className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
                   <span>{selectedCurrency}</span>
                   <ChevronDown
@@ -1072,7 +1069,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
 
           <motion.p
             variants={fadeInUp}
-            className="text-center text-sm text-white mb-12"
+            className="text-center text-sm text-primary mb-12"
           >
             {selectedLocation === "All"
               ? `Showing ${visibleVenues.length} of ${totalVenuesCount} venues`
@@ -1084,7 +1081,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
           {/* Venue Cards */}
           <motion.div variants={fadeInUp} className="mb-10">
             <div className="mb-12 text-center">
-              <p className="text-base md:text-lg text-white max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed">
                 {categoryDescriptions[category]}
               </p>
             </div>
@@ -1117,15 +1114,15 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
                   <>
                     <button
                       onClick={prevVenueSlide}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 p-2 shadow-lg hover:bg-white/40 transition-colors z-10 hover:cursor-pointer"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
                     >
-                      <ChevronLeft className="w-6 h-6 text-white" />
+                      <ArrowLeft className="w-6 h-6 text-white" />
                     </button>
                     <button
                       onClick={nextVenueSlide}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 p-2 shadow-lg hover:bg-white/40 transition-colors z-10 hover:cursor-pointer"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
                     >
-                      <ChevronRight className="w-6 h-6 text-white" />
+                      <ArrowRight className="w-6 h-6 text-white" />
                     </button>
                     <div className="flex justify-center gap-2 mt-4">
                       {filteredVenues.map((_, index) => (
@@ -1134,8 +1131,8 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
                           onClick={() => setCurrentVenueSlide(index)}
                           className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
                             currentVenueSlide === index
-                              ? "bg-white w-8"
-                              : "bg-white/40"
+                              ? "bg-primary w-8"
+                              : "bg-stone-300"
                           }`}
                         />
                       ))}
@@ -1162,7 +1159,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
                       {hasMoreVenues ? (
                         <button
                           onClick={() => setVisibleCount((prev) => prev + 6)}
-                          className="bg-transparent border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors"
+                          className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                         >
                           VIEW MORE ({totalVenuesCount - visibleCount} MORE)
                         </button>
@@ -1170,7 +1167,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
                         totalVenuesCount > 6 && (
                           <button
                             onClick={() => setVisibleCount(6)}
-                            className="bg-transparent border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors"
+                            className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                           >
                             VIEW LESS
                           </button>
@@ -1180,7 +1177,7 @@ function SectionVenueList({ experienceSlug }: { experienceSlug: string }) {
                   </>
                 ) : (
                   <div className="text-center py-16">
-                    <p className="text-white/60 text-lg italic">
+                    <p className="text-primary text-lg italic">
                       No venues found for the selected location.
                     </p>
                   </div>
@@ -1275,7 +1272,7 @@ function SectionSubExperiences({ currentSlug }: { currentSlug: string }) {
             <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
               Other Wedding
               <br />
-              <span className="italic font-light">Experiences</span>
+              <span>Experiences</span>
             </h2>
           </div>
           <div className="lg:col-span-7 flex items-end">

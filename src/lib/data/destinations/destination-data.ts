@@ -1,4 +1,4 @@
-import { Destination } from "@/lib/types/destinations/destination-types";
+  import { Destination } from "@/lib/types/destinations/destination-types";
 
 export const destinationList: Destination[] = [
   {

@@ -9,8 +9,6 @@ import {
   MapPin,
   Users,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   ArrowLeft,
 } from "lucide-react";
 import { fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
@@ -417,27 +415,24 @@ export default function Page() {
           </motion.p>
           <motion.h1
             variants={fadeInUp}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
+            className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-5 md:mb-6 leading-tight"
           >
-            Destination &
-            <br />
-            <span className="italic font-light normal-case">
-              Intimate Weddings
-            </span>
+            Destination & Intimate Weddings <br />
+            <span> in Bali – Designed with Intention</span>
           </motion.h1>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-xl leading-relaxed"
           >
-            Designed with intention, emotion, and art. Every celebration begins
-            with a story — thoughtfully crafted, never templated.
+            This is where you place emotion, art, storytelling, hospitality,
+            philosophy.
           </motion.p>
           <motion.div
             variants={fadeInUp}
             className="mt-10 flex flex-wrap gap-4"
           >
             <Link href="#wedding-themes-section">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
+              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
                 PLAN YOUR BALI WEDDING
               </button>
             </Link>
@@ -467,14 +462,12 @@ export default function Page() {
           {/* Header */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Concept Layer 02
+              Concept Layer
             </p>
             <div className="grid lg:grid-cols-12 gap-8">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                  Wedding
-                  <br />
-                  <span className="italic font-light">Themes</span>
+                  Wedding Themes
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
@@ -659,7 +652,7 @@ export default function Page() {
       {/* ── VENUES & SETTINGS ─────────────────────────────────────────── */}
       <motion.section
         id="venue-list-section"
-        className="bg-primary py-20 lg:py-28"
+        className="bg-primary/15 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -672,17 +665,15 @@ export default function Page() {
             className="mb-14 lg:mb-20 grid lg:grid-cols-12 gap-8"
           >
             <div className="lg:col-span-5">
-              <p className="text-white tracking-[0.25em] uppercase mb-3">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
                 Venues & Settings
               </p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
-                Curated
-                <br />
-                <span className="italic font-light">for Experience</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
+                Curated for Experience
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
-              <p className="text-white text-justify leading-relaxed">
+              <p className="text-primary/80 text-justify leading-relaxed">
                 We curate venues not by popularity, but by their ability to hold
                 emotion, beauty, and experience. Each space is selected for its
                 architectural character, natural environment, privacy, and
@@ -961,13 +952,13 @@ export default function Page() {
             >
               {/* Experience Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+                <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   EXPERIENCE
                 </span>
                 <div className="relative">
                   <button
                     onClick={() => setIsVenueDropdownOpen(!isVenueDropdownOpen)}
-                    className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedVenueFilter}</span>
                     <ChevronDown
@@ -1008,7 +999,7 @@ export default function Page() {
 
               {/* Location Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+                <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   LOCATION
                 </span>
                 <div className="relative">
@@ -1016,7 +1007,7 @@ export default function Page() {
                     onClick={() =>
                       setIsLocationDropdownOpen(!isLocationDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedLocation}</span>
                     <ChevronDown
@@ -1050,7 +1041,7 @@ export default function Page() {
 
               {/* Currency Filter */}
               <div className="flex items-center gap-4">
-                <span className="text-base md:text-lg text-white tracking-wider uppercase font-semibold">
+                <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   CURRENCY
                 </span>
                 <div className="relative">
@@ -1058,7 +1049,7 @@ export default function Page() {
                     onClick={() =>
                       setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-white hover:text-white/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedCurrency}</span>
                     <ChevronDown
@@ -1093,7 +1084,7 @@ export default function Page() {
 
             <motion.p
               variants={fadeInUp}
-              className="text-center text-sm text-white mb-12"
+              className="text-center text-sm text-primary mb-12"
             >
               {selectedLocation === "All"
                 ? `Showing ${visibleVenues.length} of ${totalVenuesCount} venues`
@@ -1113,7 +1104,7 @@ export default function Page() {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="text-base md:text-lg text-white max-w-3xl mx-auto leading-relaxed"
+                  className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
                 >
                   {selectedVenueFilter === "Luxury Weddings" &&
                     "A curated selection of venues known for distinctive architecture, setting, and experience."}
@@ -1172,7 +1163,7 @@ export default function Page() {
                           onClick={() => setCurrentVenueSlide(index)}
                           className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
                             currentVenueSlide === index
-                              ? "bg-white w-8"
+                              ? "bg-primary w-8"
                               : "bg-stone-300"
                           }`}
                         />
@@ -1202,7 +1193,7 @@ export default function Page() {
                   {hasMoreVenues ? (
                     <button
                       onClick={() => setVisibleCount((prev) => prev + 6)}
-                      className="bg-transparent border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors"
+                      className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                     >
                       VIEW MORE ({totalVenuesCount - visibleCount} MORE)
                     </button>
@@ -1210,7 +1201,7 @@ export default function Page() {
                     totalVenuesCount > 6 && (
                       <button
                         onClick={() => setVisibleCount(6)}
-                        className="bg-transparent border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors"
+                        className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                       >
                         VIEW LESS
                       </button>
@@ -1244,7 +1235,7 @@ export default function Page() {
       <Instagram />
       {/* ── KIND WORDS ────────────────────────────────────────────────── */}
       <motion.section
-        className="py-20 lg:py-28 bg-primary/10"
+        className="py-20 lg:py-28 bg-primary/15"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -1261,11 +1252,11 @@ export default function Page() {
                 <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
                   What our couples
                   <br />
-                  <span className="italic font-light">share with us</span>
+                  <span>share with us</span>
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
-                <p className="text-primary leading-relaxed text-justify">
+                <p className="text-primary/80 leading-relaxed text-justify">
                   Our couples often speak not only about how their wedding
                   looked, but how it felt — calm, meaningful, effortless,
                   personal, and unforgettable are words that appear again and
@@ -1293,7 +1284,7 @@ export default function Page() {
                   className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
                 >
                   <div>
-                    <span className="text-5xl text-primary/20 font-serif leading-none select-none">
+                    <span className="text-5xl text-primary/50 font-serif leading-none select-none">
                       "
                     </span>
                     <p className="text-primary leading-relaxed italic mt-2 text-justify">
@@ -1305,7 +1296,7 @@ export default function Page() {
                       {review.couple}
                     </p>
                     <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
-                      {review.origin}
+                      {`Couple from ${review.origin} `}
                     </p>
                   </div>
                 </div>

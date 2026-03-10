@@ -80,7 +80,7 @@ export default function DestinationDetail({
           >
             {destination.name}
             <br />
-            <span className="italic font-light normal-case">
+            <span>
               {destination.type}
             </span>
           </motion.h1>
@@ -231,7 +231,7 @@ export default function DestinationDetail({
                     key={option}
                     className="text-primary flex items-start gap-4"
                   >
-                    <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                    <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
                     <span className="text-primary">{option}</span>
                   </li>
                 ))}
@@ -243,7 +243,7 @@ export default function DestinationDetail({
                       key={option}
                       className="text-primary flex items-start gap-4"
                     >
-                      <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                      <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
                       <span className="text-primary">{option}</span>
                     </li>
                   ))}
@@ -286,7 +286,7 @@ export default function DestinationDetail({
                     key={option}
                     className="text-primary flex items-start gap-4"
                   >
-                    <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                    <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
                     <span className="text-primary">{option}</span>
                   </li>
                 ))}
@@ -298,7 +298,7 @@ export default function DestinationDetail({
                       key={option}
                       className="text-primary flex items-start gap-4"
                     >
-                      <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                      <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
                       <span className="text-primary">{option}</span>
                     </li>
                   ))}

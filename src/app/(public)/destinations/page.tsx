@@ -62,11 +62,7 @@ export default function DestinationsPage() {
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
           >
-            Curated Destination
-            <br />
-            <span className="italic font-light normal-case">
-              Wedding Experiences Rooted in Bali
-            </span>
+            Curated Destination Wedding Experiences Rooted in Bali
             <p className="text-white text-sm md:text-base font-light leading-relaxed mt-10 normal-case">
               While rooted in Bali, we curate select destination weddings across
               Indonesia for couples seeking rare landscapes, cultural depth, and
@@ -93,9 +89,7 @@ export default function DestinationsPage() {
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                 Rooted in Bali
                 <br />
-                <span className="italic font-light">
-                  Curated Across Indonesia
-                </span>
+                <span>Curated Across Indonesia</span>
               </h2>
             </motion.div>
             <motion.div variants={fadeInUp} className="lg:col-span-6 space-y-8">
@@ -162,7 +156,7 @@ export default function DestinationsPage() {
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
               Why Indonesia
               <br />
-              <span className="italic font-light">
+              <span>
                 For Destination Weddings
               </span>
             </h2>
@@ -182,7 +176,7 @@ export default function DestinationsPage() {
                   key={item}
                   className="flex items-start gap-4 pb-4 border-b border-primary/20 last:border-0"
                 >
-                  <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                  <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
                   <span className="text-primary">{item}</span>
                 </div>
               ))}
@@ -283,7 +277,7 @@ export default function DestinationsPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDestinations.map((destination) => (
-              <motion.div key={destination.slug} variants={fadeInUp}>
+              <div key={destination.slug}>
                 <Link
                   href={`/destinations/${destination.slug}`}
                   className="group block"
@@ -313,7 +307,7 @@ export default function DestinationsPage() {
                     Explore Destination
                   </span>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}

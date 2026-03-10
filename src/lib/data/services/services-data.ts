@@ -19,7 +19,8 @@ export const services = [
       title: "Best For",
       desc: "Destination weddings, luxury weddings, private villa weddings, and couples seeking a fully managed experience.",
     },
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773156578/wedding_planning_and_coordination_image_xyk5vc.jpg",
   },
   {
     id: "wedding-styling",
@@ -40,7 +41,8 @@ export const services = [
       title: "Best For",
       desc: "Couples who already have planning support but want strong, cohesive, luxury design.",
     },
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773156589/wedding_styling_and_creative_direction_uumx9i.jpg",
   },
   {
     id: "private-villa-weddings",
@@ -61,7 +63,8 @@ export const services = [
       title: "Best For",
       desc: "Private estates, boutique villas, hidden venues, and non-hotel weddings.",
     },
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773156579/private_villa_wedding_ilxyat.jpg",
   },
   {
     id: "intimate-elopements",
@@ -82,7 +85,8 @@ export const services = [
       title: "Best For",
       desc: "Elopements, micro weddings, vow renewals, and soulful destination ceremonies.",
     },
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773156578/intimate_wedding_image_pymvex.jpg",
   },
   {
     id: "concept-consultation",
@@ -103,7 +107,8 @@ export const services = [
       title: "Best For",
       desc: "Early-stage planning, creative clarity, and design validation.",
     },
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773156578/wedding_concept_and_design_consultation_f9bkii.jpg",
   },
   {
     id: "event-table-styling",
@@ -124,7 +129,8 @@ export const services = [
       title: "Best For",
       desc: "Couples seeking a beautifully styled celebration without full planning coordination.",
     },
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773156579/table_styling_bh7pkk.jpg",
   },
   {
     id: "guest-management",
@@ -145,7 +151,8 @@ export const services = [
       title: "Best For",
       desc: "International couples bringing guests from abroad who need a fully supported Bali experience.",
     },
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773156589/destination_guest_management_vf4ir2.jpg",
   },
 ];
 
@@ -178,8 +185,8 @@ export const whyChooseReasons = [
 ];
 
 export const destinations = [
-  "Luxury weddings in Bali",
+  "Destination wedding experiences across Bali and Indonesia",
   "Private villa weddings in Bali",
   "Intimate weddings and elopements in Bali",
-  "Destination wedding experiences across Bali and Indonesia",
+  "Luxury weddings in Bali",
 ];

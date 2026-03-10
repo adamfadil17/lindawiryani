@@ -15,7 +15,9 @@ export type DestinationSlug =
   | "nusa-dua"
   | "east-bali"
   | "tabanan"
-  | "nusa-penida";
+  | "nusa-penida"
+  | "menjangan"
+  | "singaraja";
 
 export interface PortfolioStorySection {
   heading?: string;

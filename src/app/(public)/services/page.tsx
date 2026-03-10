@@ -6,7 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
-import { destinations, services, whyChooseReasons } from "@/lib/data/services/services-data";
+import {
+  destinations,
+  services,
+  whyChooseReasons,
+} from "@/lib/data/services/services-data";
 
 function ServiceAccordion({
   service,
@@ -91,7 +95,7 @@ function ServiceAccordion({
                     <ul className="space-y-2.5">
                       {service.includes.items.map((item) => (
                         <li key={item} className="flex items-start gap-3">
-                          <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                          <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
                           <span className="text-primary">{item}</span>
                         </li>
                       ))}
@@ -123,7 +127,6 @@ function ServiceAccordion({
     </div>
   );
 }
-
 
 export default function ServicesPage() {
   const [openServiceId, setOpenServiceId] = useState<string>(services[0].id);
@@ -179,9 +182,7 @@ export default function ServicesPage() {
           >
             Where Refined Hospitality
             <br />
-            <span className="italic font-light normal-case">
-              Meets Artful Design
-            </span>
+            <span>Meets Artful Design</span>
           </motion.h1>
         </motion.div>
       </section>
@@ -199,7 +200,7 @@ export default function ServicesPage() {
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
               Seven services.
               <br />
-              <span className="italic font-light">One intention.</span>
+              <span>One intention.</span>
             </h2>
             <div className="mt-10 w-16 h-px bg-primary/70" />
           </motion.div>
@@ -229,8 +230,8 @@ export default function ServicesPage() {
             <p className="text-primary tracking-[0.25em] uppercase mb-2">
               What We Offer
             </p>
-            <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              Our <span className="italic font-light">Services</span>
+            <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+               Our Services
             </h2>
           </motion.div>
 
@@ -264,7 +265,7 @@ export default function ServicesPage() {
             </p>
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-20">
               <div className="lg:col-span-5">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
+                <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                   Why Choose
                   <br />
                   <span className="italic font-light">Linda Wiryani</span>
@@ -336,9 +337,7 @@ export default function ServicesPage() {
                   Global Reach
                 </p>
                 <h2 className="text-3xl md:text-4xl text-white font-semibold">
-                  Serving Destination
-                  <br />
-                  <span className="italic font-light">Weddings in Bali</span>
+                  Serving Destination Weddings in Bali
                 </h2>
               </motion.div>
 
@@ -355,7 +354,7 @@ export default function ServicesPage() {
                 <p className="text-white">Our studio curates:</p>
                 {destinations.map((dest) => (
                   <div key={dest} className="flex items-center gap-4">
-                    <div className="w-5 h-px bg-white/70 flex-shrink-0" />
+                    <div className="w-3 h-px bg-white/70 flex-shrink-0" />
                     <span className="text-white">{dest}</span>
                   </div>
                 ))}
@@ -405,7 +404,7 @@ export default function ServicesPage() {
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            Whether you are planning a destination wedding,
+            Whether you are planning a destination wedding,a private villa celebration, or a quiet elopement.
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
               Our role is to guide, design, and orchestrate.

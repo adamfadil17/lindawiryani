@@ -25,7 +25,3 @@ export interface Destination {
   };
 }
 
-export interface DestinationType {
-  name: string;
-  description: string;
-}

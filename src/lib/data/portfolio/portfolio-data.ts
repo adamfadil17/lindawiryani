@@ -14,7 +14,7 @@ export const portfolioItems: PortfolioItem[] = [
       "A Post-Wedding Journey Through the Rice Terraces of Tegalalang, Bali",
     location: "Tegalalang Rice Terraces, Ubud",
     destinationSlug: "ubud",
-    experiences: ["intimate-weddings"],
+    experiences: ["elopement-weddings"],
     heroImage: "https://placehold.net/default.svg",
     galleryImages: [
       "https://placehold.net/default.svg",
@@ -70,150 +70,150 @@ export const portfolioItems: PortfolioItem[] = [
     },
   },
 
-  // ─── 2. Sofia & James ────────────────────────────────────────────────────────
-  {
-    id: "2",
-    slug: "sofia-james-uluwatu-cliff",
-    couple: "Sofia & James",
-    subtitle: "A Clifftop Ceremony Above the Indian Ocean",
-    location: "Uluwatu Clifftop, Bali",
-    destinationSlug: "uluwatu",
-    experiences: [
-      "luxury-weddings",
-      "elopement-weddings",
-    ],
-    heroImage: "https://placehold.net/default.svg",
-    galleryImages: Array(6).fill("https://placehold.net/default.svg"),
-    tags: ["Clifftop", "Ocean", "Sunset"],
-    excerpt:
-      "Against the dramatic backdrop of Uluwatu's limestone cliffs, Sofia and James exchanged vows as golden light spilled across the Indian Ocean — a celebration both intimate and awe-inspiring.",
-    content: `
-<p>Against the dramatic backdrop of Uluwatu's limestone cliffs, Sofia and James exchanged vows as golden light spilled across the Indian Ocean.</p>
-<p>A celebration both intimate and awe-inspiring — designed around the natural theatre of place.</p>
-    `.trim(),
-    storySections: [],
-    credit: {
-      role: "Wedding Design & Event Planning",
-      planner: "Linda Wiryani Design and Event Planning",
-      locationDetail: "Uluwatu Clifftop, Bali",
-      coupleOrigin: "Sofia & James",
-    },
-  },
+//   // ─── 2. Sofia & James ────────────────────────────────────────────────────────
+//   {
+//     id: "2",
+//     slug: "sofia-james-uluwatu-cliff",
+//     couple: "Sofia & James",
+//     subtitle: "A Clifftop Ceremony Above the Indian Ocean",
+//     location: "Uluwatu Clifftop, Bali",
+//     destinationSlug: "uluwatu",
+//     experiences: [
+//       "luxury-weddings",
+//       "elopement-weddings",
+//     ],
+//     heroImage: "https://placehold.net/default.svg",
+//     galleryImages: Array(6).fill("https://placehold.net/default.svg"),
+//     tags: ["Clifftop", "Ocean", "Sunset"],
+//     excerpt:
+//       "Against the dramatic backdrop of Uluwatu's limestone cliffs, Sofia and James exchanged vows as golden light spilled across the Indian Ocean — a celebration both intimate and awe-inspiring.",
+//     content: `
+// <p>Against the dramatic backdrop of Uluwatu's limestone cliffs, Sofia and James exchanged vows as golden light spilled across the Indian Ocean.</p>
+// <p>A celebration both intimate and awe-inspiring — designed around the natural theatre of place.</p>
+//     `.trim(),
+//     storySections: [],
+//     credit: {
+//       role: "Wedding Design & Event Planning",
+//       planner: "Linda Wiryani Design and Event Planning",
+//       locationDetail: "Uluwatu Clifftop, Bali",
+//       coupleOrigin: "Sofia & James",
+//     },
+//   },
 
-  // ─── 3. Mei & Thomas ─────────────────────────────────────────────────────────
-  {
-    id: "3",
-    slug: "mei-thomas-private-villa-canggu",
-    couple: "Mei & Thomas",
-    subtitle: "An Intimate Garden Ceremony in Canggu",
-    location: "Private Villa, Canggu",
-    destinationSlug: "canggu",
-    experiences: ["private-villa-weddings", "intimate-weddings"],
-    heroImage: "https://placehold.net/default.svg",
-    galleryImages: Array(6).fill("https://placehold.net/default.svg"),
-    tags: ["Private Villa", "Garden", "Intimate"],
-    excerpt:
-      "Surrounded by tropical gardens and close friends, Mei and Thomas chose Canggu's relaxed energy as the backdrop for a day that felt wholly and beautifully their own.",
-    content: `
-<p>Surrounded by tropical gardens and the people they love most, Mei and Thomas chose Canggu's relaxed energy as the setting for a day that felt wholly and beautifully their own.</p>
-<p>Nothing was templated. Everything was intentional.</p>
-    `.trim(),
-    storySections: [],
-    credit: {
-      role: "Wedding Design & Event Planning",
-      planner: "Linda Wiryani Design and Event Planning",
-      locationDetail: "Private Villa, Canggu, Bali",
-      coupleOrigin: "Mei & Thomas",
-    },
-  },
+//   // ─── 3. Mei & Thomas ─────────────────────────────────────────────────────────
+//   {
+//     id: "3",
+//     slug: "mei-thomas-private-villa-canggu",
+//     couple: "Mei & Thomas",
+//     subtitle: "An Intimate Garden Ceremony in Canggu",
+//     location: "Private Villa, Canggu",
+//     destinationSlug: "canggu",
+//     experiences: ["private-villa-weddings", "intimate-weddings"],
+//     heroImage: "https://placehold.net/default.svg",
+//     galleryImages: Array(6).fill("https://placehold.net/default.svg"),
+//     tags: ["Private Villa", "Garden", "Intimate"],
+//     excerpt:
+//       "Surrounded by tropical gardens and close friends, Mei and Thomas chose Canggu's relaxed energy as the backdrop for a day that felt wholly and beautifully their own.",
+//     content: `
+// <p>Surrounded by tropical gardens and the people they love most, Mei and Thomas chose Canggu's relaxed energy as the setting for a day that felt wholly and beautifully their own.</p>
+// <p>Nothing was templated. Everything was intentional.</p>
+//     `.trim(),
+//     storySections: [],
+//     credit: {
+//       role: "Wedding Design & Event Planning",
+//       planner: "Linda Wiryani Design and Event Planning",
+//       locationDetail: "Private Villa, Canggu, Bali",
+//       coupleOrigin: "Mei & Thomas",
+//     },
+//   },
 
-  // ─── 4. Clara & Rafael ───────────────────────────────────────────────────────
-  {
-    id: "4",
-    slug: "clara-rafael-nusa-penida",
-    couple: "Clara & Rafael",
-    subtitle: "Elopement on the Edge of the World",
-    location: "Kelingking Beach, Nusa Penida",
-    destinationSlug: "nusa-penida",
-    experiences: ["elopement-weddings"],
-    heroImage: "https://placehold.net/default.svg",
-    galleryImages: Array(6).fill("https://placehold.net/default.svg"),
-    tags: ["Elopement", "Clifftop", "Remote"],
-    excerpt:
-      "Clara and Rafael chose Nusa Penida's wild coastline as witness — an elopement pared down to its most essential truth: presence, connection, and the vast blue horizon.",
-    content: `
-<p>Clara and Rafael chose Nusa Penida's wild coastline as witness — an elopement pared down to its most essential truth.</p>
-<p>Presence. Connection. And the vast blue horizon stretching endlessly before them.</p>
-    `.trim(),
-    storySections: [],
-    credit: {
-      role: "Elopement Design & Creative Direction",
-      planner: "Linda Wiryani Design and Event Planning",
-      locationDetail: "Kelingking Beach, Nusa Penida, Bali",
-      coupleOrigin: "Clara & Rafael",
-    },
-  },
+//   // ─── 4. Clara & Rafael ───────────────────────────────────────────────────────
+//   {
+//     id: "4",
+//     slug: "clara-rafael-nusa-penida",
+//     couple: "Clara & Rafael",
+//     subtitle: "Elopement on the Edge of the World",
+//     location: "Kelingking Beach, Nusa Penida",
+//     destinationSlug: "nusa-penida",
+//     experiences: ["elopement-weddings"],
+//     heroImage: "https://placehold.net/default.svg",
+//     galleryImages: Array(6).fill("https://placehold.net/default.svg"),
+//     tags: ["Elopement", "Clifftop", "Remote"],
+//     excerpt:
+//       "Clara and Rafael chose Nusa Penida's wild coastline as witness — an elopement pared down to its most essential truth: presence, connection, and the vast blue horizon.",
+//     content: `
+// <p>Clara and Rafael chose Nusa Penida's wild coastline as witness — an elopement pared down to its most essential truth.</p>
+// <p>Presence. Connection. And the vast blue horizon stretching endlessly before them.</p>
+//     `.trim(),
+//     storySections: [],
+//     credit: {
+//       role: "Elopement Design & Creative Direction",
+//       planner: "Linda Wiryani Design and Event Planning",
+//       locationDetail: "Kelingking Beach, Nusa Penida, Bali",
+//       coupleOrigin: "Clara & Rafael",
+//     },
+//   },
 
-  // ─── 5. Amara & Luca ─────────────────────────────────────────────────────────
-  {
-    id: "5",
-    slug: "amara-luca-seminyak-villa",
-    couple: "Amara & Luca",
-    subtitle: "Multi-Day Luxury Celebration in Seminyak",
-    location: "Luxury Villa Estate, Seminyak",
-    destinationSlug: "seminyak",
-    experiences: [
-      "luxury-weddings",
-      "private-villa-weddings",
-    ],
-    heroImage: "https://placehold.net/default.svg",
-    galleryImages: Array(6).fill("https://placehold.net/default.svg"),
-    tags: ["Luxury", "Multi-Day", "Villa Estate"],
-    excerpt:
-      "Across three days of curated celebrations, Amara and Luca welcomed their guests to a Seminyak estate where each moment — from welcome gathering to farewell brunch — was thoughtfully orchestrated.",
-    content: `
-<p>Across three days of curated celebrations, Amara and Luca welcomed their guests to a Seminyak estate where each moment was thoughtfully orchestrated.</p>
-<p>From the welcome gathering at dusk to the farewell brunch in morning light — every detail carried the same intention: to make each guest feel held within something meaningful.</p>
-    `.trim(),
-    storySections: [],
-    credit: {
-      role: "Luxury Wedding Design & Multi-Day Event Planning",
-      planner: "Linda Wiryani Design and Event Planning",
-      locationDetail: "Luxury Villa Estate, Seminyak, Bali",
-      coupleOrigin: "Amara & Luca",
-    },
-  },
+//   // ─── 5. Amara & Luca ─────────────────────────────────────────────────────────
+//   {
+//     id: "5",
+//     slug: "amara-luca-seminyak-villa",
+//     couple: "Amara & Luca",
+//     subtitle: "Multi-Day Luxury Celebration in Seminyak",
+//     location: "Luxury Villa Estate, Seminyak",
+//     destinationSlug: "seminyak",
+//     experiences: [
+//       "luxury-weddings",
+//       "private-villa-weddings",
+//     ],
+//     heroImage: "https://placehold.net/default.svg",
+//     galleryImages: Array(6).fill("https://placehold.net/default.svg"),
+//     tags: ["Luxury", "Multi-Day", "Villa Estate"],
+//     excerpt:
+//       "Across three days of curated celebrations, Amara and Luca welcomed their guests to a Seminyak estate where each moment — from welcome gathering to farewell brunch — was thoughtfully orchestrated.",
+//     content: `
+// <p>Across three days of curated celebrations, Amara and Luca welcomed their guests to a Seminyak estate where each moment was thoughtfully orchestrated.</p>
+// <p>From the welcome gathering at dusk to the farewell brunch in morning light — every detail carried the same intention: to make each guest feel held within something meaningful.</p>
+//     `.trim(),
+//     storySections: [],
+//     credit: {
+//       role: "Luxury Wedding Design & Multi-Day Event Planning",
+//       planner: "Linda Wiryani Design and Event Planning",
+//       locationDetail: "Luxury Villa Estate, Seminyak, Bali",
+//       coupleOrigin: "Amara & Luca",
+//     },
+//   },
 
-  // ─── 6. Hana & Ben ───────────────────────────────────────────────────────────
-  {
-    id: "6",
-    slug: "hana-ben-east-bali",
-    couple: "Hana & Ben",
-    subtitle: "A Riverside Ceremony Among Sacred Temples",
-    location: "Sidemen Valley, East Bali",
-    destinationSlug: "east-bali",
-    experiences: ["intimate-weddings"],
-    heroImage: "https://placehold.net/default.svg",
-    galleryImages: Array(6).fill("https://placehold.net/default.svg"),
-    tags: ["Riverside", "Valley", "Sacred"],
-    excerpt:
-      "In the lush Sidemen Valley, Hana and Ben found a setting that felt untouched by time — rice paddies, river song, and the quiet presence of Mount Agung framing every frame.",
-    content: `
-<p>In the lush Sidemen Valley of East Bali, Hana and Ben found a setting that felt untouched by time.</p>
-<p>Rice paddies stretched toward the horizon. River song replaced music. And the quiet presence of Mount Agung framed every moment with a stillness that needed no words.</p>
-    `.trim(),
-    storySections: [],
-    credit: {
-      role: "Wedding Design & Event Planning",
-      planner: "Linda Wiryani Design and Event Planning",
-      locationDetail: "Sidemen Valley, East Bali",
-      coupleOrigin: "Hana & Ben",
-    },
-  },
+//   // ─── 6. Hana & Ben ───────────────────────────────────────────────────────────
+//   {
+//     id: "6",
+//     slug: "hana-ben-east-bali",
+//     couple: "Hana & Ben",
+//     subtitle: "A Riverside Ceremony Among Sacred Temples",
+//     location: "Sidemen Valley, East Bali",
+//     destinationSlug: "east-bali",
+//     experiences: ["intimate-weddings"],
+//     heroImage: "https://placehold.net/default.svg",
+//     galleryImages: Array(6).fill("https://placehold.net/default.svg"),
+//     tags: ["Riverside", "Valley", "Sacred"],
+//     excerpt:
+//       "In the lush Sidemen Valley, Hana and Ben found a setting that felt untouched by time — rice paddies, river song, and the quiet presence of Mount Agung framing every frame.",
+//     content: `
+// <p>In the lush Sidemen Valley of East Bali, Hana and Ben found a setting that felt untouched by time.</p>
+// <p>Rice paddies stretched toward the horizon. River song replaced music. And the quiet presence of Mount Agung framed every moment with a stillness that needed no words.</p>
+//     `.trim(),
+//     storySections: [],
+//     credit: {
+//       role: "Wedding Design & Event Planning",
+//       planner: "Linda Wiryani Design and Event Planning",
+//       locationDetail: "Sidemen Valley, East Bali",
+//       coupleOrigin: "Hana & Ben",
+//     },
+//   },
 
-  // ─── Add future portfolio items below ────────────────────────────────────────
-  // For new items, populate the `content` field with TipTap-serialised HTML
-  // from the admin editor. The `storySections` field can be left as [].
+//   // ─── Add future portfolio items below ────────────────────────────────────────
+//   // For new items, populate the `content` field with TipTap-serialised HTML
+//   // from the admin editor. The `storySections` field can be left as [].
 ];
 
 export const weddingExperiences: { label: string; slug: ExperienceSlug }[] = [
@@ -235,6 +235,8 @@ export const destinations: { label: string; slug: DestinationSlug }[] = [
   { label: "East Bali", slug: "east-bali" },
   { label: "Tabanan", slug: "tabanan" },
   { label: "Nusa Penida", slug: "nusa-penida" },
+  { label: "Menjangan", slug: "menjangan" },
+  { label: "Singaraja", slug: "singaraja" },
 ];
 
 export const reviews = [
@@ -244,34 +246,34 @@ export const reviews = [
     couple: "Anaz & Jane",
     origin: "Morocco",
   },
-  {
-    quote:
-      "We chose Linda because we wanted something intimate and real, not a production. She understood that immediately. Our elopement in Ubud felt deeply personal — like the whole world had quieted down just for the two of us.",
-    couple: "Marcus & Sophia",
-    origin: "Australia",
-  },
-  {
-    quote:
-      "Working with Linda was like working with someone who had known us for years. She translated our vision into something more beautiful than we had imagined, and kept us completely calm throughout the entire process.",
-    couple: "Thomas & Claire",
-    origin: "France",
-  },
-  {
-    quote:
-      "The flowers, the lighting, the way the ceremony flowed — everything felt intentional and harmonious. Our guests kept saying it was the most beautiful wedding they had ever attended. We couldn't agree more.",
-    couple: "James & Priya",
-    origin: "United Kingdom",
-  },
-  {
-    quote:
-      "Linda has this rare ability to listen deeply and translate emotion into design. Our villa wedding in Seminyak was elegant, relaxed, and completely us. We are forever grateful.",
-    couple: "Riku & Hana",
-    origin: "Japan",
-  },
-  {
-    quote:
-      "We flew across the world for this wedding and trusted Linda with every detail. She never once made us feel like we were far away — she was always present, always responsive, and always one step ahead.",
-    couple: "Liam & Isabelle",
-    origin: "Canada",
-  },
+  // {
+  //   quote:
+  //     "We chose Linda because we wanted something intimate and real, not a production. She understood that immediately. Our elopement in Ubud felt deeply personal — like the whole world had quieted down just for the two of us.",
+  //   couple: "Marcus & Sophia",
+  //   origin: "Australia",
+  // },
+  // {
+  //   quote:
+  //     "Working with Linda was like working with someone who had known us for years. She translated our vision into something more beautiful than we had imagined, and kept us completely calm throughout the entire process.",
+  //   couple: "Thomas & Claire",
+  //   origin: "France",
+  // },
+  // {
+  //   quote:
+  //     "The flowers, the lighting, the way the ceremony flowed — everything felt intentional and harmonious. Our guests kept saying it was the most beautiful wedding they had ever attended. We couldn't agree more.",
+  //   couple: "James & Priya",
+  //   origin: "United Kingdom",
+  // },
+  // {
+  //   quote:
+  //     "Linda has this rare ability to listen deeply and translate emotion into design. Our villa wedding in Seminyak was elegant, relaxed, and completely us. We are forever grateful.",
+  //   couple: "Riku & Hana",
+  //   origin: "Japan",
+  // },
+  // {
+  //   quote:
+  //     "We flew across the world for this wedding and trusted Linda with every detail. She never once made us feel like we were far away — she was always present, always responsive, and always one step ahead.",
+  //   couple: "Liam & Isabelle",
+  //   origin: "Canada",
+  // },
 ];

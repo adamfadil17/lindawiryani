@@ -245,7 +245,7 @@ export default function PortfolioPage() {
           >
             Linda Wiryani
             <br />
-            <span className="italic font-light normal-case">Portfolio</span>
+            <span>Portfolio</span>
           </motion.h1>
           <motion.p
             variants={fadeInUp}
@@ -272,9 +272,7 @@ export default function PortfolioPage() {
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                 Every wedding
                 <br />
-                begins with
-                <br />
-                <span className="italic font-light">a story.</span>
+                <span>begins with a story.</span>
               </h2>
             </div>
           </motion.div>
@@ -304,7 +302,7 @@ export default function PortfolioPage() {
 
             <motion.div
               variants={fadeInUp}
-              className="border-l-2 border-primary pl-8 py-2"
+              className="border-l-2 border-primary/50 pl-8 py-2"
             >
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
                 Our Weddings Are
@@ -318,7 +316,7 @@ export default function PortfolioPage() {
                   "Deeply personal",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-4">
-                    <div className="w-5 h-px bg-primary flex-shrink-0" />
+                    <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
                     <span className="text-primary">{item}</span>
                   </div>
                 ))}
@@ -331,7 +329,7 @@ export default function PortfolioPage() {
       {/* ── PORTFOLIO GRID ────────────────────────────────────────────── */}
       <motion.section
         id="portfolio-grid"
-        className="py-16 lg:py-20 bg-primary/10"
+        className="py-16 lg:py-20 bg-primary/15"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -346,9 +344,7 @@ export default function PortfolioPage() {
                   Design Stories
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                  A Collection of
-                  <br />
-                  <span className="italic font-light">Real Celebrations</span>
+                  A Collection of Real Celebrations
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
@@ -502,9 +498,7 @@ export default function PortfolioPage() {
                 Explore Our Work
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
-                By Wedding
-                <br />
-                <span className="italic font-light">Experience</span>
+                By Wedding Experience
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
@@ -516,7 +510,7 @@ export default function PortfolioPage() {
             </div>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {weddingExperiences.map((exp, i) => (
               <motion.div key={exp.slug} variants={fadeInUp} custom={i}>
                 <Link
@@ -552,9 +546,7 @@ export default function PortfolioPage() {
                 Explore Our Work
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                By
-                <br />
-                <span className="italic font-light">Destination</span>
+                By Destination
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">

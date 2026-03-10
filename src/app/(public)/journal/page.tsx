@@ -72,7 +72,7 @@ function ArticleCard({
           {/* Tag */}
           <div className="absolute top-4 left-4">
             <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
-              {article.tag}
+              {article.category}
             </span>
           </div>
           {/* Arrow */}
@@ -120,7 +120,7 @@ function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary/20" />
           <div className="absolute top-6 left-6">
             <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
-              {article.tag}
+              {article.category}
             </span>
           </div>
         </div>
@@ -204,9 +204,7 @@ export default function JournalPage() {
           >
             Journal
             <br />
-            <span className="italic font-light normal-case text-2xl md:text-3xl lg:text-4xl">
-              Insights, Guides &amp; Stories
-            </span>
+            <span>Insights, Guides &amp; Stories</span>
           </motion.h1>
           <motion.p
             variants={fadeInUp}
@@ -231,11 +229,9 @@ export default function JournalPage() {
             <div className="lg:sticky lg:top-32">
               <div className="w-16 h-px bg-primary/70 mb-6" />
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                A journal
+                A journal shaped by
                 <br />
-                shaped by
-                <br />
-                <span className="italic font-light">experience.</span>
+                <span>experience.</span>
               </h2>
             </div>
           </motion.div>
@@ -275,7 +271,7 @@ export default function JournalPage() {
                   }}
                   className="group flex items-start gap-4 p-4 border border-primary/20 hover:border-primary/60 bg-transparent hover:bg-primary/5 transition-all duration-200 text-left hover:cursor-pointer"
                 >
-                  <div className="w-5 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                  <div className="w-3 h-px bg-primary/70 flex-shrink-0 mt-2.5" />
                   <div>
                     <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-1">
                       {cat}
@@ -305,11 +301,7 @@ export default function JournalPage() {
               Featured Read
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              Start Here
-              <br />
-              <span className="italic font-light">
-                Our Most Essential Article
-              </span>
+              Start Here Our Most Essential Article
             </h2>
           </motion.div>
           <motion.div variants={scaleIn}>
@@ -338,7 +330,7 @@ export default function JournalPage() {
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                   {activeCategory === "All" ? "All Articles" : activeCategory}
                   <br />
-                  <span className="italic font-light">
+                  <span>
                     {activeCategory === "All"
                       ? "Guides, stories & insights"
                       : categoryDescriptions[activeCategory]}

@@ -59,9 +59,9 @@ export default function OurApproachPage() {
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
           >
-            Design Led Luxury
+            Design-Led Luxury
             <br />
-            <span className="italic font-light normal-case">
+            <span>
               Wedding Planning in Bali
             </span>
           </motion.h1>
@@ -76,7 +76,7 @@ export default function OurApproachPage() {
       >
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <motion.div variants={fadeInUp} className="lg:col-span-5">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight italic">
+            <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
               A wedding is not simply an event.
             </h2>
             <p className="mt-6 text-primary  leading-relaxed">
@@ -120,9 +120,7 @@ export default function OurApproachPage() {
                   Our Studio
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  A Design Wedding
-                  <br />
-                  <span className="italic font-light">Planning Studio</span>
+                  A Design Wedding Planning Studio
                 </h2>
               </motion.div>
 
@@ -214,11 +212,7 @@ export default function OurApproachPage() {
                   Our Roots
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  Rooted in Bali,
-                  <br />
-                  <span className="italic font-light">
-                    Crafted for the World
-                  </span>
+                  Rooted in Bali, Crafted for the World
                 </h2>
               </motion.div>
 
@@ -248,7 +242,7 @@ export default function OurApproachPage() {
                   "Boutique resorts and hidden estates",
                 ].map((venue) => (
                   <div key={venue} className="flex items-center gap-4">
-                    <div className="w-5 h-px bg-primary/50 flex-shrink-0" />
+                    <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
                     <span className="text-primary">{venue}</span>
                   </div>
                 ))}
@@ -272,11 +266,10 @@ export default function OurApproachPage() {
             className="text-center mb-16 lg:mb-20"
           >
             <p className="text-white tracking-[0.25em] uppercase mb-3">
-              Hospitality-Driven
+              Our Approach
             </p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold">
-              Planning &amp;{" "}
-              <span className="italic font-light">Execution</span>
+              Hospitality-Driven Planning &amp;{" "} Execution
             </h2>
             <p className="mt-6 text-white  max-w-xl mx-auto text-center leading-relaxed">
               With nearly two decades of experience in five-star luxury
@@ -320,9 +313,7 @@ export default function OurApproachPage() {
                   Our Difference
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  What Makes Us
-                  <br />
-                  <span className="italic font-light">Different</span>
+                  What Makes Us Different
                 </h2>
               </motion.div>
 
@@ -388,7 +379,7 @@ export default function OurApproachPage() {
                   Expertise
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  Our <span className="italic font-light">Specializations</span>
+                  Our Specializations
                 </h2>
               </motion.div>
 
@@ -399,7 +390,7 @@ export default function OurApproachPage() {
               <motion.div variants={fadeInUp} className="space-y-4">
                 {specializations.map((item, i) => (
                   <div key={item} className="flex items-center gap-4">
-                    <div className="w-5 h-px bg-primary/70 flex-shrink-0" />
+                    <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
                     <span className="text-primary">{item}</span>
                   </div>
                 ))}
@@ -407,7 +398,7 @@ export default function OurApproachPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary  italic border-t border-primary/20 pt-6"
+                className="text-primary italic border-t border-primary/20 pt-6"
               >
                 Each wedding is custom-built, never packaged.
               </motion.p>

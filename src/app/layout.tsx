@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import Header from "@/components/shared/header";
-import Footer from "@/components/shared/footer";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -150,10 +148,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <div id="home" className="min-h-screen overflow-x-hidden">
-          <Header />
 
           {children}
-          <Footer />
         </div>
       </body>
     </html>

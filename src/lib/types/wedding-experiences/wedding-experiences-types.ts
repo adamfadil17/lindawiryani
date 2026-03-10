@@ -5,7 +5,6 @@ export type SlugKey =
   | "intimate-weddings"
   | "elopement-weddings"
   | "luxury-weddings";
-// | "bali-destination-wedding";
 
 export type ExperienceData = {
   meta: { breadcrumb: string; eyebrow: string; slug: string };

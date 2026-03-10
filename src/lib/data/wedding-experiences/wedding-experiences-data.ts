@@ -3,29 +3,33 @@
 // Types defined in weddingExperiencesTypes.ts
 
 import type {
-  SlugKey,
-  ExperienceData,
-} from "@/lib/types/wedding-experiences/wedding-experiences-types";
+  WeddingExperience,
+  WeddingExperienceType,
+} from "@/lib/types/new-strucutre";
+
+type SlugKey =
+  | "private-villa-weddings"
+  | "intimate-weddings"
+  | "elopement-weddings"
+  | "luxury-weddings";
+type ExperienceData = Omit<
+  WeddingExperience,
+  "id" | "venues" | "themes" | "portfolios"
+>;
 
 // ─── Private Villa Weddings ────────────────────────────────────────────────
 
 const privateVillaWeddings: ExperienceData = {
-  meta: {
-    breadcrumb: "Private Villa Weddings",
-    eyebrow: "Private Villa Wedding Planner in Bali",
-    slug: "private-villa-weddings",
-  },
+  name: "Private Villa Weddings",
+  category: "private-villa-weddings" as WeddingExperienceType,
   hero: {
     style: "split",
     image: "https://placehold.net/default.svg",
-    title: "Private Villa",
-    subtitle: "Weddings in Bali",
     desc: "Privacy, freedom of design, and an atmosphere that feels personal rather than commercial — where your wedding becomes an experience that could only be yours.",
-    cta: "INQUIRE ABOUT VILLA WEDDINGS",
   },
   intro: {
     label: "Why Villa",
-    heading: ["Why Choose a Private", "Villa Wedding in Bali"],
+    heading: ["Why Choose", "a Private Villa Wedding in Bali"],
     body: "At Linda Wiryani Design and Event Planning, we specialize in private villa weddings in Bali, designing celebrations that feel intimate, architectural, and emotionally immersive. Whether overlooking the ocean, nestled in the jungle, or hidden within a quiet estate, private villas allow weddings to unfold as a multi-layered experience — not a one-hour ceremony.",
     listLabel: "Private villas provide:",
     list: [
@@ -120,22 +124,16 @@ const privateVillaWeddings: ExperienceData = {
 // ─── Intimate Weddings ────────────────────────────────────────────────────
 
 const intimateWeddings: ExperienceData = {
-  meta: {
-    breadcrumb: "Intimate Weddings",
-    eyebrow: "Intimate Wedding Planner in Bali",
-    slug: "intimate-weddings",
-  },
+  name: "Intimate Weddings",
+  category: "intimate-weddings" as WeddingExperienceType,
   hero: {
     style: "bottom",
     image: "https://placehold.net/default.svg",
-    title: "Intimate",
-    subtitle: "Weddings in Bali",
     desc: "An intimate wedding allows space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity — and atmosphere over spectacle.",
-    cta: "INQUIRE NOW",
   },
   intro: {
     label: "Why Intimate",
-    heading: ["Why Choose an", "Intimate Wedding in Bali"],
+    heading: ["Why Choose", "an Intimate Wedding in Bali"],
     body: "At Linda Wiryani Design and Event Planning, we specialize in intimate weddings in Bali, crafting celebrations that feel warm, intentional, and deeply personal. These weddings are designed for couples who value quality over quantity and atmosphere over spectacle.",
     listLabel: null,
     list: [
@@ -224,18 +222,12 @@ const intimateWeddings: ExperienceData = {
 // ─── Elopement Weddings ────────────────────────────────────────────────────
 
 const elopementWeddings: ExperienceData = {
-  meta: {
-    breadcrumb: "Bali Elopement Weddings",
-    eyebrow: "Refined Elopement Wedding Planner in Bali",
-    slug: "elopement-weddings",
-  },
+  name: "Elopement Weddings",
+  category: "elopement-weddings" as WeddingExperienceType,
   hero: {
     style: "centered",
     image: "https://placehold.net/default.svg",
-    title: "Elopement",
-    subtitle: "Weddings in Bali",
     desc: "Bali Elopement Weddings — intimate, emotionally rich, and visually poetic — designed as meaningful experiences, not quick ceremonies.",
-    cta: "BEGIN YOUR ELOPEMENT JOURNEY",
   },
   intro: {
     label: "The Setting",
@@ -326,18 +318,12 @@ const elopementWeddings: ExperienceData = {
 // ─── Luxury Weddings ────────────────────────────────────────────────────────
 
 const luxuryWeddings: ExperienceData = {
-  meta: {
-    breadcrumb: "Luxury Weddings",
-    eyebrow: "Luxury Wedding Planner in Bali",
-    slug: "luxury-weddings",
-  },
+  name: "Luxury Weddings",
+  category: "luxury-weddings" as WeddingExperienceType,
   hero: {
     style: "editorial",
     image: "https://placehold.net/default.svg",
-    title: "Luxury",
-    subtitle: "Weedings in Bali",
     desc: "Luxury weddings in Bali shaped by architecture, atmosphere, and storytelling — not trends.",
-    cta: "BEGIN YOUR LUXURY WEDDING",
   },
   intro: {
     label: "Our Definition",
@@ -429,24 +415,19 @@ const luxuryWeddings: ExperienceData = {
 // ─── Bali Destination Wedding Planner ─────────────────────────────────────
 
 const baliDestinationWedding: ExperienceData = {
-  meta: {
-    breadcrumb: "Destination Weddings",
-    eyebrow: "Bali Destination Wedding Planner",
-    slug: "bali-destination-wedding",
-  },
+  name: "Bali Destination Wedding",
+  category: "luxury-weddings" as WeddingExperienceType,
   hero: {
     style: "split",
     image: "https://placehold.net/default.svg",
-    title: "Luxury Destination",
-    subtitle: "Wedding Planning in Bali",
     desc: "A destination wedding in Bali is more than a beautiful location — it is an experience shaped by atmosphere, culture, landscape, and emotion. We design weddings that are intentional, refined, and deeply personal.",
-    cta: "INQUIRE NOW",
   },
   intro: {
     label: "Why Bali",
     heading: ["Why Choose Bali for", "Your Destination Wedding"],
     body: "At Linda Wiryani Design and Event Planning, we specialize in luxury destination wedding planning in Bali, designing weddings that are intentional, refined, and deeply personal. Our approach blends design artistry, hospitality precision, and local expertise to create weddings that feel effortless, elevated, and meaningful. We work with couples from around the world who are drawn to Bali for its natural beauty, spiritual depth, and intimate sense of escape.",
-    listLabel: "Bali offers a rare diversity of environments within one island:",
+    listLabel:
+      "Bali offers a rare diversity of environments within one island:",
     list: [
       "Dramatic ocean cliffs",
       "Private luxury villas",

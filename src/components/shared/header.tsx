@@ -28,10 +28,6 @@ const navigationItems = [
         href: "/wedding-experiences/elopement-weddings",
       },
       { name: "Luxury Weddings", href: "/wedding-experiences/luxury-weddings" },
-      // {
-      //   name: "Destination Weddings",
-      //   href: "/wedding-experiences/bali-destination-wedding",
-      // },
     ],
   },
   { name: "WEDDING CONCEPTS", href: "/wedding-concepts" },
@@ -39,7 +35,6 @@ const navigationItems = [
   { name: "PORTFOLIO", href: "/portfolio" },
   { name: "JOURNAL", href: "/journal" },
   { name: "WORKING WITH US", href: "/working-with-us" },
-  { name: "CONTACT", href: "/contact" },
 ];
 
 export default function Header() {
