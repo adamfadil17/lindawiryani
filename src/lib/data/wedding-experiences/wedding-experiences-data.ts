@@ -24,7 +24,7 @@ const privateVillaWeddings: ExperienceData = {
   category: "private-villa-weddings" as WeddingExperienceType,
   hero: {
     style: "split",
-    image: "https://placehold.net/default.svg",
+    image: "/images/venues/banner/private-bg.png",
     desc: "Privacy, freedom of design, and an atmosphere that feels personal rather than commercial — where your wedding becomes an experience that could only be yours.",
   },
   intro: {
@@ -54,7 +54,7 @@ const privateVillaWeddings: ExperienceData = {
       "Acoustic and technical planning",
       "Emotional pacing of the day",
     ],
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767280276/Wedding_15_ofe4kx.jpg",
   },
   services: {
     label: "What We Offer",
@@ -87,7 +87,7 @@ const privateVillaWeddings: ExperienceData = {
     label: "For You",
     heading: ["A Private Villa Wedding", "That Feels Like Home"],
     body: "Your villa wedding should feel warm, intentional, and deeply personal. Each villa wedding is custom-built, never packaged. If you are planning a private villa wedding in Bali and want a design-led team who understands space, emotion, and execution — we would be honored to guide your journey.",
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767280288/Wedding_5_rt7stj.jpg",
     coupleLabel: "Created for couples who seek:",
     coupleValues: [
       "Seclusion and intimacy",
@@ -128,7 +128,7 @@ const intimateWeddings: ExperienceData = {
   category: "intimate-weddings" as WeddingExperienceType,
   hero: {
     style: "bottom",
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
     desc: "An intimate wedding allows space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity — and atmosphere over spectacle.",
   },
   intro: {
@@ -158,7 +158,7 @@ const intimateWeddings: ExperienceData = {
       "Refined aesthetic language",
       "Calm execution",
     ],
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878580/BAL_1451_dhfxcj.jpg",
   },
   services: {
     label: "What We Offer",
@@ -191,7 +191,7 @@ const intimateWeddings: ExperienceData = {
     label: "An Intimate Wedding That Feels Like You",
     heading: ["Quality over quantity.", "Atmosphere over spectacle."],
     body: "If you are planning an intimate wedding in Bali and desire a design-led, hospitality-driven team, we would be honored to guide your journey.",
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878569/BAL_1210_gktw4p.jpg",
     coupleLabel: null,
     coupleValues: [],
   },
@@ -226,7 +226,7 @@ const elopementWeddings: ExperienceData = {
   category: "elopement-weddings" as WeddingExperienceType,
   hero: {
     style: "centered",
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346138/Wedding_4_htlkyl.jpg",
     desc: "Bali Elopement Weddings — intimate, emotionally rich, and visually poetic — designed as meaningful experiences, not quick ceremonies.",
   },
   intro: {
@@ -255,7 +255,7 @@ const elopementWeddings: ExperienceData = {
       "Calm, unhurried flow",
       "Authentic connection",
     ],
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346140/Wedding_5_exmfpf.jpg",
   },
   services: {
     label: "What We Provide",
@@ -287,7 +287,7 @@ const elopementWeddings: ExperienceData = {
     label: "An Elopement That Feels Sacred",
     heading: ["Timeless. Grounded.", "Emotionally true."],
     body: "If you are looking for a Bali elopement wedding planner who approaches elopements as artful experiences, we would be honored to create with you.",
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346143/Wedding_7_gjd4lv.jpg",
     coupleLabel: null,
     coupleValues: [],
   },
@@ -322,7 +322,7 @@ const luxuryWeddings: ExperienceData = {
   category: "luxury-weddings" as WeddingExperienceType,
   hero: {
     style: "editorial",
-    image: "https://placehold.net/default.svg",
+    image: "/images/venues/banner/signature-bg.png",
     desc: "Luxury weddings in Bali shaped by architecture, atmosphere, and storytelling — not trends.",
   },
   intro: {
@@ -351,7 +351,7 @@ const luxuryWeddings: ExperienceData = {
       "Guest experience planning",
       "Technical and production precision",
     ],
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1768288826/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_04_plvo4w.jpg",
   },
   services: {
     label: "What We Offer",
@@ -384,7 +384,7 @@ const luxuryWeddings: ExperienceData = {
     label: "A Luxury Wedding That Feels Timeless",
     heading: ["Luxury should never feel loud.", "It should feel considered."],
     body: "If you are searching for a luxury wedding planner in Bali, we would be honored to design a celebration that feels meaningful, refined, and unforgettable.",
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1768288832/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_06_rzqgiu.jpg",
     coupleLabel: null,
     coupleValues: [],
   },
@@ -580,7 +580,7 @@ export const subExperiences = [
     tag: "Private Villa",
     desc: "Privacy, freedom of design, and an atmosphere that feels personal rather than commercial. Celebrating in spaces that become entirely yours.",
     href: "/wedding-experiences/private-villa-weddings",
-    image: "https://placehold.net/default.svg",
+    image: "/images/venues/banner/private-bg.png",
   },
   {
     title: "Intimate Weddings",
@@ -588,7 +588,8 @@ export const subExperiences = [
     tag: "Intimate",
     desc: "Space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity.",
     href: "/wedding-experiences/intimate-weddings",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
   },
   {
     title: "Elopement Weddings",
@@ -596,7 +597,8 @@ export const subExperiences = [
     tag: "Elopement",
     desc: "An elopement is not a smaller wedding — it is a deeper one. Emotionally rich, visually poetic, and entirely yours.",
     href: "/wedding-experiences/elopement-weddings",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png",
   },
   {
     title: "Luxury Weddings",
@@ -604,7 +606,7 @@ export const subExperiences = [
     tag: "Luxury",
     desc: "Luxury is not about excess — it is about refinement, care, and experience. Weddings shaped by architecture, atmosphere, and storytelling.",
     href: "/wedding-experiences/luxury-weddings",
-    image: "https://placehold.net/default.svg",
+    image: "/images/venues/banner/signature-bg.png",
   },
 ];
 

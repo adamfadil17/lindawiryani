@@ -121,7 +121,7 @@ function PortfolioCard({ item }: PortfolioCardProps) {
           {item.tags.slice(0, 2).map((tag) => (
             <span
               key={tag}
-              className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1"
+              className="bg-primary/80 text-white text-xs tracking-widest px-3 py-1"
             >
               {tag.toUpperCase()}
             </span>
@@ -203,7 +203,7 @@ export default function PortfolioPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="/images/service/service2.png"
             alt="Portfolio — Real Weddings in Bali"
             fill
             priority

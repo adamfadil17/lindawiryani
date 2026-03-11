@@ -67,7 +67,7 @@ export default function ContactPage() {
     setSubmitStatus({ type: null, message: "" });
 
     try {
-      const response = await fetch("/api/send-email", {
+      const response = await fetch("/api/send-email/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, recaptchaToken }),

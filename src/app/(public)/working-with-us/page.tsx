@@ -7,7 +7,11 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { openPositions, vendorCategories, vendorValues } from "@/lib/data/working-with-us/working-with-us";
+import {
+  openPositions,
+  vendorCategories,
+  vendorValues,
+} from "@/lib/data/working-with-us/working-with-us";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -109,14 +113,17 @@ export default function WorkingWithUsPage() {
     setVendorSubmitting(true);
     setVendorStatus({ type: null, message: "" });
     try {
-      const response = await fetch("/api/vendor-inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...vendorForm,
-          recaptchaToken: vendorRecaptcha,
-        }),
-      });
+      const response = await fetch(
+        "/api/send-email/working-with-us/vendor-inquiry",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...vendorForm,
+            recaptchaToken: vendorRecaptcha,
+          }),
+        },
+      );
       const data = await response.json();
       if (response.ok) {
         setVendorStatus({
@@ -166,14 +173,17 @@ export default function WorkingWithUsPage() {
     setCareerSubmitting(true);
     setCareerStatus({ type: null, message: "" });
     try {
-      const response = await fetch("/api/career-application", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...careerForm,
-          recaptchaToken: careerRecaptcha,
-        }),
-      });
+      const response = await fetch(
+        "/api/send-email/working-with-us/career-application",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...careerForm,
+            recaptchaToken: careerRecaptcha,
+          }),
+        },
+      );
       const data = await response.json();
       if (response.ok) {
         setCareerStatus({
@@ -222,7 +232,7 @@ export default function WorkingWithUsPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="/images/service/service1.png"
             alt="Working With Us"
             fill
             priority

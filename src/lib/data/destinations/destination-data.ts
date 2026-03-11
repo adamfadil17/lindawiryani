@@ -1,4 +1,4 @@
-  import { Destination } from "@/lib/types/destinations/destination-types";
+import { Destination } from "@/lib/types/destinations/destination-types";
 
 export const destinationList: Destination[] = [
   {
@@ -32,7 +32,8 @@ export const destinationList: Destination[] = [
       "Excellent accessibility from airport, high-end venues, and breathtaking natural views make it ideal for international celebrations",
     seasonalConsiderations:
       "Ceremony structures, florals, sound systems, and guest comfort must be carefully planned to work with coastal winds",
-    imageUrl: "https://placehold.net/default.svg",
+    imageUrl:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1768283257/Hero_8_tvdzth.jpg",
     guestCapacity: "50 - 500+",
     ceremonyOptions: [
       "Oceanfront cliffside ceremonies",
@@ -97,7 +98,8 @@ export const destinationList: Destination[] = [
       "Many Ubud venues are tucked into jungle landscapes, requiring careful guest transportation planning and realistic scheduling",
     seasonalConsiderations:
       "Ubud experiences higher humidity and rainfall than coastal Bali. Wedding design, guest comfort, and production planning must reflect this environment",
-    imageUrl: "https://placehold.net/default.svg",
+    imageUrl:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1768229876/Hero_6_isylaq.jpg",
     guestCapacity: "20 - 200",
     ceremonyOptions: [
       "Jungle ceremonies",
@@ -164,7 +166,7 @@ export const destinationList: Destination[] = [
       "Close to airport, numerous accommodation options, well-established vendor network, easy transportation",
     seasonalConsiderations:
       "Coastal location means careful wind and sound planning, especially for outdoor ceremonies",
-    imageUrl: "https://placehold.net/default.svg",
+    imageUrl: "https://res.cloudinary.com/dzerxindp/image/upload/v1769176975/Hero_1_evbiak.jpg",
     guestCapacity: "30 - 300",
     ceremonyOptions: [
       "Villa garden ceremonies",
@@ -230,7 +232,7 @@ export const destinationList: Destination[] = [
       "Excellent airport access, well-developed infrastructure, numerous accommodation options, established vendor network",
     seasonalConsiderations:
       "Beach weddings require careful timing; dry season (April-October) ideal for outdoor celebrations",
-    imageUrl: "https://placehold.net/default.svg",
+    imageUrl: "https://res.cloudinary.com/dzerxindp/image/upload/v1769180204/Hero_3_krhxuy.jpg",
     guestCapacity: "50 - 400",
     ceremonyOptions: [
       "Beach ceremonies",
@@ -425,7 +427,7 @@ export const destinationList: Destination[] = [
       "Closest to airport, all-inclusive resort infrastructure, comprehensive accommodation, extensive vendor options",
     seasonalConsiderations:
       "Resort infrastructure handles all weather considerations; indoor and outdoor options available year-round",
-    imageUrl: "https://placehold.net/default.svg",
+    imageUrl: "https://res.cloudinary.com/dzerxindp/image/upload/v1767280247/Hero_1_bkktzs.jpg",
     guestCapacity: "100 - 1000+",
     ceremonyOptions: [
       "Beachfront ceremonies",
@@ -490,7 +492,7 @@ export const destinationList: Destination[] = [
       "Remote location requires planning; narrower guest capacity, authentic village settings, cultural sensitivity important",
     seasonalConsiderations:
       "More remote location means weather can be more variable; careful seasonal planning necessary",
-    imageUrl: "https://placehold.net/default.svg",
+    imageUrl: "https://res.cloudinary.com/dzerxindp/image/upload/v1768288675/Hero_1_w65ysv.jpg",
     guestCapacity: "15 - 100",
     ceremonyOptions: [
       "Temple ceremonies",
@@ -555,7 +557,7 @@ export const destinationList: Destination[] = [
       "Diverse terrain requires planning; multiple venue options, scenic drives, various accommodation levels",
     seasonalConsiderations:
       "West coast exposure means different weather; seasonal planning important for outdoor activities",
-    imageUrl: "https://placehold.net/default.svg",
+    imageUrl: "https://res.cloudinary.com/dzerxindp/image/upload/v1768225699/Hero_2_gkgpm4.jpg",
     guestCapacity: "20 - 200",
     ceremonyOptions: [
       "Rice terrace ceremonies",

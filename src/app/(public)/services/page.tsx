@@ -140,7 +140,7 @@ export default function ServicesPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1767345122/Ceremony_at_The_One_4_prmb2q.jpg"
             alt="Linda Wiryani Design and Event Planning Services"
             fill
             priority

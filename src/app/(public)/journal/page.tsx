@@ -163,7 +163,7 @@ export default function JournalPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="/images/service/service3.png"
             alt="Journal — Linda Wiryani Design"
             fill
             priority

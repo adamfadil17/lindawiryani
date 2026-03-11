@@ -594,7 +594,7 @@ function SectionClosing({ data }: { data: ExperienceData }) {
                 <h2 className="text-3xl md:text-4xl text-white uppercase font-semibold">
                   {data.closing.heading[0]}
                   <br />
-                  <span>
+                  <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
                     {data.closing.heading[1]}
                   </span>
                 </h2>
@@ -655,7 +655,7 @@ function SectionClosing({ data }: { data: ExperienceData }) {
             >
               {data.closing.heading[0]}
               <br />
-              <span className="italic font-light">
+              <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
                 {data.closing.heading[1]}
               </span>
             </motion.h2>
@@ -716,11 +716,6 @@ function SectionFaq({ data }: { data: ExperienceData }) {
     </motion.section>
   );
 }
-
-// ─── Sub-experiences data ─────────────────────────────────────────────────────
-
-// ─── Venue List utilities ──────────────────────────────────────────────────────
-
 const useCurrencyConverter = () => {
   const [exchangeRate, setExchangeRate] = useState<number>(15800);
   const CACHE_DURATION = 60 * 60 * 1000;
@@ -1219,7 +1214,7 @@ const subExperiences = [
     desc: "Privacy, freedom of design, and an atmosphere that feels personal rather than commercial. Celebrating in spaces that become entirely yours.",
     href: "/wedding-experiences/private-villa-weddings",
     slug: "private-villa-weddings",
-    image: "https://placehold.net/default.svg",
+    image: "/images/venues/banner/private-bg.png",
   },
   {
     title: "Intimate Weddings",
@@ -1228,7 +1223,8 @@ const subExperiences = [
     desc: "Space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity.",
     href: "/wedding-experiences/intimate-weddings",
     slug: "intimate-weddings",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
   },
   {
     title: "Elopement Weddings",
@@ -1237,7 +1233,8 @@ const subExperiences = [
     desc: "An elopement is not a smaller wedding — it is a deeper one. Emotionally rich, visually poetic, and entirely yours.",
     href: "/wedding-experiences/elopement-weddings",
     slug: "elopement-weddings",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767346138/Wedding_4_htlkyl.jpg",
   },
   {
     title: "Luxury Weddings",
@@ -1246,7 +1243,7 @@ const subExperiences = [
     desc: "Luxury is not about excess — it is about refinement, care, and experience. Weddings shaped by architecture, atmosphere, and storytelling.",
     href: "/wedding-experiences/luxury-weddings",
     slug: "luxury-weddings",
-    image: "https://placehold.net/default.svg",
+    image: "/images/venues/banner/signature-bg.png",
   },
 ];
 
@@ -1378,8 +1375,8 @@ export function WeddingExperiences({
       <SectionServices data={data} />
       <SectionVenueList experienceSlug={experience_id} />
       <SectionFaq data={data} />
-      <SectionClosing data={data} />
       <SectionSubExperiences currentSlug={experience_id} />
+      <SectionClosing data={data} />
     </main>
   );
 }

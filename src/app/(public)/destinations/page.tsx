@@ -22,7 +22,7 @@ export default function DestinationsPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1768288675/Hero_1_w65ysv.jpg"
             alt="Indonesia Destinations"
             fill
             priority
@@ -189,11 +189,7 @@ export default function DestinationsPage() {
                     Celebration Styles
                   </p>
                   <h3 className="text-2xl text-white font-semibold mb-4">
-                    Indonesia
-                    <br />
-                    <span className="italic font-light">
-                      Multi-Day Journeys
-                    </span>
+                    Indonesia Multi-Day Journeys
                   </h3>
                   <p className="text-white  leading-relaxed mb-8">
                     Many Indonesia destination weddings unfold as retreat-style

@@ -126,7 +126,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             {item.tags.map((tag) => (
               <span
                 key={tag}
-                className="bg-white/90 text-primary text-sm tracking-widest px-3 py-1"
+                className="bg-white/15 border border-1 border-white/10 text-white text-sm tracking-widest px-3 py-1"
               >
                 {tag.toUpperCase()}
               </span>
