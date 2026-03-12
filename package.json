@@ -19,7 +19,6 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
     "@prisma/adapter-pg": "^7.4.2",
-    "@prisma/client": "^7.4.2",
     "@radix-ui/react-slot": "^1.2.3",
     "@tiptap/extension-bubble-menu": "^3.20.1",
     "@tiptap/extension-character-count": "^3.20.1",
@@ -56,6 +55,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@prisma/client": "^7.5.0",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
@@ -69,7 +69,7 @@
     "dotenv": "^17.3.1",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
-    "prisma": "^6.19.2",
+    "prisma": "^7.5.0",
     "tailwindcss": "^4.2.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
