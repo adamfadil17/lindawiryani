@@ -8,7 +8,7 @@ export const articles: Article[] = [
     category: "Guides",
     title: "How to Plan a Destination Wedding in Bali: A Complete Guide",
     excerpt:
-      "From defining your wedding experience to understanding legal requirement, this guide walks international couples through every stage of planning a destination wedding in Bali.",
+      "From defining your wedding experience to understanding legal requirements, this guide walks international couples through every stage of planning a destination wedding in Bali.",
     publishedAt: "2026-03-05",
     image: "https://placehold.net/default.svg",
     content: `
