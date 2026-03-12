@@ -61,9 +61,7 @@ export default function OurApproachPage() {
           >
             Design-Led Luxury
             <br />
-            <span>
-              Wedding Planning in Bali
-            </span>
+            <span>Wedding Planning in Bali</span>
           </motion.h1>
         </motion.div>
       </section>
@@ -106,7 +104,7 @@ export default function OurApproachPage() {
       </motion.section>
 
       <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
+        className="bg-primary/15 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
@@ -197,7 +195,7 @@ export default function OurApproachPage() {
               className="lg:col-span-5 relative h-[50vh] lg:h-[500px] overflow-hidden order-2 lg:order-1"
             >
               <Image
-                src="https://placehold.net/default.svg"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1773311285/our-roots_ibpu3e.jpg"
                 alt="Bali landscape and nature"
                 fill
                 loading="lazy"
@@ -254,7 +252,7 @@ export default function OurApproachPage() {
 
       <motion.section
         ref={planningRef}
-        className="bg-primary py-20 lg:py-28"
+        className="bg-primary/15 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -265,13 +263,13 @@ export default function OurApproachPage() {
             variants={fadeInUp}
             className="text-center mb-16 lg:mb-20"
           >
-            <p className="text-white tracking-[0.25em] uppercase mb-3">
+            <p className="text-primary tracking-[0.25em] uppercase mb-3">
               Our Approach
             </p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold">
-              Hospitality-Driven Planning &amp;{" "} Execution
+            <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold">
+              Hospitality-Driven Planning &amp; Execution
             </h2>
-            <p className="mt-6 text-white  max-w-xl mx-auto text-center leading-relaxed">
+            <p className="mt-6 text-primary  max-w-xl mx-auto text-center leading-relaxed">
               With nearly two decades of experience in five-star luxury
               hospitality, our planning system is built on one foundation: calm,
               precision, and care.
@@ -284,13 +282,13 @@ export default function OurApproachPage() {
                 key={phase.number}
                 variants={fadeInUp}
                 custom={i}
-                className="border border-white/30 p-8 flex flex-col gap-6 hover:border-white/80 transition-colors duration-300"
+                className="border border-primary/30 p-8 flex flex-col gap-6 hover:border-primary/80 transition-colors duration-300"
               >
-                <span className="text-5xl font-semibold text-white leading-none">
+                <span className="text-5xl font-semibold text-primary leading-none">
                   {phase.number}
                 </span>
-                <h3 className="text-white font-semibold ">{phase.title}</h3>
-                <p className="text-white leading-relaxed flex-1">
+                <h3 className="text-primary font-semibold ">{phase.title}</h3>
+                <p className="text-primary leading-relaxed flex-1">
                   {phase.desc}
                 </p>
               </motion.div>
@@ -319,7 +317,7 @@ export default function OurApproachPage() {
 
               <motion.div
                 variants={fadeInUp}
-                className="bg-primary/10 p-8 border-l-2 border-primary"
+                className="bg-primary/15 p-8 border-l-2 border-primary"
               >
                 <p className="text-primary  italic leading-relaxed">
                   "Many wedding planners organize logistics.
@@ -365,7 +363,7 @@ export default function OurApproachPage() {
         </div>
       </motion.section>
       <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
+        className="bg-primary/15 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
@@ -409,7 +407,7 @@ export default function OurApproachPage() {
               className="lg:col-span-5 relative h-[50vh] lg:h-[480px] overflow-hidden"
             >
               <Image
-                src="https://placehold.net/default.svg"
+                src="/images/service/service4.png"
                 alt="Luxury Bali wedding specialization"
                 fill
                 loading="lazy"
@@ -430,14 +428,14 @@ export default function OurApproachPage() {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773311704/closing_fjcftu.jpg"
             alt="A wedding that feels like you"
             fill
             loading="lazy"
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-primary/70" />
+          <div className="absolute inset-0 bg-primary/40" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">

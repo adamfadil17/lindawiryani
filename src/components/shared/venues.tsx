@@ -302,7 +302,7 @@ export default function VenuesSection({
                     className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
                     sizes="33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
                       01
@@ -338,7 +338,7 @@ export default function VenuesSection({
                     className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
                     sizes="33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
                       02
@@ -374,7 +374,7 @@ export default function VenuesSection({
                     className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
                     sizes="33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
                       03
@@ -413,7 +413,7 @@ export default function VenuesSection({
                     className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
                     sizes="100vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
                       01
@@ -449,7 +449,7 @@ export default function VenuesSection({
                     className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
                     sizes="100vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
                       02
@@ -485,7 +485,7 @@ export default function VenuesSection({
                     className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
                     sizes="100vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
                       03
@@ -524,7 +524,7 @@ export default function VenuesSection({
                     className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
                     sizes="100vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
                   <div className="absolute top-5 left-5">
                     <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
                       04

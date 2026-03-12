@@ -10,7 +10,7 @@ export const articles: Article[] = [
     excerpt:
       "From defining your wedding experience to understanding legal requirements, this guide walks international couples through every stage of planning a destination wedding in Bali.",
     publishedAt: "2026-03-05",
-    image: "https://placehold.net/default.svg",
+    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1773318719/header2_y85db9.jpg",
     content: `
 <h2>Introduction</h2>
 <p>Planning a destination wedding in Bali is not only about choosing a beautiful island. It is about designing an experience that reflects who you are, how you wish to gather, and what you want your celebration to feel like.</p>

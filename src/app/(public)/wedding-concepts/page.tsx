@@ -86,7 +86,7 @@ export default function WeddingConceptsPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1768284526/Wedding_5_x8jemc.jpg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317740/header-wedding-concepts_et47hl.jpg"
             alt="Wedding Concepts — Curated Wedding Celebrations"
             fill
             priority
@@ -709,7 +709,7 @@ export default function WeddingConceptsPage() {
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-primary/72" />
+          <div className="absolute inset-0 bg-primary/40" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">

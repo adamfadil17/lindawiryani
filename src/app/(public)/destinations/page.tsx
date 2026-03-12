@@ -22,7 +22,7 @@ export default function DestinationsPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1768288675/Hero_1_w65ysv.jpg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317927/header-destinations_nlbm2r.jpg"
             alt="Indonesia Destinations"
             fill
             priority
@@ -318,14 +318,14 @@ export default function DestinationsPage() {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773318397/destination-closing_eie0gt.png"
             alt="Your Bali destination wedding"
             fill
             loading="lazy"
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-primary/72" />
+          <div className="absolute inset-0 bg-primary/40" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">

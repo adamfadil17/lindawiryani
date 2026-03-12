@@ -1251,7 +1251,7 @@ function SectionSubExperiences({ currentSlug }: { currentSlug: string }) {
   const filtered = subExperiences.filter((exp) => exp.slug !== currentSlug);
   return (
     <motion.section
-      className="bg-white py-20 lg:py-28"
+      className="bg-primary/15 py-20 lg:py-28"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}

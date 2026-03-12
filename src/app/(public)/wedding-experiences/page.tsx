@@ -47,7 +47,7 @@ export default function WeddingExperiencesPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1767345120/Ceremony_at_The_One_15_ileyd9.jpg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317398/header-wedding-experiences_f8ri4j.jpg"
             alt="Bali Destination Wedding"
             fill
             priority
@@ -181,11 +181,11 @@ export default function WeddingExperiencesPage() {
         <div className="absolute inset-0 bg-primary/10" />
         <div className="absolute top-0 right-0 w-1/3 h-full hidden lg:block">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317398/our-studio-wedding-experiences_f1wfxa.jpg"
             alt="Design-led studio"
             fill
             loading="lazy"
-            className="object-cover opacity-40"
+            className="object-cover"
             sizes="33vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-transparent" />
@@ -251,7 +251,7 @@ export default function WeddingExperiencesPage() {
               className="lg:col-span-5 relative h-[55vh] lg:h-[600px] overflow-hidden"
             >
               <Image
-                src="https://placehold.net/default.svg"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317399/what-we-do-wedding-experiences_opnnx1.jpg"
                 alt="Full service destination wedding planning"
                 fill
                 loading="lazy"
@@ -338,7 +338,7 @@ export default function WeddingExperiencesPage() {
 
       {/* ── SUB-EXPERIENCES GRID ──────────────────────────────────────── */}
       <motion.section
-        className="bg-primary py-16 md:py-20 lg:py-28"
+        className="bg-primary/15 py-16 md:py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -350,15 +350,15 @@ export default function WeddingExperiencesPage() {
             className="mb-10 md:mb-14 lg:mb-20 grid lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8"
           >
             <div className="lg:col-span-5">
-              <p className="text-white tracking-[0.25em] uppercase mb-3">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
                 Explore Further
               </p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
                 Wedding Experiences
               </h2>
             </div>
             <div className="lg:col-span-7 lg:flex lg:items-end">
-              <p className="text-white text-justify leading-relaxed text-sm sm:text-base">
+              <p className="text-primary text-justify leading-relaxed text-sm sm:text-base">
                 Each experience below is a distinct celebration style, curated
                 for the couples who choose it. Explore the one that resonates
                 most with your vision.
@@ -383,7 +383,7 @@ export default function WeddingExperiencesPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
                     {/* Tag */}
                     <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
-                      <span className="bg-white/90 text-primary text-xs sm:text-sm tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5">
+                      <span className="bg-primary/80 text-white text-xs sm:text-sm tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5">
                         {exp.tag.toUpperCase()}
                       </span>
                     </div>
@@ -393,7 +393,7 @@ export default function WeddingExperiencesPage() {
                     </div>
                   </div>
                   <div className="px-0.5">
-                    <h3 className="text-white font-semibold text-lg sm:text-xl group-hover:text-white/80 transition-colors leading-snug">
+                    <h3 className="text-primary font-semibold text-lg sm:text-xl group-hover:text-primary/80 transition-colors leading-snug">
                       {exp.title}{" "}
                       {exp.subtitle && (
                         <span className="italic font-light">
@@ -401,10 +401,10 @@ export default function WeddingExperiencesPage() {
                         </span>
                       )}
                     </h3>
-                    <p className="text-white/90 mt-2 leading-relaxed text-sm sm:text-base">
+                    <p className="text-primary/90 mt-2 leading-relaxed text-sm sm:text-base">
                       {exp.desc}
                     </p>
-                    <div className="flex items-center gap-2 mt-3 sm:mt-4 text-white text-sm tracking-wider group-hover:text-white/80 transition-colors">
+                    <div className="flex items-center gap-2 mt-3 sm:mt-4 text-primary text-sm tracking-wider group-hover:text-primary/80 transition-colors">
                       <span>EXPLORE</span>
                       <ArrowRight className="w-4 h-4" />
                     </div>
@@ -455,14 +455,14 @@ export default function WeddingExperiencesPage() {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317401/closing-wedding-experiences_voec9s.jpg"
             alt="Your Bali destination wedding"
             fill
             loading="lazy"
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-primary/72" />
+          <div className="absolute inset-0 bg-primary/40" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">

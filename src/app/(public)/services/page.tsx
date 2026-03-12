@@ -74,7 +74,7 @@ function ServiceAccordion({
                   sizes="(max-width: 1024px) 100vw, 42vw"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="bg-primary text-white text-sm tracking-widest px-3 py-1.5">
+                  <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
                     {service.tag.toUpperCase()}
                   </span>
                 </div>
@@ -140,7 +140,7 @@ export default function ServicesPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1767345122/Ceremony_at_The_One_4_prmb2q.jpg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773311945/header-services_dbqj5l.jpg"
             alt="Linda Wiryani Design and Event Planning Services"
             fill
             priority
@@ -219,7 +219,7 @@ export default function ServicesPage() {
 
       {/* ── SERVICES ACCORDION ────────────────────────────────────────── */}
       <motion.section
-        className="bg-primary/10 py-16 lg:py-20"
+        className="bg-primary/15 py-16 lg:py-20"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -307,7 +307,7 @@ export default function ServicesPage() {
         </div>
       </motion.section>
       <motion.section
-        className="bg-primary py-20 lg:py-28"
+        className="bg-primary/15 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -321,7 +321,7 @@ export default function ServicesPage() {
               className="lg:col-span-5 relative h-[50vh] lg:h-[520px] overflow-hidden"
             >
               <Image
-                src="https://placehold.net/default.svg"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1773311967/global_reach_naldd0.jpg"
                 alt="Destination weddings in Bali"
                 fill
                 loading="lazy"
@@ -333,17 +333,17 @@ export default function ServicesPage() {
             {/* Text */}
             <div className="lg:col-span-7 space-y-8">
               <motion.div variants={fadeInUp}>
-                <p className="text-white tracking-[0.25em] uppercase mb-3">
+                <p className="text-primary tracking-[0.25em] uppercase mb-3">
                   Global Reach
                 </p>
-                <h2 className="text-3xl md:text-4xl text-white font-semibold">
+                <h2 className="text-3xl md:text-4xl text-primary font-semibold">
                   Serving Destination Weddings in Bali
                 </h2>
               </motion.div>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-white leading-relaxed text-justify "
+                className="text-primary leading-relaxed text-justify "
               >
                 Linda Wiryani Design and Event Planning proudly serves couples
                 from around the world seeking a Bali wedding planner and
@@ -351,18 +351,18 @@ export default function ServicesPage() {
               </motion.p>
 
               <motion.div variants={fadeInUp} className="space-y-4">
-                <p className="text-white">Our studio curates:</p>
+                <p className="text-primary">Our studio curates:</p>
                 {destinations.map((dest) => (
                   <div key={dest} className="flex items-center gap-4">
-                    <div className="w-3 h-px bg-white/70 flex-shrink-0" />
-                    <span className="text-white">{dest}</span>
+                    <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
+                    <span className="text-primary">{dest}</span>
                   </div>
                 ))}
               </motion.div>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-white leading-relaxed italic border-t border-white/30  pt-6"
+                className="text-primary leading-relaxed italic border-t border-primary/30  pt-6"
               >
                 From coastal cliffs and jungle hideaways to refined private
                 estates, we design weddings that feel deeply personal,
@@ -383,14 +383,14 @@ export default function ServicesPage() {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773312297/closing-services_szst8w.jpg"
             alt="Begin your wedding journey"
             fill
             loading="lazy"
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-primary/72" />
+          <div className="absolute inset-0 bg-primary/40" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
