@@ -181,12 +181,12 @@ export default function WeddingExperiencesPage() {
         <div className="absolute inset-0 bg-primary/10" />
         <div className="absolute top-0 right-0 w-1/3 h-full hidden lg:block">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317398/our-studio-wedding-experiences_f1wfxa.jpg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773324238/ChatGPT_Image_Mar_12_2026_03_27_00_PM_ji8tqr.png"
             alt="Design-led studio"
             fill
             loading="lazy"
             className="object-cover"
-            sizes="33vw"
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-transparent" />
         </div>
@@ -256,7 +256,7 @@ export default function WeddingExperiencesPage() {
                 fill
                 loading="lazy"
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 42vw"
+                sizes="(max-width: 1024px) 100vw"
               />
               {/* Floating stat */}
               <div className="absolute bottom-6 left-6 bg-white/90 px-6 py-4">
