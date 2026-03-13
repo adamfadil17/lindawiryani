@@ -31,7 +31,7 @@ export const destinationList: Destination[] = [
       "Excellent accessibility from airport, high-end venues, and breathtaking natural views make it ideal for international celebrations",
     seasonalConsiderations:
       "Ceremony structures, florals, sound systems, and guest comfort must be carefully planned to work with coastal winds",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "50 - 500+",
     highlights: [
       "Sweeping ocean cliffs and sunset views",
@@ -96,7 +96,7 @@ export const destinationList: Destination[] = [
       "Many Ubud venues are tucked into jungle landscapes, requiring careful guest transportation planning and realistic scheduling",
     seasonalConsiderations:
       "Ubud experiences higher humidity and rainfall than coastal Bali. Wedding design, guest comfort, and production planning must reflect this environment",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "20 - 200",
     highlights: [
       "Emerald jungles and flowing rivers",
@@ -163,7 +163,7 @@ export const destinationList: Destination[] = [
       "Close to airport, numerous accommodation options, well-established vendor network, easy transportation",
     seasonalConsiderations:
       "Coastal location means careful wind and sound planning, especially for outdoor ceremonies",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "30 - 300",
     highlights: [
       "Contemporary villa settings",
@@ -229,7 +229,7 @@ export const destinationList: Destination[] = [
       "Excellent airport access, well-developed infrastructure, numerous accommodation options, established vendor network",
     seasonalConsiderations:
       "Beach weddings require careful timing; dry season (April-October) ideal for outdoor celebrations",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "50 - 400",
     highlights: [
       "Boutique resort environments",
@@ -294,7 +294,7 @@ export const destinationList: Destination[] = [
       "Quieter alternative to busier areas, established accommodations, calm waterfront setting, good local vendor relationships",
     seasonalConsiderations:
       "East coast location provides different weather patterns; generally pleasant year-round with calmer waters",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "20 - 250",
     highlights: [
       "Calm, gentle coastlines",
@@ -359,7 +359,7 @@ export const destinationList: Destination[] = [
       "Highland location requires careful planning; cooler temperatures, mountain roads, remote setting",
     seasonalConsiderations:
       "Higher elevation means cooler weather and potential mist; dry season preferred for outdoor ceremonies",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "20 - 150",
     highlights: [
       "Volcanic highlands terrain",
@@ -424,7 +424,7 @@ export const destinationList: Destination[] = [
       "Closest to airport, all-inclusive resort infrastructure, comprehensive accommodation, extensive vendor options",
     seasonalConsiderations:
       "Resort infrastructure handles all weather considerations; indoor and outdoor options available year-round",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "100 - 1000+",
     highlights: [
       "Expansive beachfront resorts",
@@ -489,7 +489,7 @@ export const destinationList: Destination[] = [
       "Remote location requires planning; narrower guest capacity, authentic village settings, cultural sensitivity important",
     seasonalConsiderations:
       "More remote location means weather can be more variable; careful seasonal planning necessary",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "15 - 100",
     highlights: [
       "Sacred mountain landscapes",
@@ -554,7 +554,7 @@ export const destinationList: Destination[] = [
       "Diverse terrain requires planning; multiple venue options, scenic drives, various accommodation levels",
     seasonalConsiderations:
       "West coast exposure means different weather; seasonal planning important for outdoor activities",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "20 - 200",
     highlights: [
       "Rice terraces",
@@ -619,7 +619,7 @@ export const destinationList: Destination[] = [
       "Island location requires ferry access; smaller guest capacity, adventure mindset helpful, remote setting",
     seasonalConsiderations:
       "Ocean conditions variable; dry season (April-October) ideal for island access and outdoor ceremonies",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "5 - 80",
     highlights: [
       "Towering seaside cliffs",
@@ -684,7 +684,7 @@ export const destinationList: Destination[] = [
       "Remote location requires planning; island access for some venues, multi-day retreat options, nature-focused logistics",
     seasonalConsiderations:
       "Northern exposure means different weather patterns; dry season ideal for ceremonies and activities",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "20 - 150",
     highlights: [
       "National park settings",
@@ -749,7 +749,7 @@ export const destinationList: Destination[] = [
       "Accessible via Lombok International Airport or fast boat from Bali; remote venue settings require logistical planning",
     seasonalConsiderations:
       "Dry season (May–October) ideal; tropical rainfall in wet season requires contingency planning",
-    imageUrl: "https://placehold.net/default.svg",
+    image: "https://placehold.net/default.svg",
     guestCapacity: "10 - 80",
     highlights: [
       "Pristine unspoiled beaches",
