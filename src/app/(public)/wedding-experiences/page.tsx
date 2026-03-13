@@ -47,7 +47,7 @@ export default function WeddingExperiencesPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317398/header-wedding-experiences_f8ri4j.jpg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773382875/header-wedding-experiences_r4o2wi.png"
             alt="Bali Destination Wedding"
             fill
             priority
@@ -181,7 +181,7 @@ export default function WeddingExperiencesPage() {
         <div className="absolute inset-0 bg-primary/10" />
         <div className="absolute top-0 right-0 w-1/3 h-full hidden lg:block">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773324238/ChatGPT_Image_Mar_12_2026_03_27_00_PM_ji8tqr.png"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317398/our-studio-wedding-experiences_f1wfxa.jpg"
             alt="Design-led studio"
             fill
             loading="lazy"

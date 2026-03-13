@@ -89,7 +89,7 @@ function DestinationCard({
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
       <div className="relative aspect-[16/9] overflow-hidden">
         <Image
-          src={destination.imageUrl || "https://placehold.net/default.svg"}
+          src={destination.image || "https://placehold.net/default.svg"}
           alt={destination.name}
           fill
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"

@@ -46,7 +46,7 @@ const emptyForm: FormData = {
   atmosphere: "",
   accessibilityNotes: "",
   seasonalConsiderations: "",
-  imageUrl: "",
+  image: "",
   guestCapacity: "",
   highlights: [],
   bestFor: [],
@@ -454,9 +454,9 @@ export default function EditDestinationPage() {
             <div className="space-y-4">
               {/* Preview */}
               <div className="relative aspect-[4/3] bg-primary/5 border border-primary/20 overflow-hidden">
-                {form.imageUrl ? (
+                {form.image ? (
                   <Image
-                    src={form.imageUrl}
+                    src={form.image}
                     alt="Preview"
                     fill
                     className="object-cover"
@@ -473,9 +473,9 @@ export default function EditDestinationPage() {
 
               <FormField label="Cover Image" required>
                 <ImageUpload
-                  value={form.imageUrl}
-                  onChange={(v) => set("imageUrl", v)}
-                  error={errors.imageUrl}
+                  value={form.image}
+                  onChange={(v) => set("image", v)}
+                  error={errors.image}
                   inputId="cover-upload"
                 />
               </FormField>

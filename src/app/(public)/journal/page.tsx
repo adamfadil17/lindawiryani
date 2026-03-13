@@ -337,7 +337,7 @@ export default function JournalPage() {
                   </span>
                 </h2>
               </div>
-              <p className="text-primary/50 text-sm tracking-widest uppercase">
+              <p className="text-primary/80 text-sm tracking-widest uppercase">
                 {filtered.length} Article{filtered.length !== 1 ? "s" : ""}
               </p>
             </div>
@@ -359,12 +359,12 @@ export default function JournalPage() {
           {filtered.length === 0 && (
             <motion.div
               variants={fadeIn}
-              className="text-center py-20 text-primary/40"
+              className="text-center py-20 text-primary/80"
             >
-              <p className="text-lg tracking-widest uppercase">
+              <p className="text-lg text-primary/80 tracking-widest uppercase">
                 No articles in this category yet.
               </p>
-              <p className="mt-2 text-sm">Check back soon.</p>
+              <p className="mt-2 text-primary/80 text-sm">Check back soon.</p>
             </motion.div>
           )}
         </div>
@@ -380,14 +380,14 @@ export default function JournalPage() {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
             alt="Begin your Bali wedding journey"
             fill
             loading="lazy"
-            className="object-cover object-center"
+            className="object-cover object-top"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-primary/72" />
+          <div className="absolute inset-0 bg-primary/40" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">

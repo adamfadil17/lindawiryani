@@ -550,7 +550,7 @@ function SectionServices({ data }: { data: ExperienceData }) {
               <div className="mt-10">
                 <Link href="https://wa.me/628113980998" target="_blank">
                   <button className="bg-white text-primary font-semibold px-6 py-3 text-xs tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300 w-full">
-                    {data.services.darkPanel.cta}
+                    PLAN YOUR WEDDING
                   </button>
                 </Link>
               </div>

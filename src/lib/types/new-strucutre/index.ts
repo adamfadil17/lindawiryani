@@ -20,6 +20,7 @@ export interface WeddingExperienceIntro {
   listLabel: string | null; // null when list is empty
   list: string[];
   footnote: string | null;
+  image: string[]; //ini saya ingin untuk upload 2 images saja
 }
 
 export interface WeddingExperienceApproach {
@@ -94,7 +95,7 @@ export interface Destination {
   atmosphere: string;
   accessibilityNotes: string;
   seasonalConsiderations: string;
-  imageUrl: string;
+  image: string;
   guestCapacity: string;
   highlights: string[];
   bestFor: string[];

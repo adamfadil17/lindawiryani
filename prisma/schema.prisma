@@ -1,11 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
@@ -13,10 +10,63 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum WeddingExperienceHeroStyle {
+  split
+  centered
+  editorial
+  bottom
+}
+
+enum WeddingThemeType {
+  ELOPEMENT
+  INTIMATE
+}
+
+enum WeddingExperienceType {
+  elopement_weddings    @map("elopement-weddings")
+  intimate_weddings     @map("intimate-weddings")
+  luxury_weddings       @map("luxury-weddings")
+  private_villa_weddings @map("private-villa-weddings")
+}
+
+enum ArticleCategory {
+  All
+  Guides
+  Planning_Advice       @map("Planning Advice")
+  Destination_Knowledge @map("Destination Knowledge")
+  Venue_and_Location    @map("Venue & Location")
+  Real_Weddings         @map("Real Weddings")
+  Design_and_Concept    @map("Design & Concept")
+}
+
+enum SubmissionType {
+  vendor
+  career
+}
+
+enum SubmissionStatus {
+  new
+  reviewed
+  contacted
+  archived
+}
+
+enum InquiryStatus {
+  new
+  reviewed
+  quoted
+  booked
+  archived
+}
 
 // ─────────────────────────────────────────────
-// USERS
+// USER
 // ─────────────────────────────────────────────
+
 model User {
   id         String   @id @default(uuid())
   name       String
@@ -29,151 +79,368 @@ model User {
 }
 
 // ─────────────────────────────────────────────
-// GALLERIES
+// DESTINATION CATEGORY
 // ─────────────────────────────────────────────
-model Gallery {
-  id         String  @id @default(uuid())
-  image_url  Json    // can store multiple URLs as JSON array
-  sort_order Int     @default(0)
-  category   String
 
-  images     Image[]
+model DestinationCategory {
+  id           String        @id @default(uuid())
+  name         String
+  destinations Destination[]
 
-  @@map("galleries")
+  @@map("destination_categories")
 }
 
 // ─────────────────────────────────────────────
-// LOCATIONS (hierarchical – parent/child)
+// DESTINATION
 // ─────────────────────────────────────────────
-model Location {
-  id         String    @id @default(uuid())
-  name       String
-  slug       String    @unique
-  parent_id  String?
-  created_at DateTime  @default(now())
 
-  parent     Location?  @relation("LocationChildren", fields: [parent_id], references: [id])
-  children   Location[] @relation("LocationChildren")
+model Destination {
+  id                     String   @id @default(uuid())
+  name                   String
+  slug                   String   @unique
+  category_id            String
+  type                   String
+  description            String
+  long_description       String
+  location               String
+  atmosphere             String
+  accessibility_notes    String
+  seasonal_considerations String
+  image                  String
+  guest_capacity         String
+
+  // JSON arrays
+  highlights             Json     // string[]
+  best_for               Json     // string[]
+  ceremony_options       Json     // string[]
+  reception_options      Json     // string[]
+  accommodation_nearby   Json     // string[]
+  dining_experiences     Json     // string[]
+  unique_features        Json     // string[]
+
+  category   DestinationCategory @relation(fields: [category_id], references: [id])
   venues     Venue[]
+  portfolios Portfolio[]
 
-  @@map("locations")
+  @@map("destinations")
 }
 
 // ─────────────────────────────────────────────
-// WEDDING THEMES
+// WEDDING EXPERIENCE
 // ─────────────────────────────────────────────
-model WeddingTheme {
-  id          String   @id @default(uuid())
-  name        String
-  slug        String   @unique
-  description String?
-  og_image    String?
-  created_at  DateTime @default(now())
 
-  venues Venue[]
-  images Image[]
-
-  @@map("wedding_themes")
-}
-
-// ─────────────────────────────────────────────
-// VENUES
-// ─────────────────────────────────────────────
-model Venue {
-  id               String   @id @default(uuid())
-  name             String
-  slug             String   @unique
-  venue_type       String
-  location_id      String
-  wedding_theme_id String?
-  description      String?
-  content          String?  // rich text / markdown
-  featured_image   String?
-  is_featured      Boolean  @default(false)
-  og_image         String?
-  created_at       DateTime @default(now())
-
-  location      Location      @relation(fields: [location_id], references: [id])
-  wedding_theme WeddingTheme? @relation(fields: [wedding_theme_id], references: [id])
-  images        Image[]
-
-  @@map("venues")
-}
-
-// ─────────────────────────────────────────────
-// SERVICES
-// ─────────────────────────────────────────────
-model Service {
-  id             String   @id @default(uuid())
-  title          String
-  slug           String   @unique
-  description    String?
-  content        String?  // rich text / markdown
-  featured_image String?
-  is_active      Boolean  @default(true)
-  og_image       String?
-  created_at     DateTime @default(now())
-
-  images Image[]
-
-  @@map("services")
-}
-
-// ─────────────────────────────────────────────
-// WEDDING EXPERIENCES
-// ─────────────────────────────────────────────
 model WeddingExperience {
-  id             String   @id @default(uuid())
-  title          String
-  slug           String   @unique
-  description    String?
-  content        String?
-  featured_image String?
-  created_at     DateTime @default(now())
+  id       String                @id @default(uuid())
+  slug     String                @unique
+  category WeddingExperienceType
+  name     String
 
-  images Image[]
+  // Section: Hero
+  hero_style WeddingExperienceHeroStyle
+  hero_image String
+  hero_desc  String
+
+  // Section: Intro
+  intro_label      String
+  intro_heading    Json    // [string, string]
+  intro_body       String
+  intro_list_label String?
+  intro_list       Json    // string[]
+  intro_footnote   String?
+  intro_images     Json    // string[] — max 2 images
+
+  // Section: Approach
+  approach_label      String
+  approach_heading    Json    // [string, string]
+  approach_body       String
+  approach_list_label String?
+  approach_list       Json    // string[]
+  approach_image      String
+
+  // Section: Services
+  services_label         String
+  services_heading       Json    // [string, string]
+  services_list          Json    // string[]
+  services_footnote      String
+  services_dark_label    String
+  services_dark_heading  Json    // [string, string]
+  services_dark_body     String
+  services_dark_list     Json    // string[]
+
+  // Section: Closing
+  closing_label        String
+  closing_heading      Json    // [string, string]
+  closing_body         String
+  closing_image        String
+  closing_couple_label String?
+  closing_couple_values Json   // string[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  faqs       ExperienceFaq[]
+  venues     Venue[]
+  themes     WeddingTheme[]
+  portfolios Portfolio[]
 
   @@map("wedding_experiences")
 }
 
 // ─────────────────────────────────────────────
-// INQUIRIES
+// EXPERIENCE FAQ
 // ─────────────────────────────────────────────
-model Inquiry {
-  id                 String   @id @default(uuid())
-  name               String
-  email              String
-  phone              String?
-  wedding_date       DateTime?
-  venue_preference   String?
-  theme_preference   String?
-  service_interest   String?
-  message            String?
-  status             String   @default("pending") // pending | contacted | closed
-  created_at         DateTime @default(now())
 
-  @@map("inquiries")
+model ExperienceFaq {
+  id            String @id @default(uuid())
+  experience_id String
+  question      String
+  answer        String
+  sort_order    Int    @default(0)
+
+  experience WeddingExperience @relation(fields: [experience_id], references: [id])
+
+  @@map("experience_faqs")
 }
 
 // ─────────────────────────────────────────────
-// IMAGES  (polymorphic – FK to multiple parents)
+// VENUE
 // ─────────────────────────────────────────────
-model Image {
-  id                    String  @id @default(uuid())
-  portfolio_id          String?  // FK → Gallery
-  venue_id              String?
-  theme_id              String?  // FK → WeddingTheme
-  service_id            String?
-  wedding_experiences_id String?
-  image_url             Json    // { url, alt, width?, height? }
-  sort_order            Int     @default(0)
 
-  gallery             Gallery?           @relation(fields: [portfolio_id], references: [id])
-  venue               Venue?             @relation(fields: [venue_id], references: [id])
-  wedding_theme       WeddingTheme?      @relation(fields: [theme_id], references: [id])
-  service             Service?           @relation(fields: [service_id], references: [id])
-  wedding_experience  WeddingExperience? @relation(fields: [wedding_experiences_id], references: [id])
+model Venue {
+  id             String  @id @default(uuid())
+  slug           String  @unique
+  name           String
+  slogan         String
+  description    String
+  image          String
+  capacity       Int
+  starting_price Float
+  destination_id String
+  experience_id  String
 
-  @@map("images")
+  destination Destination       @relation(fields: [destination_id], references: [id])
+  experience  WeddingExperience @relation(fields: [experience_id], references: [id])
+  gallery     VenueImage[]
+  themes      WeddingTheme[]
+  portfolios  Portfolio[]
+
+  @@map("venues")
 }
 
+// ─────────────────────────────────────────────
+// VENUE IMAGE
+// ─────────────────────────────────────────────
+
+model VenueImage {
+  id         String @id @default(uuid())
+  url        String
+  sort_order Int    @default(0)
+  venue_id   String
+
+  venue Venue @relation(fields: [venue_id], references: [id])
+
+  @@map("venue_images")
+}
+
+// ─────────────────────────────────────────────
+// WEDDING THEME
+// ─────────────────────────────────────────────
+
+model WeddingTheme {
+  id            String    @id @default(uuid())
+  slug          String    @unique
+  type          WeddingThemeType
+  title         String
+  theme_name    String
+  description   String
+  image         String
+  inclusions    Json      // string[]
+  venue_id      String
+  experience_id String
+
+  venue      Venue              @relation(fields: [venue_id], references: [id])
+  experience WeddingExperience  @relation(fields: [experience_id], references: [id])
+  gallery    WeddingThemeImage[]
+
+  @@map("wedding_themes")
+}
+
+// ─────────────────────────────────────────────
+// WEDDING THEME IMAGE
+// ─────────────────────────────────────────────
+
+model WeddingThemeImage {
+  id         String @id @default(uuid())
+  url        String
+  sort_order Int    @default(0)
+  theme_id   String
+
+  theme WeddingTheme @relation(fields: [theme_id], references: [id])
+
+  @@map("wedding_theme_images")
+}
+
+// ─────────────────────────────────────────────
+// ARTICLE
+// ─────────────────────────────────────────────
+
+model Article {
+  id           String          @id @default(uuid())
+  slug         String          @unique
+  category     ArticleCategory
+  title        String
+  excerpt      String
+  published_at DateTime
+  image        String
+  content      String          // TipTap-serialised HTML
+  created_at   DateTime        @default(now())
+  updated_at   DateTime        @updatedAt
+
+  @@map("articles")
+}
+
+// ─────────────────────────────────────────────
+// PORTFOLIO
+// ─────────────────────────────────────────────
+
+model Portfolio {
+  id             String  @id @default(uuid())
+  slug           String  @unique
+  couple         String
+  subtitle       String
+  destination_id String
+  venue_id       String
+  experience_id  String
+  image          String
+  tags           Json    // string[]
+  excerpt        String
+  origin         String?
+  review         String?
+  content        String?
+
+  // story_sections: array of { heading?: string; body: string[] }
+  story_sections Json
+
+  // credit object
+  credit_role           String
+  credit_planner        String
+  credit_location_detail String
+  credit_couple_origin  String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  destination Destination       @relation(fields: [destination_id], references: [id])
+  venue       Venue             @relation(fields: [venue_id], references: [id])
+  experience  WeddingExperience @relation(fields: [experience_id], references: [id])
+  gallery     PortfolioImage[]
+
+  @@map("portfolios")
+}
+
+// ─────────────────────────────────────────────
+// PORTFOLIO IMAGE
+// ─────────────────────────────────────────────
+
+model PortfolioImage {
+  id           String @id @default(uuid())
+  url          String
+  sort_order   Int    @default(0)
+  portfolio_id String
+
+  portfolio Portfolio @relation(fields: [portfolio_id], references: [id])
+
+  @@map("portfolio_images")
+}
+
+// ─────────────────────────────────────────────
+// SUBMISSION (Vendor & Career — single table)
+// ─────────────────────────────────────────────
+
+model Submission {
+  id           String           @id @default(uuid())
+  type         SubmissionType
+  status       SubmissionStatus @default(new)
+  submitted_at DateTime         @default(now())
+
+  // ── Vendor fields ──────────────────────────
+  company_name      String?
+  contact_person    String?
+  vendor_category   String?
+  years_in_business String?
+  portfolio_link    String?
+  website           String?
+
+  // ── Career fields ──────────────────────────
+  full_name  String?
+  position   String?
+  experience String?
+  linked_in  String?
+  cover_letter String?
+
+  // ── Shared fields ──────────────────────────
+  email   String
+  phone   String?
+  message String?
+
+  @@map("submissions")
+}
+
+// ─────────────────────────────────────────────
+// INQUIRY SUBMISSION
+// ─────────────────────────────────────────────
+
+model InquirySubmission {
+  id           String        @id @default(uuid())
+  status       InquiryStatus @default(new)
+  submitted_at DateTime      @default(now())
+
+  // Contact Info
+  your_name    String
+  your_email   String
+  your_address String
+  telephone    String
+
+  // Groom
+  name_of_groom        String
+  religion_of_groom    String
+  nationality_of_groom String
+
+  // Bride
+  name_of_bride        String
+  religion_of_bride    String
+  nationality_of_bride String
+
+  // Wedding Details
+  wedding_date                  String
+  wedding_venue                 String
+  number_of_attendance          String
+  approximate_wedding_budget    String
+
+  // Accommodation & Travel
+  hotel_name_in_bali String
+  arrival_date       String
+  departure_date     String
+
+  // Vision
+  your_message String
+
+  @@map("inquiry_submissions")
+}
+
+// ─────────────────────────────────────────────
+// OPEN POSITION
+// ─────────────────────────────────────────────
+
+model OpenPosition {
+  id         String   @id @default(uuid())
+  title      String
+  type       String   // "Full-time" | "Part-time / Freelance"
+  level      String   // "Mid–Senior" | "Senior" | etc.
+  desc       String
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("open_positions")
+}
