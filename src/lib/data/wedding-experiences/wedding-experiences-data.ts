@@ -41,6 +41,7 @@ const privateVillaWeddings: ExperienceData = {
     ],
     footnote:
       "This makes villa weddings ideal for couples who want their wedding to feel like a private gathering rather than a staged production.",
+    image: ["", ""],
   },
   approach: {
     label: "Our Approach",
@@ -54,7 +55,8 @@ const privateVillaWeddings: ExperienceData = {
       "Acoustic and technical planning",
       "Emotional pacing of the day",
     ],
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767280276/Wedding_15_ofe4kx.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767280276/Wedding_15_ofe4kx.jpg",
   },
   services: {
     label: "What We Offer",
@@ -87,7 +89,8 @@ const privateVillaWeddings: ExperienceData = {
     label: "For You",
     heading: ["A Private Villa Wedding", "That Feels Like Home"],
     body: "Your villa wedding should feel warm, intentional, and deeply personal. Each villa wedding is custom-built, never packaged. If you are planning a private villa wedding in Bali and want a design-led team who understands space, emotion, and execution — we would be honored to guide your journey.",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767280288/Wedding_5_rt7stj.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767280288/Wedding_5_rt7stj.jpg",
     coupleLabel: "Created for couples who seek:",
     coupleValues: [
       "Seclusion and intimacy",
@@ -128,7 +131,8 @@ const intimateWeddings: ExperienceData = {
   category: "intimate-weddings" as WeddingExperienceType,
   hero: {
     style: "bottom",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
     desc: "An intimate wedding allows space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity — and atmosphere over spectacle.",
   },
   intro: {
@@ -145,6 +149,7 @@ const intimateWeddings: ExperienceData = {
     ],
     footnote:
       "Bali's diverse environments allow intimate weddings to feel cinematic yet grounded.",
+    image: ["", ""],
   },
   approach: {
     label: "How We Design",
@@ -158,7 +163,8 @@ const intimateWeddings: ExperienceData = {
       "Refined aesthetic language",
       "Calm execution",
     ],
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878580/BAL_1451_dhfxcj.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878580/BAL_1451_dhfxcj.jpg",
   },
   services: {
     label: "What We Offer",
@@ -191,7 +197,8 @@ const intimateWeddings: ExperienceData = {
     label: "An Intimate Wedding That Feels Like You",
     heading: ["Quality over quantity.", "Atmosphere over spectacle."],
     body: "If you are planning an intimate wedding in Bali and desire a design-led, hospitality-driven team, we would be honored to guide your journey.",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878569/BAL_1210_gktw4p.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878569/BAL_1210_gktw4p.jpg",
     coupleLabel: null,
     coupleValues: [],
   },
@@ -226,7 +233,8 @@ const elopementWeddings: ExperienceData = {
   category: "elopement-weddings" as WeddingExperienceType,
   hero: {
     style: "centered",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346138/Wedding_4_htlkyl.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767346138/Wedding_4_htlkyl.jpg",
     desc: "Bali Elopement Weddings — intimate, emotionally rich, and visually poetic — designed as meaningful experiences, not quick ceremonies.",
   },
   intro: {
@@ -242,6 +250,7 @@ const elopementWeddings: ExperienceData = {
       "Romantic, cinematic landscapes",
     ],
     footnote: null,
+    image: ["", ""],
   },
   approach: {
     label: "Our Philosophy",
@@ -255,7 +264,8 @@ const elopementWeddings: ExperienceData = {
       "Calm, unhurried flow",
       "Authentic connection",
     ],
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346140/Wedding_5_exmfpf.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767346140/Wedding_5_exmfpf.jpg",
   },
   services: {
     label: "What We Provide",
@@ -287,7 +297,8 @@ const elopementWeddings: ExperienceData = {
     label: "An Elopement That Feels Sacred",
     heading: ["Timeless. Grounded.", "Emotionally true."],
     body: "If you are looking for a Bali elopement wedding planner who approaches elopements as artful experiences, we would be honored to create with you.",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346143/Wedding_7_gjd4lv.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767346143/Wedding_7_gjd4lv.jpg",
     coupleLabel: null,
     coupleValues: [],
   },
@@ -338,6 +349,7 @@ const luxuryWeddings: ExperienceData = {
       "Discreet, thoughtful service",
     ],
     footnote: "True luxury is when everything flows effortlessly.",
+    image: ["", ""],
   },
   approach: {
     label: "How We Work",
@@ -351,7 +363,8 @@ const luxuryWeddings: ExperienceData = {
       "Guest experience planning",
       "Technical and production precision",
     ],
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1768288826/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_04_plvo4w.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1768288826/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_04_plvo4w.jpg",
   },
   services: {
     label: "What We Offer",
@@ -384,7 +397,8 @@ const luxuryWeddings: ExperienceData = {
     label: "A Luxury Wedding That Feels Timeless",
     heading: ["Luxury should never feel loud.", "It should feel considered."],
     body: "If you are searching for a luxury wedding planner in Bali, we would be honored to design a celebration that feels meaningful, refined, and unforgettable.",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/v1768288832/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_06_rzqgiu.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1768288832/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_06_rzqgiu.jpg",
     coupleLabel: null,
     coupleValues: [],
   },
@@ -437,6 +451,7 @@ const baliDestinationWedding: ExperienceData = {
     ],
     footnote:
       "Beyond scenery, Bali carries a sense of calm, ritual, and natural rhythm that makes destination weddings here feel deeply memorable — not just visually beautiful.",
+      image: ["", ""],
   },
   approach: {
     label: "Our Studio",

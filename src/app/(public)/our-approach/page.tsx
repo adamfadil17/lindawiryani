@@ -169,7 +169,7 @@ export default function OurApproachPage() {
               className="lg:col-span-5 relative h-[60vh] lg:h-[550px] overflow-hidden"
             >
               <Image
-                src="https://placehold.net/default.svg"
+                src="/images/service/service7.png"
                 alt="Design-led wedding studio"
                 fill
                 loading="lazy"

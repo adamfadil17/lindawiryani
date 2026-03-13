@@ -29,6 +29,7 @@ export const weddingExperienceList: WeddingExperience[] = [
       ],
       footnote:
         "This makes villa weddings ideal for couples who want their wedding to feel like a private gathering rather than a staged production.",
+        image: ["", ""],
     },
     approach: {
       label: "Our Approach",
@@ -134,6 +135,7 @@ export const weddingExperienceList: WeddingExperience[] = [
       ],
       footnote:
         "Bali's diverse environments allow intimate weddings to feel cinematic yet grounded.",
+        image: ["", ""],
     },
     approach: {
       label: "How We Design",
@@ -232,6 +234,7 @@ export const weddingExperienceList: WeddingExperience[] = [
         "Romantic, cinematic landscapes",
       ],
       footnote: null,
+      image: ["", ""],
     },
     approach: {
       label: "Our Philosophy",
@@ -329,6 +332,7 @@ export const weddingExperienceList: WeddingExperience[] = [
         "Discreet, thoughtful service",
       ],
       footnote: "True luxury is when everything flows effortlessly.",
+      image: ["", ""],
     },
     approach: {
       label: "How We Work",
