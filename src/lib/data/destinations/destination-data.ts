@@ -33,7 +33,7 @@ export const destinationList: Destination[] = [
     seasonalConsiderations:
       "Ceremony structures, florals, sound systems, and guest comfort must be carefully planned to work with coastal winds",
     imageUrl:
-      "https://res.cloudinary.com/dzerxindp/image/upload/v1768283257/Hero_8_tvdzth.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773495615/uluwatu-cover_rcjccs.jpg",
     guestCapacity: "50 - 500+",
     ceremonyOptions: [
       "Oceanfront cliffside ceremonies",

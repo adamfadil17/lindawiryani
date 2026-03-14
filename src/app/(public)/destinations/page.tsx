@@ -22,7 +22,7 @@ export default function DestinationsPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773494509/header-destination1_bnqztl.jpg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773382245/header-destination_vcrwin.jpg"
             alt="Indonesia Destinations"
             fill
             priority
