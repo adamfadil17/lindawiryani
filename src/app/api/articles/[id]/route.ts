@@ -1,13 +1,26 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, requireAuth, requireRole, notFound, ok, noContent } from "@/lib";
+import {
+  prisma,
+  handleError,
+  requireAuth,
+  requireRole,
+  notFound,
+  ok,
+  noContent,
+} from "@/lib";
 import { updateArticleSchema } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const article = await prisma.article.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
     if (!article) return notFound("Article");
     return ok(article);
@@ -16,8 +29,13 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const payload = requireAuth(req);
     requireRole(payload, "admin", "editor");
 
@@ -28,13 +46,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     if (dto.title) {
       const baseSlug = toSlug(dto.title);
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.article.findUnique({ where: { slug: s } });
-        return !!existing && existing.id !== params.id;
+        const existing = await prisma.article.findUnique({
+          where: { slug: s },
+        });
+        return !!existing && existing.id !== id;
       });
     }
 
     const article = await prisma.article.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         ...dto,
         ...(slug !== undefined && { slug }),
@@ -46,12 +66,17 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
+    const { id } = await params;
+
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.article.delete({ where: { id: params.id } });
+    await prisma.article.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);
