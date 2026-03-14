@@ -9,34 +9,25 @@ import {
   ok,
   noContent,
 } from "@/lib";
+import { updateDestinationCategorySchema } from "@/utils";
 
-import { updateUserSchema } from "@/utils";
-
-const SELECT_PUBLIC = {
-  id: true,
-  name: true,
-  email: true,
-  role: true,
-  created_at: true,
+const DESTINATION_CATEGORY_INCLUDE = {
+  destinations: true,
 };
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
-    
-    const payload = requireAuth(req);
-    requireRole(payload, "admin");
 
-    const user = await prisma.user.findUnique({
+    const category = await prisma.destinationCategory.findUnique({
       where: { id },
-      select: SELECT_PUBLIC,
+      include: DESTINATION_CATEGORY_INCLUDE,
     });
-
-    if (!user) return notFound("User");
-    return ok(user);
+    if (!category) return notFound("Destination Category");
+    return ok(category);
   } catch (error) {
     return handleError(error);
   }
@@ -50,18 +41,17 @@ export async function PATCH(
     const { id } = await params;
 
     const payload = requireAuth(req);
-    requireRole(payload, "admin");
+    requireRole(payload, "admin", "editor");
 
     const body = await req.json();
-    const dto = updateUserSchema.parse(body);
+    const dto = updateDestinationCategorySchema.parse(body);
 
-    const user = await prisma.user.update({
-      where: { id },
+    const category = await prisma.destinationCategory.update({
+      where: { id: id },
       data: dto,
-      select: SELECT_PUBLIC,
+      include: DESTINATION_CATEGORY_INCLUDE,
     });
-
-    return ok(user);
+    return ok(category);
   } catch (error) {
     return handleError(error);
   }
@@ -77,7 +67,7 @@ export async function DELETE(
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.user.delete({ where: { id } });
+    await prisma.destinationCategory.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

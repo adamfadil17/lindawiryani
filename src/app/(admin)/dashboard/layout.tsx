@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,6 +13,9 @@ import {
   Briefcase,
   MessageSquare,
   ChevronRight,
+  ChevronDown,
+  FolderOpen,
+  List,
   LogOut,
   Settings,
   Bell,
@@ -22,6 +25,7 @@ import {
   Hotel,
   Newspaper,
 } from "lucide-react";
+import { useCurrentUser } from "@/lib/hook/useCurrentUser";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -37,8 +41,6 @@ interface NavGroup {
   items: NavItem[];
 }
 
-// ─── Nav Config ───────────────────────────────────────────────────────────────
-
 const navGroups: NavGroup[] = [
   {
     group: "Overview",
@@ -53,11 +55,6 @@ const navGroups: NavGroup[] = [
   {
     group: "Content",
     items: [
-      {
-        label: "Destinations",
-        href: "/dashboard/destinations",
-        icon: <MapPin className="w-4 h-4" />,
-      },
       {
         label: "Wedding Themes",
         href: "/dashboard/wedding-themes",
@@ -102,6 +99,106 @@ const navGroups: NavGroup[] = [
     ],
   },
 ];
+
+// ─── Destinations Nav Item (with dropdown) ───────────────────────────────────
+
+function DestinationsNavItem({
+  collapsed,
+  onNavigate,
+}: {
+  collapsed?: boolean;
+  onNavigate?: () => void;
+}) {
+  const pathname = usePathname();
+  const isActive =
+    pathname.startsWith("/dashboard/destinations") ||
+    pathname.startsWith("/dashboard/destination-categories");
+
+  const [open, setOpen] = useState(isActive);
+
+  // Collapsed mode: render as plain link (no dropdown)
+  if (collapsed) {
+    return (
+      <Link
+        href="/dashboard/destinations"
+        title="Destinations"
+        className={`flex items-center justify-center px-3 py-2.5 transition-all duration-200 ${
+          isActive
+            ? "bg-primary text-white"
+            : "text-primary/60 hover:text-primary hover:bg-primary/20"
+        }`}
+      >
+        <MapPin className="w-4 h-4 flex-shrink-0" />
+      </Link>
+    );
+  }
+
+  return (
+    <div>
+      {/* Parent button */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={`w-full flex items-center gap-3 px-3 py-2.5 transition-all duration-200 hover:cursor-pointer ${
+          isActive && !open
+            ? "bg-primary text-white"
+            : isActive
+              ? "text-primary bg-primary/10"
+              : "text-primary/60 hover:text-primary hover:bg-primary/20"
+        }`}
+      >
+        <MapPin className="w-4 h-4 flex-shrink-0" />
+        <span className="text-xs tracking-[0.1em] uppercase font-medium flex-1 text-left">
+          Destinations
+        </span>
+        <ChevronDown
+          className={`w-3.5 h-3.5 flex-shrink-0 transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      {/* Sub-items */}
+      {open && (
+        <ul className="mt-0.5 ml-4 pl-3 border-l border-primary/15 space-y-0.5">
+          <li>
+            <Link
+              href="/dashboard/destination-categories"
+              onClick={onNavigate}
+              className={`flex items-center gap-2.5 px-3 py-2 transition-all duration-200 ${
+                pathname.startsWith("/dashboard/destination-categories")
+                  ? "bg-primary text-white"
+                  : "text-primary/50 hover:text-primary hover:bg-primary/10"
+              }`}
+            >
+              <FolderOpen className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="text-xs tracking-[0.1em] uppercase font-medium">
+                Categories
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/dashboard/destinations"
+              onClick={onNavigate}
+              className={`flex items-center gap-2.5 px-3 py-2 transition-all duration-200 ${
+                pathname === "/dashboard/destinations" ||
+                (pathname.startsWith("/dashboard/destinations/") &&
+                  !pathname.startsWith("/dashboard/destination-categories"))
+                  ? "bg-primary text-white"
+                  : "text-primary/50 hover:text-primary hover:bg-primary/10"
+              }`}
+            >
+              <List className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="text-xs tracking-[0.1em] uppercase font-medium">
+                Destination List
+              </span>
+            </Link>
+          </li>
+        </ul>
+      )}
+    </div>
+  );
+}
 
 // ─── Sidebar Component ────────────────────────────────────────────────────────
 
@@ -171,6 +268,12 @@ function Sidebar({
               </p>
             )}
             <ul className="space-y-1">
+              {/* Inject Destinations dropdown at the top of Content group */}
+              {group.group === "Content" && (
+                <li>
+                  <DestinationsNavItem collapsed={collapsed} />
+                </li>
+              )}
               {group.items.map((item) => {
                 const isActive =
                   item.href === "/dashboard"
@@ -308,6 +411,12 @@ function MobileSidebar({
                 {group.group}
               </p>
               <ul className="space-y-1">
+                {/* Inject Destinations dropdown at the top of Content group */}
+                {group.group === "Content" && (
+                  <li>
+                    <DestinationsNavItem onNavigate={onClose} />
+                  </li>
+                )}
                 {group.items.map((item) => {
                   const isActive =
                     item.href === "/dashboard"
@@ -377,10 +486,22 @@ function MobileSidebar({
   );
 }
 
+// ─── Helper: get initials from name ──────────────────────────────────────────
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+}
+
 // ─── Header Component ─────────────────────────────────────────────────────────
 
 function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
   const pathname = usePathname();
+  const { user, loading } = useCurrentUser();
 
   // Derive page title from pathname
   const pageTitle = (() => {
@@ -390,6 +511,10 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(" ");
   })();
+
+  const displayName = loading ? "..." : (user?.name ?? "Admin");
+  const displayRole = loading ? "..." : (user?.role ?? "Administrator");
+  const initials = loading ? "•" : (user ? getInitials(user.name) : "A");
 
   return (
     <header className="h-[72px] border-b border-primary/20 bg-white flex items-center justify-between px-6 sticky top-0 z-30">
@@ -427,15 +552,15 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
         <div className="flex items-center gap-3 cursor-pointer group">
           <div className="text-right hidden sm:block">
             <p className="text-primary text-sm font-medium tracking-wide">
-              Admin
+              {displayName}
             </p>
             <p className="text-primary/80 text-xs tracking-wider uppercase">
-              Administrator
+              {displayRole}
             </p>
           </div>
           <div className="w-9 h-9 bg-primary flex items-center justify-center flex-shrink-0 relative">
             <span className="text-white text-xs font-semibold tracking-widest">
-              A
+              {initials}
             </span>
             {/* Online indicator */}
             <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full" />

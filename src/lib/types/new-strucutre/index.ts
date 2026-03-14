@@ -7,6 +7,24 @@ export type WeddingExperienceType =
   | "luxury-weddings"
   | "private-villa-weddings";
 
+  export type Role = "admin" | "editor" | "user";
+  export interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: Role;
+    created_at: Date;
+  }
+  
+  export type PublicUser = Omit<User, never>;
+
+  export interface AuthResponse {
+    user: PublicUser;
+    token: string;
+    expiresIn: string;
+  }
+  
+
 export interface WeddingExperienceHero {
   style: "split" | "centered" | "editorial" | "bottom";
   image: string;

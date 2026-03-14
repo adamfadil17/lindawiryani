@@ -169,11 +169,11 @@ export default function OurApproachPage() {
               className="lg:col-span-5 relative h-[60vh] lg:h-[550px] overflow-hidden"
             >
               <Image
-                src="/images/service/service7.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1773493721/our-studio-our-approach1_b6vweo.png"
                 alt="Design-led wedding studio"
                 fill
                 loading="lazy"
-                className="object-cover"
+                className="object-cover object-top"
                 sizes="(max-width: 1024px) 100vw, 42vw"
               />
             </motion.div>

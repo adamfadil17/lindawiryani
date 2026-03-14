@@ -9,34 +9,23 @@ import {
   ok,
   noContent,
 } from "@/lib";
-
-import { updateUserSchema } from "@/utils";
-
-const SELECT_PUBLIC = {
-  id: true,
-  name: true,
-  email: true,
-  role: true,
-  created_at: true,
-};
+import { updateSubmissionStatusSchema } from "@/utils";
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
-    
-    const payload = requireAuth(req);
-    requireRole(payload, "admin");
 
-    const user = await prisma.user.findUnique({
+    const payload = requireAuth(_req);
+    requireRole(payload, "admin", "editor");
+
+    const submission = await prisma.submission.findUnique({
       where: { id },
-      select: SELECT_PUBLIC,
     });
-
-    if (!user) return notFound("User");
-    return ok(user);
+    if (!submission) return notFound("Submission");
+    return ok(submission);
   } catch (error) {
     return handleError(error);
   }
@@ -50,18 +39,16 @@ export async function PATCH(
     const { id } = await params;
 
     const payload = requireAuth(req);
-    requireRole(payload, "admin");
+    requireRole(payload, "admin", "editor");
 
     const body = await req.json();
-    const dto = updateUserSchema.parse(body);
+    const dto = updateSubmissionStatusSchema.parse(body);
 
-    const user = await prisma.user.update({
+    const submission = await prisma.submission.update({
       where: { id },
-      data: dto,
-      select: SELECT_PUBLIC,
+      data: { status: dto.status },
     });
-
-    return ok(user);
+    return ok(submission);
   } catch (error) {
     return handleError(error);
   }
@@ -77,7 +64,7 @@ export async function DELETE(
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.user.delete({ where: { id } });
+    await prisma.submission.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

@@ -7,7 +7,6 @@ import {
   Sparkles,
   Heart,
   BookOpen,
-  ImageIcon,
   Briefcase,
   TrendingUp,
   ArrowUpRight,

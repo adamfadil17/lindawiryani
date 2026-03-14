@@ -9,34 +9,20 @@ import {
   ok,
   noContent,
 } from "@/lib";
-
-import { updateUserSchema } from "@/utils";
-
-const SELECT_PUBLIC = {
-  id: true,
-  name: true,
-  email: true,
-  role: true,
-  created_at: true,
-};
+import { updateOpenPositionSchema } from "@/utils";
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
-    
-    const payload = requireAuth(req);
-    requireRole(payload, "admin");
-
-    const user = await prisma.user.findUnique({
+    // Public endpoint — visitors can view individual position details
+    const position = await prisma.openPosition.findUnique({
       where: { id },
-      select: SELECT_PUBLIC,
     });
-
-    if (!user) return notFound("User");
-    return ok(user);
+    if (!position) return notFound("Open Position");
+    return ok(position);
   } catch (error) {
     return handleError(error);
   }
@@ -50,18 +36,16 @@ export async function PATCH(
     const { id } = await params;
 
     const payload = requireAuth(req);
-    requireRole(payload, "admin");
+    requireRole(payload, "admin", "editor");
 
     const body = await req.json();
-    const dto = updateUserSchema.parse(body);
+    const dto = updateOpenPositionSchema.parse(body);
 
-    const user = await prisma.user.update({
+    const position = await prisma.openPosition.update({
       where: { id },
       data: dto,
-      select: SELECT_PUBLIC,
     });
-
-    return ok(user);
+    return ok(position);
   } catch (error) {
     return handleError(error);
   }
@@ -77,7 +61,7 @@ export async function DELETE(
     const payload = requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.user.delete({ where: { id } });
+    await prisma.openPosition.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

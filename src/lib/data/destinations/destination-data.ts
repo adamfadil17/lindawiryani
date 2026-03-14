@@ -99,7 +99,7 @@ export const destinationList: Destination[] = [
     seasonalConsiderations:
       "Ubud experiences higher humidity and rainfall than coastal Bali. Wedding design, guest comfort, and production planning must reflect this environment",
     imageUrl:
-      "https://res.cloudinary.com/dzerxindp/image/upload/v1768229876/Hero_6_isylaq.jpg",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1773494652/ubud-cover_pbt3om.png",
     guestCapacity: "20 - 200",
     ceremonyOptions: [
       "Jungle ceremonies",

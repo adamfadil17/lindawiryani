@@ -34,7 +34,6 @@ enum WeddingExperienceType {
 }
 
 enum ArticleCategory {
-  All
   Guides
   Planning_Advice       @map("Planning Advice")
   Destination_Knowledge @map("Destination Knowledge")
@@ -251,7 +250,6 @@ model WeddingTheme {
   slug          String    @unique
   type          WeddingThemeType
   title         String
-  theme_name    String
   description   String
   image         String
   inclusions    Json      // string[]

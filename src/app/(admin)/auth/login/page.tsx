@@ -4,9 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeInUp, staggerContainer } from "@/lib/motion";
 import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 
 interface LoginForm {
   email: string;
@@ -19,21 +18,15 @@ export default function LoginPage() {
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [status, setStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    if (status.type) setStatus({ type: null, message: "" });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setStatus({ type: null, message: "" });
 
     try {
       const response = await fetch("/api/auth/login", {
@@ -45,30 +38,35 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store token (adjust based on your auth strategy)
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        // Token ada di dalam envelope: { success: true, data: { token, user, expiresIn } }
+        const token = data.data?.token ?? data.token;
+
+        if (token) {
+          // Simpan ke localStorage (dibaca oleh useCurrentUser)
+          localStorage.setItem("token", token);
+
+          // Simpan ke cookie juga agar konsisten dengan proses logout
+          // max-age: 7 hari (sesuai JWT_EXPIRES_IN default "7d")
+          document.cookie = `token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
         }
 
-        setStatus({
-          type: "success",
-          message: "Welcome back. Redirecting...",
+        toast.success("Welcome back!", {
+          description: "Redirecting to your dashboard...",
+          duration: 2000,
         });
 
         setTimeout(() => {
           router.push("/dashboard");
         }, 1000);
       } else {
-        setStatus({
-          type: "error",
-          message: data.message || "Invalid credentials. Please try again.",
+        // Error message ada di data.error (envelope ApiResponse) atau data.message
+        toast.error("Sign in failed", {
+          description: data.error ?? data.message ?? "Invalid credentials. Please try again.",
         });
       }
     } catch {
-      setStatus({
-        type: "error",
-        message:
-          "An error occurred. Please check your connection and try again.",
+      toast.error("Connection error", {
+        description: "Please check your internet connection and try again.",
       });
     } finally {
       setSubmitting(false);
@@ -97,9 +95,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary/20" />
 
         {/* Brand overlay content */}
-        <div
-          className="absolute inset-0 flex flex-col justify-between p-12 xl:p-16"
-        >
+        <div className="absolute inset-0 flex flex-col justify-between p-12 xl:p-16">
           {/* Bottom tagline */}
           <div className="max-w-md">
             <p className="text-white/70 tracking-[0.25em] uppercase text-xs mb-4">
@@ -126,9 +122,7 @@ export default function LoginPage() {
           }}
         />
 
-        <div
-          className="relative z-10 w-full max-w-md mx-auto px-8 sm:px-12 py-16"
-        >
+        <div className="relative z-10 w-full max-w-md mx-auto px-8 sm:px-12 py-16">
           {/* Logo */}
           <div className="mb-10 text-center">
             <div className="inline-flex flex-col items-center gap-4">
@@ -157,10 +151,7 @@ export default function LoginPage() {
           </div>
 
           {/* ── Form ─────────────────────────────────────────────────────── */}
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}
             <div>
               <label className={labelClass} htmlFor="email">
@@ -249,25 +240,12 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Status message */}
-            {status.type && (
-              <div
-                className={`px-4 py-3 text-sm tracking-wide ${
-                  status.type === "success"
-                    ? "bg-green-50 text-green-800 border border-green-200"
-                    : "bg-red-50 text-red-800 border border-red-200"
-                }`}
-              >
-                {status.message}
-              </div>
-            )}
-
             {/* Submit */}
             <div className="pt-2">
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-primary border border-primary text-white font-semibold py-3 text-sm tracking-widest hover:bg-primary/90 disabled:bg-primary/10 disabled:cursor-not-allowed transition-all duration-300 uppercase"
+                className="w-full bg-primary border border-primary text-white font-semibold py-3 text-sm tracking-widest hover:bg-primary/90 disabled:bg-primary/50 disabled:cursor-not-allowed transition-all duration-300 uppercase"
               >
                 {submitting ? (
                   <span className="flex items-center justify-center gap-2">
