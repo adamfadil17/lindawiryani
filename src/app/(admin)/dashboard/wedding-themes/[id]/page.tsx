@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -12,9 +15,9 @@ import {
   Plus,
   X,
   ImageIcon,
-  Heart,
-  Sparkles,
   CheckCircle2,
+  Loader2,
+  AlertCircle,
   ChevronDown,
 } from "lucide-react";
 import FormField from "@/components/shared/from-field";
@@ -24,158 +27,165 @@ import TextareaInput from "@/components/shared/text-area-input";
 import TagsInput from "@/components/shared/tags-input";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
-import { ThemeType, WeddingTheme } from "@/lib/types/new-strucutre";
-import { weddingThemeList } from "@/lib/data/new-data/wedding-theme-data";
-import { venueList } from "@/lib/data/new-data/venue-data";
-import { weddingExperienceList } from "@/lib/data/new-data/wedding-experience-data";
+import DeleteModal from "@/components/shared/delete-modal";
+import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import { toSlug } from "@/utils";
+import {
+  weddingThemeFormSchema,
+  WeddingThemeFormData,
+} from "@/utils/form-validators";
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
+import { Venue, WeddingExperience } from "@/types";
 
-type FormData = Omit<WeddingTheme, "id" | "venue" | "experience">;
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const allThemes: WeddingTheme[] = weddingThemeList;
+type GalleryImage = { id: string; url: string; sort_order: number };
 
-// ─── Gallery Upload ───────────────────────────────────────────────────────────
+// ─── Gallery Manager ──────────────────────────────────────────────────────────
+// Edit mode: add = POST /api/wedding-themes/:id/gallery, remove = DELETE.
+// Create mode: images queued locally, flushed after theme is created.
 
-function GalleryUpload({
-  values,
-  onChange,
-}: {
-  values: string[];
-  onChange: (v: string[]) => void;
-}) {
-  const handleAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!["image/png", "image/jpeg"].includes(file.type)) {
-      toast.error("PNG or JPG only");
-      return;
+type GalleryManagerProps = {
+  themeId: string | null; // null = new (not yet created)
+  images: GalleryImage[];
+  onChange: (images: GalleryImage[]) => void;
+};
+
+function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
+  const [pendingUrl, setPendingUrl] = useState("");
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAdd = async () => {
+    if (!pendingUrl) return;
+
+    if (themeId) {
+      setIsAdding(true);
+      try {
+        const response = await axios.post(
+          `/api/wedding-themes/${themeId}/gallery`,
+          { url: pendingUrl, sort_order: images.length },
+          { headers: getAuthHeaders(true) },
+        );
+        onChange([...images, response.data.data ?? response.data]);
+        setPendingUrl("");
+        toast.success("Gallery image added");
+      } catch (err) {
+        const msg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to add gallery image";
+        toast.error(msg);
+      } finally {
+        setIsAdding(false);
+      }
+    } else {
+      // Create mode — queue locally
+      onChange([
+        ...images,
+        { id: `temp-${Date.now()}`, url: pendingUrl, sort_order: images.length },
+      ]);
+      setPendingUrl("");
     }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Max 5MB per image");
-      return;
+  };
+
+  const handleRemove = async (image: GalleryImage) => {
+    if (themeId && !image.id.startsWith("temp-")) {
+      try {
+        await axios.delete(
+          `/api/wedding-themes/${themeId}/gallery/${image.id}`,
+          { headers: getAuthHeaders() },
+        );
+      } catch (err) {
+        const msg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to remove gallery image";
+        toast.error(msg);
+        return;
+      }
     }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      onChange([...values, ev.target?.result as string]);
-      toast.success("Gallery image added");
-    };
-    reader.readAsDataURL(file);
-    e.target.value = "";
+    onChange(images.filter((img) => img.id !== image.id));
   };
 
   return (
-    <div className="space-y-3">
-      {values.length > 0 && (
+    <div className="space-y-4">
+      {/* Preview grid */}
+      {images.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
-          {values.map((src, i) => (
-            <div key={i} className="relative aspect-square group">
+          {images.map((img, i) => (
+            <div
+              key={img.id}
+              className="relative aspect-square group overflow-hidden border border-primary/20"
+            >
               <Image
-                src={src}
+                src={img.url}
                 alt={`Gallery ${i + 1}`}
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 33vw, 15vw"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
               />
               <button
-                onClick={() => onChange(values.filter((_, idx) => idx !== i))}
-                className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                type="button"
+                onClick={() => handleRemove(img)}
+                className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                title="Remove image"
               >
                 <X className="w-3 h-3" />
               </button>
-              <div className="absolute bottom-1 left-1 text-xs text-white bg-black/50 px-1">
+              <div className="absolute bottom-1 left-1 text-xs text-white bg-black/50 px-1.5 py-0.5">
                 {i + 1}
               </div>
             </div>
           ))}
         </div>
       )}
-      <div className="border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors">
-        <input
-          type="file"
-          accept=".png,.jpg,.jpeg"
-          onChange={handleAdd}
-          className="hidden"
-          id="gallery-upload"
+
+      {/* Add new gallery image */}
+      <div className="space-y-2">
+        <ImageUpload
+          value={pendingUrl}
+          onChange={setPendingUrl}
+          inputId="gallery-add-upload"
         />
-        <label
-          htmlFor="gallery-upload"
-          className="cursor-pointer flex items-center justify-center gap-2 py-3 text-sm text-primary/60 hover:text-primary transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Add Gallery Image
-        </label>
+        {pendingUrl && (
+          <>
+            {/* Preview before confirming add */}
+            <div className="relative w-full aspect-[4/3] overflow-hidden border border-primary/20 bg-primary/5">
+              <Image
+                src={pendingUrl}
+                alt="Gallery preview"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleAdd}
+              disabled={isAdding}
+              className="w-full flex items-center justify-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase py-2.5 hover:cursor-pointer hover:bg-primary/5 transition-colors disabled:opacity-50"
+            >
+              {isAdding ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Plus className="w-4 h-4" />
+              )}
+              Add to Gallery
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-function DeleteModal({
-  title,
-  onConfirm,
-  onCancel,
-}: {
-  title: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
-        </div>
-        <p className="text-primary/80 tracking-[0.2em] uppercase text-xs mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Wedding Theme
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{title}&rdquo;
-          </span>
-          ? This action cannot be undone and will permanently remove this
-          wedding theme from the system.
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const defaultForm: FormData = {
-  type: "ELOPEMENT",
-  title: "",
-  description: "",
-  themeName: "",
-  venueId: "",
-  experienceId: "",
-  image: "",
-  gallery: [],
-  inclusions: [],
-};
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function WeddingThemeDetailPage() {
   const router = useRouter();
@@ -183,120 +193,385 @@ export default function WeddingThemeDetailPage() {
   const id = params?.id as string;
   const isNew = id === "new";
 
-  const [form, setForm] = useState<FormData>(defaultForm);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {},
+  // ── React Hook Form ──
+  const {
+    watch,
+    handleSubmit,
+    setValue,
+    reset,
+    trigger,
+    formState: { errors: formErrors, isDirty },
+  } = useForm<WeddingThemeFormData>({
+    resolver: zodResolver(weddingThemeFormSchema),
+    defaultValues: {
+      slug: "",
+      title: "",
+      description: "",
+      image: "",
+      inclusions: [],
+      venue_id: undefined,
+      experience_id: "",
+    },
+  });
+
+  // setField helper — always triggers validation + touch so errors show immediately
+  const setField = (key: keyof WeddingThemeFormData, value: unknown) =>
+    setValue(key as keyof WeddingThemeFormData, value as never, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+
+  const formData = watch();
+
+  // ── Gallery state (managed separately) ──
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+
+  // ── Page state ──
+  const [isLoading, setIsLoading] = useState(!isNew);
+  const [notFound, setNotFound] = useState(false);
+
+  // ── Save state machine: idle | confirm | saving | saved ──
+  const [saveStatus, setSaveStatus] = useState<"idle" | "confirm" | "saving" | "saved">("idle");
+
+  // ── Delete state machine: idle | confirm | deleting ──
+  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
+
+  // ── Unsaved changes guard ──
+  // Create mode: any non-empty field counts as "dirty"
+  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
+  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+
+  const hasUnsavedChanges = isNew
+    ? Boolean(
+        formData.title ||
+        formData.description ||
+        formData.image ||
+        (formData.inclusions && formData.inclusions.length > 0) ||
+        galleryImages.length > 0
+      )
+    : isDirty;
+
+  // Block browser close / refresh when there are unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges && saveStatus !== "saving") {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges, saveStatus]);
+
+  // Helper: navigate with guard check
+  const guardedNavigate = useCallback(
+    (href: string) => {
+      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+        setUnsavedModal({ open: true, pendingHref: href });
+      } else {
+        router.push(href);
+      }
+    },
+    [hasUnsavedChanges, saveStatus, router]
   );
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+
+  // ── Reference data for dropdowns ──
+  const [allVenues, setAllVenues] = useState<Venue[]>([]);
+  const [allExperiences, setAllExperiences] = useState<WeddingExperience[]>([]);
+  const [isVenuesLoading, setIsVenuesLoading] = useState(true);
+  const [isExperiencesLoading, setIsExperiencesLoading] = useState(true);
+
+  // ── Fetch venues ──
+  useEffect(() => {
+    const fetchVenues = async () => {
+      try {
+        const response = await axios.get("/api/venues", { params: { limit: 100 } });
+        setAllVenues(response.data.data ?? []);
+      } catch (err) {
+        console.error("Failed to load venues:", err);
+      } finally {
+        setIsVenuesLoading(false);
+      }
+    };
+    fetchVenues();
+  }, []);
+
+  // ── Fetch wedding experiences ──
+  useEffect(() => {
+    const fetchExperiences = async () => {
+      try {
+        const response = await axios.get("/api/wedding-experiences", { params: { limit: 100 } });
+        const data: WeddingExperience[] = response.data.data ?? [];
+        setAllExperiences(data);
+        if (isNew && data.length > 0) {
+          setValue("experience_id", data[0].id, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load experiences:", err);
+      } finally {
+        setIsExperiencesLoading(false);
+      }
+    };
+    fetchExperiences();
+  }, [isNew, setValue]);
+
+  // ── Load theme data (edit mode only) ──
+  const fetchTheme = useCallback(async () => {
+    if (isNew) return;
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`/api/wedding-themes/${id}`);
+      const data = response.data.data ?? response.data;
+
+      reset({
+        slug: String(data.slug ?? ""),
+        title: String(data.title ?? ""),
+        description: String(data.description ?? ""),
+        image: String(data.image ?? ""),
+        inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
+        // venue_id may be null when the previously linked venue was deleted
+        venue_id: data.venue_id ?? undefined,
+        experience_id: String(data.experience_id ?? ""),
+      });
+
+      // Load gallery from nested include
+      const gallery: GalleryImage[] = Array.isArray(data.gallery)
+        ? data.gallery.map((g: { id: string; url: string; sort_order: number }) => ({
+            id: g.id,
+            url: g.url,
+            sort_order: g.sort_order,
+          }))
+        : [];
+      setGalleryImages(gallery);
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 404) {
+        setNotFound(true);
+      } else {
+        const errorMsg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to load wedding theme";
+        toast.error(errorMsg, {
+          description: err instanceof Error ? err.message : "Unknown error",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id, isNew, reset]);
 
   useEffect(() => {
-    if (!isNew) {
-      const existing = allThemes.find((t) => t.id === id);
-      if (existing) {
-        const { id: _id, ...rest } = existing;
-        setForm(rest);
-      } else {
-        toast.error("Wedding theme not found");
+    fetchTheme();
+  }, [fetchTheme]);
+
+  // ── Save flow ──
+  const onSubmitForm = async (_data: WeddingThemeFormData) => {
+    setSaveStatus("confirm");
+  };
+
+  // Called when handleSubmit validation fails — force all errors visible
+  const onSubmitError = async () => {
+    await trigger();
+  };
+
+  const confirmSave = async () => {
+    setSaveStatus("saving");
+    try {
+      const slugValue = toSlug(formData.title);
+      const payload = { ...formData, slug: slugValue };
+
+      if (isNew) {
+        const response = await axios.post("/api/wedding-themes", payload, {
+          headers: getAuthHeaders(true),
+        });
+        const createdTheme = response.data.data ?? response.data;
+        const newThemeId: string = createdTheme.id;
+
+        // Flush queued gallery images
+        for (const img of galleryImages) {
+          try {
+            await axios.post(
+              `/api/wedding-themes/${newThemeId}/gallery`,
+              { url: img.url, sort_order: img.sort_order },
+              { headers: getAuthHeaders(true) },
+            );
+          } catch {
+            // Non-blocking
+          }
+        }
+
+        setSaveStatus("idle");
+        toast.success("Wedding theme created!", {
+          description: "Your new wedding theme has been added to the system.",
+        });
+        reset(); // clear dirty state before navigating
         router.push("/dashboard/wedding-themes");
+      } else {
+        await axios.patch(`/api/wedding-themes/${id}`, payload, {
+          headers: getAuthHeaders(true),
+        });
+        setSaveStatus("saved");
+        toast.success("Changes saved!", {
+          description: "Your wedding theme has been updated.",
+        });
+        // Re-sync RHF baseline so isDirty becomes false
+        reset({ ...formData, slug: toSlug(formData.title) });
+        setTimeout(() => setSaveStatus("idle"), 3000);
       }
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
+      toast.error("Failed to save", { description: errorMsg });
+      setSaveStatus("confirm"); // keep modal open on error
     }
-    setIsLoaded(true);
-  }, [id, isNew, router]);
-
-  const set = <K extends keyof FormData>(key: K, value: FormData[K]) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
-  const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {};
-    if (!form.title.trim()) newErrors.title = "Title is required";
-    if (!form.themeName.trim()) newErrors.themeName = "Theme name is required";
-    if (!form.description.trim())
-      newErrors.description = "Description is required";
-    if (!form.image) newErrors.image = "Cover image is required";
-    if (form.inclusions.length === 0)
-      newErrors.inclusions = "At least one inclusion is required";
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) {
-      toast.error("Please fix the errors before saving");
-      return false;
+  // ── Delete flow ──
+  const deleteThemeById = async () => {
+    setDeleteStatus("deleting");
+    try {
+      await axios.delete(`/api/wedding-themes/${id}`, {
+        headers: getAuthHeaders(),
+      });
+      setDeleteStatus("idle");
+      toast.success("Wedding theme deleted!", {
+        description: "The wedding theme has been removed from the system.",
+      });
+      router.push("/dashboard/wedding-themes");
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
+      toast.error("Failed to delete", { description: errorMsg });
+      setDeleteStatus("confirm"); // keep modal open on error
     }
-    return true;
   };
 
-  const handleSave = () => {
-    if (validate()) setShowSaveModal(true);
-  };
+  // ── Sync slug ke form state setiap kali title berubah ──
+  useEffect(() => {
+    if (formData.title) {
+      setValue("slug", toSlug(formData.title), {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+  }, [formData.title, setValue]);
 
-  const confirmSave = () => {
-    // In production: call your API here
-    toast.success(isNew ? "Wedding theme created!" : "Changes saved!");
-    setShowSaveModal(false);
-    if (isNew) router.push("/dashboard/wedding-themes");
-  };
+  // ── Derived values ──
+  const slugPreview = formData.title ? toSlug(formData.title) : "";
+  const selectedVenue = allVenues.find((v) => v.id === formData.venue_id);
+  const selectedExperience = allExperiences.find((e) => e.id === formData.experience_id);
 
-  const confirmDelete = () => {
-    // In production: call your API here
-    toast.success("Wedding theme deleted");
-    setShowDeleteModal(false);
-    router.push("/dashboard/wedding-themes");
-  };
+  // ── Not found ──
+  if (notFound) {
+    return (
+      <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
+        <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
+        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">Not Found</p>
+        <p className="text-primary/80 text-sm mb-6">
+          This wedding theme does not exist.
+        </p>
+        <Link
+          href="/dashboard/wedding-themes"
+          className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
+        >
+          Back to Wedding Themes
+        </Link>
+      </div>
+    );
+  }
 
-  if (!isLoaded) return null;
+  // ── Loading skeleton ──
+  if (isLoading) {
+    return (
+      <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-9 h-9 bg-primary/10 border border-primary/20" />
+          <div className="space-y-2">
+            <div className="h-3 w-16 bg-primary/10 rounded" />
+            <div className="h-6 w-52 bg-primary/10 rounded" />
+          </div>
+        </div>
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white border border-primary/20 p-6 space-y-4">
+                <div className="h-4 w-36 bg-primary/10 rounded" />
+                <div className="h-10 bg-primary/5 rounded" />
+                <div className="h-10 bg-primary/5 rounded" />
+                <div className="h-20 bg-primary/5 rounded" />
+              </div>
+            ))}
+          </div>
+          <div className="space-y-6">
+            <div className="bg-white border border-primary/20 p-6">
+              <div className="aspect-[4/3] bg-primary/10 mb-4" />
+              <div className="h-10 bg-primary/5 rounded" />
+            </div>
+            <div className="bg-white border border-primary/20 p-6">
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="aspect-square bg-primary/10" />
+                ))}
+              </div>
+              <div className="h-10 bg-primary/5 rounded" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
       {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
-          <Link
-            href="/dashboard/wedding-themes"
+          <button
+            type="button"
+            onClick={() => guardedNavigate("/dashboard/wedding-themes")}
             className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-          </Link>
+          </button>
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-0.5">
+            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
               {isNew ? "Create New" : "Edit"}
             </p>
             <h1 className="text-primary text-2xl font-semibold tracking-wide">
-              {isNew ? "New Wedding Theme" : form.title || "Wedding Theme"}
+              {isNew ? "New Wedding Theme" : formData.title || "Wedding Theme"}
             </h1>
           </div>
         </div>
 
         <div className="flex items-center gap-3 self-start sm:self-auto">
-          <div
-            className={`inline-flex items-center gap-2 px-4 py-2 text-xs tracking-widest uppercase font-medium border ${
-              form.type === "ELOPEMENT"
-                ? "bg-rose-50 text-rose-600 border-rose-200"
-                : "bg-violet-50 text-violet-600 border-violet-200"
-            }`}
-          >
-            {form.type === "ELOPEMENT" ? (
-              <Heart className="w-3.5 h-3.5" />
-            ) : (
-              <Sparkles className="w-3.5 h-3.5" />
-            )}
-            {form.type.toLowerCase()}
-          </div>
           {/* Save success indicator */}
-          {saved && (
+          {saveStatus === "saved" && (
             <div className="flex items-center gap-1.5 text-green-600 text-xs tracking-wider">
               <CheckCircle2 className="w-4 h-4" />
               <span>Saved</span>
             </div>
           )}
 
-          {/* Delete button (only for existing) */}
+          {/* Delete button (edit mode only) */}
           {!isNew && (
             <button
-              onClick={() => setShowDeleteModal(true)}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors"
+              type="button"
+              onClick={() => setDeleteStatus("confirm")}
+              disabled={deleteStatus === "deleting" || saveStatus === "saving"}
+              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -305,210 +580,228 @@ export default function WeddingThemeDetailPage() {
 
           {/* Save button */}
           <button
-            onClick={handleSave}
-            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-2.5 hover:bg-primary/80 transition-colors"
+            type="button"
+            onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
+            disabled={saveStatus === "saving"}
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-2.5 hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
-            <Save className="w-4 h-4" />
+            {saveStatus === "saving" ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
             {isNew ? "Create" : "Save Changes"}
           </button>
         </div>
       </div>
 
-      {/* ── Two Column Layout ── */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <form
+        onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
+        className="grid lg:grid-cols-3 gap-6"
+      >
         {/* ── Left Column ── */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Basic Info */}
+
+          {/* Basic Information */}
           <Section
             title="Basic Information"
             subtitle="Core details about this wedding theme"
           >
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* Type */}
-                <FormField label="Theme Type" required>
-                  <div className="relative">
-                    <select
-                      value={form.type}
-                      onChange={(e) => set("type", e.target.value as ThemeType)}
-                      className="w-full px-3 py-2.5 pr-10 text-sm text-primary 
-               bg-primary/3 border border-primary/20 
-               focus:outline-none focus:border-primary/50 
-               transition-colors appearance-none"
-                    >
-                      <option value="ELOPEMENT">Elopement</option>
-                      <option value="INTIMATE">Intimate</option>
-                    </select>
-
-                    <ChevronDown
-                      className="w-4 h-4 text-primary/50 
-                          absolute right-3 top-1/2 
-                          -translate-y-1/2 pointer-events-none"
-                    />
-                  </div>
-                </FormField>
-
-                {/* Theme Name (slug key) */}
-                <FormField label="Theme Name (key)" required>
+                {/* title — required, min 2, max 255 */}
+                <FormField label="Title" required>
                   <TextInput
-                    value={form.themeName}
-                    onChange={(v) => set("themeName", v)}
-                    placeholder="e.g. cliffside, waterfall, garden"
-                    error={errors.themeName}
+                    value={formData.title}
+                    onChange={(v) => setField("title", v)}
+                    placeholder="e.g. Sunset Elopement at the Cliffs"
+                    error={
+                      formErrors.title
+                        ? String(formErrors.title.message)
+                        : undefined
+                    }
                   />
                 </FormField>
               </div>
 
-              {/* Title */}
-              <FormField label="Title" required>
-                <TextInput
-                  value={form.title}
-                  onChange={(v) => set("title", v)}
-                  placeholder="e.g. Sunset Elopement at the Cliffs"
-                  error={errors.title}
-                />
-              </FormField>
-
-              {/* Description */}
-              <FormField label="Description" required>
+              {/* description — required, min 1 */}
+              <FormField
+                label="Description"
+                required
+                hint="Describe the atmosphere, style, and experience couples can expect"
+              >
                 <TextareaInput
-                  value={form.description}
-                  onChange={(v) => set("description", v)}
+                  value={formData.description}
+                  onChange={(v) => setField("description", v)}
                   placeholder="Describe this wedding theme — the atmosphere, style, and experience couples can expect..."
                   rows={4}
-                  error={errors.description}
+                  error={
+                    formErrors.description
+                      ? String(formErrors.description.message)
+                      : undefined
+                  }
                 />
               </FormField>
             </div>
           </Section>
 
-          {/* Venue Assignment */}
-
+          {/* Venue & Experience Assignment */}
           <Section
             title="Venue & Experience Assignment"
-            subtitle="Link this theme to a specific venue and wedding experience"
+            subtitle="Optionally link this theme to a specific venue and wedding experience"
           >
-            <div className="space-y-5">
-              <div className="grid sm:grid-cols-2 gap-5">
-                <FormField label="Venue">
-                  <div className="relative">
-                    <select
-                      value={form.venueId}
-                      onChange={(e) => set("venueId", e.target.value)}
-                      className="w-full px-3 py-2.5 pr-10 text-sm text-primary 
-               bg-primary/3 border border-primary/20 
-               focus:outline-none focus:border-primary/50 
-               transition-colors appearance-none"
-                    >
-                      <option value="">— Select a venue —</option>
-                      {venueList.map((venue) => (
-                        <option key={venue.id} value={venue.id}>
-                          {venue.name}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown
-                      className="w-4 h-4 text-primary/50 
-                          absolute right-3 top-1/2 
-                          -translate-y-1/2 pointer-events-none"
-                    />
-                  </div>
-                  <p className="text-primary/80 text-sm mt-1">
-                    Leave blank if this theme is not tied to a specific venue.
-                    Elopement themes typically have no venue assigned.
+            <div className="grid sm:grid-cols-2 gap-5">
+              {/* venue_id — optional, uuid */}
+              <FormField label="Venue" hint="Optional — You can set the venue later">
+                <div className="relative">
+                  <select
+                    value={formData.venue_id ?? ""}
+                    onChange={(e) =>
+                      setField("venue_id", e.target.value || undefined)
+                    }
+                    disabled={isVenuesLoading}
+                    className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isVenuesLoading ? (
+                      <option value="" disabled>Loading venues…</option>
+                    ) : (
+                      <>
+                        <option value="">— To Be Confirmed —</option>
+                        {allVenues.map((venue) => (
+                          <option key={venue.id} value={venue.id}>
+                            {venue.name}
+                          </option>
+                        ))}
+                      </>
+                    )}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                </div>
+                {formErrors.venue_id && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.venue_id.message)}
                   </p>
-                </FormField>
-                <FormField label="Wedding Experience">
-                  <div className="relative">
-                    <select
-                      value={form.experienceId}
-                      onChange={(e) => set("experienceId", e.target.value)}
-                      className="w-full px-3 py-2.5 pr-10 text-sm text-primary 
-               bg-primary/3 border border-primary/20 
-               focus:outline-none focus:border-primary/50 
-               transition-colors appearance-none"
-                    >
-                      <option value="">— Select an experience —</option>
-                      {weddingExperienceList.map((experience) => (
-                        <option key={experience.id} value={experience.id}>
-                          {experience.name}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown
-                      className="w-4 h-4 text-primary/50 
-                          absolute right-3 top-1/2 
-                          -translate-y-1/2 pointer-events-none"
-                    />
-                  </div>
-                  <p className="text-primary/80 text-sm mt-1">
-                    Link this theme to a wedding experience package for a
-                    complete package offering.
+                )}
+              </FormField>
+
+              {/* experience_id — required, uuid */}
+              <FormField label="Wedding Experience" required>
+                <div className="relative">
+                  <select
+                    value={formData.experience_id}
+                    onChange={(e) => setField("experience_id", e.target.value)}
+                    disabled={isExperiencesLoading}
+                    className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isExperiencesLoading ? (
+                      <option value="" disabled>Loading experiences…</option>
+                    ) : (
+                      <>
+                        <option value="">— Select an experience —</option>
+                        {allExperiences.map((exp) => (
+                          <option key={exp.id} value={exp.id}>
+                            {exp.name}
+                          </option>
+                        ))}
+                      </>
+                    )}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                </div>
+                {formErrors.experience_id && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.experience_id.message)}
                   </p>
-                </FormField>
-              </div>
+                )}
+              </FormField>
             </div>
           </Section>
 
-          {/* Inclusions */}
+          {/* Package Inclusions */}
           <Section
             title="Package Inclusions"
             subtitle="What is included in this wedding theme package"
           >
+            {/* inclusions — required, array min 1 */}
             <FormField label="Inclusions" required>
               <TagsInput
-                values={form.inclusions}
-                onChange={(v) => set("inclusions", v)}
+                values={formData.inclusions}
+                onChange={(v) => setField("inclusions", v)}
                 placeholder="e.g. Professional wedding celebrant"
-                error={errors.inclusions}
               />
+              {formErrors.inclusions && (
+                <p className="text-red-500 text-xs mt-1">
+                  {String(formErrors.inclusions.message)}
+                </p>
+              )}
             </FormField>
           </Section>
         </div>
 
         {/* ── Right Column ── */}
         <div className="space-y-6">
-          {/* Cover Image */}
-          <Section title="Cover Image">
-            <div className="space-y-4">
-              <div className="relative aspect-[4/3] bg-primary/5 border border-primary/20 overflow-hidden">
-                {form.image ? (
-                  <Image
-                    src={form.image}
-                    alt="Preview"
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                    <ImageIcon className="w-8 h-8 text-primary/20" />
-                    <p className="text-primary/30 text-xs tracking-wider">
-                      No image set
-                    </p>
-                  </div>
-                )}
-              </div>
 
-              <FormField label="Cover Image" required>
-                <ImageUpload
-                  value={form.image}
-                  onChange={(v) => set("image", v)}
-                  error={errors.image}
-                  inputId="cover-upload"
+          {/* Cover Image — required, valid URL */}
+          <Section title="Cover Image">
+            {/* Preview */}
+            <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden border border-primary/20 bg-primary/5">
+              {formData.image ? (
+                <Image
+                  src={formData.image}
+                  alt={formData.title || "Theme preview"}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
                 />
-              </FormField>
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                  <ImageIcon className="w-8 h-8 text-primary/20" />
+                  <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                </div>
+              )}
             </div>
+            <FormField label="Cover Image URL" required>
+              <ImageUpload
+                value={formData.image}
+                onChange={(v) => setField("image", v)}
+                inputId="cover-upload"
+              />
+            </FormField>
+            {formErrors.image && (
+              <p className="text-red-500 text-xs mt-2">
+                {String(formErrors.image.message)}
+              </p>
+            )}
           </Section>
 
-          {/* Gallery */}
+          {/* Gallery Images */}
           <Section
             title="Gallery"
-            subtitle={`${form.gallery.length} image${form.gallery.length !== 1 ? "s" : ""}`}
+            subtitle={`${galleryImages.length} image${galleryImages.length !== 1 ? "s" : ""}`}
           >
-            <GalleryUpload
-              values={form.gallery}
-              onChange={(v) => set("gallery", v)}
+            <GalleryManager
+              themeId={isNew ? null : id}
+              images={galleryImages}
+              onChange={setGalleryImages}
             />
+          </Section>
+
+          {/* URL & SEO */}
+          <Section title="URL & SEO">
+            <div className="space-y-2">
+              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
+                URL Slug
+              </p>
+              <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
+                {slugPreview || "—"}
+              </p>
+              <p className="text-primary/50 text-xs">
+                Auto-generated from title
+              </p>
+            </div>
           </Section>
 
           {/* Quick Summary */}
@@ -518,26 +811,19 @@ export default function WeddingThemeDetailPage() {
             </p>
             <div className="space-y-3">
               {[
-                { label: "Type", value: form.type || "—" },
-                { label: "Theme Key", value: form.themeName || "—" },
-                {
-                  label: "Inclusions",
-                  value: `${form.inclusions.length} items`,
-                },
-                { label: "Gallery", value: `${form.gallery.length} photos` },
+                { label: "Slug", value: slugPreview || "—" },
+                { label: "Inclusions", value: `${formData.inclusions.length} items` },
+                { label: "Gallery", value: `${galleryImages.length} photos` },
                 {
                   label: "Venue",
-                  value: form.venueId ? `${form.venueId}` : "None",
+                  value: selectedVenue?.name ?? "To Be Confirmed",
                 },
                 {
                   label: "Experience",
-                  value: form.experienceId ? `${form.experienceId}` : "None",
+                  value: selectedExperience?.name ?? (formData.experience_id ? "—" : "None"),
                 },
               ].map((item) => (
-                <div
-                  key={item.label}
-                  className="flex items-center justify-between"
-                >
+                <div key={item.label} className="flex items-center justify-between">
                   <span className="text-primary/80 font-semibold text-xs">
                     {item.label}
                   </span>
@@ -548,44 +834,40 @@ export default function WeddingThemeDetailPage() {
               ))}
             </div>
           </div>
-
-          {/* Actions */}
-          <div className="sticky bottom-6 lg:static space-y-2">
-            <button
-              onClick={handleSave}
-              className="w-full flex items-center justify-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/90 transition-colors shadow-lg lg:shadow-none"
-            >
-              <Save className="w-4 h-4" />
-              {isNew ? "Create Theme" : "Save Changes"}
-            </button>
-
-            {!isNew && (
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete Theme
-              </button>
-            )}
-          </div>
         </div>
-      </div>
+      </form>
 
-      {/* ── Modals ── */}
-      {showSaveModal && (
-        <SaveModal
-          onConfirm={confirmSave}
-          onCancel={() => setShowSaveModal(false)}
-          isNew={isNew}
+      {/* ── Unsaved Changes Modal ── */}
+      {unsavedModal.open && (
+        <UnsavedChangesModal
+          mode={isNew ? "create" : "update"}
+          onConfirmLeave={() => {
+            setUnsavedModal({ open: false });
+            if (unsavedModal.pendingHref) router.push(unsavedModal.pendingHref);
+          }}
+          onCancel={() => setUnsavedModal({ open: false })}
         />
       )}
 
-      {showDeleteModal && (
+      {/* ── Save Modal ── */}
+      {(saveStatus === "confirm" || saveStatus === "saving") && (
+        <SaveModal
+          mode={isNew ? "create" : "update"}
+          entityName="Wedding Theme"
+          itemName={formData.title || undefined}
+          onConfirm={confirmSave}
+          onCancel={() => saveStatus !== "saving" && setSaveStatus("idle")}
+          isLoading={saveStatus === "saving"}
+        />
+      )}
+
+      {/* ── Delete Modal ── */}
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
-          title={form.title}
-          onConfirm={confirmDelete}
-          onCancel={() => setShowDeleteModal(false)}
+          name={formData.title}
+          onConfirm={deleteThemeById}
+          onCancel={() => deleteStatus !== "deleting" && setDeleteStatus("idle")}
+          isLoading={deleteStatus === "deleting"}
         />
       )}
     </div>

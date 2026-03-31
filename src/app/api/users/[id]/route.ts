@@ -26,8 +26,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    
-    const payload = requireAuth(req);
+
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     const user = await prisma.user.findUnique({
@@ -49,7 +49,7 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     const body = await req.json();
@@ -74,7 +74,7 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     await prisma.user.delete({ where: { id } });

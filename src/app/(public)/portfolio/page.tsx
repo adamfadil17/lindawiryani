@@ -5,17 +5,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin, ChevronDown, ArrowLeft } from "lucide-react";
-import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
-import {
-  ExperienceSlug,
-  PortfolioItem,
-} from "@/lib/types/portfolio/portfolio-types";
-import {
-  destinations,
-  portfolioItems,
-  reviews,
-  weddingExperiences,
-} from "@/lib/data/portfolio/portfolio-data";
+import { fadeInUp, staggerContainer } from "@/lib/motion";
+import { Portfolio } from "@/types";
+import { portfolioItems, reviews } from "@/lib/data/portfolio-data";
+import { destinationList } from "@/lib/data/destination-data";
+
+const destinations = destinationList.map((d) => ({
+  label: d.name,
+  slug: d.slug,
+}));
+
+const weddingExperiences = [
+  { id: "1", label: "Private Villa Weddings", slug: "private-villa-weddings" },
+  { id: "2", label: "Intimate Weddings", slug: "intimate-weddings" },
+  { id: "3", label: "Elopement Weddings", slug: "elopement-weddings" },
+  { id: "4", label: "Luxury Weddings", slug: "luxury-weddings" },
+];
 
 interface FilterDropdownProps {
   label: string;
@@ -93,7 +98,7 @@ function FilterDropdown({
 }
 
 interface PortfolioCardProps {
-  item: PortfolioItem;
+  item: Portfolio;
 }
 
 function PortfolioCard({ item }: PortfolioCardProps) {
@@ -107,8 +112,8 @@ function PortfolioCard({ item }: PortfolioCardProps) {
     >
       <Link href={`/portfolio/${item.slug}`} className="block h-full">
         <Image
-          src={item.heroImage}
-          alt={`${item.couple} — ${item.subtitle}`}
+          src={item.image}
+          alt={item.couple}
           fill
           quality={85}
           className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -141,7 +146,7 @@ function PortfolioCard({ item }: PortfolioCardProps) {
           <p className="text-white/80 italic text-sm mb-3">{item.subtitle}</p>
           <div className="flex items-center gap-1.5 text-white/80 text-sm">
             <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>{item.location}</span>
+            <span>{item.credit_location_detail}</span>
           </div>
           {item.origin && (
             <p className="text-white/80 text-sm mt-1 tracking-widest uppercase">
@@ -176,14 +181,16 @@ export default function PortfolioPage() {
   const filteredItems = useMemo(() => {
     let list = portfolioItems;
     if (selectedExperience !== "all") {
-      list = list.filter((item) =>
-        item.experiences.includes(selectedExperience as ExperienceSlug),
-      );
+      const exp = weddingExperiences.find((e) => e.slug === selectedExperience);
+      if (exp) {
+        list = list.filter((item) => item.experience_id === exp.id);
+      }
     }
     if (selectedDestination !== "all") {
-      list = list.filter(
-        (item) => item.destinationSlug === selectedDestination,
-      );
+      const dest = destinationList.find((d) => d.slug === selectedDestination);
+      if (dest) {
+        list = list.filter((item) => item.destination_id === dest.id);
+      }
     }
     return list;
   }, [selectedExperience, selectedDestination]);

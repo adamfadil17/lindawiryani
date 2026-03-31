@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -14,188 +17,152 @@ import {
   Plus,
   GripVertical,
   ChevronDown,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  BookOpen,
 } from "lucide-react";
-import { portfolioItems } from "@/lib/data/new-data/portfolio-data";
-import { destinationList } from "@/lib/data/new-data/destination-data";
-import { venueList } from "@/lib/data/new-data/venue-data";
-import { weddingExperienceList } from "@/lib/data/new-data/wedding-experience-data";
 import FormField from "@/components/shared/from-field";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
 import TextareaInput from "@/components/shared/text-area-input";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
+import DeleteModal from "@/components/shared/delete-modal";
+import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
 import TagsInput from "@/components/shared/tags-input";
-import { Portfolio, PortfolioStory } from "@/lib/types/new-strucutre";
+import TipTapEditor from "@/components/shared/tiptap-editor";
+import { toSlug } from "@/utils";
+import {
+  portfolioFormSchema,
+  PortfolioFormData,
+} from "@/utils/form-validators";
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
+import { PortfolioStory } from "@/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type FormData = Omit<Portfolio, "id" | "destination" | "venue" | "experiences">;
-
-const defaultForm: FormData = {
-  slug: "",
-  couple: "",
-  subtitle: "",
-  destinationId: "",
-  venueId: "",
-  experienceId: "",
-  heroImage: "",
-  galleryImages: [],
-  tags: [],
-  excerpt: "",
-  origin: "",
-  review: "",
-  content: "",
-  storySections: [],
-  credit: {
-    role: "",
-    planner: "",
-    locationDetail: "",
-    coupleOrigin: "",
-  },
-};
-
-// ─── Delete Modal ─────────────────────────────────────────────────────────────
-
-function DeleteModal({
-  couple,
-  onConfirm,
-  onCancel,
-}: {
-  couple: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
-        </div>
-        <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Portfolio
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{couple}&rdquo;
-          </span>
-          ? This action cannot be undone and will permanently remove this
-          portfolio from the collection.
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+interface SelectOption {
+  id: string;
+  name: string;
 }
 
-// ─── Gallery Upload ───────────────────────────────────────────────────────────
+// GalleryImage mengikuti pola VenueDetailPage:
+// - id "temp-*" = belum tersimpan di server (create mode atau queue)
+// - id UUID = sudah tersimpan di server (edit mode)
+type GalleryImage = { id: string; url: string; sort_order: number };
 
-function GalleryUpload({
-  value,
-  onChange,
-}: {
-  value: string[];
-  onChange: (images: string[]) => void;
-}) {
-  const handleAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
-    if (!files.length) return;
+// ─── GalleryManager ───────────────────────────────────────────────────────────
+// Mengikuti persis pola dari VenueDetailPage:
+// - Edit mode (portfolioId ada): setiap add/remove langsung hit API
+// - Create mode (portfolioId null): tambah ke array lokal, flush setelah POST portfolio
 
-    const invalid = files.find(
-      (f) => !["image/png", "image/jpeg"].includes(f.type)
-    );
-    if (invalid) {
-      toast.error("PNG or JPG only");
-      return;
-    }
-    const oversized = files.find((f) => f.size > 5 * 1024 * 1024);
-    if (oversized) {
-      toast.error("Max 5 MB per image");
-      return;
-    }
+type GalleryManagerProps = {
+  portfolioId: string | null;
+  images: GalleryImage[];
+  onChange: (images: GalleryImage[]) => void;
+};
 
-    let loaded = 0;
-    const results: string[] = [];
+function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) {
+  const [pendingUrl, setPendingUrl] = useState("");
+  const [isAdding, setIsAdding] = useState(false);
 
-    files.forEach((file, i) => {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        results[i] = ev.target?.result as string;
-        loaded++;
-        if (loaded === files.length) {
-          onChange([...value, ...results]);
-          toast.success(
-            files.length === 1
-              ? "Gallery image added"
-              : `${files.length} images added`
-          );
-        }
+  const handleAdd = async () => {
+    if (!pendingUrl) return;
+
+    if (portfolioId) {
+      // Edit mode — persists immediately ke API
+      setIsAdding(true);
+      try {
+        const response = await axios.post(
+          `/api/portfolios/${portfolioId}/gallery`,
+          { url: pendingUrl, sort_order: images.length },
+          { headers: getAuthHeaders(true) },
+        );
+        onChange([...images, response.data.data ?? response.data]);
+        setPendingUrl("");
+        toast.success("Gallery image added");
+      } catch (err) {
+        const msg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to add gallery image";
+        toast.error(msg);
+      } finally {
+        setIsAdding(false);
+      }
+    } else {
+      // Create mode — antre secara lokal, flush setelah portfolio di-POST
+      const tempImage: GalleryImage = {
+        id: `temp-${Date.now()}`,
+        url: pendingUrl,
+        sort_order: images.length,
       };
-      reader.readAsDataURL(file);
-    });
-
-    e.target.value = "";
+      onChange([...images, tempImage]);
+      setPendingUrl("");
+    }
   };
 
-  const remove = (idx: number) =>
-    onChange(value.filter((_, i) => i !== idx));
+  const handleRemove = async (image: GalleryImage) => {
+    if (portfolioId && !image.id.startsWith("temp-")) {
+      // Edit mode — hapus langsung dari API
+      try {
+        await axios.delete(
+          `/api/portfolios/${portfolioId}/gallery/${image.id}`,
+          { headers: getAuthHeaders() },
+        );
+      } catch (err) {
+        const msg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to remove gallery image";
+        toast.error(msg);
+        return; // Jangan update state kalau API gagal
+      }
+    }
+    // Baik create mode (temp) maupun edit mode setelah API berhasil
+    onChange(images.filter((img) => img.id !== image.id));
+  };
 
   return (
-    <div className="space-y-3">
-      {value.length > 0 && (
+    <div className="space-y-4">
+      {/* Preview grid — tampilkan semua gambar yang sudah ada */}
+      {images.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
-          {value.map((url, idx) => (
-            <div key={idx} className="relative aspect-square group">
+          {images.map((img, i) => (
+            <div
+              key={img.id}
+              className="relative aspect-square group overflow-hidden border border-primary/20"
+            >
               <Image
-                src={url}
-                alt={`Gallery ${idx + 1}`}
+                src={img.url}
+                alt={`Gallery ${i + 1}`}
                 fill
-                className="object-cover"
-                sizes="120px"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 33vw, 15vw"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
               />
               <button
                 type="button"
-                onClick={() => remove(idx)}
-                className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:cursor-pointer"
+                onClick={() => handleRemove(img)}
+                className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:cursor-pointer"
+                title="Remove image"
               >
                 <X className="w-3 h-3" />
               </button>
-              <div className="absolute bottom-1 left-1 text-xs text-white bg-black/50 px-1">
-                {idx + 1}
+              {/* Badge: nomor urut — konsisten dengan VenueDetailPage */}
+              <div className="absolute bottom-1 left-1 text-xs text-white bg-black/50 px-1.5 py-0.5">
+                {i + 1}
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {value.length === 0 && (
+      {/* Empty state */}
+      {images.length === 0 && (
         <div className="border border-dashed border-primary/20 py-8 flex flex-col items-center justify-center gap-2">
           <ImageIcon className="w-6 h-6 text-primary/20" />
           <p className="text-primary/30 text-xs tracking-wider">
@@ -204,22 +171,43 @@ function GalleryUpload({
         </div>
       )}
 
-      <div className="border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors">
-        <input
-          type="file"
-          accept=".png,.jpg,.jpeg"
-          multiple
-          onChange={handleAdd}
-          className="hidden"
-          id="gallery-upload"
+      {/* Input untuk menambah gambar baru */}
+      <div className="space-y-2">
+        <ImageUpload
+          value={pendingUrl}
+          onChange={setPendingUrl}
+          inputId="gallery-add-upload"
         />
-        <label
-          htmlFor="gallery-upload"
-          className="cursor-pointer flex items-center justify-center gap-2 py-3 text-sm text-primary/60 hover:text-primary transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Add Gallery Images
-        </label>
+        {pendingUrl && (
+          <>
+            {/* Preview sebelum dikonfirmasi */}
+            <div className="relative w-full aspect-[4/3] overflow-hidden border border-primary/20 bg-primary/5">
+              <Image
+                src={pendingUrl}
+                alt="Gallery preview"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleAdd}
+              disabled={isAdding}
+              className="w-full flex items-center justify-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase py-2.5 hover:cursor-pointer hover:bg-primary/5 transition-colors disabled:opacity-50"
+            >
+              {isAdding ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Plus className="w-4 h-4" />
+              )}
+              Add to Gallery
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -234,8 +222,7 @@ function StorySectionsEditor({
   value: PortfolioStory[];
   onChange: (sections: PortfolioStory[]) => void;
 }) {
-  const addSection = () =>
-    onChange([...value, { heading: "", body: [""] }]);
+  const addSection = () => onChange([...value, { heading: "", body: [""] }]);
 
   const removeSection = (idx: number) =>
     onChange(value.filter((_, i) => i !== idx));
@@ -364,207 +351,590 @@ export default function PortfolioDetailPage() {
   const id = params?.id as string;
   const isNew = id === "new";
 
-  const [form, setForm] = useState<FormData>(defaultForm);
-  const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  // ── React Hook Form ──────────────────────────────────────────────────────────
+  const {
+    watch,
+    handleSubmit,
+    setValue,
+    reset,
+    trigger,
+    formState: { errors: formErrors, isDirty },
+  } = useForm<PortfolioFormData>({
+    resolver: zodResolver(portfolioFormSchema),
+    defaultValues: {
+      couple: "",
+      slug: "",
+      subtitle: "",
+      destination_id: undefined,
+      venue_id: undefined,
+      experience_id: undefined,
+      image: "",
+      tags: [],
+      excerpt: "",
+      origin: "",
+      review: "",
+      content: "",
+      story_sections: [],
+      credit_role: "",
+      credit_planner: "",
+      credit_location_detail: "",
+      credit_couple_origin: "",
+    },
+  });
+
+  // setField helper — validasi + touch langsung saat tiap perubahan field
+  const setField = <K extends keyof PortfolioFormData>(
+    key: K,
+    value: PortfolioFormData[K],
+  ) =>
+    setValue(key, value as any, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+
+  // watch() — subscribe ke semua nilai form untuk preview/summary di sidebar
+  const formData = watch();
+
+  // ── Gallery state (pola VenueDetailPage) ─────────────────────────────────────
+  // Terpisah dari RHF karena gallery tidak ada di portfolioFormSchema.
+  // GalleryManager mengelola logika dual-mode (create vs edit) secara internal.
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+
+  // ── Page state ───────────────────────────────────────────────────────────────
+  const [isLoading, setIsLoading] = useState(!isNew);
+  const [notFound, setNotFound] = useState(false);
+
+  // ── Select options state ──────────────────────────────────────────────────────
+  const [destinationOptions, setDestinationOptions] = useState<SelectOption[]>([]);
+  const [venueOptions, setVenueOptions] = useState<SelectOption[]>([]);
+  const [experienceOptions, setExperienceOptions] = useState<SelectOption[]>([]);
+  const [isDestinationsLoading, setIsDestinationsLoading] = useState(true);
+  const [isVenuesLoading, setIsVenuesLoading] = useState(true);
+  const [isExperiencesLoading, setIsExperiencesLoading] = useState(true);
+
+  // ── Save state machine: idle | confirm | saving | saved ──────────────────────
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "confirm" | "saving" | "saved"
+  >("idle");
+
+  // ── Delete state machine: idle | confirm | deleting ──────────────────────────
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
+
+  // ── Unsaved changes guard ──────────────────────────────────────────────────────
+  // Create mode: any non-empty field counts as "dirty"
+  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
+  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+
+  const hasUnsavedChanges = isNew
+    ? Boolean(
+        formData.couple ||
+        formData.subtitle ||
+        formData.excerpt ||
+        formData.image ||
+        formData.content ||
+        (formData.tags && formData.tags.length > 0) ||
+        galleryImages.length > 0
+      )
+    : isDirty;
+
+  // Block browser close / refresh when there are unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges && saveStatus !== "saving") {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges, saveStatus]);
+
+  // Helper: navigate with guard check
+  const guardedNavigate = useCallback(
+    (href: string) => {
+      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+        setUnsavedModal({ open: true, pendingHref: href });
+      } else {
+        router.push(href);
+      }
+    },
+    [hasUnsavedChanges, saveStatus, router]
+  );
+
+  // ── Fetch destinations dari /api/destinations (route.ts yang disertakan) ──────
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const res = await axios.get("/api/destinations", {
+          params: { limit: 100 },
+        });
+        // Response: paginated → { data: Destination[], meta: {...} }
+        setDestinationOptions(res.data.data ?? []);
+      } catch {
+        console.warn("Failed to load destinations");
+      } finally {
+        setIsDestinationsLoading(false);
+      }
+    };
+    fetchDestinations();
+  }, []);
+
+  // ── Fetch venues dari /api/venues (route.ts yang disertakan) ─────────────────
+  useEffect(() => {
+    const fetchVenues = async () => {
+      try {
+        const res = await axios.get("/api/venues", {
+          params: { limit: 100 },
+        });
+        // Response: paginated → { data: Venue[], meta: {...} }
+        setVenueOptions(res.data.data ?? []);
+      } catch {
+        console.warn("Failed to load venues");
+      } finally {
+        setIsVenuesLoading(false);
+      }
+    };
+    fetchVenues();
+  }, []);
+
+  // ── Fetch wedding experiences dari /api/wedding-experiences (route.ts yang disertakan)
+  useEffect(() => {
+    const fetchExperiences = async () => {
+      try {
+        const res = await axios.get("/api/wedding-experiences", {
+          params: { limit: 100 },
+        });
+        // Response: paginated → { data: WeddingExperience[], meta: {...} }
+        setExperienceOptions(res.data.data ?? []);
+      } catch {
+        console.warn("Failed to load experiences");
+      } finally {
+        setIsExperiencesLoading(false);
+      }
+    };
+    fetchExperiences();
+  }, []);
+
+  // ── Fetch portfolio (edit mode) ───────────────────────────────────────────────
+  const fetchPortfolio = useCallback(async () => {
+    if (isNew) return;
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`/api/portfolios/${id}`);
+      const data = response.data.data ?? response.data;
+
+      reset({
+        couple: String(data.couple ?? ""),
+        slug: String(data.slug ?? ""),
+        subtitle: String(data.subtitle ?? ""),
+        destination_id: data.destination_id ?? undefined,
+        venue_id: data.venue_id ?? undefined,
+        experience_id: data.experience_id ?? undefined,
+        image: String(data.image ?? ""),
+        tags: Array.isArray(data.tags) ? data.tags : [],
+        excerpt: String(data.excerpt ?? ""),
+        origin: data.origin ?? undefined,
+        review: data.review ?? undefined,
+        content: data.content ?? undefined,
+        story_sections: Array.isArray(data.story_sections)
+          ? data.story_sections
+          : [],
+        credit_role: String(data.credit_role ?? ""),
+        credit_planner: String(data.credit_planner ?? ""),
+        credit_location_detail: String(data.credit_location_detail ?? ""),
+        credit_couple_origin: String(data.credit_couple_origin ?? ""),
+      });
+
+      // Populate galleryImages dari data.gallery (PortfolioImage[] dari PORTFOLIO_INCLUDE)
+      // Mengikuti pola VenueDetailPage: map ke GalleryImage { id, url, sort_order }
+      const gallery: GalleryImage[] = Array.isArray(data.gallery)
+        ? data.gallery.map((g: { id: string; url: string; sort_order: number }) => ({
+            id: g.id,
+            url: g.url,
+            sort_order: g.sort_order,
+          }))
+        : [];
+      setGalleryImages(gallery);
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 404) {
+        setNotFound(true);
+      } else {
+        const errorMsg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to load portfolio";
+        toast.error(errorMsg, {
+          description: err instanceof Error ? err.message : "Unknown error",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id, isNew, reset]);
 
   useEffect(() => {
-    if (!isNew) {
-      const existing = portfolioItems.find((p) => p.id === id);
-      if (existing) {
-        const {
-          id: _id,
-          destination: _dest,
-          venue: _venue,
-          experience: _exp,
-          ...rest
-        } = existing;
-        setForm(rest);
-      } else {
-        toast.error("Portfolio not found");
-        router.push("/dashboard/portfolio");
-      }
-    }
-    setIsLoaded(true);
-  }, [id, isNew, router]);
+    fetchPortfolio();
+  }, [fetchPortfolio]);
 
-  const set = <K extends keyof FormData>(key: K, value: FormData[K]) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
-  };
-
-  const setCredit = (key: keyof FormData["credit"], value: string) => {
-    setForm((prev) => ({
-      ...prev,
-      credit: { ...prev.credit, [key]: value },
-    }));
-  };
-
-  const validate = (): boolean => {
-    const newErrors: Partial<Record<string, string>> = {};
-    if (!form.couple.trim()) newErrors.couple = "Couple names are required";
-    if (!form.slug.trim()) newErrors.slug = "Slug is required";
-    if (!form.heroImage) newErrors.heroImage = "Hero image is required";
-    if (!form.destinationId) newErrors.destinationId = "Destination is required";
-    if (!form.venueId) newErrors.venueId = "Venue is required";
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) {
-      toast.error("Please fix the errors before saving");
-      return false;
-    }
-    return true;
-  };
-
-  const handleSave = () => {
-    if (validate()) setShowSaveModal(true);
-  };
-
-  const confirmSave = () => {
-    console.log("Saving portfolio:", form);
-    setShowSaveModal(false);
-    toast.success(isNew ? "Portfolio created!" : "Portfolio updated!");
-    if (isNew) router.push("/dashboard/portfolio");
-  };
-
-  const confirmDelete = () => {
-    console.log("Deleting portfolio id:", id);
-    setShowDeleteModal(false);
-    toast.success("Portfolio deleted");
-    router.push("/dashboard/portfolio");
-  };
-
+  // ── Slug: auto-generate dari couple name ─────────────────────────────────────
   const handleCoupleChange = (v: string) => {
-    set("couple", v);
+    setField("couple", v);
     if (isNew) {
-      const slug = v
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .trim()
-        .replace(/\s+/g, "-");
-      set("slug", slug);
+      setField("slug", toSlug(v));
     }
   };
 
-  if (!isLoaded) {
+  // ── Save flow ─────────────────────────────────────────────────────────────────
+  const onSubmitForm = async () => {
+    setSaveStatus("confirm");
+  };
+
+  const onSubmitError = async () => {
+    await trigger();
+    toast.error("Please fix the errors before saving");
+  };
+
+  const confirmSave = async () => {
+    setSaveStatus("saving");
+    try {
+      const slugValue = toSlug(formData.couple);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { slug: _slug, ...restFormData } = formData;
+      const payload = {
+        ...restFormData,
+        slug: slugValue,
+        destination_id: formData.destination_id || null,
+        venue_id: formData.venue_id || null,
+        experience_id: formData.experience_id || null,
+        origin: formData.origin || null,
+        review: formData.review || null,
+        content: formData.content || null,
+      };
+
+      if (isNew) {
+        // POST /api/portfolios → created(portfolio)
+        const res = await axios.post("/api/portfolios", payload, {
+          headers: getAuthHeaders(true),
+        });
+        const newPortfolioId: string = res.data.data?.id ?? res.data.id;
+
+        // Flush gallery queue — mengikuti persis pola VenueDetailPage
+        // Semua gambar temp di galleryImages di-POST ke API satu per satu
+        for (const img of galleryImages) {
+          try {
+            await axios.post(
+              `/api/portfolios/${newPortfolioId}/gallery`,
+              { url: img.url, sort_order: img.sort_order },
+              { headers: getAuthHeaders(true) },
+            );
+          } catch {
+            // Non-blocking — lanjutkan meski satu gambar gagal
+          }
+        }
+
+        setSaveStatus("idle");
+        toast.success("Portfolio published!", {
+          description: "Your new portfolio has been added to the collection.",
+        });
+        reset(); // clear dirty state before navigating
+        router.push("/dashboard/portfolio");
+      } else {
+        // PATCH /api/portfolios/:id → ok(portfolio)
+        await axios.patch(`/api/portfolios/${id}`, payload, {
+          headers: getAuthHeaders(true),
+        });
+        // Gallery sudah di-sync real-time oleh GalleryManager di edit mode
+        setSaveStatus("saved");
+        toast.success("Changes saved!", {
+          description: "Your portfolio has been updated.",
+        });
+        // Re-sync RHF baseline so isDirty becomes false
+        reset({ ...formData, slug: toSlug(formData.couple) });
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      }
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
+      toast.error("Failed to save", { description: errorMsg });
+      setSaveStatus("confirm"); // Biarkan modal terbuka agar user bisa coba lagi
+    }
+  };
+
+  // ── Delete flow ───────────────────────────────────────────────────────────────
+  const deletePortfolio = async () => {
+    setDeleteStatus("deleting");
+    try {
+      await axios.delete(`/api/portfolios/${id}`, {
+        headers: getAuthHeaders(),
+      });
+      setDeleteStatus("idle");
+      toast.success("Portfolio deleted!", {
+        description: "The portfolio has been removed from the collection.",
+      });
+      router.push("/dashboard/portfolio");
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
+      toast.error("Failed to delete", { description: errorMsg });
+      setDeleteStatus("confirm");
+    }
+  };
+
+  // ── Derived values ────────────────────────────────────────────────────────────
+  const slugPreview = formData.couple ? toSlug(formData.couple) : "";
+
+  const wordCount = formData.content
+    ? formData.content
+        .replace(/<[^>]*>/g, "")
+        .split(/\s+/)
+        .filter(Boolean).length
+    : 0;
+
+  // ── Not found ─────────────────────────────────────────────────────────────────
+  if (notFound) {
     return (
-      <div className="p-6 lg:p-8 flex items-center justify-center min-h-[400px]">
-        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
+        <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
+        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+          Not Found
+        </p>
+        <p className="text-primary/80 text-sm mb-6">
+          This portfolio does not exist.
+        </p>
+        <Link
+          href="/dashboard/portfolio"
+          className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
+        >
+          Back to Portfolio
+        </Link>
       </div>
     );
   }
 
+  // ── Skeleton loading ──────────────────────────────────────────────────────────
+  if (isLoading) {
+    return (
+      <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
+        <div className="flex items-end justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-9 h-9 bg-primary/10 rounded" />
+            <div className="space-y-2">
+              <div className="h-3 w-24 bg-primary/10 rounded" />
+              <div className="h-7 w-64 bg-primary/10 rounded" />
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="h-10 w-24 bg-primary/10 rounded" />
+            <div className="h-10 w-20 bg-primary/10 rounded" />
+            <div className="h-10 w-36 bg-primary/10 rounded" />
+          </div>
+        </div>
+        <div className="grid xl:grid-cols-[1fr_340px] gap-6">
+          <div className="space-y-6">
+            <div className="bg-white border border-primary/20 p-6 space-y-4">
+              <div className="h-4 w-36 bg-primary/10 rounded" />
+              <div className="h-10 bg-primary/5 rounded" />
+              <div className="h-10 bg-primary/5 rounded" />
+              <div className="h-20 bg-primary/5 rounded" />
+              <div className="h-10 bg-primary/5 rounded" />
+            </div>
+            <div className="bg-white border border-primary/20 p-6 space-y-4">
+              <div className="h-4 w-40 bg-primary/10 rounded" />
+              <div className="h-10 bg-primary/5 rounded" />
+              <div className="h-10 bg-primary/5 rounded" />
+              <div className="h-10 bg-primary/5 rounded" />
+            </div>
+            <div className="bg-white border border-primary/20 p-6 space-y-4">
+              <div className="h-4 w-40 bg-primary/10 rounded" />
+              <div className="h-64 bg-primary/5 rounded" />
+            </div>
+            <div className="bg-white border border-primary/20 p-6 space-y-4">
+              <div className="h-4 w-32 bg-primary/10 rounded" />
+              <div className="h-28 bg-primary/5 rounded" />
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div className="bg-white border border-primary/20 p-6">
+              <div className="aspect-[3/2] bg-primary/10 mb-4 rounded" />
+              <div className="h-10 bg-primary/5 rounded" />
+            </div>
+            <div className="bg-white border border-primary/20 p-6 space-y-3">
+              <div className="h-4 w-28 bg-primary/10 rounded" />
+              <div className="grid grid-cols-3 gap-2">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="aspect-square bg-primary/10 rounded" />
+                ))}
+              </div>
+              <div className="h-10 bg-primary/5 rounded" />
+            </div>
+            <div className="bg-primary/5 border border-primary/20 p-5 space-y-3">
+              <div className="h-3 w-16 bg-primary/10 rounded" />
+              {Array.from({ length: 7 }).map((_, i) => (
+                <div key={i} className="flex justify-between">
+                  <div className="h-3 w-14 bg-primary/10 rounded" />
+                  <div className="h-4 w-12 bg-primary/10 rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Main render ───────────────────────────────────────────────────────────────
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
-        <div>
-          <Link
-            href="/dashboard/portfolio"
-            className="inline-flex items-center gap-2 text-primary/50 hover:text-primary text-xs tracking-widest uppercase mb-3 transition-colors"
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => guardedNavigate("/dashboard/portfolio")}
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Portfolio
-          </Link>
-          <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
-            {isNew ? "Create Portfolio" : "Edit Portfolio"}
-          </p>
-          <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
-            {isNew ? "New Portfolio" : form.couple || "Untitled"}
-          </h1>
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <div>
+            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+              {isNew ? "Create Portfolio" : "Edit Portfolio"}
+            </p>
+            <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+              {isNew ? "New Portfolio" : formData.couple || "Untitled"}
+            </h1>
+          </div>
         </div>
 
         <div className="flex items-center gap-3 self-start sm:self-auto">
+          {saveStatus === "saved" && (
+            <div className="flex items-center gap-1.5 text-green-600 text-xs tracking-wider">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Saved</span>
+            </div>
+          )}
+
+          {/* View Live — gunakan slug yang sudah tersimpan di DB */}
           {!isNew && (
             <Link
-              href={`/portfolio/${form.slug}`}
+              href={`/portfolio/${formData.slug}`}
               target="_blank"
-              className="inline-flex items-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-primary/10 transition-colors"
+              className="inline-flex items-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-primary/5 transition-colors"
             >
+              <BookOpen className="w-4 h-4" />
               View Live
             </Link>
           )}
+
+          {/* Delete button — hanya di edit mode */}
+          {!isNew && (
+            <button
+              type="button"
+              onClick={() => setDeleteStatus("confirm")}
+              disabled={deleteStatus === "deleting" || saveStatus === "saving"}
+              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+            >
+              <Trash2 className="w-4 h-4" />
+              Delete
+            </button>
+          )}
+
+          {/* Save button */}
           <button
-            onClick={handleSave}
-            className="inline-flex items-center gap-2.5 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:bg-primary/90 transition-colors hover:cursor-pointer"
+            type="button"
+            onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
+            disabled={
+              saveStatus === "saving" ||
+              isDestinationsLoading ||
+              isVenuesLoading ||
+              isExperiencesLoading
+            }
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-2.5 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
-            <Save className="w-4 h-4" />
+            {saveStatus === "saving" ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
             {isNew ? "Publish Portfolio" : "Save Changes"}
           </button>
         </div>
       </div>
 
       {/* ── Two Column Layout ── */}
-      <div className="grid xl:grid-cols-[1fr_340px] gap-6">
+      <form
+        onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
+        className="grid xl:grid-cols-[1fr_340px] gap-6"
+      >
         {/* ── Left Column ── */}
         <div className="space-y-6">
-
-          {/* ── Basic Info ── */}
-          <Section title="Basic Information" subtitle="Core couple and page details">
+          {/* ── Basic Information ── */}
+          <Section
+            title="Basic Information"
+            subtitle="Core couple and page details"
+          >
             <div className="space-y-4">
-
               {/* Couple Names */}
               <FormField label="Couple Names" required>
                 <TextInput
-                  value={form.couple}
+                  value={formData.couple}
                   onChange={handleCoupleChange}
                   placeholder="e.g. Sarah & James"
-                  error={errors.couple}
+                  error={
+                    formErrors.couple
+                      ? String(formErrors.couple.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
               {/* Subtitle */}
-              <FormField label="Subtitle">
+              <FormField label="Subtitle" required>
                 <TextInput
-                  value={form.subtitle ?? ""}
-                  onChange={(v) => set("subtitle", v)}
+                  value={formData.subtitle ?? ""}
+                  onChange={(v) => setField("subtitle", v)}
                   placeholder="e.g. A Clifftop Ceremony at Uluwatu"
-                />
-              </FormField>
-
-              {/* Slug */}
-              <FormField label="Slug" required>
-                <input
-                  type="text"
-                  value={form.slug}
-                  onChange={(e) =>
-                    set(
-                      "slug",
-                      e.target.value
-                        .toLowerCase()
-                        .replace(/[^a-z0-9-]/g, "-")
-                        .replace(/-+/g, "-")
-                    )
+                  error={
+                    formErrors.subtitle
+                      ? String(formErrors.subtitle.message)
+                      : undefined
                   }
-                  placeholder="portfolio-url-slug"
-                  className={`w-full px-3 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border focus:outline-none focus:border-primary/50 transition-colors ${
-                    errors.slug ? "border-red-400" : "border-primary/20"
-                  }`}
                 />
-                {errors.slug && (
-                  <p className="text-red-500 text-xs mt-1">{errors.slug}</p>
-                )}
               </FormField>
 
               {/* Excerpt */}
-              <FormField label="Excerpt">
+              <FormField label="Excerpt" required>
                 <TextareaInput
-                  value={form.excerpt ?? ""}
-                  onChange={(v) => set("excerpt", v)}
+                  value={formData.excerpt ?? ""}
+                  onChange={(v) => setField("excerpt", v)}
                   placeholder="A short description shown in portfolio cards and SEO…"
                   rows={3}
+                  error={
+                    formErrors.excerpt
+                      ? String(formErrors.excerpt.message)
+                      : undefined
+                  }
                 />
                 <p className="text-primary/40 text-xs mt-1.5">
-                  {(form.excerpt ?? "").length} / 200 characters recommended
+                  {(formData.excerpt ?? "").length} / 200 characters recommended
                 </p>
               </FormField>
 
-              {/* Origin */}
+              {/* Origin — optional */}
               <FormField label="Couple Origin">
                 <TextInput
-                  value={form.origin ?? ""}
-                  onChange={(v) => set("origin", v)}
+                  value={formData.origin ?? ""}
+                  onChange={(v) => setField("origin", v || undefined)}
                   placeholder="e.g. Sydney, Australia"
                 />
               </FormField>
@@ -572,76 +942,136 @@ export default function PortfolioDetailPage() {
           </Section>
 
           {/* ── Venue & Location ── */}
-          <Section title="Venue & Location" subtitle="Where the wedding took place">
+          <Section
+            title="Venue & Location"
+            subtitle="Where the wedding took place"
+          >
             <div className="space-y-4">
-
-              {/* Destination */}
-              <FormField label="Destination" required>
+              {/* Destination — dari GET /api/destinations */}
+              <FormField label="Destination">
                 <div className="relative">
                   <select
-                    value={form.destinationId}
-                    onChange={(e) => set("destinationId", e.target.value)}
-                    className={`w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
-                      errors.destinationId ? "border-red-400" : "border-primary/20"
-                    }`}
+                    value={formData.destination_id ?? ""}
+                    onChange={(e) =>
+                      setField(
+                        "destination_id",
+                        (e.target.value as PortfolioFormData["destination_id"]) || undefined,
+                      )
+                    }
+                    disabled={isDestinationsLoading}
+                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option value="">Select a destination…</option>
-                    {destinationList.map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.name}
-                      </option>
-                    ))}
+                    {isDestinationsLoading ? (
+                      <option value="" disabled>Loading destinations…</option>
+                    ) : (
+                      <>
+                        <option value="">Select a destination…</option>
+                        {destinationOptions.map((d) => (
+                          <option key={d.id} value={d.id}>
+                            {d.name}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
-                {errors.destinationId && (
-                  <p className="text-red-500 text-xs mt-1">{errors.destinationId}</p>
+                {formErrors.destination_id && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.destination_id.message)}
+                  </p>
                 )}
               </FormField>
 
-              {/* Venue */}
-              <FormField label="Venue" required>
+              {/* Venue — dari GET /api/venues */}
+              <FormField label="Venue">
                 <div className="relative">
                   <select
-                    value={form.venueId}
-                    onChange={(e) => set("venueId", e.target.value)}
-                    className={`w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
-                      errors.venueId ? "border-red-400" : "border-primary/20"
-                    }`}
+                    value={formData.venue_id ?? ""}
+                    onChange={(e) =>
+                      setField(
+                        "venue_id",
+                        (e.target.value as PortfolioFormData["venue_id"]) || undefined,
+                      )
+                    }
+                    disabled={isVenuesLoading}
+                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option value="">Select a venue…</option>
-                    {venueList.map((v) => (
-                      <option key={v.id} value={v.id}>
-                        {v.name}
-                      </option>
-                    ))}
+                    {isVenuesLoading ? (
+                      <option value="" disabled>Loading venues…</option>
+                    ) : (
+                      <>
+                        <option value="">Select a venue…</option>
+                        {venueOptions.map((v) => (
+                          <option key={v.id} value={v.id}>
+                            {v.name}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
-                {errors.venueId && (
-                  <p className="text-red-500 text-xs mt-1">{errors.venueId}</p>
+                {formErrors.venue_id && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.venue_id.message)}
+                  </p>
                 )}
               </FormField>
 
-              {/* Experience */}
+              {/* Experience — dari GET /api/wedding-experiences */}
               <FormField label="Experience">
                 <div className="relative">
                   <select
-                    value={form.experienceId ?? ""}
-                    onChange={(e) => set("experienceId", e.target.value)}
-                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer"
+                    value={formData.experience_id ?? ""}
+                    onChange={(e) =>
+                      setField(
+                        "experience_id",
+                        (e.target.value as PortfolioFormData["experience_id"]) || undefined,
+                      )
+                    }
+                    disabled={isExperiencesLoading}
+                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option value="">Select an experience...</option>
-                    {weddingExperienceList.map((ex) => (
-                      <option key={ex.id} value={ex.id}>
-                        {ex.name}
-                      </option>
-                    ))}
+                    {isExperiencesLoading ? (
+                      <option value="" disabled>Loading experiences…</option>
+                    ) : (
+                      <>
+                        <option value="">Select an experience…</option>
+                        {experienceOptions.map((ex) => (
+                          <option key={ex.id} value={ex.id}>
+                            {ex.name}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
+                {formErrors.experience_id && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.experience_id.message)}
+                  </p>
+                )}
               </FormField>
             </div>
+          </Section>
+
+          {/* ── Portfolio Content (TipTap) ── */}
+          <Section
+            title="Portfolio Content"
+            subtitle="Full narrative body in rich text"
+          >
+            <TipTapEditor
+              value={formData.content ?? ""}
+              onChange={(v) => setField("content", v || undefined)}
+              error={
+                formErrors.content
+                  ? String(formErrors.content.message)
+                  : undefined
+              }
+              placeholder="Write the portfolio story here…"
+            />
           </Section>
 
           {/* ── Story Sections ── */}
@@ -650,16 +1080,24 @@ export default function PortfolioDetailPage() {
             subtitle="Narrative paragraphs displayed on the portfolio page"
           >
             <StorySectionsEditor
-              value={form.storySections}
-              onChange={(v) => set("storySections", v)}
+              value={(formData.story_sections as PortfolioStory[]) ?? []}
+              onChange={(v) =>
+                setField(
+                  "story_sections",
+                  v as PortfolioFormData["story_sections"],
+                )
+              }
             />
           </Section>
 
-          {/* ── Review ── */}
-          <Section title="Couple Review" subtitle="Quote or testimonial from the couple">
+          {/* ── Couple Review ── */}
+          <Section
+            title="Couple Review"
+            subtitle="Quote or testimonial from the couple"
+          >
             <TextareaInput
-              value={form.review ?? ""}
-              onChange={(v) => set("review", v)}
+              value={formData.review ?? ""}
+              onChange={(v) => setField("review", v || undefined)}
               placeholder="&ldquo;Working with the team was an absolute dream…&rdquo;"
               rows={4}
             />
@@ -668,19 +1106,38 @@ export default function PortfolioDetailPage() {
           {/* ── Credits ── */}
           <Section title="Credits" subtitle="Team and attribution details">
             <div className="space-y-4">
-              {(
-                [
-                  { key: "role", label: "Role / Service Type", placeholder: "e.g. Full Wedding Planning & Design" },
-                  { key: "planner", label: "Planner / Coordinator", placeholder: "e.g. Raisa Dewi" },
-                  { key: "locationDetail", label: "Location Detail", placeholder: "e.g. Uluwatu Cliff, Bali" },
-                  { key: "coupleOrigin", label: "Couple Origin", placeholder: "e.g. Sydney, Australia" },
-                ] as const
-              ).map(({ key, label, placeholder }) => (
-                <FormField key={key} label={label}>
+              {[
+                {
+                  key: "credit_role" as const,
+                  label: "Role / Service Type",
+                  placeholder: "e.g. Full Wedding Planning & Design",
+                },
+                {
+                  key: "credit_planner" as const,
+                  label: "Planner / Coordinator",
+                  placeholder: "e.g. Raisa Dewi",
+                },
+                {
+                  key: "credit_location_detail" as const,
+                  label: "Location Detail",
+                  placeholder: "e.g. Uluwatu Cliff, Bali",
+                },
+                {
+                  key: "credit_couple_origin" as const,
+                  label: "Couple Origin",
+                  placeholder: "e.g. Sydney, Australia",
+                },
+              ].map(({ key, label, placeholder }) => (
+                <FormField key={key} label={label} required>
                   <TextInput
-                    value={form.credit[key]}
-                    onChange={(v) => setCredit(key, v)}
+                    value={formData[key] ?? ""}
+                    onChange={(v) => setField(key, v)}
                     placeholder={placeholder}
+                    error={
+                      formErrors[key]
+                        ? String(formErrors[key]?.message)
+                        : undefined
+                    }
                   />
                 </FormField>
               ))}
@@ -689,29 +1146,36 @@ export default function PortfolioDetailPage() {
 
           {/* ── Tags ── */}
           <Section title="Tags" subtitle="Keywords for filtering and discovery">
-            {/* Uses shared TagsInput component from @/components/shared/tags-input */}
             <TagsInput
-              values={form.tags ?? []}
-              onChange={(v) => set("tags", v)}
+              values={formData.tags ?? []}
+              onChange={(v) => setField("tags", v)}
               placeholder="Type a tag and press Enter…"
             />
+            {formErrors.tags && (
+              <p className="text-red-500 text-xs mt-1">
+                {String(formErrors.tags.message)}
+              </p>
+            )}
           </Section>
-
         </div>
 
         {/* ── Right Column ── */}
         <div className="space-y-6">
-
           {/* Hero Image */}
           <Section title="Hero Image">
             <div className="space-y-4">
               <div className="relative aspect-[3/2] bg-primary/5 border border-primary/20 overflow-hidden">
-                {form.heroImage ? (
+                {formData.image ? (
                   <Image
-                    src={form.heroImage}
+                    src={formData.image}
                     alt="Hero preview"
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display =
+                        "none";
+                    }}
                   />
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
@@ -722,27 +1186,46 @@ export default function PortfolioDetailPage() {
                   </div>
                 )}
               </div>
-
-              <FormField label="Hero Image" required>
+              <FormField label="Hero Image URL" required>
                 <ImageUpload
-                  value={form.heroImage}
-                  onChange={(v) => set("heroImage", v)}
-                  error={errors.heroImage}
+                  value={formData.image}
+                  onChange={(v) => setField("image", v)}
                   inputId="hero-upload"
                 />
               </FormField>
+              {formErrors.image && (
+                <p className="text-red-500 text-xs mt-1">
+                  {String(formErrors.image.message)}
+                </p>
+              )}
             </div>
           </Section>
 
-          {/* Gallery Images */}
+          {/* Gallery Images — menggunakan GalleryManager pola VenueDetailPage */}
           <Section
             title="Gallery Images"
-            subtitle={`${form.galleryImages?.length ?? 0} images added`}
+            subtitle={`${galleryImages.length} image${galleryImages.length !== 1 ? "s" : ""}`}
           >
-            <GalleryUpload
-              value={form.galleryImages ?? []}
-              onChange={(v) => set("galleryImages", v)}
+            <GalleryManager
+              portfolioId={isNew ? null : id}
+              images={galleryImages}
+              onChange={setGalleryImages}
             />
+          </Section>
+
+          {/* URL & SEO */}
+          <Section title="URL & SEO">
+            <div className="space-y-2">
+              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
+                URL Slug
+              </p>
+              <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
+                {slugPreview || "—"}
+              </p>
+              <p className="text-primary/50 text-xs">
+                Auto-generated from couple names
+              </p>
+            </div>
           </Section>
 
           {/* Quick Summary */}
@@ -752,12 +1235,58 @@ export default function PortfolioDetailPage() {
             </p>
             <div className="space-y-3">
               {[
-                { label: "Couple", value: form.couple || "—" },
-                { label: "Slug", value: form.slug ? `/${form.slug}` : "—" },
-                { label: "Gallery", value: `${form.galleryImages?.length ?? 0} images` },
-                { label: "Tags", value: form.tags?.length ? `${form.tags.length} tags` : "—" },
-                { label: "Story", value: form.storySections?.length ? `${form.storySections.length} sections` : "—" },
-                { label: "Review", value: form.review ? "Added" : "—" },
+                {
+                  label: "Couple",
+                  value: formData.couple || "—",
+                },
+                {
+                  label: "Slug",
+                  value: slugPreview ? `/${slugPreview}` : "—",
+                },
+                {
+                  label: "Destination",
+                  value:
+                    destinationOptions.find(
+                      (d) => d.id === formData.destination_id,
+                    )?.name ?? (formData.destination_id ? "—" : "Not set"),
+                },
+                {
+                  label: "Venue",
+                  value:
+                    venueOptions.find((v) => v.id === formData.venue_id)
+                      ?.name ?? (formData.venue_id ? "—" : "Not set"),
+                },
+                {
+                  label: "Experience",
+                  value:
+                    experienceOptions.find(
+                      (e) => e.id === formData.experience_id,
+                    )?.name ?? (formData.experience_id ? "—" : "Not set"),
+                },
+                {
+                  label: "Gallery",
+                  value: `${galleryImages.length} images`,
+                },
+                {
+                  label: "Tags",
+                  value: (formData.tags ?? []).length
+                    ? `${formData.tags!.length} tags`
+                    : "—",
+                },
+                {
+                  label: "Story",
+                  value: (formData.story_sections ?? []).length
+                    ? `${formData.story_sections!.length} sections`
+                    : "—",
+                },
+                {
+                  label: "Content",
+                  value: wordCount > 0 ? `~${wordCount} words` : "—",
+                },
+                {
+                  label: "Review",
+                  value: formData.review ? "Added" : "—",
+                },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -773,44 +1302,42 @@ export default function PortfolioDetailPage() {
               ))}
             </div>
           </div>
-
-          {/* Actions */}
-          <div className="sticky bottom-6 lg:static space-y-2">
-            <button
-              onClick={handleSave}
-              className="w-full flex items-center justify-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/90 transition-colors shadow-lg lg:shadow-none"
-            >
-              <Save className="w-4 h-4" />
-              {isNew ? "Publish Portfolio" : "Save Changes"}
-            </button>
-
-            {!isNew && (
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete Portfolio
-              </button>
-            )}
-          </div>
         </div>
-      </div>
+      </form>
 
-      {/* ── Modals ── */}
-      {showSaveModal && (
-        <SaveModal
-          onConfirm={confirmSave}
-          onCancel={() => setShowSaveModal(false)}
-          isNew={isNew}
+      {/* ── Unsaved Changes Modal ── */}
+      {unsavedModal.open && (
+        <UnsavedChangesModal
+          mode={isNew ? "create" : "update"}
+          onConfirmLeave={() => {
+            setUnsavedModal({ open: false });
+            if (unsavedModal.pendingHref) router.push(unsavedModal.pendingHref);
+          }}
+          onCancel={() => setUnsavedModal({ open: false })}
         />
       )}
 
-      {showDeleteModal && (
+      {/* ── Save Modal ── */}
+      {(saveStatus === "confirm" || saveStatus === "saving") && (
+        <SaveModal
+          mode={isNew ? "create" : "update"}
+          entityName="Portfolio"
+          itemName={formData.couple || undefined}
+          onConfirm={confirmSave}
+          onCancel={() => saveStatus !== "saving" && setSaveStatus("idle")}
+          isLoading={saveStatus === "saving"}
+        />
+      )}
+
+      {/* ── Delete Modal ── */}
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
-          couple={form.couple}
-          onConfirm={confirmDelete}
-          onCancel={() => setShowDeleteModal(false)}
+          name={formData.couple}
+          onConfirm={deletePortfolio}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
+          isLoading={deleteStatus === "deleting"}
         />
       )}
     </div>

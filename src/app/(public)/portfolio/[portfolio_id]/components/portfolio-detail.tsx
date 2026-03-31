@@ -3,15 +3,17 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin, ArrowLeft } from "lucide-react";
-import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
-import { portfolioItems } from "@/lib/data/portfolio/portfolio-data";
-import type { PortfolioItem } from "@/lib/types/portfolio/portfolio-types";
+import { ArrowRight, MapPin } from "lucide-react";
+import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
+import { Destination, Portfolio, WeddingExperience } from "@/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface PortfolioDetailProps {
-  item: PortfolioItem;
+  item: Portfolio;
+  relatedItems: Portfolio[];
+  destination: Destination | undefined;
+  experience: WeddingExperience | undefined;
 }
 
 function TipTapContent({ html }: { html: string }) {
@@ -23,28 +25,6 @@ function TipTapContent({ html }: { html: string }) {
   );
 }
 
-const experienceLabels: Record<string, string> = {
-  "private-villa-weddings": "Private Villa Weddings",
-  "intimate-weddings": "Intimate Weddings",
-  "elopement-weddings": "Elopement Weddings",
-  "luxury-weddings": "Luxury & Multi-Day",
-  "bali-destination-wedding": "Destination Weddings in Bali",
-};
-
-const destinationLabels: Record<string, string> = {
-  uluwatu: "Uluwatu",
-  ubud: "Ubud",
-  canggu: "Canggu",
-  seminyak: "Seminyak",
-  sanur: "Sanur",
-  kintamani: "Kintamani",
-  "nusa-dua": "Nusa Dua",
-  "east-bali": "East Bali",
-  tabanan: "Tabanan",
-  "nusa-penida": "Nusa Penida",
-};
-
-// ─── Placeholder gallery ─ replace with real per-wedding image arrays ─────────
 // ─── Sub-Components ───────────────────────────────────────────────────────────
 
 function GalleryGrid({ images }: { images: string[] }) {
@@ -72,22 +52,19 @@ function GalleryGrid({ images }: { images: string[] }) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function PortfolioDetail({ item }: PortfolioDetailProps) {
-  const relatedItems = portfolioItems
-    .filter(
-      (p) =>
-        p.id !== item.id &&
-        (p.destinationSlug === item.destinationSlug ||
-          p.experiences.some((e) => item.experiences.includes(e))),
-    )
-    .slice(0, 3);
+export default function PortfolioDetail({
+  item,
+  relatedItems,
+  destination,
+  experience,
+}: PortfolioDetailProps) {
 
   return (
     <main className="relative overflow-hidden">
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src={item.heroImage}
+            src={item.image}
             alt={`${item.couple} — ${item.subtitle}`}
             fill
             priority
@@ -150,7 +127,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             className="flex items-center gap-2 text-white/80 text-sm"
           >
             <MapPin className="w-4 h-4 flex-shrink-0" />
-            <span>{item.location}</span>
+            <span>{item.credit_location_detail}</span>
             {item.origin && (
               <>
                 <span className="text-white/80">·</span>
@@ -194,12 +171,12 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                     Destination
                   </p>
                   <Link
-                    href={`/destinations/${item.destinationSlug}`}
+                    href={`/destinations/${destination?.slug ?? ""}`}
                     className="inline-flex items-center gap-2 border border-primary/30 px-4 py-2.5 text-primary text-sm hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 group"
                   >
                     <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
                     <span className="tracking-wide">
-                      {destinationLabels[item.destinationSlug]}
+                      {destination?.name ?? "—"}
                     </span>
                     <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Link>
@@ -211,18 +188,15 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                     Wedding Experiences
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {item.experiences.map((exp) => (
+                    {experience && (
                       <Link
-                        key={exp}
-                        href={`/wedding-experiences/${exp}`}
+                        href={`/wedding-experiences/${experience.slug}`}
                         className="inline-flex items-center gap-2 border border-primary/30 px-4 py-2.5 text-primary text-sm hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 group"
                       >
-                        <span className="tracking-wide">
-                          {experienceLabels[exp]}
-                        </span>
+                        <span className="tracking-wide">{experience.name}</span>
                         <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </Link>
-                    ))}
+                    )}
                   </div>
                 </div>
 
@@ -254,7 +228,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                   <TipTapContent html={item.content} />
                 </motion.div>
               ) : (
-                item.storySections.map((section, i) => (
+                item.story_sections.map((section, i) => (
                   <motion.div key={i} variants={fadeInUp} className="space-y-5">
                     {section.heading && (
                       <h3 className="text-primary font-semibold text-xl tracking-wide">
@@ -283,7 +257,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                     "{item.review}"
                   </p>
                   <footer className="mt-4 text-primary/60 text-sm tracking-widest uppercase">
-                    — {item.credit.coupleOrigin}
+                    — {item.credit_couple_origin}
                   </footer>
                 </motion.div>
               )}
@@ -297,16 +271,16 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                   Designed & Curated by
                 </p>
                 <p className="text-primary font-semibold">
-                  {item.credit.planner}
+                  {item.credit_planner}
                 </p>
                 <p className="text-primary/80 text-sm italic">
-                  {item.credit.role}
+                  {item.credit_role}
                 </p>
                 <p className="text-primary/80 text-sm">
-                  📍 {item.credit.locationDetail}
+                  📍 {item.credit_location_detail}
                 </p>
                 <p className="text-primary/80 text-sm">
-                  Couple: {item.credit.coupleOrigin}
+                  Couple: {item.credit_couple_origin}
                 </p>
               </motion.div>
             </div>
@@ -334,7 +308,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
             </h2>
           </motion.div>
 
-          <GalleryGrid images={item.galleryImages} />
+          <GalleryGrid images={(item.gallery ?? []).map((g) => g.url)} />
         </div>
       </motion.section>
 
@@ -359,18 +333,17 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                 <span className="italic font-light">feeling & approach</span>
               </h3>
               <div className="space-y-3">
-                {item.experiences.map((exp) => (
+                {experience && (
                   <Link
-                    key={exp}
-                    href={`/wedding-experiences/${exp}`}
+                    href={`/wedding-experiences/${experience.slug}`}
                     className="group flex items-center justify-between border border-white/20 p-5 hover:border-white/60 hover:bg-white/5 transition-all duration-300"
                   >
                     <span className="text-white font-medium group-hover:text-white/80 transition-colors">
-                      {experienceLabels[exp]}
+                      {experience.name}
                     </span>
                     <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors flex-shrink-0" />
                   </Link>
-                ))}
+                )}
               </div>
             </motion.div>
 
@@ -383,17 +356,17 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                 More weddings in
                 <br />
                 <span className="italic font-light">
-                  {destinationLabels[item.destinationSlug]}
+                  {destination?.name ?? "—"}
                 </span>
               </h3>
               <Link
-                href={`/destinations/${item.destinationSlug}`}
+                href={`/destinations/${destination?.slug ?? ""}`}
                 className="group flex items-center justify-between border border-white/20 p-5 hover:border-white/60 hover:bg-white/5 transition-all duration-300 mb-8"
               >
                 <div className="flex items-center gap-3">
                   <MapPin className="w-4 h-4 text-white/60 flex-shrink-0" />
                   <span className="text-white font-medium group-hover:text-white/80 transition-colors">
-                    {destinationLabels[item.destinationSlug]}, Bali
+                    {destination?.name ?? "—"}, Bali
                   </span>
                 </div>
                 <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors flex-shrink-0" />
@@ -460,8 +433,8 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                     className="block h-full"
                   >
                     <Image
-                      src={related.heroImage}
-                      alt={`${related.couple} — ${related.subtitle}`}
+                      src={related.image}
+                      alt={related.couple}
                       fill
                       quality={80}
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -480,7 +453,7 @@ export default function PortfolioDetail({ item }: PortfolioDetailProps) {
                       </p>
                       <div className="flex items-center gap-1.5 text-white/60 text-xs">
                         <MapPin className="w-3 h-3 flex-shrink-0" />
-                        <span>{related.location}</span>
+                        <span>{related.credit_location_detail}</span>
                       </div>
                     </div>
                   </Link>

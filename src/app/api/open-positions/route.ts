@@ -1,7 +1,18 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
-import { createOpenPositionSchema, parsePagination, paginateQuery } from "@/utils";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+} from "@/lib";
+import {
+  createOpenPositionSchema,
+  parsePagination,
+  paginateQuery,
+} from "@/utils";
 
 export async function GET(req: NextRequest) {
   try {
@@ -51,7 +62,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();

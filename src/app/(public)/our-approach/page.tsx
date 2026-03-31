@@ -10,7 +10,7 @@ import {
   phases,
   pillars,
   specializations,
-} from "@/lib/data/our-approach/our-approach-data";
+} from "@/lib/data/our-approach-data";
 
 export default function OurApproachPage() {
   const planningRef = useRef<HTMLDivElement>(null);

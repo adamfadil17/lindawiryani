@@ -43,7 +43,7 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
@@ -53,7 +53,9 @@ export async function PATCH(
     if (dto.name) {
       const baseSlug = toSlug(dto.name);
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.destination.findUnique({ where: { slug: s } });
+        const existing = await prisma.destination.findUnique({
+          where: { slug: s },
+        });
         return !!existing && existing.id !== id;
       });
     }
@@ -79,7 +81,7 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     await prisma.destination.delete({ where: { id } });

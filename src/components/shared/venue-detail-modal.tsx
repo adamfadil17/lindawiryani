@@ -11,12 +11,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
-import {
-  Venue,
-  cities,
-  elopementThemes,
-  intimateThemes,
-} from "@/lib/data/wedding-concepts/wedding-concepts-data";
+import type { Venue, WeddingTheme, Currency } from "@/types";
 
 type ExperienceFilter =
   | "Private Villa Weddings"
@@ -24,20 +19,24 @@ type ExperienceFilter =
   | "Elopement Weddings"
   | "Luxury Weddings";
 
-const getVenueExperiences = (venue: Venue): ExperienceFilter[] => {
+const getVenueExperiences = (
+  venue: Venue,
+  elopementThemes: WeddingTheme[],
+  intimateThemes: WeddingTheme[],
+): ExperienceFilter[] => {
   const experiences: ExperienceFilter[] = [];
 
   const elopementVenueIds = new Set(
-    elopementThemes.map((t) => t.venueId).filter(Boolean),
+    elopementThemes.map((t) => t.venue_id).filter(Boolean),
   );
   const intimateVenueIds = new Set(
-    intimateThemes.map((t) => t.venueId).filter(Boolean),
+    intimateThemes.map((t) => t.venue_id).filter(Boolean),
   );
 
-  if (venue.categoryRelations?.category === "luxury") {
+  if (venue.experience?.category === "luxury_weddings") {
     experiences.push("Luxury Weddings");
   }
-  if (venue.categoryRelations?.category === "private_villa") {
+  if (venue.experience?.category === "private_villa_weddings") {
     experiences.push("Private Villa Weddings");
   }
   if (elopementVenueIds.has(venue.id)) {
@@ -50,13 +49,13 @@ const getVenueExperiences = (venue: Venue): ExperienceFilter[] => {
   return experiences;
 };
 
-type Currency = "IDR" | "USD";
-
 interface VenueDetailModalProps {
   venue: Venue;
   onClose: () => void;
   selectedCurrency: Currency;
   exchangeRate: number;
+  elopementThemes: WeddingTheme[];
+  intimateThemes: WeddingTheme[];
 }
 
 const formatPrice = (
@@ -103,6 +102,8 @@ export default function VenueDetailModal({
   onClose,
   selectedCurrency: initialCurrency,
   exchangeRate,
+  elopementThemes,
+  intimateThemes,
 }: VenueDetailModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCurrency, setSelectedCurrency] =
@@ -115,7 +116,7 @@ export default function VenueDetailModal({
   const [mainImageError, setMainImageError] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
-  const totalImages = venue.images.gallery.length;
+  const totalImages = venue.gallery.length;
   const visibleThumbnails = 4;
 
   const thumbnailItemRef = useRef<HTMLButtonElement>(null);
@@ -236,7 +237,7 @@ export default function VenueDetailModal({
               {/* Main Image */}
               <Image
                 src={
-                  venue.images.gallery[currentImageIndex] ||
+                  venue.gallery[currentImageIndex]?.url ||
                   "https://placehold.net/default.svg"
                 }
                 alt={`${venue.name} - Image ${currentImageIndex + 1}`}
@@ -291,7 +292,7 @@ export default function VenueDetailModal({
                         }px)`,
                       }}
                     >
-                      {venue.images.gallery.map((img, index) => {
+                      {venue.gallery.map((img, index) => {
                         const isLoaded = loadedThumbnails.has(index);
 
                         return (
@@ -319,7 +320,9 @@ export default function VenueDetailModal({
                               }`}
                             >
                               <Image
-                                src={img || "https://placehold.net/default.svg"}
+                                src={
+                                  img.url || "https://placehold.net/default.svg"
+                                }
                                 alt={`Thumbnail ${index + 1}`}
                                 fill
                                 loading="lazy"
@@ -362,7 +365,7 @@ export default function VenueDetailModal({
                 Venues
               </span>
               <div className="flex gap-2 flex-wrap">
-                {getVenueExperiences(venue).map((exp) => (
+                {getVenueExperiences(venue, elopementThemes, intimateThemes).map((exp) => (
                   <span
                     key={exp}
                     className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
@@ -373,7 +376,7 @@ export default function VenueDetailModal({
               </div>
             </div>
 
-            {venue.categoryRelations?.category === "private_villa" ? (
+            {venue.experience?.category === "private_villa_weddings" ? (
               <span className="block text-3xl md:text-4xl text-primary font-semibold leading-tight">
                 {venue.slogan}
               </span>
@@ -431,19 +434,19 @@ export default function VenueDetailModal({
                   Starts from
                 </span>
                 <div className="flex items-baseline gap-2">
-                  {venue.startingPrice > 0 && (
+                  {venue.starting_price > 0 && (
                     <span className="text-md text-primary font-medium">
                       {selectedCurrency}
                     </span>
                   )}
                   <span className="text-2xl md:text-2xl font-medium text-primary">
                     {formatPrice(
-                      venue.startingPrice,
+                      venue.starting_price,
                       selectedCurrency,
                       exchangeRate,
                     )}
                   </span>
-                  {venue.startingPrice > 0 && (
+                  {venue.starting_price > 0 && (
                     <span className="text-sm text-primary">nett</span>
                   )}
                 </div>
@@ -453,9 +456,7 @@ export default function VenueDetailModal({
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
                   <span className="block text-md text-primary">
-                    {cities.find((c) => c.id === venue.location.cityId)?.name},{" "}
-                    {venue.location.provinceId.charAt(0).toUpperCase() +
-                      venue.location.provinceId.slice(1)}
+                    {venue.destination?.name ?? "indonesia"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">

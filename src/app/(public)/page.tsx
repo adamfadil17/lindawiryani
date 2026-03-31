@@ -6,56 +6,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { Venue } from "@/lib/data/wedding-concepts/wedding-concepts-data";
 import AboutUs from "@/components/shared/about-us";
 import Instagram from "@/components/shared/instagram";
-import { reviews } from "@/lib/data/portfolio/portfolio-data";
-import { Currency } from "@/lib/types/wedding-concepts/wedding-concepts-types";
+import { reviews } from "@/lib/data/portfolio-data";
 import WeddingThemesSection from "@/components/shared/wedding-themes";
 import VenuesSection from "@/components/shared/venues";
-
-// ── Extracted sub-page components ────────────────────────────────────────
-
-// ── Currency hook ───────────────────────────────────────────────────────────
-const useCurrencyConverter = () => {
-  const [exchangeRate, setExchangeRate] = useState<number>(15800);
-  const CACHE_DURATION = 60 * 60 * 1000;
-
-  useEffect(() => {
-    const fetchExchangeRate = async () => {
-      const now = Date.now();
-      const cachedRate = sessionStorage.getItem("exchangeRate");
-      const cachedTime = sessionStorage.getItem("exchangeRateTime");
-
-      if (cachedRate && cachedTime) {
-        const timeDiff = now - Number.parseInt(cachedTime);
-        if (timeDiff < CACHE_DURATION) {
-          setExchangeRate(Number.parseFloat(cachedRate));
-          return;
-        }
-      }
-
-      try {
-        const response = await fetch(
-          "https://api.exchangerate-api.com/v4/latest/USD",
-        );
-        const data = await response.json();
-        const rate = data.rates.IDR;
-        setExchangeRate(rate);
-        sessionStorage.setItem("exchangeRate", rate.toString());
-        sessionStorage.setItem("exchangeRateTime", now.toString());
-      } catch (error) {
-        console.error("Failed to fetch exchange rate:", error);
-      }
-    };
-
-    fetchExchangeRate();
-  }, []);
-
-  return exchangeRate;
-};
-
-// ─── Page ───────────────────────────────────────────────────────────────────
+import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
+import type { Venue, Currency } from "@/types";
 
 export default function Page() {
   const [isMobile, setIsMobile] = useState(false);

@@ -12,23 +12,48 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import {
-  cities,
-  venues,
-  Venue,
-  elopementThemes,
-  intimateThemes,
-  locations,
-  venueCurationConsiderations,
-} from "@/lib/data/wedding-concepts/wedding-concepts-data";
+import { venueList } from "@/lib/data/venue-data";
+import { weddingExperienceList } from "@/lib/data/wedding-experience-data";
+import { weddingThemeList } from "@/lib/data/wedding-theme-data";
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
-import { Currency } from "@/lib/types/wedding-concepts/wedding-concepts-types";
+import type { Venue, Currency } from "@/types";
 
-type ExperienceFilter =
-  | "Private Villa Weddings"
-  | "Intimate Weddings"
-  | "Elopement Weddings"
-  | "Luxury Weddings";
+// ─── Derived data ─────────────────────────────────────────────────────────────
+
+const elopementThemes = weddingThemeList.filter((t) => t.type === "ELOPEMENT");
+const intimateThemes = weddingThemeList.filter((t) => t.type === "INTIMATE");
+
+// Semua nama destinasi unik dari venueList, diawali "All"
+const locations = [
+  "All",
+  ...Array.from(
+    new Set(
+      venueList.map((v) => v.destination?.name).filter(Boolean) as string[],
+    ),
+  ),
+];
+
+// Mapping slug experience → label tampilan
+const EXPERIENCE_LABEL_MAP: Record<string, string> = {
+  "private-villa-weddings": "Private Villa Weddings",
+  "intimate-weddings": "Intimate Weddings",
+  "elopement-weddings": "Elopement Weddings",
+  "luxury-weddings": "Luxury Weddings",
+};
+
+// Deskripsi per kategori (experience.category sebagai key)
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  luxury_weddings:
+    "A curated selection of venues known for distinctive architecture, setting, and experience.",
+  private_villa_weddings:
+    "Exclusive private estates offering intimacy, flexibility, and a deeply personal celebration experience.",
+  elopement_weddings:
+    "Intimate settings designed for couples seeking privacy, meaning, and extraordinary surroundings.",
+  intimate_weddings:
+    "Thoughtfully curated venues for scaled celebrations — connection, elegance, and refined hospitality.",
+};
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const formatPrice = (
   price: number | undefined,
@@ -64,7 +89,7 @@ function VenueCard({
       className="relative group overflow-hidden aspect-[4/5] cursor-pointer"
     >
       <Image
-        src={venue.images.hero || "https://placehold.net/default.svg"}
+        src={venue.image || "https://placehold.net/default.svg"}
         alt={`${venue.name} - ${venue.slogan}`}
         fill
         quality={85}
@@ -85,17 +110,17 @@ function VenueCard({
               Starts from
             </span>
             <div className="flex items-baseline gap-2">
-              {venue.startingPrice !== 0 && (
+              {venue.starting_price !== 0 && (
                 <span className="text-md font-medium">{selectedCurrency}</span>
               )}
               <span className="text-xl md:text-2xl font-normal text-white">
                 {formatPrice(
-                  venue.startingPrice,
+                  venue.starting_price,
                   selectedCurrency,
                   exchangeRate,
                 )}
               </span>
-              {venue.startingPrice !== 0 && (
+              {venue.starting_price !== 0 && (
                 <span className="text-sm text-white">nett</span>
               )}
             </div>
@@ -104,11 +129,7 @@ function VenueCard({
         <div className="flex items-center gap-4 text-md">
           <div className="flex items-center gap-1.5">
             <MapPin className="w-4 h-4" />
-            <span>
-              {cities.find((city) => city.id === venue.location.cityId)?.name},{" "}
-              {venue.location.provinceId.charAt(0).toUpperCase() +
-                venue.location.provinceId.slice(1)}
-            </span>
+            <span>{venue.destination?.name ?? "Indonesia"}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Users className="w-4 h-4" />
@@ -124,12 +145,10 @@ function VenueCard({
 
 function NoVenuesFound({
   selectedLocation,
-  selectedVenueFilter,
-  onReset,
+  selectedExperienceLabel,
 }: {
   selectedLocation: string;
-  selectedVenueFilter: ExperienceFilter;
-  onReset: () => void;
+  selectedExperienceLabel: string;
 }) {
   return (
     <motion.div
@@ -146,10 +165,9 @@ function NoVenuesFound({
       </p>
       <p className="text-primary/80 text-sm mb-8 max-w-sm">
         There are currently no{" "}
-        <span className="font-medium">{selectedVenueFilter}</span> venues
-        available in{" "}
-        <span className="font-medium">{selectedLocation}</span>. Try selecting a
-        different location or experience.
+        <span className="font-medium">{selectedExperienceLabel}</span> venues
+        available in <span className="font-medium">{selectedLocation}</span>.
+        Try selecting a different location or experience.
       </p>
     </motion.div>
   );
@@ -174,63 +192,56 @@ export default function VenuesSection({
   externalSelectedVenue,
   onExternalModalClose,
 }: VenuesSectionProps) {
-  const [selectedVenueFilter, setSelectedVenueFilter] =
-    useState<ExperienceFilter>("Luxury Weddings");
+  // State filter experience berdasarkan slug dari weddingExperienceList
+  const [selectedExperienceSlug, setSelectedExperienceSlug] = useState<string>(
+    weddingExperienceList[0]?.slug ?? "",
+  );
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedCurrencyLocal, setSelectedCurrencyLocal] =
     useState<Currency>(selectedCurrency);
-  const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
+  const [isExperienceDropdownOpen, setIsExperienceDropdownOpen] =
+    useState(false);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
 
   const [visibleCount, setVisibleCount] = useState(6);
   const [currentVenueSlide, setCurrentVenueSlide] = useState(0);
-
   const [selectedVenueForModal, setSelectedVenueForModal] =
     useState<Venue | null>(null);
 
-  // Sync external selected venue (e.g. from theme modal)
+  // Sync venue yang dipilih dari luar (mis. ThemeDetailModal)
   useEffect(() => {
     if (externalSelectedVenue) {
       setSelectedVenueForModal(externalSelectedVenue);
     }
   }, [externalSelectedVenue]);
 
+  // Reset posisi & pagination saat filter berubah
   useEffect(() => {
     setCurrentVenueSlide(0);
     setVisibleCount(6);
-  }, [selectedLocation, selectedVenueFilter]);
+  }, [selectedLocation, selectedExperienceSlug]);
 
+  // Cari experience yang sedang dipilih
+  const selectedExperience = useMemo(
+    () => weddingExperienceList.find((e) => e.slug === selectedExperienceSlug),
+    [selectedExperienceSlug],
+  );
+
+  // Filter venue: cocokkan experience_id, lalu filter destination
   const filteredVenues = useMemo(() => {
-    let list = venues;
+    if (!selectedExperience) return [];
 
-    const elopementVenueIds = new Set(
-      elopementThemes.map((t) => t.venueId).filter(Boolean),
+    let list = venueList.filter(
+      (v) => v.experience_id === selectedExperience.id,
     );
-    const intimateVenueIds = new Set(
-      intimateThemes.map((t) => t.venueId).filter(Boolean),
-    );
-
-    if (selectedVenueFilter === "Luxury Weddings") {
-      list = list.filter((v) => v.categoryRelations?.category === "luxury");
-    } else if (selectedVenueFilter === "Private Villa Weddings") {
-      list = list.filter(
-        (v) => v.categoryRelations?.category === "private_villa",
-      );
-    } else if (selectedVenueFilter === "Elopement Weddings") {
-      list = list.filter((v) => elopementVenueIds.has(v.id));
-    } else if (selectedVenueFilter === "Intimate Weddings") {
-      list = list.filter((v) => intimateVenueIds.has(v.id));
-    }
 
     if (selectedLocation !== "All") {
-      list = list.filter((v) => {
-        const city = cities.find((c) => c.id === v.location.cityId);
-        return city?.name === selectedLocation;
-      });
+      list = list.filter((v) => v.destination?.name === selectedLocation);
     }
+
     return list;
-  }, [selectedVenueFilter, selectedLocation]);
+  }, [selectedExperience, selectedLocation]);
 
   const visibleVenues = useMemo(
     () => (isMobile ? filteredVenues : filteredVenues.slice(0, visibleCount)),
@@ -250,6 +261,16 @@ export default function VenuesSection({
     setSelectedVenueForModal(null);
     onExternalModalClose?.();
   };
+
+  // Label tampilan untuk experience yang dipilih
+  const selectedExperienceLabel =
+    EXPERIENCE_LABEL_MAP[selectedExperienceSlug] ??
+    selectedExperience?.name ??
+    "";
+
+  // Deskripsi kategori berdasarkan experience.category
+  const categoryDescription =
+    CATEGORY_DESCRIPTIONS[selectedExperience?.category ?? ""] ?? "";
 
   return (
     <>
@@ -285,314 +306,180 @@ export default function VenuesSection({
             </div>
           </motion.div>
 
-          {/* Wedding Experiences — 4-card stack */}
+          {/* Wedding Experiences — card grid dari weddingExperienceList */}
           <motion.div className="mb-16" variants={fadeInUp}>
-            {/* Top row: 3 cards side-by-side on desktop */}
+            {/* Desktop: 3 kartu pertama di atas, 1 kartu penuh di bawah */}
             <div className="hidden lg:grid grid-cols-3 gap-px mb-px bg-white/10">
-              <Link
-                href="/wedding-experiences/private-villa-weddings"
-                className="group relative bg-primary overflow-hidden"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src="/images/venues/banner/private-bg.png"
-                    alt="Private Villa Weddings in Bali"
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                    sizes="33vw"
-                  />
-                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
-                  <div className="absolute top-5 left-5">
-                    <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
-                      01
-                    </span>
+              {weddingExperienceList.slice(0, 3).map((exp, i) => (
+                <Link
+                  key={exp.slug}
+                  href={`/wedding-experiences/${exp.slug}`}
+                  className="group relative bg-primary overflow-hidden"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={exp.hero_image}
+                      alt={`${exp.name} in Bali`}
+                      fill
+                      loading="lazy"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
+                      sizes="33vw"
+                    />
+                    <div className="absolute top-5 left-5">
+                      <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
+                        {exp.name.split(" ").slice(0, -1).join(" ")}
+                        <br />
+                        <span className="italic font-light">
+                          {exp.name.split(" ").slice(-1)[0]}
+                        </span>
+                      </h3>
+                      <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-2">
+                        {exp.hero_desc}
+                      </p>
+                      <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
+                        EXPLORE <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                      Private Villa
-                      <br />
-                      <span className="italic font-light">Weddings</span>
-                    </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-2">
-                      Privacy, freedom of design, and an atmosphere that feels
-                      personal rather than commercial.
-                    </p>
-                    <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                      EXPLORE <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-
-              <Link
-                href="/wedding-experiences/intimate-weddings"
-                className="group relative bg-primary overflow-hidden"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src="https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
-                    alt="Intimate Weddings in Bali"
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                    sizes="33vw"
-                  />
-                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
-                  <div className="absolute top-5 left-5">
-                    <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
-                      02
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                      Intimate
-                      <br />
-                      <span className="italic font-light">Weddings</span>
-                    </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-2">
-                      Space for connection, presence, and beauty without excess.
-                      Quality over quantity.
-                    </p>
-                    <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                      EXPLORE <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-
-              <Link
-                href="/wedding-experiences/elopement-weddings"
-                className="group relative bg-primary overflow-hidden"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src="https://res.cloudinary.com/dzerxindp/image/upload/v1767346138/Wedding_4_htlkyl.jpg"
-                    alt="Elopement Weddings in Bali"
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                    sizes="33vw"
-                  />
-                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
-                  <div className="absolute top-5 left-5">
-                    <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
-                      03
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                      Elopement
-                      <br />
-                      <span className="italic font-light">Weddings</span>
-                    </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-2">
-                      Not a smaller wedding — a deeper one. Emotionally rich,
-                      visually poetic, entirely yours.
-                    </p>
-                    <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                      EXPLORE <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              ))}
             </div>
 
-            {/* Mobile & Tablet: all cards full-width stacked */}
-            <div className="flex flex-col gap-px lg:hidden mb-px">
-              <Link
-                href="/wedding-experiences/private-villa-weddings"
-                className="group relative bg-primary overflow-hidden block"
-              >
-                <div className="relative aspect-[4/3] sm:aspect-[21/9] overflow-hidden">
-                  <Image
-                    src="/images/venues/banner/private-bg.png"
-                    alt="Private Villa Weddings in Bali"
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                    sizes="100vw"
-                  />
-                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
-                  <div className="absolute top-5 left-5">
-                    <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
-                      01
-                    </span>
+            {/* Desktop: kartu ke-4 (jika ada) — full width */}
+            {weddingExperienceList[3] && (
+              <div className="hidden lg:block mb-14">
+                <Link
+                  href={`/wedding-experiences/${weddingExperienceList[3].slug}`}
+                  className="group relative bg-primary overflow-hidden block"
+                >
+                  <div className="relative aspect-[21/9] overflow-hidden">
+                    <Image
+                      src={weddingExperienceList[3].hero_image}
+                      alt={`${weddingExperienceList[3].name} in Bali`}
+                      fill
+                      loading="lazy"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
+                      sizes="100vw"
+                    />
+                    <div className="absolute top-5 left-5">
+                      <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
+                        04
+                      </span>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                      <h3 className="text-white text-xl md:text-2xl lg:text-3xl font-semibold leading-tight mb-3">
+                        {weddingExperienceList[3].name
+                          .split(" ")
+                          .slice(0, -1)
+                          .join(" ")}
+                        <br />
+                        <span className="italic font-light">
+                          {
+                            weddingExperienceList[3].name
+                              .split(" ")
+                              .slice(-1)[0]
+                          }
+                        </span>
+                      </h3>
+                      <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
+                        {weddingExperienceList[3].hero_desc}
+                      </p>
+                      <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
+                        EXPLORE <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                      Private Villa
-                      <br />
-                      <span className="italic font-light">Weddings</span>
-                    </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
-                      Privacy, freedom of design, and an atmosphere that feels
-                      personal rather than commercial.
-                    </p>
-                    <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                      EXPLORE <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
+            )}
 
-              <Link
-                href="/wedding-experiences/intimate-weddings"
-                className="group relative bg-primary overflow-hidden block"
-              >
-                <div className="relative aspect-[4/3] sm:aspect-[21/9] overflow-hidden">
-                  <Image
-                    src="https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
-                    alt="Intimate Weddings in Bali"
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                    sizes="100vw"
-                  />
-                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
-                  <div className="absolute top-5 left-5">
-                    <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
-                      02
-                    </span>
+            {/* Mobile & Tablet: semua kartu full-width stacked */}
+            <div className="flex flex-col gap-px lg:hidden mb-8 sm:mb-10 md:mb-12">
+              {weddingExperienceList.map((exp, i) => (
+                <Link
+                  key={exp.slug}
+                  href={`/wedding-experiences/${exp.slug}`}
+                  className="group relative bg-primary overflow-hidden block"
+                >
+                  <div className="relative aspect-[4/3] sm:aspect-[21/9] overflow-hidden">
+                    <Image
+                      src={exp.hero_image}
+                      alt={`${exp.name} in Bali`}
+                      fill
+                      loading="lazy"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
+                      sizes="100vw"
+                    />
+                    <div className="absolute top-5 left-5">
+                      <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                      <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
+                        {exp.name.split(" ").slice(0, -1).join(" ")}
+                        <br />
+                        <span className="italic font-light">
+                          {exp.name.split(" ").slice(-1)[0]}
+                        </span>
+                      </h3>
+                      <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
+                        {exp.hero_desc}
+                      </p>
+                      <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
+                        EXPLORE <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                      Intimate
-                      <br />
-                      <span className="italic font-light">Weddings</span>
-                    </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
-                      Space for connection, presence, and beauty without excess.
-                      Quality over quantity.
-                    </p>
-                    <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                      EXPLORE <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-
-              <Link
-                href="/wedding-experiences/elopement-weddings"
-                className="group relative bg-primary overflow-hidden block"
-              >
-                <div className="relative aspect-[4/3] sm:aspect-[21/9] overflow-hidden">
-                  <Image
-                    src="https://res.cloudinary.com/dzerxindp/image/upload/v1767346138/Wedding_4_htlkyl.jpg"
-                    alt="Elopement Weddings in Bali"
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                    sizes="100vw"
-                  />
-                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
-                  <div className="absolute top-5 left-5">
-                    <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
-                      03
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                      Elopement
-                      <br />
-                      <span className="italic font-light">Weddings</span>
-                    </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
-                      Not a smaller wedding — a deeper one. Emotionally rich,
-                      visually poetic, entirely yours.
-                    </p>
-                    <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                      EXPLORE <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            {/* Bottom row: Luxury — full width */}
-            <div className="mb-12">
-              <Link
-                href="/wedding-experiences/luxury-weddings"
-                className="group relative bg-primary overflow-hidden block"
-              >
-                <div className="relative aspect-[4/3] sm:aspect-[21/9] overflow-hidden">
-                  <Image
-                    src="/images/venues/banner/signature-bg.png"
-                    alt="Luxury Weddings in Bali"
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                    sizes="100vw"
-                  />
-                  {/* <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" /> */}
-                  <div className="absolute top-5 left-5">
-                    <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
-                      04
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <h3 className="text-white text-xl md:text-2xl lg:text-3xl font-semibold leading-tight mb-3">
-                      Luxury
-                      <br />
-                      <span className="italic font-light">Weddings</span>
-                    </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
-                      Luxury is not about excess — it is about refinement, care,
-                      and experience shaped by architecture and atmosphere.
-                    </p>
-                    <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                      EXPLORE <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              ))}
             </div>
 
             {/* ── Filters ─────────────────────────────────────────────── */}
             <motion.div
               variants={fadeInUp}
-              className="flex items-center justify-center gap-8 mb-4 flex-wrap"
+              className="flex items-center justify-center gap-4 md:gap-6 lg:gap-8 mb-4 mt-8 sm:mt-10 lg:mt-0 flex-wrap"
             >
-              {/* Experience Filter */}
+              {/* Experience Filter — dari weddingExperienceList */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   EXPERIENCE
                 </span>
                 <div className="relative">
                   <button
-                    onClick={() => setIsVenueDropdownOpen(!isVenueDropdownOpen)}
+                    onClick={() =>
+                      setIsExperienceDropdownOpen(!isExperienceDropdownOpen)
+                    }
                     className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                   >
-                    <span>{selectedVenueFilter}</span>
+                    <span>{selectedExperienceLabel}</span>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform ${
-                        isVenueDropdownOpen ? "rotate-180" : ""
+                        isExperienceDropdownOpen ? "rotate-180" : ""
                       }`}
                     />
                   </button>
-                  {isVenueDropdownOpen && (
+                  {isExperienceDropdownOpen && (
                     <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[200px]">
-                      {(
-                        [
-                          "Private Villa Weddings",
-                          "Intimate Weddings",
-                          "Elopement Weddings",
-                          "Luxury Weddings",
-                        ] as ExperienceFilter[]
-                      ).map((v) => (
+                      {weddingExperienceList.map((exp) => (
                         <button
-                          key={v}
+                          key={exp.slug}
                           onClick={() => {
-                            setSelectedVenueFilter(v);
-                            setIsVenueDropdownOpen(false);
+                            setSelectedExperienceSlug(exp.slug);
+                            setIsExperienceDropdownOpen(false);
                           }}
                           className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
-                            selectedVenueFilter === v
+                            selectedExperienceSlug === exp.slug
                               ? "bg-primary text-white"
                               : "text-primary hover:bg-stone-100"
                           }`}
                         >
-                          {v}
+                          {EXPERIENCE_LABEL_MAP[exp.slug] ?? exp.name}
                         </button>
                       ))}
                     </div>
@@ -600,7 +487,7 @@ export default function VenuesSection({
                 </div>
               </div>
 
-              {/* Location Filter */}
+              {/* Location Filter — dari destination venue */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   LOCATION
@@ -702,21 +589,14 @@ export default function VenuesSection({
             <div className="mb-12 text-center">
               <AnimatePresence mode="wait">
                 <motion.p
-                  key={selectedVenueFilter}
+                  key={selectedExperienceSlug}
                   variants={fadeInUp}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
                   className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
                 >
-                  {selectedVenueFilter === "Luxury Weddings" &&
-                    "A curated selection of venues known for distinctive architecture, setting, and experience."}
-                  {selectedVenueFilter === "Private Villa Weddings" &&
-                    "Exclusive private estates offering intimacy, flexibility, and a deeply personal celebration experience."}
-                  {selectedVenueFilter === "Elopement Weddings" &&
-                    "Intimate settings designed for couples seeking privacy, meaning, and extraordinary surroundings."}
-                  {selectedVenueFilter === "Intimate Weddings" &&
-                    "Thoughtfully curated venues for scaled celebrations — connection, elegance, and refined hospitality."}
+                  {categoryDescription}
                 </motion.p>
               </AnimatePresence>
             </div>
@@ -725,8 +605,7 @@ export default function VenuesSection({
             {filteredVenues.length === 0 ? (
               <NoVenuesFound
                 selectedLocation={selectedLocation}
-                selectedVenueFilter={selectedVenueFilter}
-                onReset={() => setSelectedLocation("All")}
+                selectedExperienceLabel={selectedExperienceLabel}
               />
             ) : isMobile ? (
               <div className="relative">
@@ -784,7 +663,7 @@ export default function VenuesSection({
               <>
                 <div
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                  key={`${selectedVenueFilter}-${selectedLocation}`}
+                  key={`${selectedExperienceSlug}-${selectedLocation}`}
                 >
                   {visibleVenues.map((venue) => (
                     <VenueCard
@@ -822,13 +701,15 @@ export default function VenuesSection({
         </div>
       </motion.section>
 
-      {/* Modal */}
+      {/* Modal — pass elopementThemes & intimateThemes sesuai pola wedding-experiences-detail */}
       {selectedVenueForModal && (
         <VenueDetailModal
           venue={selectedVenueForModal}
           onClose={handleModalClose}
           selectedCurrency={selectedCurrencyLocal}
           exchangeRate={exchangeRate}
+          elopementThemes={elopementThemes}
+          intimateThemes={intimateThemes}
         />
       )}
     </>

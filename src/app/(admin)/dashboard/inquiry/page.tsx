@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import axios from "axios";
+import { toast } from "sonner";
 import {
   Search,
   X,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Eye,
   Trash2,
   Users,
@@ -15,216 +19,73 @@ import {
   MapPin,
   CalendarDays,
   Heart,
-  Filter,
 } from "lucide-react";
-import { Inquiry, InquiryStatus, inquiryStatusConfig, InquirySubmission } from "@/lib/types/new-strucutre";
+import {
+  InquiryStatus,
+  InquirySubmission,
+  inquiryStatusConfig,
+} from "@/types";
+import DeleteModal from "@/components/shared/delete-modal";
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
+import type { PaginationMeta } from "@/lib/api-response";
 
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-
-const mockInquiries: InquirySubmission[] = [
-  {
-    id: "inq-001",
-    status: "new",
-    submittedAt: "2025-01-20T09:15:00Z",
-    yourName: "Emma Richardson",
-    yourEmail: "emma.richardson@gmail.com",
-    yourAddress: "London, United Kingdom",
-    telephone: "+44 7911 123456",
-    nameOfGroom: "James Richardson",
-    religionOfGroom: "Christian",
-    nationalityOfGroom: "British",
-    nameOfBride: "Emma Clarke",
-    religionOfBride: "Christian",
-    nationalityOfBride: "British",
-    weddingDate: "2025-10-15",
-    weddingVenue: "Tirtha Uluwatu",
-    numberOfAttendance: "40",
-    approximateWeddingBudget: "$25,000 – $35,000",
-    hotelNameInBali: "The Mulia Resort",
-    arrivalDate: "2025-10-12",
-    departureDate: "2025-10-20",
-    yourMessage:
-      "We've been dreaming of a cliffside sunset ceremony in Bali for years. We'd love an intimate elopement-style wedding with just our closest family and friends. Hoping for elegant, natural floral arrangements and a private dinner reception.",
-  },
-  {
-    id: "inq-002",
-    status: "reviewed",
-    submittedAt: "2025-01-19T14:30:00Z",
-    yourName: "Mei Lin Zhang",
-    yourEmail: "meilin.zhang@outlook.com",
-    yourAddress: "Singapore",
-    telephone: "+65 9123 4567",
-    nameOfGroom: "Wei Zhang",
-    religionOfGroom: "Buddhist",
-    nationalityOfGroom: "Singaporean",
-    nameOfBride: "Mei Lin Tan",
-    religionOfBride: "Buddhist",
-    nationalityOfBride: "Singaporean",
-    weddingDate: "2025-09-20",
-    weddingVenue: "Mandapa Reserve Ubud",
-    numberOfAttendance: "80",
-    approximateWeddingBudget: "$40,000 – $60,000",
-    hotelNameInBali: "Mandapa, a Ritz-Carlton Reserve",
-    arrivalDate: "2025-09-17",
-    departureDate: "2025-09-25",
-    yourMessage:
-      "We are looking for a luxury jungle-themed wedding in Ubud with traditional Balinese ceremonial elements blended with modern aesthetics. We'd also appreciate assistance with accommodation for our guests.",
-  },
-  {
-    id: "inq-003",
-    status: "quoted",
-    submittedAt: "2025-01-17T11:00:00Z",
-    yourName: "Sophie Moreau",
-    yourEmail: "sophie.moreau@icloud.com",
-    yourAddress: "Paris, France",
-    telephone: "+33 6 12 34 56 78",
-    nameOfGroom: "Lucas Moreau",
-    religionOfGroom: "Catholic",
-    nationalityOfGroom: "French",
-    nameOfBride: "Sophie Dupont",
-    religionOfBride: "Catholic",
-    nationalityOfBride: "French",
-    weddingDate: "2025-12-05",
-    weddingVenue: "Semara Luxury Villa Resort",
-    numberOfAttendance: "20",
-    approximateWeddingBudget: "$15,000 – $20,000",
-    hotelNameInBali: "COMO Uma Canggu",
-    arrivalDate: "2025-12-02",
-    departureDate: "2025-12-10",
-    yourMessage:
-      "Just the two of us and our families — a true elopement with a romantic sunset ceremony. We love the idea of a private villa setting with candlelit dinner. French-inspired floral design if possible.",
-  },
-  {
-    id: "inq-004",
-    status: "booked",
-    submittedAt: "2025-01-15T08:45:00Z",
-    yourName: "Priya Nair",
-    yourEmail: "priya.nair@email.com",
-    yourAddress: "Mumbai, India",
-    telephone: "+91 98765 43210",
-    nameOfGroom: "Arjun Mehta",
-    religionOfGroom: "Hindu",
-    nationalityOfGroom: "Indian",
-    nameOfBride: "Priya Nair",
-    religionOfBride: "Hindu",
-    nationalityOfBride: "Indian",
-    weddingDate: "2025-08-10",
-    weddingVenue: "Alila Villas Uluwatu",
-    numberOfAttendance: "120",
-    approximateWeddingBudget: "$60,000 – $80,000",
-    hotelNameInBali: "Alila Villas Uluwatu",
-    arrivalDate: "2025-08-06",
-    departureDate: "2025-08-15",
-    yourMessage:
-      "We are planning a multi-day celebration blending traditional Hindu rituals with a modern destination wedding. We need coordination for Mehendi, Sangeet, and the main ceremony. Our families will be flying in from Mumbai and London.",
-  },
-  {
-    id: "inq-005",
-    status: "new",
-    submittedAt: "2025-01-14T16:20:00Z",
-    yourName: "Hannah Müller",
-    yourEmail: "h.mueller@gmail.com",
-    yourAddress: "Berlin, Germany",
-    telephone: "+49 151 23456789",
-    nameOfGroom: "Tobias Müller",
-    religionOfGroom: "Non-religious",
-    nationalityOfGroom: "German",
-    nameOfBride: "Hannah Schmidt",
-    religionOfBride: "Non-religious",
-    nationalityOfBride: "German",
-    weddingDate: "2026-03-22",
-    weddingVenue: "Komaneka at Bisma",
-    numberOfAttendance: "30",
-    approximateWeddingBudget: "$20,000 – $30,000",
-    hotelNameInBali: "Komaneka at Bisma",
-    arrivalDate: "2026-03-19",
-    departureDate: "2026-03-28",
-    yourMessage:
-      "We love Ubud's serene atmosphere and rice terrace scenery. We'd love a minimalist, nature-forward aesthetic — think organic textures, wild greenery, and earthy tones. Small gathering of close friends.",
-  },
-  {
-    id: "inq-006",
-    status: "archived",
-    submittedAt: "2025-01-10T10:00:00Z",
-    yourName: "Olivia Thompson",
-    yourEmail: "olivia.t@yahoo.com",
-    yourAddress: "Sydney, Australia",
-    telephone: "+61 412 345 678",
-    nameOfGroom: "Nathan Thompson",
-    religionOfGroom: "Christian",
-    nationalityOfGroom: "Australian",
-    nameOfBride: "Olivia Davis",
-    religionOfBride: "Christian",
-    nationalityOfBride: "Australian",
-    weddingDate: "2025-07-04",
-    weddingVenue: "Four Seasons Resort Bali at Sayan",
-    numberOfAttendance: "60",
-    approximateWeddingBudget: "$35,000 – $50,000",
-    hotelNameInBali: "Four Seasons Resort Bali at Sayan",
-    arrivalDate: "2025-07-01",
-    departureDate: "2025-07-08",
-    yourMessage:
-      "Dreaming of a lush jungle riverside ceremony — something truly magical and otherworldly. We'd love help with logistics for guests travelling from Australia and New Zealand.",
-  },
+const LIMIT = 9;
+const ALL_STATUSES: InquiryStatus[] = [
+  "new",
+  "reviewed",
+  "quoted",
+  "booked",
+  "archived",
 ];
 
-// ─── Delete Modal ─────────────────────────────────────────────────────────────
+// ─── Skeleton Card ────────────────────────────────────────────────────────────
 
-function DeleteModal({
-  name,
-  onConfirm,
-  onCancel,
-}: {
-  name: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
+function SkeletonCard() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
+    <div className="bg-white border border-primary/20 animate-pulse p-5">
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div className="flex items-start gap-3 min-w-0 flex-1">
+          <div className="w-9 h-9 bg-primary/10 flex-shrink-0" />
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <div className="h-2.5 w-12 bg-primary/10 rounded" />
+            <div className="h-4 w-40 bg-primary/10 rounded" />
+            <div className="h-3 w-24 bg-primary/10 rounded" />
+          </div>
         </div>
-        <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Inquiry
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete the inquiry from{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{name}&rdquo;
-          </span>
-          ? This action cannot be undone.
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
+        <div className="h-6 w-16 bg-primary/10 rounded flex-shrink-0" />
+      </div>
+      <div className="space-y-2 mb-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="flex items-center gap-1.5">
+            <div className="w-3 h-3 bg-primary/10 rounded-full flex-shrink-0" />
+            <div className="h-3 bg-primary/10 rounded w-3/4" />
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-2 mb-4">
+        <div className="h-6 w-20 bg-primary/10 rounded" />
+        <div className="h-6 w-28 bg-primary/10 rounded" />
+      </div>
+      <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
+        <div className="h-3 w-20 bg-primary/10 rounded" />
+        <div className="flex gap-1">
+          <div className="w-8 h-8 bg-primary/10" />
+          <div className="w-8 h-8 bg-primary/10" />
         </div>
       </div>
+    </div>
+  );
+}
+
+// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
+
+function SkeletonStatCard() {
+  return (
+    <div className="p-5 border border-primary/20 bg-white animate-pulse">
+      <div className="h-3 bg-primary/10 w-2/3 rounded mb-3" />
+      <div className="h-7 bg-primary/10 w-10 rounded" />
     </div>
   );
 }
@@ -235,7 +96,7 @@ function StatusBadge({ status }: { status: InquiryStatus }) {
   const { label, classes } = inquiryStatusConfig[status];
   return (
     <span
-      className={`text-xs tracking-widest uppercase px-2.5 py-1 font-medium ${classes}`}
+      className={`text-xs tracking-widest uppercase px-2.5 py-1 font-medium flex-shrink-0 ${classes}`}
     >
       {label}
     </span>
@@ -251,13 +112,13 @@ function InquiryCard({
   inquiry: InquirySubmission;
   onDelete: (inquiry: InquirySubmission) => void;
 }) {
-  const submittedDate = new Date(inquiry.submittedAt).toLocaleDateString(
+  const submittedDate = new Date(inquiry.submitted_at).toLocaleDateString(
     "en-GB",
-    { day: "numeric", month: "short", year: "numeric" }
+    { day: "numeric", month: "short", year: "numeric" },
   );
 
-  const weddingDateFormatted = inquiry.weddingDate
-    ? new Date(inquiry.weddingDate).toLocaleDateString("en-GB", {
+  const weddingDateFormatted = inquiry.wedding_date
+    ? new Date(inquiry.wedding_date).toLocaleDateString("en-GB", {
         day: "numeric",
         month: "short",
         year: "numeric",
@@ -277,10 +138,10 @@ function InquiryCard({
               Inquiry
             </p>
             <h3 className="text-primary font-semibold text-base leading-snug truncate">
-              {inquiry.nameOfBride} & {inquiry.nameOfGroom}
+              {inquiry.name_of_bride} & {inquiry.name_of_groom}
             </h3>
             <p className="text-primary/60 text-xs tracking-wider mt-0.5 truncate">
-              {inquiry.yourName}
+              {inquiry.your_name}
             </p>
           </div>
         </div>
@@ -292,7 +153,7 @@ function InquiryCard({
         <div className="flex items-center gap-1.5">
           <Mail className="w-3 h-3 text-primary/40 flex-shrink-0" />
           <span className="text-primary/70 text-xs truncate">
-            {inquiry.yourEmail}
+            {inquiry.your_email}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -302,7 +163,7 @@ function InquiryCard({
         <div className="flex items-center gap-1.5">
           <MapPin className="w-3 h-3 text-primary/40 flex-shrink-0" />
           <span className="text-primary/70 text-xs truncate">
-            {inquiry.weddingVenue}
+            {inquiry.wedding_venue}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -314,10 +175,10 @@ function InquiryCard({
       {/* Guest & Budget pills */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
         <span className="text-xs tracking-wider text-primary/60 bg-primary/5 border border-primary/10 px-2.5 py-1">
-          {inquiry.numberOfAttendance} guests
+          {inquiry.number_of_attendance} guests
         </span>
         <span className="text-xs tracking-wider text-primary/60 bg-primary/5 border border-primary/10 px-2.5 py-1 truncate max-w-[160px]">
-          {inquiry.approximateWeddingBudget}
+          {inquiry.approximate_wedding_budget}
         </span>
       </div>
 
@@ -348,40 +209,200 @@ function InquiryCard({
   );
 }
 
+// ─── Pagination ───────────────────────────────────────────────────────────────
+
+function Pagination({
+  meta,
+  onPageChange,
+}: {
+  meta: PaginationMeta;
+  onPageChange: (page: number) => void;
+}) {
+  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1);
+
+  const getVisiblePages = (): (number | "...")[] => {
+    if (meta.totalPages <= 7) return pages;
+    const range: (number | "...")[] = [];
+    if (meta.page <= 4) {
+      range.push(...pages.slice(0, 5), "...", meta.totalPages);
+    } else if (meta.page >= meta.totalPages - 3) {
+      range.push(1, "...", ...pages.slice(meta.totalPages - 5));
+    } else {
+      range.push(1, "...", meta.page - 1, meta.page, meta.page + 1, "...", meta.totalPages);
+    }
+    return range;
+  };
+
+  if (meta.total === 0) return null;
+
+  return (
+    <div className="flex items-center justify-between mt-8 pt-6 border-t border-primary/20">
+      <p className="text-primary/60 text-xs tracking-wider">
+        Showing{" "}
+        <span className="text-primary font-medium">
+          {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
+        </span>{" "}
+        of <span className="text-primary font-medium">{meta.total}</span> inquiries
+      </p>
+
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onPageChange(meta.page - 1)}
+          disabled={!meta.hasPrev}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+
+        {getVisiblePages().map((p, i) =>
+          p === "..." ? (
+            <span
+              key={`ellipsis-${i}`}
+              className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm"
+            >
+              …
+            </span>
+          ) : (
+            <button
+              key={p}
+              onClick={() => onPageChange(p as number)}
+              className={`w-8 h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
+                meta.page === p
+                  ? "bg-primary text-white border border-primary"
+                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+              }`}
+            >
+              {p}
+            </button>
+          ),
+        )}
+
+        <button
+          onClick={() => onPageChange(meta.page + 1)}
+          disabled={!meta.hasNext}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function InquiryPage() {
-  const [inquiries, setInquiries] =
-    useState<InquirySubmission[]>(mockInquiries);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"All" | InquiryStatus>(
-    "All"
-  );
-  const [deleteTarget, setDeleteTarget] = useState<InquirySubmission | null>(
-    null
-  );
+export default function DashboardInquiryPage() {
+  // ── Data state ──
+  const [inquiries, setInquiries] = useState<InquirySubmission[]>([]);
+  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filtered = inquiries.filter((inq) => {
-    const coupleName = `${inq.nameOfBride} ${inq.nameOfGroom}`.toLowerCase();
-    const matchSearch =
-      coupleName.includes(search.toLowerCase()) ||
-      inq.yourName.toLowerCase().includes(search.toLowerCase()) ||
-      inq.yourEmail.toLowerCase().includes(search.toLowerCase()) ||
-      inq.weddingVenue.toLowerCase().includes(search.toLowerCase());
-    const matchStatus =
-      statusFilter === "All" || inq.status === statusFilter;
-    return matchSearch && matchStatus;
-  });
+  // ── Filter & search state ──
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | InquiryStatus>("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const confirmDelete = () => {
-    if (deleteTarget) {
-      setInquiries((prev) => prev.filter((inq) => inq.id !== deleteTarget.id));
+  // ── Delete state (consolidated): idle | confirm | deleting ──
+  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
+  const [deleteTarget, setDeleteTarget] = useState<InquirySubmission | null>(null);
+
+  // ── Debounce search — 400ms, reset page ke 1 setiap search berubah ──
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setCurrentPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // ── Fetch inquiries — reaktif terhadap semua filter & page ──
+  const getInquiries = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        limit: LIMIT,
+      };
+      if (debouncedSearch) params.search = debouncedSearch;
+      if (statusFilter !== "all") params.status = statusFilter;
+
+      const response = await axios.get("/api/inquiries", { params });
+      setInquiries(response.data.data ?? []);
+      setPaginationMeta(response.data.meta ?? null);
+    } catch (err) {
+      const errorMsg = axios.isAxiosError(err)
+        ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
+        : err instanceof Error
+          ? err.message
+          : "Failed to load inquiries";
+      toast.error("Failed to load inquiries", { description: errorMsg });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentPage, debouncedSearch, statusFilter]);
+
+  useEffect(() => {
+    getInquiries();
+  }, [getInquiries]);
+
+  // ── Filter change helpers — selalu reset page ke 1 ──
+  const handleStatusChange = (value: "all" | InquiryStatus) => {
+    setStatusFilter(value);
+    setCurrentPage(1);
+  };
+
+  const clearAllFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setCurrentPage(1);
+  };
+
+  // ── Delete flow ──
+  const openDeleteModal = (inquiry: InquirySubmission) => {
+    setDeleteTarget(inquiry);
+    setDeleteStatus("confirm");
+  };
+
+  const closeDeleteModal = () => {
+    if (deleteStatus === "deleting") return; // blokir close saat request berjalan
+    setDeleteTarget(null);
+    setDeleteStatus("idle");
+  };
+
+  const deleteInquiryById = async () => {
+    if (!deleteTarget) return;
+    setDeleteStatus("deleting");
+    try {
+      await axios.delete(`/api/inquiries/${deleteTarget.id}`, {
+        headers: getAuthHeaders(),
+      });
+      toast.success("Inquiry deleted!", {
+        description: "The inquiry has been removed from the system.",
+      });
+      const isLastOnPage = inquiries.length === 1 && currentPage > 1;
       setDeleteTarget(null);
+      setDeleteStatus("idle");
+      if (isLastOnPage) {
+        setCurrentPage((prev) => prev - 1); // trigger useEffect → getInquiries otomatis
+      } else {
+        getInquiries();
+      }
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
+      toast.error("Failed to delete", { description: errorMsg });
+      setDeleteStatus("confirm"); // keep modal open on error
     }
   };
 
-  const countByStatus = (status: InquiryStatus) =>
-    inquiries.filter((inq) => inq.status === status).length;
+  // ── Derived values ──
+  const totalCount = paginationMeta?.total ?? 0;
+  const hasActiveFilters = !!debouncedSearch || statusFilter !== "all";
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
@@ -395,163 +416,196 @@ export default function InquiryPage() {
             Inquiries
           </h1>
           <p className="text-primary/80 text-sm mt-1">
-            {inquiries.length} total inquiries
+            {isLoading ? (
+              <span className="inline-block w-24 h-3 bg-primary/10 animate-pulse rounded" />
+            ) : (
+              `${totalCount} total inquiries`
+            )}
           </p>
         </div>
       </div>
 
       {/* ── Stats Row ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        {/* All */}
-        <button
-          onClick={() => setStatusFilter("All")}
-          className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
-            statusFilter === "All"
-              ? "bg-primary text-white border-primary"
-              : "bg-white border-primary/20 text-primary hover:border-primary/30"
-          }`}
-        >
-          <div className="flex items-center gap-2 mb-1.5">
-            <Users
-              className={`w-3.5 h-3.5 ${statusFilter === "All" ? "text-white/70" : "text-primary/50"}`}
-            />
-            <p
-              className={`text-xs tracking-[0.2em] uppercase ${
-                statusFilter === "All" ? "text-white/80" : "text-primary/80"
-              }`}
-            >
-              All
-            </p>
-          </div>
-          <p className="text-2xl font-semibold">{inquiries.length}</p>
-        </button>
-
-        {/* Status stat buttons */}
-        {(
-          [
-            "new",
-            "reviewed",
-            "quoted",
-            "booked",
-            "archived",
-          ] as InquiryStatus[]
-        ).map((status) => {
-          const isActive = statusFilter === status;
-          const { label } = inquiryStatusConfig[status];
-          return (
-            <button
-              key={status}
-              onClick={() => setStatusFilter(isActive ? "All" : status)}
-              className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
-                isActive
-                  ? "bg-primary text-white border-primary"
-                  : "bg-white border-primary/20 text-primary hover:border-primary/30"
-              }`}
-            >
+      {isLoading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonStatCard key={i} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          {/* All */}
+          <button
+            onClick={() => handleStatusChange("all")}
+            className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
+              statusFilter === "all"
+                ? "bg-primary text-white border-primary"
+                : "bg-white border-primary/20 text-primary hover:border-primary/30"
+            }`}
+          >
+            <div className="flex items-center gap-2 mb-1.5">
+              <Users
+                className={`w-3.5 h-3.5 ${statusFilter === "all" ? "text-white/70" : "text-primary/50"}`}
+              />
               <p
-                className={`text-xs tracking-[0.2em] uppercase mb-1.5 ${
-                  isActive ? "text-white/80" : "text-primary/80"
+                className={`text-xs tracking-[0.2em] uppercase ${
+                  statusFilter === "all" ? "text-white/80" : "text-primary/80"
                 }`}
               >
-                {label}
+                All
               </p>
-              <p className="text-2xl font-semibold">{countByStatus(status)}</p>
-            </button>
-          );
-        })}
-      </div>
+            </div>
+            <p className="text-2xl font-semibold">{totalCount}</p>
+          </button>
+
+          {/* Per-status stat buttons */}
+          {ALL_STATUSES.map((status) => {
+            const isActive = statusFilter === status;
+            const { label } = inquiryStatusConfig[status];
+            return (
+              <button
+                key={status}
+                onClick={() => handleStatusChange(isActive ? "all" : status)}
+                className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
+                  isActive
+                    ? "bg-primary text-white border-primary"
+                    : "bg-white border-primary/20 text-primary hover:border-primary/30"
+                }`}
+              >
+                <p
+                  className={`text-xs tracking-[0.2em] uppercase mb-1.5 ${
+                    isActive ? "text-white/80" : "text-primary/80"
+                  }`}
+                >
+                  {label}
+                </p>
+                <p className="text-2xl font-semibold">
+                  {isActive ? (paginationMeta?.total ?? "—") : "—"}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* ── Search & Filter Bar ── */}
-      <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+      <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
             type="text"
             placeholder="Search by couple name, contact, venue, or email..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
-          {search && (
+          {searchTerm && (
             <button
-              onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
+              onClick={() => setSearchTerm("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/30 hover:text-primary/60 transition-colors hover:cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Status filter */}
+        {/* Divider */}
+        <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
+
+        {/* Status filter dropdown */}
         <div className="relative shrink-0">
           <select
             value={statusFilter}
-            onChange={(e) =>
-              setStatusFilter(e.target.value as "All" | InquiryStatus)
-            }
-            className="w-full sm:w-40 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer"
+            onChange={(e) => handleStatusChange(e.target.value as "all" | InquiryStatus)}
+            className="w-full sm:w-44 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer"
           >
-            <option value="All">All Statuses</option>
-            <option value="new">New</option>
-            <option value="reviewed">Reviewed</option>
-            <option value="quoted">Quoted</option>
-            <option value="booked">Booked</option>
-            <option value="archived">Archived</option>
+            <option value="all">All Statuses</option>
+            {ALL_STATUSES.map((s) => (
+              <option key={s} value={s}>
+                {inquiryStatusConfig[s].label}
+              </option>
+            ))}
           </select>
           <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
         </div>
+
+        {/* Clear all */}
+        {hasActiveFilters && (
+          <>
+            <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
+            <button
+              onClick={clearAllFilters}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-primary/50 hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+              Clear
+            </button>
+          </>
+        )}
       </div>
 
-      {/* ── Results Count ── */}
-      {(search || statusFilter !== "All") && (
+      {/* ── Results Info ── */}
+      {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
-          Showing {filtered.length} of {inquiries.length} inquiries
-          {statusFilter !== "All" &&
+          Showing {paginationMeta.total} inquir{paginationMeta.total !== 1 ? "ies" : "y"}
+          {statusFilter !== "all" &&
             ` · ${inquiryStatusConfig[statusFilter].label}`}
-          {search && ` · "${search}"`}
+          {debouncedSearch && ` for "${debouncedSearch}"`}
         </p>
       )}
 
       {/* ── Grid ── */}
-      {filtered.length === 0 ? (
+      {isLoading ? (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {Array.from({ length: LIMIT }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      ) : inquiries.length === 0 ? (
         <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
           <Heart className="w-8 h-8 text-primary/20 mb-4" />
           <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
             No Results
           </p>
           <p className="text-primary/80 text-sm">
-            {search
-              ? `No inquiries match "${search}"`
+            {debouncedSearch
+              ? `No inquiries match "${debouncedSearch}"`
               : "No inquiries in this category yet"}
           </p>
-          {search && (
+          {hasActiveFilters && (
             <button
-              onClick={() => setSearch("")}
+              onClick={clearAllFilters}
               className="mt-4 text-xs tracking-widest uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
             >
-              Clear Search
+              Clear Filters
             </button>
           )}
         </div>
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {filtered.map((inquiry) => (
+          {inquiries.map((inquiry) => (
             <InquiryCard
               key={inquiry.id}
               inquiry={inquiry}
-              onDelete={(inq) => setDeleteTarget(inq)}
+              onDelete={openDeleteModal}
             />
           ))}
         </div>
       )}
 
+      {/* ── Pagination ── */}
+      {paginationMeta && !isLoading && (
+        <Pagination meta={paginationMeta} onPageChange={setCurrentPage} />
+      )}
+
       {/* ── Delete Modal ── */}
-      {deleteTarget && (
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") && deleteTarget && (
         <DeleteModal
-          name={`${deleteTarget.nameOfBride} & ${deleteTarget.nameOfGroom}`}
-          onConfirm={confirmDelete}
-          onCancel={() => setDeleteTarget(null)}
+          name={`${deleteTarget.name_of_bride} & ${deleteTarget.name_of_groom}`}
+          onConfirm={deleteInquiryById}
+          onCancel={closeDeleteModal}
+          isLoading={deleteStatus === "deleting"}
         />
       )}
     </div>

@@ -4,6 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import {
   ChevronLeft,
   FolderOpen,
@@ -15,31 +18,19 @@ import {
   Eye,
   Trash2,
 } from "lucide-react";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface Destination {
-  id: string;
-  name: string;
-  slug: string;
-  type: string;
-  location: string;
-  image: string;
-  guest_capacity: string;
-}
-
-interface DestinationCategory {
-  id: string;
-  name: string;
-  destinations: Destination[];
-}
+import { Destination, DestinationCategory } from "@/types";
+import { destinationCategoryFormSchema, type DestinationCategoryFormData } from "@/utils/form-validators";
+import SaveModal from "@/components/shared/save-modal";
+import DeleteModal from "@/components/shared/delete-modal";
+import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
 // ─── Destination Mini Card ────────────────────────────────────────────────────
 
 function DestinationMiniCard({ destination }: { destination: Destination }) {
   return (
-    <div className="flex items-center gap-4 p-4 bg-white border border-primary/20 hover:border-primary/30 hover:shadow-sm transition-all group">
-      <div className="relative w-16 h-12 shrink-0 overflow-hidden">
+    <div className="flex items-center gap-3 p-3 sm:p-4 bg-white border border-primary/20 hover:border-primary/30 hover:shadow-sm transition-all group">
+      <div className="relative w-14 h-11 sm:w-16 sm:h-12 shrink-0 overflow-hidden">
         <Image
           src={destination.image || "https://placehold.net/default.svg"}
           alt={destination.name}
@@ -57,24 +48,26 @@ function DestinationMiniCard({ destination }: { destination: Destination }) {
         </p>
         <div className="flex items-center gap-1 mt-0.5">
           <MapPin className="w-3 h-3 text-primary/30 shrink-0" />
-          <p className="text-primary/50 text-xs truncate">{destination.location}</p>
+          <p className="text-primary/50 text-xs truncate">
+            {destination.location}
+          </p>
         </div>
       </div>
-      <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex items-center gap-1 shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
         <Link
           href={`/destinations/${destination.slug}`}
           target="_blank"
-          className="w-7 h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 transition-colors"
+          className="w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 active:bg-primary/10 transition-colors"
           title="View public page"
         >
-          <Eye className="w-3.5 h-3.5" />
+          <Eye className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
         </Link>
         <Link
           href={`/dashboard/destinations/${destination.id}`}
-          className="w-7 h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 transition-colors"
+          className="w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 active:bg-primary/10 transition-colors"
           title="Edit destination"
         >
-          <Pencil className="w-3.5 h-3.5" />
+          <Pencil className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
         </Link>
       </div>
     </div>
@@ -83,95 +76,162 @@ function DestinationMiniCard({ destination }: { destination: Destination }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function DashboardDestinationCategoryDetailPage() {
+export default function DestinationCategoryDetailPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
 
   const [category, setCategory] = useState<DestinationCategory | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  // Inline edit state
+  // Edit state
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState("");
+  const [showSaveModal, setShowSaveModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
 
   // Delete state
-  const [showDelete, setShowDelete] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const fetchCategory = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/destination-categories/${id}`);
-      if (res.status === 404) {
-        setError("Category not found.");
-        return;
+  // ── Unsaved changes guard — state only (logic setelah useForm) ─────────────
+  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+
+  // Form setup
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+    reset,
+    watch,
+  } = useForm<DestinationCategoryFormData>({
+    resolver: zodResolver(destinationCategoryFormSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  const nameValue = watch("name");
+
+  // ── Unsaved changes guard ──────────────────────────────────────────────────────
+  // Guard aktif hanya ketika sedang dalam mode edit DAN form sudah diubah (isDirty)
+  const hasUnsavedChanges = isEditing && isDirty;
+
+  // Block browser close / refresh saat ada perubahan yang belum disimpan
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges && !isSaving) {
+        e.preventDefault();
+        e.returnValue = "";
       }
-      if (!res.ok) throw new Error("Failed to fetch");
-      const json = await res.json();
-      setCategory(json.data);
-      setEditName(json.data.name);
-    } catch {
-      setError("Failed to load category. Please try again.");
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges, isSaving]);
+
+  // Helper: navigate dengan guard check
+  const guardedNavigate = useCallback(
+    (href: string) => {
+      if (hasUnsavedChanges && !isSaving) {
+        setUnsavedModal({ open: true, pendingHref: href });
+      } else {
+        router.push(href);
+      }
+    },
+    [hasUnsavedChanges, isSaving, router]
+  );
+
+  // ── Fetch category ────────────────────────────────────────────────────────
+  const getDestinationCategoryById = useCallback(async () => {
+    setIsLoadingData(true);
+    setApiError(null);
+    try {
+      const response = await axios.get(`/api/destination-categories/${id}`);
+      setCategory(response.data.data);
+      reset({ name: response.data.data.name });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          setApiError("Category not found.");
+        } else {
+          setApiError("Failed to load category. Please try again.");
+        }
+      } else {
+        setApiError("Failed to load category. Please try again.");
+      }
     } finally {
-      setIsLoading(false);
+      setIsLoadingData(false);
     }
-  }, [id]);
+  }, [id, reset]);
 
   useEffect(() => {
-    fetchCategory();
-  }, [fetchCategory]);
+    getDestinationCategoryById();
+  }, [getDestinationCategoryById]);
 
-  const handleSave = async () => {
-    if (!editName.trim() || editName === category?.name) {
+  // ── Handle save ────────────────────────────────────────────────────────────
+  const onSubmitForm = async (data: DestinationCategoryFormData) => {
+    if (data.name === category?.name) {
       setIsEditing(false);
       return;
     }
+    setShowSaveModal(true);
+  };
+
+  const updateDestinationCategoryById = async () => {
     setIsSaving(true);
-    setSaveError(null);
+    setApiError(null);
     try {
-      const res = await fetch(`/api/destination-categories/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: editName.trim() }),
-      });
-      if (!res.ok) throw new Error("Failed to update");
-      const json = await res.json();
-      setCategory(json.data);
-      setEditName(json.data.name);
+      const response = await axios.patch(
+        `/api/destination-categories/${id}`,
+        { name: nameValue.trim() },
+        { headers: getAuthHeaders(true) }
+      );
+      setCategory(response.data.data);
+      reset({ name: response.data.data.name });
       setIsEditing(false);
-    } catch {
-      setSaveError("Failed to save. Please try again.");
+      setShowSaveModal(false);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setApiError("Failed to save. Please try again.");
+      } else {
+        setApiError("Failed to save. Please try again.");
+      }
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleDelete = async () => {
+  // ── Handle delete ──────────────────────────────────────────────────────────
+  const deleteDestinationCategoryById = async () => {
     setIsDeleting(true);
     try {
-      const res = await fetch(`/api/destination-categories/${id}`, {
-        method: "DELETE",
+      await axios.delete(`/api/destination-categories/${id}`, {
+        headers: getAuthHeaders(),
       });
-      if (!res.ok) throw new Error("Failed to delete");
       router.push("/dashboard/destination-categories");
-    } catch {
-      setError("Failed to delete category.");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setApiError("Failed to delete category.");
+      } else {
+        setApiError("Failed to delete category.");
+      }
       setIsDeleting(false);
-      setShowDelete(false);
+      setShowDeleteModal(false);
     }
   };
 
-  // ── Loading ────────────────────────────────────────────────────────────────
+  // ── Handle edit cancel ─────────────────────────────────────────────────────
+  const handleEditCancel = () => {
+    reset();
+    setIsEditing(false);
+  };
 
-  if (isLoading) {
+  // ── Loading ──────────────────────────────────────────────────────────────��─
+
+  if (isLoadingData) {
     return (
-      <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-        <div className="flex flex-col items-center justify-center py-40">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">
+        <div className="flex flex-col items-center justify-center py-32 sm:py-40">
           <Loader2 className="w-6 h-6 text-primary/30 animate-spin mb-3" />
           <p className="text-primary/40 text-xs tracking-widest uppercase">
             Loading...
@@ -183,15 +243,15 @@ export default function DashboardDestinationCategoryDetailPage() {
 
   // ── Error ──────────────────────────────────────────────────────────────────
 
-  if (error && !category) {
+  if (apiError && !category) {
     return (
-      <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-        <div className="flex flex-col items-center justify-center py-40 text-center">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">
+        <div className="flex flex-col items-center justify-center py-32 sm:py-40 text-center">
           <FolderOpen className="w-8 h-8 text-primary/20 mb-4" />
           <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
             Error
           </p>
-          <p className="text-primary/60 text-sm mb-6">{error}</p>
+          <p className="text-primary/60 text-sm mb-6">{apiError}</p>
           <Link
             href="/dashboard/destination-categories"
             className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
@@ -206,43 +266,49 @@ export default function DashboardDestinationCategoryDetailPage() {
   if (!category) return null;
 
   return (
-    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">
       {/* ── Breadcrumb ── */}
-      <div className="flex items-center gap-2 mb-8">
-        <Link
-          href="/dashboard/destination-categories"
+      <div className="flex items-center gap-2 mb-6 sm:mb-8">
+        <button
+          type="button"
+          onClick={() => guardedNavigate("/dashboard/destination-categories")}
           className="flex items-center gap-1.5 text-primary/50 hover:text-primary transition-colors text-xs tracking-widest uppercase"
         >
           <ChevronLeft className="w-3 h-3" />
           Categories
-        </Link>
+        </button>
         <span className="text-primary/20 text-xs">/</span>
-        <span className="text-primary/80 text-xs tracking-widest uppercase truncate max-w-[200px]">
+        <span className="text-primary/80 text-xs tracking-widest uppercase truncate max-w-[150px] sm:max-w-[200px]">
           {category.name}
         </span>
       </div>
 
       {/* ── Error Banner ── */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 mb-6 flex items-center justify-between">
-          <span>{error}</span>
-          <button onClick={() => setError(null)} className="hover:cursor-pointer">
+      {apiError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 mb-6 flex items-center justify-between gap-3">
+          <span className="text-xs sm:text-sm">{apiError}</span>
+          <button
+            onClick={() => setApiError(null)}
+            className="hover:cursor-pointer shrink-0"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
         {/* ── Left: Category Details ── */}
-        <div className="lg:col-span-1 space-y-5">
+        <div className="lg:col-span-1 space-y-4 sm:space-y-5">
           {/* Category Info Card */}
-          <div className="bg-white border border-primary/20 p-6">
+          <div className="bg-white border border-primary/20 p-4 sm:p-6">
             <div className="flex items-start justify-between mb-5">
               <div>
                 <p className="text-primary/60 tracking-[0.25em] uppercase text-xs mb-1">
                   Category
                 </p>
-                <p className="text-primary/40 text-xs font-mono">{category.id.slice(0, 8)}…</p>
+                <p className="text-primary/40 text-xs font-mono">
+                  {category.id.slice(0, 8)}…
+                </p>
               </div>
               <div className="w-10 h-10 bg-primary/5 flex items-center justify-center">
                 <FolderOpen className="w-5 h-5 text-primary/40" />
@@ -255,30 +321,26 @@ export default function DashboardDestinationCategoryDetailPage() {
                 Category Name
               </label>
               {isEditing ? (
-                <div className="space-y-2">
+                <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-2">
                   <input
+                    {...register("name")}
                     type="text"
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
+                    autoFocus
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") handleSave();
                       if (e.key === "Escape") {
-                        setEditName(category.name);
-                        setIsEditing(false);
-                        setSaveError(null);
+                        handleEditCancel();
                       }
                     }}
-                    autoFocus
                     className="w-full px-3 py-2.5 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors"
                   />
-                  {saveError && (
-                    <p className="text-red-500 text-xs">{saveError}</p>
+                  {errors.name && (
+                    <p className="text-red-500 text-xs">{errors.name.message}</p>
                   )}
                   <div className="flex gap-2">
                     <button
-                      onClick={handleSave}
-                      disabled={isSaving || !editName.trim()}
-                      className="flex-1 flex items-center justify-center gap-1.5 bg-primary text-white text-xs tracking-widest uppercase py-2 hover:bg-primary/90 transition-colors disabled:opacity-50 hover:cursor-pointer"
+                      type="submit"
+                      disabled={isSaving || !isDirty}
+                      className="flex-1 flex items-center justify-center gap-1.5 bg-primary text-white text-xs tracking-widest uppercase py-2.5 sm:py-2 hover:bg-primary/90 active:bg-primary/80 transition-colors disabled:opacity-50 hover:cursor-pointer"
                     >
                       {isSaving ? (
                         <Loader2 className="w-3 h-3 animate-spin" />
@@ -288,30 +350,30 @@ export default function DashboardDestinationCategoryDetailPage() {
                       Save
                     </button>
                     <button
-                      onClick={() => {
-                        setEditName(category.name);
-                        setIsEditing(false);
-                        setSaveError(null);
-                      }}
+                      type="button"
+                      onClick={handleEditCancel}
                       disabled={isSaving}
-                      className="flex-1 flex items-center justify-center gap-1.5 border border-primary/20 text-primary text-xs tracking-widest uppercase py-2 hover:bg-primary/5 transition-colors hover:cursor-pointer"
+                      className="flex-1 flex items-center justify-center gap-1.5 border border-primary/20 text-primary text-xs tracking-widest uppercase py-2.5 sm:py-2 hover:bg-primary/5 active:bg-primary/5 transition-colors hover:cursor-pointer"
                     >
                       <X className="w-3 h-3" />
                       Cancel
                     </button>
                   </div>
-                </div>
+                </form>
               ) : (
-                <div className="flex items-center justify-between group">
+                <div className="flex items-center justify-between">
                   <p className="text-primary font-semibold text-lg">
                     {category.name}
                   </p>
                   <button
-                    onClick={() => setIsEditing(true)}
-                    className="w-7 h-7 flex items-center justify-center text-primary/30 hover:text-primary hover:bg-primary/10 transition-colors opacity-0 group-hover:opacity-100 hover:cursor-pointer"
+                    onClick={() => {
+                      setIsEditing(true);
+                      reset({ name: category.name });
+                    }}
+                    className="w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 active:bg-primary/10 transition-colors hover:cursor-pointer"
                     title="Edit name"
                   >
-                    <Pencil className="w-3.5 h-3.5" />
+                    <Pencil className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                   </button>
                 </div>
               )}
@@ -331,7 +393,7 @@ export default function DashboardDestinationCategoryDetailPage() {
           </div>
 
           {/* Danger Zone */}
-          <div className="bg-white border border-red-100 p-6">
+          <div className="bg-white border border-red-100 p-4 sm:p-6">
             <p className="text-xs tracking-widest uppercase text-red-400 mb-3">
               Danger Zone
             </p>
@@ -340,8 +402,8 @@ export default function DashboardDestinationCategoryDetailPage() {
               linked to this category will need to be reassigned.
             </p>
             <button
-              onClick={() => setShowDelete(true)}
-              className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-red-50 transition-colors hover:cursor-pointer"
+              onClick={() => setShowDeleteModal(true)}
+              className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-3 sm:py-2.5 hover:bg-red-50 active:bg-red-50 transition-colors hover:cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               Delete Category
@@ -353,7 +415,7 @@ export default function DashboardDestinationCategoryDetailPage() {
         <div className="lg:col-span-2">
           <div className="bg-white border border-primary/20 overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-primary/10">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-primary/10">
               <div>
                 <p className="text-primary font-medium text-sm">
                   Destinations in this Category
@@ -367,7 +429,7 @@ export default function DashboardDestinationCategoryDetailPage() {
               </div>
               <Link
                 href={`/dashboard/destinations?category=${category.id}`}
-                className="text-xs tracking-widest uppercase text-primary/50 hover:text-primary transition-colors border-b border-primary/20 hover:border-primary"
+                className="text-xs tracking-widest uppercase text-primary/50 hover:text-primary transition-colors border-b border-primary/20 hover:border-primary shrink-0 ml-4"
               >
                 View All
               </Link>
@@ -375,7 +437,7 @@ export default function DashboardDestinationCategoryDetailPage() {
 
             {/* Destination List */}
             {category.destinations.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="flex flex-col items-center justify-center py-16 sm:py-20 text-center px-4">
                 <MapPin className="w-7 h-7 text-primary/15 mb-3" />
                 <p className="text-primary/60 text-xs tracking-widest uppercase mb-1.5">
                   No Destinations
@@ -391,7 +453,7 @@ export default function DashboardDestinationCategoryDetailPage() {
                 </Link>
               </div>
             ) : (
-              <div className="p-4 grid sm:grid-cols-2 gap-3">
+              <div className="p-3 sm:p-4 grid sm:grid-cols-2 gap-2 sm:gap-3">
                 {category.destinations.map((destination) => (
                   <DestinationMiniCard
                     key={destination.id}
@@ -404,61 +466,38 @@ export default function DashboardDestinationCategoryDetailPage() {
         </div>
       </div>
 
+      {/* ── Unsaved Changes Modal ── */}
+      {unsavedModal.open && (
+        <UnsavedChangesModal
+          mode="update"
+          onConfirmLeave={() => {
+            setUnsavedModal({ open: false });
+            if (unsavedModal.pendingHref) router.push(unsavedModal.pendingHref);
+          }}
+          onCancel={() => setUnsavedModal({ open: false })}
+        />
+      )}
+
+      {/* ── Save Confirmation Modal ── */}
+      {showSaveModal && (
+        <SaveModal
+          mode="update"
+          entityName="Category"
+          itemName={nameValue.trim()}
+          onConfirm={updateDestinationCategoryById}
+          onCancel={() => setShowSaveModal(false)}
+          isLoading={isSaving}
+        />
+      )}
+
       {/* ── Delete Confirmation Modal ── */}
-      {showDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => !isDeleting && setShowDelete(false)}
-          />
-          <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-            <button
-              onClick={() => setShowDelete(false)}
-              disabled={isDeleting}
-              className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors disabled:opacity-40"
-            >
-              <X className="w-4 h-4" />
-            </button>
-            <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-              <Trash2 className="w-5 h-5 text-red-500" />
-            </div>
-            <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-2">
-              Confirm Delete
-            </p>
-            <h2 className="text-primary text-xl font-semibold mb-3">
-              Delete Category
-            </h2>
-            <p className="text-primary/70 text-sm leading-relaxed mb-8">
-              Are you sure you want to delete{" "}
-              <span className="font-semibold text-primary">
-                &ldquo;{category.name}&rdquo;
-              </span>
-              ? This action cannot be undone.{" "}
-              {category.destinations.length > 0 && (
-                <span className="text-red-500 font-medium">
-                  This category has {category.destinations.length} destination(s) linked to it.
-                </span>
-              )}
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowDelete(false)}
-                disabled={isDeleting}
-                className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors disabled:opacity-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
-              >
-                {isDeleting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
+      {showDeleteModal && (
+        <DeleteModal
+          name={category.name}
+          onConfirm={deleteDestinationCategoryById}
+          onCancel={() => setShowDeleteModal(false)}
+          isLoading={isDeleting}
+        />
       )}
     </div>
   );

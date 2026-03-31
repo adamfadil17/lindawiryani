@@ -21,11 +21,6 @@ enum WeddingExperienceHeroStyle {
   bottom
 }
 
-enum WeddingThemeType {
-  ELOPEMENT
-  INTIMATE
-}
-
 enum WeddingExperienceType {
   elopement_weddings    @map("elopement-weddings")
   intimate_weddings     @map("intimate-weddings")
@@ -248,15 +243,14 @@ model VenueImage {
 model WeddingTheme {
   id            String    @id @default(uuid())
   slug          String    @unique
-  type          WeddingThemeType
   title         String
   description   String
   image         String
   inclusions    Json      // string[]
-  venue_id      String
+  venue_id      String?
   experience_id String
 
-  venue      Venue              @relation(fields: [venue_id], references: [id])
+  venue      Venue?              @relation(fields: [venue_id], references: [id])
   experience WeddingExperience  @relation(fields: [experience_id], references: [id])
   gallery    WeddingThemeImage[]
 
@@ -306,9 +300,9 @@ model Portfolio {
   slug           String  @unique
   couple         String
   subtitle       String
-  destination_id String
-  venue_id       String
-  experience_id  String
+  destination_id String?
+  venue_id       String?
+  experience_id  String?
   image          String
   tags           Json    // string[]
   excerpt        String
@@ -328,9 +322,9 @@ model Portfolio {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  destination Destination       @relation(fields: [destination_id], references: [id])
-  venue       Venue             @relation(fields: [venue_id], references: [id])
-  experience  WeddingExperience @relation(fields: [experience_id], references: [id])
+  destination Destination?       @relation(fields: [destination_id], references: [id])
+  venue       Venue?             @relation(fields: [venue_id], references: [id])
+  experience  WeddingExperience? @relation(fields: [experience_id], references: [id])
   gallery     PortfolioImage[]
 
   @@map("portfolios")

@@ -43,7 +43,7 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
@@ -53,7 +53,9 @@ export async function PATCH(
     if (dto.title) {
       const baseSlug = toSlug(dto.title);
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.weddingTheme.findUnique({ where: { slug: s } });
+        const existing = await prisma.weddingTheme.findUnique({
+          where: { slug: s },
+        });
         return !!existing && existing.id !== id;
       });
     }
@@ -79,10 +81,17 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.weddingTheme.delete({ where: { id } });
+    const existing = await prisma.weddingTheme.findUnique({ where: { id } });
+    if (!existing) return notFound("Wedding Theme");
+
+    await prisma.$transaction(async (tx) => {
+      await tx.weddingThemeImage.deleteMany({ where: { theme_id: id } });
+      await tx.weddingTheme.delete({ where: { id } });
+    });
+
     return noContent();
   } catch (error) {
     return handleError(error);

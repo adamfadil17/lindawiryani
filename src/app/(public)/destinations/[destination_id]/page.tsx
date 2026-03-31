@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { destinationList } from "@/lib/data/destinations/destination-data";
 import DestinationDetail from "./components/destination-detail";
+import { destinationList } from "@/lib/data/destination-data";
 
 interface Props {
   params: Promise<{
@@ -32,10 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: destination.description,
     openGraph: {
       title: `${destination.name} Destination Weddings`,
-      description: destination.longDescription,
+      description: destination.long_description,
       images: [
         {
-          url: destination.imageUrl,
+          url: destination.image,
           width: 1200,
           height: 630,
           alt: destination.name,
@@ -54,6 +54,14 @@ export default async function DestinationPage({ params }: Props) {
   if (!destination) {
     notFound();
   }
+  const otherDestinations = destinationList.filter(
+    (d) => d.slug !== destination.slug,
+  );
 
-  return <DestinationDetail destination={destination} />;
+  return (
+    <DestinationDetail
+      destination={destination}
+      otherDestinations={otherDestinations}
+    />
+  );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Toaster } from "@/components/ui/sonner";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,23 +10,23 @@ import {
   Sparkles,
   Heart,
   BookOpen,
-  ImageIcon,
   Briefcase,
-  MessageSquare,
   ChevronRight,
   ChevronDown,
   FolderOpen,
   List,
   LogOut,
-  Settings,
-  Bell,
   Menu,
   X,
   LayoutDashboard,
   Hotel,
   Newspaper,
+  Users,
+  MailOpen,
 } from "lucide-react";
-import { useCurrentUser } from "@/lib/hook/useCurrentUser";
+import { useCurrentUser } from "@/hook/useCurrentUser";
+import { useLogout } from "@/hook/useLogout";
+import { useInquiryBadge } from "@/hook/useInquiryBadge";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -33,7 +34,6 @@ interface NavItem {
   label: string;
   href: string;
   icon: React.ReactNode;
-  badge?: number;
 }
 
 interface NavGroup {
@@ -56,11 +56,6 @@ const navGroups: NavGroup[] = [
     group: "Content",
     items: [
       {
-        label: "Wedding Themes",
-        href: "/dashboard/wedding-themes",
-        icon: <Sparkles className="w-4 h-4" />,
-      },
-      {
         label: "Wedding Experiences",
         href: "/dashboard/wedding-experiences",
         icon: <Heart className="w-4 h-4" />,
@@ -69,6 +64,11 @@ const navGroups: NavGroup[] = [
         label: "Venues",
         href: "/dashboard/venues",
         icon: <Hotel className="w-4 h-4" />,
+      },
+      {
+        label: "Wedding Themes",
+        href: "/dashboard/wedding-themes",
+        icon: <Sparkles className="w-4 h-4" />,
       },
       {
         label: "Journal",
@@ -93,8 +93,7 @@ const navGroups: NavGroup[] = [
       {
         label: "Inquiry",
         href: "/dashboard/inquiry",
-        icon: <MessageSquare className="w-4 h-4" />,
-        badge: 3,
+        icon: <MailOpen className="w-4 h-4" />,
       },
     ],
   },
@@ -210,6 +209,8 @@ function Sidebar({
   onToggle: () => void;
 }) {
   const pathname = usePathname();
+  const { logout } = useLogout();
+  const { count: inquiryBadgeCount } = useInquiryBadge();
 
   return (
     <aside
@@ -301,9 +302,9 @@ function Sidebar({
                           <span className="text-xs tracking-[0.1em] uppercase font-medium flex-1">
                             {item.label}
                           </span>
-                          {item.badge && (
-                            <span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 min-w-[18px] text-center">
-                              {item.badge}
+                          {item.href === "/dashboard/inquiry" && inquiryBadgeCount > 0 && (
+                            <span className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${isActive ? "bg-white/20 text-white" : "bg-primary/20 text-primary"}`}>
+                              {inquiryBadgeCount}
                             </span>
                           )}
                         </>
@@ -324,15 +325,15 @@ function Sidebar({
       {/* Footer */}
       <div className="border-t border-primary/20 p-3 space-y-1">
         <Link
-          href="/dashboard/settings"
+          href="/dashboard/users"
           className={`flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:text-primary hover:bg-primary/5 transition-colors ${
             collapsed ? "justify-center" : ""
           }`}
-          title={collapsed ? "Settings" : undefined}
+          title={collapsed ? "Users" : undefined}
         >
-          <Settings className="w-4 h-4 flex-shrink-0" />
+          <Users className="w-4 h-4 flex-shrink-0" />
           {!collapsed && (
-            <span className="text-xs tracking-[0.1em] uppercase">Settings</span>
+            <span className="text-xs tracking-[0.1em] uppercase">Users</span>
           )}
         </Link>
         <button
@@ -340,12 +341,7 @@ function Sidebar({
             collapsed ? "justify-center" : ""
           }`}
           title={collapsed ? "Sign Out" : undefined}
-          onClick={() => {
-            document.cookie =
-              "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-            localStorage.removeItem("token");
-            window.location.href = "/login";
-          }}
+          onClick={logout}
         >
           <LogOut className="w-4 h-4 flex-shrink-0" />
           {!collapsed && (
@@ -367,6 +363,8 @@ function MobileSidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const { logout } = useLogout();
+  const { count: inquiryBadgeCount } = useInquiryBadge();
 
   return (
     <>
@@ -438,7 +436,7 @@ function MobileSidebar({
                         <span className="text-xs tracking-[0.1em] uppercase font-medium flex-1">
                           {item.label}
                         </span>
-                        {item.badge && (
+                        {item.href === "/dashboard/inquiry" && inquiryBadgeCount > 0 && (
                           <span
                             className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${
                               isActive
@@ -446,7 +444,7 @@ function MobileSidebar({
                                 : "bg-primary/20 text-primary"
                             }`}
                           >
-                            {item.badge}
+                            {inquiryBadgeCount}
                           </span>
                         )}
                       </Link>
@@ -461,21 +459,16 @@ function MobileSidebar({
         {/* Footer */}
         <div className="border-t border-primary/20 p-4 space-y-1">
           <Link
-            href="/dashboard/settings"
+            href="/dashboard/users"
             onClick={onClose}
             className="flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:text-primary hover:bg-primary/5 transition-colors"
           >
-            <Settings className="w-4 h-4" />
-            <span className="text-xs tracking-[0.1em] uppercase">Settings</span>
+            <Users className="w-4 h-4" />
+            <span className="text-xs tracking-[0.1em] uppercase">Users</span>
           </Link>
           <button
             className="w-full flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:cursor-pointer hover:text-red-500 hover:bg-red-50 transition-colors"
-            onClick={() => {
-              document.cookie =
-                "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-              localStorage.removeItem("token");
-              window.location.href = "/login";
-            }}
+            onClick={logout}
           >
             <LogOut className="w-4 h-4" />
             <span className="text-xs tracking-[0.1em] uppercase">Sign Out</span>
@@ -514,7 +507,7 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
 
   const displayName = loading ? "..." : (user?.name ?? "Admin");
   const displayRole = loading ? "..." : (user?.role ?? "Administrator");
-  const initials = loading ? "•" : (user ? getInitials(user.name) : "A");
+  const initials = loading ? "•" : user ? getInitials(user.name) : "A";
 
   return (
     <header className="h-[72px] border-b border-primary/20 bg-white flex items-center justify-between px-6 sticky top-0 z-30">
@@ -539,15 +532,6 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
 
       {/* Right: notifications + user avatar */}
       <div className="flex items-center gap-3">
-        {/* Notification bell */}
-        <button className="relative w-9 h-9 flex items-center justify-center text-primary/80 hover:cursor-pointer hover:text-primary hover:bg-primary/20 transition-colors">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary rounded-full" />
-        </button>
-
-        {/* Divider */}
-        <div className="w-px h-6 bg-primary/20" />
-
         {/* User avatar */}
         <div className="flex items-center gap-3 cursor-pointer group">
           <div className="text-right hidden sm:block">
@@ -599,6 +583,7 @@ export default function DashboardLayout({
 
         {/* Page content */}
         <main className="flex-1 overflow-y-auto">{children}</main>
+        <Toaster />
       </div>
     </div>
   );

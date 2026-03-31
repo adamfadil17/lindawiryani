@@ -5,66 +5,24 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
+import { fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import {
-  Venue,
   conceptLayers,
   venueCurationConsiderations,
   stylingFocusAreas,
   editorialSources,
   planningJourney,
-} from "@/lib/data/wedding-concepts/wedding-concepts-data";
-import { Currency } from "@/lib/types/wedding-concepts/wedding-concepts-types";
+} from "@/lib/data/wedding-concepts-data";
 import WeddingThemesSection from "@/components/shared/wedding-themes";
 import VenuesSection from "@/components/shared/venues";
-
-
-// ── Currency hook ───────────────────────────────────────────────────────────
-const useCurrencyConverter = () => {
-  const [exchangeRate, setExchangeRate] = useState<number>(15800);
-  const CACHE_DURATION = 60 * 60 * 1000;
-
-  useEffect(() => {
-    const fetchExchangeRate = async () => {
-      const now = Date.now();
-      const cachedRate = sessionStorage.getItem("exchangeRate");
-      const cachedTime = sessionStorage.getItem("exchangeRateTime");
-
-      if (cachedRate && cachedTime) {
-        const timeDiff = now - Number.parseInt(cachedTime);
-        if (timeDiff < CACHE_DURATION) {
-          setExchangeRate(Number.parseFloat(cachedRate));
-          return;
-        }
-      }
-
-      try {
-        const response = await fetch(
-          "https://api.exchangerate-api.com/v4/latest/USD",
-        );
-        const data = await response.json();
-        const rate = data.rates.IDR;
-        setExchangeRate(rate);
-        sessionStorage.setItem("exchangeRate", rate.toString());
-        sessionStorage.setItem("exchangeRateTime", now.toString());
-      } catch (error) {
-        console.error("Failed to fetch exchange rate:", error);
-      }
-    };
-
-    fetchExchangeRate();
-  }, []);
-
-  return exchangeRate;
-};
-
-// ─── Page ───────────────────────────────────────────────────────────────────
+import type { Venue, Currency } from "@/types";
+import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
 
 export default function WeddingConceptsPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCurrency] = useState<Currency>("IDR");
 
-  // Venue selected from ThemeDetailModal — passed down to VenuesSection
+  // Venue yang dipilih dari ThemeDetailModal — diteruskan ke VenuesSection
   const [venueFromTheme, setVenueFromTheme] = useState<Venue | null>(null);
 
   const exchangeRate = useCurrencyConverter();
@@ -103,7 +61,6 @@ export default function WeddingConceptsPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-12 mt-6"
@@ -369,23 +326,14 @@ export default function WeddingConceptsPage() {
               >
                 Venue curation is the foundation of every wedding we design.
                 Rather than presenting an exhaustive directory, we provide a
-                carefully selected overview of venues by area — typically one to
-                five representative venues — to help couples understand location
-                character, venue style, and indicative starting budgets.
-              </motion.p>
-
-              <motion.p
-                variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify"
-              >
-                Our curated venue selections are not recommendations to choose
-                from directly, but guidance tools that reflect the types of
-                spaces we work with and the experiences they support.
+                considered selection of spaces that align with the emotional,
+                aesthetic, and logistical requirements of each celebration
+                style.
               </motion.p>
 
               <motion.div variants={fadeInUp}>
-                <p className="text-primary tracking-widest uppercase mb-5">
-                  Our Venue Curation Process Considers
+                <p className="text-primary font-semibold tracking-widest uppercase mb-5">
+                  Our Selection Criteria
                 </p>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {venueCurationConsiderations.map((item) => (
@@ -424,13 +372,32 @@ export default function WeddingConceptsPage() {
 
       {/* ── WEDDING THEMES ────────────────────────────────────────────── */}
       {/*
-        Section ini menggunakan komponen WeddingThemesSection yang sudah dipisah.
-        Label "Concept Layer 02" berbeda dari versi home page, tapi konten
-        themes/cards dihandle penuh oleh komponen.
+        WeddingThemesSection menggunakan weddingThemeList dari new-data.
+        elopementThemes  = filter type === "ELOPEMENT"
+        intimateThemes   = filter type === "INTIMATE"
+        Venue name lookup via venueList menggunakan theme.venue_id.
+        onExploreVenue meneruskan Venue (tipe baru dari @/types) ke VenuesSection.
       */}
       <WeddingThemesSection
         isMobile={isMobile}
         onExploreVenue={handleExploreVenueFromTheme}
+      />
+
+      {/* ── VENUES & SETTINGS ─────────────────────────────────────────── */}
+      {/*
+        VenuesSection menggunakan venueList, weddingExperienceList,
+        dan weddingThemeList dari new-data.
+        Filter Experience berdasarkan venue.experience_id.
+        Filter Location berdasarkan venue.destination.name.
+        VenueDetailModal menerima elopementThemes & intimateThemes.
+      */}
+      <VenuesSection
+        isMobile={isMobile}
+        selectedCurrency={selectedCurrency}
+        exchangeRate={exchangeRate}
+        onVenueSelect={() => {}}
+        externalSelectedVenue={venueFromTheme}
+        onExternalModalClose={() => setVenueFromTheme(null)}
       />
 
       {/* ── STYLING CONCEPTS DETAIL ───────────────────────────────────── */}
@@ -616,21 +583,6 @@ export default function WeddingConceptsPage() {
           </div>
         </div>
       </motion.section>
-
-      {/* ── VENUES & SETTINGS ─────────────────────────────────────────── */}
-      {/*
-        Section ini menggunakan komponen VenuesSection yang sudah dipisah.
-        Termasuk "No venues found" state, filter Experience/Location/Currency,
-        slider mobile, grid desktop, dan VenueDetailModal.
-      */}
-      <VenuesSection
-        isMobile={isMobile}
-        selectedCurrency={selectedCurrency}
-        exchangeRate={exchangeRate}
-        onVenueSelect={() => {}}
-        externalSelectedVenue={venueFromTheme}
-        onExternalModalClose={() => setVenueFromTheme(null)}
-      />
 
       {/* ── FROM CONCEPT TO CELEBRATION ───────────────────────────────── */}
       <motion.section

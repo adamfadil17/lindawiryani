@@ -35,7 +35,7 @@ export async function PATCH(
   try {
     const { id, faqId } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     // Verify FAQ belongs to this experience
@@ -66,7 +66,7 @@ export async function DELETE(
   try {
     const { id, faqId } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     // Verify FAQ belongs to this experience

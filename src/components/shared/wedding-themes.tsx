@@ -5,16 +5,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import {
-  elopementThemes,
-  intimateThemes,
-  elopementCategoryImages,
-  intimateCategoryImages,
-  venues,
-  WeddingTheme,
-} from "@/lib/data/wedding-concepts/wedding-concepts-data";
+import { weddingThemeList } from "@/lib/data/wedding-theme-data";
+import { venueList } from "@/lib/data/venue-data";
 import ThemeDetailModal from "@/components/shared/theme-detail-modal";
-import { Venue } from "@/lib/data/wedding-concepts/wedding-concepts-data";
+import type { Venue, WeddingTheme } from "@/types";
+
+// ─── Derived data ─────────────────────────────────────────────────────────────
+
+// Filter tema per kategori dari weddingThemeList
+const elopementThemes = weddingThemeList.filter((t) => t.type === "ELOPEMENT");
+const intimateThemes = weddingThemeList.filter((t) => t.type === "INTIMATE");
+
+// Ambil gambar slideshow dari tema masing-masing kategori (maks 5, deduplicate)
+const elopementCategoryImages = [
+  ...new Set(elopementThemes.map((t) => t.image).filter(Boolean)),
+].slice(0, 5) as string[];
+
+const intimateCategoryImages = [
+  ...new Set(intimateThemes.map((t) => t.image).filter(Boolean)),
+].slice(0, 5) as string[];
 
 // ─── ThemeCategoryCard ────────────────────────────────────────────────────────
 
@@ -34,6 +43,7 @@ function ThemeCategoryCard({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
+    if (images.length <= 1) return;
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }, 5000);
@@ -90,7 +100,9 @@ interface WeddingThemeCardProps {
 }
 
 function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
-  const venueData = venues.find((v) => v.id === theme.venueId);
+  // Lookup nama venue dari venueList menggunakan theme.venue_id (skema baru)
+  const venueData = venueList.find((v) => v.id === theme.venue_id);
+
   return (
     <article
       className="relative overflow-hidden cursor-pointer group aspect-[16/9]"
@@ -190,7 +202,7 @@ export default function WeddingThemesSection({
             </div>
           </motion.div>
 
-          {/* Category Cards */}
+          {/* Category Cards — gambar slideshow dari tema masing-masing kategori */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
             variants={fadeInUp}
@@ -215,7 +227,7 @@ export default function WeddingThemesSection({
             variants={fadeInUp}
             className="mb-8"
           >
-            {/* Filter */}
+            {/* Filter dropdown */}
             <div className="flex items-center justify-center gap-4 mb-12">
               <span className="text-base md:text-lg text-primary tracking-widest uppercase font-semibold">
                 WEDDING THEMES
@@ -256,7 +268,7 @@ export default function WeddingThemesSection({
               </div>
             </div>
 
-            {/* Description */}
+            {/* Deskripsi kategori aktif */}
             <div className="mb-12 text-center">
               <AnimatePresence mode="wait">
                 {selectedThemeCategory === "elopement" ? (
@@ -358,7 +370,7 @@ export default function WeddingThemesSection({
         </div>
       </motion.section>
 
-      {/* Modal */}
+      {/* Modal — onExploreVenue meneruskan Venue (tipe baru dari @/types) ke parent */}
       {selectedThemeForModal && (
         <ThemeDetailModal
           theme={selectedThemeForModal}

@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -14,148 +17,120 @@ import {
   Sparkles,
   ChevronDown,
   ImageIcon,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
 } from "lucide-react";
-import { weddingExperienceList } from "@/lib/data/new-data/wedding-experience-data";
 import FormField from "@/components/shared/from-field";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
 import TextareaInput from "@/components/shared/text-area-input";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
+import DeleteModal from "@/components/shared/delete-modal";
+import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
 import TagsInput from "@/components/shared/tags-input";
-import { WeddingExperience } from "@/lib/types/new-strucutre";
+import { WeddingExperience, ExperienceFaq } from "@/types";
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
+import {
+  weddingExperienceFormSchema,
+  WeddingExperienceFormData,
+} from "@/utils/form-validators";
+import { toSlug } from "@/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type FAQ = { q: string; a: string };
-
-type FormData = {
-  // identity
-  category: string;
-  name: string;
-  // hero
-  heroStyle: string;
-  heroImage: string;
-  heroDesc: string;
-  // intro
-  introLabel: string;
-  introHeading: [string, string];
-  introBody: string;
-  introListLabel: string;
-  introList: string[];
-  introFootnote: string;
-  // approach
-  approachLabel: string;
-  approachHeading: [string, string];
-  approachBody: string;
-  approachListLabel: string;
-  approachList: string[];
-  approachImage: string;
-  // services
-  servicesLabel: string;
-  servicesHeading: [string, string];
-  servicesList: string[];
-  servicesFootnote: string;
-  darkPanelLabel: string;
-  darkPanelHeading: [string, string];
-  darkPanelBody: string;
-  darkPanelList: string[];
-  darkPanelCta: string;
-  // closing
-  closingLabel: string;
-  closingHeading: [string, string];
-  closingBody: string;
-  closingImage: string;
-  closingCoupleLabel: string;
-  closingCoupleValues: string[];
-  // faqs
-  faqs: FAQ[];
-};
+type FAQ = ExperienceFaq;
+type ExperienceFormData = WeddingExperienceFormData;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function expToForm(e: WeddingExperience): FormData {
+function expToForm(e: WeddingExperience): ExperienceFormData {
   return {
+    slug: e.slug,
     category: e.category,
     name: e.name,
-    heroStyle: e.hero.style,
-    heroImage: e.hero.image,
-    heroDesc: e.hero.desc,
-    introLabel: e.intro.label,
-    introHeading: e.intro.heading,
-    introBody: e.intro.body,
-    introListLabel: e.intro.listLabel ?? "",
-    introList: [...e.intro.list],
-    introFootnote: e.intro.footnote ?? "",
-    approachLabel: e.approach.label,
-    approachHeading: e.approach.heading,
-    approachBody: e.approach.body,
-    approachListLabel: e.approach.listLabel ?? "",
-    approachList: [...e.approach.list],
-    approachImage: e.approach.image,
-    servicesLabel: e.services.label,
-    servicesHeading: e.services.heading,
-    servicesList: [...e.services.list],
-    servicesFootnote: e.services.footnote,
-    darkPanelLabel: e.services.darkPanel.label,
-    darkPanelHeading: e.services.darkPanel.heading,
-    darkPanelBody: e.services.darkPanel.body,
-    darkPanelList: [...e.services.darkPanel.list],
-    darkPanelCta: e.services.darkPanel.cta,
-    closingLabel: e.closing.label,
-    closingHeading: e.closing.heading,
-    closingBody: e.closing.body,
-    closingImage: e.closing.image,
-    closingCoupleLabel: e.closing.coupleLabel ?? "",
-    closingCoupleValues: [...(e.closing.coupleValues ?? [])],
-    faqs: e.faqs.map((f) => ({ q: f.q, a: f.a })),
+    hero_style: e.hero_style,
+    hero_image: e.hero_image,
+    hero_desc: e.hero_desc,
+    intro_label: e.intro_label,
+    intro_heading: e.intro_heading,
+    intro_body: e.intro_body,
+    intro_list_label: e.intro_list_label ?? "",
+    intro_list: [...e.intro_list],
+    intro_footnote: e.intro_footnote ?? "",
+    intro_images: [...e.intro_images],
+    approach_label: e.approach_label,
+    approach_heading: e.approach_heading,
+    approach_body: e.approach_body,
+    approach_list_label: e.approach_list_label ?? "",
+    approach_list: [...e.approach_list],
+    approach_image: e.approach_image,
+    services_label: e.services_label,
+    services_heading: e.services_heading,
+    services_list: [...e.services_list],
+    services_footnote: e.services_footnote,
+    services_dark_label: e.services_dark_label,
+    services_dark_heading: e.services_dark_heading,
+    services_dark_body: e.services_dark_body,
+    services_dark_list: [...e.services_dark_list],
+    closing_label: e.closing_label,
+    closing_heading: e.closing_heading,
+    closing_body: e.closing_body,
+    closing_image: e.closing_image,
+    closing_couple_label: e.closing_couple_label ?? "",
+    closing_couple_values: [...e.closing_couple_values],
   };
 }
 
-const defaultForm: FormData = {
-  category: "luxury-weddings",
-  name: "",
-  heroStyle: "split",
-  heroImage: "",
-  heroDesc: "",
-  introLabel: "",
-  introHeading: ["", ""],
-  introBody: "",
-  introListLabel: "",
-  introList: [""],
-  introFootnote: "",
-  approachLabel: "",
-  approachHeading: ["", ""],
-  approachBody: "",
-  approachListLabel: "",
-  approachList: [""],
-  approachImage: "",
-  servicesLabel: "What We Offer",
-  servicesHeading: ["", ""],
-  servicesList: [""],
-  servicesFootnote: "",
-  darkPanelLabel: "",
-  darkPanelHeading: ["", ""],
-  darkPanelBody: "",
-  darkPanelList: [""],
-  darkPanelCta: "",
-  closingLabel: "",
-  closingHeading: ["", ""],
-  closingBody: "",
-  closingImage: "",
-  closingCoupleLabel: "",
-  closingCoupleValues: [],
-  faqs: [{ q: "", a: "" }],
-};
+function formToDto(form: ExperienceFormData) {
+  return {
+    slug: form.slug,
+    category: form.category,
+    name: form.name,
+    hero_style: form.hero_style,
+    hero_image: form.hero_image,
+    hero_desc: form.hero_desc,
+    intro_label: form.intro_label,
+    intro_heading: form.intro_heading,
+    intro_body: form.intro_body,
+    intro_list_label: form.intro_list_label || null,
+    intro_list: form.intro_list.filter(Boolean),
+    intro_footnote: form.intro_footnote || null,
+    intro_images: form.intro_images,
+    approach_label: form.approach_label,
+    approach_heading: form.approach_heading,
+    approach_body: form.approach_body,
+    approach_list_label: form.approach_list_label || null,
+    approach_list: form.approach_list.filter(Boolean),
+    approach_image: form.approach_image,
+    services_label: form.services_label,
+    services_heading: form.services_heading,
+    services_list: form.services_list.filter(Boolean),
+    services_footnote: form.services_footnote,
+    services_dark_label: form.services_dark_label,
+    services_dark_heading: form.services_dark_heading,
+    services_dark_body: form.services_dark_body,
+    services_dark_list: form.services_dark_list.filter(Boolean),
+    closing_label: form.closing_label,
+    closing_heading: form.closing_heading,
+    closing_body: form.closing_body,
+    closing_image: form.closing_image,
+    closing_couple_label: form.closing_couple_label || null,
+    closing_couple_values: form.closing_couple_values,
+  };
+}
 
-// ─── Small shared components ──────────────────────────────────────────────────
+// ─── HeadingEditor ────────────────────────────────────────────────────────────
 
 function HeadingEditor({
   value,
   onChange,
+  error,
 }: {
   value: [string, string];
   onChange: (v: [string, string]) => void;
+  error?: string;
 }) {
   return (
     <div className="space-y-2">
@@ -171,48 +146,142 @@ function HeadingEditor({
         placeholder="Line 2"
         className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
       />
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
   );
 }
 
+// ─── FAQ Editor ───────────────────────────────────────────────────────────────
+
 function FAQEditor({
+  experienceId,
   faqs,
-  onChange,
+  onFaqsChange,
 }: {
+  experienceId: string;
   faqs: FAQ[];
-  onChange: (v: FAQ[]) => void;
+  onFaqsChange: (faqs: FAQ[]) => void;
 }) {
-  const update = (i: number, field: keyof FAQ, val: string) => {
-    const next = [...faqs];
-    next[i] = { ...next[i], [field]: val };
-    onChange(next);
+  const [savingIdx, setSavingIdx] = useState<number | null>(null);
+  const [deletingIdx, setDeletingIdx] = useState<number | null>(null);
+  const [drafts, setDrafts] = useState<{ question: string; answer: string }[]>(
+    [],
+  );
+
+  const baseUrl = `/api/wedding-experiences/${experienceId}/faqs`;
+
+  const updateFaq = (
+    idx: number,
+    field: "question" | "answer",
+    val: string,
+  ) => {
+    onFaqsChange(faqs.map((f, i) => (i === idx ? { ...f, [field]: val } : f)));
   };
-  const remove = (i: number) => onChange(faqs.filter((_, idx) => idx !== i));
-  const add = () => onChange([...faqs, { q: "", a: "" }]);
+
+  const saveFaqUpdate = async (idx: number) => {
+    const faq = faqs[idx];
+    if (!faq.question.trim()) return;
+    setSavingIdx(idx);
+    try {
+      await axios.patch(
+        `${baseUrl}/${faq.id}`,
+        { question: faq.question, answer: faq.answer },
+        { headers: getAuthHeaders(true) },
+      );
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "Failed to save FAQ";
+      toast.error(errorMsg);
+    } finally {
+      setSavingIdx(null);
+    }
+  };
+
+  const deleteFaqById = async (idx: number) => {
+    const faq = faqs[idx];
+    setDeletingIdx(idx);
+    try {
+      await axios.delete(`${baseUrl}/${faq.id}`, { headers: getAuthHeaders() });
+      onFaqsChange(faqs.filter((_, i) => i !== idx));
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "Failed to delete FAQ";
+      toast.error(errorMsg);
+    } finally {
+      setDeletingIdx(null);
+    }
+  };
+
+  const addDraft = () => setDrafts((d) => [...d, { question: "", answer: "" }]);
+  const updateDraft = (i: number, field: "question" | "answer", val: string) =>
+    setDrafts((d) =>
+      d.map((dr, idx) => (idx === i ? { ...dr, [field]: val } : dr)),
+    );
+  const removeDraft = (i: number) =>
+    setDrafts((d) => d.filter((_, idx) => idx !== i));
+
+  const createFaq = async (i: number) => {
+    const draft = drafts[i];
+    if (!draft.question.trim()) return;
+    setSavingIdx(-(i + 1));
+    try {
+      const response = await axios.post(
+        baseUrl,
+        {
+          question: draft.question,
+          answer: draft.answer,
+          sort_order: faqs.length + i,
+        },
+        { headers: getAuthHeaders(true) },
+      );
+      const data: FAQ = response.data.data ?? response.data;
+      onFaqsChange([...faqs, data]);
+      removeDraft(i);
+      toast.success("FAQ added");
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "Failed to add FAQ";
+      toast.error(errorMsg);
+    } finally {
+      setSavingIdx(null);
+    }
+  };
 
   return (
     <div className="space-y-5">
       {faqs.map((faq, i) => (
         <div
-          key={i}
+          key={faq.id}
           className="border border-primary/20 p-4 space-y-3 relative"
         >
           <span className="absolute top-3 left-3 text-[10px] text-primary/30 tracking-widest uppercase">
             #{i + 1}
           </span>
           <button
-            onClick={() => remove(i)}
-            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-400 hover:bg-red-50 transition-colors"
+            onClick={() => deleteFaqById(i)}
+            disabled={deletingIdx === i}
+            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-400 hover:bg-red-50 transition-colors disabled:opacity-50"
           >
-            <X className="w-3.5 h-3.5" />
+            {deletingIdx === i ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <X className="w-3.5 h-3.5" />
+            )}
           </button>
           <div className="pt-4">
             <label className="text-[10px] tracking-widest uppercase text-primary/50 mb-1 block">
               Question
             </label>
             <input
-              value={faq.q}
-              onChange={(e) => update(i, "q", e.target.value)}
+              value={faq.question}
+              onChange={(e) => updateFaq(i, "question", e.target.value)}
+              onBlur={() => saveFaqUpdate(i)}
               placeholder="e.g. What is included in..."
               className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
             />
@@ -222,17 +291,82 @@ function FAQEditor({
               Answer
             </label>
             <textarea
-              value={faq.a}
-              onChange={(e) => update(i, "a", e.target.value)}
+              value={faq.answer}
+              onChange={(e) => updateFaq(i, "answer", e.target.value)}
+              onBlur={() => saveFaqUpdate(i)}
               placeholder="Answer..."
               rows={3}
               className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors resize-none"
             />
           </div>
+          {savingIdx === i && (
+            <p className="text-[10px] text-primary/40 flex items-center gap-1">
+              <Loader2 className="w-3 h-3 animate-spin" /> Saving...
+            </p>
+          )}
         </div>
       ))}
+
+      {drafts.map((draft, i) => (
+        <div
+          key={`draft-${i}`}
+          className="border border-dashed border-primary/30 p-4 space-y-3 relative"
+        >
+          <span className="absolute top-3 left-3 text-[10px] text-primary/30 tracking-widest uppercase">
+            #{faqs.length + i + 1} — unsaved
+          </span>
+          <button
+            onClick={() => removeDraft(i)}
+            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-400 hover:bg-red-50 transition-colors"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+          <div className="pt-4">
+            <label className="text-[10px] tracking-widest uppercase text-primary/50 mb-1 block">
+              Question
+            </label>
+            <input
+              value={draft.question}
+              onChange={(e) => updateDraft(i, "question", e.target.value)}
+              placeholder="e.g. What is included in..."
+              className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="text-[10px] tracking-widest uppercase text-primary/50 mb-1 block">
+              Answer
+            </label>
+            <textarea
+              value={draft.answer}
+              onChange={(e) => updateDraft(i, "answer", e.target.value)}
+              placeholder="Answer..."
+              rows={3}
+              className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+            />
+          </div>
+          <button
+            onClick={() => createFaq(i)}
+            disabled={!draft.question.trim() || savingIdx === -(i + 1)}
+            className="flex items-center gap-1.5 text-xs text-primary/60 border border-primary/20 px-3 py-1.5 hover:bg-primary/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {savingIdx === -(i + 1) ? (
+              <Loader2 className="w-3 h-3 animate-spin" />
+            ) : (
+              <Save className="w-3 h-3" />
+            )}
+            Save FAQ
+          </button>
+        </div>
+      ))}
+
+      {faqs.length === 0 && drafts.length === 0 && (
+        <p className="text-xs text-primary/30 italic">
+          No FAQs yet. Click &ldquo;Add FAQ&rdquo; to begin.
+        </p>
+      )}
+
       <button
-        onClick={add}
+        onClick={addDraft}
         className="flex items-center gap-1.5 text-xs text-primary/50 hover:text-primary transition-colors hover:cursor-pointer"
       >
         <Plus className="w-3.5 h-3.5" />
@@ -242,170 +376,380 @@ function FAQEditor({
   );
 }
 
-// ─── Delete Modal ─────────────────────────────────────────────────────────────
-
-function DeleteModal({
-  name,
-  onConfirm,
-  onCancel,
-}: {
-  name: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
-        </div>
-        <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Experience
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{name}&rdquo;
-          </span>
-          ? This action cannot be undone.
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function ExperienceDetailPage() {
+export default function ExperiencesDetailPage() {
   const router = useRouter();
   const params = useParams();
-  const rawId = params?.id as string;
-  const isNew = rawId === "new";
+  const id = params?.id as string;
+  const isNew = id === "new";
 
-  const [form, setForm] = useState<FormData>(defaultForm);
-  const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  // ── React Hook Form ──
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    trigger,
+    formState: { errors: formErrors, isDirty },
+  } = useForm<ExperienceFormData>({
+    resolver: zodResolver(weddingExperienceFormSchema),
+    defaultValues: {
+      slug: "",
+      category: "luxury_weddings",
+      name: "",
+      hero_style: "split",
+      hero_image: "",
+      hero_desc: "",
+      intro_label: "",
+      intro_heading: ["", ""],
+      intro_body: "",
+      intro_list_label: "",
+      intro_list: [],
+      intro_footnote: "",
+      intro_images: [],
+      approach_label: "",
+      approach_heading: ["", ""],
+      approach_body: "",
+      approach_list_label: "",
+      approach_list: [],
+      approach_image: "",
+      services_label: "",
+      services_heading: ["", ""],
+      services_list: [],
+      services_footnote: "",
+      services_dark_label: "",
+      services_dark_heading: ["", ""],
+      services_dark_body: "",
+      services_dark_list: [],
+      closing_label: "",
+      closing_heading: ["", ""],
+      closing_body: "",
+      closing_image: "",
+      closing_couple_label: "",
+      closing_couple_values: [],
+    },
+  });
 
+  // ── setField helper: always triggers validation so errors show immediately ──
+  const setField = (key: keyof ExperienceFormData, value: unknown) =>
+    setValue(key as any, value as any, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+
+  const formData = watch();
+
+  // ── FAQs ──
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+
+  // ── Page state ──
+  const [isLoading, setIsLoading] = useState(!isNew);
+  const [notFound, setNotFound] = useState(false);
+  const [experienceId, setExperienceId] = useState<string | null>(
+    isNew ? null : id,
+  );
+
+  // ── Save state (consolidated): idle | confirm | saving | saved
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "confirm" | "saving" | "saved"
+  >("idle");
+
+  // ── Delete state (consolidated): idle | confirm | deleting
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
+
+  // ── Unsaved changes guard ──
+  // Create mode: any non-empty field counts as "dirty"
+  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
+  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+
+  const hasUnsavedChanges = isNew
+    ? Boolean(
+        formData.name ||
+        formData.hero_desc ||
+        formData.hero_image ||
+        formData.intro_body ||
+        formData.approach_body ||
+        formData.closing_body ||
+        formData.closing_image ||
+        (formData.intro_list && formData.intro_list.some(Boolean)) ||
+        (formData.services_list && formData.services_list.some(Boolean))
+      )
+    : isDirty;
+
+  // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
-    if (!isNew && rawId) {
-      const existing = weddingExperienceList.find((e) => e.id === rawId);
-      if (existing) {
-        setForm(expToForm(existing));
-      } else {
-        toast.error("Experience not found");
-        router.push("/dashboard/experiences");
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges && saveStatus !== "saving") {
+        e.preventDefault();
+        e.returnValue = "";
       }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges, saveStatus]);
+
+  // Helper: navigate with guard check
+  const guardedNavigate = useCallback(
+    (href: string) => {
+      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+        setUnsavedModal({ open: true, pendingHref: href });
+      } else {
+        router.push(href);
+      }
+    },
+    [hasUnsavedChanges, saveStatus, router]
+  );
+
+  // ── Load experience data (edit mode only) ──
+  useEffect(() => {
+    if (isNew) return;
+    setIsLoading(true);
+    const getExperienceById = async () => {
+      try {
+        const response = await axios.get(`/api/wedding-experiences/${id}`);
+        const data: WeddingExperience = response.data.data ?? response.data;
+        reset(expToForm(data));
+        setFaqs(data.faqs ?? []);
+        setExperienceId(data.id);
+      } catch (err) {
+        if (axios.isAxiosError(err) && err.response?.status === 404) {
+          setNotFound(true);
+        } else {
+          const errorMsg =
+            axios.isAxiosError(err) && err.response?.data?.message
+              ? err.response.data.message
+              : "Failed to load experience";
+          toast.error(errorMsg, {
+            description: err instanceof Error ? err.message : "Unknown error",
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getExperienceById();
+  }, [id, isNew, reset]);
+
+  // ── Save flow ──
+  const onSubmitForm = async () => {
+    setSaveStatus("confirm");
+  };
+
+  const onSubmitError = async () => {
+    await trigger();
+  };
+
+  const confirmSave = async () => {
+    setSaveStatus("saving");
+    try {
+      const dto = formToDto(formData);
+
+      if (isNew) {
+        dto.slug = toSlug(formData.name);
+        const response = await axios.post("/api/wedding-experiences", dto, {
+          headers: getAuthHeaders(true),
+        });
+        const data: WeddingExperience = response.data.data ?? response.data;
+        setExperienceId(data.id);
+        setSaveStatus("idle");
+        toast.success("Experience created!", {
+          description: "Your new experience has been added to the system.",
+        });
+        reset(); // clear dirty state before navigating
+        router.push("/dashboard/wedding-experiences");
+      } else {
+        await axios.patch(`/api/wedding-experiences/${id}`, dto, {
+          headers: getAuthHeaders(true),
+        });
+        setSaveStatus("saved");
+        toast.success("Changes saved!", {
+          description: "Your experience has been updated.",
+        });
+        // Re-sync RHF baseline so isDirty becomes false
+        reset(formData);
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      }
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
+      toast.error("Failed to save", { description: errorMsg });
+      setSaveStatus("confirm"); // keep modal open on error
     }
-    setIsLoaded(true);
-  }, [rawId, isNew, router]);
-
-  const set = <K extends keyof FormData>(key: K, value: FormData[K]) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
-  const validate = (): boolean => {
-    const e: Partial<Record<string, string>> = {};
-    if (!form.name.trim()) e.name = "Name is required";
-    if (!form.heroDesc.trim()) e.heroDesc = "Hero description is required";
-    setErrors(e);
-    if (Object.keys(e).length > 0) {
-      toast.error("Please fix the errors before saving");
-      return false;
+  // ── Delete flow ──
+  const deleteExperienceById = async () => {
+    setDeleteStatus("deleting");
+    try {
+      await axios.delete(`/api/wedding-experiences/${id}`, {
+        headers: getAuthHeaders(),
+      });
+      setDeleteStatus("idle");
+      toast.success("Experience deleted!", {
+        description: "The experience has been removed from the system.",
+      });
+      router.push("/dashboard/wedding-experiences");
+    } catch (err) {
+      const errorMsg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
+      toast.error("Failed to delete", { description: errorMsg });
+      setDeleteStatus("confirm"); // keep modal open on error
     }
-    return true;
   };
 
-  const confirmSave = () => {
-    setShowSaveModal(false);
-    toast.success(isNew ? "Experience created!" : "Experience updated!");
-    router.push("/dashboard/experiences");
-  };
+  // ── Not found ──
+  if (notFound) {
+    return (
+      <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
+        <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
+        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+          Not Found
+        </p>
+        <p className="text-primary/80 text-sm mb-6">
+          This experience does not exist.
+        </p>
+        <Link
+          href="/dashboard/wedding-experiences"
+          className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
+        >
+          Back to Experiences
+        </Link>
+      </div>
+    );
+  }
 
-  const confirmDelete = () => {
-    setShowDeleteModal(false);
-    toast.success("Experience deleted");
-    router.push("/dashboard/experiences");
-  };
-
-  if (!isLoaded) return null;
+  // ── Loading skeleton ──
+  if (isLoading) {
+    return (
+      <div className="p-6 lg:p-8 max-w-[1200px] mx-auto animate-pulse">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-9 h-9 bg-primary/10 border border-primary/20" />
+          <div className="space-y-2">
+            <div className="h-3 w-24 bg-primary/10 rounded" />
+            <div className="h-6 w-48 bg-primary/10 rounded" />
+          </div>
+        </div>
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="bg-white border border-primary/20 p-6 space-y-4"
+              >
+                <div className="h-4 w-32 bg-primary/10 rounded" />
+                <div className="h-10 bg-primary/5 rounded" />
+                <div className="h-10 bg-primary/5 rounded" />
+                <div className="h-20 bg-primary/5 rounded" />
+              </div>
+            ))}
+          </div>
+          <div className="space-y-6">
+            <div className="bg-white border border-primary/20 p-6">
+              <div className="aspect-[4/3] bg-primary/10 mb-4" />
+              <div className="h-10 bg-primary/5 rounded" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const categoryOptions = [
-    { id: "luxury-weddings", label: "Luxury Weddings" },
-    { id: "private-villa-weddings", label: "Private Villa Weddings" },
-    { id: "intimate-weddings", label: "Intimate Weddings" },
-    { id: "elopement-weddings", label: "Elopement Weddings" },
+    { id: "luxury_weddings", label: "Luxury Weddings" },
+    { id: "private_villa_weddings", label: "Private Villa Weddings" },
+    { id: "intimate_weddings", label: "Intimate Weddings" },
+    { id: "elopement_weddings", label: "Elopement Weddings" },
   ];
 
   const heroStyleOptions = ["split", "bottom", "centered", "editorial"];
 
   const summaryItems = [
-    { label: "Category", value: form.category || "—" },
-    { label: "Hero Style", value: form.heroStyle || "—" },
-    { label: "Intro Items", value: `${form.introList.filter(Boolean).length}` },
-    { label: "Services", value: `${form.servicesList.filter(Boolean).length}` },
-    { label: "FAQs", value: `${form.faqs.filter((f) => f.q).length}` },
+    { label: "Category", value: formData.category || "—" },
+    { label: "Hero Style", value: formData.hero_style || "—" },
+    {
+      label: "Intro Items",
+      value: `${formData.intro_list.filter(Boolean).length}`,
+    },
+    {
+      label: "Services",
+      value: `${formData.services_list.filter(Boolean).length}`,
+    },
+    { label: "FAQs", value: `${faqs.length}` },
   ];
 
   return (
     <div className="p-6 lg:p-8 max-w-[1200px] mx-auto">
       {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <Link
-            href="/dashboard/experiences"
-            className="inline-flex items-center gap-1.5 text-primary/50 hover:text-primary transition-colors text-xs tracking-widest uppercase mb-3"
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => guardedNavigate("/dashboard/wedding-experiences")}
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Experiences
-          </Link>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary/10 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-primary" />
-            </div>
-            <div>
-              <p className="text-primary/80 tracking-[0.25em] uppercase text-xs">
-                {isNew ? "New Experience" : "Edit Experience"}
-              </p>
-              <h1 className="text-primary text-xl font-semibold tracking-wide">
-                {isNew ? "Create Experience" : form.name || "Untitled"}
-              </h1>
-            </div>
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <div>
+            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+              {isNew ? "Create New" : "Edit"}
+            </p>
+            <h1 className="text-primary text-2xl font-semibold tracking-wide">
+              {isNew ? "New Experience" : formData.name || "Experience"}
+            </h1>
           </div>
+        </div>
+
+        <div className="flex items-center gap-3 self-start sm:self-auto">
+          {saveStatus === "saved" && (
+            <div className="flex items-center gap-1.5 text-green-600 text-xs tracking-wider">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Saved</span>
+            </div>
+          )}
+
+          {!isNew && (
+            <button
+              onClick={() => setDeleteStatus("confirm")}
+              disabled={deleteStatus === "deleting" || saveStatus === "saving"}
+              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+            >
+              <Trash2 className="w-4 h-4" />
+              Delete
+            </button>
+          )}
+
+          <button
+            onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
+            disabled={saveStatus === "saving"}
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-2.5 hover:bg-primary/80 transition-colors disabled:opacity-60"
+          >
+            {saveStatus === "saving" ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            {isNew ? "Create" : "Save Changes"}
+          </button>
         </div>
       </div>
 
       {/* ── Two-column layout ── */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <form
+        onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
+        className="grid lg:grid-cols-3 gap-6"
+      >
         {/* ── Left Column ── */}
         <div className="lg:col-span-2 space-y-6">
           {/* ── Identity ── */}
@@ -415,19 +759,35 @@ export default function ExperienceDetailPage() {
           >
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                <FormField label="Display Name" required>
+                {/* name — required (min 2) */}
+                <FormField label="Experience Name" required>
                   <TextInput
-                    value={form.name}
-                    onChange={(v) => set("name", v)}
+                    value={formData.name}
+                    onChange={(v) => {
+                      setField("name", v);
+                      if (isNew) setValue("slug", toSlug(v));
+                    }}
                     placeholder="e.g. Luxury Weddings"
-                    error={errors.name}
+                    error={
+                      formErrors.name
+                        ? String(formErrors.name.message)
+                        : undefined
+                    }
                   />
                 </FormField>
-                <FormField label="Category">
+
+                {/* category — required (enum) */}
+                <FormField label="Category" required>
                   <div className="relative">
                     <select
-                      value={form.category}
-                      onChange={(e) => set("category", e.target.value)}
+                      value={formData.category}
+                      onChange={(e) =>
+                        setField(
+                          "category",
+                          e.target
+                            .value as WeddingExperienceFormData["category"],
+                        )
+                      }
                       className="w-full px-4 py-2.5 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
                     >
                       {categoryOptions.map((o) => (
@@ -436,27 +796,57 @@ export default function ExperienceDetailPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="w-4 h-4 text-primary/50 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                   </div>
+                  {formErrors.category && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {String(formErrors.category.message)}
+                    </p>
+                  )}
                 </FormField>
               </div>
+
               {/* Auto-derived meta preview */}
               <div className="bg-primary/5 border border-primary/20 p-4 space-y-2.5">
                 <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40 font-semibold mb-3">
                   Auto-generated Meta
                 </p>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">Breadcrumb</span>
-                  <span className="text-sm text-primary/70 flex-1 truncate">
-                    {form.name || <span className="text-primary/30 italic">Waiting for Display Name...</span>}
+                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">
+                    Slug
+                  </span>
+                  <span className="text-sm text-primary/70 flex-1 truncate font-mono">
+                    {formData.slug || toSlug(formData.name) || (
+                      <span className="text-primary/30 italic not-italic">
+                        Waiting for Name...
+                      </span>
+                    )}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">Eyebrow</span>
+                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">
+                    Breadcrumb
+                  </span>
                   <span className="text-sm text-primary/70 flex-1 truncate">
-                    {form.name
-                      ? `${form.name} Wedding Planner in Bali`
-                      : <span className="text-primary/30 italic">Waiting for Display Name...</span>}
+                    {formData.name || (
+                      <span className="text-primary/30 italic">
+                        Waiting for Display Name...
+                      </span>
+                    )}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">
+                    Eyebrow
+                  </span>
+                  <span className="text-sm text-primary/70 flex-1 truncate">
+                    {formData.name ? (
+                      `${formData.name} Wedding Planner in Bali`
+                    ) : (
+                      <span className="text-primary/30 italic">
+                        Waiting for Display Name...
+                      </span>
+                    )}
                   </span>
                 </div>
               </div>
@@ -464,16 +854,20 @@ export default function ExperienceDetailPage() {
           </Section>
 
           {/* ── Hero ── */}
-          <Section
-            title="Hero Section"
-            subtitle="The first thing visitors see"
-          >
+          <Section title="Hero Section" subtitle="The first thing visitors see">
             <div className="space-y-5">
-              <FormField label="Hero Style">
+              {/* hero_style — required (enum) */}
+              <FormField label="Hero Style" required>
                 <div className="relative">
                   <select
-                    value={form.heroStyle}
-                    onChange={(e) => set("heroStyle", e.target.value)}
+                    value={formData.hero_style}
+                    onChange={(e) =>
+                      setField(
+                        "hero_style",
+                        e.target
+                          .value as WeddingExperienceFormData["hero_style"],
+                      )
+                    }
                     className="w-full px-4 py-2.5 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
                   >
                     {heroStyleOptions.map((s) => (
@@ -482,15 +876,22 @@ export default function ExperienceDetailPage() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="w-4 h-4 text-primary/50 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
+                {formErrors.hero_style && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.hero_style.message)}
+                  </p>
+                )}
               </FormField>
-              <FormField label="Hero Image">
+
+              {/* hero_image — required (url) */}
+              <FormField label="Hero Image" required>
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
-                    {form.heroImage ? (
+                    {formData.hero_image ? (
                       <Image
-                        src={form.heroImage}
+                        src={formData.hero_image}
                         alt="Hero preview"
                         fill
                         className="object-cover"
@@ -498,150 +899,273 @@ export default function ExperienceDetailPage() {
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                         <ImageIcon className="w-7 h-7 text-primary/20" />
-                        <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                        <p className="text-primary/30 text-xs tracking-wider">
+                          No image set
+                        </p>
                       </div>
                     )}
                   </div>
                   <ImageUpload
-                    value={form.heroImage}
-                    onChange={(v) => set("heroImage", v)}
+                    value={formData.hero_image}
+                    onChange={(v) => setField("hero_image", v)}
                     inputId="hero-image-upload"
                   />
+                  {formErrors.hero_image && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {String(formErrors.hero_image.message)}
+                    </p>
+                  )}
                 </div>
               </FormField>
+
               {/* Auto-derived hero text */}
               <div className="bg-primary/5 border border-primary/20 p-4 space-y-2.5">
                 <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40 font-semibold mb-3">
                   Auto-generated Hero Text
                 </p>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">Title</span>
+                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">
+                    Title
+                  </span>
                   <span className="text-sm text-primary/70 flex-1 truncate">
-                    {form.name || <span className="text-primary/30 italic">Waiting for Display Name...</span>}
+                    {formData.name || (
+                      <span className="text-primary/30 italic">
+                        Waiting for Display Name...
+                      </span>
+                    )}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">Subtitle</span>
-                  <span className="text-sm text-primary/70">Weddings in Bali</span>
+                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">
+                    Subtitle
+                  </span>
+                  <span className="text-sm text-primary/70">
+                    Weddings in Bali
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">CTA</span>
+                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">
+                    CTA
+                  </span>
                   <span className="text-sm text-primary/70">INQUIRE NOW</span>
                 </div>
               </div>
+
+              {/* hero_desc — required (min 1) */}
               <FormField label="Description" required>
                 <TextareaInput
-                  value={form.heroDesc}
-                  onChange={(v) => set("heroDesc", v)}
+                  value={formData.hero_desc}
+                  onChange={(v) => setField("hero_desc", v)}
                   placeholder="The headline description shown in the hero..."
                   rows={3}
-                  error={errors.heroDesc}
+                  error={
+                    formErrors.hero_desc
+                      ? String(formErrors.hero_desc.message)
+                      : undefined
+                  }
                 />
               </FormField>
             </div>
           </Section>
 
           {/* ── Intro ── */}
-          <Section
-            title="Intro Section"
-            subtitle="Why choose this experience"
-          >
+          <Section title="Intro Section" subtitle="Why choose this experience">
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                <FormField label="Section Label">
+                {/* intro_label — required (min 1) */}
+                <FormField label="Section Label" required>
                   <TextInput
-                    value={form.introLabel}
-                    onChange={(v) => set("introLabel", v)}
+                    value={formData.intro_label}
+                    onChange={(v) => setField("intro_label", v)}
                     placeholder="e.g. Why Villa"
+                    error={
+                      formErrors.intro_label
+                        ? String(formErrors.intro_label.message)
+                        : undefined
+                    }
                   />
                 </FormField>
+                {/* intro_list_label — optional */}
                 <FormField label="List Label (optional)">
                   <TextInput
-                    value={form.introListLabel}
-                    onChange={(v) => set("introListLabel", v)}
+                    value={formData.intro_list_label ?? ""}
+                    onChange={(v) => setField("intro_list_label", v)}
                     placeholder="e.g. Private villas provide:"
                   />
                 </FormField>
               </div>
-              <FormField label="Heading (2 lines)">
+
+              {/* intro_heading — required (tuple[string, string]) */}
+              <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
-                  value={form.introHeading}
-                  onChange={(v) => set("introHeading", v)}
+                  value={formData.intro_heading as [string, string]}
+                  onChange={(v) => setField("intro_heading", v)}
+                  error={
+                    (formErrors.intro_heading as any)?.[0]?.message
+                      ? String((formErrors.intro_heading as any)[0].message)
+                      : (formErrors.intro_heading as any)?.[1]?.message
+                        ? String((formErrors.intro_heading as any)[1].message)
+                        : undefined
+                  }
                 />
               </FormField>
-              <FormField label="Body Text">
+
+              {/* intro_body — required (min 1) */}
+              <FormField label="Body Text" required>
                 <TextareaInput
-                  value={form.introBody}
-                  onChange={(v) => set("introBody", v)}
+                  value={formData.intro_body}
+                  onChange={(v) => setField("intro_body", v)}
                   rows={4}
                   placeholder="Introductory paragraph..."
+                  error={
+                    formErrors.intro_body
+                      ? String(formErrors.intro_body.message)
+                      : undefined
+                  }
                 />
               </FormField>
+
+              {/* intro_list — optional (array) */}
               <FormField label="List Items">
                 <TagsInput
-                  values={form.introList}
-                  onChange={(v) => set("introList", v)}
+                  values={formData.intro_list}
+                  onChange={(v) => setField("intro_list", v)}
                   placeholder="e.g. Full creative freedom"
                 />
               </FormField>
+
+              {/* intro_footnote — optional */}
               <FormField label="Footnote (optional)">
                 <TextInput
-                  value={form.introFootnote}
-                  onChange={(v) => set("introFootnote", v)}
+                  value={formData.intro_footnote ?? ""}
+                  onChange={(v) => setField("intro_footnote", v)}
                   placeholder="e.g. Ideal for couples who..."
                 />
+              </FormField>
+
+              {/* intro_images — optional (max 2 urls) */}
+              <FormField label="Intro Images (max 2)">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {[0, 1].map((idx) => (
+                    <div key={idx} className="space-y-2">
+                      <div className="relative aspect-[4/3] bg-primary/5 border border-primary/20 overflow-hidden">
+                        {formData.intro_images[idx] ? (
+                          <Image
+                            src={formData.intro_images[idx]}
+                            alt={`Intro image ${idx + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                            <ImageIcon className="w-6 h-6 text-primary/20" />
+                            <p className="text-primary/30 text-xs tracking-wider">
+                              Image {idx + 1}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      <ImageUpload
+                        value={formData.intro_images[idx] ?? ""}
+                        onChange={(v) => {
+                          const next = [...formData.intro_images];
+                          next[idx] = v;
+                          setField("intro_images", next);
+                        }}
+                        inputId={`intro-image-${idx}-upload`}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {formErrors.intro_images && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(
+                      (formErrors.intro_images as any)?.message ??
+                        (formErrors.intro_images as any)?.root?.message ??
+                        (formErrors.intro_images as any)?.[0]?.message ??
+                        (formErrors.intro_images as any)?.[1]?.message ??
+                        "",
+                    )}
+                  </p>
+                )}
               </FormField>
             </div>
           </Section>
 
           {/* ── Approach ── */}
-          <Section
-            title="Approach Section"
-            subtitle="How you design or work"
-          >
+          <Section title="Approach Section" subtitle="How you design or work">
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                <FormField label="Section Label">
+                {/* approach_label — required (min 1) */}
+                <FormField label="Section Label" required>
                   <TextInput
-                    value={form.approachLabel}
-                    onChange={(v) => set("approachLabel", v)}
+                    value={formData.approach_label}
+                    onChange={(v) => setField("approach_label", v)}
                     placeholder="e.g. Our Approach"
+                    error={
+                      formErrors.approach_label
+                        ? String(formErrors.approach_label.message)
+                        : undefined
+                    }
                   />
                 </FormField>
+                {/* approach_list_label — optional */}
                 <FormField label="List Label (optional)">
                   <TextInput
-                    value={form.approachListLabel}
-                    onChange={(v) => set("approachListLabel", v)}
+                    value={formData.approach_list_label ?? ""}
+                    onChange={(v) => setField("approach_list_label", v)}
                     placeholder="e.g. It requires understanding:"
                   />
                 </FormField>
               </div>
-              <FormField label="Heading (2 lines)">
+
+              {/* approach_heading — required (tuple) */}
+              <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
-                  value={form.approachHeading}
-                  onChange={(v) => set("approachHeading", v)}
+                  value={formData.approach_heading as [string, string]}
+                  onChange={(v) => setField("approach_heading", v)}
+                  error={
+                    (formErrors.approach_heading as any)?.[0]?.message
+                      ? String((formErrors.approach_heading as any)[0].message)
+                      : (formErrors.approach_heading as any)?.[1]?.message
+                        ? String(
+                            (formErrors.approach_heading as any)[1].message,
+                          )
+                        : undefined
+                  }
                 />
               </FormField>
-              <FormField label="Body Text">
+
+              {/* approach_body — required (min 1) */}
+              <FormField label="Body Text" required>
                 <TextareaInput
-                  value={form.approachBody}
-                  onChange={(v) => set("approachBody", v)}
+                  value={formData.approach_body}
+                  onChange={(v) => setField("approach_body", v)}
                   rows={4}
                   placeholder="Approach description..."
+                  error={
+                    formErrors.approach_body
+                      ? String(formErrors.approach_body.message)
+                      : undefined
+                  }
                 />
               </FormField>
+
+              {/* approach_list — optional */}
               <FormField label="List Items">
                 <TagsInput
-                  values={form.approachList}
-                  onChange={(v) => set("approachList", v)}
+                  values={formData.approach_list}
+                  onChange={(v) => setField("approach_list", v)}
                 />
               </FormField>
-              <FormField label="Section Image">
+
+              {/* approach_image — required (url) */}
+              <FormField label="Approach Image" required>
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
-                    {form.approachImage ? (
+                    {formData.approach_image ? (
                       <Image
-                        src={form.approachImage}
+                        src={formData.approach_image}
                         alt="Approach preview"
                         fill
                         className="object-cover"
@@ -649,53 +1173,92 @@ export default function ExperienceDetailPage() {
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                         <ImageIcon className="w-7 h-7 text-primary/20" />
-                        <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                        <p className="text-primary/30 text-xs tracking-wider">
+                          No image set
+                        </p>
                       </div>
                     )}
                   </div>
                   <ImageUpload
-                    value={form.approachImage}
-                    onChange={(v) => set("approachImage", v)}
+                    value={formData.approach_image}
+                    onChange={(v) => setField("approach_image", v)}
                     inputId="approach-image-upload"
                   />
+                  {formErrors.approach_image && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {String(formErrors.approach_image.message)}
+                    </p>
+                  )}
                 </div>
               </FormField>
             </div>
           </Section>
 
           {/* ── Services ── */}
-          <Section
-            title="Services Section"
-            subtitle="What you offer"
-          >
+          <Section title="Services Section" subtitle="What you offer">
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                <FormField label="Section Label">
+                {/* services_label — required (min 1) */}
+                <FormField label="Section Label" required>
                   <TextInput
-                    value={form.servicesLabel}
-                    onChange={(v) => set("servicesLabel", v)}
+                    value={formData.services_label}
+                    onChange={(v) => setField("services_label", v)}
                     placeholder="e.g. What We Offer"
+                    error={
+                      formErrors.services_label
+                        ? String(formErrors.services_label.message)
+                        : undefined
+                    }
                   />
                 </FormField>
               </div>
-              <FormField label="Heading (2 lines)">
+
+              {/* services_heading — required (tuple) */}
+              <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
-                  value={form.servicesHeading}
-                  onChange={(v) => set("servicesHeading", v)}
+                  value={formData.services_heading as [string, string]}
+                  onChange={(v) => setField("services_heading", v)}
+                  error={
+                    (formErrors.services_heading as any)?.[0]?.message
+                      ? String((formErrors.services_heading as any)[0].message)
+                      : (formErrors.services_heading as any)?.[1]?.message
+                        ? String(
+                            (formErrors.services_heading as any)[1].message,
+                          )
+                        : undefined
+                  }
                 />
               </FormField>
-              <FormField label="Services List">
+
+              {/* services_list — required (min 1 item) */}
+              <FormField label="Services List" required>
                 <TagsInput
-                  values={form.servicesList}
-                  onChange={(v) => set("servicesList", v)}
+                  values={formData.services_list}
+                  onChange={(v) => setField("services_list", v)}
                   placeholder="e.g. Venue sourcing and design"
                 />
+                {formErrors.services_list && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(
+                      formErrors.services_list.message ??
+                        (formErrors.services_list as any)?.root?.message ??
+                        "At least one service is required",
+                    )}
+                  </p>
+                )}
               </FormField>
-              <FormField label="Footnote">
+
+              {/* services_footnote — required (min 1) */}
+              <FormField label="Footnote" required>
                 <TextInput
-                  value={form.servicesFootnote}
-                  onChange={(v) => set("servicesFootnote", v)}
+                  value={formData.services_footnote}
+                  onChange={(v) => setField("services_footnote", v)}
                   placeholder="e.g. Every element is designed to feel cohesive."
+                  error={
+                    formErrors.services_footnote
+                      ? String(formErrors.services_footnote.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
@@ -704,79 +1267,133 @@ export default function ExperienceDetailPage() {
                 <p className="text-[10px] tracking-[0.2em] uppercase text-primary/60 font-semibold">
                   Dark Panel
                 </p>
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <FormField label="Panel Label">
-                    <TextInput
-                      value={form.darkPanelLabel}
-                      onChange={(v) => set("darkPanelLabel", v)}
-                      placeholder="e.g. The Day Unfolds"
-                    />
-                  </FormField>
-                  <FormField label="CTA Text">
-                    <TextInput
-                      value={form.darkPanelCta}
-                      onChange={(v) => set("darkPanelCta", v)}
-                      placeholder="e.g. PLAN YOUR WEDDING"
-                    />
-                  </FormField>
-                </div>
-                <FormField label="Heading (2 lines)">
-                  <HeadingEditor
-                    value={form.darkPanelHeading}
-                    onChange={(v) => set("darkPanelHeading", v)}
+
+                {/* services_dark_label — required (min 1) */}
+                <FormField label="Panel Label" required>
+                  <TextInput
+                    value={formData.services_dark_label}
+                    onChange={(v) => setField("services_dark_label", v)}
+                    placeholder="e.g. The Day Unfolds"
+                    error={
+                      formErrors.services_dark_label
+                        ? String(formErrors.services_dark_label.message)
+                        : undefined
+                    }
                   />
                 </FormField>
-                <FormField label="Body Text">
+
+                {/* services_dark_heading — required (tuple) */}
+                <FormField label="Heading (2 lines)" required>
+                  <HeadingEditor
+                    value={formData.services_dark_heading as [string, string]}
+                    onChange={(v) => setField("services_dark_heading", v)}
+                    error={
+                      (formErrors.services_dark_heading as any)?.[0]?.message
+                        ? String(
+                            (formErrors.services_dark_heading as any)[0]
+                              .message,
+                          )
+                        : (formErrors.services_dark_heading as any)?.[1]
+                              ?.message
+                          ? String(
+                              (formErrors.services_dark_heading as any)[1]
+                                .message,
+                            )
+                          : undefined
+                    }
+                  />
+                </FormField>
+
+                {/* services_dark_body — required (min 1) */}
+                <FormField label="Body Text" required>
                   <TextareaInput
-                    value={form.darkPanelBody}
-                    onChange={(v) => set("darkPanelBody", v)}
+                    value={formData.services_dark_body}
+                    onChange={(v) => setField("services_dark_body", v)}
                     rows={3}
                     placeholder="Dark panel body..."
+                    error={
+                      formErrors.services_dark_body
+                        ? String(formErrors.services_dark_body.message)
+                        : undefined
+                    }
                   />
                 </FormField>
-                <FormField label="List Items">
+
+                {/* services_dark_list — required (min 1 item) */}
+                <FormField label="List Items" required>
                   <TagsInput
-                    values={form.darkPanelList}
-                    onChange={(v) => set("darkPanelList", v)}
+                    values={formData.services_dark_list}
+                    onChange={(v) => setField("services_dark_list", v)}
                   />
+                  {formErrors.services_dark_list && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {String(
+                        formErrors.services_dark_list.message ??
+                          (formErrors.services_dark_list as any)?.root
+                            ?.message ??
+                          "At least one list item is required",
+                      )}
+                    </p>
+                  )}
                 </FormField>
               </div>
             </div>
           </Section>
 
           {/* ── Closing ── */}
-          <Section
-            title="Closing Section"
-            subtitle="Final call-to-action area"
-          >
+          <Section title="Closing Section" subtitle="Final call-to-action area">
             <div className="space-y-5">
-              <FormField label="Section Label">
+              {/* closing_label — required (min 1) */}
+              <FormField label="Section Label" required>
                 <TextInput
-                  value={form.closingLabel}
-                  onChange={(v) => set("closingLabel", v)}
+                  value={formData.closing_label}
+                  onChange={(v) => setField("closing_label", v)}
                   placeholder="e.g. A Luxury Wedding That Feels Timeless"
+                  error={
+                    formErrors.closing_label
+                      ? String(formErrors.closing_label.message)
+                      : undefined
+                  }
                 />
               </FormField>
-              <FormField label="Heading (2 lines)">
+
+              {/* closing_heading — required (tuple) */}
+              <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
-                  value={form.closingHeading}
-                  onChange={(v) => set("closingHeading", v)}
+                  value={formData.closing_heading as [string, string]}
+                  onChange={(v) => setField("closing_heading", v)}
+                  error={
+                    (formErrors.closing_heading as any)?.[0]?.message
+                      ? String((formErrors.closing_heading as any)[0].message)
+                      : (formErrors.closing_heading as any)?.[1]?.message
+                        ? String((formErrors.closing_heading as any)[1].message)
+                        : undefined
+                  }
                 />
               </FormField>
-              <FormField label="Body Text">
+
+              {/* closing_body — required (min 1) */}
+              <FormField label="Body Text" required>
                 <TextareaInput
-                  value={form.closingBody}
-                  onChange={(v) => set("closingBody", v)}
+                  value={formData.closing_body}
+                  onChange={(v) => setField("closing_body", v)}
                   rows={3}
                   placeholder="Closing paragraph..."
+                  error={
+                    formErrors.closing_body
+                      ? String(formErrors.closing_body.message)
+                      : undefined
+                  }
                 />
               </FormField>
-              <FormField label="Section Image">
+
+              {/* closing_image — required (url) */}
+              <FormField label="Section Image" required>
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
-                    {form.closingImage ? (
+                    {formData.closing_image ? (
                       <Image
-                        src={form.closingImage}
+                        src={formData.closing_image}
                         alt="Closing preview"
                         fill
                         className="object-cover"
@@ -784,29 +1401,40 @@ export default function ExperienceDetailPage() {
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                         <ImageIcon className="w-7 h-7 text-primary/20" />
-                        <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                        <p className="text-primary/30 text-xs tracking-wider">
+                          No image set
+                        </p>
                       </div>
                     )}
                   </div>
                   <ImageUpload
-                    value={form.closingImage}
-                    onChange={(v) => set("closingImage", v)}
+                    value={formData.closing_image}
+                    onChange={(v) => setField("closing_image", v)}
                     inputId="closing-image-upload"
                   />
+                  {formErrors.closing_image && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {String(formErrors.closing_image.message)}
+                    </p>
+                  )}
                 </div>
               </FormField>
+
+              {/* closing_couple_label — optional */}
               <FormField label="Couple Label (optional)">
                 <TextInput
-                  value={form.closingCoupleLabel}
-                  onChange={(v) => set("closingCoupleLabel", v)}
+                  value={formData.closing_couple_label ?? ""}
+                  onChange={(v) => setField("closing_couple_label", v)}
                   placeholder="e.g. Created for couples who seek:"
                 />
               </FormField>
-              {form.closingCoupleLabel && (
+
+              {/* closing_couple_values — optional (array) */}
+              {formData.closing_couple_label && (
                 <FormField label="Couple Values">
                   <TagsInput
-                    values={form.closingCoupleValues}
-                    onChange={(v) => set("closingCoupleValues", v)}
+                    values={formData.closing_couple_values}
+                    onChange={(v) => setField("closing_couple_values", v)}
                     placeholder="e.g. Seclusion and intimacy"
                   />
                 </FormField>
@@ -817,9 +1445,23 @@ export default function ExperienceDetailPage() {
           {/* ── FAQs ── */}
           <Section
             title="FAQs"
-            subtitle={`${form.faqs.filter((f) => f.q).length} questions`}
+            subtitle={
+              isNew
+                ? "Available after saving"
+                : `${faqs.length} question${faqs.length !== 1 ? "s" : ""}`
+            }
           >
-            <FAQEditor faqs={form.faqs} onChange={(v) => set("faqs", v)} />
+            {isNew || !experienceId ? (
+              <p className="text-xs text-primary/40 italic">
+                FAQs can be added after the experience is created and saved.
+              </p>
+            ) : (
+              <FAQEditor
+                experienceId={experienceId}
+                faqs={faqs}
+                onFaqsChange={setFaqs}
+              />
+            )}
           </Section>
         </div>
 
@@ -854,16 +1496,23 @@ export default function ExperienceDetailPage() {
             </p>
             <div className="space-y-2">
               {[
-                { label: "Hero", filled: !!form.heroDesc && !!form.heroImage },
+                {
+                  label: "Hero",
+                  filled: !!formData.hero_desc && !!formData.hero_image,
+                },
                 {
                   label: "Intro",
-                  filled: !!form.introBody && form.introList.some(Boolean),
+                  filled:
+                    !!formData.intro_body && formData.intro_list.some(Boolean),
                 },
-                { label: "Approach", filled: !!form.approachBody },
-                { label: "Services", filled: form.servicesList.some(Boolean) },
-                { label: "Dark Panel", filled: !!form.darkPanelBody },
-                { label: "Closing", filled: !!form.closingBody },
-                { label: "FAQs", filled: form.faqs.some((f) => f.q) },
+                { label: "Approach", filled: !!formData.approach_body },
+                {
+                  label: "Services",
+                  filled: formData.services_list.some(Boolean),
+                },
+                { label: "Dark Panel", filled: !!formData.services_dark_body },
+                { label: "Closing", filled: !!formData.closing_body },
+                { label: "FAQs", filled: faqs.length > 0 },
               ].map((s) => (
                 <div
                   key={s.label}
@@ -877,44 +1526,42 @@ export default function ExperienceDetailPage() {
               ))}
             </div>
           </div>
-
-          {/* Actions */}
-          <div className="sticky bottom-6 lg:static space-y-2">
-            <button
-              onClick={() => {
-                if (validate()) setShowSaveModal(true);
-              }}
-              className="w-full flex items-center justify-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/90 transition-colors shadow-lg lg:shadow-none"
-            >
-              <Save className="w-4 h-4" />
-              {isNew ? "Create Experience" : "Save Changes"}
-            </button>
-            {!isNew && (
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete Experience
-              </button>
-            )}
-          </div>
         </div>
-      </div>
+      </form>
 
-      {/* ── Modals ── */}
-      {showSaveModal && (
-        <SaveModal
-          onConfirm={confirmSave}
-          onCancel={() => setShowSaveModal(false)}
-          isNew={isNew}
+      {/* ── Unsaved Changes Modal ── */}
+      {unsavedModal.open && (
+        <UnsavedChangesModal
+          mode={isNew ? "create" : "update"}
+          onConfirmLeave={() => {
+            setUnsavedModal({ open: false });
+            if (unsavedModal.pendingHref) router.push(unsavedModal.pendingHref);
+          }}
+          onCancel={() => setUnsavedModal({ open: false })}
         />
       )}
-      {showDeleteModal && (
+
+      {/* ── Save Modal ── */}
+      {(saveStatus === "confirm" || saveStatus === "saving") && (
+        <SaveModal
+          mode={isNew ? "create" : "update"}
+          entityName="Experience"
+          itemName={formData.name || undefined}
+          onConfirm={confirmSave}
+          onCancel={() => saveStatus !== "saving" && setSaveStatus("idle")}
+          isLoading={saveStatus === "saving"}
+        />
+      )}
+
+      {/* ── Delete Modal ── */}
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
-          name={form.name}
-          onConfirm={confirmDelete}
-          onCancel={() => setShowDeleteModal(false)}
+          name={formData.name}
+          onConfirm={deleteExperienceById}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
+          isLoading={deleteStatus === "deleting"}
         />
       )}
     </div>

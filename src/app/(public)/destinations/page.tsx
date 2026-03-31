@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { destinationList } from "@/lib/data/destinations/destination-data";
+import { destinationList } from "@/lib/data/destination-data";
 
 export default function DestinationsPage() {
   const [selectedCategory, setSelectedCategory] = useState<
@@ -13,7 +13,7 @@ export default function DestinationsPage() {
   >("Bali");
 
   const filteredDestinations = destinationList.filter(
-    (d) => d.category === selectedCategory,
+    (d) => d.category.name === selectedCategory,
   );
 
   return (
@@ -156,9 +156,7 @@ export default function DestinationsPage() {
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
               Why Indonesia
               <br />
-              <span>
-                For Destination Weddings
-              </span>
+              <span>For Destination Weddings</span>
             </h2>
           </motion.div>
 
@@ -220,13 +218,7 @@ export default function DestinationsPage() {
       </motion.section>
 
       {/* Destinations Grid */}
-      <motion.section
-        className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
+      <section className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28">
         <motion.div variants={fadeInUp} className="mb-14">
           <p className="text-primary tracking-[0.25em] uppercase mb-3">
             Explore
@@ -280,7 +272,7 @@ export default function DestinationsPage() {
                 >
                   <div className="relative aspect-[4/3] overflow-hidden mb-4">
                     <Image
-                      src={destination.imageUrl}
+                      src={destination.image}
                       alt={destination.name}
                       fill
                       className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
@@ -307,7 +299,7 @@ export default function DestinationsPage() {
             ))}
           </div>
         )}
-      </motion.section>
+      </section>
 
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"

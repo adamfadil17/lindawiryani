@@ -16,7 +16,7 @@ import {
   hospitalityValues,
   subExperiences,
   whyBali,
-} from "@/lib/data/wedding-experiences/wedding-experiences-data";
+} from "@/lib/data/wedding-experience-data";
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);

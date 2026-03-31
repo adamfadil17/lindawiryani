@@ -6,8 +6,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
-import { categories, Category } from "@/lib/types/article/article-types";
-import { articles } from "@/lib/data/article/article-data";
+import { articles } from "@/lib/data/article-data";
+import { articleCategories, ArticleCategory } from "@/types";
 
 const categoryDescriptions: Record<string, string> = {
   Guides: "Step-by-step planning guides for destination couples",
@@ -20,16 +20,19 @@ const categoryDescriptions: Record<string, string> = {
 
 // ─── Filter Bar ───────────────────────────────────────────────────────────────
 
+type ActiveCategory = ArticleCategory | "All";
+
 function CategoryFilter({
   active,
   onChange,
 }: {
-  active: Category;
-  onChange: (c: Category) => void;
+  active: ActiveCategory;
+  onChange: (c: ActiveCategory) => void;
 }) {
+  const allCategories: ActiveCategory[] = ["All", ...articleCategories];
   return (
     <div className="flex flex-wrap gap-2 lg:gap-3">
-      {categories.map((cat) => (
+      {allCategories.map((cat) => (
         <button
           key={cat}
           onClick={() => onChange(cat)}
@@ -127,7 +130,7 @@ function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
 
         {/* Content */}
         <div className="lg:col-span-5 bg-primary/10 flex flex-col justify-center p-10 lg:p-14">
-          <p className="text-primary/50 text-xs tracking-widest uppercase mb-4">
+          <p className="text-primary/80 text-xs tracking-widest uppercase mb-4">
             Featured
           </p>
           <h2 className="text-primary font-semibold text-2xl lg:text-3xl leading-snug group-hover:text-primary/70 transition-colors mb-5">
@@ -147,7 +150,7 @@ function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function JournalPage() {
-  const [activeCategory, setActiveCategory] = useState<Category>("All");
+  const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All");
 
   const filtered =
     activeCategory === "All"
@@ -264,7 +267,7 @@ export default function JournalPage() {
                 <button
                   key={cat}
                   onClick={() => {
-                    setActiveCategory(cat as Category);
+                    setActiveCategory(cat as ActiveCategory);
                     document
                       .getElementById("journal-grid")
                       ?.scrollIntoView({ behavior: "smooth" });

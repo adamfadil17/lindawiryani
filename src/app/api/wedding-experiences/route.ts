@@ -1,7 +1,18 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
-import { createWeddingExperienceSchema, parsePagination, paginateQuery } from "@/utils";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+} from "@/lib";
+import {
+  createWeddingExperienceSchema,
+  parsePagination,
+  paginateQuery,
+} from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const WEDDING_EXPERIENCE_INCLUDE = {
@@ -47,7 +58,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
@@ -55,7 +66,9 @@ export async function POST(req: NextRequest) {
 
     const baseSlug = toSlug(dto.name);
     const slug = await ensureUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.weddingExperience.findUnique({ where: { slug: s } });
+      const existing = await prisma.weddingExperience.findUnique({
+        where: { slug: s },
+      });
       return !!existing;
     });
 

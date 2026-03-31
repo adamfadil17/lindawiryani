@@ -4,11 +4,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, MapPin, Check } from "lucide-react";
 import Link from "next/link";
-import {
-  WeddingTheme,
-  venues,
-  Venue,
-} from "@/lib/data/wedding-concepts/wedding-concepts-data";
+import { venueList } from "@/lib/data/venue-data";
+import type { Venue, WeddingTheme } from "@/types";
 
 interface ThemeDetailModalProps {
   theme: WeddingTheme;
@@ -16,7 +13,6 @@ interface ThemeDetailModalProps {
   onExploreVenue: (venue: Venue) => void;
 }
 
-// Komponen Loading Skeleton
 const ImageLoadingSkeleton = () => (
   <div className="absolute inset-0 bg-stone-200 animate-pulse">
     <div className="w-full h-full flex items-center justify-center">
@@ -34,8 +30,12 @@ export default function ThemeDetailModal({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  const totalImages = theme.gallery?.length || 0;
-  const relatedVenue = venues.find((v) => v.id === theme.venueId);
+  // gallery bertipe WeddingThemeImage[] — ambil .url untuk src Image
+  const galleryImages = theme.gallery ?? [];
+  const totalImages = galleryImages.length;
+
+  // Lookup venue dari venueList menggunakan theme.venue_id
+  const relatedVenue = venueList.find((v) => v.id === theme.venue_id);
   const venueName = relatedVenue ? relatedVenue.name : "Venue To Be Confirmed";
 
   useEffect(() => {
@@ -47,49 +47,39 @@ export default function ThemeDetailModal({
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
+      if (e.key === "Escape") onClose();
     };
-
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
-  // Reset index dan loading state saat theme berubah
   useEffect(() => {
     setCurrentImageIndex(0);
     setImageLoaded(false);
     setImageError(false);
   }, [theme.id]);
 
-  // Reset loading state ketika image berubah
   useEffect(() => {
     setImageLoaded(false);
     setImageError(false);
   }, [currentImageIndex]);
 
   const nextImage = () => {
-    if (totalImages > 1) {
+    if (totalImages > 1)
       setCurrentImageIndex((prev) => (prev + 1) % totalImages);
-    }
   };
 
   const prevImage = () => {
-    if (totalImages > 1) {
+    if (totalImages > 1)
       setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
-    }
   };
 
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageError(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoaded(true);
-    setImageError(true);
-  };
+  // URL aktif: ambil .url dari WeddingThemeImage, fallback ke theme.image
+  const currentImageUrl =
+    totalImages > 0
+      ? (galleryImages[currentImageIndex].url ??
+        "https://placehold.net/default.svg")
+      : (theme.image ?? "https://placehold.net/default.svg");
 
   return (
     <div
@@ -109,11 +99,10 @@ export default function ThemeDetailModal({
 
         <div className="overflow-y-auto p-4 md:p-8">
           <div className="flex flex-col gap-8">
+            {/* ── Galeri ── */}
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100">
-              {/* Loading Skeleton */}
               {!imageLoaded && !imageError && <ImageLoadingSkeleton />}
 
-              {/* Error State */}
               {imageError && (
                 <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
                   <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
@@ -123,12 +112,9 @@ export default function ThemeDetailModal({
                 </div>
               )}
 
-              {/* Main Image */}
+              {/* .url dari WeddingThemeImage — bukan item object langsung */}
               <Image
-                src={
-                  theme.gallery[currentImageIndex] ||
-                  "https://placehold.net/default.svg"
-                }
+                src={currentImageUrl}
                 alt={`${theme.title} - Image ${currentImageIndex + 1}`}
                 fill
                 className={`object-cover transition-opacity duration-300 ${
@@ -136,11 +122,16 @@ export default function ThemeDetailModal({
                 }`}
                 priority
                 sizes="(max-width: 1024px) 100vw, 80vw"
-                onLoad={handleImageLoad}
-                onError={handleImageError}
+                onLoad={() => {
+                  setImageLoaded(true);
+                  setImageError(false);
+                }}
+                onError={() => {
+                  setImageLoaded(true);
+                  setImageError(true);
+                }}
               />
 
-              {/* Navigasi hanya muncul jika gambar lebih dari satu */}
               {totalImages > 1 && (
                 <>
                   <button
@@ -157,8 +148,6 @@ export default function ThemeDetailModal({
                   >
                     <ChevronRight className="w-5 h-5 text-primary" />
                   </button>
-
-                  {/* Indicator jumlah gambar */}
                   <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 text-xs">
                     {currentImageIndex + 1} / {totalImages}
                   </div>
@@ -166,6 +155,7 @@ export default function ThemeDetailModal({
               )}
             </div>
 
+            {/* ── Konten ── */}
             <article className="flex flex-col gap-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-stone-100 pb-8">
                 <div className="flex-1">
@@ -176,10 +166,12 @@ export default function ThemeDetailModal({
                     {theme.title}
                   </span>
 
-                  {/* Show venue name and only make it clickable if venue exists */}
                   {relatedVenue ? (
                     <button
-                      onClick={() => onExploreVenue(relatedVenue)}
+                      onClick={() => {
+                        onExploreVenue(relatedVenue);
+                        onClose();
+                      }}
                       className="flex items-center gap-2 text-primary italic hover:text-primary/80 hover:cursor-pointer group"
                     >
                       <MapPin className="w-4 h-4 flex-shrink-0" />
@@ -194,16 +186,17 @@ export default function ThemeDetailModal({
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                  {/* Secondary CTA: Explore Venue */}
                   {relatedVenue && (
                     <button
-                      onClick={() => onExploreVenue(relatedVenue)}
+                      onClick={() => {
+                        onExploreVenue(relatedVenue);
+                        onClose();
+                      }}
                       className="bg-white border border-primary text-primary font-semibold px-6 py-4 text-sm tracking-widest hover:bg-stone-50 transition-colors uppercase hover:cursor-pointer"
                     >
                       Explore Venue
                     </button>
                   )}
-
                   <Link
                     href="https://wa.me/628113980998"
                     target="_blank"
@@ -222,7 +215,7 @@ export default function ThemeDetailModal({
                     The Experience
                   </span>
                   <p className="text-sm md:text-base text-primary text-justify leading-relaxed italic">
-                    "{theme.description}"
+                    &ldquo;{theme.description}&rdquo;
                   </p>
                 </div>
 

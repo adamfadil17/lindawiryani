@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { ArticleDetail } from "./components/article-detail";
-import { articles } from "@/lib/data/article/article-data";
+import { articles } from "@/lib/data/article-data";
 import { Metadata } from "next";
 
 export async function generateStaticParams() {

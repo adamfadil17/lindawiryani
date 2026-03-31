@@ -227,12 +227,13 @@ export const weddingThemeTypeEnum = z.enum(["ELOPEMENT", "INTIMATE"]);
 
 export const createWeddingThemeSchema = z.object({
   slug: slugSchema,
-  type: weddingThemeTypeEnum,
   title: z.string().min(2).max(255),
   description: z.string().min(1),
   image: z.string().url(),
   inclusions: z.array(z.string()).min(1),
-  venue_id: uuidSchema,
+  venue_id: z
+      .union([uuidSchema, z.literal(""), z.undefined()])
+      .transform((v) => v || undefined),
   experience_id: uuidSchema,
 });
 
@@ -297,9 +298,15 @@ export const createPortfolioSchema = z.object({
   slug: slugSchema,
   couple: z.string().min(2).max(255),
   subtitle: z.string().min(1),
-  destination_id: uuidSchema,
-  venue_id: uuidSchema,
-  experience_id: uuidSchema,
+  destination_id: z
+    .union([uuidSchema, z.literal(""), z.undefined()])
+    .transform((v) => v || undefined),
+  venue_id: z
+    .union([uuidSchema, z.literal(""), z.undefined()])
+    .transform((v) => v || undefined),
+  experience_id: z
+    .union([uuidSchema, z.literal(""), z.undefined()])
+    .transform((v) => v || undefined),
   image: z.string().url(),
   tags: z.array(z.string()).min(1),
   excerpt: z.string().min(1),

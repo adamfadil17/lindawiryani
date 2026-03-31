@@ -40,7 +40,7 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
@@ -64,7 +64,7 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     await prisma.destinationCategory.delete({ where: { id } });

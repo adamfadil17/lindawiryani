@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const valid = await comparePassword(password, user.password);
     if (!valid) return unauthorized("Invalid credentials");
 
-    const token = signToken({ userId: user.id, email: user.email, role: user.role });
+    const token = await signToken({ userId: user.id, email: user.email, role: user.role });
 
     const { password: _, ...publicUser } = user;
     return ok({

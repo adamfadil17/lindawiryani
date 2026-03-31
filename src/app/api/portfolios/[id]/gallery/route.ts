@@ -58,7 +58,7 @@ export async function POST(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const portfolio = await prisma.portfolio.findUnique({

@@ -10,20 +10,17 @@ import {
   slideInLeft,
   slideInRight,
 } from "@/lib/motion";
-import { Destination } from "@/lib/types/destinations/destination-types";
-import { destinationList } from "@/lib/data/destinations/destination-data";
-
+import { Destination } from "@/types";
 interface DestinationDetailProps {
   destination: Destination;
+  otherDestinations: Destination[];
 }
 
 export default function DestinationDetail({
   destination,
+  otherDestinations,
 }: DestinationDetailProps) {
   const [isOptionsExpanded, setIsOptionsExpanded] = useState(false);
-  const otherDestinations = destinationList.filter(
-    (d) => d.slug !== destination.slug,
-  );
 
   return (
     <main className="relative overflow-hidden">
@@ -31,7 +28,7 @@ export default function DestinationDetail({
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src={destination.imageUrl}
+            src={destination.image}
             alt={destination.name}
             fill
             priority
@@ -80,9 +77,7 @@ export default function DestinationDetail({
           >
             {destination.name}
             <br />
-            <span>
-              {destination.type}
-            </span>
+            <span>{destination.type}</span>
           </motion.h1>
 
           {/* Description */}
@@ -130,7 +125,7 @@ export default function DestinationDetail({
               <p className="text-primary font-semibold tracking-[0.25em] uppercase mb-4">
                 Why Couples Choose {destination.name}
               </p>
-              {destination.bestFor.map((reason, index) => (
+              {destination.best_for.map((reason, index) => (
                 <div
                   key={reason}
                   className="flex items-center gap-4 pb-4 border-b border-primary/20 last:border-0"
@@ -168,7 +163,7 @@ export default function DestinationDetail({
                 Guest Capacity
               </p>
               <p className="text-3xl font-semibold mb-6">
-                {destination.guestCapacity}
+                {destination.guest_capacity}
               </p>
               <p className="text-white/80  leading-relaxed">
                 Flexible capacity to accommodate intimate gatherings or larger
@@ -207,7 +202,7 @@ export default function DestinationDetail({
                 Accessibility & Transportation
               </h3>
               <p className="text-primary leading-relaxed">
-                {destination.accessibilityNotes}
+                {destination.accessibility_notes}
               </p>
             </motion.div>
 
@@ -219,14 +214,14 @@ export default function DestinationDetail({
             >
               <div className="flex items-center justify-between gap-4 mb-4">
                 <h3 className="font-semibold text-primary">Ceremony Options</h3>
-                {destination.ceremonyOptions.length > 2 && (
+                {destination.ceremony_options.length > 2 && (
                   <span className="hidden sm:inline text-sm border border-primary/50 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
                     {isOptionsExpanded ? "SHOW LESS" : "VIEW MORE OPTIONS"}
                   </span>
                 )}
               </div>
               <ul className="space-y-2">
-                {destination.ceremonyOptions.slice(0, 2).map((option) => (
+                {destination.ceremony_options.slice(0, 2).map((option) => (
                   <li
                     key={option}
                     className="text-primary flex items-start gap-4"
@@ -238,7 +233,7 @@ export default function DestinationDetail({
               </ul>
               {isOptionsExpanded && (
                 <ul className="space-y-2 mt-3 pt-3 border-t border-primary/20">
-                  {destination.ceremonyOptions.slice(2).map((option) => (
+                  {destination.ceremony_options.slice(2).map((option) => (
                     <li
                       key={option}
                       className="text-primary flex items-start gap-4"
@@ -260,7 +255,7 @@ export default function DestinationDetail({
                 Seasonal Considerations
               </h3>
               <p className="text-primary leading-relaxed">
-                {destination.seasonalConsiderations}
+                {destination.seasonal_considerations}
               </p>
             </motion.div>
 
@@ -274,14 +269,14 @@ export default function DestinationDetail({
                 <h3 className="font-semibold text-primary">
                   Reception Options
                 </h3>
-                {destination.receptionOptions.length > 2 && (
+                {destination.reception_options.length > 2 && (
                   <span className="hidden sm:inline text-sm border border-primary/50 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
                     {isOptionsExpanded ? "SHOW LESS" : "VIEW MORE OPTIONS"}
                   </span>
                 )}
               </div>
               <ul className="space-y-2">
-                {destination.receptionOptions.slice(0, 2).map((option) => (
+                {destination.reception_options.slice(0, 2).map((option) => (
                   <li
                     key={option}
                     className="text-primary flex items-start gap-4"
@@ -293,7 +288,7 @@ export default function DestinationDetail({
               </ul>
               {isOptionsExpanded && (
                 <ul className="space-y-2 mt-3 pt-3 border-t border-primary/20">
-                  {destination.receptionOptions.slice(2).map((option) => (
+                  {destination.reception_options.slice(2).map((option) => (
                     <li
                       key={option}
                       className="text-primary flex items-start gap-4"
@@ -332,7 +327,7 @@ export default function DestinationDetail({
               Accommodation Nearby
             </p>
             <ul className="space-y-3">
-              {destination.accommodationNearby.map((place) => (
+              {destination.accommodation_nearby.map((place) => (
                 <li key={place} className="text-primary flex items-start gap-3">
                   <span className="text-primary/80  flex-shrink-0">◆</span>
                   {place}
@@ -346,7 +341,7 @@ export default function DestinationDetail({
               Dining Experiences
             </p>
             <ul className="space-y-3">
-              {destination.diningExperiences.map((dining) => (
+              {destination.dining_experiences.map((dining) => (
                 <li
                   key={dining}
                   className="text-primary flex items-start gap-3"
@@ -363,7 +358,7 @@ export default function DestinationDetail({
               Unique Features
             </p>
             <ul className="space-y-3">
-              {destination.uniqueFeatures.map((feature) => (
+              {destination.unique_features.map((feature) => (
                 <li
                   key={feature}
                   className="text-primary flex items-start gap-3"
@@ -387,7 +382,7 @@ export default function DestinationDetail({
       >
         <div className="absolute inset-0">
           <Image
-            src={destination.imageUrl}
+            src={destination.image}
             alt={destination.name}
             fill
             loading="lazy"
@@ -463,7 +458,7 @@ export default function DestinationDetail({
               <Link href={`/destinations/${dest.slug}`} className="group block">
                 <div className="relative aspect-[4/3] overflow-hidden mb-4">
                   <Image
-                    src={dest.imageUrl}
+                    src={dest.image}
                     alt={dest.name}
                     fill
                     loading="lazy"

@@ -5,8 +5,6 @@ import { createSubmissionSchema, parsePagination, paginateQuery } from "@/utils"
 
 export async function GET(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
-    requireRole(payload, "admin", "editor");
 
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const type = req.nextUrl.searchParams.get("type") ?? undefined;

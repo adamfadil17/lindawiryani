@@ -4,7 +4,7 @@ import { prisma, ok, handleError, requireAuth, notFound } from "@/lib";
 
 export async function GET(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
 
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },

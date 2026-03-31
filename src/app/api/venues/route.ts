@@ -1,6 +1,13 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+} from "@/lib";
 import { createVenueSchema, parsePagination, paginateQuery } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
@@ -15,8 +22,10 @@ const VENUE_INCLUDE = {
 export async function GET(req: NextRequest) {
   try {
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
-    const destinationId = req.nextUrl.searchParams.get("destinationId") ?? undefined;
-    const experienceId = req.nextUrl.searchParams.get("experienceId") ?? undefined;
+    const destinationId =
+      req.nextUrl.searchParams.get("destinationId") ?? undefined;
+    const experienceId =
+      req.nextUrl.searchParams.get("experienceId") ?? undefined;
 
     const where: Record<string, unknown> = {};
     if (search) {
@@ -51,7 +60,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();

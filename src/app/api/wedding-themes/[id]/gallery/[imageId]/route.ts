@@ -35,7 +35,7 @@ export async function PATCH(
   try {
     const { id, imageId } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const existing = await prisma.weddingThemeImage.findUnique({
@@ -65,7 +65,7 @@ export async function DELETE(
   try {
     const { id, imageId } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     const existing = await prisma.weddingThemeImage.findUnique({

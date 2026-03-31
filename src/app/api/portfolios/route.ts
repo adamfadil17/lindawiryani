@@ -1,6 +1,13 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+} from "@/lib";
 import { createPortfolioSchema, parsePagination, paginateQuery } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
@@ -14,9 +21,11 @@ const PORTFOLIO_INCLUDE = {
 export async function GET(req: NextRequest) {
   try {
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
-    const destinationId = req.nextUrl.searchParams.get("destinationId") ?? undefined;
+    const destinationId =
+      req.nextUrl.searchParams.get("destinationId") ?? undefined;
     const venueId = req.nextUrl.searchParams.get("venueId") ?? undefined;
-    const experienceId = req.nextUrl.searchParams.get("experienceId") ?? undefined;
+    const experienceId =
+      req.nextUrl.searchParams.get("experienceId") ?? undefined;
 
     const where: Record<string, unknown> = {};
     if (search) {
@@ -53,7 +62,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
@@ -61,7 +70,9 @@ export async function POST(req: NextRequest) {
 
     const baseSlug = toSlug(dto.couple);
     const slug = await ensureUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.portfolio.findUnique({ where: { slug: s } });
+      const existing = await prisma.portfolio.findUnique({
+        where: { slug: s },
+      });
       return !!existing;
     });
 
@@ -70,9 +81,9 @@ export async function POST(req: NextRequest) {
         slug,
         couple: dto.couple,
         subtitle: dto.subtitle,
-        destination_id: dto.destination_id,
-        venue_id: dto.venue_id,
-        experience_id: dto.experience_id,
+        destination_id: dto.destination_id ?? null,
+        venue_id: dto.venue_id ?? null,
+        experience_id: dto.experience_id ?? null,
         image: dto.image,
         tags: dto.tags,
         excerpt: dto.excerpt,

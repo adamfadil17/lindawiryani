@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 import {
   Plus,
   Search,
@@ -11,66 +12,156 @@ import {
   Trash2,
   Eye,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   X,
 } from "lucide-react";
-import { Destination } from "@/lib/types/new-strucutre";
-import { destinationList } from "@/lib/data/new-data/destination-data";
+import { Destination } from "@/types";
+import DeleteModal from "@/components/shared/delete-modal";
+import type { PaginationMeta } from "@/lib/api-response";
+import { toast } from "sonner";
 
-// ─── Delete Confirmation Modal ────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-function DeleteModal({
-  destination,
-  onConfirm,
-  onCancel,
-}: {
-  destination: Destination;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
+const LIMIT = 6;
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface CategoryOption {
+  id: string;
+  name: string;
+  count: number;
+}
+
+interface PageState {
+  // data
+  destinations: Destination[];
+  paginationMeta: PaginationMeta | null;
+  isLoading: boolean;
+  // filters
+  searchTerm: string;
+  debouncedSearch: string;
+  categoryFilter: string; // "all" | category uuid
+  currentPage: number;
+  // filter options + counts (dari /api/destinations/filters)
+  categories: CategoryOption[];
+  isFiltersLoading: boolean;
+  // delete state machine: idle → confirm → deleting → idle
+  deleteStatus: "idle" | "confirm" | "deleting";
+  deleteTarget: Destination | null;
+}
+
+type PageAction =
+  | { type: "FETCH_START" }
+  | { type: "FETCH_SUCCESS"; destinations: Destination[]; meta: PaginationMeta | null }
+  | { type: "FETCH_ERROR" }
+  | { type: "SET_FILTERS"; categories: CategoryOption[] }
+  | { type: "FILTERS_LOADED" }
+  | { type: "SET_SEARCH"; value: string }
+  | { type: "SET_DEBOUNCED_SEARCH"; value: string }
+  | { type: "SET_CATEGORY"; id: string }
+  | { type: "SET_PAGE"; page: number }
+  | { type: "CLEAR_FILTERS" }
+  | { type: "OPEN_DELETE"; destination: Destination }
+  | { type: "CLOSE_DELETE" }
+  | { type: "DELETE_START" }
+  | { type: "DELETE_SUCCESS" }
+  | { type: "DELETE_ERROR" };
+
+const initialState: PageState = {
+  destinations: [],
+  paginationMeta: null,
+  isLoading: true,
+  searchTerm: "",
+  debouncedSearch: "",
+  categoryFilter: "all",
+  currentPage: 1,
+  categories: [],
+  isFiltersLoading: true,
+  deleteStatus: "idle",
+  deleteTarget: null,
+};
+
+function pageReducer(state: PageState, action: PageAction): PageState {
+  switch (action.type) {
+    case "FETCH_START":
+      return { ...state, isLoading: true };
+    case "FETCH_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        destinations: action.destinations,
+        paginationMeta: action.meta,
+      };
+    case "FETCH_ERROR":
+      return { ...state, isLoading: false };
+
+    case "SET_FILTERS":
+      return { ...state, categories: action.categories };
+    case "FILTERS_LOADED":
+      return { ...state, isFiltersLoading: false };
+
+    case "SET_SEARCH":
+      return { ...state, searchTerm: action.value };
+    case "SET_DEBOUNCED_SEARCH":
+      // Reset ke halaman 1 setiap kali search term berubah
+      return { ...state, debouncedSearch: action.value, currentPage: 1 };
+
+    case "SET_CATEGORY":
+      return { ...state, categoryFilter: action.id, currentPage: 1 };
+    case "SET_PAGE":
+      return { ...state, currentPage: action.page };
+    case "CLEAR_FILTERS":
+      return {
+        ...state,
+        searchTerm: "",
+        debouncedSearch: "",
+        categoryFilter: "all",
+        currentPage: 1,
+      };
+
+    case "OPEN_DELETE":
+      return { ...state, deleteTarget: action.destination, deleteStatus: "confirm" };
+    case "CLOSE_DELETE":
+      // Guard: tidak bisa close saat sedang proses delete
+      return state.deleteStatus === "deleting"
+        ? state
+        : { ...state, deleteTarget: null, deleteStatus: "idle" };
+    case "DELETE_START":
+      return { ...state, deleteStatus: "deleting" };
+    case "DELETE_SUCCESS":
+      return { ...state, deleteTarget: null, deleteStatus: "idle" };
+    case "DELETE_ERROR":
+      return { ...state, deleteStatus: "confirm" };
+
+    default:
+      return state;
+  }
+}
+
+// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
+
+function SkeletonStatCard() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
-        </div>
-        <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Destination
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{destination.name}&rdquo;
-          </span>
-          ? This action cannot be undone and will permanently remove this
-          destination from the system.
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
-        </div>
+    <div className="p-5 border border-primary/20 bg-white animate-pulse">
+      <div className="h-3 bg-primary/10 w-2/3 rounded mb-3" />
+      <div className="h-7 bg-primary/10 w-10 rounded" />
+    </div>
+  );
+}
+
+// ─── Skeleton Card ────────────────────────────────────────────────────────────
+
+function SkeletonCard() {
+  return (
+    <div className="bg-white border border-primary/20 animate-pulse">
+      <div className="aspect-[16/9] bg-primary/10" />
+      <div className="p-5 space-y-3">
+        <div className="h-3 bg-primary/10 w-1/4 rounded" />
+        <div className="h-4 bg-primary/10 w-3/4 rounded" />
+        <div className="h-3 bg-primary/10 w-1/2 rounded" />
+        <div className="h-3 bg-primary/10 w-full rounded" />
+        <div className="h-3 bg-primary/10 w-5/6 rounded" />
       </div>
     </div>
   );
@@ -134,11 +225,11 @@ function DestinationCard({
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
             <span className="text-sm text-primary/80 font-semibold tracking-wider uppercase">
-              {destination.guestCapacity}
+              {destination.guest_capacity ?? "—"}
             </span>
             <div className="flex items-center gap-1">
               <Link
-                href={`/destinations/${destination.id}`}
+                href={`/destinations/${destination.slug}`}
                 target="_blank"
                 className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
                 title="View Public Page"
@@ -167,44 +258,264 @@ function DestinationCard({
   );
 }
 
+// ─── Pagination ───────────────────────────────────────────────────────────────
+
+function Pagination({
+  meta,
+  onPageChange,
+}: {
+  meta: PaginationMeta;
+  onPageChange: (page: number) => void;
+}) {
+  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1);
+
+  const getVisiblePages = (): (number | "...")[] => {
+    if (meta.totalPages <= 7) return pages;
+    const range: (number | "...")[] = [];
+    if (meta.page <= 4) {
+      range.push(...pages.slice(0, 5), "...", meta.totalPages);
+    } else if (meta.page >= meta.totalPages - 3) {
+      range.push(1, "...", ...pages.slice(meta.totalPages - 5));
+    } else {
+      range.push(
+        1,
+        "...",
+        meta.page - 1,
+        meta.page,
+        meta.page + 1,
+        "...",
+        meta.totalPages,
+      );
+    }
+    return range;
+  };
+
+  if (meta.total === 0) return null;
+
+  return (
+    <div className="flex items-center justify-between mt-8 pt-6 border-t border-primary/20">
+      <p className="text-primary/60 text-xs tracking-wider">
+        Showing{" "}
+        <span className="text-primary font-medium">
+          {(meta.page - 1) * meta.limit + 1}–
+          {Math.min(meta.page * meta.limit, meta.total)}
+        </span>{" "}
+        of <span className="text-primary font-medium">{meta.total}</span>{" "}
+        destinations
+      </p>
+
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onPageChange(meta.page - 1)}
+          disabled={!meta.hasPrev}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+
+        {getVisiblePages().map((p, i) =>
+          p === "..." ? (
+            <span
+              key={`ellipsis-${i}`}
+              className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm"
+            >
+              …
+            </span>
+          ) : (
+            <button
+              key={p}
+              onClick={() => onPageChange(p as number)}
+              className={`w-8 h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
+                meta.page === p
+                  ? "bg-primary text-white border border-primary"
+                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+              }`}
+            >
+              {p}
+            </button>
+          ),
+        )}
+
+        <button
+          onClick={() => onPageChange(meta.page + 1)}
+          disabled={!meta.hasNext}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DashboardDestinationsPage() {
-  const [destinations, setDestinations] =
-    useState<Destination[]>(destinationList);
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<string>("All");
-  const [deleteTarget, setDeleteTarget] = useState<Destination | null>(null);
+  const [state, dispatch] = useReducer(pageReducer, initialState);
 
-  const categories = [
-    { id: "All", name: "All Categories" },
-    ...Array.from(
-      new Map(destinations.map((d) => [d.category.id, d.category])).values()
-    ),
-  ];
+  const {
+    destinations,
+    paginationMeta,
+    isLoading,
+    searchTerm,
+    debouncedSearch,
+    categoryFilter,
+    currentPage,
+    categories,
+    isFiltersLoading,
+    deleteStatus,
+    deleteTarget,
+  } = state;
 
-  const filtered = destinations.filter((d) => {
-    const matchSearch =
-      d.name.toLowerCase().includes(search.toLowerCase()) ||
-      d.location.toLowerCase().includes(search.toLowerCase()) ||
-      d.type.toLowerCase().includes(search.toLowerCase());
-    const matchCategory =
-      categoryFilter === "All" || d.categoryId === categoryFilter;
-    return matchSearch && matchCategory;
-  });
+  // ── useRef: debounce timer — tidak perlu trigger re-render ──
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const confirmDelete = () => {
-    if (deleteTarget) {
-      setDestinations((prev) => prev.filter((d) => d.id !== deleteTarget.id));
-      setDeleteTarget(null);
+  // ── useRef: AbortController — cancel request lama saat params berubah ──
+  const abortRef = useRef<AbortController | null>(null);
+
+  // ── Debounce search input ──
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      dispatch({ type: "SET_DEBOUNCED_SEARCH", value: searchTerm });
+    }, 400);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [searchTerm]);
+
+  // ── Fetch filter options (sekali saat mount) ──
+  // /api/destinations/filters mengembalikan categories beserta count
+  // destinasi per category — stat card langsung terisi tanpa extra request
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const { data } = await axios.get<{
+          data: { categories: CategoryOption[] };
+        }>("/api/destinations/filters");
+        dispatch({ type: "SET_FILTERS", categories: data.data.categories });
+      } catch (err) {
+        console.error("Failed to load filters:", err);
+      } finally {
+        dispatch({ type: "FILTERS_LOADED" });
+      }
+    };
+    fetchFilters();
+  }, []);
+
+  // ── Fetch destinations ──
+  const getDestinations = useCallback(async () => {
+    // Cancel in-flight request sebelumnya agar tidak ada race condition
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
+
+    dispatch({ type: "FETCH_START" });
+    try {
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        limit: LIMIT,
+      };
+      if (debouncedSearch) params.search = debouncedSearch;
+      if (categoryFilter !== "all") params.categoryId = categoryFilter;
+
+      const response = await axios.get("/api/destinations", {
+        params,
+        signal: abortRef.current.signal,
+      });
+
+      dispatch({
+        type: "FETCH_SUCCESS",
+        destinations: response.data.data ?? [],
+        meta: response.data.meta ?? null,
+      });
+    } catch (err) {
+      // Abaikan error dari request yang sengaja di-cancel
+      if (axios.isCancel(err)) return;
+      const errorMsg = axios.isAxiosError(err)
+        ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
+        : err instanceof Error
+          ? err.message
+          : "Failed to load destinations";
+      toast.error("Failed to load destinations", { description: errorMsg });
+      dispatch({ type: "FETCH_ERROR" });
     }
-  };
+  }, [currentPage, debouncedSearch, categoryFilter]);
 
-  const countByCategory = (categoryId: string) =>
-    destinations.filter((d) => d.categoryId === categoryId).length;
+  // getDestinations dipanggil ulang setiap kali fungsinya berubah
+  // (yaitu saat currentPage / debouncedSearch / categoryFilter berubah)
+  useEffect(() => {
+    getDestinations();
+  }, [getDestinations]);
 
-  const selectedCategoryName =
-    categories.find((c) => c.id === categoryFilter)?.name ?? "All Categories";
+  // ── Filter & action helpers — stable reference dengan useCallback ──
+  const handleCategoryChange = useCallback(
+    (id: string) => dispatch({ type: "SET_CATEGORY", id }),
+    [],
+  );
+
+  const clearAllFilters = useCallback(
+    () => dispatch({ type: "CLEAR_FILTERS" }),
+    [],
+  );
+
+  const openDeleteModal = useCallback(
+    (destination: Destination) =>
+      dispatch({ type: "OPEN_DELETE", destination }),
+    [],
+  );
+
+  const closeDeleteModal = useCallback(
+    () => dispatch({ type: "CLOSE_DELETE" }),
+    [],
+  );
+
+  const deleteDestinationById = useCallback(async () => {
+    if (!deleteTarget) return;
+    dispatch({ type: "DELETE_START" });
+    try {
+      await axios.delete(`/api/destinations/${deleteTarget.id}`);
+      // Jika destination yang dihapus adalah satu-satunya di halaman terakhir,
+      // mundur satu halaman agar tidak stuck di halaman kosong
+      const isLastOnPage = destinations.length === 1 && currentPage > 1;
+      dispatch({ type: "DELETE_SUCCESS" });
+      if (isLastOnPage) {
+        dispatch({ type: "SET_PAGE", page: currentPage - 1 });
+      } else {
+        getDestinations();
+      }
+    } catch (err) {
+      console.error("Delete failed:", err);
+      toast.error("Failed to delete destination");
+      dispatch({ type: "DELETE_ERROR" });
+    }
+  }, [deleteTarget, destinations.length, currentPage, getDestinations]);
+
+  // ── useMemo: derived values & options ──
+
+  const totalCount = useMemo(
+    () => paginationMeta?.total ?? 0,
+    [paginationMeta],
+  );
+
+  const hasActiveFilters = useMemo(
+    () => !!debouncedSearch || categoryFilter !== "all",
+    [debouncedSearch, categoryFilter],
+  );
+
+  // Stat cards: ["All", ...categories] — rebuild hanya saat categories/totalCount berubah
+  const statCards = useMemo(
+    () => [{ id: "all", name: "All", count: totalCount }, ...categories],
+    [categories, totalCount],
+  );
+
+  // Dropdown options
+  const categoryOptions = useMemo(
+    () => [
+      { id: "all", name: "All Categories" },
+      ...categories.map((c) => ({ id: c.id, name: c.name })),
+    ],
+    [categories],
+  );
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
@@ -218,7 +529,11 @@ export default function DashboardDestinationsPage() {
             Destinations
           </h1>
           <p className="text-primary/80 text-sm mt-1">
-            {destinations.length} total destinations
+            {isLoading ? (
+              <span className="inline-block w-24 h-3 bg-primary/10 animate-pulse rounded" />
+            ) : (
+              `${totalCount} total destinations`
+            )}
           </p>
         </div>
 
@@ -232,128 +547,193 @@ export default function DashboardDestinationsPage() {
       </div>
 
       {/* ── Stats Row ── */}
-      <div
-        className="grid gap-4 mb-8"
-        style={{
-          gridTemplateColumns: `repeat(${categories.length}, minmax(0, 1fr))`,
-        }}
-      >
-        {categories.map((cat) => {
-          const isActive = categoryFilter === cat.id;
-          const value =
-            cat.id === "All" ? destinations.length : countByCategory(cat.id);
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setCategoryFilter(cat.id)}
-              className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
-                isActive
-                  ? "bg-primary text-white border-primary"
-                  : "bg-white border-primary/20 text-primary hover:border-primary/30"
-              }`}
-            >
-              <p
-                className={`text-sm tracking-[0.2em] uppercase mb-1.5 ${
-                  isActive ? "text-white/80" : "text-primary/80"
-                }`}
-              >
-                {cat.name}
-              </p>
-              <p className="text-2xl font-semibold">{value}</p>
-            </button>
-          );
-        })}
-      </div>
+      {isFiltersLoading ? (
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonStatCard key={i} />
+          ))}
+        </div>
+      ) : (
+        statCards.length > 1 && (
+          <div
+            className="grid gap-4 mb-8"
+            style={{
+              gridTemplateColumns: `repeat(${Math.min(statCards.length, 6)}, minmax(0, 1fr))`,
+            }}
+          >
+            {statCards.map((stat) => {
+              const isActive = categoryFilter === stat.id;
+              const displayValue =
+                stat.id === "all" ? totalCount : stat.count > 0 ? stat.count : "—";
+
+              return (
+                <button
+                  key={stat.id}
+                  onClick={() => handleCategoryChange(stat.id)}
+                  className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
+                    isActive
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white border-primary/20 text-primary hover:border-primary/30"
+                  }`}
+                >
+                  <p
+                    className={`text-sm tracking-[0.2em] uppercase mb-1.5 truncate ${
+                      isActive ? "text-white/80" : "text-primary/80"
+                    }`}
+                  >
+                    {stat.name}
+                  </p>
+                  {isLoading && stat.id === "all" ? (
+                    <div className="h-7 w-10 bg-current opacity-10 animate-pulse rounded" />
+                  ) : (
+                    <p className="text-2xl font-semibold">{displayValue}</p>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )
+      )}
 
       {/* ── Search & Filter Bar ── */}
-      <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-        {/* Search Input */}
+      <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+        {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
             type="text"
             placeholder="Search destinations..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+            value={searchTerm}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
+            className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
-          {search && (
+          {searchTerm && (
             <button
-              onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
+              onClick={() => dispatch({ type: "SET_SEARCH", value: "" })}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/30 hover:text-primary/60 transition-colors hover:cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Category Dropdown */}
-        <div className="relative shrink-0">
+        {/* Divider */}
+        <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
+
+        {/* Category dropdown */}
+        <div className="relative shrink-0 h-[42px]">
           <select
             value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="w-full sm:w-48 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40 hover:text-primary/80"
+            onChange={(e) => handleCategoryChange(e.target.value)}
+            disabled={isFiltersLoading}
+            className={`appearance-none h-full pl-3 pr-8 py-2.5 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+              categoryFilter !== "all"
+                ? "bg-primary text-white border-primary"
+                : "bg-white text-primary/60 border-primary/20 hover:border-primary/40 hover:text-primary/80"
+            }`}
           >
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
+            {categoryOptions.map((opt) => (
+              <option
+                key={opt.id}
+                value={opt.id}
+                className="bg-white text-primary normal-case font-normal tracking-normal"
+              >
+                {opt.name}
               </option>
             ))}
           </select>
-          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+          <ChevronDown
+            className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
+              categoryFilter !== "all" ? "text-white/70" : "text-primary/40"
+            }`}
+          />
         </div>
+
+        {/* Clear all */}
+        {hasActiveFilters && (
+          <>
+            <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
+            <button
+              onClick={clearAllFilters}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-primary/50 hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+              Clear
+            </button>
+          </>
+        )}
       </div>
 
-      {/* ── Results Count ── */}
-      {(search || categoryFilter !== "All") && (
+      {/* ── Results Info ── */}
+      {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
-          Showing {filtered.length} of {destinations.length} destinations
-          {categoryFilter !== "All" && ` in ${selectedCategoryName}`}
-          {search && ` for "${search}"`}
+          Showing {paginationMeta.total} destination
+          {paginationMeta.total !== 1 ? "s" : ""}
+          {categoryFilter !== "all" &&
+            ` in ${categoryOptions.find((c) => c.id === categoryFilter)?.name ?? ""}`}
+          {debouncedSearch && ` for "${debouncedSearch}"`}
         </p>
       )}
 
       {/* ── Grid ── */}
-      {filtered.length === 0 ? (
+      {isLoading ? (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {Array.from({ length: LIMIT }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      ) : destinations.length === 0 ? (
         <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
           <MapPin className="w-8 h-8 text-primary/20 mb-4" />
           <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
             No Results
           </p>
           <p className="text-primary/80 text-sm">
-            {search
-              ? `No destinations match "${search}"`
+            {debouncedSearch
+              ? `No destinations match "${debouncedSearch}"`
               : "No destinations in this category yet"}
           </p>
-          {search && (
+          {hasActiveFilters && (
             <button
-              onClick={() => setSearch("")}
+              onClick={clearAllFilters}
               className="mt-4 text-xs tracking-widest uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
             >
-              Clear Search
+              Clear Filters
             </button>
           )}
         </div>
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {filtered.map((destination) => (
+          {destinations.map((destination) => (
             <DestinationCard
               key={destination.id}
               destination={destination}
-              onDelete={(d) => setDeleteTarget(d)}
+              onDelete={openDeleteModal}
             />
           ))}
         </div>
       )}
 
-      {/* ── Delete Modal ── */}
-      {deleteTarget && (
-        <DeleteModal
-          destination={deleteTarget}
-          onConfirm={confirmDelete}
-          onCancel={() => setDeleteTarget(null)}
+      {/* ── Pagination ── */}
+      {paginationMeta && !isLoading && (
+        <Pagination
+          meta={paginationMeta}
+          onPageChange={(page) => dispatch({ type: "SET_PAGE", page })}
         />
       )}
+
+      {/* ── Delete Modal ── */}
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
+        deleteTarget && (
+          <DeleteModal
+            name={deleteTarget.name}
+            onConfirm={deleteDestinationById}
+            onCancel={closeDeleteModal}
+            isLoading={deleteStatus === "deleting"}
+          />
+        )}
     </div>
   );
 }

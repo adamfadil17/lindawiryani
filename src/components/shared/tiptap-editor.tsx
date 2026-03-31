@@ -1,6 +1,7 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import "./tiptap-editor.css";
+import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import { BubbleMenu, FloatingMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -200,7 +201,7 @@ export default function TipTapEditor({
   value,
   onChange,
   error,
-  placeholder = "Write your article content here…",
+  placeholder,
 }: TipTapEditorProps) {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
@@ -211,50 +212,23 @@ export default function TipTapEditor({
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
         horizontalRule: false, // use standalone extension below
-        code: {
-          HTMLAttributes: {
-            class:
-              "bg-primary/8 text-primary font-mono text-[0.875em] px-1.5 py-0.5 rounded",
-          },
-        },
-        codeBlock: {
-          HTMLAttributes: {
-            class:
-              "bg-primary/8 text-primary font-mono text-sm p-4 rounded-sm overflow-x-auto",
-          },
-        },
-        blockquote: {
-          HTMLAttributes: {
-            class: "border-l-4 border-primary/30 pl-4 italic text-primary/70",
-          },
-        },
+        // HTMLAttributes dihapus dari code, codeBlock, blockquote —
+        // styling sekarang ditangani oleh prose-* classes di editorProps
       }),
       Underline,
       Highlight.configure({ multicolor: false }),
       Typography,
-      HorizontalRule.configure({
-        HTMLAttributes: { class: "border-t border-primary/20 my-6" },
-      }),
+      HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Link.configure({
         openOnClick: false,
         autolink: true,
-        HTMLAttributes: {
-          class:
-            "text-primary underline underline-offset-2 hover:opacity-70 transition-opacity",
-          rel: "noopener noreferrer",
-          target: "_blank",
-        },
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: "max-w-full rounded-sm my-4 mx-auto block",
-        },
-      }),
+      Image,
       Placeholder.configure({
         placeholder,
         emptyEditorClass:
-          "before:content-[attr(data-placeholder)] before:text-primary/30 before:pointer-events-none before:absolute before:top-0 before:left-0",
+          "before:content-[attr(data-placeholder)] before:text-primary/30 before:pointer-events-none before:absolute before:top-5 before:left-5",
       }),
       CharacterCount,
     ],
@@ -264,8 +238,12 @@ export default function TipTapEditor({
     },
     editorProps: {
       attributes: {
+        // Tailwind v4: prose-* chaining kompleks (prose-code:before:content-none, dll)
+        // tidak didukung sebagai class string. Semua override detail ada di
+        // tiptap-editor.css yang di-import di bawah.
+        // Class di sini: prose prose-sm untuk aktifkan Typography, + class dasar.
         class:
-          "min-h-[420px] px-5 py-5 text-sm text-primary leading-relaxed focus:outline-none prose-headings:font-semibold",
+          "tiptap-content prose prose-sm max-w-none min-h-[420px] px-5 py-5 focus:outline-none",
       },
     },
   });
@@ -283,11 +261,7 @@ export default function TipTapEditor({
         editor.chain().focus().unsetLink().run();
         return;
       }
-      editor
-        .chain()
-        .focus()
-        .setLink({ href: url })
-        .run();
+      editor.chain().focus().setLink({ href: url }).run();
     },
     [editor],
   );
@@ -305,11 +279,56 @@ export default function TipTapEditor({
     [editor],
   );
 
+  // ── Reactive toolbar state — re-renders saat cursor / selection berpindah ──
+  const editorState = useEditorState({
+    editor,
+    selector: (ctx) => {
+      const e = ctx.editor;
+      if (!e) return null;
+      return {
+        canUndo: e.can().undo(),
+        canRedo: e.can().redo(),
+        isH1: e.isActive("heading", { level: 1 }),
+        isH2: e.isActive("heading", { level: 2 }),
+        isH3: e.isActive("heading", { level: 3 }),
+        isBold: e.isActive("bold"),
+        isItalic: e.isActive("italic"),
+        isUnderline: e.isActive("underline"),
+        isStrike: e.isActive("strike"),
+        isHighlight: e.isActive("highlight"),
+        isCode: e.isActive("code"),
+        isAlignLeft: e.isActive({ textAlign: "left" }),
+        isAlignCenter: e.isActive({ textAlign: "center" }),
+        isAlignRight: e.isActive({ textAlign: "right" }),
+        isAlignJustify: e.isActive({ textAlign: "justify" }),
+        isBulletList: e.isActive("bulletList"),
+        isOrderedList: e.isActive("orderedList"),
+        isBlockquote: e.isActive("blockquote"),
+        isCodeBlock: e.isActive("codeBlock"),
+        isLink: e.isActive("link"),
+        linkHref: e.getAttributes("link").href ?? "",
+        charCount: e.storage.characterCount?.characters?.() ?? 0,
+        wordCount: e.storage.characterCount?.words?.() ?? 0,
+      };
+    },
+  });
+
   if (!editor) return null;
 
-  const currentLinkUrl = editor.getAttributes("link").href ?? "";
-  const charCount = editor.storage.characterCount?.characters?.() ?? 0;
-  const wordCountFromEditor = editor.storage.characterCount?.words?.() ?? 0;
+  const s = editorState ?? {
+    canUndo: false, canRedo: false,
+    isH1: false, isH2: false, isH3: false,
+    isBold: false, isItalic: false, isUnderline: false,
+    isStrike: false, isHighlight: false, isCode: false,
+    isAlignLeft: false, isAlignCenter: false, isAlignRight: false, isAlignJustify: false,
+    isBulletList: false, isOrderedList: false, isBlockquote: false, isCodeBlock: false,
+    isLink: false, linkHref: "",
+    charCount: 0, wordCount: 0,
+  };
+
+  const currentLinkUrl = s.linkHref;
+  const charCount = s.charCount;
+  const wordCountFromEditor = s.wordCount;
 
   return (
     <>
@@ -324,14 +343,14 @@ export default function TipTapEditor({
           <ToolbarBtn
             title="Undo (Ctrl+Z)"
             onClick={() => editor.chain().focus().undo().run()}
-            disabled={!editor.can().undo()}
+            disabled={!s.canUndo}
           >
             <Undo className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Redo (Ctrl+Y)"
             onClick={() => editor.chain().focus().redo().run()}
-            disabled={!editor.can().redo()}
+            disabled={!s.canRedo}
           >
             <Redo className="w-3.5 h-3.5" />
           </ToolbarBtn>
@@ -344,7 +363,7 @@ export default function TipTapEditor({
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
-            active={editor.isActive("heading", { level: 1 })}
+            active={s.isH1}
           >
             <Heading1 className="w-3.5 h-3.5" />
           </ToolbarBtn>
@@ -353,7 +372,7 @@ export default function TipTapEditor({
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
-            active={editor.isActive("heading", { level: 2 })}
+            active={s.isH2}
           >
             <Heading2 className="w-3.5 h-3.5" />
           </ToolbarBtn>
@@ -362,7 +381,7 @@ export default function TipTapEditor({
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
-            active={editor.isActive("heading", { level: 3 })}
+            active={s.isH3}
           >
             <Heading3 className="w-3.5 h-3.5" />
           </ToolbarBtn>
@@ -373,42 +392,42 @@ export default function TipTapEditor({
           <ToolbarBtn
             title="Bold (Ctrl+B)"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            active={editor.isActive("bold")}
+            active={s.isBold}
           >
             <Bold className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Italic (Ctrl+I)"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            active={editor.isActive("italic")}
+            active={s.isItalic}
           >
             <Italic className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Underline (Ctrl+U)"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            active={editor.isActive("underline")}
+            active={s.isUnderline}
           >
             <UnderlineIcon className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Strikethrough"
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            active={editor.isActive("strike")}
+            active={s.isStrike}
           >
             <Strikethrough className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Highlight"
             onClick={() => editor.chain().focus().toggleHighlight().run()}
-            active={editor.isActive("highlight")}
+            active={s.isHighlight}
           >
             <Highlighter className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Inline Code"
             onClick={() => editor.chain().focus().toggleCode().run()}
-            active={editor.isActive("code")}
+            active={s.isCode}
           >
             <Code className="w-3.5 h-3.5" />
           </ToolbarBtn>
@@ -419,28 +438,28 @@ export default function TipTapEditor({
           <ToolbarBtn
             title="Align Left"
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
-            active={editor.isActive({ textAlign: "left" })}
+            active={s.isAlignLeft}
           >
             <AlignLeft className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Align Center"
             onClick={() => editor.chain().focus().setTextAlign("center").run()}
-            active={editor.isActive({ textAlign: "center" })}
+            active={s.isAlignCenter}
           >
             <AlignCenter className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Align Right"
             onClick={() => editor.chain().focus().setTextAlign("right").run()}
-            active={editor.isActive({ textAlign: "right" })}
+            active={s.isAlignRight}
           >
             <AlignRight className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Justify"
             onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            active={editor.isActive({ textAlign: "justify" })}
+            active={s.isAlignJustify}
           >
             <AlignJustify className="w-3.5 h-3.5" />
           </ToolbarBtn>
@@ -451,28 +470,28 @@ export default function TipTapEditor({
           <ToolbarBtn
             title="Bullet List"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            active={editor.isActive("bulletList")}
+            active={s.isBulletList}
           >
             <List className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Ordered List"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            active={editor.isActive("orderedList")}
+            active={s.isOrderedList}
           >
             <ListOrdered className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Blockquote"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            active={editor.isActive("blockquote")}
+            active={s.isBlockquote}
           >
             <Quote className="w-3.5 h-3.5" />
           </ToolbarBtn>
           <ToolbarBtn
             title="Code Block"
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            active={editor.isActive("codeBlock")}
+            active={s.isCodeBlock}
           >
             <CodeSquare className="w-3.5 h-3.5" />
           </ToolbarBtn>
@@ -489,11 +508,11 @@ export default function TipTapEditor({
           <ToolbarBtn
             title="Insert / Edit Link"
             onClick={openLinkModal}
-            active={editor.isActive("link")}
+            active={s.isLink}
           >
             <Link2 className="w-3.5 h-3.5" />
           </ToolbarBtn>
-          {editor.isActive("link") && (
+          {s.isLink && (
             <ToolbarBtn title="Remove Link" onClick={removeLink}>
               <Link2Off className="w-3.5 h-3.5" />
             </ToolbarBtn>
@@ -638,11 +657,11 @@ export default function TipTapEditor({
         </div>
 
         {/* ── Footer ── */}
-        <div className="flex items-center justify-between px-4 py-2 border-t border-primary/10 bg-primary/[0.02]">
-          <span className="text-[10px] tracking-widest uppercase text-primary/30">
-            Rich Text · TipTap
+        <div className="flex items-center justify-between px-4 py-2 border-t border-primary/20 bg-primary/[0.02]">
+          <span className="text-xs tracking-widest uppercase text-primary/80">
+            Linda Wiryani Weddings Planner
           </span>
-          <span className="text-[10px] text-primary/40">
+          <span className="text-xs text-primary/80">
             {wordCountFromEditor.toLocaleString()} words ·{" "}
             {charCount.toLocaleString()} chars
           </span>

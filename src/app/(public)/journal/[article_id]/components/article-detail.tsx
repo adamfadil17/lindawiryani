@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
-import { Article } from "@/lib/types/new-strucutre";
+import { Article } from "@/types";
 
 interface ArticleDetailProps {
   article: Article;
@@ -62,7 +62,7 @@ function RelatedCard({ article }: { article: Article }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function ArticleDetail({ article, related }: ArticleDetailProps) {
-  const formattedDate = new Date(article.publishedAt).toLocaleDateString(
+  const formattedDate = new Date(article.published_at).toLocaleDateString(
     "en-GB",
     { day: "numeric", month: "long", year: "numeric" },
   );
@@ -254,14 +254,14 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
             alt="Begin your Bali wedding journey"
             fill
             loading="lazy"
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-primary/72" />
+          <div className="absolute inset-0 bg-primary/40" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">

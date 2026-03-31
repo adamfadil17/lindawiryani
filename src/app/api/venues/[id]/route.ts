@@ -45,7 +45,7 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
@@ -83,10 +83,25 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.venue.delete({ where: { id } });
+    await prisma.$transaction(async (tx) => {
+      await tx.venueImage.deleteMany({ where: { venue_id: id } });
+
+      await tx.weddingTheme.updateMany({
+        where: { venue_id: id },
+        data: { venue_id: null },
+      });
+
+      await tx.portfolio.updateMany({
+        where: { venue_id: id },
+        data: { venue_id: null },
+      });
+
+      await tx.venue.delete({ where: { id } });
+    });
+
     return noContent();
   } catch (error) {
     return handleError(error);

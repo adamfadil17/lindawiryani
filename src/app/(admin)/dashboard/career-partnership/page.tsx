@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
 import Link from "next/link";
+import axios from "axios";
 import {
   Search,
   X,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Eye,
   Trash2,
   Briefcase,
@@ -16,12 +19,10 @@ import {
   Mail,
   Phone,
   Plus,
-  MapPin,
   Layers,
+  Pencil,
 } from "lucide-react";
 import {
-  Vendor,
-  Career,
   SubmissionType,
   SubmissionStatus,
   VendorSubmission,
@@ -29,228 +30,242 @@ import {
   Submission,
   submissionStatusConfig,
   OpenPosition,
-  openPositions,
-} from "@/lib/types/new-strucutre";
+} from "@/types";
+import DeleteModal from "@/components/shared/delete-modal";
+import type { PaginationMeta } from "@/lib/api-response";
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
+import { toast } from "sonner";
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-const mockSubmissions: Submission[] = [
-  {
-    id: "sub-001",
-    type: "vendor",
-    status: "new",
-    submittedAt: "2025-01-15T09:30:00Z",
-    companyName: "Bloom & Petal Florals",
-    contactPerson: "Sari Dewi",
-    email: "sari@bloomandpetal.com",
-    phone: "+62 812-3456-7890",
-    website: "https://bloomandpetal.com",
-    vendorCategory: "Florist",
-    yearsInBusiness: "8",
-    portfolioLink: "https://bloomandpetal.com/portfolio",
-    message:
-      "We specialize in tropical and Balinese floral arrangements for luxury weddings. Our team has worked with over 200 couples across Bali and Lombok.",
-  },
-  {
-    id: "sub-002",
-    type: "career",
-    status: "reviewed",
-    submittedAt: "2025-01-14T14:20:00Z",
-    fullName: "Rizky Pratama",
-    email: "rizky.pratama@gmail.com",
-    phone: "+62 821-9876-5432",
-    position: "Senior Wedding Planner",
-    experience: "6 years",
-    linkedIn: "https://linkedin.com/in/rizkypratama",
-    portfolioLink: "https://rizkypratama.notion.site",
-    coverLetter:
-      "I have been passionate about creating unforgettable wedding experiences for the past 6 years, with specialization in destination weddings across Southeast Asia.",
-  },
-  {
-    id: "sub-003",
-    type: "vendor",
-    status: "contacted",
-    submittedAt: "2025-01-13T11:00:00Z",
-    companyName: "Cinematic Vows",
-    contactPerson: "Budi Santoso",
-    email: "hello@cinematicvows.id",
-    phone: "+62 818-5555-1234",
-    website: "https://cinematicvows.id",
-    vendorCategory: "Videography",
-    yearsInBusiness: "5",
-    portfolioLink: "https://vimeo.com/cinematicvows",
-    message:
-      "Award-winning wedding film studio based in Seminyak. We craft timeless cinematic stories for couples from around the world.",
-  },
-  {
-    id: "sub-004",
-    type: "career",
-    status: "new",
-    submittedAt: "2025-01-12T08:45:00Z",
-    fullName: "Ayu Maharani",
-    email: "ayu.maharani@email.com",
-    phone: "+62 857-1234-5678",
-    position: "Event Coordinator",
-    experience: "3 years",
-    linkedIn: "https://linkedin.com/in/ayumaharani",
-    portfolioLink: "",
-    coverLetter:
-      "Detail-oriented event coordinator with experience in luxury hospitality. Looking to bring my organizational skills to a world-class wedding company.",
-  },
-  {
-    id: "sub-005",
-    type: "vendor",
-    status: "archived",
-    submittedAt: "2025-01-10T16:15:00Z",
-    companyName: "Bali Photo Art",
-    contactPerson: "Made Suryawan",
-    email: "made@baliphotoart.com",
-    phone: "+62 811-9999-0000",
-    website: "https://baliphotoart.com",
-    vendorCategory: "Photography",
-    yearsInBusiness: "12",
-    portfolioLink: "https://baliphotoart.com/gallery",
-    message:
-      "Fine art wedding photography with 12 years of experience in Bali. Our work has been featured in Vogue Weddings and Harper's Bazaar.",
-  },
-  {
-    id: "sub-006",
-    type: "career",
-    status: "contacted",
-    submittedAt: "2025-01-09T10:30:00Z",
-    fullName: "Dian Kusuma",
-    email: "dian.kusuma@outlook.com",
-    phone: "+62 896-7654-3210",
-    position: "Wedding Stylist",
-    experience: "4 years",
-    linkedIn: "https://linkedin.com/in/diankusuma",
-    portfolioLink: "https://diankusuma.com",
-    coverLetter:
-      "Passionate wedding stylist with expertise in contemporary Balinese and minimalist aesthetics. Previously worked with The Ritz-Carlton Bali.",
-  },
-];
+const SUBMISSION_LIMIT = 6;
+const POSITION_LIMIT = 8;
 
-// ─── Mock Open Positions (with IDs) ──────────────────────────────────────────
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const mockPositions: OpenPosition[] = openPositions.map((p, i) => ({
-  ...p,
-  id: `pos-00${i + 1}`,
-}));
+type TypeFilter = "All" | SubmissionType;
+type StatusFilter = "All" | SubmissionStatus;
+type DeleteStatus = "idle" | "confirm" | "deleting";
 
-// ─── Delete Modal ─────────────────────────────────────────────────────────────
+// ─── Page State ───────────────────────────────────────────────────────────────
 
-function DeleteModal({
-  name,
-  onConfirm,
-  onCancel,
-}: {
-  name: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
+interface PageState {
+  // ── Submissions data ──
+  submissions: Submission[];
+  submissionMeta: PaginationMeta | null;
+  isSubmissionsLoading: boolean;
+  // ── Submissions filter ──
+  submissionSearch: string;
+  submissionDebouncedSearch: string;
+  typeFilter: TypeFilter;
+  statusFilter: StatusFilter;
+  submissionPage: number;
+  // ── Submissions delete FSM ──
+  deleteSubmissionStatus: DeleteStatus;
+  deleteSubmissionTarget: Submission | null;
+
+  // ── Positions data ──
+  positions: OpenPosition[];
+  positionMeta: PaginationMeta | null;
+  isPositionsLoading: boolean;
+  // ── Positions filter ──
+  positionSearch: string;
+  positionDebouncedSearch: string;
+  positionPage: number;
+  // ── Positions delete FSM ──
+  deletePositionStatus: DeleteStatus;
+  deletePositionTarget: OpenPosition | null;
+}
+
+type PageAction =
+  // submissions fetch
+  | { type: "FETCH_SUBMISSIONS_START" }
+  | { type: "FETCH_SUBMISSIONS_SUCCESS"; submissions: Submission[]; meta: PaginationMeta | null }
+  | { type: "FETCH_SUBMISSIONS_ERROR" }
+  // positions fetch
+  | { type: "FETCH_POSITIONS_START" }
+  | { type: "FETCH_POSITIONS_SUCCESS"; positions: OpenPosition[]; meta: PaginationMeta | null }
+  | { type: "FETCH_POSITIONS_ERROR" }
+  // submission filters
+  | { type: "SET_SUBMISSION_SEARCH"; value: string }
+  | { type: "SET_SUBMISSION_DEBOUNCED"; value: string }
+  | { type: "SET_TYPE_FILTER"; value: TypeFilter }
+  | { type: "SET_STATUS_FILTER"; value: StatusFilter }
+  | { type: "SET_SUBMISSION_PAGE"; page: number }
+  | { type: "CLEAR_SUBMISSION_FILTERS" }
+  // position filters
+  | { type: "SET_POSITION_SEARCH"; value: string }
+  | { type: "SET_POSITION_DEBOUNCED"; value: string }
+  | { type: "SET_POSITION_PAGE"; page: number }
+  // submission delete FSM
+  | { type: "OPEN_DELETE_SUBMISSION"; submission: Submission }
+  | { type: "CLOSE_DELETE_SUBMISSION" }
+  | { type: "DELETE_SUBMISSION_START" }
+  | { type: "DELETE_SUBMISSION_SUCCESS" }
+  | { type: "DELETE_SUBMISSION_ERROR" }
+  // position delete FSM
+  | { type: "OPEN_DELETE_POSITION"; position: OpenPosition }
+  | { type: "CLOSE_DELETE_POSITION" }
+  | { type: "DELETE_POSITION_START" }
+  | { type: "DELETE_POSITION_SUCCESS" }
+  | { type: "DELETE_POSITION_ERROR" };
+
+const initialState: PageState = {
+  submissions: [],
+  submissionMeta: null,
+  isSubmissionsLoading: true,
+  submissionSearch: "",
+  submissionDebouncedSearch: "",
+  typeFilter: "All",
+  statusFilter: "All",
+  submissionPage: 1,
+  deleteSubmissionStatus: "idle",
+  deleteSubmissionTarget: null,
+
+  positions: [],
+  positionMeta: null,
+  isPositionsLoading: true,
+  positionSearch: "",
+  positionDebouncedSearch: "",
+  positionPage: 1,
+  deletePositionStatus: "idle",
+  deletePositionTarget: null,
+};
+
+function pageReducer(state: PageState, action: PageAction): PageState {
+  switch (action.type) {
+    // ── Submissions fetch ──
+    case "FETCH_SUBMISSIONS_START":
+      return { ...state, isSubmissionsLoading: true };
+    case "FETCH_SUBMISSIONS_SUCCESS":
+      return { ...state, isSubmissionsLoading: false, submissions: action.submissions, submissionMeta: action.meta };
+    case "FETCH_SUBMISSIONS_ERROR":
+      return { ...state, isSubmissionsLoading: false };
+
+    // ── Positions fetch ──
+    case "FETCH_POSITIONS_START":
+      return { ...state, isPositionsLoading: true };
+    case "FETCH_POSITIONS_SUCCESS":
+      return { ...state, isPositionsLoading: false, positions: action.positions, positionMeta: action.meta };
+    case "FETCH_POSITIONS_ERROR":
+      return { ...state, isPositionsLoading: false };
+
+    // ── Submission filters ──
+    case "SET_SUBMISSION_SEARCH":
+      return { ...state, submissionSearch: action.value };
+    case "SET_SUBMISSION_DEBOUNCED":
+      return { ...state, submissionDebouncedSearch: action.value, submissionPage: 1 };
+    case "SET_TYPE_FILTER":
+      return { ...state, typeFilter: action.value, submissionPage: 1 };
+    case "SET_STATUS_FILTER":
+      return { ...state, statusFilter: action.value, submissionPage: 1 };
+    case "SET_SUBMISSION_PAGE":
+      return { ...state, submissionPage: action.page };
+    case "CLEAR_SUBMISSION_FILTERS":
+      return { ...state, submissionSearch: "", submissionDebouncedSearch: "", typeFilter: "All", statusFilter: "All", submissionPage: 1 };
+
+    // ── Position filters ──
+    case "SET_POSITION_SEARCH":
+      return { ...state, positionSearch: action.value };
+    case "SET_POSITION_DEBOUNCED":
+      return { ...state, positionDebouncedSearch: action.value, positionPage: 1 };
+    case "SET_POSITION_PAGE":
+      return { ...state, positionPage: action.page };
+
+    // ── Submission delete FSM ──
+    case "OPEN_DELETE_SUBMISSION":
+      return { ...state, deleteSubmissionTarget: action.submission, deleteSubmissionStatus: "confirm" };
+    case "CLOSE_DELETE_SUBMISSION":
+      return state.deleteSubmissionStatus === "deleting"
+        ? state
+        : { ...state, deleteSubmissionTarget: null, deleteSubmissionStatus: "idle" };
+    case "DELETE_SUBMISSION_START":
+      return { ...state, deleteSubmissionStatus: "deleting" };
+    case "DELETE_SUBMISSION_SUCCESS":
+      return { ...state, deleteSubmissionTarget: null, deleteSubmissionStatus: "idle" };
+    case "DELETE_SUBMISSION_ERROR":
+      return { ...state, deleteSubmissionStatus: "confirm" };
+
+    // ── Position delete FSM ──
+    case "OPEN_DELETE_POSITION":
+      return { ...state, deletePositionTarget: action.position, deletePositionStatus: "confirm" };
+    case "CLOSE_DELETE_POSITION":
+      return state.deletePositionStatus === "deleting"
+        ? state
+        : { ...state, deletePositionTarget: null, deletePositionStatus: "idle" };
+    case "DELETE_POSITION_START":
+      return { ...state, deletePositionStatus: "deleting" };
+    case "DELETE_POSITION_SUCCESS":
+      return { ...state, deletePositionTarget: null, deletePositionStatus: "idle" };
+    case "DELETE_POSITION_ERROR":
+      return { ...state, deletePositionStatus: "confirm" };
+
+    default:
+      return state;
+  }
+}
+
+// ─── Skeleton Card ────────────────────────────────────────────────────────────
+
+function SkeletonCard() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
+    <div className="bg-white border border-primary/20 p-5 animate-pulse">
+      <div className="flex items-start gap-3 mb-4">
+        <div className="w-9 h-9 bg-primary/10 flex-shrink-0" />
+        <div className="flex-1 space-y-2">
+          <div className="h-3 bg-primary/10 w-1/4 rounded" />
+          <div className="h-4 bg-primary/10 w-2/3 rounded" />
+          <div className="h-3 bg-primary/10 w-1/3 rounded" />
         </div>
-        <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Submission
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete the submission from{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{name}&rdquo;
-          </span>
-          ? This action cannot be undone.
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
+        <div className="h-5 w-20 bg-primary/10 rounded" />
+      </div>
+      <div className="space-y-2 mb-4">
+        <div className="h-3 bg-primary/10 w-full rounded" />
+        <div className="h-3 bg-primary/10 w-3/4 rounded" />
+        <div className="h-3 bg-primary/10 w-1/2 rounded" />
+      </div>
+      <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
+        <div className="h-3 w-24 bg-primary/10 rounded" />
+        <div className="flex gap-1">
+          <div className="w-8 h-8 bg-primary/10 rounded" />
+          <div className="w-8 h-8 bg-primary/10 rounded" />
         </div>
       </div>
     </div>
   );
 }
 
-// ─── Delete Position Modal ────────────────────────────────────────────────────
-
-function DeletePositionModal({
-  title,
-  onConfirm,
-  onCancel,
-}: {
-  title: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
+function SkeletonPositionCard() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
+    <div className="bg-white border border-primary/20 p-5 animate-pulse">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 bg-primary/10 flex-shrink-0" />
+          <div className="space-y-2">
+            <div className="h-4 bg-primary/10 w-32 rounded" />
+            <div className="h-3 bg-primary/10 w-20 rounded" />
+          </div>
         </div>
-        <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Position
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete the position{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{title}&rdquo;
-          </span>
-          ? This action cannot be undone.
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
+        <div className="h-5 w-16 bg-primary/10 rounded" />
+      </div>
+      <div className="h-3 bg-primary/10 w-full rounded mb-2" />
+      <div className="h-3 bg-primary/10 w-4/5 rounded mb-4" />
+      <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
+        <div className="h-3 w-20 bg-primary/10 rounded" />
+        <div className="flex gap-1">
+          <div className="w-8 h-8 bg-primary/10 rounded" />
+          <div className="w-8 h-8 bg-primary/10 rounded" />
         </div>
       </div>
+    </div>
+  );
+}
+
+function SkeletonStatCard() {
+  return (
+    <div className="p-5 border border-primary/20 bg-white animate-pulse">
+      <div className="h-3 bg-primary/10 w-2/3 rounded mb-3" />
+      <div className="h-7 bg-primary/10 w-10 rounded" />
     </div>
   );
 }
@@ -260,51 +275,105 @@ function DeletePositionModal({
 function StatusBadge({ status }: { status: SubmissionStatus }) {
   const { label, classes } = submissionStatusConfig[status];
   return (
-    <span
-      className={`text-xs tracking-widest uppercase px-2.5 py-1 font-medium ${classes}`}
-    >
+    <span className={`text-xs tracking-widest uppercase px-2.5 py-1 font-medium ${classes}`}>
       {label}
     </span>
   );
 }
 
-// ─── Open Position Card ───────────────────────────────────────────────────────
+// ─── Pagination ───────────────────────────────────────────────────────────────
 
-function PositionCard({
-  position,
-  onDelete,
-}: {
-  position: OpenPosition;
-  onDelete: (position: OpenPosition) => void;
-}) {
+function Pagination({ meta, onPageChange }: { meta: PaginationMeta; onPageChange: (page: number) => void }) {
+  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1);
+
+  const getVisiblePages = (): (number | "...")[] => {
+    if (meta.totalPages <= 7) return pages;
+    const range: (number | "...")[] = [];
+    if (meta.page <= 4) {
+      range.push(...pages.slice(0, 5), "...", meta.totalPages);
+    } else if (meta.page >= meta.totalPages - 3) {
+      range.push(1, "...", ...pages.slice(meta.totalPages - 5));
+    } else {
+      range.push(1, "...", meta.page - 1, meta.page, meta.page + 1, "...", meta.totalPages);
+    }
+    return range;
+  };
+
+  if (meta.total === 0) return null;
+
+  return (
+    <div className="flex items-center justify-between mt-8 pt-6 border-t border-primary/20">
+      <p className="text-primary/60 text-xs tracking-wider">
+        Showing{" "}
+        <span className="text-primary font-medium">
+          {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
+        </span>{" "}
+        of <span className="text-primary font-medium">{meta.total}</span>
+      </p>
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onPageChange(meta.page - 1)}
+          disabled={!meta.hasPrev}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        {getVisiblePages().map((p, i) =>
+          p === "..." ? (
+            <span key={`e-${i}`} className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm">…</span>
+          ) : (
+            <button
+              key={p}
+              onClick={() => onPageChange(p as number)}
+              className={`w-8 h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
+                meta.page === p
+                  ? "bg-primary text-white border border-primary"
+                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+              }`}
+            >
+              {p}
+            </button>
+          ),
+        )}
+        <button
+          onClick={() => onPageChange(meta.page + 1)}
+          disabled={!meta.hasNext}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Position Card ────────────────────────────────────────────────────────────
+
+function PositionCard({ position, onDelete }: { position: OpenPosition; onDelete: (position: OpenPosition) => void }) {
   return (
     <div className="bg-white border border-primary/20 hover:border-primary/30 transition-all duration-300 hover:shadow-md group p-5">
-      {/* Top row */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-start gap-3 min-w-0">
           <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center mt-0.5 bg-primary/5">
             <Briefcase className="w-4 h-4 text-primary/50" />
           </div>
           <div className="min-w-0">
-            <h3 className="text-primary font-semibold text-base leading-snug">
-              {position.title}
-            </h3>
-            <p className="text-primary/50 text-xs tracking-wider mt-0.5">
-              {position.type}
-            </p>
+            <h3 className="text-primary font-semibold text-base leading-snug">{position.title}</h3>
+            <p className="text-primary/50 text-xs tracking-wider mt-0.5">{position.type}</p>
           </div>
         </div>
-        <span className="shrink-0 text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-primary/60 border border-primary/10">
-          {position.level}
-        </span>
+        <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+          <span className="text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-primary/60 border border-primary/10">
+            {position.level}
+          </span>
+          {!position.is_active && (
+            <span className="text-xs tracking-widest uppercase px-2 py-0.5 bg-primary/5 text-primary/30 border border-primary/10">
+              Inactive
+            </span>
+          )}
+        </div>
       </div>
-
-      {/* Description */}
-      <p className="text-primary/70 text-sm leading-relaxed line-clamp-2 mb-4">
-        {position.desc}
-      </p>
-
-      {/* Footer */}
+      <p className="text-primary/70 text-sm leading-relaxed line-clamp-2 mb-4">{position.desc}</p>
       <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Layers className="w-3 h-3 text-primary/30" />
@@ -316,7 +385,7 @@ function PositionCard({
             className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
             title="Edit Position"
           >
-            <Eye className="w-4 h-4" />
+            <Pencil className="w-4 h-4" />
           </Link>
           <button
             onClick={() => onDelete(position)}
@@ -333,79 +402,57 @@ function PositionCard({
 
 // ─── Submission Card ──────────────────────────────────────────────────────────
 
-function SubmissionCard({
-  submission,
-  onDelete,
-}: {
-  submission: Submission;
-  onDelete: (submission: Submission) => void;
-}) {
+function SubmissionCard({ submission, onDelete }: { submission: Submission; onDelete: (submission: Submission) => void }) {
   const isVendor = submission.type === "vendor";
+
   const name = isVendor
-    ? (submission as VendorSubmission).companyName
-    : (submission as CareerSubmission).fullName;
+    ? (submission as VendorSubmission).company_name
+    : (submission as CareerSubmission).full_name;
   const subLabel = isVendor
-    ? (submission as VendorSubmission).vendorCategory
+    ? (submission as VendorSubmission).vendor_category
     : (submission as CareerSubmission).position;
-  const email = isVendor
-    ? (submission as VendorSubmission).email
-    : (submission as CareerSubmission).email;
-  const phone = isVendor
-    ? (submission as VendorSubmission).phone
-    : (submission as CareerSubmission).phone;
   const website = isVendor
     ? (submission as VendorSubmission).website
-    : (submission as CareerSubmission).linkedIn;
-  const submittedDate = new Date(submission.submittedAt).toLocaleDateString(
-    "en-GB",
-    { day: "numeric", month: "short", year: "numeric" },
-  );
+    : (submission as CareerSubmission).linked_in;
+
+  const submittedDate = new Date(submission.submitted_at).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
     <div className="bg-white border border-primary/20 hover:border-primary/30 transition-all duration-300 hover:shadow-md group p-5">
-      {/* Top row */}
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-start gap-3 min-w-0">
-          <div
-            className={`w-9 h-9 flex-shrink-0 flex items-center justify-center mt-0.5 ${
-              isVendor ? "bg-primary/10" : "bg-amber-50"
-            }`}
-          >
-            {isVendor ? (
-              <Briefcase className="w-4 h-4 text-primary/60" />
-            ) : (
-              <UserCheck className="w-4 h-4 text-amber-500" />
-            )}
+          <div className={`w-9 h-9 flex-shrink-0 flex items-center justify-center mt-0.5 ${isVendor ? "bg-primary/10" : "bg-amber-50"}`}>
+            {isVendor
+              ? <Briefcase className="w-4 h-4 text-primary/60" />
+              : <UserCheck className="w-4 h-4 text-amber-500" />
+            }
           </div>
           <div className="min-w-0">
-            <p
-              className={`text-xs tracking-widest uppercase mb-0.5 ${
-                isVendor ? "text-primary/50" : "text-amber-500/80"
-              }`}
-            >
+            <p className={`text-xs tracking-widest uppercase mb-0.5 ${isVendor ? "text-primary/50" : "text-amber-500/80"}`}>
               {isVendor ? "Vendor" : "Career"}
             </p>
-            <h3 className="text-primary font-semibold text-base leading-snug truncate">
-              {name}
-            </h3>
-            <p className="text-primary/60 text-xs tracking-wider mt-0.5">
-              {subLabel}
-            </p>
+            <h3 className="text-primary font-semibold text-base leading-snug truncate">{name}</h3>
+            {subLabel && <p className="text-primary/60 text-xs tracking-wider mt-0.5">{subLabel}</p>}
           </div>
         </div>
         <StatusBadge status={submission.status} />
       </div>
 
-      {/* Contact info */}
       <div className="space-y-1.5 mb-4">
         <div className="flex items-center gap-1.5">
           <Mail className="w-3 h-3 text-primary/40 flex-shrink-0" />
-          <span className="text-primary/70 text-xs truncate">{email}</span>
+          <span className="text-primary/70 text-xs truncate">{submission.email}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <Phone className="w-3 h-3 text-primary/40 flex-shrink-0" />
-          <span className="text-primary/70 text-xs">{phone}</span>
-        </div>
+        {submission.phone && (
+          <div className="flex items-center gap-1.5">
+            <Phone className="w-3 h-3 text-primary/40 flex-shrink-0" />
+            <span className="text-primary/70 text-xs">{submission.phone}</span>
+          </div>
+        )}
         {website && (
           <div className="flex items-center gap-1.5">
             <ExternalLink className="w-3 h-3 text-primary/40 flex-shrink-0" />
@@ -421,7 +468,6 @@ function SubmissionCard({
         )}
       </div>
 
-      {/* Footer */}
       <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Clock className="w-3 h-3 text-primary/30" />
@@ -429,7 +475,7 @@ function SubmissionCard({
         </div>
         <div className="flex items-center gap-1">
           <Link
-            href={`/dashboard/career-partnership/${submission.id}`}
+            href={`/dashboard/career-partnership/submissions/${submission.id}`}
             className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
             title="View Details"
           >
@@ -451,61 +497,202 @@ function SubmissionCard({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function CareerPartnershipPage() {
-  const [submissions, setSubmissions] = useState<Submission[]>(mockSubmissions);
-  const [positions, setPositions] = useState<OpenPosition[]>(mockPositions);
-  const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState<"All" | SubmissionType>("All");
-  const [statusFilter, setStatusFilter] = useState<"All" | SubmissionStatus>(
-    "All",
+  const [state, dispatch] = useReducer(pageReducer, initialState);
+
+  const {
+    submissions, submissionMeta, isSubmissionsLoading,
+    submissionSearch, submissionDebouncedSearch, typeFilter, statusFilter, submissionPage,
+    deleteSubmissionStatus, deleteSubmissionTarget,
+    positions, positionMeta, isPositionsLoading,
+    positionSearch, positionDebouncedSearch, positionPage,
+    deletePositionStatus, deletePositionTarget,
+  } = state;
+
+  // ── useRef: debounce timers (no re-render needed) ──
+  const submissionDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const positionDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ── useRef: AbortControllers to cancel stale in-flight requests ──
+  const submissionAbortRef = useRef<AbortController | null>(null);
+  const positionAbortRef = useRef<AbortController | null>(null);
+
+  // ── Debounce: submissions search ──
+  useEffect(() => {
+    if (submissionDebounceRef.current) clearTimeout(submissionDebounceRef.current);
+    submissionDebounceRef.current = setTimeout(() => {
+      dispatch({ type: "SET_SUBMISSION_DEBOUNCED", value: submissionSearch });
+    }, 400);
+    return () => {
+      if (submissionDebounceRef.current) clearTimeout(submissionDebounceRef.current);
+    };
+  }, [submissionSearch]);
+
+  // ── Debounce: positions search ──
+  useEffect(() => {
+    if (positionDebounceRef.current) clearTimeout(positionDebounceRef.current);
+    positionDebounceRef.current = setTimeout(() => {
+      dispatch({ type: "SET_POSITION_DEBOUNCED", value: positionSearch });
+    }, 400);
+    return () => {
+      if (positionDebounceRef.current) clearTimeout(positionDebounceRef.current);
+    };
+  }, [positionSearch]);
+
+  // ── Fetch submissions ──
+  const getSubmissions = useCallback(async () => {
+    // Cancel any previous in-flight request
+    submissionAbortRef.current?.abort();
+    submissionAbortRef.current = new AbortController();
+
+    dispatch({ type: "FETCH_SUBMISSIONS_START" });
+    try {
+      const params: Record<string, unknown> = { page: submissionPage, limit: SUBMISSION_LIMIT };
+      if (submissionDebouncedSearch) params.search = submissionDebouncedSearch;
+      if (typeFilter !== "All") params.type = typeFilter;
+      if (statusFilter !== "All") params.status = statusFilter;
+
+      const response = await axios.get("/api/submissions", {
+        params,
+        signal: submissionAbortRef.current.signal,
+      });
+      dispatch({
+        type: "FETCH_SUBMISSIONS_SUCCESS",
+        submissions: response.data.data ?? [],
+        meta: response.data.meta ?? null,
+      });
+    } catch (err) {
+      if (axios.isCancel(err)) return;
+      const errorMsg = axios.isAxiosError(err)
+        ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
+        : err instanceof Error ? err.message : "Failed to load submissions";
+      toast.error("Failed to load submissions", { description: errorMsg });
+      dispatch({ type: "FETCH_SUBMISSIONS_ERROR" });
+    }
+  }, [submissionPage, submissionDebouncedSearch, typeFilter, statusFilter]);
+
+  useEffect(() => {
+    getSubmissions();
+  }, [getSubmissions]);
+
+  // ── Fetch positions ──
+  const getPositions = useCallback(async () => {
+    // Cancel any previous in-flight request
+    positionAbortRef.current?.abort();
+    positionAbortRef.current = new AbortController();
+
+    dispatch({ type: "FETCH_POSITIONS_START" });
+    try {
+      const params: Record<string, unknown> = {
+        page: positionPage,
+        limit: POSITION_LIMIT,
+        isActive: "all", // admin view — show all regardless of active status
+      };
+      if (positionDebouncedSearch) params.search = positionDebouncedSearch;
+
+      const response = await axios.get("/api/open-positions", {
+        params,
+        signal: positionAbortRef.current.signal,
+      });
+      dispatch({
+        type: "FETCH_POSITIONS_SUCCESS",
+        positions: response.data.data ?? [],
+        meta: response.data.meta ?? null,
+      });
+    } catch (err) {
+      if (axios.isCancel(err)) return;
+      const errorMsg = axios.isAxiosError(err)
+        ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
+        : err instanceof Error ? err.message : "Failed to load positions";
+      toast.error("Failed to load positions", { description: errorMsg });
+      dispatch({ type: "FETCH_POSITIONS_ERROR" });
+    }
+  }, [positionPage, positionDebouncedSearch]);
+
+  useEffect(() => {
+    getPositions();
+  }, [getPositions]);
+
+  // ── Filter change helpers (useCallback: stable refs, no deps needed — dispatch is stable) ──
+  const handleTypeChange = useCallback((value: TypeFilter) => dispatch({ type: "SET_TYPE_FILTER", value }), []);
+  const handleStatusChange = useCallback((value: StatusFilter) => dispatch({ type: "SET_STATUS_FILTER", value }), []);
+  const clearSubmissionFilters = useCallback(() => dispatch({ type: "CLEAR_SUBMISSION_FILTERS" }), []);
+
+  // ── Submission delete handlers ──
+  const openDeleteSubmissionModal = useCallback(
+    (submission: Submission) => dispatch({ type: "OPEN_DELETE_SUBMISSION", submission }),
+    [],
   );
-  const [deleteTarget, setDeleteTarget] = useState<Submission | null>(null);
-  const [deletePositionTarget, setDeletePositionTarget] =
-    useState<OpenPosition | null>(null);
+  const closeDeleteSubmissionModal = useCallback(() => dispatch({ type: "CLOSE_DELETE_SUBMISSION" }), []);
 
-  const filtered = submissions.filter((s) => {
-    const name =
-      s.type === "vendor"
-        ? (s as VendorSubmission).companyName
-        : (s as CareerSubmission).fullName;
-    const sub =
-      s.type === "vendor"
-        ? (s as VendorSubmission).vendorCategory
-        : (s as CareerSubmission).position;
-    const matchSearch =
-      name.toLowerCase().includes(search.toLowerCase()) ||
-      sub.toLowerCase().includes(search.toLowerCase()) ||
-      s.email.toLowerCase().includes(search.toLowerCase());
-    const matchType = typeFilter === "All" || s.type === typeFilter;
-    const matchStatus = statusFilter === "All" || s.status === statusFilter;
-    return matchSearch && matchType && matchStatus;
-  });
-
-  const confirmDelete = () => {
-    if (deleteTarget) {
-      setSubmissions((prev) => prev.filter((s) => s.id !== deleteTarget.id));
-      setDeleteTarget(null);
+  const deleteSubmissionById = useCallback(async () => {
+    if (!deleteSubmissionTarget) return;
+    dispatch({ type: "DELETE_SUBMISSION_START" });
+    try {
+      await axios.delete(`/api/submissions/${deleteSubmissionTarget.id}`, { headers: getAuthHeaders() });
+      const isLastOnPage = submissions.length === 1 && submissionPage > 1;
+      dispatch({ type: "DELETE_SUBMISSION_SUCCESS" });
+      if (isLastOnPage) {
+        dispatch({ type: "SET_SUBMISSION_PAGE", page: submissionPage - 1 });
+      } else {
+        getSubmissions();
+      }
+    } catch (err) {
+      console.error("Delete submission failed:", err);
+      dispatch({ type: "DELETE_SUBMISSION_ERROR" });
     }
-  };
+  }, [deleteSubmissionTarget, submissions.length, submissionPage, getSubmissions]);
 
-  const confirmDeletePosition = () => {
-    if (deletePositionTarget) {
-      setPositions((prev) =>
-        prev.filter((p) => p.id !== deletePositionTarget.id),
-      );
-      setDeletePositionTarget(null);
+  // ── Position delete handlers ──
+  const openDeletePositionModal = useCallback(
+    (position: OpenPosition) => dispatch({ type: "OPEN_DELETE_POSITION", position }),
+    [],
+  );
+  const closeDeletePositionModal = useCallback(() => dispatch({ type: "CLOSE_DELETE_POSITION" }), []);
+
+  const deletePositionById = useCallback(async () => {
+    if (!deletePositionTarget) return;
+    dispatch({ type: "DELETE_POSITION_START" });
+    try {
+      await axios.delete(`/api/open-positions/${deletePositionTarget.id}`, { headers: getAuthHeaders() });
+      const isLastOnPage = positions.length === 1 && positionPage > 1;
+      dispatch({ type: "DELETE_POSITION_SUCCESS" });
+      if (isLastOnPage) {
+        dispatch({ type: "SET_POSITION_PAGE", page: positionPage - 1 });
+      } else {
+        getPositions();
+      }
+    } catch (err) {
+      console.error("Delete position failed:", err);
+      dispatch({ type: "DELETE_POSITION_ERROR" });
     }
-  };
+  }, [deletePositionTarget, positions.length, positionPage, getPositions]);
 
-  const countByType = (type: SubmissionType) =>
-    submissions.filter((s) => s.type === type).length;
-  const countByStatus = (status: SubmissionStatus) =>
-    submissions.filter((s) => s.status === status).length;
+  // ── useMemo: derived values ──
+  const submissionTotalCount = useMemo(() => submissionMeta?.total ?? 0, [submissionMeta]);
 
-  const deleteTargetName = deleteTarget
-    ? deleteTarget.type === "vendor"
-      ? (deleteTarget as VendorSubmission).companyName
-      : (deleteTarget as CareerSubmission).fullName
-    : "";
+  const hasActiveSubmissionFilters = useMemo(
+    () => !!submissionDebouncedSearch || typeFilter !== "All" || statusFilter !== "All",
+    [submissionDebouncedSearch, typeFilter, statusFilter],
+  );
+
+  // Stat card definitions — stable unless filter options change
+  const submissionStatCards = useMemo(
+    () => [
+      { id: "All" as const, label: "All", icon: Users },
+      { id: "vendor" as const, label: "Vendors", icon: Briefcase },
+      { id: "career" as const, label: "Careers", icon: UserCheck },
+    ],
+    [],
+  );
+
+  // Helper — stable reference
+  const getSubmissionName = useCallback(
+    (s: Submission) =>
+      s.type === "vendor"
+        ? (s as VendorSubmission).company_name ?? s.email
+        : (s as CareerSubmission).full_name ?? s.email,
+    [],
+  );
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
@@ -516,107 +703,88 @@ export default function CareerPartnershipPage() {
             Content Management
           </p>
           <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
-            Career & Partnership
+            Career &amp; Partnership
           </h1>
           <p className="text-primary/80 text-sm mt-1">
-            {submissions.length} total submissions
+            {isSubmissionsLoading ? (
+              <span className="inline-block w-32 h-3 bg-primary/10 animate-pulse rounded" />
+            ) : (
+              `${submissionTotalCount} total submission${submissionTotalCount !== 1 ? "s" : ""}`
+            )}
           </p>
         </div>
       </div>
 
-      {/* ── Stats Row ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        {/* Type stats */}
-        {(
-          [
-            {
-              id: "All" as const,
-              label: "All",
-              value: submissions.length,
-              icon: Users,
-            },
-            {
-              id: "vendor" as const,
-              label: "Vendors",
-              value: countByType("vendor"),
-              icon: Briefcase,
-            },
-            {
-              id: "career" as const,
-              label: "Careers",
-              value: countByType("career"),
-              icon: UserCheck,
-            },
-          ] as const
-        ).map((item) => {
-          const isActive = typeFilter === item.id;
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.id}
-              onClick={() => setTypeFilter(item.id)}
-              className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
-                isActive
-                  ? "bg-primary text-white border-primary"
-                  : "bg-white border-primary/20 text-primary hover:border-primary/30"
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-1.5">
-                <Icon
-                  className={`w-3.5 h-3.5 ${isActive ? "text-white/70" : "text-primary/50"}`}
-                />
-                <p
-                  className={`text-xs tracking-[0.2em] uppercase ${
-                    isActive ? "text-white/80" : "text-primary/80"
-                  }`}
-                >
-                  {item.label}
-                </p>
-              </div>
-              <p className="text-2xl font-semibold">{item.value}</p>
-            </button>
-          );
-        })}
-
-        {/* Status stats */}
-        {(
-          ["new", "reviewed", "contacted", "archived"] as SubmissionStatus[]
-        ).map((status) => {
-          const isActive = statusFilter === status;
-          const { label, classes } = submissionStatusConfig[status];
-          return (
-            <button
-              key={status}
-              onClick={() => setStatusFilter(isActive ? "All" : status)}
-              className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
-                isActive
-                  ? "bg-primary text-white border-primary"
-                  : "bg-white border-primary/20 text-primary hover:border-primary/30"
-              }`}
-            >
-              <p
-                className={`text-xs tracking-[0.2em] uppercase mb-1.5 ${
-                  isActive ? "text-white/80" : "text-primary/80"
+      {/* ── Stats Row — Submissions ── */}
+      {isSubmissionsLoading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 mb-8">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <SkeletonStatCard key={i} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 mb-8">
+          {/* Type filter stat cards */}
+          {submissionStatCards.map((item) => {
+            const isActive = typeFilter === item.id;
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleTypeChange(item.id)}
+                className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
+                  isActive
+                    ? "bg-primary text-white border-primary"
+                    : "bg-white border-primary/20 text-primary hover:border-primary/30"
                 }`}
               >
-                {label}
-              </p>
-              <p className="text-2xl font-semibold">{countByStatus(status)}</p>
-            </button>
-          );
-        })}
-      </div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white/70" : "text-primary/50"}`} />
+                  <p className={`text-xs tracking-[0.2em] uppercase ${isActive ? "text-white/80" : "text-primary/80"}`}>
+                    {item.label}
+                  </p>
+                </div>
+                <p className="text-2xl font-semibold">
+                  {item.id === "All"
+                    ? submissionTotalCount
+                    : isActive
+                      ? (submissionMeta?.total ?? "—")
+                      : "—"}
+                </p>
+              </button>
+            );
+          })}
+
+          {/* Status filter stat cards */}
+          {(["new", "reviewed", "contacted", "archived"] as SubmissionStatus[]).map((status) => {
+            const isActive = statusFilter === status;
+            const { label } = submissionStatusConfig[status];
+            return (
+              <button
+                key={status}
+                onClick={() => handleStatusChange(isActive ? "All" : status)}
+                className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
+                  isActive
+                    ? "bg-primary text-white border-primary"
+                    : "bg-white border-primary/20 text-primary hover:border-primary/30"
+                }`}
+              >
+                <p className={`text-xs tracking-[0.2em] uppercase mb-1.5 ${isActive ? "text-white/80" : "text-primary/80"}`}>
+                  {label}
+                </p>
+                <p className="text-2xl font-semibold">—</p>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* ── Open Positions Section ── */}
       <div className="mb-10">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-1">
-              Listings
-            </p>
-            <h2 className="text-primary text-lg font-semibold tracking-wide">
-              Open Positions
-            </h2>
+            <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-1">Listings</p>
+            <h2 className="text-primary text-lg font-semibold tracking-wide">Open Positions</h2>
           </div>
           <Link
             href="/dashboard/career-partnership/positions/new"
@@ -627,61 +795,107 @@ export default function CareerPartnershipPage() {
           </Link>
         </div>
 
-        {positions.length === 0 ? (
+        {/* Position search bar */}
+        <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+            <input
+              type="text"
+              placeholder="Search positions..."
+              value={positionSearch}
+              onChange={(e) => dispatch({ type: "SET_POSITION_SEARCH", value: e.target.value })}
+              className="w-full pl-9 pr-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+            />
+            {positionSearch && (
+              <button
+                onClick={() => dispatch({ type: "SET_POSITION_SEARCH", value: "" })}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Results info */}
+        {positionDebouncedSearch && !isPositionsLoading && positionMeta && (
+          <p className="text-primary/80 text-sm tracking-wider mb-4">
+            Showing {positionMeta.total} position{positionMeta.total !== 1 ? "s" : ""}
+            {positionDebouncedSearch && ` for "${positionDebouncedSearch}"`}
+          </p>
+        )}
+
+        {/* Positions grid */}
+        {isPositionsLoading ? (
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+            {Array.from({ length: POSITION_LIMIT }).map((_, i) => (
+              <SkeletonPositionCard key={i} />
+            ))}
+          </div>
+        ) : positions.length === 0 ? (
           <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-16 text-center">
             <Briefcase className="w-8 h-8 text-primary/20 mb-4" />
-            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
-              No Positions
-            </p>
+            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">No Positions</p>
             <p className="text-primary/60 text-sm mb-5">
-              No open positions listed yet.
+              {positionDebouncedSearch
+                ? `No positions match "${positionDebouncedSearch}"`
+                : "No open positions listed yet."}
             </p>
-            <Link
-              href="/dashboard/career-partnership/positions/new"
-              className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
-            >
-              Create First Position
-            </Link>
+            {!positionDebouncedSearch && (
+              <Link
+                href="/dashboard/career-partnership/positions/new"
+                className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
+              >
+                Create First Position
+              </Link>
+            )}
+            {positionDebouncedSearch && (
+              <button
+                onClick={() => dispatch({ type: "SET_POSITION_SEARCH", value: "" })}
+                className="mt-2 text-xs tracking-widest uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
+              >
+                Clear Search
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
             {positions.map((position) => (
-              <PositionCard
-                key={position.id}
-                position={position}
-                onDelete={(p) => setDeletePositionTarget(p)}
-              />
+              <PositionCard key={position.id} position={position} onDelete={openDeletePositionModal} />
             ))}
           </div>
+        )}
+
+        {/* Positions pagination */}
+        {positionMeta && !isPositionsLoading && (
+          <Pagination
+            meta={positionMeta}
+            onPageChange={(page) => dispatch({ type: "SET_POSITION_PAGE", page })}
+          />
         )}
       </div>
 
       {/* ── Submissions Section ── */}
       <div>
         <div className="mb-5">
-          <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-1">
-            Inbox
-          </p>
-          <h2 className="text-primary text-lg font-semibold tracking-wide">
-            Submissions
-          </h2>
+          <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-1">Inbox</p>
+          <h2 className="text-primary text-lg font-semibold tracking-wide">Submissions</h2>
         </div>
 
-        {/* ── Search & Filter Bar ── */}
+        {/* Submissions search & filter bar */}
         <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-          {/* Search */}
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
             <input
               type="text"
-              placeholder="Search by name, category, or email..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name, company, position, or email..."
+              value={submissionSearch}
+              onChange={(e) => dispatch({ type: "SET_SUBMISSION_SEARCH", value: e.target.value })}
               className="w-full pl-9 pr-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
             />
-            {search && (
+            {submissionSearch && (
               <button
-                onClick={() => setSearch("")}
+                onClick={() => dispatch({ type: "SET_SUBMISSION_SEARCH", value: "" })}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -693,10 +907,8 @@ export default function CareerPartnershipPage() {
           <div className="relative shrink-0">
             <select
               value={typeFilter}
-              onChange={(e) =>
-                setTypeFilter(e.target.value as "All" | SubmissionType)
-              }
-              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer"
+              onChange={(e) => handleTypeChange(e.target.value as TypeFilter)}
+              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
             >
               <option value="All">All Types</option>
               <option value="vendor">Vendor</option>
@@ -709,10 +921,8 @@ export default function CareerPartnershipPage() {
           <div className="relative shrink-0">
             <select
               value={statusFilter}
-              onChange={(e) =>
-                setStatusFilter(e.target.value as "All" | SubmissionStatus)
-              }
-              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer"
+              onChange={(e) => handleStatusChange(e.target.value as StatusFilter)}
+              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
             >
               <option value="All">All Statuses</option>
               <option value="new">New</option>
@@ -722,70 +932,95 @@ export default function CareerPartnershipPage() {
             </select>
             <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
           </div>
+
+          {/* Clear all filters */}
+          {hasActiveSubmissionFilters && (
+            <>
+              <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
+              <button
+                onClick={clearSubmissionFilters}
+                className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-primary/50 hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+                Clear
+              </button>
+            </>
+          )}
         </div>
 
-        {/* ── Results Count ── */}
-        {(search || typeFilter !== "All" || statusFilter !== "All") && (
+        {/* Results info */}
+        {hasActiveSubmissionFilters && !isSubmissionsLoading && submissionMeta && (
           <p className="text-primary/80 text-sm tracking-wider mb-4">
-            Showing {filtered.length} of {submissions.length} submissions
+            Showing {submissionMeta.total} submission{submissionMeta.total !== 1 ? "s" : ""}
             {typeFilter !== "All" && ` · ${typeFilter}`}
-            {statusFilter !== "All" &&
-              ` · ${submissionStatusConfig[statusFilter].label}`}
-            {search && ` · "${search}"`}
+            {statusFilter !== "All" && ` · ${submissionStatusConfig[statusFilter].label}`}
+            {submissionDebouncedSearch && ` · "${submissionDebouncedSearch}"`}
           </p>
         )}
 
-        {/* ── Grid ── */}
-        {filtered.length === 0 ? (
+        {/* Submissions grid */}
+        {isSubmissionsLoading ? (
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {Array.from({ length: SUBMISSION_LIMIT }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : submissions.length === 0 ? (
           <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
             <Users className="w-8 h-8 text-primary/20 mb-4" />
-            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
-              No Results
-            </p>
+            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">No Results</p>
             <p className="text-primary/80 text-sm">
-              {search
-                ? `No submissions match "${search}"`
-                : "No submissions in this category yet"}
+              {submissionDebouncedSearch
+                ? `No submissions match "${submissionDebouncedSearch}"`
+                : "No submissions in this filter yet"}
             </p>
-            {search && (
+            {hasActiveSubmissionFilters && (
               <button
-                onClick={() => setSearch("")}
+                onClick={clearSubmissionFilters}
                 className="mt-4 text-xs tracking-widest uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
               >
-                Clear Search
+                Clear Filters
               </button>
             )}
           </div>
         ) : (
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {filtered.map((submission) => (
-              <SubmissionCard
-                key={submission.id}
-                submission={submission}
-                onDelete={(s) => setDeleteTarget(s)}
-              />
+            {submissions.map((submission) => (
+              <SubmissionCard key={submission.id} submission={submission} onDelete={openDeleteSubmissionModal} />
             ))}
           </div>
+        )}
+
+        {/* Submissions pagination */}
+        {submissionMeta && !isSubmissionsLoading && (
+          <Pagination
+            meta={submissionMeta}
+            onPageChange={(page) => dispatch({ type: "SET_SUBMISSION_PAGE", page })}
+          />
         )}
       </div>
 
       {/* ── Delete Submission Modal ── */}
-      {deleteTarget && (
-        <DeleteModal
-          name={deleteTargetName}
-          onConfirm={confirmDelete}
-          onCancel={() => setDeleteTarget(null)}
-        />
-      )}
+      {(deleteSubmissionStatus === "confirm" || deleteSubmissionStatus === "deleting") &&
+        deleteSubmissionTarget && (
+          <DeleteModal
+            name={getSubmissionName(deleteSubmissionTarget)}
+            onConfirm={deleteSubmissionById}
+            onCancel={closeDeleteSubmissionModal}
+            isLoading={deleteSubmissionStatus === "deleting"}
+          />
+        )}
 
       {/* ── Delete Position Modal ── */}
-      {deletePositionTarget && (
-        <DeletePositionModal
-          title={deletePositionTarget.title}
-          onConfirm={confirmDeletePosition}
-          onCancel={() => setDeletePositionTarget(null)}
-        />
-      )}
+      {(deletePositionStatus === "confirm" || deletePositionStatus === "deleting") &&
+        deletePositionTarget && (
+          <DeleteModal
+            name={deletePositionTarget.title}
+            onConfirm={deletePositionById}
+            onCancel={closeDeletePositionModal}
+            isLoading={deletePositionStatus === "deleting"}
+          />
+        )}
     </div>
   );
 }

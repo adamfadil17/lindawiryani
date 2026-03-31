@@ -1,13 +1,10 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
+import { prisma, handleError, paginated, created } from "@/lib";
 import { createInquirySchema, parsePagination, paginateQuery } from "@/utils";
 
 export async function GET(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
-    requireRole(payload, "admin", "editor");
-
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const status = req.nextUrl.searchParams.get("status") ?? undefined;
 

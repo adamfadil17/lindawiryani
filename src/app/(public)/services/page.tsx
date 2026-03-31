@@ -5,12 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
+import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 import {
-  destinations,
+  serviceDestinations,
   services,
   whyChooseReasons,
-} from "@/lib/data/services/services-data";
+} from "@/lib/data/services-data";
 
 function ServiceAccordion({
   service,
@@ -231,7 +231,7 @@ export default function ServicesPage() {
               What We Offer
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-               Our Services
+              Our Services
             </h2>
           </motion.div>
 
@@ -352,7 +352,7 @@ export default function ServicesPage() {
 
               <motion.div variants={fadeInUp} className="space-y-4">
                 <p className="text-primary">Our studio curates:</p>
-                {destinations.map((dest) => (
+                {serviceDestinations.map((dest) => (
                   <div key={dest} className="flex items-center gap-4">
                     <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
                     <span className="text-primary">{dest}</span>
@@ -404,7 +404,8 @@ export default function ServicesPage() {
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            Whether you are planning a destination wedding,a private villa celebration, or a quiet elopement.
+            Whether you are planning a destination wedding,a private villa
+            celebration, or a quiet elopement.
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
               Our role is to guide, design, and orchestrate.

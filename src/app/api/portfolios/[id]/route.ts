@@ -44,19 +44,19 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
     const dto = updatePortfolioSchema.parse(body);
 
-    // Auto-regenerate slug jika couple ikut diupdate
     let slug: string | undefined;
     if (dto.couple) {
       const baseSlug = toSlug(dto.couple);
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.portfolio.findUnique({ where: { slug: s } });
-        // Skip slug milik diri sendiri
+        const existing = await prisma.portfolio.findUnique({
+          where: { slug: s },
+        });
         return !!existing && existing.id !== id;
       });
     }
@@ -82,10 +82,17 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.portfolio.delete({ where: { id } });
+    const existing = await prisma.portfolio.findUnique({ where: { id } });
+    if (!existing) return notFound("Portfolio");
+
+    await prisma.$transaction(async (tx) => {
+      await tx.portfolioImage.deleteMany({ where: { portfolio_id: id } });
+      await tx.portfolio.delete({ where: { id } });
+    });
+
     return noContent();
   } catch (error) {
     return handleError(error);

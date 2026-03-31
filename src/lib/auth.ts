@@ -1,7 +1,9 @@
-import jwt from "jsonwebtoken";
+import * as jose from "jose";
 import { NextRequest } from "next/server";
 
-const JWT_SECRET = process.env.JWT_SECRET ?? "change-me-in-production";
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET ?? "change-me-in-production"
+);
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? "7d";
 
 export interface JwtPayload {
@@ -12,53 +14,47 @@ export interface JwtPayload {
   exp?: number;
 }
 
-/** Sign a new JWT */
-export function signToken(payload: Omit<JwtPayload, "iat" | "exp">): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN } as jwt.SignOptions);
+export async function signToken(payload: Omit<JwtPayload, "iat" | "exp">): Promise<string> {
+  return await new jose.SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(JWT_EXPIRES_IN)
+    .sign(JWT_SECRET);
 }
 
-/** Verify and decode a JWT — throws on invalid / expired */
-export function verifyToken(token: string): JwtPayload {
-  return jwt.verify(token, JWT_SECRET) as JwtPayload;
+export async function verifyToken(token: string): Promise<JwtPayload> {
+  const { payload } = await jose.jwtVerify(token, JWT_SECRET);
+  return payload as unknown as JwtPayload;
 }
 
-/** Extract the bearer token from the Authorization header */
 export function extractToken(req: NextRequest): string | null {
   const authHeader = req.headers.get("Authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) return null;
+  if (!authHeader?.startsWith("Bearer ")) return null;
   return authHeader.slice(7);
 }
 
-/** Full guard: extract + verify — returns payload or null */
-export function getAuthPayload(req: NextRequest): JwtPayload | null {
+export async function getAuthPayload(req: NextRequest): Promise<JwtPayload | null> {
   try {
     const token = extractToken(req);
     if (!token) return null;
-    return verifyToken(token);
+    return await verifyToken(token);
   } catch {
     return null;
   }
 }
 
-/** Throws ApiError(401) if not authenticated */
-export function requireAuth(req: NextRequest): JwtPayload {
-  const payload = getAuthPayload(req);
-  if (!payload) {
-    throw new ApiError(401, "Unauthorized — invalid or missing token");
-  }
+export async function requireAuth(req: NextRequest): Promise<JwtPayload> {
+  const payload = await getAuthPayload(req);
+  if (!payload) throw new ApiError(401, "Unauthorized — invalid or missing token");
   return payload;
 }
 
-/** Throws ApiError(403) if the user doesn't have the required role */
 export function requireRole(payload: JwtPayload, ...roles: string[]): void {
   if (!roles.includes(payload.role)) {
     throw new ApiError(403, `Forbidden — required role: ${roles.join(" | ")}`);
   }
 }
 
-// ─────────────────────────────────────────────
-// Custom API Error
-// ─────────────────────────────────────────────
 export class ApiError extends Error {
   status: number;
   constructor(status: number, message: string) {

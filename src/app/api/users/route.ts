@@ -1,8 +1,20 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+} from "@/lib";
 
-import { createUserSchema, parsePagination, paginateQuery, hashPassword } from "@/utils";
+import {
+  createUserSchema,
+  parsePagination,
+  paginateQuery,
+  hashPassword,
+} from "@/utils";
 
 const SELECT_PUBLIC = {
   id: true,
@@ -14,14 +26,17 @@ const SELECT_PUBLIC = {
 
 export async function GET(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
 
     const where = search
       ? {
-          OR: [{ name: { contains: search, mode: "insensitive" as const } }, { email: { contains: search, mode: "insensitive" as const } }],
+          OR: [
+            { name: { contains: search, mode: "insensitive" as const } },
+            { email: { contains: search, mode: "insensitive" as const } },
+          ],
         }
       : {};
 
@@ -47,7 +62,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
     const body = await req.json();

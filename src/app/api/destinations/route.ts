@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = requireAuth(req);
+    const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
@@ -68,7 +68,9 @@ export async function POST(req: NextRequest) {
 
     const baseSlug = toSlug(dto.name);
     const slug = await ensureUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.destination.findUnique({ where: { slug: s } });
+      const existing = await prisma.destination.findUnique({
+        where: { slug: s },
+      });
       return !!existing;
     });
 

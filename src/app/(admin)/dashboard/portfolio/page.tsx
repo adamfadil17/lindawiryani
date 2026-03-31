@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 import {
   Plus,
   Search,
@@ -15,72 +16,63 @@ import {
   Users,
   Tag,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { portfolioItems as initialPortfolios } from "@/lib/data/new-data/portfolio-data";
-import { destinationList } from "@/lib/data/new-data/destination-data";
-import { venueList } from "@/lib/data/new-data/venue-data";
-import { weddingExperienceList } from "@/lib/data/new-data/wedding-experience-data";
-import { Portfolio } from "@/lib/types/new-strucutre";
+import { Portfolio } from "@/types";
+import DeleteModal from "@/components/shared/delete-modal";
+import type { PaginationMeta } from "@/lib/api-response";
+import { toast } from "sonner";
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Delete Confirmation Modal ────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-function DeleteModal({
-  portfolio,
-  onConfirm,
-  onCancel,
-}: {
-  portfolio: Portfolio;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
+const LIMIT = 6;
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface FilterOption {
+  id: string;
+  name: string;
+}
+
+interface ExperienceFilterOption extends FilterOption {
+  category: string;
+}
+
+interface PortfolioFilters {
+  destinations: FilterOption[];
+  venues: FilterOption[];
+  experiences: ExperienceFilterOption[];
+}
+
+// ─── Skeleton Card ────────────────────────────────────────────────────────────
+
+function SkeletonCard() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onCancel}
-      />
-      <div className="relative bg-white w-full max-w-md mx-4 p-8 shadow-2xl">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-
-        <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
-          <Trash2 className="w-5 h-5 text-red-500" />
+    <div className="bg-white border border-primary/20 animate-pulse">
+      <div className="aspect-[3/2] bg-primary/10" />
+      <div className="p-5 space-y-3">
+        <div className="h-4 bg-primary/10 w-2/3 rounded" />
+        <div className="h-3 bg-primary/10 w-1/2 rounded" />
+        <div className="space-y-1.5">
+          <div className="h-3 bg-primary/10 w-3/4 rounded" />
+          <div className="h-3 bg-primary/10 w-1/2 rounded" />
         </div>
-
-        <p className="text-primary/60 tracking-[0.2em] uppercase text-[10px] mb-2">
-          Confirm Delete
-        </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          Delete Portfolio
-        </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
-          Are you sure you want to delete{" "}
-          <span className="font-semibold text-primary">
-            &ldquo;{portfolio.couple}&rdquo;
-          </span>
-          ? This action cannot be undone and will permanently remove this
-          portfolio from the collection.
-        </p>
-
-        <div className="flex gap-3">
-          <button
-            onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors"
-          >
-            Delete
-          </button>
-        </div>
+        <div className="h-3 bg-primary/10 w-full rounded" />
+        <div className="h-3 bg-primary/10 w-5/6 rounded" />
       </div>
+    </div>
+  );
+}
+
+// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
+
+function SkeletonStatCard() {
+  return (
+    <div className="p-5 border border-primary/20 bg-white animate-pulse">
+      <div className="h-3 bg-primary/10 w-2/3 rounded mb-3" />
+      <div className="h-7 bg-primary/10 w-10 rounded" />
     </div>
   );
 }
@@ -99,7 +91,7 @@ function PortfolioCard({
       {/* Hero Image */}
       <div className="relative aspect-[3/2] overflow-hidden">
         <Image
-          src={portfolio.heroImage || "https://placehold.net/default.svg"}
+          src={portfolio.image || "https://placehold.net/default.svg"}
           alt={portfolio.couple}
           fill
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
@@ -109,7 +101,7 @@ function PortfolioCard({
         <div className="absolute top-3 right-3">
           <span className="inline-flex items-center gap-1 text-[10px] tracking-widest uppercase px-2.5 py-1 font-medium bg-black/60 text-white backdrop-blur-sm">
             <Images className="w-3 h-3" />
-            {portfolio.galleryImages?.length ?? 0}
+            {portfolio.gallery?.length ?? 0}
           </span>
         </div>
         {/* Tags */}
@@ -174,7 +166,7 @@ function PortfolioCard({
           </p>
         )}
 
-        {/* Divider */}
+        {/* Divider + Actions */}
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
             <span className="text-xs text-primary/80 font-semibold tracking-wider truncate max-w-[140px]">
@@ -214,56 +206,506 @@ function PortfolioCard({
   );
 }
 
+// ─── Filter Dropdown ──────────────────────────────────────────────────────────
+
+function FilterDropdown({
+  value,
+  onChange,
+  options,
+  placeholder,
+  disabled,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: { id: string; label: string }[];
+  placeholder: string;
+  disabled?: boolean;
+}) {
+  const isActive = value !== "";
+
+  return (
+    <div className="relative shrink-0 h-[42px]">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
+        className={`appearance-none h-full pl-3 pr-8 py-2.5 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+          isActive
+            ? "bg-primary text-white border-primary"
+            : "bg-white text-primary/60 border-primary/20 hover:border-primary/40 hover:text-primary/80"
+        }`}
+      >
+        <option value="" className="bg-white text-primary normal-case font-normal tracking-normal">
+          {placeholder}
+        </option>
+        {options.map((opt) => (
+          <option
+            key={opt.id}
+            value={opt.id}
+            className="bg-white text-primary normal-case font-normal tracking-normal"
+          >
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown
+        className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
+          isActive ? "text-white/70" : "text-primary/40"
+        }`}
+      />
+    </div>
+  );
+}
+
+// ─── Pagination ───────────────────────────────────────────────────────────────
+
+function Pagination({
+  meta,
+  onPageChange,
+}: {
+  meta: PaginationMeta;
+  onPageChange: (page: number) => void;
+}) {
+  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1);
+
+  const getVisiblePages = (): (number | "...")[] => {
+    if (meta.totalPages <= 7) return pages;
+    const range: (number | "...")[] = [];
+    if (meta.page <= 4) {
+      range.push(...pages.slice(0, 5), "...", meta.totalPages);
+    } else if (meta.page >= meta.totalPages - 3) {
+      range.push(1, "...", ...pages.slice(meta.totalPages - 5));
+    } else {
+      range.push(
+        1,
+        "...",
+        meta.page - 1,
+        meta.page,
+        meta.page + 1,
+        "...",
+        meta.totalPages,
+      );
+    }
+    return range;
+  };
+
+  if (meta.total === 0) return null;
+
+  return (
+    <div className="flex items-center justify-between mt-8 pt-6 border-t border-primary/20">
+      <p className="text-primary/60 text-xs tracking-wider">
+        Showing{" "}
+        <span className="text-primary font-medium">
+          {(meta.page - 1) * meta.limit + 1}–
+          {Math.min(meta.page * meta.limit, meta.total)}
+        </span>{" "}
+        of <span className="text-primary font-medium">{meta.total}</span>{" "}
+        portfolios
+      </p>
+
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onPageChange(meta.page - 1)}
+          disabled={!meta.hasPrev}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+
+        {getVisiblePages().map((p, i) =>
+          p === "..." ? (
+            <span
+              key={`ellipsis-${i}`}
+              className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm"
+            >
+              …
+            </span>
+          ) : (
+            <button
+              key={p}
+              onClick={() => onPageChange(p as number)}
+              className={`w-8 h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
+                meta.page === p
+                  ? "bg-primary text-white border border-primary"
+                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+              }`}
+            >
+              {p}
+            </button>
+          ),
+        )}
+
+        <button
+          onClick={() => onPageChange(meta.page + 1)}
+          disabled={!meta.hasNext}
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Page State (useReducer) ──────────────────────────────────────────────────
+
+interface PageState {
+  // data
+  portfolios: Portfolio[];
+  paginationMeta: PaginationMeta | null;
+  isLoading: boolean;
+  // filters
+  searchTerm: string;
+  debouncedSearch: string;
+  filterDestination: string;
+  filterVenue: string;
+  filterExperience: string;
+  currentPage: number;
+  // delete state machine
+  deleteStatus: "idle" | "confirm" | "deleting";
+  deleteTarget: Portfolio | null;
+  // faceted filter options (satu request, bukan tiga)
+  filters: PortfolioFilters;
+  isFiltersLoading: boolean;
+  // cached counts per experience untuk stat cards
+  experienceCounts: Record<string, number>;
+}
+
+type PageAction =
+  | { type: "FETCH_PORTFOLIOS_START" }
+  | { type: "FETCH_PORTFOLIOS_SUCCESS"; portfolios: Portfolio[]; meta: PaginationMeta | null; experienceFilter: string }
+  | { type: "FETCH_PORTFOLIOS_ERROR" }
+  | { type: "SET_FILTERS"; filters: PortfolioFilters }
+  | { type: "FILTERS_LOADED" }
+  | { type: "EXPERIENCE_COUNTS"; counts: Record<string, number> }
+  | { type: "SET_SEARCH"; value: string }
+  | { type: "SET_DEBOUNCED_SEARCH"; value: string }
+  | { type: "SET_DESTINATION"; id: string }
+  | { type: "SET_VENUE"; id: string }
+  | { type: "SET_EXPERIENCE"; id: string }
+  | { type: "SET_PAGE"; page: number }
+  | { type: "CLEAR_FILTERS" }
+  | { type: "OPEN_DELETE"; portfolio: Portfolio }
+  | { type: "CLOSE_DELETE" }
+  | { type: "DELETE_START" }
+  | { type: "DELETE_SUCCESS" }
+  | { type: "DELETE_ERROR" };
+
+const initialState: PageState = {
+  portfolios: [],
+  paginationMeta: null,
+  isLoading: true,
+  searchTerm: "",
+  debouncedSearch: "",
+  filterDestination: "",
+  filterVenue: "",
+  filterExperience: "",
+  currentPage: 1,
+  deleteStatus: "idle",
+  deleteTarget: null,
+  filters: { destinations: [], venues: [], experiences: [] },
+  isFiltersLoading: true,
+  experienceCounts: {},
+};
+
+function pageReducer(state: PageState, action: PageAction): PageState {
+  switch (action.type) {
+    case "FETCH_PORTFOLIOS_START":
+      return { ...state, isLoading: true };
+
+    case "FETCH_PORTFOLIOS_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        portfolios: action.portfolios,
+        paginationMeta: action.meta,
+        // Cache total untuk filter experience yang sedang aktif.
+        // Dipakai di stat cards tanpa perlu refetch.
+        experienceCounts: {
+          ...state.experienceCounts,
+          [action.experienceFilter]: action.meta?.total ?? 0,
+        },
+      };
+
+    case "FETCH_PORTFOLIOS_ERROR":
+      return { ...state, isLoading: false };
+
+    case "SET_FILTERS":
+      return { ...state, filters: action.filters };
+
+    case "FILTERS_LOADED":
+      return { ...state, isFiltersLoading: false };
+
+    case "EXPERIENCE_COUNTS":
+      return {
+        ...state,
+        experienceCounts: { ...state.experienceCounts, ...action.counts },
+      };
+
+    case "SET_SEARCH":
+      return { ...state, searchTerm: action.value };
+
+    case "SET_DEBOUNCED_SEARCH":
+      // Search baru → selalu kembali ke halaman 1
+      return { ...state, debouncedSearch: action.value, currentPage: 1 };
+
+    case "SET_DESTINATION":
+      return { ...state, filterDestination: action.id, currentPage: 1 };
+
+    case "SET_VENUE":
+      return { ...state, filterVenue: action.id, currentPage: 1 };
+
+    case "SET_EXPERIENCE":
+      return { ...state, filterExperience: action.id, currentPage: 1 };
+
+    case "SET_PAGE":
+      return { ...state, currentPage: action.page };
+
+    case "CLEAR_FILTERS":
+      return {
+        ...state,
+        searchTerm: "",
+        filterDestination: "",
+        filterVenue: "",
+        filterExperience: "",
+        currentPage: 1,
+      };
+
+    case "OPEN_DELETE":
+      return { ...state, deleteTarget: action.portfolio, deleteStatus: "confirm" };
+
+    case "CLOSE_DELETE":
+      // Blokir close saat delete sedang berjalan
+      return state.deleteStatus === "deleting"
+        ? state
+        : { ...state, deleteTarget: null, deleteStatus: "idle" };
+
+    case "DELETE_START":
+      return { ...state, deleteStatus: "deleting" };
+
+    case "DELETE_SUCCESS":
+      return { ...state, deleteTarget: null, deleteStatus: "idle" };
+
+    case "DELETE_ERROR":
+      // Kembalikan ke confirm agar user bisa retry atau cancel
+      return { ...state, deleteStatus: "confirm" };
+
+    default:
+      return state;
+  }
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DashboardPortfolioPage() {
-  const [portfolios, setPortfolios] = useState<Portfolio[]>(initialPortfolios);
-  const [search, setSearch] = useState("");
-  const [filterDestination, setFilterDestination] = useState("");
-  const [filterVenue, setFilterVenue] = useState("");
-  const [filterExperience, setFilterExperience] = useState("");
-  const [deleteTarget, setDeleteTarget] = useState<Portfolio | null>(null);
+  const [state, dispatch] = useReducer(pageReducer, initialState);
 
-  // ── Filter options from imported data lists ──
-  const destinationOptions = [{ id: "", name: "All Destinations" }, ...destinationList];
-  const venueOptions = [{ id: "", name: "All Venues" }, ...venueList];
-  const experienceOptions = [{ id: "", name: "All Experiences" }, ...weddingExperienceList];
+  const {
+    portfolios, paginationMeta, isLoading,
+    searchTerm, debouncedSearch,
+    filterDestination, filterVenue, filterExperience,
+    currentPage,
+    deleteStatus, deleteTarget,
+    filters, isFiltersLoading,
+    experienceCounts,
+  } = state;
 
-  const hasActiveFilters =
-    filterDestination !== "" || filterVenue !== "" || filterExperience !== "";
+  // ── useRef: timer debounce — mutasi ref tidak memicu re-render ──
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const clearFilters = () => {
-    setFilterDestination("");
-    setFilterVenue("");
-    setFilterExperience("");
-  };
+  // ── useRef: AbortController — batalkan fetch lama saat deps berubah ──
+  const abortRef = useRef<AbortController | null>(null);
 
-  const filtered = portfolios.filter((p) => {
-    const q = search.toLowerCase();
-    const matchesSearch =
-      !q ||
-      p.couple.toLowerCase().includes(q) ||
-      (p.subtitle ?? "").toLowerCase().includes(q) ||
-      p.slug.toLowerCase().includes(q) ||
-      (p.destination?.name ?? "").toLowerCase().includes(q) ||
-      (p.venue?.name ?? "").toLowerCase().includes(q) ||
-      (p.tags ?? []).some((t) => t.toLowerCase().includes(q));
+  // ── Debounce search: dispatch SET_DEBOUNCED_SEARCH 400ms setelah berhenti mengetik ──
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      dispatch({ type: "SET_DEBOUNCED_SEARCH", value: searchTerm });
+    }, 400);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [searchTerm]);
 
-    const matchesDestination = !filterDestination || p.destinationId === filterDestination;
-    const matchesVenue = !filterVenue || p.venueId === filterVenue;
-    const matchesExperience = !filterExperience || p.experienceId === filterExperience;
+  // ── Fetch semua filter options sekaligus (satu request, bukan tiga) ──
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const { data } = await axios.get<{ data: PortfolioFilters }>(
+          "/api/portfolios/filters",
+        );
+        const portfolioFilters = data.data;
+        dispatch({ type: "SET_FILTERS", filters: portfolioFilters });
 
-    return matchesSearch && matchesDestination && matchesVenue && matchesExperience;
-  });
+        // Pre-fetch count per experience secara paralel agar stat cards
+        // langsung menampilkan angka real tanpa user harus klik satu per satu.
+        if (portfolioFilters.experiences.length > 0) {
+          const countResults = await Promise.allSettled(
+            portfolioFilters.experiences.map((exp) =>
+              axios
+                .get<{ meta: PaginationMeta }>("/api/portfolios", {
+                  params: { page: 1, limit: 1, experienceId: exp.id },
+                })
+                .then((res) => ({ id: exp.id, total: res.data.meta?.total ?? 0 })),
+            ),
+          );
 
-  const handleDelete = (portfolio: Portfolio) => setDeleteTarget(portfolio);
+          const counts: Record<string, number> = {};
+          for (const result of countResults) {
+            if (result.status === "fulfilled") {
+              counts[result.value.id] = result.value.total;
+            }
+          }
+          dispatch({ type: "EXPERIENCE_COUNTS", counts });
+        }
+      } catch (err) {
+        console.error("Failed to load filters:", err);
+      } finally {
+        dispatch({ type: "FILTERS_LOADED" });
+      }
+    };
+    fetchFilters();
+  }, []);
 
-  const confirmDelete = () => {
-    if (deleteTarget) {
-      setPortfolios((prev) => prev.filter((p) => p.id !== deleteTarget.id));
-      setDeleteTarget(null);
+  // ── Fetch portfolios (paginated, searched, filtered) ──
+  // useCallback memastikan getPortfolios hanya dibuat ulang saat deps benar-benar berubah,
+  // sehingga useEffect di bawah tidak loop tanpa sebab.
+  const getPortfolios = useCallback(async () => {
+    // Batalkan request sebelumnya untuk mencegah race condition
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
+
+    dispatch({ type: "FETCH_PORTFOLIOS_START" });
+    try {
+      const params: Record<string, unknown> = { page: currentPage, limit: LIMIT };
+      if (debouncedSearch)   params.search        = debouncedSearch;
+      if (filterDestination) params.destinationId = filterDestination;
+      if (filterVenue)       params.venueId       = filterVenue;
+      if (filterExperience)  params.experienceId  = filterExperience;
+
+      const response = await axios.get("/api/portfolios", {
+        params,
+        signal: abortRef.current.signal,
+      });
+
+      dispatch({
+        type: "FETCH_PORTFOLIOS_SUCCESS",
+        portfolios: response.data.data ?? [],
+        meta: response.data.meta ?? null,
+        experienceFilter: filterExperience,
+      });
+    } catch (err) {
+      // Abort yang disengaja tidak dianggap error — langsung return
+      if (axios.isCancel(err)) return;
+      const errorMsg = axios.isAxiosError(err)
+        ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
+        : err instanceof Error
+          ? err.message
+          : "Failed to load portfolios";
+      toast.error("Failed to load portfolios", { description: errorMsg });
+      dispatch({ type: "FETCH_PORTFOLIOS_ERROR" });
     }
-  };
+  }, [currentPage, debouncedSearch, filterDestination, filterVenue, filterExperience]);
+
+  useEffect(() => {
+    getPortfolios();
+  }, [getPortfolios]);
+
+  // ── Filter change handlers ──
+  // useCallback dengan deps [] karena hanya memanggil dispatch (referensi stabil)
+  const handleDestinationChange = useCallback(
+    (id: string) => dispatch({ type: "SET_DESTINATION", id }),
+    [],
+  );
+
+  const handleVenueChange = useCallback(
+    (id: string) => dispatch({ type: "SET_VENUE", id }),
+    [],
+  );
+
+  const handleExperienceChange = useCallback(
+    (id: string) => dispatch({ type: "SET_EXPERIENCE", id }),
+    [],
+  );
+
+  const clearAllFilters = useCallback(
+    () => dispatch({ type: "CLEAR_FILTERS" }),
+    [],
+  );
+
+  // ── Delete flow ──
+  const openDeleteModal = useCallback(
+    (portfolio: Portfolio) => dispatch({ type: "OPEN_DELETE", portfolio }),
+    [],
+  );
+
+  const closeDeleteModal = useCallback(
+    () => dispatch({ type: "CLOSE_DELETE" }),
+    [],
+  );
+
+  const deletePortfolioById = useCallback(async () => {
+    if (!deleteTarget) return;
+    dispatch({ type: "DELETE_START" });
+    try {
+      await axios.delete(`/api/portfolios/${deleteTarget.id}`, {
+        headers: getAuthHeaders(),
+      });
+      const isLastOnPage = portfolios.length === 1 && currentPage > 1;
+      dispatch({ type: "DELETE_SUCCESS" });
+      if (isLastOnPage) {
+        // Mundur satu halaman agar tidak landing di halaman kosong
+        dispatch({ type: "SET_PAGE", page: currentPage - 1 });
+      } else {
+        getPortfolios();
+      }
+    } catch (err) {
+      console.error("Delete failed:", err);
+      toast.error("Failed to delete portfolio");
+      dispatch({ type: "DELETE_ERROR" });
+    }
+  }, [deleteTarget, portfolios.length, currentPage, getPortfolios]);
+
+  // ── useMemo: derived values & dropdown options ──
+  // Hanya dihitung ulang saat deps spesifiknya berubah, bukan setiap render
+
+  const totalCount = useMemo(
+    () => paginationMeta?.total ?? 0,
+    [paginationMeta],
+  );
+
+  const hasActiveFilters = useMemo(
+    () =>
+      !!debouncedSearch ||
+      filterDestination !== "" ||
+      filterVenue !== "" ||
+      filterExperience !== "",
+    [debouncedSearch, filterDestination, filterVenue, filterExperience],
+  );
+
+  const destinationOptions = useMemo(
+    () => filters.destinations.map((d) => ({ id: d.id, label: d.name })),
+    [filters.destinations],
+  );
+
+  const venueOptions = useMemo(
+    () => filters.venues.map((v) => ({ id: v.id, label: v.name })),
+    [filters.venues],
+  );
+
+  const experienceOptions = useMemo(
+    () => filters.experiences.map((e) => ({ id: e.id, label: e.name })),
+    [filters.experiences],
+  );
+
+  // Stat cards: "Total" + satu kartu per experience
+  const statCards = useMemo(
+    () => [
+      { id: "", label: "Total" },
+      ...filters.experiences.map((e) => ({ id: e.id, label: e.name })),
+    ],
+    [filters.experiences],
+  );
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
@@ -277,7 +719,11 @@ export default function DashboardPortfolioPage() {
             Portfolio
           </h1>
           <p className="text-primary/80 text-sm mt-1">
-            {portfolios.length} total portfolios
+            {isLoading ? (
+              <span className="inline-block w-28 h-3 bg-primary/10 animate-pulse rounded" />
+            ) : (
+              `${totalCount} total portfolios`
+            )}
           </p>
         </div>
 
@@ -290,149 +736,196 @@ export default function DashboardPortfolioPage() {
         </Link>
       </div>
 
+      {/* ── Stats Row ── */}
+      {isFiltersLoading ? (
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonStatCard key={i} />
+          ))}
+        </div>
+      ) : (
+        statCards.length > 1 && (
+          <div
+            className="grid gap-4 mb-8"
+            style={{
+              gridTemplateColumns: `repeat(${Math.min(statCards.length, 6)}, minmax(0, 1fr))`,
+            }}
+          >
+            {statCards.map((stat) => {
+              const isActive = filterExperience === stat.id;
+              const displayValue =
+                stat.id === ""
+                  ? totalCount
+                  : (experienceCounts[stat.id] ?? "—");
+
+              return (
+                <button
+                  key={stat.id}
+                  onClick={() => handleExperienceChange(stat.id)}
+                  className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
+                    isActive
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white border-primary/20 text-primary hover:border-primary/30"
+                  }`}
+                >
+                  <p
+                    className={`text-sm tracking-[0.2em] uppercase mb-1.5 truncate ${
+                      isActive ? "text-white/80" : "text-primary/80"
+                    }`}
+                  >
+                    {stat.label}
+                  </p>
+                  {isLoading && stat.id === "" ? (
+                    <div className="h-7 w-10 bg-current opacity-10 animate-pulse rounded" />
+                  ) : (
+                    <p className="text-2xl font-semibold">{displayValue}</p>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )
+      )}
+
       {/* ── Search & Filter Bar ── */}
-      <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-        {/* Search Input */}
-        <div className="relative flex-1">
+      <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center flex-wrap">
+        {/* Search */}
+        <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
             type="text"
             placeholder="Search by couple, venue, destination, or tag…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+            value={searchTerm}
+            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
-          {search && (
+          {searchTerm && (
             <button
-              onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
+              onClick={() => dispatch({ type: "SET_SEARCH", value: "" })}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/30 hover:text-primary/60 transition-colors hover:cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Destination Dropdown */}
-        <div className="relative shrink-0">
-          <select
+        {/* Divider */}
+        <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
+
+        {/* Filter Dropdowns */}
+        <div className="flex gap-2 items-stretch h-[42px]">
+          <FilterDropdown
             value={filterDestination}
-            onChange={(e) => setFilterDestination(e.target.value)}
-            className="w-full sm:w-44 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40 hover:text-primary/80"
-          >
-            {destinationOptions.map((d) => (
-              <option key={d.id} value={d.id}>
-                {d.name}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
-        </div>
-
-        {/* Venue Dropdown */}
-        <div className="relative shrink-0">
-          <select
+            onChange={handleDestinationChange}
+            options={destinationOptions}
+            placeholder="All Destinations"
+            disabled={isFiltersLoading}
+          />
+          <FilterDropdown
             value={filterVenue}
-            onChange={(e) => setFilterVenue(e.target.value)}
-            className="w-full sm:w-44 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40 hover:text-primary/80"
-          >
-            {venueOptions.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
-        </div>
-
-        {/* Experience Dropdown */}
-        <div className="relative shrink-0">
-          <select
+            onChange={handleVenueChange}
+            options={venueOptions}
+            placeholder="All Venues"
+            disabled={isFiltersLoading}
+          />
+          <FilterDropdown
             value={filterExperience}
-            onChange={(e) => setFilterExperience(e.target.value)}
-            className="w-full sm:w-44 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40 hover:text-primary/80"
-          >
-            {experienceOptions.map((ex) => (
-              <option key={ex.id} value={ex.id}>
-                {ex.name}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+            onChange={handleExperienceChange}
+            options={experienceOptions}
+            placeholder="All Experiences"
+            disabled={isFiltersLoading}
+          />
         </div>
 
-        {/* Clear Filters */}
+        {/* Clear all */}
         {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="inline-flex items-center justify-center gap-1.5 shrink-0 px-3 py-2.5 text-xs tracking-widest uppercase text-primary/50 border border-primary/20 hover:text-primary hover:border-primary/40 hover:cursor-pointer transition-colors"
-          >
-            <X className="w-3.5 h-3.5" />
-            Clear
-          </button>
+          <>
+            <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
+            <button
+              onClick={clearAllFilters}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-primary/50 hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+              Clear
+            </button>
+          </>
         )}
       </div>
 
-      {/* ── Results Count ── */}
-      {(search || hasActiveFilters) && (
-        <p className="text-primary/50 text-xs tracking-wider mb-4">
-          Showing {filtered.length} of {portfolios.length} portfolios
-          {search && <> for &ldquo;{search}&rdquo;</>}
+      {/* ── Results Info ── */}
+      {hasActiveFilters && !isLoading && paginationMeta && (
+        <p className="text-primary/80 text-sm tracking-wider mb-4">
+          Showing {paginationMeta.total} portfolio
+          {paginationMeta.total !== 1 ? "s" : ""}
+          {filterDestination &&
+            ` in ${destinationOptions.find((d) => d.id === filterDestination)?.label ?? ""}`}
+          {filterVenue &&
+            ` at ${venueOptions.find((v) => v.id === filterVenue)?.label ?? ""}`}
+          {filterExperience &&
+            ` for ${experienceOptions.find((e) => e.id === filterExperience)?.label ?? ""}`}
+          {debouncedSearch && ` matching "${debouncedSearch}"`}
         </p>
       )}
 
       {/* ── Grid ── */}
-      {filtered.length === 0 ? (
+      {isLoading ? (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {Array.from({ length: LIMIT }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      ) : portfolios.length === 0 ? (
         <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
           <Images className="w-8 h-8 text-primary/20 mb-4" />
           <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
             No Results
           </p>
           <p className="text-primary/80 text-sm">
-            {search || hasActiveFilters
-              ? "No portfolios match the current filters"
-              : "No portfolios have been added yet"}
+            {debouncedSearch
+              ? `No portfolios match "${debouncedSearch}"`
+              : hasActiveFilters
+                ? "No portfolios match the current filters"
+                : "No portfolios have been added yet"}
           </p>
-          {(search || hasActiveFilters) && (
-            <div className="flex items-center gap-3 mt-4">
-              {search && (
-                <button
-                  onClick={() => setSearch("")}
-                  className="text-xs tracking-widest uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
-                >
-                  Clear Search
-                </button>
-              )}
-              {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="text-xs tracking-widest uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
-                >
-                  Clear Filters
-                </button>
-              )}
-            </div>
+          {hasActiveFilters && (
+            <button
+              onClick={clearAllFilters}
+              className="mt-4 text-xs tracking-widest uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
+            >
+              Clear Filters
+            </button>
           )}
         </div>
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {filtered.map((portfolio) => (
+          {portfolios.map((portfolio) => (
             <PortfolioCard
               key={portfolio.id}
               portfolio={portfolio}
-              onDelete={handleDelete}
+              onDelete={openDeleteModal}
             />
           ))}
         </div>
       )}
 
-      {/* ── Delete Modal ── */}
-      {deleteTarget && (
-        <DeleteModal
-          portfolio={deleteTarget}
-          onConfirm={confirmDelete}
-          onCancel={() => setDeleteTarget(null)}
+      {/* ── Pagination ── */}
+      {paginationMeta && !isLoading && (
+        <Pagination
+          meta={paginationMeta}
+          onPageChange={(page) => dispatch({ type: "SET_PAGE", page })}
         />
       )}
+
+      {/* ── Delete Modal ── */}
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
+        deleteTarget && (
+          <DeleteModal
+            name={deleteTarget.couple}
+            onConfirm={deletePortfolioById}
+            onCancel={closeDeleteModal}
+            isLoading={deleteStatus === "deleting"}
+          />
+        )}
     </div>
   );
 }
