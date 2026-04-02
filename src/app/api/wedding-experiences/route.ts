@@ -7,6 +7,8 @@ import {
   requireAuth,
   requireRole,
   created,
+  notFound,
+  ok,
 } from "@/lib";
 import {
   createWeddingExperienceSchema,
@@ -17,13 +19,28 @@ import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const WEDDING_EXPERIENCE_INCLUDE = {
   faqs: { orderBy: { sort_order: "asc" as const } },
-  venues: true,
+  venues: {
+    include: {
+      destination: true,
+      gallery: { orderBy: { sort_order: "asc" as const } },
+    },
+  },
   themes: true,
   portfolios: true,
 };
 
 export async function GET(req: NextRequest) {
   try {
+    const slug = req.nextUrl.searchParams.get("slug") ?? undefined;
+    if (slug) {
+      const experience = await prisma.weddingExperience.findUnique({
+        where: { slug },
+        include: WEDDING_EXPERIENCE_INCLUDE,
+      });
+      if (!experience) return notFound("Wedding Experience");
+      return ok(experience);
+    }
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const category = req.nextUrl.searchParams.get("category") ?? undefined;
 

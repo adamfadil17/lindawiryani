@@ -396,6 +396,13 @@ export interface OpenPosition {
   is_active: boolean;
 }
 
+export type ExperienceData = Omit<WeddingExperience, "venues" | "themes" | "portfolios">;
+
+export type ExperienceWithRelations = Omit<WeddingExperience, "venues" | "themes"> & {
+  venues: Venue[];
+  themes: WeddingTheme[];
+};
+
 export const openPositions: Omit<OpenPosition, "id" | "is_active">[] = [
   {
     title: "Wedding Planner & Coordinator",

@@ -21,6 +21,7 @@ type ExperienceData = Omit<
 >;
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import type { Venue, WeddingTheme, Currency } from "@/types";
+import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
 
 // ─── Shared components ────────────────────────────────────────────────────────
 
@@ -316,6 +317,9 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
 // ─── Section components ────────────────────────────────────────────────────────
 
 function SectionIntro({ data }: { data: ExperienceData }) {
+  const introHeading = data.intro_heading as [string, string];
+  const introList    = data.intro_list as string[];
+
   return (
     <motion.section
       className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
@@ -331,9 +335,9 @@ function SectionIntro({ data }: { data: ExperienceData }) {
               {data.intro_label}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-              {data.intro_heading[0]}
+              {introHeading[0]}
               <br />
-              <span>{data.intro_heading[1]}</span>
+              <span>{introHeading[1]}</span>
             </h2>
           </motion.div>
           <motion.div variants={fadeInUp} className="space-y-0">
@@ -342,7 +346,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
                 {data.intro_list_label}
               </p>
             )}
-            {data.intro_list.map((item, i) => (
+            {introList.map((item, i) => (
               <div
                 key={item}
                 className="flex items-center gap-4 py-3.5 border-b border-primary/20 last:border-0"
@@ -371,28 +375,34 @@ function SectionIntro({ data }: { data: ExperienceData }) {
             {data.intro_body}
           </motion.p>
           {/* Staggered image pair */}
-          <motion.div variants={scaleIn} className="grid grid-cols-2 gap-4">
-            <div className="relative aspect-[3/4] overflow-hidden">
-              <Image
-                src={data.approach_image}
-                alt={data.name}
-                fill
-                loading="lazy"
-                className="object-cover"
-                sizes="100vw"
-              />
-            </div>
-            <div className="relative aspect-[3/4] overflow-hidden mt-8">
-              <Image
-                src={data.hero_image}
-                alt={data.name}
-                fill
-                loading="lazy"
-                className="object-cover"
-                sizes="100vw"
-              />
-            </div>
-          </motion.div>
+          {data.intro_images[0] && (
+            <motion.div variants={scaleIn} className="grid grid-cols-2 gap-4">
+              {data.approach_image && (
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <Image
+                    src={data.intro_images[0]}
+                    alt={data.name}
+                    fill
+                    loading="lazy"
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                </div>
+              )}
+              {data.intro_images[1] && (
+                <div className="relative aspect-[3/4] overflow-hidden mt-8">
+                  <Image
+                    src={data.intro_images[1]}
+                    alt={data.name}
+                    fill
+                    loading="lazy"
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                </div>
+              )}
+            </motion.div>
+          )}
         </div>
       </div>
     </motion.section>
@@ -400,6 +410,9 @@ function SectionIntro({ data }: { data: ExperienceData }) {
 }
 
 function SectionApproach({ data }: { data: ExperienceData }) {
+  const approachHeading = data.approach_heading as [string, string];
+  const approachList    = data.approach_list as string[];
+
   return (
     <motion.section
       className="bg-primary/15 py-20 lg:py-28"
@@ -414,14 +427,16 @@ function SectionApproach({ data }: { data: ExperienceData }) {
             variants={fadeIn}
             className="lg:col-span-6 relative h-[50vh] lg:h-[520px] overflow-hidden"
           >
-            <Image
-              src={data.approach_image}
-              alt={data.approach_heading[0]}
-              fill
-              loading="lazy"
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
+            {data.approach_image ? (
+              <Image
+                src={data.approach_image}
+                alt={approachHeading[0]}
+                fill
+                loading="lazy"
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            ) : null}
           </motion.div>
           <div className="lg:col-span-6 space-y-8">
             <motion.div variants={fadeInUp}>
@@ -429,9 +444,9 @@ function SectionApproach({ data }: { data: ExperienceData }) {
                 {data.approach_label}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                {data.approach_heading[0]}
+                {approachHeading[0]}
                 <br />
-                <span>{data.approach_heading[1]}</span>
+                <span>{approachHeading[1]}</span>
               </h2>
             </motion.div>
             <motion.p
@@ -446,7 +461,7 @@ function SectionApproach({ data }: { data: ExperienceData }) {
                   {data.approach_list_label}
                 </p>
               )}
-              {data.approach_list.map((item, i) => (
+              {approachList.map((item, i) => (
                 <div
                   key={item}
                   className="flex items-center gap-4 py-3.5 border-b border-primary/20 last:border-0"
@@ -466,6 +481,11 @@ function SectionApproach({ data }: { data: ExperienceData }) {
 }
 
 function SectionServices({ data }: { data: ExperienceData }) {
+  const servicesHeading     = data.services_heading      as [string, string];
+  const servicesList        = data.services_list         as string[];
+  const servicesDarkHeading = data.services_dark_heading as [string, string];
+  const servicesDarkList    = data.services_dark_list    as string[];
+
   return (
     <motion.section
       className="py-20 lg:py-28"
@@ -482,13 +502,13 @@ function SectionServices({ data }: { data: ExperienceData }) {
                 {data.services_label}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                {data.services_heading[0]}
+                {servicesHeading[0]}
                 <br />
-                <span>{data.services_heading[1]}</span>
+                <span>{servicesHeading[1]}</span>
               </h2>
             </div>
             <div className="space-y-0">
-              {data.services_list.map((item, i) => (
+              {servicesList.map((item, i) => (
                 <div
                   key={item}
                   className="flex items-center gap-4 py-3.5 border-b border-primary/20 last:border-0"
@@ -514,15 +534,15 @@ function SectionServices({ data }: { data: ExperienceData }) {
               {data.services_dark_label}
             </p>
             <h3 className="text-2xl md:text-3xl text-white font-semibold leading-tight">
-              {data.services_dark_heading[0]}
+              {servicesDarkHeading[0]}
               <br />
-              <span>{data.services_dark_heading[1]}</span>
+              <span>{servicesDarkHeading[1]}</span>
             </h3>
             <p className="text-white/80 leading-relaxed">
               {data.services_dark_body}
             </p>
             <div className="space-y-0 pt-2">
-              {data.services_dark_list.map((item) => (
+              {servicesDarkList.map((item) => (
                 <div
                   key={item}
                   className="flex items-center gap-4 py-3 border-b border-white/20 last:border-0"
@@ -540,6 +560,9 @@ function SectionServices({ data }: { data: ExperienceData }) {
 }
 
 function SectionClosing({ data }: { data: ExperienceData }) {
+  const closingHeading      = data.closing_heading       as [string, string];
+  const closingCoupleValues = data.closing_couple_values as string[];
+
   return (
     <motion.section
       className="relative py-24 lg:py-32 overflow-hidden"
@@ -560,7 +583,7 @@ function SectionClosing({ data }: { data: ExperienceData }) {
         <div className="absolute inset-0 bg-primary/72" />
       </div>
       <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        {data.closing_couple_values.length > 0 ? (
+        {closingCoupleValues.length > 0 ? (
           /* Two-column closing for villa page */
           <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-6 space-y-8">
@@ -569,10 +592,10 @@ function SectionClosing({ data }: { data: ExperienceData }) {
                   {data.closing_label}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-white uppercase font-semibold">
-                  {data.closing_heading[0]}
+                  {closingHeading[0]}
                   <br />
                   <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-                    {data.closing_heading[1]}
+                    {closingHeading[1]}
                   </span>
                 </h2>
               </motion.div>
@@ -604,7 +627,7 @@ function SectionClosing({ data }: { data: ExperienceData }) {
                   <p className="text-white italic mb-5">
                     {data.closing_couple_label}
                   </p>
-                  {data.closing_couple_values.map((v) => (
+                  {closingCoupleValues.map((v) => (
                     <div
                       key={v}
                       className="flex items-center gap-4 py-3 border-b border-white/40"
@@ -630,10 +653,10 @@ function SectionClosing({ data }: { data: ExperienceData }) {
               variants={fadeInUp}
               className="text-3xl md:text-5xl lg:text-6xl text-white uppercase font-semibold leading-tight"
             >
-              {data.closing_heading[0]}
+              {closingHeading[0]}
               <br />
               <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-                {data.closing_heading[1]}
+                {closingHeading[1]}
               </span>
             </motion.h2>
             <motion.p
@@ -684,7 +707,7 @@ function SectionFaq({ data }: { data: ExperienceData }) {
             </h2>
           </motion.div>
           <motion.div variants={fadeIn} className="lg:col-span-8">
-            {data.faqs.map((faq) => (
+            {(data.faqs ?? []).map((faq) => (
               <FaqItem key={faq.question} q={faq.question} a={faq.answer} />
             ))}
           </motion.div>
@@ -694,42 +717,6 @@ function SectionFaq({ data }: { data: ExperienceData }) {
   );
 }
 
-const useCurrencyConverter = () => {
-  const [exchangeRate, setExchangeRate] = useState<number>(15800);
-  const CACHE_DURATION = 60 * 60 * 1000;
-
-  useEffect(() => {
-    const fetchExchangeRate = async () => {
-      const now = Date.now();
-      const cachedRate = sessionStorage.getItem("exchangeRate");
-      const cachedTime = sessionStorage.getItem("exchangeRateTime");
-
-      if (cachedRate && cachedTime) {
-        const timeDiff = now - Number.parseInt(cachedTime);
-        if (timeDiff < CACHE_DURATION) {
-          setExchangeRate(Number.parseFloat(cachedRate));
-          return;
-        }
-      }
-
-      try {
-        const response = await fetch(
-          "https://api.exchangerate-api.com/v4/latest/USD",
-        );
-        const data = await response.json();
-        const rate = data.rates.IDR;
-        setExchangeRate(rate);
-        sessionStorage.setItem("exchangeRate", rate.toString());
-        sessionStorage.setItem("exchangeRateTime", now.toString());
-      } catch (error) {
-        console.error("Failed to fetch exchange rate:", error);
-      }
-    };
-    fetchExchangeRate();
-  }, []);
-
-  return exchangeRate;
-};
 
 const formatPrice = (
   price: number | undefined,
@@ -1235,46 +1222,26 @@ function SectionSubExperiences({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export function WeddingExperiencesDetail({
+  experience,
   experienceList,
-  currentSlug,
-  allVenues,
-  elopementThemes,
-  intimateThemes,
-  locations,
 }: {
+  experience: WeddingExperience;
   experienceList: WeddingExperience[];
-  currentSlug: string;
-  allVenues: Venue[];
-  elopementThemes: WeddingTheme[];
-  intimateThemes: WeddingTheme[];
-  locations: string[];
 }) {
-  const experience = experienceList.find((e) => e.slug === currentSlug);
-
-  if (!experience) {
-    return (
-      <main className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <p className="text-primary/50 tracking-[0.25em] text-xs uppercase mb-4">
-            404
-          </p>
-          <h1 className="text-3xl md:text-4xl text-primary font-semibold mb-6">
-            Page <span className="italic font-light">not found</span>
-          </h1>
-          <Link href="/wedding-experiences">
-            <button className="border border-primary text-primary font-semibold px-8 py-3 text-xs tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
-              BACK TO WEDDING EXPERIENCES
-            </button>
-          </Link>
-        </div>
-      </main>
-    );
-  }
+  const allVenues       = experience.venues ?? [];
+  const elopementThemes = (experience.themes ?? []).filter((t) => t.type === "ELOPEMENT");
+  const intimateThemes  = (experience.themes ?? []).filter((t) => t.type === "INTIMATE");
+  const locations       = [
+    "All",
+    ...Array.from(
+      new Set(allVenues.map((v) => v.destination?.name).filter(Boolean) as string[])
+    ),
+  ];
 
   const heroMap: Record<string, React.ReactNode> = {
-    split: <HeroSplit data={experience} />,
-    bottom: <HeroBottomSplit data={experience} />,
-    centered: <HeroCentered data={experience} />,
+    split:     <HeroSplit data={experience} />,
+    bottom:    <HeroBottomSplit data={experience} />,
+    centered:  <HeroCentered data={experience} />,
     editorial: <HeroEditorial data={experience} />,
   };
 
@@ -1294,7 +1261,7 @@ export function WeddingExperiencesDetail({
       <SectionFaq data={experience} />
       <SectionSubExperiences
         experienceList={experienceList}
-        currentSlug={currentSlug}
+        currentSlug={experience.slug}
       />
       <SectionClosing data={experience} />
     </main>
