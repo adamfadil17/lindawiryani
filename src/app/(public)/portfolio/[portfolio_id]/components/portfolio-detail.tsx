@@ -7,8 +7,6 @@ import { ArrowRight, MapPin } from "lucide-react";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 import { Destination, Portfolio, WeddingExperience } from "@/types";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface PortfolioDetailProps {
   item: Portfolio;
   relatedItems: Portfolio[];
@@ -24,8 +22,6 @@ function TipTapContent({ html }: { html: string }) {
     />
   );
 }
-
-// ─── Sub-Components ───────────────────────────────────────────────────────────
 
 function GalleryGrid({ images }: { images: string[] }) {
   return (
@@ -50,15 +46,12 @@ function GalleryGrid({ images }: { images: string[] }) {
   );
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function PortfolioDetail({
   item,
   relatedItems,
   destination,
   experience,
 }: PortfolioDetailProps) {
-
   return (
     <main className="relative overflow-hidden">
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
@@ -81,7 +74,6 @@ export default function PortfolioDetail({
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-10 mt-6"
@@ -98,7 +90,6 @@ export default function PortfolioDetail({
             </span>
           </motion.div>
 
-          {/* Tags */}
           <motion.div variants={fadeInUp} className="flex flex-wrap gap-2 mb-6">
             {item.tags.map((tag) => (
               <span
@@ -138,7 +129,6 @@ export default function PortfolioDetail({
         </motion.div>
       </section>
 
-      {/* ── STORY ─────────────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -148,7 +138,6 @@ export default function PortfolioDetail({
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
-            {/* Sticky sidebar */}
             <motion.div variants={fadeInUp} className="lg:col-span-4">
               <div className="lg:sticky lg:top-32 space-y-8">
                 <div>
@@ -165,7 +154,6 @@ export default function PortfolioDetail({
                   </h2>
                 </div>
 
-                {/* Destination */}
                 <div className="space-y-3">
                   <p className="text-primary text-xs tracking-widest uppercase font-semibold">
                     Destination
@@ -182,7 +170,6 @@ export default function PortfolioDetail({
                   </Link>
                 </div>
 
-                {/* Experiences */}
                 <div className="space-y-3">
                   <p className="text-primary text-xs tracking-widest uppercase font-semibold">
                     Wedding Experiences
@@ -200,7 +187,6 @@ export default function PortfolioDetail({
                   </div>
                 </div>
 
-                {/* CTA */}
                 <div className="pt-4">
                   <Link href="https://wa.me/628113980998" target="_blank">
                     <button className="w-full bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
@@ -211,9 +197,7 @@ export default function PortfolioDetail({
               </div>
             </motion.div>
 
-            {/* Story body */}
             <div className="lg:col-span-8 space-y-10">
-              {/* Excerpt */}
               <motion.p
                 variants={fadeInUp}
                 className="text-primary leading-relaxed text-justify text-lg italic"
@@ -221,8 +205,6 @@ export default function PortfolioDetail({
                 {item.excerpt}
               </motion.p>
 
-              {/* Story body — TipTap HTML takes priority; falls back to
-                  structured storySections for items not yet in the CMS */}
               {item.content ? (
                 <motion.div variants={fadeIn}>
                   <TipTapContent html={item.content} />
@@ -247,7 +229,6 @@ export default function PortfolioDetail({
                 ))
               )}
 
-              {/* Review / couple testimonial */}
               {item.review && (
                 <motion.div
                   variants={fadeInUp}
@@ -262,7 +243,6 @@ export default function PortfolioDetail({
                 </motion.div>
               )}
 
-              {/* Credit block */}
               <motion.div
                 variants={fadeInUp}
                 className="pt-4 border-t border-primary/20 space-y-1"
@@ -288,7 +268,6 @@ export default function PortfolioDetail({
         </div>
       </motion.section>
 
-      {/* ── GALLERY ───────────────────────────────────────────────────── */}
       <motion.section
         className="py-16 lg:py-20 bg-primary/10"
         initial="hidden"
@@ -312,7 +291,6 @@ export default function PortfolioDetail({
         </div>
       </motion.section>
 
-      {/* ── CTA TAGS: EXPERIENCE & DESTINATION ───────────────────────── */}
       <motion.section
         className="py-20 lg:py-28 bg-primary"
         initial="hidden"
@@ -322,7 +300,6 @@ export default function PortfolioDetail({
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-2 gap-16">
-            {/* Experiences CTAs */}
             <motion.div variants={fadeInUp}>
               <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
                 Explore by Experience
@@ -347,7 +324,6 @@ export default function PortfolioDetail({
               </div>
             </motion.div>
 
-            {/* Destination CTA */}
             <motion.div variants={fadeInUp}>
               <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
                 Explore by Destination
@@ -387,8 +363,6 @@ export default function PortfolioDetail({
           </div>
         </div>
       </motion.section>
-
-      {/* ── RELATED PORTFOLIOS ────────────────────────────────────────── */}
       {relatedItems.length > 0 && (
         <motion.section
           className="py-20 lg:py-28"

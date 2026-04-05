@@ -431,7 +431,7 @@ export default function DestinationDetailPage() {
                   <TextInput
                     value={formData.name}
                     onChange={(v) => setField("name", v)}
-                    placeholder="e.g. Ubud, Bali"
+                    placeholder="e.g. Menjangan"
                     error={
                       formErrors.name
                         ? String(formErrors.name.message)
@@ -491,7 +491,7 @@ export default function DestinationDetailPage() {
                   <TextInput
                     value={formData.location}
                     onChange={(v) => setField("location", v)}
-                    placeholder="e.g. Central Bali, Indonesia"
+                    placeholder="e.g. West Bali"
                     error={
                       formErrors.location
                         ? String(formErrors.location.message)

@@ -19,7 +19,6 @@ export default function Page() {
   const [selectedCurrency] = useState<Currency>("IDR");
   const [reviewSlide, setReviewSlide] = useState(0);
 
-  // Venue selected from ThemeDetailModal — passed down to VenuesSection
   const [venueFromTheme, setVenueFromTheme] = useState<Venue | null>(null);
 
   const exchangeRate = useCurrencyConverter();
@@ -39,7 +38,6 @@ export default function Page() {
 
   return (
     <div id="home" className="min-h-screen overflow-x-hidden">
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[75vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -98,16 +96,13 @@ export default function Page() {
         </motion.div>
       </section>
 
-      {/* ── ABOUT US ──────────────────────────────────────────────────── */}
       <AboutUs />
 
-      {/* ── WEDDING THEMES ────────────────────────────────────────────── */}
       <WeddingThemesSection
         isMobile={isMobile}
         onExploreVenue={handleExploreVenueFromTheme}
       />
 
-      {/* ── VENUES & SETTINGS ─────────────────────────────────────────── */}
       <VenuesSection
         isMobile={isMobile}
         selectedCurrency={selectedCurrency}
@@ -117,11 +112,9 @@ export default function Page() {
         onExternalModalClose={() => setVenueFromTheme(null)}
       />
 
-      {/* <Gallery /> */}
 
       <Instagram />
 
-      {/* ── KIND WORDS ────────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28 bg-primary/15"
         initial="hidden"
@@ -130,7 +123,6 @@ export default function Page() {
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Section Header */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
               Kind Words
@@ -154,7 +146,6 @@ export default function Page() {
             </div>
           </motion.div>
 
-          {/* ── Desktop Slider: 3 cards visible, slide by 1 ── */}
           <motion.div
             variants={fadeInUp}
             className="hidden lg:block overflow-hidden"
@@ -192,7 +183,6 @@ export default function Page() {
             </motion.div>
           </motion.div>
 
-          {/* ── Mobile Slider: 1 card visible ── */}
           <motion.div variants={fadeInUp} className="lg:hidden overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
@@ -223,9 +213,7 @@ export default function Page() {
             </AnimatePresence>
           </motion.div>
 
-          {/* ── Controls (shared) ── */}
           <div className="flex items-center justify-between mt-10">
-            {/* Dot indicators */}
             <div className="flex gap-2">
               {reviews.slice(0, reviews.length - 2).map((_, i) => (
                 <button
@@ -240,7 +228,6 @@ export default function Page() {
               ))}
             </div>
 
-            {/* Arrow buttons */}
             <div className="flex gap-3">
               <button
                 onClick={() => setReviewSlide((p) => Math.max(p - 1, 0))}

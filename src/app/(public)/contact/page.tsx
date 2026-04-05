@@ -130,7 +130,6 @@ export default function ContactPage() {
 
   return (
     <main className="relative overflow-hidden">
-      {/* ── Hero Section ── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -204,7 +203,6 @@ export default function ContactPage() {
         </motion.div>
       </section>
 
-      {/* ── Keep In Touch + Form Side by Side ── */}
       <motion.section
         className="bg-primary/10 py-20 lg:py-28"
         initial="hidden"
@@ -214,7 +212,6 @@ export default function ContactPage() {
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-            {/* Left – Keep In Touch */}
             <div className="lg:col-span-4 space-y-10">
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -284,7 +281,6 @@ export default function ContactPage() {
               </motion.div>
             </div>
 
-            {/* Right – Form */}
             <motion.div className="lg:col-span-8 space-y-8" variants={fadeInUp}>
               <div className="space-y-4">
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -299,13 +295,11 @@ export default function ContactPage() {
                 </h2>
               </div>
 
-              {/* Form */}
               <motion.form
                 variants={fadeInUp}
                 onSubmit={handleSubmit}
                 className="space-y-6"
               >
-                {/* — Personal Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Personal Details
@@ -369,7 +363,6 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* — Groom Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Groom Details
@@ -411,7 +404,6 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* — Bride Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Bride Details
@@ -453,7 +445,6 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* — Wedding Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Wedding Details
@@ -511,8 +502,6 @@ export default function ContactPage() {
                     </div>
                   </div>
                 </div>
-
-                {/* — Accommodation & Travel — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Accommodation & Travel
@@ -554,7 +543,6 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* — Your Vision — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Your Vision
@@ -577,7 +565,6 @@ export default function ContactPage() {
                   />
                 </div>
 
-                {/* reCAPTCHA */}
                 <div className="flex justify-start">
                   <ReCAPTCHA
                     ref={recaptchaRef}
@@ -586,7 +573,6 @@ export default function ContactPage() {
                   />
                 </div>
 
-                {/* Status Message */}
                 {submitStatus.type && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -601,7 +587,6 @@ export default function ContactPage() {
                   </motion.div>
                 )}
 
-                {/* Submit */}
                 <button
                   type="submit"
                   disabled={isSubmitting || !recaptchaToken}
@@ -615,7 +600,6 @@ export default function ContactPage() {
         </div>
       </motion.section>
 
-      {/* ── CTA Section ── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

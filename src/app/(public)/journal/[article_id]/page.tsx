@@ -9,8 +9,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// ─── Metadata ─────────────────────────────────────────────────────────────────
-
 export async function generateMetadata({
   params,
 }: {
@@ -35,8 +33,6 @@ export async function generateMetadata({
   };
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default async function ArticlePage({
   params,
 }: {
@@ -47,7 +43,6 @@ export default async function ArticlePage({
 
   if (!article) notFound();
 
-  // Related articles: same category, exclude current
   const related = articles
     .filter((a) => a.category === article.category && a.slug !== article.slug)
     .slice(0, 3);

@@ -55,7 +55,9 @@ export default async function DestinationPage({ params }: Props) {
     notFound();
   }
   const otherDestinations = destinationList.filter(
-    (d) => d.slug !== destination.slug,
+    (d) =>
+      d.slug !== destination.slug &&
+      d.category_id === destination.category_id,
   );
 
   return (

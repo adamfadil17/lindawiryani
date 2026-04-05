@@ -38,12 +38,9 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function WeddingExperiencesPage() {
   return (
     <main className="relative overflow-hidden">
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -54,7 +51,7 @@ export default function WeddingExperiencesPage() {
             className="object-cover object-center"
             sizes="100vw"
           />
-          {/* Layered overlays for depth */}
+
           <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/10 to-black/20" />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
         </div>
@@ -65,7 +62,6 @@ export default function WeddingExperiencesPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-12 mt-6"
@@ -93,11 +89,8 @@ export default function WeddingExperiencesPage() {
             <span>Wedding Planning in Bali</span>
           </motion.h1>
         </motion.div>
-
-        {/* Vertical label */}
       </section>
 
-      {/* ── INTRO SPLIT ───────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -106,7 +99,6 @@ export default function WeddingExperiencesPage() {
         variants={staggerContainer}
       >
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
-          {/* Left sticky label */}
           <motion.div variants={fadeInUp} className="lg:col-span-4 lg:pt-2">
             <div className="lg:sticky lg:top-32">
               <div className="w-16 h-px bg-primary/70 mb-6" />
@@ -116,7 +108,6 @@ export default function WeddingExperiencesPage() {
             </div>
           </motion.div>
 
-          {/* Right content */}
           <div className="lg:col-span-8 space-y-10">
             <motion.p
               variants={fadeInUp}
@@ -138,7 +129,6 @@ export default function WeddingExperiencesPage() {
               intimate sense of escape.
             </motion.p>
 
-            {/* Why Bali */}
             <motion.div
               variants={fadeInUp}
               className="border-l-2 border-primary/70 pl-8 py-2"
@@ -169,7 +159,6 @@ export default function WeddingExperiencesPage() {
         </div>
       </motion.section>
 
-      {/* ── DESIGN-LED STUDIO ─────────────────────────────────────────── */}
       <motion.section
         className="relative py-20 lg:py-28 overflow-hidden"
         initial="hidden"
@@ -177,7 +166,6 @@ export default function WeddingExperiencesPage() {
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
         variants={staggerContainer}
       >
-        {/* Background texture block */}
         <div className="absolute inset-0 bg-primary/10" />
         <div className="absolute top-0 right-0 w-1/3 h-full hidden lg:block">
           <Image
@@ -235,7 +223,6 @@ export default function WeddingExperiencesPage() {
         </div>
       </motion.section>
 
-      {/* ── FULL SERVICE ──────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -245,7 +232,6 @@ export default function WeddingExperiencesPage() {
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            {/* Image */}
             <motion.div
               variants={scaleIn}
               className="lg:col-span-5 relative h-[55vh] lg:h-[600px] overflow-hidden"
@@ -258,7 +244,6 @@ export default function WeddingExperiencesPage() {
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw"
               />
-              {/* Floating stat */}
               <div className="absolute bottom-6 left-6 bg-white/90 px-6 py-4">
                 <p className="text-primary text-sm tracking-widest uppercase mb-1">
                   Experience
@@ -270,7 +255,6 @@ export default function WeddingExperiencesPage() {
               </div>
             </motion.div>
 
-            {/* Content */}
             <div className="lg:col-span-7 space-y-10">
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -293,7 +277,6 @@ export default function WeddingExperiencesPage() {
                 ))}
               </motion.div>
 
-              {/* Hospitality values */}
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-widest uppercase mb-5">
                   Hospitality-Driven Execution
@@ -314,7 +297,6 @@ export default function WeddingExperiencesPage() {
                 </p>
               </motion.div>
 
-              {/* Couple values */}
               <motion.div
                 variants={fadeInUp}
                 className="pt-6 border-t border-primary/20"
@@ -336,7 +318,6 @@ export default function WeddingExperiencesPage() {
         </div>
       </motion.section>
 
-      {/* ── SUB-EXPERIENCES GRID ──────────────────────────────────────── */}
       <motion.section
         className="bg-primary/15 py-16 md:py-20 lg:py-28"
         initial="hidden"
@@ -365,8 +346,6 @@ export default function WeddingExperiencesPage() {
               </p>
             </div>
           </motion.div>
-
-          {/* 2×2 grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-8 lg:gap-12">
             {subExperiences.map((exp, i) => (
               <motion.div key={exp.href} variants={fadeInUp} custom={i}>
@@ -381,13 +360,11 @@ export default function WeddingExperiencesPage() {
                       sizes="(max-width: 640px) 100vw, 50vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
-                    {/* Tag */}
                     <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
                       <span className="bg-primary/80 text-white text-xs sm:text-sm tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5">
                         {exp.tag.toUpperCase()}
                       </span>
                     </div>
-                    {/* Arrow CTA */}
                     <div className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-9 h-9 sm:w-10 sm:h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
                       <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
                     </div>
@@ -416,7 +393,6 @@ export default function WeddingExperiencesPage() {
         </div>
       </motion.section>
 
-      {/* ── FAQ ───────────────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-24"
         initial="hidden"
@@ -445,7 +421,6 @@ export default function WeddingExperiencesPage() {
         </div>
       </motion.section>
 
-      {/* ── CLOSING QUOTE ─────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

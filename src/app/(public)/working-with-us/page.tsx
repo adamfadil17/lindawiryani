@@ -13,7 +13,6 @@ import {
   vendorValues,
 } from "@/lib/data/working-with-us";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
 
 type Tab = "vendor" | "career";
 
@@ -43,7 +42,6 @@ interface CareerForm {
 export default function WorkingWithUsPage() {
   const [activeTab, setActiveTab] = useState<Tab>("vendor");
 
-  // Vendor form
   const vendorRecaptchaRef = useRef<ReCAPTCHA>(null);
   const [vendorForm, setVendorForm] = useState<VendorForm>({
     companyName: "",
@@ -63,7 +61,6 @@ export default function WorkingWithUsPage() {
   }>({ type: null, message: "" });
   const [vendorRecaptcha, setVendorRecaptcha] = useState<string | null>(null);
 
-  // Career form
   const careerRecaptchaRef = useRef<ReCAPTCHA>(null);
   const [careerForm, setCareerForm] = useState<CareerForm>({
     fullName: "",
@@ -82,7 +79,6 @@ export default function WorkingWithUsPage() {
   }>({ type: null, message: "" });
   const [careerRecaptcha, setCareerRecaptcha] = useState<string | null>(null);
 
-  // Handlers
   const handleVendorChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -228,7 +224,6 @@ export default function WorkingWithUsPage() {
 
   return (
     <main className="relative overflow-hidden">
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -249,7 +244,6 @@ export default function WorkingWithUsPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-10 mt-6"
@@ -313,7 +307,6 @@ export default function WorkingWithUsPage() {
         </motion.div>
       </section>
 
-      {/* ── Why Work With Us ─────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -390,7 +383,6 @@ export default function WorkingWithUsPage() {
         </div>
       </motion.section>
 
-      {/* ── Vendor Values ────────────────────────────────────────────────── */}
       <motion.section
         className="bg-primary/10 py-20 lg:py-28"
         initial="hidden"
@@ -429,8 +421,6 @@ export default function WorkingWithUsPage() {
           </div>
         </div>
       </motion.section>
-
-      {/* ── Open Positions Preview ───────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -485,8 +475,6 @@ export default function WorkingWithUsPage() {
           ))}
         </div>
       </motion.section>
-
-      {/* ── Tab Forms Section ────────────────────────────────────────────── */}
       <motion.section
         id="apply"
         className="bg-primary/5 py-20 lg:py-28"
@@ -496,7 +484,6 @@ export default function WorkingWithUsPage() {
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Tab Switcher */}
           <motion.div variants={fadeInUp} className="mb-14">
             <p className="text-primary tracking-[0.25em] uppercase mb-6">
               Get In Touch
@@ -520,7 +507,6 @@ export default function WorkingWithUsPage() {
             </div>
           </motion.div>
 
-          {/* ── Vendor Form ── */}
           <AnimatePresence mode="wait">
             {activeTab === "vendor" && (
               <motion.div
@@ -573,10 +559,8 @@ export default function WorkingWithUsPage() {
                     </div>
                   </div>
 
-                  {/* Right – form */}
                   <div className="lg:col-span-8">
                     <form onSubmit={handleVendorSubmit} className="space-y-6">
-                      {/* — Company Info — */}
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
                           Company Information
@@ -657,7 +641,6 @@ export default function WorkingWithUsPage() {
                         </div>
                       </div>
 
-                      {/* — Service Details — */}
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
                           Service Details
@@ -732,7 +715,6 @@ export default function WorkingWithUsPage() {
                         </div>
                       </div>
 
-                      {/* — Message — */}
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
                           Tell Us More
@@ -755,8 +737,6 @@ export default function WorkingWithUsPage() {
                           className={`${inputClass} resize-vertical`}
                         />
                       </div>
-
-                      {/* reCAPTCHA */}
                       <div className="flex justify-start">
                         <ReCAPTCHA
                           ref={vendorRecaptchaRef}
@@ -767,7 +747,6 @@ export default function WorkingWithUsPage() {
                         />
                       </div>
 
-                      {/* Status */}
                       {vendorStatus.type && (
                         <motion.div
                           initial={{ opacity: 0, y: -10 }}
@@ -794,8 +773,6 @@ export default function WorkingWithUsPage() {
                 </div>
               </motion.div>
             )}
-
-            {/* ── Career Form ── */}
             {activeTab === "career" && (
               <motion.div
                 key="career"
@@ -850,10 +827,8 @@ export default function WorkingWithUsPage() {
                     </div>
                   </div>
 
-                  {/* Right – form */}
                   <div className="lg:col-span-8">
                     <form onSubmit={handleCareerSubmit} className="space-y-6">
-                      {/* — Personal Info — */}
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
                           Personal Information
@@ -902,7 +877,6 @@ export default function WorkingWithUsPage() {
                         </div>
                       </div>
 
-                      {/* — Role Details — */}
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
                           Role & Experience
@@ -994,7 +968,6 @@ export default function WorkingWithUsPage() {
                         </div>
                       </div>
 
-                      {/* — Cover Letter — */}
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
                           Your Story
@@ -1019,7 +992,6 @@ export default function WorkingWithUsPage() {
                         />
                       </div>
 
-                      {/* reCAPTCHA */}
                       <div className="flex justify-start">
                         <ReCAPTCHA
                           ref={careerRecaptchaRef}
@@ -1030,7 +1002,6 @@ export default function WorkingWithUsPage() {
                         />
                       </div>
 
-                      {/* Status */}
                       {careerStatus.type && (
                         <motion.div
                           initial={{ opacity: 0, y: -10 }}
@@ -1060,8 +1031,6 @@ export default function WorkingWithUsPage() {
           </AnimatePresence>
         </div>
       </motion.section>
-
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

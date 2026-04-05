@@ -5,7 +5,6 @@ import { portfolioItems } from "@/lib/data/portfolio-data";
 import { destinationList } from "@/lib/data/destination-data";
 import { weddingExperienceList } from "@/lib/data/wedding-experience-data";
 
-// ─── generateStaticParams ─────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
   return portfolioItems.map((item) => ({
@@ -13,7 +12,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// ─── generateMetadata ─────────────────────────────────────────────────────────
 
 export async function generateMetadata({
   params,
@@ -40,7 +38,6 @@ export async function generateMetadata({
   };
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function PortfolioDetailPage({
   params,

@@ -25,7 +25,6 @@ function ServiceAccordion({
 }) {
   return (
     <div className="border-b border-primary/20 last:border-b-0">
-      {/* Trigger */}
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between py-6 text-left group hover:cursor-pointer"
@@ -51,7 +50,6 @@ function ServiceAccordion({
         />
       </button>
 
-      {/* Body */}
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
@@ -63,7 +61,6 @@ function ServiceAccordion({
             className="overflow-hidden"
           >
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 pb-12">
-              {/* Image */}
               <div className="lg:col-span-5 relative h-[40vh] lg:h-[360px] overflow-hidden">
                 <Image
                   src={service.image}
@@ -80,14 +77,12 @@ function ServiceAccordion({
                 </div>
               </div>
 
-              {/* Content */}
               <div className="lg:col-span-7 flex flex-col gap-6 justify-center">
                 <p className="text-primary text-justify leading-relaxed ">
                   {service.intro}
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-8">
-                  {/* Includes */}
                   <div>
                     <h4 className="text-primary font-semibold tracking-widest uppercase mb-4 pb-2 border-b border-primary/20">
                       {service.includes.title}
@@ -101,8 +96,6 @@ function ServiceAccordion({
                       ))}
                     </ul>
                   </div>
-
-                  {/* Best For + CTA */}
                   <div className="flex flex-col justify-between gap-6">
                     <div>
                       <h4 className="text-primary font-semibold tracking-widest uppercase mb-4 pb-2 border-b border-primary/20">
@@ -147,7 +140,6 @@ export default function ServicesPage() {
             className="object-cover object-center"
             sizes="100vw"
           />
-          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
         </div>
@@ -158,7 +150,6 @@ export default function ServicesPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-12 mt-6"
@@ -187,7 +178,6 @@ export default function ServicesPage() {
         </motion.div>
       </section>
 
-      {/* ── INTRO ─────────────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-24"
         initial="hidden"
@@ -217,7 +207,6 @@ export default function ServicesPage() {
         </div>
       </motion.section>
 
-      {/* ── SERVICES ACCORDION ────────────────────────────────────────── */}
       <motion.section
         className="bg-primary/15 py-16 lg:py-20"
         initial="hidden"
@@ -249,7 +238,6 @@ export default function ServicesPage() {
         </div>
       </motion.section>
 
-      {/* ── WHY CHOOSE ────────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -258,7 +246,6 @@ export default function ServicesPage() {
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Heading */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
               Our Studio
@@ -282,7 +269,6 @@ export default function ServicesPage() {
             </div>
           </motion.div>
 
-          {/* Reason grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
             {whyChooseReasons.map((reason, i) => (
               <motion.div
@@ -315,7 +301,6 @@ export default function ServicesPage() {
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Image */}
             <motion.div
               variants={fadeIn}
               className="lg:col-span-5 relative h-[50vh] lg:h-[520px] overflow-hidden"
@@ -330,7 +315,6 @@ export default function ServicesPage() {
               />
             </motion.div>
 
-            {/* Text */}
             <div className="lg:col-span-7 space-y-8">
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -373,7 +357,6 @@ export default function ServicesPage() {
         </div>
       </motion.section>
 
-      {/* ── CTA ───────────────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

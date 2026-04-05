@@ -22,8 +22,6 @@ type ExperienceData = Omit<
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import type { Venue, WeddingTheme, Currency } from "@/types";
 
-// ─── Shared components ────────────────────────────────────────────────────────
-
 function Breadcrumb({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-2">
@@ -60,8 +58,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
     </div>
   );
 }
-
-// ─── Hero variants ────────────────────────────────────────────────────────────
 
 function HeroSplit({ data }: { data: ExperienceData }) {
   return (
@@ -313,8 +309,6 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
   );
 }
 
-// ─── Section components ────────────────────────────────────────────────────────
-
 function SectionIntro({ data }: { data: ExperienceData }) {
   return (
     <motion.section
@@ -370,7 +364,6 @@ function SectionIntro({ data }: { data: ExperienceData }) {
           >
             {data.intro_body}
           </motion.p>
-          {/* Staggered image pair */}
           <motion.div variants={scaleIn} className="grid grid-cols-2 gap-4">
             <div className="relative aspect-[3/4] overflow-hidden">
               <Image
@@ -561,7 +554,6 @@ function SectionClosing({ data }: { data: ExperienceData }) {
       </div>
       <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {data.closing_couple_values.length > 0 ? (
-          /* Two-column closing for villa page */
           <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-6 space-y-8">
               <motion.div variants={fadeInUp}>
@@ -618,7 +610,6 @@ function SectionClosing({ data }: { data: ExperienceData }) {
             )}
           </div>
         ) : (
-          /* Centered closing for other pages */
           <div className="text-center max-w-3xl mx-auto">
             <motion.p
               variants={fadeInUp}
@@ -814,8 +805,6 @@ function VenueCard({
   );
 }
 
-// ─── Section Venue List ────────────────────────────────────────────────────────
-
 interface SectionVenueListProps {
   experience: ExperienceData;
   allVenues: Venue[];
@@ -900,7 +889,6 @@ function SectionVenueList({
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Section Header */}
           <motion.div
             variants={fadeInUp}
             className="mb-14 lg:mb-20 grid lg:grid-cols-12 gap-8"
@@ -923,12 +911,10 @@ function SectionVenueList({
             </div>
           </motion.div>
 
-          {/* Filters */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center justify-center gap-8 mb-4 flex-wrap"
           >
-            {/* Location Filter */}
             <div className="flex items-center gap-4">
               <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                 LOCATION
@@ -970,7 +956,6 @@ function SectionVenueList({
               </div>
             </div>
 
-            {/* Currency Filter */}
             <div className="flex items-center gap-4">
               <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                 CURRENCY
@@ -1024,7 +1009,6 @@ function SectionVenueList({
                 } in ${selectedLocation}`}
           </motion.p>
 
-          {/* Venue Cards */}
           <motion.div variants={fadeInUp} className="mb-10">
             <div className="mb-12 text-center">
               <p className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed">
@@ -1231,8 +1215,6 @@ function SectionSubExperiences({
     </motion.section>
   );
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export function WeddingExperiencesDetail({
   experienceList,

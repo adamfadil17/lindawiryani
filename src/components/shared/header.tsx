@@ -98,6 +98,7 @@ export default function Header() {
               src="/images/logo-white.png"
               alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
               className={`h-14 w-auto mx-auto transition-opacity ${inverted ? "opacity-0" : "opacity-100"}`}
+              priority
               width={120}
               height={56}
             />
@@ -105,6 +106,7 @@ export default function Header() {
               src="/images/logo-gray.png"
               alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
               className={`h-14 w-auto mx-auto absolute top-0 left-1/2 -translate-x-1/2 transition-opacity ${inverted ? "opacity-100" : "opacity-0"}`}
+              priority
               width={120}
               height={56}
             />

@@ -18,8 +18,6 @@ const categoryDescriptions: Record<string, string> = {
   "Design & Concept": "Design thinking, atmosphere, and creative direction",
 };
 
-// ─── Filter Bar ───────────────────────────────────────────────────────────────
-
 type ActiveCategory = ArticleCategory | "All";
 
 function CategoryFilter({
@@ -49,8 +47,6 @@ function CategoryFilter({
   );
 }
 
-// ─── Article Card ─────────────────────────────────────────────────────────────
-
 function ArticleCard({
   article,
   index,
@@ -61,7 +57,6 @@ function ArticleCard({
   return (
     <div>
       <Link href={`/journal/${article.slug}`} className="group block">
-        {/* Image */}
         <div className="relative h-[260px] lg:h-[300px] overflow-hidden mb-5">
           <Image
             src={article.image}
@@ -72,23 +67,17 @@ function ArticleCard({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
-          {/* Tag */}
           <div className="absolute top-4 left-4">
             <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
               {article.category}
             </span>
           </div>
-          {/* Arrow */}
           <div className="absolute bottom-4 right-4 w-9 h-9 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
             <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
           </div>
         </div>
 
-        {/* Content */}
         <div>
-          {/* <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
-            {article.readTime}
-          </p> */}
           <h3 className="text-primary font-semibold text-lg leading-snug group-hover:text-primary/70 transition-colors mb-2">
             {article.title}
           </h3>
@@ -105,13 +94,10 @@ function ArticleCard({
   );
 }
 
-// ─── Featured Article ─────────────────────────────────────────────────────────
-
 function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
   return (
     <Link href={`/journal/${article.slug}`} className="group block">
       <div className="grid lg:grid-cols-12 gap-0 border border-primary/10 overflow-hidden">
-        {/* Image */}
         <div className="relative h-[320px] lg:h-auto lg:col-span-7 overflow-hidden">
           <Image
             src={article.image}
@@ -128,7 +114,6 @@ function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
           </div>
         </div>
 
-        {/* Content */}
         <div className="lg:col-span-5 bg-primary/10 flex flex-col justify-center p-10 lg:p-14">
           <p className="text-primary/80 text-xs tracking-widest uppercase mb-4">
             Featured
@@ -147,8 +132,6 @@ function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function JournalPage() {
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All");
 
@@ -162,7 +145,6 @@ export default function JournalPage() {
 
   return (
     <main className="relative overflow-hidden">
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -219,7 +201,6 @@ export default function JournalPage() {
         </motion.div>
       </section>
 
-      {/* ── INTRO ─────────────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -258,7 +239,6 @@ export default function JournalPage() {
               estates and luxury resorts.
             </motion.p>
 
-            {/* Category tiles */}
             <motion.div
               variants={fadeInUp}
               className="grid sm:grid-cols-2 gap-4 pt-4"
@@ -290,7 +270,6 @@ export default function JournalPage() {
         </div>
       </motion.section>
 
-      {/* ── FEATURED ARTICLE ──────────────────────────────────────────── */}
       <motion.section
         className="bg-primary/10 py-20 lg:py-28"
         initial="hidden"
@@ -312,8 +291,6 @@ export default function JournalPage() {
           </motion.div>
         </div>
       </motion.section>
-
-      {/* ── ARTICLE GRID ──────────────────────────────────────────────── */}
       <motion.section
         id="journal-grid"
         className="py-20 lg:py-28"
@@ -323,7 +300,6 @@ export default function JournalPage() {
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Header + filters */}
           <motion.div variants={fadeInUp} className="mb-12 lg:mb-16">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
               <div>
@@ -351,14 +327,11 @@ export default function JournalPage() {
             />
           </motion.div>
 
-          {/* Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
             {(activeCategory === "All" ? rest : filtered).map((article, i) => (
               <ArticleCard key={article.id} article={article} index={i} />
             ))}
           </div>
-
-          {/* Empty state */}
           {filtered.length === 0 && (
             <motion.div
               variants={fadeIn}
@@ -373,7 +346,6 @@ export default function JournalPage() {
         </div>
       </motion.section>
 
-      {/* ── CLOSING CTA ───────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

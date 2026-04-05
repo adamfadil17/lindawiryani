@@ -121,7 +121,6 @@ function PortfolioCard({ item }: PortfolioCardProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
 
-        {/* Tags */}
         <div className="absolute top-5 left-5 flex flex-wrap gap-2">
           {item.tags.slice(0, 2).map((tag) => (
             <span
@@ -133,12 +132,10 @@ function PortfolioCard({ item }: PortfolioCardProps) {
           ))}
         </div>
 
-        {/* Arrow */}
         <div className="absolute top-5 right-5 w-9 h-9 bg-white/10 border border-white/30 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
           <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
         </div>
 
-        {/* Bottom info */}
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
           <h3 className="text-xl md:text-2xl font-semibold leading-tight mb-1">
             {item.couple}
@@ -158,8 +155,6 @@ function PortfolioCard({ item }: PortfolioCardProps) {
     </motion.article>
   );
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function PortfolioPage() {
   const [selectedExperience, setSelectedExperience] = useState<string>("all");
@@ -206,7 +201,6 @@ export default function PortfolioPage() {
 
   return (
     <main className="relative overflow-hidden" onClick={closeDropdowns}>
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -227,7 +221,6 @@ export default function PortfolioPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-10 mt-6"
@@ -264,7 +257,6 @@ export default function PortfolioPage() {
         </motion.div>
       </section>
 
-      {/* ── INTRO ─────────────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -333,7 +325,6 @@ export default function PortfolioPage() {
         </div>
       </motion.section>
 
-      {/* ── PORTFOLIO GRID ────────────────────────────────────────────── */}
       <motion.section
         id="portfolio-grid"
         className="py-16 lg:py-20 bg-primary/15"
@@ -343,7 +334,6 @@ export default function PortfolioPage() {
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Section header */}
           <motion.div variants={fadeInUp} className="mb-12 lg:mb-16">
             <div className="grid lg:grid-cols-12 gap-8 items-end">
               <div className="lg:col-span-5">
@@ -364,7 +354,6 @@ export default function PortfolioPage() {
             </div>
           </motion.div>
 
-          {/* ── Filters ─────────────────────────────────────────────── */}
           <motion.div
             variants={fadeInUp}
             className="flex flex-wrap items-center gap-4 mb-10"
@@ -432,7 +421,6 @@ export default function PortfolioPage() {
             </span>
           </motion.div>
 
-          {/* ── Grid ─────────────────────────────────────────────────── */}
           <AnimatePresence mode="wait">
             {filteredItems.length === 0 ? (
               <motion.div
@@ -462,7 +450,6 @@ export default function PortfolioPage() {
             )}
           </AnimatePresence>
 
-          {/* Load more */}
           {filteredItems.length > 0 && (
             <div className="text-center mt-12">
               {hasMore ? (
@@ -487,7 +474,6 @@ export default function PortfolioPage() {
         </div>
       </motion.section>
 
-      {/* ── EXPLORE BY EXPERIENCE ─────────────────────────────────────── */}
       <motion.section
         className="bg-primary py-20 lg:py-28"
         initial="hidden"
@@ -535,7 +521,6 @@ export default function PortfolioPage() {
         </div>
       </motion.section>
 
-      {/* ── EXPLORE BY DESTINATION ────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -583,7 +568,6 @@ export default function PortfolioPage() {
         </div>
       </motion.section>
 
-      {/* ── KIND WORDS ────────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28 bg-primary/10"
         initial="hidden"
@@ -592,7 +576,6 @@ export default function PortfolioPage() {
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Section Header */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
               Kind Words
@@ -616,7 +599,6 @@ export default function PortfolioPage() {
             </div>
           </motion.div>
 
-          {/* ── Desktop Slider: 3 cards visible, slide by 1 ── */}
           <motion.div
             variants={fadeInUp}
             className="hidden lg:block overflow-hidden"
@@ -654,7 +636,6 @@ export default function PortfolioPage() {
             </motion.div>
           </motion.div>
 
-          {/* ── Mobile Slider: 1 card visible ── */}
           <motion.div variants={fadeInUp} className="lg:hidden overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
@@ -684,10 +665,7 @@ export default function PortfolioPage() {
               </motion.div>
             </AnimatePresence>
           </motion.div>
-
-          {/* ── Controls (shared) ── */}
           <div className="flex items-center justify-between mt-10">
-            {/* Dot indicators */}
             <div className="flex gap-2">
               {reviews.slice(0, reviews.length - 2).map((_, i) => (
                 <button
@@ -702,7 +680,6 @@ export default function PortfolioPage() {
               ))}
             </div>
 
-            {/* Arrow buttons */}
             <div className="flex gap-3">
               <button
                 onClick={() => setReviewSlide((p) => Math.max(p - 1, 0))}
@@ -725,7 +702,6 @@ export default function PortfolioPage() {
         </div>
       </motion.section>
 
-      {/* ── CLOSING CTA ───────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"
