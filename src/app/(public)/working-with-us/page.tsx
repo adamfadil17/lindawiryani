@@ -12,7 +12,7 @@ import {
   vendorCategories,
   vendorValues,
 } from "@/lib/data/working-with-us";
-
+import {  ChevronDown } from "lucide-react";
 
 type Tab = "vendor" | "career";
 
@@ -217,7 +217,7 @@ export default function WorkingWithUsPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/30";
+    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/50";
   const labelClass =
     "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
   const selectClass = `${inputClass} appearance-none cursor-pointer`;
@@ -462,9 +462,7 @@ export default function WorkingWithUsPage() {
               <h3 className="text-primary font-semibold text-xl">
                 {pos.title}
               </h3>
-              <p className="text-primary/80 text-sm leading-relaxed">
-                {pos.desc}
-              </p>
+              <p className="text-primary text-sm leading-relaxed">{pos.desc}</p>
               <button
                 onClick={() => setActiveTab("career")}
                 className="inline-block mt-2 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 hover:border-primary hover:cursor-pointer transition-colors duration-300"
@@ -496,7 +494,7 @@ export default function WorkingWithUsPage() {
                   className={`px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-colors hover:cursor-pointer duration-300 border-b-2 -mb-px ${
                     activeTab === tab
                       ? "border-primary text-primary"
-                      : "border-transparent text-primary/40 hover:text-primary/70"
+                      : "border-transparent text-primary/80 hover:text-primary"
                   }`}
                 >
                   {tab === "vendor"
@@ -668,19 +666,7 @@ export default function WorkingWithUsPage() {
                                 ))}
                               </select>
                               <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                                <svg
-                                  className="w-4 h-4 text-primary/50"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={1.5}
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
+                                <ChevronDown className="w-4 h-4 text-primary/80" />
                               </div>
                             </div>
                           </div>
@@ -906,19 +892,7 @@ export default function WorkingWithUsPage() {
                               </option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                              <svg
-                                className="w-4 h-4 text-primary/50"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={1.5}
-                                  d="M19 9l-7 7-7-7"
-                                />
-                              </svg>
+                              <ChevronDown className="w-4 h-4 text-primary/80" />
                             </div>
                           </div>
                         </div>
@@ -976,7 +950,7 @@ export default function WorkingWithUsPage() {
                           Cover Letter / Why You'd Like to Join Us{" "}
                           <span className="text-red-500">*</span>
                         </label>
-                        <p className="text-primary/50 text-xs italic mb-3">
+                        <p className="text-primary/80 text-sm mb-3">
                           Tell us about yourself, your background, and what
                           draws you to Linda Wiryani Events specifically.
                         </p>

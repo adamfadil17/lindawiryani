@@ -38,7 +38,7 @@ function ServiceAccordion({
             {service.name}
           </span>
           {service.tag === "Add-On" && (
-            <span className="hidden sm:inline text-sm border border-primary/50 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
+            <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
               OPTIONAL
             </span>
           )}

@@ -123,7 +123,7 @@ export default function ContactPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/30";
+    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/50";
 
   const labelClass =
     "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
@@ -133,7 +133,7 @@ export default function ContactPage() {
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773709789/singaraja_mt8hqt.png"
             alt="Contact Linda Wiryani Events"
             fill
             priority
@@ -272,7 +272,7 @@ export default function ContactPage() {
                           ? "noopener noreferrer"
                           : undefined
                       }
-                      className="text-primary hover:text-primary/70 transition-colors"
+                      className="text-primary hover:text-primary transition-colors"
                     >
                       {item.label}
                     </a>

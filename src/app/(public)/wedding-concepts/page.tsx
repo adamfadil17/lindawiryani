@@ -132,7 +132,7 @@ export default function WeddingConceptsPage() {
 
             <motion.div
               variants={fadeInUp}
-              className="border-l-2 border-primary/50 pl-8 py-2"
+              className="border-l-2 border-primary/30 pl-8 py-2"
             >
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
                 How Concepts Support Your Planning Journey
@@ -424,7 +424,7 @@ export default function WeddingConceptsPage() {
                   {stylingFocusAreas.map((item, i) => (
                     <div
                       key={item}
-                      className="flex items-center gap-4 p-4 border border-primary/40 bg-white/40"
+                      className="flex items-center gap-4 p-4 border border-primary/30 bg-white/40"
                     >
                       <span className="text-primary font-mono mt-0.5 flex-shrink-0">
                         {String(i + 1).padStart(2, "0")}
@@ -437,7 +437,7 @@ export default function WeddingConceptsPage() {
 
               <motion.div
                 variants={fadeInUp}
-                className="border-l-2 border-primary/50 pl-8 py-2"
+                className="border-l-2 border-primary/30 pl-8 py-2"
               >
                 <p className="text-primary font-semibold tracking-widest uppercase mb-4">
                   Styling Supports
@@ -510,7 +510,7 @@ export default function WeddingConceptsPage() {
                 {editorialSources.map((item, i) => (
                   <div
                     key={item}
-                    className="flex items-center gap-4 p-4 border border-primary/40 bg-white/40"
+                    className="flex items-center gap-4 p-4 border border-primary/30 bg-white/40"
                   >
                     <span className="text-primary font-mono mt-0.5 flex-shrink-0">
                       {String(i + 1).padStart(2, "0")}
@@ -590,7 +590,7 @@ export default function WeddingConceptsPage() {
                   {planningJourney.map((item, i) => (
                     <div
                       key={item}
-                      className="flex items-center gap-6 p-5 border border-primary/40 bg-white/40"
+                      className="flex items-center gap-6 p-5 border border-primary/30 bg-white/40"
                     >
                       <span className="text-primary font-mono flex-shrink-0">
                         {String(i + 1).padStart(2, "0")}

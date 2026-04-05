@@ -136,7 +136,7 @@ export default function Page() {
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
-                <p className="text-primary/80 leading-relaxed text-justify">
+                <p className="text-primary leading-relaxed text-justify">
                   Our couples often speak not only about how their wedding
                   looked, but how it felt — calm, meaningful, effortless,
                   personal, and unforgettable are words that appear again and
@@ -163,7 +163,7 @@ export default function Page() {
                   className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
                 >
                   <div>
-                    <span className="text-5xl text-primary/50 font-serif leading-none select-none">
+                    <span className="text-5xl text-primary/80 font-serif leading-none select-none">
                       "
                     </span>
                     <p className="text-primary leading-relaxed italic mt-2 text-justify">
@@ -194,7 +194,7 @@ export default function Page() {
                 className="bg-white border border-primary/10 p-8 flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-5xl text-primary/20 font-serif leading-none select-none">
+                  <span className="text-5xl text-primary/80 font-serif leading-none select-none">
                     "
                   </span>
                   <p className="text-primary leading-relaxed italic mt-2 text-justify">
@@ -205,7 +205,7 @@ export default function Page() {
                   <p className="text-primary font-semibold text-sm tracking-wide">
                     {reviews[reviewSlide].couple}
                   </p>
-                  <p className="text-primary/50 text-xs tracking-widest uppercase mt-1">
+                  <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
                     {reviews[reviewSlide].origin}
                   </p>
                 </div>

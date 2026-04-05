@@ -213,7 +213,7 @@ export default function DestinationDetail({
               <div className="flex items-center justify-between gap-4 mb-4">
                 <h3 className="font-semibold text-primary">Ceremony Options</h3>
                 {destination.ceremony_options.length > 2 && (
-                  <span className="hidden sm:inline text-sm border border-primary/50 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
+                  <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
                     {isOptionsExpanded ? "SHOW LESS" : "VIEW MORE OPTIONS"}
                   </span>
                 )}
@@ -266,7 +266,7 @@ export default function DestinationDetail({
                   Reception Options
                 </h3>
                 {destination.reception_options.length > 2 && (
-                  <span className="hidden sm:inline text-sm border border-primary/50 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
+                  <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
                     {isOptionsExpanded ? "SHOW LESS" : "VIEW MORE OPTIONS"}
                   </span>
                 )}
@@ -324,7 +324,7 @@ export default function DestinationDetail({
             <ul className="space-y-3">
               {destination.accommodation_nearby.map((place) => (
                 <li key={place} className="text-primary flex items-start gap-3">
-                  <span className="text-primary/80  flex-shrink-0">◆</span>
+                  <span className="text-primary  flex-shrink-0">◆</span>
                   {place}
                 </li>
               ))}
@@ -341,7 +341,7 @@ export default function DestinationDetail({
                   key={dining}
                   className="text-primary flex items-start gap-3"
                 >
-                  <span className="text-primary/80  flex-shrink-0">◆</span>
+                  <span className="text-primary  flex-shrink-0">◆</span>
                   {dining}
                 </li>
               ))}
@@ -358,7 +358,7 @@ export default function DestinationDetail({
                   key={feature}
                   className="text-primary flex items-start gap-3"
                 >
-                  <span className="text-primary/80  flex-shrink-0">◆</span>
+                  <span className="text-primary  flex-shrink-0">◆</span>
                   {feature}
                 </li>
               ))}
@@ -452,7 +452,7 @@ export default function DestinationDetail({
                   {destination.category?.name ?? ""} Destinations
                 </span>
               </h2>
-              <p className="text-xs text-primary/80 tracking-wider uppercase mt-4">
+              <p className="text-xs text-primary tracking-wider uppercase mt-4">
                 {isOthersExpanded
                   ? `Showing all ${otherDestinations.length} destinations`
                   : `Showing ${Math.min(INITIAL_SHOW, otherDestinations.length)} of ${otherDestinations.length}`}
@@ -500,7 +500,7 @@ export default function DestinationDetail({
                       </h3>
                     </div>
                   </div>
-                  <p className="text-primary/80 text-sm leading-relaxed line-clamp-2">
+                  <p className="text-primary text-sm leading-relaxed line-clamp-2">
                     {dest.description}
                   </p>
                   <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 group-hover:border-primary transition-colors duration-300">

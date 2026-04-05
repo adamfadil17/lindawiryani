@@ -175,10 +175,10 @@ function DestinationCard({ destination }: { destination: Destination }) {
           </h3>
         </div>
       </div>
-      <p className="text-primary/80 text-sm leading-relaxed line-clamp-2">
+      <p className="text-primary text-sm leading-relaxed line-clamp-2">
         {destination.description}
       </p>
-      <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 group-hover:border-primary transition-colors duration-300">
+      <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/30 pb-0.5 group-hover:border-primary transition-colors duration-300">
         Explore Destination
       </span>
     </Link>
@@ -229,7 +229,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                 Destinations
               </span>
             </h2>
-            <p className="text-xs text-primary/80 tracking-wider uppercase mt-4">
+            <p className="text-xs text-primary tracking-wider uppercase mt-4">
               {allDestinations.length} destination
               {allDestinations.length !== 1 ? "s" : ""}
               {selectedLabel ? ` · ${selectedLabel}` : ""}
@@ -240,7 +240,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
             variants={fadeInUp}
             className="lg:col-span-8 flex flex-col justify-center"
           >
-            <p className="text-primary/70 leading-relaxed mb-6 max-w-2xl">
+            <p className="text-primary leading-relaxed mb-6 max-w-2xl">
               {meta.description}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -248,8 +248,8 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                 onClick={() => setSelectedLabel(null)}
                 className={`px-4 py-1.5 text-xs font-medium tracking-wider uppercase transition-colors border hover:cursor-pointer ${
                   selectedLabel === null
-                    ? "bg-primary/10 border-primary text-primary"
-                    : "border-primary/30 text-primary/50 hover:border-primary/60 hover:text-primary"
+                    ? "bg-primary/5 border-primary text-primary"
+                    : "border-primary/30 text-primary/80 hover:border-primary/50 hover:text-primary"
                 }`}
               >
                 All
@@ -264,8 +264,8 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                   }
                   className={`px-4 py-1.5 text-xs font-medium tracking-wider uppercase transition-colors border hover:cursor-pointer ${
                     selectedLabel === loc.label
-                      ? "bg-primary/10 border-primary text-primary"
-                      : "border-primary/30 text-primary/50 hover:border-primary/60 hover:text-primary"
+                      ? "bg-primary/5 border-primary text-primary"
+                      : "border-primary/30 text-primary/80 hover:border-primary/50 hover:text-primary"
                   }`}
                 >
                   {loc.label}
@@ -293,7 +293,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                   <br />
                   <span className="italic font-light">Not by Volume</span>
                 </h3>
-                <p className="text-primary/60 text-sm leading-relaxed">
+                <p className="text-primary/80 text-sm leading-relaxed">
                   Destinations are developed intentionally and selectively —
                   check back as our collection grows.
                 </p>
@@ -315,7 +315,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                     animate={{ opacity: 1 }}
                     className="mt-12 flex flex-col items-center gap-3"
                   >
-                    <p className="text-primary/80 text-xs tracking-widest uppercase">
+                    <p className="text-primary text-xs tracking-widest uppercase">
                       {expanded
                         ? `Showing all ${allDestinations.length} destinations`
                         : `Showing ${Math.min(INITIAL_SHOW, allDestinations.length)} of ${allDestinations.length}`}
@@ -637,14 +637,14 @@ export default function DestinationsPage() {
                   className={`group text-left p-6 border transition-all duration-300 hover:cursor-pointer ${
                     isActive
                       ? "bg-primary border-primary text-white"
-                      : "bg-white border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+                      : "bg-white border-primary/30 hover:border-primary/50 hover:bg-primary/5"
                   }`}
                 >
                   {/* Top row: label + count */}
                   <div className="flex items-start justify-between mb-4">
                     <p
                       className={`text-xs font-semibold tracking-[0.2em] uppercase ${
-                        isActive ? "text-white" : "text-primary/80"
+                        isActive ? "text-white" : "text-primary"
                       }`}
                     >
                       {meta.label}
@@ -653,7 +653,7 @@ export default function DestinationsPage() {
                       className={`text-xs font-mono px-2 py-0.5 flex-shrink-0 ml-2 ${
                         isActive
                           ? "bg-white/20 text-white"
-                          : "bg-primary/10 text-primary/60"
+                          : "bg-primary/10 text-primary/80"
                       }`}
                     >
                       {count}
@@ -668,7 +668,7 @@ export default function DestinationsPage() {
                     {meta.label}
                     <span
                       className={`block text-sm italic font-light mt-0.5 ${
-                        isActive ? "text-white/80" : "text-primary/60"
+                        isActive ? "text-white/80" : "text-primary/80"
                       }`}
                     >
                       Destinations
@@ -677,7 +677,7 @@ export default function DestinationsPage() {
 
                   <p
                     className={`text-xs leading-relaxed line-clamp-3 mb-5 ${
-                      isActive ? "text-white/75" : "text-primary/60"
+                      isActive ? "text-white" : "text-primary"
                     }`}
                   >
                     {meta.description}
@@ -690,8 +690,8 @@ export default function DestinationsPage() {
                           key={loc.label}
                           className={`text-xs tracking-wide px-2 py-0.5 border ${
                             isActive
-                              ? "border-white/30 text-white/70"
-                              : "border-primary/30 text-primary/70"
+                              ? "border-white/50 text-white"
+                              : "border-primary/30 text-primary"
                           }`}
                         >
                           {loc.label}
@@ -700,7 +700,7 @@ export default function DestinationsPage() {
                       {meta.locations.length > 4 && (
                         <span
                           className={`text-xs tracking-wide px-2 py-0.5 ${
-                            isActive ? "text-white" : "text-primary/70"
+                            isActive ? "text-white" : "text-primary"
                           }`}
                         >
                           +{meta.locations.length - 4} more

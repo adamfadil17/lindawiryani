@@ -237,7 +237,7 @@ export default function PortfolioDetail({
                   <p className="text-primary italic leading-relaxed text-lg">
                     "{item.review}"
                   </p>
-                  <footer className="mt-4 text-primary/60 text-sm tracking-widest uppercase">
+                  <footer className="mt-4 text-primary/80 text-sm tracking-widest uppercase">
                     — {item.credit_couple_origin}
                   </footer>
                 </motion.div>
@@ -388,7 +388,7 @@ export default function PortfolioDetail({
               </div>
               <Link
                 href="/portfolio"
-                className="hidden md:flex items-center gap-2 text-primary text-sm tracking-widest uppercase hover:text-primary/70 transition-colors"
+                className="hidden md:flex items-center gap-2 text-primary text-sm tracking-widest uppercase hover:text-primary/80 transition-colors"
               >
                 <span>View All</span>
                 <ArrowRight className="w-4 h-4" />

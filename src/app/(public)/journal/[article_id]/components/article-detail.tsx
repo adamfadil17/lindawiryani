@@ -43,13 +43,13 @@ function RelatedCard({ article }: { article: Article }) {
           <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
         </div>
       </div>
-      <h3 className="text-primary font-semibold text-base leading-snug group-hover:text-primary/70 transition-colors mb-2">
+      <h3 className="text-primary font-semibold text-base leading-snug group-hover:text-primary/80 transition-colors mb-2">
         {article.title}
       </h3>
-      <p className="text-primary/70 text-sm leading-relaxed line-clamp-2">
+      <p className="text-primary text-sm leading-relaxed line-clamp-2">
         {article.excerpt}
       </p>
-      <div className="flex items-center gap-2 mt-3 text-primary text-xs tracking-widest group-hover:text-primary/60 transition-colors">
+      <div className="flex items-center gap-2 mt-3 text-primary text-xs tracking-widest group-hover:text-primary/80 transition-colors">
         <span>READ ARTICLE</span>
         <ArrowRight className="w-3.5 h-3.5" />
       </div>

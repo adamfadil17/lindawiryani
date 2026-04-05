@@ -37,7 +37,7 @@ function CategoryFilter({
           className={`text-xs sm:text-sm tracking-[0.15em] uppercase px-4 py-2 border transition-all duration-200 hover:cursor-pointer ${
             active === cat
               ? "bg-primary text-white border-primary"
-              : "bg-transparent text-primary border-primary/40 hover:border-primary hover:bg-primary/5"
+              : "bg-transparent text-primary border-primary/30 hover:border-primary/50 hover:bg-primary/5"
           }`}
         >
           {cat}
@@ -78,13 +78,13 @@ function ArticleCard({
         </div>
 
         <div>
-          <h3 className="text-primary font-semibold text-lg leading-snug group-hover:text-primary/70 transition-colors mb-2">
+          <h3 className="text-primary font-semibold text-lg leading-snug group-hover:text-primary/80 transition-colors mb-2">
             {article.title}
           </h3>
-          <p className="text-primary/80 leading-relaxed text-sm">
+          <p className="text-primary group-hover:text-primary/80 leading-relaxed text-sm">
             {article.excerpt}
           </p>
-          <div className="flex items-center gap-2 mt-4 text-primary text-xs tracking-widest group-hover:text-primary/60 transition-colors">
+          <div className="flex items-center gap-2 mt-4 text-primary text-xs tracking-widest group-hover:text-primary/80 transition-colors">
             <span>READ ARTICLE</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </div>
@@ -118,11 +118,11 @@ function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
           <p className="text-primary/80 text-xs tracking-widest uppercase mb-4">
             Featured
           </p>
-          <h2 className="text-primary font-semibold text-2xl lg:text-3xl leading-snug group-hover:text-primary/70 transition-colors mb-5">
+          <h2 className="text-primary font-semibold text-2xl lg:text-3xl leading-snug group-hover:text-primary/80 transition-colors mb-5">
             {article.title}
           </h2>
-          <p className="text-primary/80 leading-relaxed">{article.excerpt}</p>
-          <div className="flex items-center gap-2 mt-8 text-primary text-sm tracking-widest group-hover:text-primary/60 transition-colors">
+          <p className="text-primary group-hover:text-primary/80 leading-relaxed">{article.excerpt}</p>
+          <div className="flex items-center gap-2 mt-8 text-primary text-sm tracking-widest group-hover:text-primary/80 transition-colors">
             <span>READ ARTICLE</span>
             <ArrowRight className="w-4 h-4" />
           </div>
@@ -252,14 +252,14 @@ export default function JournalPage() {
                       .getElementById("journal-grid")
                       ?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="group flex items-start gap-4 p-4 border border-primary/20 hover:border-primary/60 bg-transparent hover:bg-primary/5 transition-all duration-200 text-left hover:cursor-pointer"
+                  className="group flex items-start gap-4 p-4 border border-primary/30 hover:border-primary/50 bg-transparent hover:bg-primary/5 transition-all duration-200 text-left hover:cursor-pointer"
                 >
                   <div className="w-3 h-px bg-primary/70 flex-shrink-0 mt-2.5" />
                   <div>
                     <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-1">
                       {cat}
                     </p>
-                    <p className="text-primary/80 text-sm leading-relaxed">
+                    <p className="text-primary text-sm leading-relaxed">
                       {desc}
                     </p>
                   </div>

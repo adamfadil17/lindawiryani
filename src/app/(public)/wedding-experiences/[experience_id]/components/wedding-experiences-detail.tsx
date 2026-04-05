@@ -1196,13 +1196,13 @@ function SectionSubExperiences({
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-primary font-semibold text-xl group-hover:text-primary/70 transition-colors">
+                  <h3 className="text-primary font-semibold text-xl group-hover:text-primary/80 transition-colors">
                     {exp.name}
                   </h3>
-                  <p className="text-primary/70 mt-2 leading-relaxed">
+                  <p className="text-primary mt-2 leading-relaxed">
                     {exp.hero_desc}
                   </p>
-                  <div className="flex items-center gap-2 mt-4 text-primary text-sm tracking-wider group-hover:text-primary/60 transition-colors">
+                  <div className="flex items-center gap-2 mt-4 text-primary text-sm tracking-wider group-hover:text-primary/80 transition-colors">
                     <span>EXPLORE</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>

@@ -378,7 +378,7 @@ export default function WeddingExperiencesPage() {
                         </span>
                       )}
                     </h3>
-                    <p className="text-primary/90 mt-2 leading-relaxed text-sm sm:text-base">
+                    <p className="text-primary mt-2 leading-relaxed text-sm sm:text-base">
                       {exp.desc}
                     </p>
                     <div className="flex items-center gap-2 mt-3 sm:mt-4 text-primary text-sm tracking-wider group-hover:text-primary/80 transition-colors">

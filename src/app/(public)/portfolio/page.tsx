@@ -67,29 +67,37 @@ function FilterDropdown({
             transition={{ duration: 0.15 }}
             className={`absolute top-full mt-2 bg-white border border-stone-200 shadow-xl z-20 min-w-[220px] ${align === "right" ? "right-0" : "left-0"}`}
           >
-            <button
-              onClick={() => onSelect("all")}
-              className={`block w-full text-left px-5 py-3 text-sm transition-colors hover:cursor-pointer ${
-                value === "all"
-                  ? "bg-primary text-white"
-                  : "text-primary hover:bg-stone-50"
-              }`}
+            <div
+              className={
+                options.length > 5
+                  ? "max-h-[260px] overflow-y-auto [scrollbar-width:thin] [scrollbar-color:color-mix(in_srgb,var(--color-primary)_30%,transparent)_transparent]"
+                  : ""
+              }
             >
-              All
-            </button>
-            {options.map((opt) => (
               <button
-                key={opt.value}
-                onClick={() => onSelect(opt.value)}
+                onClick={() => onSelect("all")}
                 className={`block w-full text-left px-5 py-3 text-sm transition-colors hover:cursor-pointer ${
-                  value === opt.value
+                  value === "all"
                     ? "bg-primary text-white"
                     : "text-primary hover:bg-stone-50"
                 }`}
               >
-                {opt.label}
+                All
               </button>
-            ))}
+              {options.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => onSelect(opt.value)}
+                  className={`block w-full text-left px-5 py-3 text-sm transition-colors hover:cursor-pointer ${
+                    value === opt.value
+                      ? "bg-primary text-white"
+                      : "text-primary hover:bg-stone-50"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -430,7 +438,7 @@ export default function PortfolioPage() {
                 exit={{ opacity: 0 }}
                 className="py-24 text-center"
               >
-                <p className="text-primary/60 text-lg italic">
+                <p className="text-primary/80 text-lg italic">
                   No weddings found for this combination. Try adjusting your
                   filters.
                 </p>
@@ -463,7 +471,7 @@ export default function PortfolioPage() {
                 totalCount > 6 && (
                   <button
                     onClick={() => setVisibleCount(6)}
-                    className="border border-primary/40 text-primary/60 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/5 hover:cursor-pointer transition-colors duration-300"
+                    className="border border-primary/30 text-primary/80 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/5 hover:cursor-pointer transition-colors duration-300"
                   >
                     VIEW LESS
                   </button>
@@ -616,7 +624,7 @@ export default function PortfolioPage() {
                   className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
                 >
                   <div>
-                    <span className="text-5xl text-primary/20 font-serif leading-none select-none">
+                    <span className="text-5xl text-primary/80 font-serif leading-none select-none">
                       "
                     </span>
                     <p className="text-primary leading-relaxed italic mt-2 text-justify">
@@ -647,7 +655,7 @@ export default function PortfolioPage() {
                 className="bg-white border border-primary/10 p-8 flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-5xl text-primary/20 font-serif leading-none select-none">
+                  <span className="text-5xl text-primary/80 font-serif leading-none select-none">
                     "
                   </span>
                   <p className="text-primary leading-relaxed italic mt-2 text-justify">
@@ -658,7 +666,7 @@ export default function PortfolioPage() {
                   <p className="text-primary font-semibold text-sm tracking-wide">
                     {reviews[reviewSlide].couple}
                   </p>
-                  <p className="text-primary/50 text-xs tracking-widest uppercase mt-1">
+                  <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
                     {reviews[reviewSlide].origin}
                   </p>
                 </div>
@@ -684,7 +692,7 @@ export default function PortfolioPage() {
               <button
                 onClick={() => setReviewSlide((p) => Math.max(p - 1, 0))}
                 disabled={reviewSlide === 0}
-                className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+                className="w-10 h-10 border border-primary/30 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
               </button>
@@ -693,7 +701,7 @@ export default function PortfolioPage() {
                   setReviewSlide((p) => Math.min(p + 1, reviews.length - 3))
                 }
                 disabled={reviewSlide >= reviews.length - 3}
-                className="w-10 h-10 border border-primary/40 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+                className="w-10 h-10 border border-primary/30 flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
               >
                 <ArrowRight className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
               </button>
