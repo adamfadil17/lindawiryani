@@ -3564,7 +3564,7 @@ export const destinationList: Destination[] = [
       "Defined architecture, controlled light, and symmetrical elegance, ideal for refined and timeless destination wedding ceremonies shaped by structure, clarity, and intimate focus.",
     long_description:
       "Chapel weddings in Bali offer a refined and structured setting — where architecture, light, and symmetry come together to create a ceremony that feels both intimate and timeless. Defined by clean lines, controlled environments, and carefully framed views, chapels provide a space where every detail feels intentional and beautifully composed. At Linda Wiryani Design and Event Planning, we design chapel weddings that embrace this sense of clarity — creating celebrations that feel elegant, meaningful, and seamlessly orchestrated. Our approach is to work with architecture and atmosphere — allowing light, space, and proportion to shape a wedding that feels calm, elevated, and refined.",
-    location: "South Bali",
+    location: "Ubud, South Bali",
     atmosphere:
       "Elegant and composed — intimate, focused, and architecturally refined, where clean lines and controlled light draw attention to the couple and the ceremony itself, creating a setting that feels timeless, calm, and deeply meaningful",
     accessibility_notes:
