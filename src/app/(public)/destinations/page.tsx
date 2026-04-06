@@ -98,6 +98,10 @@ const CATEGORY_META: Record<
         label: "Garden Weddings",
         value: "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains",
       },
+      {
+        label: "Chapel Weddings",
+        value: "South Bali",
+      },
     ],
   },
   "cat-islands": {
