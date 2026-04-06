@@ -1393,7 +1393,7 @@ export const destinationList: Destination[] = [
     seasonal_considerations:
       "Ceremony timing carefully planned to capture the most beautiful natural light across valley and mountain landscapes; preparation for sun exposure, humidity, and occasional rain is essential; open terrain requires thoughtful weather contingency planning",
     image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433568/sidemen_zthbs0.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773382245/header-destination_vcrwin.jpg",
     guest_capacity: "10 - 80",
     highlights: [
       "Expansive rice field and valley ceremony views",
