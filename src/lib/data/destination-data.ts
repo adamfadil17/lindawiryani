@@ -581,7 +581,8 @@ export const destinationList: Destination[] = [
       "Island access requires boat transfers for guests and vendors; guest accommodation planning is important due to the island's limited but curated options; wind and ocean conditions must be carefully considered; certain technical elements may need to be arranged from mainland Bali; schedules must account for island transport and setup timing",
     seasonal_considerations:
       "Light transitions from day to sunset must be considered for ceremony timing; wind conditions and coastal exposure influence design and structure choices; dry season provides the most stable conditions for island access and outdoor celebrations",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309427/Nusa_Lembongan_Final_vc5hxp.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309427/Nusa_Lembongan_Final_vc5hxp.png",
     guest_capacity: "10 - 100",
     highlights: [
       "Clear waters and soft coastal light creating a naturally beautiful setting",
@@ -647,7 +648,8 @@ export const destinationList: Destination[] = [
       "Guests typically arrive via Nusa Lembongan requiring coordinated transfers; limited but curated accommodation options require early planning; open coastal environments require careful consideration for setup and design; some elements may need to be arranged from mainland Bali; schedules must align with island transport and setup timing",
     seasonal_considerations:
       "Open environments and wind conditions require thoughtful design and structural choices; natural light and soft ocean reflections create beautiful ceremony conditions particularly at golden hour; dry season preferred for stable access and outdoor event planning",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309438/Nusa_Ceningan_Wedding_xhxycj.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309438/Nusa_Ceningan_Wedding_xhxycj.png",
     guest_capacity: "5 - 60",
     highlights: [
       "Intimate and quiet island atmosphere unlike any other Bali destination",
@@ -713,7 +715,8 @@ export const destinationList: Destination[] = [
       "Accessible via Lombok International Airport or fast boat from Bali; flights, transfers, and logistics must be carefully coordinated; guest accommodations require early planning due to more limited options compared to Bali; certain vendors and technical elements may need to be brought from Bali; schedules must allow for travel and setup logistics",
     seasonal_considerations:
       "Wind and sun exposure across open coastal landscapes must be carefully considered in design and timing; dry season (May–October) provides the most stable conditions for outdoor ceremonies; natural light across wide horizons is particularly beautiful at golden hour and sunset",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309336/Lombok_uo3d50.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309336/Lombok_uo3d50.png",
     guest_capacity: "10 - 150",
     highlights: [
       "Wide and untouched beachfront ceremony settings",
@@ -779,7 +782,8 @@ export const destinationList: Destination[] = [
       "Remote destination requiring detailed coordination for flights, transfers, and all guest logistics; limited but high-end accommodation options require early planning; many elements including vendors and technical setups may need to be brought from Bali; open landscapes require careful planning for sun, wind, and natural exposure; extended planning timelines are essential for smooth execution",
     seasonal_considerations:
       "Open savannahs and coastal environments require full preparation for sun, wind, and natural elements; dry season is strongly preferred for ceremony conditions and travel logistics; natural light across vast open landscapes creates particularly dramatic and cinematic conditions at sunrise and sunset",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309390/Sumba_wedding_erkew6.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309390/Sumba_wedding_erkew6.png",
     guest_capacity: "10 - 100",
     highlights: [
       "Vast savannah and dramatic clifftop coastal ceremony settings",
@@ -845,7 +849,8 @@ export const destinationList: Destination[] = [
       "Accessible via flights and land transfers from Bali; all travel logistics and coordination must be carefully planned for guests and vendors; certain vendors and technical elements may need to be arranged from Bali; different landscape types require tailored planning for layout, terrain, and guest safety; schedules must account for travel distances and setup logistics",
     seasonal_considerations:
       "Layered landscape types — mountain, forest, and coastal — each require specific seasonal considerations and contingency planning; natural light varies significantly across different environments requiring careful ceremony timing; dry season preferred for outdoor events and travel logistics",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309279/Banyuwangi_wdrvji.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309279/Banyuwangi_wdrvji.png",
     guest_capacity: "10 - 120",
     highlights: [
       "Diverse natural landscapes combining mountain, forest, and coastal settings",
@@ -911,7 +916,8 @@ export const destinationList: Destination[] = [
       "Accessible via flights to Yogyakarta and coordinated land transfers; all travel logistics must be carefully planned for guests and vendors; certain venue locations may have specific usage and operational guidelines; structured environments require thoughtful guest movement and spatial planning; careful scheduling ensures a smooth and well-paced experience",
     seasonal_considerations:
       "Outdoor and semi-open settings require weather contingency planning; natural light across open courtyards, terraces, and architectural spaces creates beautiful ceremony conditions particularly in the morning and late afternoon; dry season preferred for open-air ceremonies and guest comfort",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433444/Magelang_q1pjqj.png",
     guest_capacity: "20 - 200",
     highlights: [
       "Ancient heritage and iconic architectural settings with deep cultural significance",
@@ -1029,6 +1035,75 @@ export const destinationList: Destination[] = [
   },
   {
     id: "11",
+    name: "Legian",
+    slug: "legian-wedding",
+    category_id: "cat-bali",
+    category: getCat("cat-bali"),
+    type: "Beachfront & Lifestyle",
+    description:
+      "Beachfront settings, vibrant coastal atmosphere, and relaxed energy, ideal for lively yet refined destination weddings shaped by flow, light, and effortless social elegance.",
+    long_description:
+      "Legian is one of Bali's most balanced coastal destinations, situated between Seminyak and Kuta, offering a blend of beachfront beauty, vibrant atmosphere, and approachable rhythm that makes it ideal for celebrations that feel social, warm, and naturally enjoyable. We design weddings in Legian that embrace this energy — creating celebrations that feel effortless, intentional, and beautifully curated. Our Legian weddings are shaped by open coastal settings, sunset light, and a seamless flow between ceremony, cocktail, and reception that allows each moment to feel engaging and alive. We work with couples drawn to Legian for its accessibility, lively character, and a setting that feels both welcoming and refined.",
+    location: "South Bali",
+    atmosphere:
+      "Relaxed yet stylish — vibrant, social, and light-filled, where beachfront energy meets effortless elegance and each celebration feels warm, lively, and beautifully curated",
+    accessibility_notes:
+      "Central location between Seminyak and Kuta with excellent accessibility for guests and vendors; wide range of nearby accommodation and amenities; urban coastal areas may have specific sound regulations and curfews that must be carefully planned around",
+    seasonal_considerations:
+      "West-facing coastline captures beautiful sunset light ideal for ceremony timing; coastal wind and environmental exposure must be considered in design and setup; seamless transitions between ceremony and reception essential for guest comfort in open coastal environments",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775455577/Legian_mjifbs.png",
+    guest_capacity: "30 - 350",
+    highlights: [
+      "Open beachfront settings with easy coastal access",
+      "Vibrant yet approachable lifestyle atmosphere",
+      "Central location between Seminyak and Kuta",
+      "Boutique resort and lifestyle venue options",
+      "Beautiful sunset views over the Indian Ocean",
+    ],
+    best_for: [
+      "Beachfront weddings with a social and lively energy",
+      "Couples seeking a relaxed yet stylish coastal setting",
+      "Celebrations close to accommodation, dining, and entertainment",
+      "Warm and engaging gatherings with effortless flow",
+      "A versatile setting for both ceremony and reception",
+    ],
+    ceremony_options: [
+      "Open beachfront sunset ceremonies",
+      "Boutique resort garden and terrace settings",
+      "Indoor-outdoor coastal venue ceremonies",
+      "Villa pool and garden ceremonies",
+      "Intimate beachside elopements",
+    ],
+    reception_options: [
+      "Beachfront dinner and sunset reception flows",
+      "Boutique resort terrace celebrations",
+      "Social and lifestyle-oriented evening gatherings",
+      "Cocktail and dinner receptions with ocean views",
+      "Multi-space venue experiences with relaxed energy",
+    ],
+    accommodation_nearby: [
+      "Boutique beachfront resorts and hotels",
+      "Contemporary villa rentals",
+      "Lifestyle hotels with coastal amenities",
+      "Centrally located guesthouses and properties",
+    ],
+    dining_experiences: [
+      "Beachfront dining and sunset cocktail experiences",
+      "Contemporary and international cuisine",
+      "Private chef and bespoke catering services",
+      "Resort and lifestyle restaurant dining",
+    ],
+    unique_features: [
+      "Sunset ceremony on one of Bali's most accessible beachfronts",
+      "A social and atmosphere-led gathering with effortless energy",
+      "Central coastal location combining convenience with charm",
+      "A wedding that feels warm, stylish, and naturally engaging",
+      "Bali's vibrant lifestyle as the backdrop for celebration",
+    ],
+  },
+  {
+    id: "12",
     name: "Jimbaran",
     slug: "jimbaran-wedding",
     category_id: "cat-bali",
@@ -1045,7 +1120,8 @@ export const destinationList: Destination[] = [
       "Sheltered west-facing bay provides calmer conditions than open beaches; close to airport; luxury resort infrastructure with comprehensive guest services; beachfront setup requires flooring and seating planning on sand",
     seasonal_considerations:
       "West-facing bay captures beautiful golden sunset tones; ceremony timing carefully planned for optimal sunset light; wind patterns calmer than northern coastal areas but ocean breeze planning still required",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775313394/Jimbaran_Four_Seasons_Jimbaran_Image_bpl6qe.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775313394/Jimbaran_Four_Seasons_Jimbaran_Image_bpl6qe.jpg",
     guest_capacity: "20 - 300",
     highlights: [
       "Calm, sheltered bay and golden sandy beach",
@@ -1095,7 +1171,7 @@ export const destinationList: Destination[] = [
   },
 
   {
-    id: "12",
+    id: "13",
     name: "Ketewel",
     slug: "ketewel-wedding",
     category_id: "cat-bali",
@@ -1112,7 +1188,8 @@ export const destinationList: Destination[] = [
       "Conveniently located between Sanur and Ubud; private villa settings require careful guest navigation coordination; transport and navigation should be clearly coordinated for guests unfamiliar with the area",
     seasonal_considerations:
       "Open coastal areas require careful selection of décor elements and ceremony structures for wind; minimal built infrastructure means preparation for sun, wind, and potential rain is essential; black sand and terrain require flooring and layout planning for guest comfort",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775310462/Pantai_Ketewel_kvtdjp.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775310462/Pantai_Ketewel_kvtdjp.png",
     guest_capacity: "10 - 100",
     highlights: [
       "Black-sand beaches with natural coastal character",
@@ -1161,7 +1238,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "13",
+    id: "14",
     name: "Saba",
     slug: "saba-wedding",
     category_id: "cat-bali",
@@ -1230,7 +1307,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "14",
+    id: "15",
     name: "Tegallalang",
     slug: "tegallalang-wedding",
     category_id: "cat-bali",
@@ -1247,7 +1324,8 @@ export const destinationList: Destination[] = [
       "Rice terrace environments may involve steps, slopes, and uneven ground requiring careful guest flow planning; proximity to Ubud provides good accommodation options; terrain and elevation differences must be factored into event design",
     seasonal_considerations:
       "Morning and late afternoon offer the most flattering natural light for ceremonies and photography; open landscapes require preparation for sun exposure, humidity, and potential rain; design should respect and integrate with the surrounding agricultural and natural environment",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309750/Ricefield_wedding_goma3z.jpg",
     guest_capacity: "15 - 120",
     highlights: [
       "Iconic layered rice terrace ceremony backdrops",
@@ -1297,7 +1375,7 @@ export const destinationList: Destination[] = [
   },
 
   {
-    id: "15",
+    id: "16",
     name: "Sidemen",
     slug: "sidemen-wedding",
     category_id: "cat-bali",
@@ -1314,7 +1392,8 @@ export const destinationList: Destination[] = [
       "More remote location requiring clear planning for guest transport and logistics; open landscapes and natural terrain require careful layout and flow planning; facilities, shading, and layout must be thoughtfully designed for guest comfort",
     seasonal_considerations:
       "Ceremony timing carefully planned to capture the most beautiful natural light across valley and mountain landscapes; preparation for sun exposure, humidity, and occasional rain is essential; open terrain requires thoughtful weather contingency planning",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433568/sidemen_zthbs0.png",
     guest_capacity: "10 - 80",
     highlights: [
       "Expansive rice field and valley ceremony views",
@@ -1363,7 +1442,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "16",
+    id: "17",
     name: "Amed",
     slug: "amed-wedding",
     category_id: "cat-bali",
@@ -1430,7 +1509,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "17",
+    id: "18",
     name: "Manggis",
     slug: "manggis-wedding",
     category_id: "cat-bali",
@@ -1497,7 +1576,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "18",
+    id: "19",
     name: "Candidasa",
     slug: "candidasa-wedding",
     category_id: "cat-bali",
@@ -1564,7 +1643,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "19",
+    id: "20",
     name: "Taman Ujung",
     slug: "taman-ujung-wedding",
     category_id: "cat-bali",
@@ -1631,7 +1710,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "20",
+    id: "21",
     name: "Tulamben",
     slug: "tulamben-wedding",
     category_id: "cat-bali",
@@ -1698,7 +1777,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "21",
+    id: "22",
     name: "Tirta Gangga",
     slug: "tirta-gangga-wedding",
     category_id: "cat-bali",
@@ -1765,7 +1844,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "22",
+    id: "23",
     name: "Savana Tianyar",
     slug: "savana-tianyar-wedding",
     category_id: "cat-bali",
@@ -1832,7 +1911,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "23",
+    id: "24",
     name: "Lovina",
     slug: "lovina-wedding",
     category_id: "cat-bali",
@@ -1899,7 +1978,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "24",
+    id: "25",
     name: "Munduk",
     slug: "munduk-wedding",
     category_id: "cat-bali",
@@ -1916,7 +1995,8 @@ export const destinationList: Destination[] = [
       "Located approximately 2.5–3 hours from Bali's international airport requiring well-organized guest transportation; some wedding vendors travel from southern Bali requiring structured scheduling and production planning; mountain roads require careful timing",
     seasonal_considerations:
       "Highland temperatures are cooler and mist may appear during certain times of day creating a unique and beautiful atmosphere; evening events require additional attention to lighting, flooring, and temperature considerations; dry season preferred for outdoor ceremonies",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433888/Munduk_wusb1v.png",
     guest_capacity: "10 - 80",
     highlights: [
       "Dramatic mountain and jungle valley viewpoints",
@@ -1965,7 +2045,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "25",
+    id: "26",
     name: "Pemuteran",
     slug: "pemuteran-wedding",
     category_id: "cat-bali",
@@ -1982,7 +2062,8 @@ export const destinationList: Destination[] = [
       "Located in North-West Bali requiring careful planning for guest travel time and vendor logistics; eco and environmental considerations influence design choices; boutique eco-resort settings provide comfort within a naturally harmonious environment",
     seasonal_considerations:
       "Both sunrise and sunset provide beautiful natural lighting opportunities influencing ceremony timing; preparation for sun, humidity, and open-air environments is essential; shading, layout, and facilities must be carefully designed for remote comfort",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775313508/Pemuteran_exl1bs.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775313508/Pemuteran_exl1bs.png",
     guest_capacity: "10 - 80",
     highlights: [
       "Calm and peaceful North-West Bali coastal setting",
@@ -2031,7 +2112,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "26",
+    id: "27",
     name: "Menjangan",
     slug: "menjangan-wedding",
     category_id: "cat-bali",
@@ -2048,7 +2129,8 @@ export const destinationList: Destination[] = [
       "Located within West Bali National Park requiring specific permits and strict adherence to environmental regulations; remote location demands detailed coordination for transport, setup, and vendor access; limited on-site infrastructure requires full logistical planning",
     seasonal_considerations:
       "Preparation for sun, wind, and natural coastal conditions is essential; open protected environment requires careful timing for ceremony and photography; eco-luxury resort partners provide structural support within a pristine natural setting",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775434370/Menjangan_final_gkgtup.png",
     guest_capacity: "10 - 60",
     highlights: [
       "Pristine coastline within West Bali National Park",
@@ -2097,7 +2179,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "27",
+    id: "28",
     name: "Pupuan",
     slug: "pupuan-wedding",
     category_id: "cat-bali",
@@ -2114,7 +2196,8 @@ export const destinationList: Destination[] = [
       "Remote location requiring detailed coordination for transport, setup, and vendor access; jungle and waterfall terrain requires careful planning for guest movement and safety; natural light in forest environments requires precise timing for ceremony and photography",
     seasonal_considerations:
       "Humidity, rainfall, and natural elements must be fully prepared for; water levels and slippery surfaces near waterfalls require safety management; dry season is preferable for most outdoor ceremonies and photography",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775434109/Pupuan_cyfep8.png",
     guest_capacity: "10 - 60",
     highlights: [
       "Dense jungle and hidden waterfall landscapes",
@@ -2163,7 +2246,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "28",
+    id: "29",
     name: "Jatiluwih",
     slug: "jatiluwih-wedding",
     category_id: "cat-bali",
@@ -2180,7 +2263,8 @@ export const destinationList: Destination[] = [
       "Located in central West Bali requiring coordinated transport for guests and vendors; UNESCO-protected setting requires design and setup to respect agricultural and cultural landscape; slopes and uneven rice terrace terrain require careful planning for guest flow",
     seasonal_considerations:
       "Morning and late afternoon provide the most beautiful natural light for ceremonies and photography; preparation for sun, wind, and rain is essential in open landscapes; shading, seating, and pathways must be carefully designed",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775455696/Jatiluwih_area_1_barat_k8b4wm.png",
     guest_capacity: "20 - 120",
     highlights: [
       "Expansive UNESCO-recognized rice terrace landscapes",
@@ -2229,7 +2313,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "29",
+    id: "30",
     name: "Secluded Waterfalls",
     slug: "secluded-waterfalls-wedding",
     category_id: "cat-bali",
@@ -2246,7 +2330,8 @@ export const destinationList: Destination[] = [
       "Waterfall locations often involve walking paths, steps, or uneven terrain requiring careful planning for guest movement; water levels, slippery surfaces, and natural conditions must be carefully managed; remote settings require detailed coordination for transport and vendor access",
     seasonal_considerations:
       "Rainfall can affect water flow and accessibility requiring flexible contingency planning; natural light within forest environments varies making timing essential; dry season generally preferred for accessibility and guest safety at waterfall sites",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775434113/Pupuan_secluded_waterfall2_anoeww.png",
     guest_capacity: "10 - 50",
     highlights: [
       "Hidden cascading waterfalls in West Bali lush landscapes",
@@ -2295,7 +2380,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "30",
+    id: "31",
     name: "Kintamani",
     slug: "kintamani-wedding",
     category_id: "cat-bali",
@@ -2364,7 +2449,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "31",
+    id: "32",
     name: "Bedugul",
     slug: "bedugul-wedding",
     category_id: "cat-bali",
@@ -2433,7 +2518,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "32",
+    id: "33",
     name: "Lake Beratan",
     slug: "lake-beratan-wedding",
     category_id: "cat-bali",
@@ -2502,7 +2587,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "33",
+    id: "34",
     name: "Lake Buyan",
     slug: "lake-buyan-wedding",
     category_id: "cat-bali",
@@ -2571,7 +2656,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "34",
+    id: "35",
     name: "Lake Tamblingan",
     slug: "lake-tamblingan-wedding",
     category_id: "cat-bali",
@@ -2640,7 +2725,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "35",
+    id: "36",
     name: "Bali Botanical Garden",
     slug: "bali-botanical-garden-wedding",
     category_id: "cat-bali",
@@ -2657,7 +2742,8 @@ export const destinationList: Destination[] = [
       "As a public garden, permits and usage guidelines must be carefully followed; large open areas require careful planning for seating, pathways, and guest flow; cooler temperatures and potential rain require flexible planning and preparation",
     seasonal_considerations:
       "Morning and late afternoon provide the most beautiful natural light for ceremonies and photography; shading, flooring, and layout must be thoughtfully designed for outdoor guest comfort; highland weather patterns require flexible planning",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433667/Bedugul_Botanical_Garden_z7wq6r.png",
     guest_capacity: "20 - 200",
     highlights: [
       "Expansive botanical gardens with towering trees and vast greenery",
@@ -2708,7 +2794,7 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "36",
+    id: "37",
     name: "Mount Batur & Volcanic Landscapes",
     slug: "mount-batur-volcanic-landscapes-wedding",
     category_id: "cat-bali",
@@ -2797,7 +2883,8 @@ export const destinationList: Destination[] = [
       "Cooler highland temperatures require preparation for guest comfort, particularly in early morning or evening events; natural mist enhances atmosphere but may influence timing and photography; terrain may involve uneven ground or forest paths requiring thoughtful layout planning; certain sacred lake locations require respectful planning and adherence to local cultural guidelines",
     seasonal_considerations:
       "Highland weather can change quickly requiring flexible planning and contingency solutions; natural mist and cloud cover can vary throughout the day influencing ceremony timing; morning and late afternoon provide the most atmospheric lighting conditions for ceremonies and photography",
-    image: "https://placehold.net/default.svg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775434577/lake-wedding_xqsyuv.png",
     guest_capacity: "10 - 150",
     highlights: [
       "Still water reflections and misty mountain atmosphere as ceremony backdrop",
@@ -2865,7 +2952,8 @@ export const destinationList: Destination[] = [
       "Carefully selected waterfall locations prioritise safe access and manageable walking distances with minimal steps; terrain and safety conditions are assessed for each site; water levels and slippery surfaces require careful setup planning; natural light within forest environments varies and requires precise timing for ceremony and photography",
     seasonal_considerations:
       "Water flow varies depending on season influencing both design choices and ceremony timing; dry season generally preferred for most accessible and stable conditions; soft natural light is most beautiful in the morning and late afternoon within forest environments",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309703/Pupuan_wedding_qvxx0o.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309703/Pupuan_wedding_qvxx0o.png",
     guest_capacity: "5 - 60",
     highlights: [
       "Cascading waterfall as a naturally dramatic and intimate ceremony backdrop",
@@ -2931,7 +3019,8 @@ export const destinationList: Destination[] = [
       "Each villa has its own policies regarding events, sound, and capacity requiring individual coordination; lighting, power, catering, and technical requirements must typically be sourced and brought in by the planning team; sound and curfew restrictions vary by area and local regulations; weather contingency plans are essential as most villas are outdoor-focused",
     seasonal_considerations:
       "Most villas are outdoor-focused requiring flexible weather contingency planning; lighting transitions from day to evening must be carefully designed; timing of ceremony, cocktail, and reception flow should align with natural light and Bali's seasonal sunset conditions",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309730/Private_Villa_Weddings_ckh0kd.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309730/Private_Villa_Weddings_ckh0kd.png",
     guest_capacity: "10 - 300",
     highlights: [
       "Complete creative freedom in design, layout, and celebration format",
@@ -2999,7 +3088,8 @@ export const destinationList: Destination[] = [
       "Highland locations require coordinated transport for guests and vendors; open elevated landscapes require careful design and structural considerations for wind and environmental exposure; elevated terrain may involve slopes or uneven ground requiring thoughtful layout and guest flow planning; cooler temperatures require preparation for guest comfort, particularly in early morning or evening events",
     seasonal_considerations:
       "Mountain views can be influenced by cloud cover and changing weather conditions requiring flexible planning; morning and late afternoon provide the most beautiful natural light for ceremonies and photography; dry season preferred for most stable highland conditions and outdoor ceremony planning",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775314171/Kintamani_romzer.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775314171/Kintamani_romzer.png",
     guest_capacity: "15 - 200",
     highlights: [
       "Panoramic views across volcanic landscapes, valleys, and open horizons",
@@ -3067,7 +3157,8 @@ export const destinationList: Destination[] = [
       "Forest environments may involve uneven ground or natural terrain requiring careful layout and guest flow planning; humidity requires preparation for guest comfort including ventilation and shaded seating areas; filtered light conditions require precise timing for ceremony and photography; natural settings with dense vegetation require thoughtful pathway and accessibility planning",
     seasonal_considerations:
       "Jungle areas may experience sudden rain requiring contingency planning and flexible structure options; filtered forest light is most beautiful and gentle in the morning and late afternoon; humidity levels increase during wet season requiring additional guest comfort preparations; dry season preferred for most outdoor jungle ceremony and reception experiences",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311974/Pupuan_Jungle_Wedding_not_the_rice_field_image_ufaadl.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311974/Pupuan_Jungle_Wedding_not_the_rice_field_image_ufaadl.png",
     guest_capacity: "10 - 150",
     highlights: [
       "Layered jungle greenery and organic textures as natural ceremony surroundings",
@@ -3135,7 +3226,8 @@ export const destinationList: Destination[] = [
       "Wind and coastal exposure must be carefully considered in structural design, florals, and styling elements; ceremony timing must be precisely planned to align with Bali's sunset light and photography conditions; shading, flooring, and seating are essential for guest comfort in open beachfront environments; beach and coastal venues often have specific sound and operational guidelines that must be respected",
     seasonal_considerations:
       "West-facing beaches capture Bali's most iconic golden sunset tones — ceremony timing is carefully planned for maximum visual and photographic impact; dry season provides more stable coastal wind conditions; coastal breeze and open exposure require flexible contingency planning year-round",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309697/Beachfront_or_oceanfront_wedding_cpcdau.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309697/Beachfront_or_oceanfront_wedding_cpcdau.png",
     guest_capacity: "20 - 500",
     highlights: [
       "Iconic Bali sunset ceremonies along the ocean coastline",
@@ -3203,7 +3295,8 @@ export const destinationList: Destination[] = [
       "Cultural sensitivity and respect for local customs must be carefully integrated throughout planning; certain heritage locations may have specific rules, restrictions, and usage guidelines; traditional compounds require thoughtful movement planning across multiple pavilions and courtyards; décor and styling must enhance rather than overpower the existing architectural setting; many traditional venues are semi-open requiring weather contingency planning",
     seasonal_considerations:
       "Semi-open traditional venues require flexible contingency planning for rain; natural light within carved courtyards and pavilions is most beautiful in the morning and late afternoon; timing of ceremonies and processions should respect local cultural calendars and ceremonial considerations",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309659/Royal_Balinese_Wedding_g6qmts.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309659/Royal_Balinese_Wedding_g6qmts.png",
     guest_capacity: "20 - 250",
     highlights: [
       "Authentic traditional Balinese architecture with intricate stone carvings",
@@ -3271,7 +3364,8 @@ export const destinationList: Destination[] = [
       "Terraced landscapes may involve slopes, steps, or uneven paths requiring careful layout and guest flow planning; open environments require preparation for sun exposure, wind, and rain with shading and flooring essential; rice fields are working cultural landscapes requiring respectful planning and environmental sensitivity; morning and late afternoon provide the most beautiful natural light for ceremonies and photography",
     seasonal_considerations:
       "Rice field colour and visual character change through agricultural cycles — green terraces are most lush during and after rainy season while golden pre-harvest periods offer a different beauty; open terrain requires full weather contingency planning; morning and golden hour light is particularly beautiful across terraced landscapes",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309750/Ricefield_wedding_goma3z.jpg",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433769/Pupuan_rice_paddy_field_ogv5b9.png",
     guest_capacity: "15 - 200",
     highlights: [
       "Iconic Tegallalang terraced landscapes with dramatic visual layering",
@@ -3339,7 +3433,8 @@ export const destinationList: Destination[] = [
       "Riverbanks and valley settings may involve uneven ground, slopes, or natural terrain requiring careful layout and guest pathway planning; humidity and natural moisture require preparation for guest comfort including ventilation and appropriate flooring; water levels and river flow may vary seasonally affecting setup areas and accessibility; filtered light within valley environments requires precise ceremony and photography timing",
     seasonal_considerations:
       "River flow and water levels vary depending on rainfall and season requiring flexible site assessment and planning; valley and jungle-edge environments experience increased humidity during wet season; filtered forest light within valleys is most gentle and beautiful in the morning and late afternoon; dry season preferred for most accessible and comfortable riverside ceremony conditions",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309711/Riverside_Wedding_Setting_iyvxh5.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309711/Riverside_Wedding_Setting_iyvxh5.png",
     guest_capacity: "10 - 100",
     highlights: [
       "Natural flowing water as the defining sound and atmosphere of the ceremony",
@@ -3407,7 +3502,8 @@ export const destinationList: Destination[] = [
       "Large open areas require careful spatial planning for guest flow, ceremony layout, and reception transitions; shading, seating, and flooring must be thoughtfully arranged for guest comfort in outdoor environments; technical elements including lighting, sound, and catering infrastructure must be integrated smoothly; weather contingency planning is essential for outdoor settings",
     seasonal_considerations:
       "Open garden environments require flexible planning for sun exposure and potential rain; natural light transitions throughout the day should be considered for both ceremony and reception timing; morning and late afternoon provide the most beautiful and even lighting conditions for photography and atmosphere",
-    image: "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775313016/Garden_Weddings_b0lzyq.png",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775313016/Garden_Weddings_b0lzyq.png",
     guest_capacity: "20 - 400",
     highlights: [
       "Bedugul Botanical Garden with cool highland greenery and expansive open lawns",
@@ -3455,6 +3551,75 @@ export const destinationList: Destination[] = [
       "A wedding that feels fresh, timeless, and effortlessly connected to the outdoors",
       "Access to Bali's most diverse and beautifully curated garden wedding environments",
       "A celebration defined by openness, balance, and naturally elegant simplicity",
+    ],
+  },
+  {
+    id: "t11",
+    name: "Chapel Weddings",
+    slug: "chapel-weddings",
+    category_id: "cat-themes",
+    category: getCat("cat-themes"),
+    type: "Architectural Elegance & Intimate Atmosphere",
+    description:
+      "Defined architecture, controlled light, and symmetrical elegance, ideal for refined and timeless destination wedding ceremonies shaped by structure, clarity, and intimate focus.",
+    long_description:
+      "Chapel weddings in Bali offer a refined and structured setting — where architecture, light, and symmetry come together to create a ceremony that feels both intimate and timeless. Defined by clean lines, controlled environments, and carefully framed views, chapels provide a space where every detail feels intentional and beautifully composed. At Linda Wiryani Design and Event Planning, we design chapel weddings that embrace this sense of clarity — creating celebrations that feel elegant, meaningful, and seamlessly orchestrated. Our approach is to work with architecture and atmosphere — allowing light, space, and proportion to shape a wedding that feels calm, elevated, and refined.",
+    location: "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains",
+    atmosphere:
+      "Elegant and composed — intimate, focused, and architecturally refined, where clean lines and controlled light draw attention to the couple and the ceremony itself, creating a setting that feels timeless, calm, and deeply meaningful",
+    accessibility_notes:
+      "Chapel venues vary in location across Bali from resort-integrated settings to standalone architectural spaces; guest capacity and seating are defined by the chapel structure and must be planned accordingly; each chapel may have specific guidelines and regulations that must be respected",
+    seasonal_considerations:
+      "Controlled indoor environments provide weather-independent reliability; natural and artificial lighting must be carefully aligned for ceremony timing; indoor chapel settings offer consistent atmosphere regardless of season or weather conditions",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775361533/chapel-wedding_ejqsqz.png",
+    guest_capacity: "10 - 150",
+    highlights: [
+      "Defined architectural spaces with clean lines and visual symmetry",
+      "Controlled environment providing comfort and consistency in any weather",
+      "Intimate and focused ceremony atmosphere",
+      "Ocean view and landscape-framed chapel settings across Bali",
+      "Seamless integration with nearby reception areas and resort venues",
+    ],
+    best_for: [
+      "Couples seeking a structured and elegantly composed ceremony environment",
+      "A refined and timeless setting protected from outdoor conditions",
+      "Ceremonies where architecture and light shape the emotional experience",
+      "Intimate gatherings with a formal and focused atmosphere",
+      "A wedding that feels classic, elegant, and beautifully orchestrated",
+    ],
+    ceremony_options: [
+      "Intimate chapel ceremonies within resort and private estate settings",
+      "Ocean view chapel ceremonies with framed landscape surroundings",
+      "Destination chapel ceremonies with full planning and design integration",
+      "Intimate chapel elopements with a calm and focused atmosphere",
+      "Luxury resort chapel ceremonies with seamless reception transitions",
+    ],
+    reception_options: [
+      "Seamless chapel to reception transitions within resort environments",
+      "Intimate indoor receptions following structured chapel ceremonies",
+      "Garden and terrace receptions connected to chapel ceremony spaces",
+      "Multi-space resort celebrations flowing from chapel to open-air dining",
+      "Candlelit and elegantly styled evening receptions",
+    ],
+    accommodation_nearby: [
+      "Luxury resort properties with integrated chapel and reception venues",
+      "Boutique hotels and private villas near chapel settings",
+      "Highland and lakeside accommodations with nearby architectural venues",
+      "Full-service resort properties with comprehensive guest amenities",
+    ],
+    dining_experiences: [
+      "Resort fine dining and gourmet catering within elegant settings",
+      "Private chef and bespoke multi-course dinner experiences",
+      "Intimate candlelit receptions with refined styling and ambiance",
+      "Sunset cocktail and evening reception flows following chapel ceremonies",
+    ],
+    unique_features: [
+      "A ceremony framed by architecture, light, and beautifully composed symmetry",
+      "A controlled and intimate environment focused entirely on the couple",
+      "Weather-independent reliability within an elegant and refined setting",
+      "A wedding experience that feels timeless, composed, and deeply meaningful",
+      "Access to Bali's most refined architectural ceremony spaces",
     ],
   },
 ];

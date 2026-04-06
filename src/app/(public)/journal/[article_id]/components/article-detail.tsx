@@ -235,7 +235,6 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
             src="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
             alt="Begin your Bali wedding journey"
             fill
-            loading="lazy"
             className="object-cover object-center"
             sizes="100vw"
           />

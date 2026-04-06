@@ -103,6 +103,7 @@ function FeaturedArticle({ article }: { article: (typeof articles)[number] }) {
             src={article.image}
             alt={article.title}
             fill
+            loading="lazy"
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 1024px) 100vw, 60vw"
           />
@@ -358,7 +359,6 @@ export default function JournalPage() {
             src="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
             alt="Begin your Bali wedding journey"
             fill
-            loading="lazy"
             className="object-cover object-top"
             sizes="100vw"
           />
