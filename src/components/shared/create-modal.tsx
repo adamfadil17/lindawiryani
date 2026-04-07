@@ -1,9 +1,10 @@
 import { Plus, X, Loader2 } from "lucide-react";
+import { type FormEventHandler } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { DestinationCategoryFormData } from "@/utils/form-validators";
 
 export interface CreateModalProps {
-  onConfirm: () => void;
+  onSubmit: FormEventHandler<HTMLFormElement>;
   onCancel: () => void;
   isLoading: boolean;
   register: UseFormRegister<DestinationCategoryFormData>;
@@ -11,7 +12,7 @@ export interface CreateModalProps {
 }
 
 export function CreateModal({
-  onConfirm,
+  onSubmit,
   onCancel,
   isLoading,
   register,
@@ -50,10 +51,7 @@ export function CreateModal({
         </p>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onConfirm();
-          }}
+          onSubmit={onSubmit}
           className="space-y-4"
         >
           <div>

@@ -88,10 +88,7 @@ export async function DELETE(
     const existing = await prisma.portfolio.findUnique({ where: { id } });
     if (!existing) return notFound("Portfolio");
 
-    await prisma.$transaction(async (tx) => {
-      await tx.portfolioImage.deleteMany({ where: { portfolio_id: id } });
-      await tx.portfolio.delete({ where: { id } });
-    });
+    await prisma.portfolio.delete({ where: { id } });
 
     return noContent();
   } catch (error) {

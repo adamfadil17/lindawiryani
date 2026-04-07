@@ -87,10 +87,7 @@ export async function DELETE(
     const existing = await prisma.weddingTheme.findUnique({ where: { id } });
     if (!existing) return notFound("Wedding Theme");
 
-    await prisma.$transaction(async (tx) => {
-      await tx.weddingThemeImage.deleteMany({ where: { theme_id: id } });
-      await tx.weddingTheme.delete({ where: { id } });
-    });
+    await prisma.weddingTheme.delete({ where: { id } });
 
     return noContent();
   } catch (error) {

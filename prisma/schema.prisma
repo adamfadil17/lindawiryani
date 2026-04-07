@@ -77,11 +77,29 @@ model User {
 // ─────────────────────────────────────────────
 
 model DestinationCategory {
-  id           String        @id @default(uuid())
-  name         String
-  destinations Destination[]
+  id        String                @id @default(uuid())
+  name      String
+  slug      String                @unique // "bali" | "islands" | "outside-bali"
+
+  locations DestinationLocation[]
 
   @@map("destination_categories")
+}
+
+// ─────────────────────────────────────────────
+// DESTINATION LOCATION
+// ─────────────────────────────────────────────
+
+model DestinationLocation {
+  id          String @id @default(uuid())
+  name        String                       // "South Bali", "Ubud & Gianyar"
+  slug        String @unique               // "south-bali", "ubud-gianyar"
+  category_id String
+
+  category     DestinationCategory @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  destinations Destination[]
+
+  @@map("destination_locations")
 }
 
 // ─────────────────────────────────────────────
@@ -89,30 +107,29 @@ model DestinationCategory {
 // ─────────────────────────────────────────────
 
 model Destination {
-  id                     String   @id @default(uuid())
-  name                   String
-  slug                   String   @unique
-  category_id            String
-  type                   String
-  description            String
-  long_description       String
-  location               String
-  atmosphere             String
-  accessibility_notes    String
+  id                      String @id @default(uuid())
+  name                    String
+  slug                    String @unique
+  location_id             String
+  type                    String
+  description             String
+  long_description        String
+  atmosphere              String
+  accessibility_notes     String
   seasonal_considerations String
-  image                  String
-  guest_capacity         String
+  image                   String
+  guest_capacity          String
 
   // JSON arrays
-  highlights             Json     // string[]
-  best_for               Json     // string[]
-  ceremony_options       Json     // string[]
-  reception_options      Json     // string[]
-  accommodation_nearby   Json     // string[]
-  dining_experiences     Json     // string[]
-  unique_features        Json     // string[]
+  highlights           Json // string[]
+  best_for             Json // string[]
+  ceremony_options     Json // string[]
+  reception_options    Json // string[]
+  accommodation_nearby Json // string[]
+  dining_experiences   Json // string[]
+  unique_features      Json // string[]
 
-  category   DestinationCategory @relation(fields: [category_id], references: [id])
+  location   DestinationLocation @relation(fields: [location_id], references: [id], onDelete: Cascade)
   venues     Venue[]
   portfolios Portfolio[]
 
@@ -191,7 +208,7 @@ model ExperienceFaq {
   answer        String
   sort_order    Int    @default(0)
 
-  experience WeddingExperience @relation(fields: [experience_id], references: [id])
+  experience WeddingExperience @relation(fields: [experience_id], references: [id], onDelete: Cascade)
 
   @@map("experience_faqs")
 }
@@ -212,8 +229,8 @@ model Venue {
   destination_id String
   experience_id  String
 
-  destination Destination       @relation(fields: [destination_id], references: [id])
-  experience  WeddingExperience @relation(fields: [experience_id], references: [id])
+  destination Destination       @relation(fields: [destination_id], references: [id], onDelete: Cascade)
+  experience  WeddingExperience @relation(fields: [experience_id], references: [id], onDelete: Cascade)
   gallery     VenueImage[]
   themes      WeddingTheme[]
   portfolios  Portfolio[]
@@ -231,7 +248,7 @@ model VenueImage {
   sort_order Int    @default(0)
   venue_id   String
 
-  venue Venue @relation(fields: [venue_id], references: [id])
+  venue Venue @relation(fields: [venue_id], references: [id], onDelete: Cascade)
 
   @@map("venue_images")
 }
@@ -250,8 +267,8 @@ model WeddingTheme {
   venue_id      String?
   experience_id String
 
-  venue      Venue?              @relation(fields: [venue_id], references: [id])
-  experience WeddingExperience  @relation(fields: [experience_id], references: [id])
+  venue      Venue?              @relation(fields: [venue_id], references: [id], onDelete: Cascade)
+  experience WeddingExperience  @relation(fields: [experience_id], references: [id], onDelete: Cascade)
   gallery    WeddingThemeImage[]
 
   @@map("wedding_themes")
@@ -267,7 +284,7 @@ model WeddingThemeImage {
   sort_order Int    @default(0)
   theme_id   String
 
-  theme WeddingTheme @relation(fields: [theme_id], references: [id])
+  theme WeddingTheme @relation(fields: [theme_id], references: [id], onDelete: Cascade)
 
   @@map("wedding_theme_images")
 }
@@ -322,9 +339,9 @@ model Portfolio {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  destination Destination?       @relation(fields: [destination_id], references: [id])
-  venue       Venue?             @relation(fields: [venue_id], references: [id])
-  experience  WeddingExperience? @relation(fields: [experience_id], references: [id])
+  destination Destination?       @relation(fields: [destination_id], references: [id], onDelete: Cascade)
+  venue       Venue?             @relation(fields: [venue_id], references: [id], onDelete: Cascade)
+  experience  WeddingExperience? @relation(fields: [experience_id], references: [id], onDelete: Cascade)
   gallery     PortfolioImage[]
 
   @@map("portfolios")
@@ -340,7 +357,7 @@ model PortfolioImage {
   sort_order   Int    @default(0)
   portfolio_id String
 
-  portfolio Portfolio @relation(fields: [portfolio_id], references: [id])
+  portfolio Portfolio @relation(fields: [portfolio_id], references: [id], onDelete: Cascade)
 
   @@map("portfolio_images")
 }

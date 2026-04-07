@@ -9,30 +9,34 @@ import {
   created,
 } from "@/lib";
 import {
-  createDestinationCategorySchema,
+  createDestinationLocationSchema,
   parsePagination,
   paginateQuery,
 } from "@/utils";
+import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
-const DESTINATION_CATEGORY_INCLUDE = {
-  locations: true,
+const DESTINATION_LOCATION_INCLUDE = {
+  category: true,
+  destinations: true,
 };
 
 export async function GET(req: NextRequest) {
   try {
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
+    const categoryId = req.nextUrl.searchParams.get("categoryId") ?? undefined;
 
     const where: Record<string, unknown> = {};
     if (search) {
       where.name = { contains: search, mode: "insensitive" };
     }
+    if (categoryId) where.category_id = categoryId;
 
     const { data, meta } = await paginateQuery(
-      () => prisma.destinationCategory.count({ where }),
+      () => prisma.destinationLocation.count({ where }),
       (skip, take) =>
-        prisma.destinationCategory.findMany({
+        prisma.destinationLocation.findMany({
           where,
-          include: DESTINATION_CATEGORY_INCLUDE,
+          include: DESTINATION_LOCATION_INCLUDE,
           skip,
           take,
           orderBy: { name: "asc" },
@@ -53,17 +57,26 @@ export async function POST(req: NextRequest) {
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
-    const dto = createDestinationCategorySchema.parse(body);
+    const dto = createDestinationLocationSchema.parse(body);
 
-    const category = await prisma.destinationCategory.create({
-      data: {
-        name: dto.name,
-        slug: dto.slug,
-      },
-      include: DESTINATION_CATEGORY_INCLUDE,
+    const baseSlug = toSlug(dto.name);
+    const slug = await ensureUniqueSlug(baseSlug, async (s) => {
+      const existing = await prisma.destinationLocation.findUnique({
+        where: { slug: s },
+      });
+      return !!existing;
     });
 
-    return created(category);
+    const location = await prisma.destinationLocation.create({
+      data: {
+        name: dto.name,
+        slug,
+        category_id: dto.category_id,
+      },
+      include: DESTINATION_LOCATION_INCLUDE,
+    });
+
+    return created(location);
   } catch (error) {
     return handleError(error);
   }

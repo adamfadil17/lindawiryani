@@ -42,10 +42,28 @@ export const destinationCategoryFormSchema = z.object({
     .string()
     .min(2, "Category name must be at least 2 characters")
     .max(255, "Category name must be at most 255 characters"),
+  slug: slugSchema,
 });
 
 export type DestinationCategoryFormData = z.infer<
   typeof destinationCategoryFormSchema
+>;
+
+// ─────────────────────────────────────────────
+// DESTINATION LOCATION
+// ─────────────────────────────────────────────
+
+export const destinationLocationFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Location name must be at least 2 characters")
+    .max(255, "Location name must be at most 255 characters"),
+  slug: slugSchema,
+  category_id: uuidSchema,
+});
+
+export type DestinationLocationFormData = z.infer<
+  typeof destinationLocationFormSchema
 >;
 
 // ─────────────────────────────────────────────
@@ -57,26 +75,21 @@ export const destinationFormSchema = z.object({
     .string()
     .min(2, "Destination name must be at least 2 characters")
     .max(255, "Destination name must be at most 255 characters"),
-  // slug di-generate otomatis dari name, tetap divalidasi format-nya
   slug: slugSchema,
-  category_id: uuidSchema,
+  location_id: uuidSchema,
   type: z
     .string()
     .min(1, "Type is required")
     .max(100, "Type must be at most 100 characters"),
   description: z.string().min(1, "Description is required"),
   long_description: z.string().min(1, "Long description is required"),
-  location: z.string().min(1, "Location is required"),
   atmosphere: z.string().min(1, "Atmosphere is required"),
-  // backend: min(1) — wajib diisi
   accessibility_notes: z.string().min(1, "Accessibility notes are required"),
   seasonal_considerations: z
     .string()
     .min(1, "Seasonal considerations are required"),
-  // backend tidak allow empty string untuk image
   image: z.string().url("Invalid image URL"),
   guest_capacity: z.string().min(1, "Guest capacity is required"),
-  // backend: semua array wajib min 1 item
   highlights: z.array(z.string()).min(1, "At least one highlight is required"),
   best_for: z
     .array(z.string())

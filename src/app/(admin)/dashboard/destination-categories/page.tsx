@@ -27,6 +27,7 @@ import { CreateModal } from "@/components/shared/create-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
+import { toSlug } from "@/utils";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -104,7 +105,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "OPEN_DELETE":
       return { ...state, deleteTarget: action.category, deleteStatus: "confirm" };
     case "CLOSE_DELETE":
-      // Block closing while a delete is in-flight
       return state.deleteStatus === "deleting"
         ? state
         : { ...state, deleteTarget: null, deleteStatus: "idle" };
@@ -118,7 +118,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "OPEN_CREATE":
       return { ...state, createStatus: "open" };
     case "CLOSE_CREATE":
-      // Block closing while a create is in-flight
       return state.createStatus === "creating"
         ? state
         : { ...state, createStatus: "idle" };
@@ -172,7 +171,6 @@ function Pagination({
 }) {
   const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1);
 
-  // Windowed page numbers — show at most 7 buttons with ellipsis
   const getVisiblePages = (): (number | "...")[] => {
     if (meta.totalPages <= 7) return pages;
     const range: (number | "...")[] = [];
@@ -253,9 +251,11 @@ function CategoryRow({
   index: number;
   onDeleteClick: (category: DestinationCategory) => void;
 }) {
+  const locationCount = category.locations?.length ?? 0;
+
   return (
     <>
-      {/* ── Mobile: Card layout ── */}
+      {/* ── Mobile ── */}
       <div className="flex sm:hidden items-center gap-3 px-4 py-3.5 border-b border-primary/10 active:bg-primary/5 transition-colors">
         <div className="w-9 h-9 bg-primary/5 flex items-center justify-center shrink-0">
           <FolderOpen className="w-4 h-4 text-primary/40" />
@@ -266,8 +266,7 @@ function CategoryRow({
           <div className="flex items-center gap-1 mt-0.5">
             <MapPin className="w-3 h-3 text-primary/30 shrink-0" />
             <span className="text-xs text-primary/50">
-              {category.destinations.length}{" "}
-              {category.destinations.length === 1 ? "destination" : "destinations"}
+              {locationCount} {locationCount === 1 ? "location" : "locations"}
             </span>
           </div>
         </div>
@@ -296,7 +295,7 @@ function CategoryRow({
         </div>
       </div>
 
-      {/* ── Desktop: Table row ── */}
+      {/* ── Desktop ── */}
       <div className="hidden sm:flex items-center gap-4 px-6 py-4 border-b border-primary/10 hover:bg-primary/2 transition-colors group">
         <span className="w-8 text-xs text-primary/30 font-mono shrink-0">
           {String(index + 1).padStart(2, "0")}
@@ -308,13 +307,13 @@ function CategoryRow({
 
         <div className="flex-1 min-w-0">
           <p className="text-primary font-medium text-sm">{category.name}</p>
+          <p className="text-primary/40 text-xs font-mono mt-0.5">{category.slug}</p>
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
           <MapPin className="w-3 h-3 text-primary/30" />
           <span className="text-xs text-primary/50">
-            {category.destinations.length}{" "}
-            {category.destinations.length === 1 ? "destination" : "destinations"}
+            {locationCount} {locationCount === 1 ? "location" : "locations"}
           </span>
         </div>
 
@@ -362,13 +361,10 @@ export default function DashboardDestinationCategoriesPage() {
     createStatus,
   } = state;
 
-  // ── useRef: debounce timer (no re-render needed) ──
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // ── useRef: AbortController to cancel stale in-flight fetch requests ──
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search: fires 400ms after the user stops typing ──
+  // ── Debounce search ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -381,7 +377,6 @@ export default function DashboardDestinationCategoriesPage() {
 
   // ── Fetch categories ──
   const getCategories = useCallback(async () => {
-    // Cancel any previous in-flight request to prevent race conditions
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
@@ -401,7 +396,7 @@ export default function DashboardDestinationCategoriesPage() {
         meta: response.data.meta ?? null,
       });
     } catch (err) {
-      if (axios.isCancel(err)) return; // Intentional cancellation — ignore silently
+      if (axios.isCancel(err)) return;
       const errorMsg = axios.isAxiosError(err)
         ? `Error ${err.response?.status ?? "Unknown"}: ${err.message}`
         : err instanceof Error
@@ -412,7 +407,6 @@ export default function DashboardDestinationCategoriesPage() {
     }
   }, [currentPage, debouncedSearch]);
 
-  // Re-fetch whenever getCategories identity changes (i.e. deps changed)
   useEffect(() => {
     getCategories();
   }, [getCategories]);
@@ -423,10 +417,18 @@ export default function DashboardDestinationCategoriesPage() {
     handleSubmit: handleCreateSubmit,
     formState: { errors: createErrors },
     reset: resetCreate,
+    watch: watchCreate,
+    setValue: setValueCreate,
   } = useForm<DestinationCategoryFormData>({
     resolver: zodResolver(destinationCategoryFormSchema),
-    defaultValues: { name: "" },
+    defaultValues: { name: "", slug: "" },
   });
+
+  // Auto-generate slug dari name
+  const createName = watchCreate("name");
+  useEffect(() => {
+    setValueCreate("slug", toSlug(createName), { shouldValidate: false });
+  }, [createName, setValueCreate]);
 
   const handleCreateCategory = useCallback(
     async (data: DestinationCategoryFormData) => {
@@ -472,7 +474,6 @@ export default function DashboardDestinationCategoriesPage() {
       });
       toast.success(`"${deleteTarget.name}" deleted`);
       dispatch({ type: "DELETE_SUCCESS" });
-      // If we just deleted the only item on a non-first page, go back one page
       const isLastOnPage = categories.length === 1 && currentPage > 1;
       if (isLastOnPage) {
         dispatch({ type: "SET_PAGE", page: currentPage - 1 });
@@ -488,20 +489,22 @@ export default function DashboardDestinationCategoriesPage() {
     }
   }, [deleteTarget, categories.length, currentPage, getCategories]);
 
-  // ── useMemo: derived values ──
+  // ── Derived values ──
   const totalCategories = useMemo(() => paginationMeta?.total ?? 0, [paginationMeta]);
-
-  const totalDestinations = useMemo(
-    () => categories.reduce((acc, c) => acc + c.destinations.length, 0),
+  const totalLocations = useMemo(
+    () => categories.reduce((acc, c) => acc + (c.locations?.length ?? 0), 0),
     [categories]
   );
-
   const hasActiveSearch = useMemo(() => !!debouncedSearch, [debouncedSearch]);
-
-  // ── Pagination helper ──
   const handlePageChange = useCallback(
     (page: number) => dispatch({ type: "SET_PAGE", page }),
     []
+  );
+
+  // ── Stable submit handler for CreateModal ──
+  const onConfirmCreate = useMemo(
+    () => handleCreateSubmit(handleCreateCategory),
+    [handleCreateSubmit, handleCreateCategory]
   );
 
   return (
@@ -537,10 +540,7 @@ export default function DashboardDestinationCategoriesPage() {
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {Array.from({ length: 2 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-white border border-primary/20 p-4 sm:p-5 animate-pulse"
-            >
+            <div key={i} className="bg-white border border-primary/20 p-4 sm:p-5 animate-pulse">
               <div className="h-3 bg-primary/10 w-2/3 rounded mb-3" />
               <div className="h-7 bg-primary/10 w-10 rounded" />
             </div>
@@ -556,9 +556,9 @@ export default function DashboardDestinationCategoriesPage() {
           </div>
           <div className="bg-white border border-primary/20 p-4 sm:p-5">
             <p className="text-xs tracking-[0.2em] uppercase text-primary/60 mb-1.5">
-              Total Destinations
+              Total Locations
             </p>
-            <p className="text-2xl font-semibold text-primary">{totalDestinations}</p>
+            <p className="text-2xl font-semibold text-primary">{totalLocations}</p>
           </div>
         </div>
       )}
@@ -585,7 +585,7 @@ export default function DashboardDestinationCategoriesPage() {
         </div>
       </div>
 
-      {/* ── Results info when searching ── */}
+      {/* ── Results info ── */}
       {hasActiveSearch && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} categor
@@ -595,26 +595,18 @@ export default function DashboardDestinationCategoriesPage() {
 
       {/* ── List / Table ── */}
       <div className="bg-white border border-primary/20 overflow-hidden">
-        {/* Desktop table header */}
+        {/* Desktop header */}
         <div className="hidden sm:flex items-center gap-4 px-6 py-3 bg-primary/3 border-b border-primary/10">
           <span className="w-8 text-xs tracking-widest uppercase text-primary/40">#</span>
           <span className="w-9 shrink-0" />
-          <span className="flex-1 text-xs tracking-widest uppercase text-primary/40">
-            Name
-          </span>
-          <span className="shrink-0 text-xs tracking-widest uppercase text-primary/40">
-            Destinations
-          </span>
-          <span className="w-24 shrink-0 text-xs tracking-widest uppercase text-primary/40 text-right">
-            Actions
-          </span>
+          <span className="flex-1 text-xs tracking-widest uppercase text-primary/40">Name</span>
+          <span className="shrink-0 text-xs tracking-widest uppercase text-primary/40">Locations</span>
+          <span className="w-24 shrink-0 text-xs tracking-widest uppercase text-primary/40 text-right">Actions</span>
         </div>
 
-        {/* Mobile list header */}
+        {/* Mobile header */}
         <div className="flex sm:hidden items-center px-4 py-2.5 bg-primary/3 border-b border-primary/10">
-          <span className="text-xs tracking-widest uppercase text-primary/40">
-            Categories
-          </span>
+          <span className="text-xs tracking-widest uppercase text-primary/40">Categories</span>
         </div>
 
         {/* Loading skeletons */}
@@ -633,9 +625,7 @@ export default function DashboardDestinationCategoriesPage() {
         {!isLoading && categories.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 sm:py-24 text-center px-4">
             <FolderOpen className="w-8 h-8 text-primary/20 mb-4" />
-            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
-              No Results
-            </p>
+            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">No Results</p>
             <p className="text-primary/60 text-sm">
               {debouncedSearch
                 ? `No categories match "${debouncedSearch}"`
@@ -672,7 +662,7 @@ export default function DashboardDestinationCategoriesPage() {
       {/* ── Create Modal ── */}
       {(createStatus === "open" || createStatus === "creating") && (
         <CreateModal
-          onConfirm={handleCreateSubmit(handleCreateCategory)}
+          onSubmit={onConfirmCreate}
           onCancel={closeCreateModal}
           isLoading={createStatus === "creating"}
           register={registerCreate}

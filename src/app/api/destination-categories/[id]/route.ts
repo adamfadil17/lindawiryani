@@ -12,7 +12,7 @@ import {
 import { updateDestinationCategorySchema } from "@/utils";
 
 const DESTINATION_CATEGORY_INCLUDE = {
-  destinations: true,
+  locations: true,
 };
 
 export async function GET(
@@ -47,7 +47,7 @@ export async function PATCH(
     const dto = updateDestinationCategorySchema.parse(body);
 
     const category = await prisma.destinationCategory.update({
-      where: { id: id },
+      where: { id },
       data: dto,
       include: DESTINATION_CATEGORY_INCLUDE,
     });
@@ -66,6 +66,11 @@ export async function DELETE(
 
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
+
+    const existing = await prisma.destinationCategory.findUnique({
+      where: { id },
+    });
+    if (!existing) return notFound("Destination Category");
 
     await prisma.destinationCategory.delete({ where: { id } });
     return noContent();

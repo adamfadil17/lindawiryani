@@ -9,14 +9,12 @@ import {
   ok,
   noContent,
 } from "@/lib";
-import { updateWeddingExperienceSchema } from "@/utils";
+import { updateDestinationLocationSchema } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
-const WEDDING_EXPERIENCE_INCLUDE = {
-  faqs: { orderBy: { sort_order: "asc" as const } },
-  venues: true,
-  themes: true,
-  portfolios: true,
+const DESTINATION_LOCATION_INCLUDE = {
+  category: true,
+  destinations: true,
 };
 
 export async function GET(
@@ -26,12 +24,12 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const experience = await prisma.weddingExperience.findUnique({
+    const location = await prisma.destinationLocation.findUnique({
       where: { id },
-      include: WEDDING_EXPERIENCE_INCLUDE,
+      include: DESTINATION_LOCATION_INCLUDE,
     });
-    if (!experience) return notFound("Wedding Experience");
-    return ok(experience);
+    if (!location) return notFound("Destination Location");
+    return ok(location);
   } catch (error) {
     return handleError(error);
   }
@@ -43,32 +41,33 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
+
     const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
     const body = await req.json();
-    const dto = updateWeddingExperienceSchema.parse(body);
+    const dto = updateDestinationLocationSchema.parse(body);
 
     let slug: string | undefined;
     if (dto.name) {
       const baseSlug = toSlug(dto.name);
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.weddingExperience.findUnique({
+        const existing = await prisma.destinationLocation.findUnique({
           where: { slug: s },
         });
         return !!existing && existing.id !== id;
       });
     }
 
-    const experience = await prisma.weddingExperience.update({
+    const location = await prisma.destinationLocation.update({
       where: { id },
       data: {
         ...dto,
         ...(slug !== undefined && { slug }),
       },
-      include: WEDDING_EXPERIENCE_INCLUDE,
+      include: DESTINATION_LOCATION_INCLUDE,
     });
-    return ok(experience);
+    return ok(location);
   } catch (error) {
     return handleError(error);
   }
@@ -84,11 +83,12 @@ export async function DELETE(
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    const existing = await prisma.weddingExperience.findUnique({ where: { id } });
-    if (!existing) return notFound("Wedding Experience");
+    const existing = await prisma.destinationLocation.findUnique({
+      where: { id },
+    });
+    if (!existing) return notFound("Destination Location");
 
-
-    await prisma.weddingExperience.delete({ where: { id } });
+    await prisma.destinationLocation.delete({ where: { id } });
     return noContent();
   } catch (error) {
     return handleError(error);

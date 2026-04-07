@@ -60,6 +60,7 @@ export type LoginDto = z.infer<typeof loginSchema>;
 
 export const createDestinationCategorySchema = z.object({
   name: z.string().min(2).max(255),
+  slug: slugSchema,
 });
 
 export const updateDestinationCategorySchema = createDestinationCategorySchema.partial();
@@ -68,17 +69,31 @@ export type CreateDestinationCategoryDto = z.infer<typeof createDestinationCateg
 export type UpdateDestinationCategoryDto = z.infer<typeof updateDestinationCategorySchema>;
 
 // ─────────────────────────────────────────────
+// DESTINATION LOCATION
+// ─────────────────────────────────────────────
+
+export const createDestinationLocationSchema = z.object({
+  name: z.string().min(2).max(255),
+  slug: slugSchema,
+  category_id: uuidSchema,
+});
+
+export const updateDestinationLocationSchema = createDestinationLocationSchema.partial();
+
+export type CreateDestinationLocationDto = z.infer<typeof createDestinationLocationSchema>;
+export type UpdateDestinationLocationDto = z.infer<typeof updateDestinationLocationSchema>;
+
+// ─────────────────────────────────────────────
 // DESTINATION
 // ─────────────────────────────────────────────
 
 export const createDestinationSchema = z.object({
   name: z.string().min(2).max(255),
   slug: slugSchema,
-  category_id: uuidSchema,
+  location_id: uuidSchema,
   type: z.string().min(1).max(100),
   description: z.string().min(1),
   long_description: z.string().min(1),
-  location: z.string().min(1),
   atmosphere: z.string().min(1),
   accessibility_notes: z.string().min(1),
   seasonal_considerations: z.string().min(1),

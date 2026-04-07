@@ -16,7 +16,9 @@ import {
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const DESTINATION_INCLUDE = {
-  category: true,
+  location: {
+    include: { category: true },
+  },
   venues: true,
   portfolios: true,
 };
@@ -25,6 +27,7 @@ export async function GET(req: NextRequest) {
   try {
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const categoryId = req.nextUrl.searchParams.get("categoryId") ?? undefined;
+    const locationId = req.nextUrl.searchParams.get("locationId") ?? undefined;
     const type = req.nextUrl.searchParams.get("type") ?? undefined;
 
     const where: Record<string, unknown> = {};
@@ -32,10 +35,10 @@ export async function GET(req: NextRequest) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
         { description: { contains: search, mode: "insensitive" } },
-        { location: { contains: search, mode: "insensitive" } },
       ];
     }
-    if (categoryId) where.category_id = categoryId;
+    if (categoryId) where.location = { category_id: categoryId };
+    if (locationId) where.location_id = locationId;
     if (type) where.type = type;
 
     const { data, meta } = await paginateQuery(
@@ -78,11 +81,10 @@ export async function POST(req: NextRequest) {
       data: {
         name: dto.name,
         slug,
-        category_id: dto.category_id,
+        location_id: dto.location_id,
         type: dto.type,
         description: dto.description,
         long_description: dto.long_description,
-        location: dto.location,
         atmosphere: dto.atmosphere,
         accessibility_notes: dto.accessibility_notes,
         seasonal_considerations: dto.seasonal_considerations,

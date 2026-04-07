@@ -61,6 +61,9 @@ export async function DELETE(
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
+    const existing = await prisma.submission.findUnique({ where: { id } });
+    if (!existing) return notFound("Submission");
+
     await prisma.submission.delete({ where: { id } });
     return noContent();
   } catch (error) {

@@ -86,21 +86,10 @@ export async function DELETE(
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    await prisma.$transaction(async (tx) => {
-      await tx.venueImage.deleteMany({ where: { venue_id: id } });
+    const existing = await prisma.venue.findUnique({ where: { id } });
+    if (!existing) return notFound("Venue");
 
-      await tx.weddingTheme.updateMany({
-        where: { venue_id: id },
-        data: { venue_id: null },
-      });
-
-      await tx.portfolio.updateMany({
-        where: { venue_id: id },
-        data: { venue_id: null },
-      });
-
-      await tx.venue.delete({ where: { id } });
-    });
+    await prisma.venue.delete({ where: { id } });
 
     return noContent();
   } catch (error) {

@@ -13,7 +13,9 @@ import { updateDestinationSchema } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const DESTINATION_INCLUDE = {
-  category: true,
+  location: {
+    include: { category: true },
+  },
   venues: true,
   portfolios: true,
 };
@@ -83,6 +85,9 @@ export async function DELETE(
 
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
+
+    const existing = await prisma.destination.findUnique({ where: { id } });
+    if (!existing) return notFound("Destination");
 
     await prisma.destination.delete({ where: { id } });
     return noContent();

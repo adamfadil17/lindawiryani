@@ -111,7 +111,18 @@ export interface WeddingExperience {
 export interface DestinationCategory {
   id: string;
   name: string;
-  destinations: Destination[];
+  slug: string;
+  locations: DestinationLocation[];
+}
+
+// ─── DESTINATION LOCATION ───────────────────────────────
+export interface DestinationLocation {
+  id: string;
+  name: string;
+  slug: string;
+  category_id: string;
+  category?: DestinationCategory;
+  destinations?: Destination[];
 }
 
 // ─── DESTINATION ────────────────────────────────────────
@@ -119,12 +130,11 @@ export interface Destination {
   id: string;
   name: string;
   slug: string;
-  category_id: string;
-  category: DestinationCategory;
+  location_id: string;
+  location: DestinationLocation;
   type: string;
   description: string;
   long_description: string;
-  location: string;
   atmosphere: string;
   accessibility_notes: string;
   seasonal_considerations: string;

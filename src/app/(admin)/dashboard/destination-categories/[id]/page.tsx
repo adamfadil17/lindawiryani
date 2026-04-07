@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -15,62 +14,296 @@ import {
   X,
   MapPin,
   Loader2,
-  Eye,
   Trash2,
+  Plus,
 } from "lucide-react";
-import { Destination, DestinationCategory } from "@/types";
-import { destinationCategoryFormSchema, type DestinationCategoryFormData } from "@/utils/form-validators";
+import { DestinationCategory, DestinationLocation } from "@/types";
+import {
+  destinationCategoryFormSchema,
+  destinationLocationFormSchema,
+  type DestinationCategoryFormData,
+  type DestinationLocationFormData,
+} from "@/utils/form-validators";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
+import { toast } from "sonner";
 
-// ─── Destination Mini Card ────────────────────────────────────────────────────
+// ─── Location Row ─────────────────────────────────────────────────────────────
 
-function DestinationMiniCard({ destination }: { destination: Destination }) {
+function LocationRow({
+  location,
+  categoryId,
+  onUpdated,
+  onDeleted,
+}: {
+  location: DestinationLocation;
+  categoryId: string;
+  onUpdated: (updated: DestinationLocation) => void;
+  onDeleted: (id: string) => void;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+    reset,
+  } = useForm<DestinationLocationFormData>({
+    resolver: zodResolver(destinationLocationFormSchema),
+    defaultValues: {
+      name: location.name,
+      slug: location.slug,
+      category_id: categoryId,
+    },
+  });
+
+  const onSave = async (data: DestinationLocationFormData) => {
+    setIsSaving(true);
+    try {
+      const response = await axios.patch(
+        `/api/destination-locations/${location.id}`,
+        { name: data.name, slug: data.slug },
+        { headers: getAuthHeaders(true) }
+      );
+      onUpdated(response.data.data);
+      setIsEditing(false);
+      toast.success("Location updated");
+    } catch {
+      toast.error("Failed to update location");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const onDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await axios.delete(`/api/destination-locations/${location.id}`, {
+        headers: getAuthHeaders(),
+      });
+      onDeleted(location.id);
+      toast.success(`"${location.name}" deleted`);
+    } catch {
+      toast.error("Failed to delete location");
+      setIsDeleting(false);
+      setShowDeleteModal(false);
+    }
+  };
+
   return (
-    <div className="flex items-center gap-3 p-3 sm:p-4 bg-white border border-primary/20 hover:border-primary/30 hover:shadow-sm transition-all group">
-      <div className="relative w-14 h-11 sm:w-16 sm:h-12 shrink-0 overflow-hidden">
-        <Image
-          src={destination.image || "https://placehold.net/default.svg"}
-          alt={destination.name}
-          fill
-          className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
-          sizes="64px"
-        />
+    <div className="flex items-start gap-3 p-3 sm:p-4 border-b border-primary/10 last:border-0 group">
+      <div className="w-8 h-8 bg-primary/5 flex items-center justify-center shrink-0 mt-0.5">
+        <MapPin className="w-3.5 h-3.5 text-primary/40" />
       </div>
+
       <div className="flex-1 min-w-0">
-        <p className="text-primary/60 text-xs tracking-widest uppercase mb-0.5">
-          {destination.type}
-        </p>
-        <p className="text-primary font-medium text-sm truncate">
-          {destination.name}
-        </p>
-        <div className="flex items-center gap-1 mt-0.5">
-          <MapPin className="w-3 h-3 text-primary/30 shrink-0" />
-          <p className="text-primary/50 text-xs truncate">
-            {destination.location}
-          </p>
+        {isEditing ? (
+          <form onSubmit={handleSubmit(onSave)} className="space-y-2">
+            <div>
+              <input
+                {...register("name")}
+                type="text"
+                placeholder="Location name"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    reset();
+                    setIsEditing(false);
+                  }
+                }}
+                className="w-full px-3 py-2 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+              )}
+            </div>
+            <div>
+              <input
+                {...register("slug")}
+                type="text"
+                placeholder="location-slug"
+                className="w-full px-3 py-2 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors font-mono"
+              />
+              {errors.slug && (
+                <p className="text-red-500 text-xs mt-1">{errors.slug.message}</p>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={isSaving || !isDirty}
+                className="flex items-center gap-1 bg-primary text-white text-xs tracking-widest uppercase px-3 py-2 hover:bg-primary/90 transition-colors disabled:opacity-50 hover:cursor-pointer"
+              >
+                {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={() => { reset(); setIsEditing(false); }}
+                disabled={isSaving}
+                className="flex items-center gap-1 border border-primary/20 text-primary text-xs tracking-widest uppercase px-3 py-2 hover:bg-primary/5 transition-colors hover:cursor-pointer"
+              >
+                <X className="w-3 h-3" />
+                Cancel
+              </button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <p className="text-primary font-medium text-sm">{location.name}</p>
+            <p className="text-primary/40 text-xs font-mono mt-0.5">{location.slug}</p>
+            {location.destinations && (
+              <p className="text-primary/50 text-xs mt-1">
+                {location.destinations.length}{" "}
+                {location.destinations.length === 1 ? "destination" : "destinations"}
+              </p>
+            )}
+          </>
+        )}
+      </div>
+
+      {!isEditing && (
+        <div className="flex items-center gap-0.5 shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={() => setIsEditing(true)}
+            className="w-8 h-8 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 transition-colors hover:cursor-pointer"
+            title="Edit location"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="w-8 h-8 flex items-center justify-center text-primary/40 hover:text-red-500 hover:bg-red-50 transition-colors hover:cursor-pointer"
+            title="Delete location"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
         </div>
-      </div>
-      <div className="flex items-center gap-1 shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-        <Link
-          href={`/destinations/${destination.slug}`}
-          target="_blank"
-          className="w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 active:bg-primary/10 transition-colors"
-          title="View public page"
-        >
-          <Eye className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
-        </Link>
-        <Link
-          href={`/dashboard/destinations/${destination.id}`}
-          className="w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 active:bg-primary/10 transition-colors"
-          title="Edit destination"
-        >
-          <Pencil className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
-        </Link>
-      </div>
+      )}
+
+      {showDeleteModal && (
+        <DeleteModal
+          name={location.name}
+          onConfirm={onDelete}
+          onCancel={() => setShowDeleteModal(false)}
+          isLoading={isDeleting}
+        />
+      )}
     </div>
+  );
+}
+
+// ─── Add Location Form ────────────────────────────────────────────────────────
+
+function AddLocationForm({
+  categoryId,
+  onCreated,
+  onCancel,
+}: {
+  categoryId: string;
+  onCreated: (location: DestinationLocation) => void;
+  onCancel: () => void;
+}) {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+    setValue,
+  } = useForm<DestinationLocationFormData>({
+    resolver: zodResolver(destinationLocationFormSchema),
+    defaultValues: { name: "", slug: "", category_id: categoryId },
+  });
+
+  // Auto-generate slug dari name
+  const nameValue = watch("name");
+  const slugRef = useRef<boolean>(false);
+  useEffect(() => {
+    if (!slugRef.current) {
+      const generated = nameValue
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+      setValue("slug", generated, { shouldValidate: false });
+    }
+  }, [nameValue, setValue]);
+
+  const onSave = async (data: DestinationLocationFormData) => {
+    setIsSaving(true);
+    try {
+      const response = await axios.post(
+        "/api/destination-locations",
+        { ...data, category_id: categoryId },
+        { headers: getAuthHeaders(true) }
+      );
+      onCreated(response.data.data);
+      reset();
+      toast.success("Location added");
+    } catch {
+      toast.error("Failed to add location");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSave)} className="p-3 sm:p-4 border-t border-primary/10 bg-primary/2 space-y-2">
+      <p className="text-xs tracking-widest uppercase text-primary/50 mb-2">New Location</p>
+      <div>
+        <input
+          {...register("name")}
+          type="text"
+          placeholder="Location name"
+          autoFocus
+          onFocus={() => { slugRef.current = false; }}
+          className="w-full px-3 py-2 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors bg-white"
+        />
+        {errors.name && (
+          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+        )}
+      </div>
+      <div>
+        <input
+          {...register("slug")}
+          type="text"
+          placeholder="location-slug"
+          onFocus={() => { slugRef.current = true; }}
+          className="w-full px-3 py-2 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors font-mono bg-white"
+        />
+        {errors.slug && (
+          <p className="text-red-500 text-xs mt-1">{errors.slug.message}</p>
+        )}
+      </div>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={isSaving}
+          className="flex items-center gap-1.5 bg-primary text-white text-xs tracking-widest uppercase px-3 py-2 hover:bg-primary/90 transition-colors disabled:opacity-50 hover:cursor-pointer"
+        >
+          {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+          Add
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={isSaving}
+          className="flex items-center gap-1 border border-primary/20 text-primary text-xs tracking-widest uppercase px-3 py-2 hover:bg-primary/5 transition-colors hover:cursor-pointer"
+        >
+          <X className="w-3 h-3" />
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 }
 
@@ -82,22 +315,26 @@ export default function DestinationCategoryDetailPage() {
   const id = params.id as string;
 
   const [category, setCategory] = useState<DestinationCategory | null>(null);
+  const [locations, setLocations] = useState<DestinationLocation[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  // Edit state
+  // Category edit state
   const [isEditing, setIsEditing] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Delete state
+  // Category delete state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ── Unsaved changes guard — state only (logic setelah useForm) ─────────────
+  // Add location state
+  const [showAddLocation, setShowAddLocation] = useState(false);
+
+  // Unsaved changes guard
   const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
 
-  // Form setup
+  // Category form
   const {
     register,
     handleSubmit,
@@ -106,18 +343,13 @@ export default function DestinationCategoryDetailPage() {
     watch,
   } = useForm<DestinationCategoryFormData>({
     resolver: zodResolver(destinationCategoryFormSchema),
-    defaultValues: {
-      name: "",
-    },
+    defaultValues: { name: "", slug: "" },
   });
 
   const nameValue = watch("name");
-
-  // ── Unsaved changes guard ──────────────────────────────────────────────────────
-  // Guard aktif hanya ketika sedang dalam mode edit DAN form sudah diubah (isDirty)
   const hasUnsavedChanges = isEditing && isDirty;
 
-  // Block browser close / refresh saat ada perubahan yang belum disimpan
+  // Block browser close when editing
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && !isSaving) {
@@ -129,7 +361,6 @@ export default function DestinationCategoryDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, isSaving]);
 
-  // Helper: navigate dengan guard check
   const guardedNavigate = useCallback(
     (href: string) => {
       if (hasUnsavedChanges && !isSaving) {
@@ -141,21 +372,22 @@ export default function DestinationCategoryDetailPage() {
     [hasUnsavedChanges, isSaving, router]
   );
 
-  // ── Fetch category ────────────────────────────────────────────────────────
+  // ── Fetch category ──────────────────────────────────────────────────────────
   const getDestinationCategoryById = useCallback(async () => {
     setIsLoadingData(true);
     setApiError(null);
     try {
       const response = await axios.get(`/api/destination-categories/${id}`);
-      setCategory(response.data.data);
-      reset({ name: response.data.data.name });
+      const data: DestinationCategory = response.data.data;
+      setCategory(data);
+      setLocations(data.locations ?? []);
+      reset({ name: data.name, slug: data.slug });
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        if (error.response?.status === 404) {
-          setApiError("Category not found.");
-        } else {
-          setApiError("Failed to load category. Please try again.");
-        }
+        setApiError(error.response?.status === 404
+          ? "Category not found."
+          : "Failed to load category. Please try again."
+        );
       } else {
         setApiError("Failed to load category. Please try again.");
       }
@@ -168,9 +400,9 @@ export default function DestinationCategoryDetailPage() {
     getDestinationCategoryById();
   }, [getDestinationCategoryById]);
 
-  // ── Handle save ────────────────────────────────────────────────────────────
+  // ── Save category ───────────────────────────────────────────────────────────
   const onSubmitForm = async (data: DestinationCategoryFormData) => {
-    if (data.name === category?.name) {
+    if (data.name === category?.name && data.slug === category?.slug) {
       setIsEditing(false);
       return;
     }
@@ -186,22 +418,20 @@ export default function DestinationCategoryDetailPage() {
         { name: nameValue.trim() },
         { headers: getAuthHeaders(true) }
       );
-      setCategory(response.data.data);
-      reset({ name: response.data.data.name });
+      const updated: DestinationCategory = response.data.data;
+      setCategory(updated);
+      reset({ name: updated.name, slug: updated.slug });
       setIsEditing(false);
       setShowSaveModal(false);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setApiError("Failed to save. Please try again.");
-      } else {
-        setApiError("Failed to save. Please try again.");
-      }
+      toast.success("Category saved");
+    } catch {
+      setApiError("Failed to save. Please try again.");
     } finally {
       setIsSaving(false);
     }
   };
 
-  // ── Handle delete ──────────────────────────────────────────────────────────
+  // ── Delete category ─────────────────────────────────────────────────────────
   const deleteDestinationCategoryById = async () => {
     setIsDeleting(true);
     try {
@@ -209,48 +439,51 @@ export default function DestinationCategoryDetailPage() {
         headers: getAuthHeaders(),
       });
       router.push("/dashboard/destination-categories");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setApiError("Failed to delete category.");
-      } else {
-        setApiError("Failed to delete category.");
-      }
+    } catch {
+      setApiError("Failed to delete category.");
       setIsDeleting(false);
       setShowDeleteModal(false);
     }
   };
 
-  // ── Handle edit cancel ─────────────────────────────────────────────────────
   const handleEditCancel = () => {
     reset();
     setIsEditing(false);
   };
 
-  // ── Loading ──────────────────────────────────────────────────────────────��─
+  // ── Location CRUD callbacks ─────────────────────────────────────────────────
+  const handleLocationCreated = useCallback((location: DestinationLocation) => {
+    setLocations((prev) => [...prev, location]);
+    setShowAddLocation(false);
+  }, []);
 
+  const handleLocationUpdated = useCallback((updated: DestinationLocation) => {
+    setLocations((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
+  }, []);
+
+  const handleLocationDeleted = useCallback((deletedId: string) => {
+    setLocations((prev) => prev.filter((l) => l.id !== deletedId));
+  }, []);
+
+  // ── Loading ─────────────────────────────────────────────────────────────────
   if (isLoadingData) {
     return (
       <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">
         <div className="flex flex-col items-center justify-center py-32 sm:py-40">
           <Loader2 className="w-6 h-6 text-primary/30 animate-spin mb-3" />
-          <p className="text-primary/40 text-xs tracking-widest uppercase">
-            Loading...
-          </p>
+          <p className="text-primary/40 text-xs tracking-widest uppercase">Loading...</p>
         </div>
       </div>
     );
   }
 
-  // ── Error ──────────────────────────────────────────────────────────────────
-
+  // ── Error ───────────────────────────────────────────────────────────────────
   if (apiError && !category) {
     return (
       <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">
         <div className="flex flex-col items-center justify-center py-32 sm:py-40 text-center">
           <FolderOpen className="w-8 h-8 text-primary/20 mb-4" />
-          <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
-            Error
-          </p>
+          <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">Error</p>
           <p className="text-primary/60 text-sm mb-6">{apiError}</p>
           <Link
             href="/dashboard/destination-categories"
@@ -287,10 +520,7 @@ export default function DestinationCategoryDetailPage() {
       {apiError && (
         <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 mb-6 flex items-center justify-between gap-3">
           <span className="text-xs sm:text-sm">{apiError}</span>
-          <button
-            onClick={() => setApiError(null)}
-            className="hover:cursor-pointer shrink-0"
-          >
+          <button onClick={() => setApiError(null)} className="hover:cursor-pointer shrink-0">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -303,12 +533,8 @@ export default function DestinationCategoryDetailPage() {
           <div className="bg-white border border-primary/20 p-4 sm:p-6">
             <div className="flex items-start justify-between mb-5">
               <div>
-                <p className="text-primary/60 tracking-[0.25em] uppercase text-xs mb-1">
-                  Category
-                </p>
-                <p className="text-primary/40 text-xs font-mono">
-                  {category.id.slice(0, 8)}…
-                </p>
+                <p className="text-primary/60 tracking-[0.25em] uppercase text-xs mb-1">Category</p>
+                <p className="text-primary/40 text-xs font-mono">{category.id.slice(0, 8)}…</p>
               </div>
               <div className="w-10 h-10 bg-primary/5 flex items-center justify-center">
                 <FolderOpen className="w-5 h-5 text-primary/40" />
@@ -316,7 +542,7 @@ export default function DestinationCategoryDetailPage() {
             </div>
 
             {/* Inline Name Editor */}
-            <div className="mb-5">
+            <div className="mb-4">
               <label className="block text-xs tracking-widest uppercase text-primary/40 mb-2">
                 Category Name
               </label>
@@ -326,11 +552,7 @@ export default function DestinationCategoryDetailPage() {
                     {...register("name")}
                     type="text"
                     autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === "Escape") {
-                        handleEditCancel();
-                      }
-                    }}
+                    onKeyDown={(e) => { if (e.key === "Escape") handleEditCancel(); }}
                     className="w-full px-3 py-2.5 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors"
                   />
                   {errors.name && (
@@ -342,11 +564,7 @@ export default function DestinationCategoryDetailPage() {
                       disabled={isSaving || !isDirty}
                       className="flex-1 flex items-center justify-center gap-1.5 bg-primary text-white text-xs tracking-widest uppercase py-2.5 sm:py-2 hover:bg-primary/90 active:bg-primary/80 transition-colors disabled:opacity-50 hover:cursor-pointer"
                     >
-                      {isSaving ? (
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                      ) : (
-                        <Check className="w-3 h-3" />
-                      )}
+                      {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
                       Save
                     </button>
                     <button
@@ -362,13 +580,14 @@ export default function DestinationCategoryDetailPage() {
                 </form>
               ) : (
                 <div className="flex items-center justify-between">
-                  <p className="text-primary font-semibold text-lg">
-                    {category.name}
-                  </p>
+                  <div>
+                    <p className="text-primary font-semibold text-lg">{category.name}</p>
+                    <p className="text-primary/40 text-xs font-mono mt-0.5">{category.slug}</p>
+                  </div>
                   <button
                     onClick={() => {
                       setIsEditing(true);
-                      reset({ name: category.name });
+                      reset({ name: category.name, slug: category.slug });
                     }}
                     className="w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 active:bg-primary/10 transition-colors hover:cursor-pointer"
                     title="Edit name"
@@ -382,24 +601,18 @@ export default function DestinationCategoryDetailPage() {
             {/* Stats */}
             <div className="border-t border-primary/10 pt-4">
               <div className="flex items-center justify-between py-2 border-b border-primary/10">
-                <span className="text-xs text-primary/50 tracking-wider">
-                  Destinations
-                </span>
-                <span className="text-sm font-semibold text-primary">
-                  {category.destinations.length}
-                </span>
+                <span className="text-xs text-primary/50 tracking-wider">Locations</span>
+                <span className="text-sm font-semibold text-primary">{locations.length}</span>
               </div>
             </div>
           </div>
 
           {/* Danger Zone */}
           <div className="bg-white border border-red-100 p-4 sm:p-6">
-            <p className="text-xs tracking-widest uppercase text-red-400 mb-3">
-              Danger Zone
-            </p>
+            <p className="text-xs tracking-widest uppercase text-red-400 mb-3">Danger Zone</p>
             <p className="text-primary/60 text-xs leading-relaxed mb-4">
-              Deleting this category will permanently remove it. Destinations
-              linked to this category will need to be reassigned.
+              Deleting this category will also remove all its locations. Destinations linked to
+              those locations will need to be reassigned.
             </p>
             <button
               onClick={() => setShowDeleteModal(true)}
@@ -411,56 +624,62 @@ export default function DestinationCategoryDetailPage() {
           </div>
         </div>
 
-        {/* ── Right: Destinations in this Category ── */}
+        {/* ── Right: Locations in this Category ── */}
         <div className="lg:col-span-2">
           <div className="bg-white border border-primary/20 overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-primary/10">
               <div>
-                <p className="text-primary font-medium text-sm">
-                  Destinations in this Category
-                </p>
+                <p className="text-primary font-medium text-sm">Locations in this Category</p>
                 <p className="text-primary/50 text-xs mt-0.5">
-                  {category.destinations.length}{" "}
-                  {category.destinations.length === 1
-                    ? "destination"
-                    : "destinations"}
+                  {locations.length} {locations.length === 1 ? "location" : "locations"}
                 </p>
               </div>
-              <Link
-                href={`/dashboard/destinations?category=${category.id}`}
-                className="text-xs tracking-widest uppercase text-primary/50 hover:text-primary transition-colors border-b border-primary/20 hover:border-primary shrink-0 ml-4"
-              >
-                View All
-              </Link>
+              {!showAddLocation && (
+                <button
+                  onClick={() => setShowAddLocation(true)}
+                  className="inline-flex items-center gap-1.5 bg-primary text-white text-xs tracking-widest uppercase px-3 py-2 hover:bg-primary/90 transition-colors hover:cursor-pointer shrink-0 ml-4"
+                >
+                  <Plus className="w-3 h-3" />
+                  Add Location
+                </button>
+              )}
             </div>
 
-            {/* Destination List */}
-            {category.destinations.length === 0 ? (
+            {/* Location list */}
+            {locations.length === 0 && !showAddLocation ? (
               <div className="flex flex-col items-center justify-center py-16 sm:py-20 text-center px-4">
                 <MapPin className="w-7 h-7 text-primary/15 mb-3" />
-                <p className="text-primary/60 text-xs tracking-widest uppercase mb-1.5">
-                  No Destinations
-                </p>
-                <p className="text-primary/40 text-sm">
-                  No destinations linked to this category yet.
-                </p>
-                <Link
-                  href="/dashboard/destinations/new"
-                  className="mt-4 text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
+                <p className="text-primary/60 text-xs tracking-widest uppercase mb-1.5">No Locations</p>
+                <p className="text-primary/40 text-sm">No locations in this category yet.</p>
+                <button
+                  onClick={() => setShowAddLocation(true)}
+                  className="mt-4 text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors hover:cursor-pointer"
                 >
-                  Add Destination
-                </Link>
+                  Add First Location
+                </button>
               </div>
             ) : (
-              <div className="p-3 sm:p-4 grid sm:grid-cols-2 gap-2 sm:gap-3">
-                {category.destinations.map((destination) => (
-                  <DestinationMiniCard
-                    key={destination.id}
-                    destination={destination}
+              <div>
+                {locations.map((location) => (
+                  <LocationRow
+                    key={location.id}
+                    location={location}
+                    categoryId={category.id}
+                    onUpdated={handleLocationUpdated}
+                    onDeleted={handleLocationDeleted}
                   />
                 ))}
               </div>
+            )}
+
+            {/* Add location form */}
+            {showAddLocation && (
+              <AddLocationForm
+                categoryId={category.id}
+                onCreated={handleLocationCreated}
+                onCancel={() => setShowAddLocation(false)}
+              />
             )}
           </div>
         </div>
