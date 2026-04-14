@@ -36,12 +36,10 @@ import { toSlug } from "@/utils";
 import { venueFormSchema, VenueFormData } from "@/utils/form-validators";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { Destination, WeddingExperience } from "@/types";
-
-// ─── Types ──────────────────────────────────────────────────────────
 type GalleryImage = { id: string; url: string; sort_order: number };
 
 type GalleryManagerProps = {
-  venueId: string | null; // null = new venue (not yet created)
+  venueId: string | null;
   images: GalleryImage[];
   onChange: (images: GalleryImage[]) => void;
 };
@@ -54,7 +52,7 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
     if (!pendingUrl) return;
 
     if (venueId) {
-      // Edit mode — persist immediately
+
       setIsAdding(true);
       try {
         const response = await axios.post(
@@ -74,7 +72,7 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
         setIsAdding(false);
       }
     } else {
-      // Create mode — queue locally, flush after venue creation
+
       const tempImage: GalleryImage = {
         id: `temp-${Date.now()}`,
         url: pendingUrl,
@@ -104,7 +102,7 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
 
   return (
     <div className="space-y-4">
-      {/* Preview grid */}
+      
       {images.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
           {images.map((img, i) => (
@@ -135,7 +133,7 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
         </div>
       )}
 
-      {/* Add new gallery image */}
+      
       <div className="space-y-2">
         <ImageUpload
           value={pendingUrl}
@@ -144,7 +142,7 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
         />
         {pendingUrl && (
           <>
-            {/* Preview sebelum add */}
+            
             <div className="relative w-full aspect-[4/3] overflow-hidden border border-primary/20 bg-primary/5">
               <Image
                 src={pendingUrl}
@@ -177,15 +175,13 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function VenueDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   const isNew = id === "new";
 
-  // ── React Hook Form ──
+
   const {
     watch,
     handleSubmit,
@@ -208,7 +204,7 @@ export default function VenueDetailPage() {
     },
   });
 
-  // setField helper — always triggers validation + touch so errors show immediately
+
   const setField = (key: keyof VenueFormData, value: unknown) =>
     setValue(key as keyof VenueFormData, value as never, {
       shouldValidate: true,
@@ -218,22 +214,22 @@ export default function VenueDetailPage() {
 
   const formData = watch();
 
-  // ── Gallery state (managed separately from main form) ──
+
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
 
-  // ── Page state ──
+
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
 
-  // ── Save state machine: idle | confirm | saving | saved ──
+
   const [saveStatus, setSaveStatus] = useState<"idle" | "confirm" | "saving" | "saved">("idle");
 
-  // ── Delete state machine: idle | confirm | deleting ──
+
   const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
 
-  // ── Unsaved changes guard ──
-  // For create mode: any non-empty field counts as "dirty"
-  // For edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
+
+
+
   const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
 
   const hasUnsavedChanges = isNew
@@ -248,7 +244,7 @@ export default function VenueDetailPage() {
       )
     : isDirty;
 
-  // Block browser close / refresh when there are unsaved changes
+
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && saveStatus !== "saving") {
@@ -260,7 +256,7 @@ export default function VenueDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, saveStatus]);
 
-  // Helper: navigate with guard check
+
   const guardedNavigate = useCallback(
     (href: string) => {
       if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
@@ -272,13 +268,13 @@ export default function VenueDetailPage() {
     [hasUnsavedChanges, saveStatus, router]
   );
 
-  // ── Reference data for dropdowns ──
+
   const [allDestinations, setAllDestinations] = useState<Destination[]>([]);
   const [allExperiences, setAllExperiences] = useState<WeddingExperience[]>([]);
   const [isDestinationsLoading, setIsDestinationsLoading] = useState(true);
   const [isExperiencesLoading, setIsExperiencesLoading] = useState(true);
 
-  // ── Fetch destinations ──
+
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
@@ -301,7 +297,7 @@ export default function VenueDetailPage() {
     fetchDestinations();
   }, [isNew, setValue]);
 
-  // ── Fetch wedding experiences ──
+
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
@@ -324,7 +320,7 @@ export default function VenueDetailPage() {
     fetchExperiences();
   }, [isNew, setValue]);
 
-  // ── Load venue data (edit mode only) ──
+
   const fetchVenue = useCallback(async () => {
     if (isNew) return;
     setIsLoading(true);
@@ -344,7 +340,7 @@ export default function VenueDetailPage() {
         experience_id: String(data.experience_id ?? ""),
       });
 
-      // Load gallery from nested include
+
       const gallery: GalleryImage[] = Array.isArray(data.gallery)
         ? data.gallery.map((g: { id: string; url: string; sort_order: number }) => ({
             id: g.id,
@@ -374,12 +370,12 @@ export default function VenueDetailPage() {
     fetchVenue();
   }, [fetchVenue]);
 
-  // ── Save flow ──
+
   const onSubmitForm = async (_data: VenueFormData) => {
     setSaveStatus("confirm");
   };
 
-  // Called when handleSubmit validation fails — force all errors visible
+
   const onSubmitError = async () => {
     await trigger();
   };
@@ -397,7 +393,7 @@ export default function VenueDetailPage() {
         const createdVenue = response.data.data ?? response.data;
         const newVenueId: string = createdVenue.id;
 
-        // Flush queued gallery images
+
         for (const img of galleryImages) {
           try {
             await axios.post(
@@ -406,7 +402,7 @@ export default function VenueDetailPage() {
               { headers: getAuthHeaders(true) },
             );
           } catch {
-            // Non-blocking — toast per image is too noisy
+
           }
         }
 
@@ -414,7 +410,7 @@ export default function VenueDetailPage() {
         toast.success("Venue created!", {
           description: "Your new venue has been added to the system.",
         });
-        reset(); // clear dirty state before navigating
+        reset();
         router.push("/dashboard/venues");
       } else {
         await axios.patch(`/api/venues/${id}`, payload, {
@@ -424,7 +420,7 @@ export default function VenueDetailPage() {
         toast.success("Changes saved!", {
           description: "Your venue has been updated.",
         });
-        // Re-sync RHF baseline so isDirty becomes false
+
         reset({ ...formData, slug: toSlug(formData.name) });
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -436,11 +432,11 @@ export default function VenueDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to save", { description: errorMsg });
-      setSaveStatus("confirm"); // keep modal open on error
+      setSaveStatus("confirm");
     }
   };
 
-  // ── Delete flow ──
+
   const deleteVenueById = async () => {
     setDeleteStatus("deleting");
     try {
@@ -460,16 +456,16 @@ export default function VenueDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
-      setDeleteStatus("confirm"); // keep modal open on error
+      setDeleteStatus("confirm");
     }
   };
 
-  // ── Derived values ──
+
   const slugPreview = formData.name ? toSlug(formData.name) : "";
   const selectedDestination = allDestinations.find((d) => d.id === formData.destination_id);
   const selectedExperience = allExperiences.find((e) => e.id === formData.experience_id);
 
-  // ── Not found ──
+
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
@@ -486,7 +482,7 @@ export default function VenueDetailPage() {
     );
   }
 
-  // ── Loading skeleton ──
+
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1200px] mx-auto animate-pulse">
@@ -527,7 +523,7 @@ export default function VenueDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1200px] mx-auto">
-      {/* ── Header ── */}
+      
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -587,16 +583,16 @@ export default function VenueDetailPage() {
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
       >
-        {/* ── Left Column ── */}
+        
         <div className="lg:col-span-2 space-y-6">
 
-          {/* Basic Information */}
+          
           <Section
             title="Basic Information"
             subtitle="Core details about this venue"
           >
             <div className="space-y-5">
-              {/* name — required, min 2, max 255 */}
+              
               <FormField label="Venue Name" required>
                 <TextInput
                   value={formData.name}
@@ -609,7 +605,7 @@ export default function VenueDetailPage() {
                 />
               </FormField>
 
-              {/* slogan — required, min 2 */}
+              
               <FormField label="Slogan" required>
                 <TextInput
                   value={formData.slogan}
@@ -619,7 +615,7 @@ export default function VenueDetailPage() {
                 />
               </FormField>
 
-              {/* description — required, min 1 */}
+              
               <FormField label="Description" required>
                 <TextareaInput
                   value={formData.description}
@@ -632,10 +628,10 @@ export default function VenueDetailPage() {
             </div>
           </Section>
 
-          {/* Destination */}
+          
           <Section title="Destination" subtitle="Where this venue is situated">
             <div className="grid sm:grid-cols-2 gap-5">
-              {/* destination_id — required, uuid */}
+              
               <FormField label="Destination" required>
                 <div className="relative">
                   <select
@@ -666,7 +662,7 @@ export default function VenueDetailPage() {
                 )}
               </FormField>
 
-              {/* destination type — read-only, auto-filled */}
+              
               <FormField label="Destination Type">
                 <div className="flex items-center gap-2 px-3 py-2.5 bg-primary/5 border border-primary/20 text-sm text-primary/60">
                   <MapPin className="w-4 h-4 text-primary/30 flex-shrink-0" />
@@ -677,12 +673,12 @@ export default function VenueDetailPage() {
             </div>
           </Section>
 
-          {/* Wedding Experience */}
+          
           <Section
             title="Wedding Experience"
             subtitle="Which experience category this venue belongs to"
           >
-            {/* experience_id — required, uuid */}
+            
             <FormField label="Experience" required>
               <div className="relative">
                 <select
@@ -714,10 +710,10 @@ export default function VenueDetailPage() {
             </FormField>
           </Section>
 
-          {/* Capacity & Pricing */}
+          
           <Section title="Capacity & Pricing" subtitle="Guest count and starting rate">
             <div className="grid sm:grid-cols-2 gap-5">
-              {/* capacity — required, int, positive */}
+              
               <FormField label="Max Capacity" required>
                 <div className="relative">
                   <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none" />
@@ -739,8 +735,8 @@ export default function VenueDetailPage() {
                 )}
               </FormField>
 
-              {/* starting_price — required, positive (> 0) */}
-              <FormField label="Starting Price (USD)" required>
+              
+              <FormField label="Starting Price (IDR)" required>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none" />
                   <input
@@ -748,7 +744,7 @@ export default function VenueDetailPage() {
                     min={1}
                     value={formData.starting_price || ""}
                     onChange={(e) => setField("starting_price", parseFloat(e.target.value) || 0)}
-                    placeholder="e.g. 3500"
+                    placeholder="e.g. 350000000"
                     className={`w-full pl-9 pr-4 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
                       formErrors.starting_price ? "border-red-400" : "border-primary/30"
                     }`}
@@ -764,12 +760,12 @@ export default function VenueDetailPage() {
           </Section>
         </div>
 
-        {/* ── Right Column ── */}
+        
         <div className="space-y-6">
 
-          {/* Hero Image — required, valid URL */}
+          
           <Section title="Hero Image">
-            {/* Preview */}
+            
             <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden border border-primary/20 bg-primary/5">
               {formData.image ? (
                 <Image
@@ -803,7 +799,7 @@ export default function VenueDetailPage() {
             )}
           </Section>
 
-          {/* Gallery Images */}
+          
           <Section
             title="Gallery"
             subtitle={`${galleryImages.length} image${galleryImages.length !== 1 ? "s" : ""}`}
@@ -815,7 +811,7 @@ export default function VenueDetailPage() {
             />
           </Section>
 
-          {/* URL & SEO */}
+          
           <Section title="URL & SEO">
             <div className="space-y-2">
               <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">URL Slug</p>
@@ -826,7 +822,7 @@ export default function VenueDetailPage() {
             </div>
           </Section>
 
-          {/* Quick Summary */}
+          
           <div className="bg-primary/5 border border-primary/20 p-5">
             <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">Summary</p>
             <div className="space-y-3">
@@ -866,7 +862,7 @@ export default function VenueDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
+      
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -878,7 +874,7 @@ export default function VenueDetailPage() {
         />
       )}
 
-      {/* ── Save Modal ── */}
+      
       {(saveStatus === "confirm" || saveStatus === "saving") && (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -890,7 +886,7 @@ export default function VenueDetailPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
+      
       {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
           name={formData.name}

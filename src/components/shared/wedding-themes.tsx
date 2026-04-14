@@ -3,20 +3,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowLeft, ChevronDown, Loader2 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import { weddingThemeList } from "@/lib/data/wedding-theme-data";
-import { venueList } from "@/lib/data/venue-data";
 import ThemeDetailModal from "@/components/shared/theme-detail-modal";
 import type { Venue, WeddingTheme } from "@/types";
+import { useWeddingThemes } from "@/hook/useWeddingThemes";
 
-// ─── Derived data ─────────────────────────────────────────────────────────────
-
-// Filter tema per kategori dari weddingThemeList
 const elopementThemes = weddingThemeList.filter((t) => t.type === "ELOPEMENT");
 const intimateThemes = weddingThemeList.filter((t) => t.type === "INTIMATE");
 
-// Ambil gambar slideshow dari tema masing-masing kategori (maks 5, deduplicate)
 const elopementCategoryImages = [
   ...new Set(elopementThemes.map((t) => t.image).filter(Boolean)),
 ].slice(0, 5) as string[];
@@ -25,7 +21,22 @@ const intimateCategoryImages = [
   ...new Set(intimateThemes.map((t) => t.image).filter(Boolean)),
 ].slice(0, 5) as string[];
 
-// ─── ThemeCategoryCard ────────────────────────────────────────────────────────
+const STATIC_CATEGORIES = [
+  {
+    key: "elopement" as const,
+    title: "Elopement Weddings",
+    description:
+      "Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings.",
+    images: elopementCategoryImages,
+  },
+  {
+    key: "intimate" as const,
+    title: "Intimate Weddings",
+    description:
+      "Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality.",
+    images: intimateCategoryImages,
+  },
+];
 
 interface ThemeCategoryCardProps {
   title: string;
@@ -92,16 +103,13 @@ function ThemeCategoryCard({
   );
 }
 
-// ─── WeddingThemeCard ─────────────────────────────────────────────────────────
-
 interface WeddingThemeCardProps {
   theme: WeddingTheme;
   onClick: () => void;
 }
 
 function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
-  // Lookup nama venue dari venueList menggunakan theme.venue_id (skema baru)
-  const venueData = venueList.find((v) => v.id === theme.venue_id);
+  const venueName = theme.venue?.name ?? "Venue To Be Confirmed";
 
   return (
     <article
@@ -121,15 +129,21 @@ function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
         <h3 className="text-xl md:text-2xl font-semibold leading-tight mb-2">
           {theme.title}
         </h3>
-        <p className="text-md text-white/90">
-          {venueData ? venueData.name : "Venue To Be Confirmed"}
-        </p>
+        <p className="text-md text-white/90">{venueName}</p>
       </div>
     </article>
   );
 }
 
-// ─── WeddingThemesSection ─────────────────────────────────────────────────────
+function ThemeListSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="aspect-[16/9] bg-primary/10 animate-pulse" />
+      ))}
+    </div>
+  );
+}
 
 interface WeddingThemesSectionProps {
   isMobile: boolean;
@@ -140,19 +154,30 @@ export default function WeddingThemesSection({
   isMobile,
   onExploreVenue,
 }: WeddingThemesSectionProps) {
-  const [selectedThemeCategory, setSelectedThemeCategory] = useState<
-    "elopement" | "intimate"
-  >("elopement");
+  const {
+    experienceOptions,
+    themes,
+    selectedExperienceId,
+    setSelectedExperienceId,
+    selectedExperience,
+    isLoadingExperiences,
+    isLoadingThemes,
+    themesError,
+  } = useWeddingThemes();
+
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const [currentThemeSlide, setCurrentThemeSlide] = useState(0);
   const [selectedThemeForModal, setSelectedThemeForModal] =
     useState<WeddingTheme | null>(null);
 
-  const currentThemes =
-    selectedThemeCategory === "elopement" ? elopementThemes : intimateThemes;
+  useEffect(() => {
+    setCurrentThemeSlide(0);
+  }, [selectedExperienceId]);
 
-  const handleCategoryClick = (category: "elopement" | "intimate") => {
-    setSelectedThemeCategory(category);
+  const handleCategoryCardClick = (experienceKey: "elopement" | "intimate") => {
+    const match = experienceOptions.find((e) => e.slug.includes(experienceKey));
+    if (match) setSelectedExperienceId(match.id);
+
     setCurrentThemeSlide(0);
     setTimeout(() => {
       document
@@ -162,11 +187,9 @@ export default function WeddingThemesSection({
   };
 
   const nextThemeSlide = () =>
-    setCurrentThemeSlide((p) => (p + 1) % currentThemes.length);
+    setCurrentThemeSlide((p) => (p + 1) % themes.length);
   const prevThemeSlide = () =>
-    setCurrentThemeSlide(
-      (p) => (p - 1 + currentThemes.length) % currentThemes.length,
-    );
+    setCurrentThemeSlide((p) => (p - 1 + themes.length) % themes.length);
 
   return (
     <>
@@ -180,7 +203,6 @@ export default function WeddingThemesSection({
       >
         <div className="absolute inset-0 bg-primary/10" />
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Header */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
               Concept Layer
@@ -202,125 +224,126 @@ export default function WeddingThemesSection({
             </div>
           </motion.div>
 
-          {/* Category Cards — gambar slideshow dari tema masing-masing kategori */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
             variants={fadeInUp}
           >
-            <ThemeCategoryCard
-              title="Elopement Weddings"
-              description="Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings."
-              images={elopementCategoryImages}
-              onClick={() => handleCategoryClick("elopement")}
-            />
-            <ThemeCategoryCard
-              title="Intimate Weddings"
-              description="Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality."
-              images={intimateCategoryImages}
-              onClick={() => handleCategoryClick("intimate")}
-            />
+            {STATIC_CATEGORIES.map((cat) => (
+              <ThemeCategoryCard
+                key={cat.key}
+                title={cat.title}
+                description={cat.description}
+                images={cat.images}
+                onClick={() => handleCategoryCardClick(cat.key)}
+              />
+            ))}
           </motion.div>
 
-          {/* Theme Selector + Cards */}
           <motion.div
             id="wedding-themes-selector"
             variants={fadeInUp}
             className="mb-8"
           >
-            {/* Filter dropdown */}
             <div className="flex items-center justify-center gap-4 mb-12">
               <span className="text-base md:text-lg text-primary tracking-widest uppercase font-semibold">
                 WEDDING THEMES
               </span>
               <div className="relative">
-                <button
-                  onClick={() => setIsThemeDropdownOpen(!isThemeDropdownOpen)}
-                  className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium capitalize"
-                >
-                  <span>{selectedThemeCategory}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      isThemeDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {isThemeDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
-                    {(["elopement", "intimate"] as const).map((cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => {
-                          setSelectedThemeCategory(cat);
-                          setIsThemeDropdownOpen(false);
-                          setCurrentThemeSlide(0);
-                        }}
-                        className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer capitalize ${
-                          selectedThemeCategory === cat
-                            ? "bg-primary text-white"
-                            : "text-primary hover:bg-stone-100"
+                {isLoadingExperiences ? (
+                  <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                ) : (
+                  <>
+                    <button
+                      onClick={() =>
+                        setIsThemeDropdownOpen(!isThemeDropdownOpen)
+                      }
+                      className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium"
+                    >
+                      <span>{selectedExperience?.name ?? "—"}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform ${
+                          isThemeDropdownOpen ? "rotate-180" : ""
                         }`}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
+                      />
+                    </button>
+                    {isThemeDropdownOpen && (
+                      <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[200px]">
+                        {experienceOptions.map((exp) => (
+                          <button
+                            key={exp.id}
+                            onClick={() => {
+                              setSelectedExperienceId(exp.id);
+                              setIsThemeDropdownOpen(false);
+                              setCurrentThemeSlide(0);
+                            }}
+                            className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
+                              selectedExperienceId === exp.id
+                                ? "bg-primary text-white"
+                                : "text-primary hover:bg-stone-100"
+                            }`}
+                          >
+                            {exp.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
 
-            {/* Deskripsi kategori aktif */}
             <div className="mb-12 text-center">
               <AnimatePresence mode="wait">
-                {selectedThemeCategory === "elopement" ? (
-                  <motion.p
-                    key="elopement-desc"
-                    variants={fadeInUp}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
-                  >
-                    Intimate celebrations designed for couples seeking privacy,
-                    meaning, and extraordinary settings.
-                  </motion.p>
-                ) : (
-                  <motion.p
-                    key="intimate-desc"
-                    variants={fadeInUp}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
-                  >
-                    Thoughtfully scaled celebrations curated for connection,
-                    elegance, and refined hospitality.
-                  </motion.p>
-                )}
+                <motion.p
+                  key={selectedExperienceId}
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
+                >
+                  {selectedExperience?.description ?? ""}
+                </motion.p>
               </AnimatePresence>
             </div>
 
-            {/* Theme Cards — Mobile slider / Desktop grid */}
-            {isMobile ? (
+            {isLoadingThemes ? (
+              <ThemeListSkeleton />
+            ) : themesError ? (
+              <div className="flex justify-center py-24">
+                <p className="text-primary/60 text-sm">{themesError}</p>
+              </div>
+            ) : themes.length === 0 ? (
+              <motion.div
+                variants={fadeInUp}
+                initial="hidden"
+                animate="visible"
+                className="flex flex-col items-center justify-center py-24 text-center"
+              >
+                <p className="text-primary text-lg italic font-light">
+                  No themes found for this experience.
+                </p>
+              </motion.div>
+            ) : isMobile ? (
+              /* Mobile slider */
               <div className="relative">
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={`${selectedThemeCategory}-${currentThemeSlide}`}
+                    key={`${selectedExperienceId}-${currentThemeSlide}`}
                     initial={{ opacity: 0, x: 100 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -100 }}
                     transition={{ duration: 0.3 }}
                   >
                     <WeddingThemeCard
-                      theme={currentThemes[currentThemeSlide]}
+                      theme={themes[currentThemeSlide]}
                       onClick={() =>
-                        setSelectedThemeForModal(
-                          currentThemes[currentThemeSlide],
-                        )
+                        setSelectedThemeForModal(themes[currentThemeSlide])
                       }
                     />
                   </motion.div>
                 </AnimatePresence>
-                {currentThemes.length > 1 && (
+                {themes.length > 1 && (
                   <>
                     <button
                       onClick={prevThemeSlide}
@@ -335,7 +358,7 @@ export default function WeddingThemesSection({
                       <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
                     </button>
                     <div className="flex justify-center gap-2 mt-4">
-                      {currentThemes.map((_, index) => (
+                      {themes.map((_, index) => (
                         <button
                           key={index}
                           onClick={() => setCurrentThemeSlide(index)}
@@ -351,13 +374,14 @@ export default function WeddingThemesSection({
                 )}
               </div>
             ) : (
+              /* Desktop grid */
               <motion.div
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 variants={staggerContainer}
                 initial="hidden"
                 animate="visible"
               >
-                {currentThemes.map((theme) => (
+                {themes.map((theme) => (
                   <WeddingThemeCard
                     key={theme.id}
                     theme={theme}
@@ -370,7 +394,6 @@ export default function WeddingThemesSection({
         </div>
       </motion.section>
 
-      {/* Modal — onExploreVenue meneruskan Venue (tipe baru dari @/types) ke parent */}
       {selectedThemeForModal && (
         <ThemeDetailModal
           theme={selectedThemeForModal}

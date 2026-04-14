@@ -84,7 +84,6 @@ export default function Header() {
         inverted ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"
       }`}
     >
-      {/* Logo row — hidden when scrolled on desktop */}
       <div
         className={`container mx-auto px-6 py-5 transition-all duration-300 ${
           isScrolled
@@ -107,10 +106,10 @@ export default function Header() {
               className={`h-14 w-auto mx-auto absolute top-0 left-1/2 -translate-x-1/2 transition-opacity ${inverted ? "opacity-100" : "opacity-0"}`}
               width={120}
               height={56}
+              priority
             />
           </div>
 
-          {/* Mobile menu toggle */}
           <div className="absolute right-0 md:hidden">
             <Button
               variant="ghost"
@@ -124,7 +123,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Desktop Nav */}
       <nav
         className={`hidden md:block border-t transition-colors ${inverted ? "border-primary/15" : "border-white/20"}`}
       >
@@ -144,7 +142,6 @@ export default function Header() {
                   )}
                 </Link>
 
-                {/* Dropdown */}
                 {item.submenu && (
                   <div
                     className={`absolute top-full left-1/2 -translate-x-1/2 w-56 bg-white shadow-xl border border-stone-100 py-3 transition-all duration-200 ${
@@ -174,7 +171,6 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-stone-100 max-h-[80vh] overflow-y-auto">
           <ul className="px-6 py-4 space-y-1">

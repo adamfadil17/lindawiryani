@@ -18,13 +18,9 @@ import {
 } from "@/lib/data/wedding-experience-data";
 import type { WeddingExperience } from "@/types";
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface Props {
   experiences: WeddingExperience[];
 }
-
-// ─── FAQ Item ─────────────────────────────────────────────────────────────────
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -46,12 +42,9 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export function WeddingExperiencesPage({ experiences }: Props) {
   return (
     <main className="relative overflow-hidden">
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -101,7 +94,6 @@ export function WeddingExperiencesPage({ experiences }: Props) {
         </motion.div>
       </section>
 
-      {/* ── INTRO SPLIT ───────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -170,7 +162,6 @@ export function WeddingExperiencesPage({ experiences }: Props) {
         </div>
       </motion.section>
 
-      {/* ── DESIGN-LED STUDIO ─────────────────────────────────────────── */}
       <motion.section
         className="relative py-20 lg:py-28 overflow-hidden"
         initial="hidden"
@@ -235,7 +226,6 @@ export function WeddingExperiencesPage({ experiences }: Props) {
         </div>
       </motion.section>
 
-      {/* ── FULL SERVICE ──────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -331,7 +321,6 @@ export function WeddingExperiencesPage({ experiences }: Props) {
         </div>
       </motion.section>
 
-      {/* ── SUB-EXPERIENCES GRID ──────────────────────────────────────── */}
       <motion.section
         className="bg-primary/15 py-16 md:py-20 lg:py-28"
         initial="hidden"
@@ -361,7 +350,6 @@ export function WeddingExperiencesPage({ experiences }: Props) {
             </div>
           </motion.div>
 
-          {/* 2×2 grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-8 lg:gap-12">
             {experiences.map((exp, i) => (
               <motion.div key={exp.slug} variants={fadeInUp} custom={i}>
@@ -407,7 +395,6 @@ export function WeddingExperiencesPage({ experiences }: Props) {
         </div>
       </motion.section>
 
-      {/* ── FAQ ───────────────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-24"
         initial="hidden"
@@ -436,7 +423,6 @@ export function WeddingExperiencesPage({ experiences }: Props) {
         </div>
       </motion.section>
 
-      {/* ── CLOSING QUOTE ─────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

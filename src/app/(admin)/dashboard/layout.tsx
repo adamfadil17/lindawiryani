@@ -28,8 +28,6 @@ import { useCurrentUser } from "@/hook/useCurrentUser";
 import { useLogout } from "@/hook/useLogout";
 import { useInquiryBadge } from "@/hook/useInquiryBadge";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface NavItem {
   label: string;
   href: string;
@@ -99,8 +97,6 @@ const navGroups: NavGroup[] = [
   },
 ];
 
-// ─── Destinations Nav Item (with dropdown) ───────────────────────────────────
-
 function DestinationsNavItem({
   collapsed,
   onNavigate,
@@ -115,7 +111,6 @@ function DestinationsNavItem({
 
   const [open, setOpen] = useState(isActive);
 
-  // Collapsed mode: render as plain link (no dropdown)
   if (collapsed) {
     return (
       <Link
@@ -134,7 +129,6 @@ function DestinationsNavItem({
 
   return (
     <div>
-      {/* Parent button */}
       <button
         onClick={() => setOpen((v) => !v)}
         className={`w-full flex items-center gap-3 px-3 py-2.5 transition-all duration-200 hover:cursor-pointer ${
@@ -156,7 +150,6 @@ function DestinationsNavItem({
         />
       </button>
 
-      {/* Sub-items */}
       {open && (
         <ul className="mt-0.5 ml-4 pl-3 border-l border-primary/15 space-y-0.5">
           <li>
@@ -199,8 +192,6 @@ function DestinationsNavItem({
   );
 }
 
-// ─── Sidebar Component ────────────────────────────────────────────────────────
-
 function Sidebar({
   collapsed,
   onToggle,
@@ -220,7 +211,6 @@ function Sidebar({
         ${collapsed ? "w-[72px]" : "w-[240px]"}
       `}
     >
-      {/* Logo */}
       <div
         className={`flex items-center border-b border-primary/20 h-[72px] px-4 ${
           collapsed ? "justify-center" : "justify-between"
@@ -234,6 +224,7 @@ function Sidebar({
               className="h-10 w-auto"
               width={120}
               height={40}
+              priority
             />
           </Link>
         )}
@@ -259,7 +250,6 @@ function Sidebar({
         </button>
       </div>
 
-      {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-6">
         {navGroups.map((group) => (
           <div key={group.group}>
@@ -269,7 +259,6 @@ function Sidebar({
               </p>
             )}
             <ul className="space-y-1">
-              {/* Inject Destinations dropdown at the top of Content group */}
               {group.group === "Content" && (
                 <li>
                   <DestinationsNavItem collapsed={collapsed} />
@@ -302,14 +291,16 @@ function Sidebar({
                           <span className="text-xs tracking-[0.1em] uppercase font-medium flex-1">
                             {item.label}
                           </span>
-                          {item.href === "/dashboard/inquiry" && inquiryBadgeCount > 0 && (
-                            <span className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${isActive ? "bg-white/20 text-white" : "bg-primary/20 text-primary"}`}>
-                              {inquiryBadgeCount}
-                            </span>
-                          )}
+                          {item.href === "/dashboard/inquiry" &&
+                            inquiryBadgeCount > 0 && (
+                              <span
+                                className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${isActive ? "bg-white/20 text-white" : "bg-primary/20 text-primary"}`}
+                              >
+                                {inquiryBadgeCount}
+                              </span>
+                            )}
                         </>
                       )}
-                      {/* Active indicator */}
                       {isActive && !collapsed && (
                         <span className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-white/80" />
                       )}
@@ -322,7 +313,6 @@ function Sidebar({
         ))}
       </nav>
 
-      {/* Footer */}
       <div className="border-t border-primary/20 p-3 space-y-1">
         <Link
           href="/dashboard/users"
@@ -353,8 +343,6 @@ function Sidebar({
   );
 }
 
-// ─── Mobile Sidebar ───────────────────────────────────────────────────────────
-
 function MobileSidebar({
   open,
   onClose,
@@ -368,7 +356,6 @@ function MobileSidebar({
 
   return (
     <>
-      {/* Backdrop */}
       <div
         className={`fixed inset-0 bg-black/40 z-40 lg:hidden transition-opacity duration-300 ${
           open
@@ -378,13 +365,11 @@ function MobileSidebar({
         onClick={onClose}
       />
 
-      {/* Drawer */}
       <aside
         className={`fixed top-0 left-0 h-full w-[280px] bg-white z-50 lg:hidden flex flex-col transition-transform duration-300 ease-in-out ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Logo */}
         <div className="flex items-center justify-between px-6 h-[72px] border-b border-primary/20">
           <Image
             src="/images/logo-gray.png"
@@ -392,6 +377,7 @@ function MobileSidebar({
             className="h-9 w-auto"
             width={120}
             height={36}
+            priority
           />
           <button
             onClick={onClose}
@@ -401,7 +387,6 @@ function MobileSidebar({
           </button>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-6">
           {navGroups.map((group) => (
             <div key={group.group}>
@@ -409,7 +394,6 @@ function MobileSidebar({
                 {group.group}
               </p>
               <ul className="space-y-1">
-                {/* Inject Destinations dropdown at the top of Content group */}
                 {group.group === "Content" && (
                   <li>
                     <DestinationsNavItem onNavigate={onClose} />
@@ -436,17 +420,18 @@ function MobileSidebar({
                         <span className="text-xs tracking-[0.1em] uppercase font-medium flex-1">
                           {item.label}
                         </span>
-                        {item.href === "/dashboard/inquiry" && inquiryBadgeCount > 0 && (
-                          <span
-                            className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${
-                              isActive
-                                ? "bg-white/20 text-white"
-                                : "bg-primary/20 text-primary"
-                            }`}
-                          >
-                            {inquiryBadgeCount}
-                          </span>
-                        )}
+                        {item.href === "/dashboard/inquiry" &&
+                          inquiryBadgeCount > 0 && (
+                            <span
+                              className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${
+                                isActive
+                                  ? "bg-white/20 text-white"
+                                  : "bg-primary/20 text-primary"
+                              }`}
+                            >
+                              {inquiryBadgeCount}
+                            </span>
+                          )}
                       </Link>
                     </li>
                   );
@@ -456,7 +441,6 @@ function MobileSidebar({
           ))}
         </nav>
 
-        {/* Footer */}
         <div className="border-t border-primary/20 p-4 space-y-1">
           <Link
             href="/dashboard/users"
@@ -479,8 +463,6 @@ function MobileSidebar({
   );
 }
 
-// ─── Helper: get initials from name ──────────────────────────────────────────
-
 function getInitials(name: string): string {
   return name
     .split(" ")
@@ -490,13 +472,10 @@ function getInitials(name: string): string {
     .join("");
 }
 
-// ─── Header Component ─────────────────────────────────────────────────────────
-
 function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
   const pathname = usePathname();
   const { user, loading } = useCurrentUser();
 
-  // Derive page title from pathname
   const pageTitle = (() => {
     const segment = pathname.split("/").filter(Boolean).at(-1) ?? "dashboard";
     return segment
@@ -511,7 +490,6 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
 
   return (
     <header className="h-[72px] border-b border-primary/20 bg-white flex items-center justify-between px-6 sticky top-0 z-30">
-      {/* Left: hamburger (mobile) + breadcrumb */}
       <div className="flex items-center gap-4">
         <button
           onClick={onMobileMenuOpen}
@@ -530,9 +508,7 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
         </div>
       </div>
 
-      {/* Right: notifications + user avatar */}
       <div className="flex items-center gap-3">
-        {/* User avatar */}
         <div className="flex items-center gap-3 cursor-pointer group">
           <div className="text-right hidden sm:block">
             <p className="text-primary text-sm font-medium tracking-wide">
@@ -546,7 +522,6 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
             <span className="text-white text-xs font-semibold tracking-widest">
               {initials}
             </span>
-            {/* Online indicator */}
             <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full" />
           </div>
         </div>
@@ -554,8 +529,6 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
     </header>
   );
 }
-
-// ─── Layout ───────────────────────────────────────────────────────────────────
 
 export default function DashboardLayout({
   children,
@@ -567,21 +540,16 @@ export default function DashboardLayout({
 
   return (
     <div className="flex h-screen bg-[#fafaf9] overflow-hidden">
-      {/* Desktop Sidebar */}
       <Sidebar
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed((v) => !v)}
       />
 
-      {/* Mobile Sidebar */}
       <MobileSidebar open={mobileOpen} onClose={() => setMobileOpen(false)} />
 
-      {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Header */}
         <Header onMobileMenuOpen={() => setMobileOpen(true)} />
 
-        {/* Page content */}
         <main className="flex-1 overflow-y-auto">{children}</main>
         <Toaster />
       </div>

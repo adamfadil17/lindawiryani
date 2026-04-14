@@ -10,9 +10,8 @@ export default function FloatingContactButton() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Show button after slight delay on mount for a smooth entrance
     const showTimer = setTimeout(() => setVisible(true), 800);
-    // Stop pulsing after 6 seconds
+
     const pulseTimer = setTimeout(() => setPulse(false), 6000);
     return () => {
       clearTimeout(showTimer);
@@ -20,7 +19,6 @@ export default function FloatingContactButton() {
     };
   }, []);
 
-  // Don't show on the contact page itself
   if (pathname === "/contact") return null;
 
   return (
@@ -69,7 +67,6 @@ export default function FloatingContactButton() {
           className={`floating-contact ${pulse ? "pulsing" : ""} fixed bottom-8 right-6 z-50 flex items-center bg-primary hover:bg-primary/80 text-white rounded-full shadow-2xl px-4 py-4 transition-colors duration-300 group`}
           style={{ textDecoration: "none" }}
         >
-          {/* Flower / envelope icon */}
           <span className="flower-ring flex items-center justify-center w-6 h-6 shrink-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -85,10 +82,7 @@ export default function FloatingContactButton() {
             </svg>
           </span>
 
-          {/* Expandable label */}
-          <span
-            className="contact-label text-sm tracking-[0.18em] font-light uppercase"
-          >
+          <span className="contact-label text-sm tracking-[0.18em] font-light uppercase">
             Contact Us
           </span>
         </Link>

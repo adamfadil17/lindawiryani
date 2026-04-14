@@ -15,7 +15,6 @@ export default function ImageUpload({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file type - only PNG, JPG, JPEG
       const allowedTypes = ["image/png", "image/jpeg"];
       if (!allowedTypes.includes(file.type)) {
         toast.error("Invalid file type", {
@@ -24,7 +23,6 @@ export default function ImageUpload({
         return;
       }
 
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("File too large", {
           description: "Image must be less than 5MB",

@@ -8,7 +8,6 @@ export default function Quote() {
   return (
     <section className="bg-white pb-16 lg:pb-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        {/* Quote Text */}
         <motion.div
           className="text-center mb-24"
           initial="hidden"
@@ -26,9 +25,7 @@ export default function Quote() {
           </h2>
         </motion.div>
 
-        {/* Images Layout */}
         <div className="relative">
-          {/* Desktop Layout - 3 columns with middle offset */}
           <motion.div
             className="hidden md:grid md:grid-cols-3 gap-6"
             initial="hidden"
@@ -40,7 +37,6 @@ export default function Quote() {
             }}
             variants={staggerContainer}
           >
-            {/* Left Image - Couple in field with veil */}
             <motion.div
               variants={fadeInUp}
               className="relative aspect-[3/4] overflow-hidden"
@@ -55,7 +51,6 @@ export default function Quote() {
               />
             </motion.div>
 
-            {/* Center Image - Wedding ceremony with petals (offset down) */}
             <motion.div
               variants={fadeInUp}
               className="relative aspect-[3/4] overflow-hidden transform translate-y-12"
@@ -70,7 +65,6 @@ export default function Quote() {
               />
             </motion.div>
 
-            {/* Right Image - Couple dancing */}
             <motion.div
               variants={fadeInUp}
               className="relative aspect-[3/4] overflow-hidden"
@@ -86,7 +80,6 @@ export default function Quote() {
             </motion.div>
           </motion.div>
 
-          {/* Mobile Layout - 2+1 arrangement */}
           <motion.div
             className="md:hidden space-y-6"
             initial="hidden"
@@ -98,9 +91,7 @@ export default function Quote() {
             }}
             variants={staggerContainer}
           >
-            {/* Top Row - Two images side by side */}
             <div className="grid grid-cols-2 gap-4">
-              {/* Left Image - Couple in field with veil */}
               <motion.div
                 variants={fadeInUp}
                 className="relative aspect-[3/4] overflow-hidden"
@@ -115,7 +106,6 @@ export default function Quote() {
                 />
               </motion.div>
 
-              {/* Right Image - Couple dancing */}
               <motion.div
                 variants={fadeInUp}
                 className="relative aspect-[3/4] overflow-hidden"
@@ -131,7 +121,6 @@ export default function Quote() {
               </motion.div>
             </div>
 
-            {/* Bottom Row - Centered single image */}
             <div className="flex justify-center">
               <motion.div
                 variants={fadeInUp}

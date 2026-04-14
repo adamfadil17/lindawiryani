@@ -33,44 +33,24 @@ import { toSlug } from "@/utils";
 import {
   articleFormSchema,
   ArticleFormData,
-  // ── Ambil enum dari form-validators, bukan dari @/types,
-  //    agar nilai yang dikirim ke API selalu konsisten dengan schema backend
   articleCategoryEnum,
 } from "@/utils/form-validators";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Derive category list dari enum schema ─────────────────────────────────────
-// articleCategoryEnum.options → ["Guides", "Planning_Advice", "Destination_Knowledge", ...]
-// Dengan ini daftar di UI otomatis sinkron dengan schema — tidak perlu maintain array terpisah.
 const ARTICLE_CATEGORIES = articleCategoryEnum.options;
 
-// Helper: format label kategori untuk tampilan (ganti underscore dengan spasi)
-// "Planning_Advice" → "Planning Advice"
 const formatCategoryLabel = (cat: string) => cat.replace(/_/g, " ");
 
-// ─── Helper konversi date string ───────────────────────────────────────────────
-// published_at di articleFormSchema divalidasi dengan z.string().datetime()
-// yang mengharuskan ISO 8601 penuh, contoh: "2025-03-24T00:00:00.000Z"
-//
-// Namun input[type=date] di browser hanya menghasilkan "YYYY-MM-DD",
-// sehingga perlu konversi dua arah:
-//   dateToISO  → simpan ke form state (untuk lolos validasi .datetime())
-//   isoToDateInput → tampilkan di input[type=date] (hanya YYYY-MM-DD)
-
-/** "2025-03-24" → "2025-03-24T00:00:00.000Z" */
 const dateToISO = (dateStr: string): string => {
   if (!dateStr) return "";
-  if (dateStr.includes("T")) return dateStr; // sudah ISO, kembalikan langsung
+  if (dateStr.includes("T")) return dateStr;
   return new Date(dateStr + "T00:00:00.000Z").toISOString();
 };
 
-/** "2025-03-24T00:00:00.000Z" → "2025-03-24" */
 const isoToDateInput = (iso: string): string => {
   if (!iso) return "";
   return iso.split("T")[0];
 };
-
-// ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function JournalArticleDetailPage() {
   const router = useRouter();
@@ -78,7 +58,6 @@ export default function JournalArticleDetailPage() {
   const id = params?.id as string;
   const isNew = id === "new";
 
-  // ── React Hook Form ──────────────────────────────────────────────────────────
   const {
     watch,
     handleSubmit,
@@ -90,20 +69,15 @@ export default function JournalArticleDetailPage() {
     resolver: zodResolver(articleFormSchema),
     defaultValues: {
       title: "",
-      // slugSchema: min 2, max 255, regex /^[a-z0-9]+(?:-[a-z0-9]+)*$/
       slug: "",
-      // Pakai nilai pertama dari enum agar defaultValues langsung valid
       category: ARTICLE_CATEGORIES[0],
       excerpt: "",
-      // Wajib ISO 8601 penuh — bukan "YYYY-MM-DD"
       published_at: new Date().toISOString(),
-      // image: z.string().url() — tidak boleh string kosong saat submit
       image: "",
       content: "",
     },
   });
 
-  // setField helper — validasi + touch langsung saat tiap perubahan field
   const setField = (key: keyof ArticleFormData, value: unknown) =>
     setValue(key as keyof ArticleFormData, value as any, {
       shouldValidate: true,
@@ -113,31 +87,31 @@ export default function JournalArticleDetailPage() {
 
   const formData = watch();
 
-  // ── Page state ───────────────────────────────────────────────────────────────
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
 
-  // ── Save state machine: idle | confirm | saving | saved ──────────────────────
-  const [saveStatus, setSaveStatus] = useState<"idle" | "confirm" | "saving" | "saved">("idle");
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "confirm" | "saving" | "saved"
+  >("idle");
 
-  // ── Delete state machine: idle | confirm | deleting ──────────────────────────
-  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
 
-  // ── Unsaved changes guard ──────────────────────────────────────────────────────
-  // Create mode: any non-empty field counts as "dirty"
-  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const hasUnsavedChanges = isNew
     ? Boolean(
         formData.title ||
         formData.excerpt ||
         formData.content ||
-        formData.image
+        formData.image,
       )
     : isDirty;
 
-  // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && saveStatus !== "saving") {
@@ -149,19 +123,21 @@ export default function JournalArticleDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, saveStatus]);
 
-  // Helper: navigate with guard check
   const guardedNavigate = useCallback(
     (href: string) => {
-      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+      if (
+        hasUnsavedChanges &&
+        saveStatus !== "saving" &&
+        saveStatus !== "saved"
+      ) {
         setUnsavedModal({ open: true, pendingHref: href });
       } else {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, saveStatus, router]
+    [hasUnsavedChanges, saveStatus, router],
   );
 
-  // ── Fetch article (edit mode) ─────────────────────────────────────────────────
   const fetchArticle = useCallback(async () => {
     if (isNew) return;
     setIsLoading(true);
@@ -169,8 +145,6 @@ export default function JournalArticleDetailPage() {
       const response = await axios.get(`/api/articles/${id}`);
       const data = response.data.data ?? response.data;
 
-      // published_at dari API mungkin berupa "YYYY-MM-DD" atau ISO penuh —
-      // pastikan selalu disimpan sebagai ISO penuh agar lolos validasi .datetime()
       const publishedAt = data.published_at
         ? dateToISO(String(data.published_at))
         : new Date().toISOString();
@@ -178,7 +152,7 @@ export default function JournalArticleDetailPage() {
       reset({
         title: String(data.title ?? ""),
         slug: String(data.slug ?? ""),
-        // Validasi category dari API terhadap enum — fallback ke nilai pertama jika tidak valid
+
         category: ARTICLE_CATEGORIES.includes(data.category)
           ? (data.category as ArticleFormData["category"])
           : ARTICLE_CATEGORIES[0],
@@ -208,13 +182,10 @@ export default function JournalArticleDetailPage() {
     fetchArticle();
   }, [fetchArticle]);
 
-  // ── Save flow ─────────────────────────────────────────────────────────────────
-  // handleSubmit memanggil onSubmitForm hanya jika zodResolver tidak menemukan error
   const onSubmitForm = async () => {
     setSaveStatus("confirm");
   };
 
-  // Jika validasi gagal, paksa semua error tampil sekaligus
   const onSubmitError = async () => {
     await trigger();
     toast.error("Please fix the errors before saving");
@@ -223,18 +194,11 @@ export default function JournalArticleDetailPage() {
   const confirmSave = async () => {
     setSaveStatus("saving");
     try {
-      // Regenerasi slug dari title sebelum kirim — konsisten dengan ensureUniqueSlug di route.ts
       const slugValue = toSlug(formData.title);
 
-      // Payload sesuai ArticleFormData:
-      // - slug        : lowercase-kebab-case
-      // - category    : raw enum value (misal "Planning_Advice"), bukan label
-      // - published_at: ISO 8601 full string
-      // - image       : URL valid (tidak kosong)
       const payload: ArticleFormData = { ...formData, slug: slugValue };
 
       if (isNew) {
-        // POST /api/articles
         await axios.post("/api/articles", payload, {
           headers: getAuthHeaders(true),
         });
@@ -242,10 +206,9 @@ export default function JournalArticleDetailPage() {
         toast.success("Article published!", {
           description: "Your new article has been added to the journal.",
         });
-        reset(); // clear dirty state before navigating
+        reset();
         router.push("/dashboard/journal");
       } else {
-        // PATCH /api/articles/:id
         await axios.patch(`/api/articles/${id}`, payload, {
           headers: getAuthHeaders(true),
         });
@@ -253,7 +216,7 @@ export default function JournalArticleDetailPage() {
         toast.success("Changes saved!", {
           description: "Your article has been updated.",
         });
-        // Re-sync RHF baseline so isDirty becomes false
+
         reset({ ...formData, slug: toSlug(formData.title) });
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -265,16 +228,14 @@ export default function JournalArticleDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to save", { description: errorMsg });
-      // Modal tetap terbuka agar user bisa coba lagi
+
       setSaveStatus("confirm");
     }
   };
 
-  // ── Delete flow ───────────────────────────────────────────────────────────────
   const deleteArticle = async () => {
     setDeleteStatus("deleting");
     try {
-      // DELETE /api/articles/:id
       await axios.delete(`/api/articles/${id}`, {
         headers: getAuthHeaders(),
       });
@@ -295,9 +256,6 @@ export default function JournalArticleDetailPage() {
     }
   };
 
-  // ── Slug: auto-generate dari title ───────────────────────────────────────────
-  // toSlug() menghasilkan lowercase-kebab-case sesuai slugSchema
-  // Hanya auto-generate di create mode; edit mode biarkan slug yang sudah ada
   const handleTitleChange = (v: string) => {
     setField("title", v);
     if (isNew) {
@@ -305,25 +263,27 @@ export default function JournalArticleDetailPage() {
     }
   };
 
-  // ── Derived values ────────────────────────────────────────────────────────────
-  // Slug preview — selalu di-generate ulang dari title saat save
   const slugPreview = formData.title ? toSlug(formData.title) : "";
 
-  // Word count — strip HTML tags dari konten TipTap terlebih dahulu
   const wordCount = formData.content
-    ? formData.content.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length
+    ? formData.content
+        .replace(/<[^>]*>/g, "")
+        .split(/\s+/)
+        .filter(Boolean).length
     : 0;
 
-  // Nilai untuk input[type=date] — perlu "YYYY-MM-DD", bukan ISO penuh
   const dateInputValue = isoToDateInput(formData.published_at ?? "");
 
-  // ── Not found ─────────────────────────────────────────────────────────────────
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">Not Found</p>
-        <p className="text-primary/80 text-sm mb-6">This article does not exist.</p>
+        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+          Not Found
+        </p>
+        <p className="text-primary/80 text-sm mb-6">
+          This article does not exist.
+        </p>
         <Link
           href="/dashboard/journal"
           className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
@@ -334,7 +294,6 @@ export default function JournalArticleDetailPage() {
     );
   }
 
-  // ── Skeleton loading ──────────────────────────────────────────────────────────
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
@@ -374,11 +333,8 @@ export default function JournalArticleDetailPage() {
     );
   }
 
-  // ── Main render ───────────────────────────────────────────────────────────────
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -445,30 +401,30 @@ export default function JournalArticleDetailPage() {
         </div>
       </div>
 
-      {/* ── Two-column form layout ── */}
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
       >
-        {/* ── Left Column ── */}
         <div className="lg:col-span-2 space-y-6">
-
-          <Section title="Article Details" subtitle="Core information about this journal entry">
+          <Section
+            title="Article Details"
+            subtitle="Core information about this journal entry"
+          >
             <div className="space-y-5">
-
-              {/* Category — dari articleCategoryEnum.options */}
               <FormField label="Category" required>
                 <div className="relative">
                   <select
                     value={formData.category}
                     onChange={(e) =>
-                      setField("category", e.target.value as ArticleFormData["category"])
+                      setField(
+                        "category",
+                        e.target.value as ArticleFormData["category"],
+                      )
                     }
                     className="w-full px-3 py-2.5 pr-10 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
                   >
                     {ARTICLE_CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>
-                        {/* Tampilkan label rapi; value tetap raw enum ("Planning_Advice") */}
                         {formatCategoryLabel(cat)}
                       </option>
                     ))}
@@ -482,24 +438,30 @@ export default function JournalArticleDetailPage() {
                 )}
               </FormField>
 
-              {/* Title */}
               <FormField label="Title" required>
                 <TextInput
                   value={formData.title}
                   onChange={handleTitleChange}
                   placeholder="e.g. How to Plan Your Dream Bali Elopement"
-                  error={formErrors.title ? String(formErrors.title.message) : undefined}
+                  error={
+                    formErrors.title
+                      ? String(formErrors.title.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
-              {/* Excerpt */}
               <FormField label="Excerpt" required>
                 <TextareaInput
                   value={formData.excerpt}
                   onChange={(v) => setField("excerpt", v)}
                   placeholder="A brief summary shown in article cards and SEO descriptions…"
                   rows={3}
-                  error={formErrors.excerpt ? String(formErrors.excerpt.message) : undefined}
+                  error={
+                    formErrors.excerpt
+                      ? String(formErrors.excerpt.message)
+                      : undefined
+                  }
                 />
                 <p className="text-primary/40 text-xs mt-1.5">
                   {formData.excerpt.length} / 200 characters recommended
@@ -508,21 +470,24 @@ export default function JournalArticleDetailPage() {
             </div>
           </Section>
 
-          {/* Article Content */}
-          <Section title="Article Content" subtitle="Full body of the article in rich text">
+          <Section
+            title="Article Content"
+            subtitle="Full body of the article in rich text"
+          >
             <TipTapEditor
               value={formData.content}
               onChange={(v) => setField("content", v)}
-              error={formErrors.content ? String(formErrors.content.message) : undefined}
+              error={
+                formErrors.content
+                  ? String(formErrors.content.message)
+                  : undefined
+              }
               placeholder="Write your article content here…"
             />
           </Section>
         </div>
 
-        {/* ── Right Column ── */}
         <div className="space-y-6">
-
-          {/* Cover Image — image: z.string().url(), tidak boleh kosong saat submit */}
           <Section title="Cover Image">
             <div className="space-y-4">
               <div className="relative aspect-[4/3] bg-primary/5 border border-primary/20 overflow-hidden">
@@ -534,13 +499,16 @@ export default function JournalArticleDetailPage() {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 33vw"
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                      (e.currentTarget as HTMLImageElement).style.display =
+                        "none";
                     }}
                   />
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                     <ImageIcon className="w-8 h-8 text-primary/20" />
-                    <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                    <p className="text-primary/30 text-xs tracking-wider">
+                      No image set
+                    </p>
                   </div>
                 )}
               </div>
@@ -552,38 +520,41 @@ export default function JournalArticleDetailPage() {
                 />
               </FormField>
               {formErrors.image && (
-                <p className="text-red-500 text-xs mt-1">{String(formErrors.image.message)}</p>
+                <p className="text-red-500 text-xs mt-1">
+                  {String(formErrors.image.message)}
+                </p>
               )}
             </div>
           </Section>
 
-          {/* URL & SEO — slug preview read-only, persis seperti venue detail page */}
           <Section title="URL & SEO">
             <div className="space-y-2">
-              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">URL Slug</p>
+              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
+                URL Slug
+              </p>
               <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
                 {slugPreview || "—"}
               </p>
-              <p className="text-primary/50 text-xs">Auto-generated from article title</p>
+              <p className="text-primary/50 text-xs">
+                Auto-generated from article title
+              </p>
             </div>
           </Section>
 
-          {/* Publication — published_at: z.string().datetime() */}
           <Section title="Publication" subtitle="Scheduling and metadata">
             <FormField label="Published Date" required>
               <div className="relative">
                 <CalendarDays className="w-4 h-4 text-primary/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="date"
-                  // input[type=date] hanya menerima "YYYY-MM-DD"
                   value={dateInputValue}
                   onChange={(e) => {
-                    // Konversi ke ISO 8601 penuh sebelum disimpan ke form state
-                    // agar lolos validasi z.string().datetime()
                     setField("published_at", dateToISO(e.target.value));
                   }}
                   className={`w-full pl-9 pr-4 py-2.5 text-sm text-primary bg-primary/3 border focus:outline-none focus:border-primary/50 transition-colors ${
-                    formErrors.published_at ? "border-red-400" : "border-primary/20"
+                    formErrors.published_at
+                      ? "border-red-400"
+                      : "border-primary/20"
                   }`}
                 />
               </div>
@@ -595,19 +566,24 @@ export default function JournalArticleDetailPage() {
             </FormField>
           </Section>
 
-          {/* Quick Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">Summary</p>
+            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
+              Summary
+            </p>
             <div className="space-y-3">
               {[
                 {
                   label: "Category",
-                  // Tampilkan label rapi, bukan raw enum value
-                  value: formData.category ? formatCategoryLabel(formData.category) : "—",
+
+                  value: formData.category
+                    ? formatCategoryLabel(formData.category)
+                    : "—",
                 },
                 {
                   label: "Excerpt",
-                  value: formData.excerpt ? `${formData.excerpt.length} chars` : "—",
+                  value: formData.excerpt
+                    ? `${formData.excerpt.length} chars`
+                    : "—",
                 },
                 {
                   label: "Content",
@@ -615,18 +591,26 @@ export default function JournalArticleDetailPage() {
                 },
                 {
                   label: "Published",
-                  // Tampilkan tanggal yang terbaca, bukan ISO string mentah
+
                   value: formData.published_at
-                    ? new Date(formData.published_at).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })
+                    ? new Date(formData.published_at).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        },
+                      )
                     : "—",
                 },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-primary/80 font-semibold text-xs">{item.label}</span>
+                <div
+                  key={item.label}
+                  className="flex items-center justify-between"
+                >
+                  <span className="text-primary/80 font-semibold text-xs">
+                    {item.label}
+                  </span>
                   <span className="text-xs font-medium bg-primary text-white px-2 py-0.5">
                     {item.value}
                   </span>
@@ -637,7 +621,6 @@ export default function JournalArticleDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -649,7 +632,6 @@ export default function JournalArticleDetailPage() {
         />
       )}
 
-      {/* ── Save Modal ── */}
       {(saveStatus === "confirm" || saveStatus === "saving") && (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -661,12 +643,13 @@ export default function JournalArticleDetailPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
           name={formData.title}
           onConfirm={deleteArticle}
-          onCancel={() => deleteStatus !== "deleting" && setDeleteStatus("idle")}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
           isLoading={deleteStatus === "deleting"}
         />
       )}

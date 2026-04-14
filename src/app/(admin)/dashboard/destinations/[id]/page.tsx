@@ -34,15 +34,12 @@ import {
 } from "@/utils/form-validators";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DestinationDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   const isNew = id === "new";
 
-  // ── React Hook Form ──
   const {
     watch,
     handleSubmit,
@@ -84,19 +81,32 @@ export default function DestinationDetailPage() {
   const formData = watch();
   const locationId = watch("location_id");
 
-  // ── Category → Location cascade ──
+  useEffect(() => {
+    if (formData.name) {
+      setValue("slug", toSlug(formData.name), { shouldValidate: true });
+    }
+  }, [formData.name, setValue]);
+
   const [allCategories, setAllCategories] = useState<DestinationCategory[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
-  const [availableLocations, setAvailableLocations] = useState<DestinationLocation[]>([]);
+  const [availableLocations, setAvailableLocations] = useState<
+    DestinationLocation[]
+  >([]);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
 
-  // ── Page state ──
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
 
-  const [saveStatus, setSaveStatus] = useState<"idle" | "confirm" | "saving" | "saved">("idle");
-  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "confirm" | "saving" | "saved"
+  >("idle");
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const hasUnsavedChanges = isNew
     ? Boolean(
@@ -107,7 +117,7 @@ export default function DestinationDetailPage() {
         formData.location_id ||
         formData.image ||
         (formData.highlights && formData.highlights.length > 0) ||
-        (formData.ceremony_options && formData.ceremony_options.length > 0)
+        (formData.ceremony_options && formData.ceremony_options.length > 0),
       )
     : isDirty;
 
@@ -124,16 +134,19 @@ export default function DestinationDetailPage() {
 
   const guardedNavigate = useCallback(
     (href: string) => {
-      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+      if (
+        hasUnsavedChanges &&
+        saveStatus !== "saving" &&
+        saveStatus !== "saved"
+      ) {
         setUnsavedModal({ open: true, pendingHref: href });
       } else {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, saveStatus, router]
+    [hasUnsavedChanges, saveStatus, router],
   );
 
-  // ── Load categories on mount ──
   useEffect(() => {
     const getCategories = async () => {
       try {
@@ -143,13 +156,15 @@ export default function DestinationDetailPage() {
         const cats: DestinationCategory[] = response.data.data ?? [];
         setAllCategories(cats);
 
-        // Untuk mode create, pilih category pertama dan set locations-nya
         if (isNew && cats.length > 0) {
           const firstCat = cats[0];
           setSelectedCategoryId(firstCat.id);
           setAvailableLocations(firstCat.locations ?? []);
-          // Set location_id ke location pertama jika ada dan belum di-set
-          if (!locationId && firstCat.locations && firstCat.locations.length > 0) {
+          if (
+            !locationId &&
+            firstCat.locations &&
+            firstCat.locations.length > 0
+          ) {
             setValue("location_id", firstCat.locations[0].id);
           }
         }
@@ -160,16 +175,13 @@ export default function DestinationDetailPage() {
       }
     };
     getCategories();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNew]);
 
-  // ── Sync availableLocations saat selectedCategoryId berubah ──
   useEffect(() => {
     if (!selectedCategoryId) return;
     const cat = allCategories.find((c) => c.id === selectedCategoryId);
     const locs = cat?.locations ?? [];
     setAvailableLocations(locs);
-    // Reset location_id ke pilihan pertama di category baru
     if (locs.length > 0) {
       setValue("location_id", locs[0].id, { shouldDirty: true });
     } else {
@@ -177,7 +189,6 @@ export default function DestinationDetailPage() {
     }
   }, [selectedCategoryId, allCategories, setValue]);
 
-  // ── Load destination data (edit mode only) ──
   useEffect(() => {
     if (isNew) return;
     setIsLoading(true);
@@ -186,8 +197,8 @@ export default function DestinationDetailPage() {
         const response = await axios.get(`/api/destinations/${id}`);
         const data = response.data.data ?? response.data;
 
-        // Resolve category dari location yang ada di data
-        const locationCategoryId = data.location?.category_id ?? data.location?.category?.id ?? "";
+        const locationCategoryId =
+          data.location?.category_id ?? data.location?.category?.id ?? "";
         setSelectedCategoryId(locationCategoryId);
 
         reset({
@@ -204,11 +215,21 @@ export default function DestinationDetailPage() {
           guest_capacity: String(data.guest_capacity ?? ""),
           highlights: Array.isArray(data.highlights) ? data.highlights : [],
           best_for: Array.isArray(data.best_for) ? data.best_for : [],
-          ceremony_options: Array.isArray(data.ceremony_options) ? data.ceremony_options : [],
-          reception_options: Array.isArray(data.reception_options) ? data.reception_options : [],
-          accommodation_nearby: Array.isArray(data.accommodation_nearby) ? data.accommodation_nearby : [],
-          dining_experiences: Array.isArray(data.dining_experiences) ? data.dining_experiences : [],
-          unique_features: Array.isArray(data.unique_features) ? data.unique_features : [],
+          ceremony_options: Array.isArray(data.ceremony_options)
+            ? data.ceremony_options
+            : [],
+          reception_options: Array.isArray(data.reception_options)
+            ? data.reception_options
+            : [],
+          accommodation_nearby: Array.isArray(data.accommodation_nearby)
+            ? data.accommodation_nearby
+            : [],
+          dining_experiences: Array.isArray(data.dining_experiences)
+            ? data.dining_experiences
+            : [],
+          unique_features: Array.isArray(data.unique_features)
+            ? data.unique_features
+            : [],
         });
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
@@ -229,13 +250,15 @@ export default function DestinationDetailPage() {
     getDestinationById();
   }, [id, isNew, reset]);
 
-  // ── Save flow ──
   const onSubmitForm = async (_data: DestinationFormData) => {
     setSaveStatus("confirm");
   };
 
   const onSubmitError = async () => {
     await trigger();
+    toast.error("Please fix the errors before saving", {
+      description: "Some required fields are missing or invalid.",
+    });
   };
 
   const confirmSave = async () => {
@@ -269,13 +292,14 @@ export default function DestinationDetailPage() {
       const errorMsg =
         axios.isAxiosError(err) && err.response?.data?.message
           ? err.response.data.message
-          : err instanceof Error ? err.message : "Unknown error";
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
       toast.error("Failed to save", { description: errorMsg });
       setSaveStatus("confirm");
     }
   };
 
-  // ── Delete flow ──
   const deleteDestinationById = async () => {
     setDeleteStatus("deleting");
     try {
@@ -291,19 +315,24 @@ export default function DestinationDetailPage() {
       const errorMsg =
         axios.isAxiosError(err) && err.response?.data?.message
           ? err.response.data.message
-          : err instanceof Error ? err.message : "Unknown error";
+          : err instanceof Error
+            ? err.message
+            : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
       setDeleteStatus("confirm");
     }
   };
 
-  // ── Not found ──
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">Not Found</p>
-        <p className="text-primary/80 text-sm mb-6">This destination does not exist.</p>
+        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+          Not Found
+        </p>
+        <p className="text-primary/80 text-sm mb-6">
+          This destination does not exist.
+        </p>
         <Link
           href="/dashboard/destinations"
           className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
@@ -314,7 +343,6 @@ export default function DestinationDetailPage() {
     );
   }
 
-  // ── Loading skeleton ──
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
@@ -328,7 +356,10 @@ export default function DestinationDetailPage() {
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white border border-primary/20 p-6 space-y-4">
+              <div
+                key={i}
+                className="bg-white border border-primary/20 p-6 space-y-4"
+              >
                 <div className="h-4 w-32 bg-primary/10 rounded" />
                 <div className="h-10 bg-primary/5 rounded" />
                 <div className="h-10 bg-primary/5 rounded" />
@@ -347,11 +378,10 @@ export default function DestinationDetailPage() {
     );
   }
 
-  const slugPreview = formData.name ? toSlug(formData.name) : "";
+  const slugPreview = formData.name ? `${toSlug(formData.name)}-wedding` : "";
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -409,39 +439,41 @@ export default function DestinationDetailPage() {
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
       >
-        {/* ── Left Column ── */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Basic Info */}
           <Section
             title="Basic Information"
             subtitle="Core details shown on the public destination page"
           >
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* name */}
                 <FormField label="Destination Name" required>
                   <TextInput
                     value={formData.name}
                     onChange={(v) => setField("name", v)}
                     placeholder="e.g. Ubud, Bali"
-                    error={formErrors.name ? String(formErrors.name.message) : undefined}
+                    error={
+                      formErrors.name
+                        ? String(formErrors.name.message)
+                        : undefined
+                    }
                   />
                 </FormField>
 
-                {/* type */}
                 <FormField label="Type" required>
                   <TextInput
                     value={formData.type}
                     onChange={(v) => setField("type", v)}
                     placeholder="e.g. Tropical Rainforest"
-                    error={formErrors.type ? String(formErrors.type.message) : undefined}
+                    error={
+                      formErrors.type
+                        ? String(formErrors.type.message)
+                        : undefined
+                    }
                   />
                 </FormField>
               </div>
 
-              {/* Category → Location cascade selectors */}
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* Category selector — UI only, tidak disimpan ke form, cukup untuk filter locations */}
                 <FormField label="Category" required>
                   <div className="relative">
                     <select
@@ -451,10 +483,14 @@ export default function DestinationDetailPage() {
                       className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isCategoriesLoading ? (
-                        <option value="" disabled>Loading categories…</option>
+                        <option value="" disabled>
+                          Loading categories…
+                        </option>
                       ) : (
                         allCategories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>{cat.name}</option>
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
                         ))
                       )}
                     </select>
@@ -462,20 +498,25 @@ export default function DestinationDetailPage() {
                   </div>
                 </FormField>
 
-                {/* location_id — yang benar-benar disimpan ke DB */}
                 <FormField label="Location" required>
                   <div className="relative">
                     <select
                       value={locationId}
                       onChange={(e) => setField("location_id", e.target.value)}
-                      disabled={isCategoriesLoading || availableLocations.length === 0}
+                      disabled={
+                        isCategoriesLoading || availableLocations.length === 0
+                      }
                       className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {availableLocations.length === 0 ? (
-                        <option value="" disabled>No locations in this category</option>
+                        <option value="" disabled>
+                          No locations in this category
+                        </option>
                       ) : (
                         availableLocations.map((loc) => (
-                          <option key={loc.id} value={loc.id}>{loc.name}</option>
+                          <option key={loc.id} value={loc.id}>
+                            {loc.name}
+                          </option>
                         ))
                       )}
                     </select>
@@ -489,54 +530,84 @@ export default function DestinationDetailPage() {
                 </FormField>
               </div>
 
-              {/* description */}
-              <FormField label="Short Description" required hint="Shown on the destinations listing card (2–3 sentences)">
+              <FormField
+                label="Short Description"
+                required
+                hint="Shown on the destinations listing card (2–3 sentences)"
+              >
                 <TextareaInput
                   value={formData.description}
                   onChange={(v) => setField("description", v)}
                   placeholder="A brief, evocative description..."
                   rows={2}
-                  error={formErrors.description ? String(formErrors.description.message) : undefined}
+                  error={
+                    formErrors.description
+                      ? String(formErrors.description.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
-              {/* long_description */}
-              <FormField label="Long Description" required hint="Full description shown on the destination detail page">
+              <FormField
+                label="Long Description"
+                required
+                hint="Full description shown on the destination detail page"
+              >
                 <TextareaInput
                   value={formData.long_description}
                   onChange={(v) => setField("long_description", v)}
                   placeholder="Detailed description for the destination detail page..."
                   rows={5}
-                  error={formErrors.long_description ? String(formErrors.long_description.message) : undefined}
+                  error={
+                    formErrors.long_description
+                      ? String(formErrors.long_description.message)
+                      : undefined
+                  }
                 />
               </FormField>
             </div>
           </Section>
 
-          {/* Location & Atmosphere */}
-          <Section title="Location & Atmosphere" subtitle="Describe the physical setting and mood of the destination">
+          <Section
+            title="Location & Atmosphere"
+            subtitle="Describe the physical setting and mood of the destination"
+          >
             <div className="space-y-5">
-              <FormField label="Atmosphere" required hint="The overall mood and feeling of this destination">
+              <FormField
+                label="Atmosphere"
+                required
+                hint="The overall mood and feeling of this destination"
+              >
                 <TextareaInput
                   value={formData.atmosphere}
                   onChange={(v) => setField("atmosphere", v)}
                   placeholder="e.g. Lush, spiritual, and deeply cultural..."
                   rows={2}
-                  error={formErrors.atmosphere ? String(formErrors.atmosphere.message) : undefined}
+                  error={
+                    formErrors.atmosphere
+                      ? String(formErrors.atmosphere.message)
+                      : undefined
+                  }
                 />
               </FormField>
             </div>
           </Section>
 
-          {/* Wedding Details */}
-          <Section title="Wedding Details" subtitle="Venue-specific information for wedding planning">
+          <Section
+            title="Wedding Details"
+            subtitle="Venue-specific information for wedding planning"
+          >
             <div className="space-y-5">
               <FormField label="Guest Capacity" required>
                 <TextInput
                   value={formData.guest_capacity}
                   onChange={(v) => setField("guest_capacity", v)}
                   placeholder="e.g. 20–200 guests"
-                  error={formErrors.guest_capacity ? String(formErrors.guest_capacity.message) : undefined}
+                  error={
+                    formErrors.guest_capacity
+                      ? String(formErrors.guest_capacity.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
@@ -547,7 +618,9 @@ export default function DestinationDetailPage() {
                   placeholder="Add ceremony option..."
                 />
                 {formErrors.ceremony_options && (
-                  <p className="text-red-500 text-xs mt-1">{String(formErrors.ceremony_options.message)}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.ceremony_options.message)}
+                  </p>
                 )}
               </FormField>
 
@@ -558,7 +631,9 @@ export default function DestinationDetailPage() {
                   placeholder="Add reception option..."
                 />
                 {formErrors.reception_options && (
-                  <p className="text-red-500 text-xs mt-1">{String(formErrors.reception_options.message)}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.reception_options.message)}
+                  </p>
                 )}
               </FormField>
 
@@ -569,14 +644,18 @@ export default function DestinationDetailPage() {
                   placeholder="Add dining experience..."
                 />
                 {formErrors.dining_experiences && (
-                  <p className="text-red-500 text-xs mt-1">{String(formErrors.dining_experiences.message)}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.dining_experiences.message)}
+                  </p>
                 )}
               </FormField>
             </div>
           </Section>
 
-          {/* Additional Information */}
-          <Section title="Additional Information" subtitle="Extra details about the destination">
+          <Section
+            title="Additional Information"
+            subtitle="Extra details about the destination"
+          >
             <div className="space-y-5">
               <FormField label="Accessibility Notes" required>
                 <TextareaInput
@@ -584,7 +663,11 @@ export default function DestinationDetailPage() {
                   onChange={(v) => setField("accessibility_notes", v)}
                   placeholder="e.g. Wheelchair accessible, steps required..."
                   rows={2}
-                  error={formErrors.accessibility_notes ? String(formErrors.accessibility_notes.message) : undefined}
+                  error={
+                    formErrors.accessibility_notes
+                      ? String(formErrors.accessibility_notes.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
@@ -594,7 +677,11 @@ export default function DestinationDetailPage() {
                   onChange={(v) => setField("seasonal_considerations", v)}
                   placeholder="e.g. Best visited during dry season..."
                   rows={2}
-                  error={formErrors.seasonal_considerations ? String(formErrors.seasonal_considerations.message) : undefined}
+                  error={
+                    formErrors.seasonal_considerations
+                      ? String(formErrors.seasonal_considerations.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
@@ -605,7 +692,9 @@ export default function DestinationDetailPage() {
                   placeholder="Add a highlight..."
                 />
                 {formErrors.highlights && (
-                  <p className="text-red-500 text-xs mt-1">{String(formErrors.highlights.message)}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.highlights.message)}
+                  </p>
                 )}
               </FormField>
 
@@ -616,7 +705,9 @@ export default function DestinationDetailPage() {
                   placeholder="Add a wedding type..."
                 />
                 {formErrors.best_for && (
-                  <p className="text-red-500 text-xs mt-1">{String(formErrors.best_for.message)}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.best_for.message)}
+                  </p>
                 )}
               </FormField>
 
@@ -627,7 +718,9 @@ export default function DestinationDetailPage() {
                   placeholder="Add accommodation option..."
                 />
                 {formErrors.accommodation_nearby && (
-                  <p className="text-red-500 text-xs mt-1">{String(formErrors.accommodation_nearby.message)}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.accommodation_nearby.message)}
+                  </p>
                 )}
               </FormField>
 
@@ -638,14 +731,15 @@ export default function DestinationDetailPage() {
                   placeholder="Add a unique feature..."
                 />
                 {formErrors.unique_features && (
-                  <p className="text-red-500 text-xs mt-1">{String(formErrors.unique_features.message)}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.unique_features.message)}
+                  </p>
                 )}
               </FormField>
             </div>
           </Section>
         </div>
 
-        {/* ── Right Sidebar ── */}
         <div className="space-y-6">
           <Section title="Destination Image">
             {formData.image && (
@@ -657,21 +751,29 @@ export default function DestinationDetailPage() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                    (e.currentTarget as HTMLImageElement).style.display =
+                      "none";
                   }}
                 />
               </div>
             )}
-            <ImageUpload value={formData.image} onChange={(v) => setField("image", v)} />
+            <ImageUpload
+              value={formData.image}
+              onChange={(v) => setField("image", v)}
+            />
             {formErrors.image && (
-              <p className="text-red-500 text-xs mt-2">{String(formErrors.image.message)}</p>
+              <p className="text-red-500 text-xs mt-2">
+                {String(formErrors.image.message)}
+              </p>
             )}
           </Section>
 
           <Section title="URL & SEO">
             <div className="space-y-2">
               <div>
-                <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">URL Slug</p>
+                <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
+                  URL Slug
+                </p>
                 <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
                   {slugPreview || "—"}
                 </p>
@@ -681,7 +783,6 @@ export default function DestinationDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -693,7 +794,6 @@ export default function DestinationDetailPage() {
         />
       )}
 
-      {/* ── Save Modal ── */}
       {saveStatus === "confirm" || saveStatus === "saving" ? (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -705,12 +805,13 @@ export default function DestinationDetailPage() {
         />
       ) : null}
 
-      {/* ── Delete Modal ── */}
       {deleteStatus === "confirm" || deleteStatus === "deleting" ? (
         <DeleteModal
           name={formData.name}
           onConfirm={deleteDestinationById}
-          onCancel={() => deleteStatus !== "deleting" && setDeleteStatus("idle")}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
           isLoading={deleteStatus === "deleting"}
         />
       ) : null}

@@ -23,8 +23,6 @@ import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import type { Venue, WeddingTheme, Currency } from "@/types";
 import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
 
-// ─── Shared components ────────────────────────────────────────────────────────
-
 function Breadcrumb({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-2">
@@ -61,8 +59,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
     </div>
   );
 }
-
-// ─── Hero variants ────────────────────────────────────────────────────────────
 
 function HeroSplit({ data }: { data: ExperienceData }) {
   return (
@@ -314,11 +310,9 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
   );
 }
 
-// ─── Section components ────────────────────────────────────────────────────────
-
 function SectionIntro({ data }: { data: ExperienceData }) {
   const introHeading = data.intro_heading as [string, string];
-  const introList    = data.intro_list as string[];
+  const introList = data.intro_list as string[];
 
   return (
     <motion.section
@@ -374,7 +368,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
           >
             {data.intro_body}
           </motion.p>
-          {/* Staggered image pair */}
+
           {data.intro_images[0] && (
             <motion.div variants={scaleIn} className="grid grid-cols-2 gap-4">
               {data.approach_image && (
@@ -411,7 +405,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
 
 function SectionApproach({ data }: { data: ExperienceData }) {
   const approachHeading = data.approach_heading as [string, string];
-  const approachList    = data.approach_list as string[];
+  const approachList = data.approach_list as string[];
 
   return (
     <motion.section
@@ -481,10 +475,10 @@ function SectionApproach({ data }: { data: ExperienceData }) {
 }
 
 function SectionServices({ data }: { data: ExperienceData }) {
-  const servicesHeading     = data.services_heading      as [string, string];
-  const servicesList        = data.services_list         as string[];
+  const servicesHeading = data.services_heading as [string, string];
+  const servicesList = data.services_list as string[];
   const servicesDarkHeading = data.services_dark_heading as [string, string];
-  const servicesDarkList    = data.services_dark_list    as string[];
+  const servicesDarkList = data.services_dark_list as string[];
 
   return (
     <motion.section
@@ -560,7 +554,7 @@ function SectionServices({ data }: { data: ExperienceData }) {
 }
 
 function SectionClosing({ data }: { data: ExperienceData }) {
-  const closingHeading      = data.closing_heading       as [string, string];
+  const closingHeading = data.closing_heading as [string, string];
   const closingCoupleValues = data.closing_couple_values as string[];
 
   return (
@@ -717,7 +711,6 @@ function SectionFaq({ data }: { data: ExperienceData }) {
   );
 }
 
-
 const formatPrice = (
   price: number | undefined,
   currency: Currency,
@@ -800,8 +793,6 @@ function VenueCard({
     </article>
   );
 }
-
-// ─── Section Venue List ────────────────────────────────────────────────────────
 
 interface SectionVenueListProps {
   experience: ExperienceData;
@@ -887,7 +878,6 @@ function SectionVenueList({
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Section Header */}
           <motion.div
             variants={fadeInUp}
             className="mb-14 lg:mb-20 grid lg:grid-cols-12 gap-8"
@@ -910,12 +900,10 @@ function SectionVenueList({
             </div>
           </motion.div>
 
-          {/* Filters */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center justify-center gap-8 mb-4 flex-wrap"
           >
-            {/* Location Filter */}
             <div className="flex items-center gap-4">
               <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                 LOCATION
@@ -957,7 +945,6 @@ function SectionVenueList({
               </div>
             </div>
 
-            {/* Currency Filter */}
             <div className="flex items-center gap-4">
               <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                 CURRENCY
@@ -1011,7 +998,6 @@ function SectionVenueList({
                 } in ${selectedLocation}`}
           </motion.p>
 
-          {/* Venue Cards */}
           <motion.div variants={fadeInUp} className="mb-10">
             <div className="mb-12 text-center">
               <p className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed">
@@ -1219,8 +1205,6 @@ function SectionSubExperiences({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export function WeddingExperiencesDetail({
   experience,
   experienceList,
@@ -1228,20 +1212,26 @@ export function WeddingExperiencesDetail({
   experience: WeddingExperience;
   experienceList: WeddingExperience[];
 }) {
-  const allVenues       = experience.venues ?? [];
-  const elopementThemes = (experience.themes ?? []).filter((t) => t.type === "ELOPEMENT");
-  const intimateThemes  = (experience.themes ?? []).filter((t) => t.type === "INTIMATE");
-  const locations       = [
+  const allVenues = experience.venues ?? [];
+  const elopementThemes = (experience.themes ?? []).filter(
+    (t) => t.type === "ELOPEMENT",
+  );
+  const intimateThemes = (experience.themes ?? []).filter(
+    (t) => t.type === "INTIMATE",
+  );
+  const locations = [
     "All",
     ...Array.from(
-      new Set(allVenues.map((v) => v.destination?.name).filter(Boolean) as string[])
+      new Set(
+        allVenues.map((v) => v.destination?.name).filter(Boolean) as string[],
+      ),
     ),
   ];
 
   const heroMap: Record<string, React.ReactNode> = {
-    split:     <HeroSplit data={experience} />,
-    bottom:    <HeroBottomSplit data={experience} />,
-    centered:  <HeroCentered data={experience} />,
+    split: <HeroSplit data={experience} />,
+    bottom: <HeroBottomSplit data={experience} />,
+    centered: <HeroCentered data={experience} />,
     editorial: <HeroEditorial data={experience} />,
   };
 

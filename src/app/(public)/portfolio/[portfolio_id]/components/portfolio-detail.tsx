@@ -5,15 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
-import { Destination, Portfolio, WeddingExperience } from "@/types";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
+import type { Portfolio } from "@/types";
 
 interface PortfolioDetailProps {
   item: Portfolio;
   relatedItems: Portfolio[];
-  destination: Destination | undefined;
-  experience: WeddingExperience | undefined;
 }
 
 function TipTapContent({ html }: { html: string }) {
@@ -25,8 +21,6 @@ function TipTapContent({ html }: { html: string }) {
   );
 }
 
-// ─── Sub-Components ───────────────────────────────────────────────────────────
-
 function GalleryGrid({ images }: { images: string[] }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -34,7 +28,7 @@ function GalleryGrid({ images }: { images: string[] }) {
         <motion.div
           key={i}
           variants={fadeInUp}
-          className={`relative overflow-hidden aspect-square`}
+          className="relative overflow-hidden aspect-square"
         >
           <Image
             src={src}
@@ -50,14 +44,9 @@ function GalleryGrid({ images }: { images: string[] }) {
   );
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
-export default function PortfolioDetail({
-  item,
-  relatedItems,
-  destination,
-  experience,
-}: PortfolioDetailProps) {
+export function PortfolioDetail({ item, relatedItems }: PortfolioDetailProps) {
+  const destination = item.destination ?? null;
+  const experience = item.experience ?? null;
 
   return (
     <main className="relative overflow-hidden">
@@ -81,7 +70,6 @@ export default function PortfolioDetail({
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-10 mt-6"
@@ -93,17 +81,16 @@ export default function PortfolioDetail({
               Portfolio
             </Link>
             <span className="text-white text-sm">/</span>
-            <span className="text-white text-sm font-simbold tracking-widest uppercase truncate max-w-[200px]">
+            <span className="text-white text-sm tracking-widest uppercase truncate max-w-[200px]">
               {item.couple}
             </span>
           </motion.div>
 
-          {/* Tags */}
           <motion.div variants={fadeInUp} className="flex flex-wrap gap-2 mb-6">
             {item.tags.map((tag) => (
               <span
                 key={tag}
-                className="bg-white/15 border border-1 border-white/10 text-white text-sm tracking-widest px-3 py-1"
+                className="bg-white/15 border border-white/10 text-white text-sm tracking-widest px-3 py-1"
               >
                 {tag.toUpperCase()}
               </span>
@@ -138,7 +125,6 @@ export default function PortfolioDetail({
         </motion.div>
       </section>
 
-      {/* ── STORY ─────────────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -148,7 +134,6 @@ export default function PortfolioDetail({
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
-            {/* Sticky sidebar */}
             <motion.div variants={fadeInUp} className="lg:col-span-4">
               <div className="lg:sticky lg:top-32 space-y-8">
                 <div>
@@ -165,30 +150,30 @@ export default function PortfolioDetail({
                   </h2>
                 </div>
 
-                {/* Destination */}
                 <div className="space-y-3">
                   <p className="text-primary text-xs tracking-widest uppercase font-semibold">
                     Destination
                   </p>
-                  <Link
-                    href={`/destinations/${destination?.slug ?? ""}`}
-                    className="inline-flex items-center gap-2 border border-primary/30 px-4 py-2.5 text-primary text-sm hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 group"
-                  >
-                    <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="tracking-wide">
-                      {destination?.name ?? "—"}
-                    </span>
-                    <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
+                  {destination ? (
+                    <Link
+                      href={`/destinations/${destination.slug}`}
+                      className="inline-flex items-center gap-2 border border-primary/30 px-4 py-2.5 text-primary text-sm hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 group"
+                    >
+                      <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span className="tracking-wide">{destination.name}</span>
+                      <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  ) : (
+                    <p className="text-primary/60 text-sm">—</p>
+                  )}
                 </div>
 
-                {/* Experiences */}
                 <div className="space-y-3">
                   <p className="text-primary text-xs tracking-widest uppercase font-semibold">
-                    Wedding Experiences
+                    Wedding Experience
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {experience && (
+                    {experience ? (
                       <Link
                         href={`/wedding-experiences/${experience.slug}`}
                         className="inline-flex items-center gap-2 border border-primary/30 px-4 py-2.5 text-primary text-sm hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 group"
@@ -196,11 +181,12 @@ export default function PortfolioDetail({
                         <span className="tracking-wide">{experience.name}</span>
                         <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </Link>
+                    ) : (
+                      <p className="text-primary/60 text-sm">—</p>
                     )}
                   </div>
                 </div>
 
-                {/* CTA */}
                 <div className="pt-4">
                   <Link href="https://wa.me/628113980998" target="_blank">
                     <button className="w-full bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
@@ -211,9 +197,7 @@ export default function PortfolioDetail({
               </div>
             </motion.div>
 
-            {/* Story body */}
             <div className="lg:col-span-8 space-y-10">
-              {/* Excerpt */}
               <motion.p
                 variants={fadeInUp}
                 className="text-primary leading-relaxed text-justify text-lg italic"
@@ -222,7 +206,7 @@ export default function PortfolioDetail({
               </motion.p>
 
               {/* Story body — TipTap HTML takes priority; falls back to
-                  structured storySections for items not yet in the CMS */}
+                  structured story_sections */}
               {item.content ? (
                 <motion.div variants={fadeIn}>
                   <TipTapContent html={item.content} />
@@ -247,7 +231,6 @@ export default function PortfolioDetail({
                 ))
               )}
 
-              {/* Review / couple testimonial */}
               {item.review && (
                 <motion.div
                   variants={fadeInUp}
@@ -262,7 +245,6 @@ export default function PortfolioDetail({
                 </motion.div>
               )}
 
-              {/* Credit block */}
               <motion.div
                 variants={fadeInUp}
                 className="pt-4 border-t border-primary/20 space-y-1"
@@ -288,31 +270,31 @@ export default function PortfolioDetail({
         </div>
       </motion.section>
 
-      {/* ── GALLERY ───────────────────────────────────────────────────── */}
-      <motion.section
-        className="py-16 lg:py-20 bg-primary/10"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          <motion.div variants={fadeInUp} className="mb-12">
-            <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Design Gallery
-            </p>
-            <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-              Moments from
-              <br />
-              <span className="italic font-light">{item.couple}</span>
-            </h2>
-          </motion.div>
+      {item.gallery && item.gallery.length > 0 && (
+        <motion.section
+          className="py-16 lg:py-20 bg-primary/10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
+          variants={staggerContainer}
+        >
+          <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+            <motion.div variants={fadeInUp} className="mb-12">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
+                Design Gallery
+              </p>
+              <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+                Moments from
+                <br />
+                <span className="italic font-light">{item.couple}</span>
+              </h2>
+            </motion.div>
 
-          <GalleryGrid images={(item.gallery ?? []).map((g) => g.url)} />
-        </div>
-      </motion.section>
+            <GalleryGrid images={item.gallery.map((g) => g.url)} />
+          </div>
+        </motion.section>
+      )}
 
-      {/* ── CTA TAGS: EXPERIENCE & DESTINATION ───────────────────────── */}
       <motion.section
         className="py-20 lg:py-28 bg-primary"
         initial="hidden"
@@ -322,7 +304,6 @@ export default function PortfolioDetail({
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-2 gap-16">
-            {/* Experiences CTAs */}
             <motion.div variants={fadeInUp}>
               <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
                 Explore by Experience
@@ -333,7 +314,7 @@ export default function PortfolioDetail({
                 <span className="italic font-light">feeling & approach</span>
               </h3>
               <div className="space-y-3">
-                {experience && (
+                {experience ? (
                   <Link
                     href={`/wedding-experiences/${experience.slug}`}
                     className="group flex items-center justify-between border border-white/20 p-5 hover:border-white/60 hover:bg-white/5 transition-all duration-300"
@@ -343,11 +324,14 @@ export default function PortfolioDetail({
                     </span>
                     <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors flex-shrink-0" />
                   </Link>
+                ) : (
+                  <p className="text-white/40 text-sm italic">
+                    No experience linked.
+                  </p>
                 )}
               </div>
             </motion.div>
 
-            {/* Destination CTA */}
             <motion.div variants={fadeInUp}>
               <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
                 Explore by Destination
@@ -359,18 +343,24 @@ export default function PortfolioDetail({
                   {destination?.name ?? "—"}
                 </span>
               </h3>
-              <Link
-                href={`/destinations/${destination?.slug ?? ""}`}
-                className="group flex items-center justify-between border border-white/20 p-5 hover:border-white/60 hover:bg-white/5 transition-all duration-300 mb-8"
-              >
-                <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-white/60 flex-shrink-0" />
-                  <span className="text-white font-medium group-hover:text-white/80 transition-colors">
-                    {destination?.name ?? "—"}, Bali
-                  </span>
-                </div>
-                <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors flex-shrink-0" />
-              </Link>
+              {destination ? (
+                <Link
+                  href={`/destinations/${destination.slug}`}
+                  className="group flex items-center justify-between border border-white/20 p-5 hover:border-white/60 hover:bg-white/5 transition-all duration-300 mb-8"
+                >
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-4 h-4 text-white/60 flex-shrink-0" />
+                    <span className="text-white font-medium group-hover:text-white/80 transition-colors">
+                      {destination.name}, Bali
+                    </span>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors flex-shrink-0" />
+                </Link>
+              ) : (
+                <p className="text-white/40 text-sm italic mb-8">
+                  No destination linked.
+                </p>
+              )}
 
               <div className="pt-4 border-t border-white/10">
                 <p className="text-white/60 text-sm mb-5 leading-relaxed">
@@ -388,7 +378,6 @@ export default function PortfolioDetail({
         </div>
       </motion.section>
 
-      {/* ── RELATED PORTFOLIOS ────────────────────────────────────────── */}
       {relatedItems.length > 0 && (
         <motion.section
           className="py-20 lg:py-28"

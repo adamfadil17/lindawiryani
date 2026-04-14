@@ -10,17 +10,23 @@ import {
   slideInLeft,
   slideInRight,
 } from "@/lib/motion";
-import { Destination } from "@/types";
+import type { Destination } from "@/types";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
 const INITIAL_SHOW = 6;
+
+// ─── Props ────────────────────────────────────────────────────────────────────
 
 interface DestinationDetailProps {
   destination: Destination;
   otherDestinations: Destination[];
 }
 
-export default function DestinationDetail({
+// ─── Component ────────────────────────────────────────────────────────────────
+
+export function DestinationDetail({
   destination,
   otherDestinations,
 }: DestinationDetailProps) {
@@ -32,8 +38,15 @@ export default function DestinationDetail({
     : otherDestinations.slice(0, INITIAL_SHOW);
   const hiddenOthersCount = otherDestinations.length - INITIAL_SHOW;
 
+  // location adalah DestinationLocation (object), bukan string
+  const locationName = destination.location?.name ?? "";
+
+  // category ada di location.category (DestinationCategory)
+  const categoryName = destination.location?.category?.name ?? "";
+
   return (
     <main className="relative overflow-hidden">
+      {/* ── Hero ── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -66,7 +79,7 @@ export default function DestinationDetail({
               Destinations
             </Link>
             <span className="text-white text-sm">/</span>
-            <span className="text-white text-sm font-simbold tracking-widest uppercase truncate max-w-[200px]">
+            <span className="text-white text-sm tracking-widest uppercase truncate max-w-[200px]">
               {destination.name}
             </span>
           </motion.div>
@@ -75,7 +88,7 @@ export default function DestinationDetail({
             variants={fadeInUp}
             className="text-white tracking-[0.3em] uppercase mb-5"
           >
-            Bali Destination
+            {categoryName ? `${categoryName} Destination` : "Destination"}
           </motion.p>
 
           <motion.h1
@@ -89,7 +102,7 @@ export default function DestinationDetail({
 
           <motion.p
             variants={fadeInUp}
-            className="text-white/80  max-w-3xl leading-relaxed mt-6"
+            className="text-white/80 max-w-3xl leading-relaxed mt-6"
           >
             {destination.description}
           </motion.p>
@@ -98,11 +111,13 @@ export default function DestinationDetail({
             <p className="text-white tracking-[0.25em] uppercase mb-2">
               Location
             </p>
-            <p className="text-white ">{destination.location}</p>
+            {/* location adalah DestinationLocation — tampilkan name-nya */}
+            <p className="text-white">{locationName}</p>
           </motion.div>
         </motion.div>
       </section>
 
+      {/* ── Atmosphere & Best For ── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -119,7 +134,7 @@ export default function DestinationDetail({
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight mb-6">
                 The Spirit of This Place
               </h2>
-              <p className="text-primary  leading-relaxed">
+              <p className="text-primary leading-relaxed">
                 {destination.atmosphere}
               </p>
             </div>
@@ -144,7 +159,7 @@ export default function DestinationDetail({
 
           <motion.div variants={slideInRight} className="space-y-8">
             <div className="bg-primary/10 p-8 lg:p-10">
-              <p className="text-primary font-semibold  tracking-[0.25em] uppercase mb-4">
+              <p className="text-primary font-semibold tracking-[0.25em] uppercase mb-4">
                 Highlights
               </p>
               <div className="space-y-4">
@@ -167,7 +182,7 @@ export default function DestinationDetail({
               <p className="text-3xl font-semibold mb-6">
                 {destination.guest_capacity}
               </p>
-              <p className="text-white/80  leading-relaxed">
+              <p className="text-white/80 leading-relaxed">
                 Flexible capacity to accommodate intimate gatherings or larger
                 celebrations, depending on the venue selected.
               </p>
@@ -176,6 +191,7 @@ export default function DestinationDetail({
         </div>
       </motion.section>
 
+      {/* ── Planning Guide ── */}
       <motion.section
         className="bg-primary/10 py-20 lg:py-28"
         initial="hidden"
@@ -301,6 +317,7 @@ export default function DestinationDetail({
         </div>
       </motion.section>
 
+      {/* ── Complete Experience ── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -325,7 +342,7 @@ export default function DestinationDetail({
             <ul className="space-y-3">
               {destination.accommodation_nearby.map((place) => (
                 <li key={place} className="text-primary flex items-start gap-3">
-                  <span className="text-primary  flex-shrink-0">◆</span>
+                  <span className="text-primary flex-shrink-0">◆</span>
                   {place}
                 </li>
               ))}
@@ -338,11 +355,8 @@ export default function DestinationDetail({
             </p>
             <ul className="space-y-3">
               {destination.dining_experiences.map((dining) => (
-                <li
-                  key={dining}
-                  className="text-primary flex items-start gap-3"
-                >
-                  <span className="text-primary  flex-shrink-0">◆</span>
+                <li key={dining} className="text-primary flex items-start gap-3">
+                  <span className="text-primary flex-shrink-0">◆</span>
                   {dining}
                 </li>
               ))}
@@ -355,11 +369,8 @@ export default function DestinationDetail({
             </p>
             <ul className="space-y-3">
               {destination.unique_features.map((feature) => (
-                <li
-                  key={feature}
-                  className="text-primary flex items-start gap-3"
-                >
-                  <span className="text-primary  flex-shrink-0">◆</span>
+                <li key={feature} className="text-primary flex items-start gap-3">
+                  <span className="text-primary flex-shrink-0">◆</span>
                   {feature}
                 </li>
               ))}
@@ -368,6 +379,7 @@ export default function DestinationDetail({
         </div>
       </motion.section>
 
+      {/* ── Closing CTA ── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"
@@ -382,7 +394,7 @@ export default function DestinationDetail({
             fill
             className="object-cover object-center"
             sizes="100vw"
-            priority
+            loading="lazy"
             unoptimized={destination.image.includes("placehold")}
           />
           <div className="absolute inset-0 bg-primary/72" />
@@ -407,11 +419,10 @@ export default function DestinationDetail({
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="mt-6 text-white/80  max-w-2xl mx-auto leading-relaxed"
+            className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
             Our studio is ready to guide you through creating a meaningful,
-            design-led wedding experience that honors this beautiful
-            destination.
+            design-led wedding experience that honors this beautiful destination.
           </motion.p>
 
           <motion.div
@@ -425,12 +436,14 @@ export default function DestinationDetail({
             </Link>
             <Link href="/destinations">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                VIEW PORTFOLIO
+                VIEW ALL DESTINATIONS
               </button>
             </Link>
           </motion.div>
         </div>
       </motion.section>
+
+      {/* ── Other Destinations in Same Category ── */}
       {otherDestinations.length > 0 && (
         <motion.section
           className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
@@ -450,7 +463,8 @@ export default function DestinationDetail({
               <h2 className="text-3xl md:text-4xl text-primary font-semibold">
                 More{" "}
                 <span className="italic font-light">
-                  {destination.category?.name ?? ""} Destinations
+                  {/* category name via location.category */}
+                  {categoryName ? `${categoryName} Destinations` : "Destinations"}
                 </span>
               </h2>
               <p className="text-xs text-primary tracking-wider uppercase mt-4">
@@ -468,48 +482,52 @@ export default function DestinationDetail({
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {visibleOthers.map((dest) => (
-              <div key={dest.slug}>
-                <Link
-                  href={`/destinations/${dest.slug}`}
-                  className="group block"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden mb-4">
-                    <Image
-                      src={dest.image}
-                      alt={dest.name}
-                      fill
-                      className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      loading="lazy"
-                      unoptimized={dest.image.includes("placehold")}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-white/90 text-primary text-[10px] tracking-widest uppercase px-2 py-1">
-                        {dest.location.length > 30
-                          ? dest.location.slice(0, 30) + "…"
-                          : dest.location}
-                      </span>
+            {visibleOthers.map((dest) => {
+              // location adalah DestinationLocation (object)
+              const destLocationName = dest.location?.name ?? "";
+              return (
+                <div key={dest.slug}>
+                  <Link
+                    href={`/destinations/${dest.slug}`}
+                    className="group block"
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden mb-4">
+                      <Image
+                        src={dest.image}
+                        alt={dest.name}
+                        fill
+                        className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        loading="lazy"
+                        unoptimized={dest.image.includes("placehold")}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+                      <div className="absolute top-4 left-4">
+                        <span className="bg-white/90 text-primary text-[10px] tracking-widest uppercase px-2 py-1">
+                          {destLocationName.length > 30
+                            ? destLocationName.slice(0, 30) + "…"
+                            : destLocationName}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <p className="text-white/80 text-xs tracking-widest uppercase mb-1">
+                          {dest.type}
+                        </p>
+                        <h3 className="text-white font-semibold text-xl uppercase">
+                          {dest.name}
+                        </h3>
+                      </div>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <p className="text-white/80 text-xs tracking-widest uppercase mb-1">
-                        {dest.type}
-                      </p>
-                      <h3 className="text-white font-semibold text-xl uppercase">
-                        {dest.name}
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-primary text-sm leading-relaxed line-clamp-2">
-                    {dest.description}
-                  </p>
-                  <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 group-hover:border-primary transition-colors duration-300">
-                    Explore Destination
-                  </span>
-                </Link>
-              </div>
-            ))}
+                    <p className="text-primary text-sm leading-relaxed line-clamp-2">
+                      {dest.description}
+                    </p>
+                    <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 group-hover:border-primary transition-colors duration-300">
+                      Explore Destination
+                    </span>
+                  </Link>
+                </div>
+              );
+            })}
           </div>
 
           {otherDestinations.length > INITIAL_SHOW && (
@@ -533,12 +551,12 @@ export default function DestinationDetail({
                 {isOthersExpanded ? (
                   <>
                     <span>Show Less</span>
-                    <ChevronUp className="w-4 h-4 text-primary" />
+                    <ChevronUp className="w-4 h-4" />
                   </>
                 ) : (
                   <>
                     <span>Show {hiddenOthersCount} More Destinations</span>
-                    <ChevronDown className="w-4 h-4 text-primary" />
+                    <ChevronDown className="w-4 h-4" />
                   </>
                 )}
               </button>

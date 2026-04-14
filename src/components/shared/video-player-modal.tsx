@@ -55,7 +55,6 @@ export function VideoPlayerModal({
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 z-10 bg-white/20 hover:cursor-pointer hover:bg-white/40 rounded-full p-2 transition-colors"
@@ -64,7 +63,6 @@ export function VideoPlayerModal({
               <X className="w-6 h-6 text-white" />
             </button>
 
-            {/* Cloudinary Video Player */}
             <video src={videoUrl} controls autoPlay className="w-full h-full" />
           </motion.div>
         </motion.div>

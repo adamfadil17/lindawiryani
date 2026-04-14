@@ -74,7 +74,6 @@ const formatPrice = (
   return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-// Komponen Loading Skeleton
 const ImageLoadingSkeleton = () => (
   <div className="absolute inset-0 bg-stone-200 animate-pulse">
     <div className="w-full h-full flex items-center justify-center">
@@ -116,7 +115,8 @@ export default function VenueDetailModal({
   const [mainImageError, setMainImageError] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
-  const totalImages = venue.gallery.length;
+  const galleryImages = venue.gallery ?? [];
+  const totalImages = galleryImages.length;
   const visibleThumbnails = 4;
 
   const thumbnailItemRef = useRef<HTMLButtonElement>(null);
@@ -133,7 +133,6 @@ export default function VenueDetailModal({
   }, [venue.id]);
 
   useEffect(() => {
-    // Reset loading state ketika image berubah
     setMainImageLoaded(false);
     setMainImageError(false);
   }, [currentImageIndex]);
@@ -170,7 +169,7 @@ export default function VenueDetailModal({
   const thumbnailScrollIndex = getScrollPosition(currentImageIndex);
   const thumbnailWidth = thumbnailItemRef.current?.offsetWidth ?? 0;
 
-  const gap = 8; // gap-2 = 0.5rem = 8px
+  const gap = 8;
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % totalImages);
@@ -218,13 +217,10 @@ export default function VenueDetailModal({
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 md:p-8 overflow-y-auto">
-          {/* Left Side - Image Carousel */}
           <div className="flex flex-col gap-4">
             <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
-              {/* Loading Skeleton */}
               {!mainImageLoaded && !mainImageError && <ImageLoadingSkeleton />}
 
-              {/* Error State */}
               {mainImageError && (
                 <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
                   <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
@@ -234,10 +230,9 @@ export default function VenueDetailModal({
                 </div>
               )}
 
-              {/* Main Image */}
               <Image
                 src={
-                  venue.gallery[currentImageIndex]?.url ||
+                  galleryImages[currentImageIndex]?.url ||
                   "https://placehold.net/default.svg"
                 }
                 alt={`${venue.name} - Image ${currentImageIndex + 1}`}
@@ -276,7 +271,6 @@ export default function VenueDetailModal({
               )}
             </div>
 
-            {/* Thumbnail Gallery */}
             {totalImages > 1 && (
               <div className="flex flex-col gap-3 px-6 md:px-4">
                 <div className="relative w-full">
@@ -292,7 +286,7 @@ export default function VenueDetailModal({
                         }px)`,
                       }}
                     >
-                      {venue.gallery.map((img, index) => {
+                      {galleryImages.map((img, index) => {
                         const isLoaded = loadedThumbnails.has(index);
 
                         return (
@@ -303,7 +297,6 @@ export default function VenueDetailModal({
                             className="relative overflow-hidden transition-all flex-shrink-0 w-[calc(25%-0.375rem)]"
                             style={{ aspectRatio: "1" }}
                           >
-                            {/* Thumbnail Loading Skeleton */}
                             {!isLoaded && (
                               <div className="absolute inset-0 bg-stone-200 animate-pulse">
                                 <div className="w-full h-full flex items-center justify-center">
@@ -357,15 +350,17 @@ export default function VenueDetailModal({
             )}
           </div>
 
-          {/* Right Side - Venue Details */}
           <article className="flex flex-col items-start gap-3 justify-start">
-            {/* Category Label & Venue Type */}
             <div className="flex items-center gap-3 flex-wrap">
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
                 Venues
               </span>
               <div className="flex gap-2 flex-wrap">
-                {getVenueExperiences(venue, elopementThemes, intimateThemes).map((exp) => (
+                {getVenueExperiences(
+                  venue,
+                  elopementThemes,
+                  intimateThemes,
+                ).map((exp) => (
                   <span
                     key={exp}
                     className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
@@ -384,7 +379,6 @@ export default function VenueDetailModal({
               <VenueNameSlogan venue={venue} />
             )}
 
-            {/* Currency Dropdown */}
             <div className="flex items-center gap-2 mt-2">
               <span className="text-sm text-primary tracking-wider uppercase font-semibold">
                 Currency
@@ -427,7 +421,6 @@ export default function VenueDetailModal({
               </div>
             </div>
 
-            {/* Venue Info Section */}
             <div className="flex justify-start gap-8 items-start mt-4 mb-6 w-full border-y border-stone-100 py-6">
               <div className="flex flex-col">
                 <span className="text-sm text-primary italic mb-1">

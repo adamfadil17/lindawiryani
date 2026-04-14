@@ -41,9 +41,7 @@ export default function Footer() {
     <footer className="bg-white/95 backdrop-blur-sm pt-16 lg:pt-20 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-4 lg:py-8 border-primary border-b-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Left Section - Logo, Tagline, and Address */}
           <div className="space-y-8 text-center lg:text-left">
-            {/* Logo */}
             <div className="flex justify-center lg:justify-start">
               <Image
                 src="/images/logo-gray.png"
@@ -55,23 +53,18 @@ export default function Footer() {
               />
             </div>
 
-            {/* Tagline */}
             <p className="text-primary text-sm tracking-[0.4em] uppercase font-light">
               DESIGN • EVENT PLANNING
             </p>
 
-            {/* Address */}
             <p className="text-primary text-md font-light max-w-md mx-auto lg:mx-0">
               © 2026 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali
               80239, Indonesia.
             </p>
           </div>
 
-          {/* Right Section - Navigation and Social Media */}
           <div className="space-y-12 text-center lg:text-left">
-            {/* Navigation Links */}
             <nav className="grid grid-cols-2 gap-x-8 gap-y-0">
-              {/* Left column: main nav items */}
               <ul className="flex flex-col gap-y-2.5 items-center lg:items-start">
                 {navigationItems
                   .filter((item) => !item.submenu)
@@ -87,7 +80,6 @@ export default function Footer() {
                   ))}
               </ul>
 
-              {/* Right column: Wedding Experiences + submenu */}
               <div className="flex flex-col gap-y-2.5 items-center lg:items-start">
                 {navigationItems
                   .filter((item) => item.submenu)
@@ -116,13 +108,11 @@ export default function Footer() {
               </div>
             </nav>
 
-            {/* Social Media Section */}
             <div className="space-y-4">
               <p className="text-primary text-sm font-light">
                 Reach out and follow us at
               </p>
 
-              {/* Social Media Icons */}
               <div className="flex space-x-4 justify-center lg:justify-start">
                 <a
                   href="https://wa.me/628113980998"

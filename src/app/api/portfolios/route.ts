@@ -7,6 +7,8 @@ import {
   requireAuth,
   requireRole,
   created,
+  notFound,
+  ok,
 } from "@/lib";
 import { createPortfolioSchema, parsePagination, paginateQuery } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
@@ -20,6 +22,17 @@ const PORTFOLIO_INCLUDE = {
 
 export async function GET(req: NextRequest) {
   try {
+
+    const slug = req.nextUrl.searchParams.get("slug") ?? undefined;
+    if (slug) {
+      const portfolio = await prisma.portfolio.findUnique({
+        where: { slug },
+        include: PORTFOLIO_INCLUDE,
+      });
+      if (!portfolio) return notFound("Portfolio");
+      return ok(portfolio);
+    }
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const destinationId =
       req.nextUrl.searchParams.get("destinationId") ?? undefined;

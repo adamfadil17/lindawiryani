@@ -27,15 +27,9 @@ import {
   BookOpen,
   Loader2,
 } from "lucide-react";
-import {
-  InquiryStatus,
-  InquirySubmission,
-  inquiryStatusConfig,
-} from "@/types";
+import { InquiryStatus, InquirySubmission, inquiryStatusConfig } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
-
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 const ALL_STATUSES: InquiryStatus[] = [
   "new",
@@ -44,8 +38,6 @@ const ALL_STATUSES: InquiryStatus[] = [
   "booked",
   "archived",
 ];
-
-// ─── Info Row ─────────────────────────────────────────────────────────────────
 
 function InfoRow({
   icon: Icon,
@@ -85,8 +77,6 @@ function InfoRow({
   );
 }
 
-// ─── Section Block ────────────────────────────────────────────────────────────
-
 function SectionBlock({
   title,
   children,
@@ -103,8 +93,6 @@ function SectionBlock({
     </div>
   );
 }
-
-// ─── Couple Column ────────────────────────────────────────────────────────────
 
 function CoupleColumn({
   role,
@@ -161,25 +149,23 @@ function CoupleColumn({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function InquiryDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
 
-  // ── Page state ──
   const [inquiry, setInquiry] = useState<InquirySubmission | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  // ── Status update state: idle | saving ──
-  const [statusUpdateStatus, setStatusUpdateStatus] = useState<"idle" | "saving">("idle");
+  const [statusUpdateStatus, setStatusUpdateStatus] = useState<
+    "idle" | "saving"
+  >("idle");
 
-  // ── Delete state (consolidated): idle | confirm | deleting ──
-  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
 
-  // ── Load inquiry data on mount ──
   useEffect(() => {
     setIsLoading(true);
     const getInquiryById = async () => {
@@ -206,7 +192,6 @@ export default function InquiryDetailPage() {
     getInquiryById();
   }, [id]);
 
-  // ── Status update flow ──
   const handleStatusChange = async (newStatus: InquiryStatus) => {
     if (!inquiry || newStatus === inquiry.status) return;
     setStatusUpdateStatus("saving");
@@ -233,7 +218,6 @@ export default function InquiryDetailPage() {
     }
   };
 
-  // ── Delete flow ──
   const deleteInquiryById = async () => {
     setDeleteStatus("deleting");
     try {
@@ -253,11 +237,10 @@ export default function InquiryDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
-      setDeleteStatus("confirm"); // keep modal open on error
+      setDeleteStatus("confirm");
     }
   };
 
-  // ── Not found ──
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
@@ -278,11 +261,9 @@ export default function InquiryDetailPage() {
     );
   }
 
-  // ── Loading skeleton ──
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
-        {/* Header skeleton */}
         <div className="flex items-center gap-4 mb-8">
           <div className="w-9 h-9 bg-primary/10 border border-primary/20" />
           <div className="space-y-2">
@@ -290,11 +271,14 @@ export default function InquiryDetailPage() {
             <div className="h-6 w-52 bg-primary/10 rounded" />
           </div>
         </div>
-        {/* Content skeleton */}
+
         <div className="grid lg:grid-cols-[1fr_320px] gap-6">
           <div className="space-y-6">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="bg-white border border-primary/20 p-6 space-y-4">
+              <div
+                key={i}
+                className="bg-white border border-primary/20 p-6 space-y-4"
+              >
                 <div className="h-3 w-36 bg-primary/10 rounded" />
                 <div className="flex items-center gap-3">
                   <div className="w-14 h-14 bg-primary/10 flex-shrink-0" />
@@ -338,19 +322,24 @@ export default function InquiryDetailPage() {
 
   if (!inquiry) return null;
 
-  // ── Derived values ──
   const coupleNames = `${inquiry.name_of_bride} & ${inquiry.name_of_groom}`;
 
-  const submittedDate = new Date(inquiry.submitted_at).toLocaleDateString("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-  const submittedTime = new Date(inquiry.submitted_at).toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const submittedDate = new Date(inquiry.submitted_at).toLocaleDateString(
+    "en-GB",
+    {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    },
+  );
+  const submittedTime = new Date(inquiry.submitted_at).toLocaleTimeString(
+    "en-GB",
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+  );
 
   const weddingDateFormatted = inquiry.wedding_date
     ? new Date(inquiry.wedding_date).toLocaleDateString("en-GB", {
@@ -379,7 +368,6 @@ export default function InquiryDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <Link
@@ -410,11 +398,8 @@ export default function InquiryDetailPage() {
         </div>
       </div>
 
-      {/* ── Layout ── */}
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        {/* ── Left Column ── */}
         <div className="space-y-6">
-          {/* Contact Information */}
           <SectionBlock title="Contact Information">
             <div className="flex items-start gap-4 mb-6">
               <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center bg-rose-50">
@@ -455,7 +440,6 @@ export default function InquiryDetailPage() {
             </div>
           </SectionBlock>
 
-          {/* Couple Details */}
           <SectionBlock title="Couple Details">
             <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
               <CoupleColumn
@@ -474,7 +458,6 @@ export default function InquiryDetailPage() {
             </div>
           </SectionBlock>
 
-          {/* Wedding Details */}
           <SectionBlock title="Wedding Details">
             <div>
               <InfoRow
@@ -500,7 +483,6 @@ export default function InquiryDetailPage() {
             </div>
           </SectionBlock>
 
-          {/* Accommodation & Travel */}
           <SectionBlock title="Accommodation & Travel">
             <div>
               <InfoRow
@@ -521,7 +503,6 @@ export default function InquiryDetailPage() {
             </div>
           </SectionBlock>
 
-          {/* Vision & Message */}
           <SectionBlock title="Vision & Message">
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 flex items-center justify-center bg-primary/5 flex-shrink-0">
@@ -534,9 +515,7 @@ export default function InquiryDetailPage() {
           </SectionBlock>
         </div>
 
-        {/* ── Right Sidebar ── */}
         <div className="space-y-5">
-          {/* Status Manager */}
           <div className="bg-white border border-primary/20 p-6">
             <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
               Inquiry Status
@@ -553,7 +532,9 @@ export default function InquiryDetailPage() {
             <div className="relative">
               <select
                 value={inquiry.status}
-                onChange={(e) => handleStatusChange(e.target.value as InquiryStatus)}
+                onChange={(e) =>
+                  handleStatusChange(e.target.value as InquiryStatus)
+                }
                 disabled={statusUpdateStatus === "saving"}
                 className="w-full appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -575,7 +556,6 @@ export default function InquiryDetailPage() {
             </p>
           </div>
 
-          {/* Inquiry Meta */}
           <div className="bg-white border border-primary/20 p-6">
             <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
               Inquiry Details
@@ -599,7 +579,9 @@ export default function InquiryDetailPage() {
                 <div className="flex items-start gap-2">
                   <Clock className="w-3.5 h-3.5 text-primary/50 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-primary text-sm font-medium">{submittedDate}</p>
+                    <p className="text-primary text-sm font-medium">
+                      {submittedDate}
+                    </p>
                     <p className="text-primary/50 text-xs">{submittedTime}</p>
                   </div>
                 </div>
@@ -608,12 +590,13 @@ export default function InquiryDetailPage() {
                 <p className="text-primary/40 text-xs tracking-widest uppercase mb-1">
                   Inquiry ID
                 </p>
-                <p className="text-primary/60 text-xs font-mono">{inquiry.id}</p>
+                <p className="text-primary/60 text-xs font-mono">
+                  {inquiry.id}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* At a Glance */}
           <div className="bg-white border border-primary/20 p-6">
             <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
               At a Glance
@@ -649,18 +632,20 @@ export default function InquiryDetailPage() {
                 </span>
                 <span className="text-primary text-xs font-medium">
                   {inquiry.wedding_date
-                    ? new Date(inquiry.wedding_date).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })
+                    ? new Date(inquiry.wedding_date).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )
                     : "—"}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Quick Actions */}
           <div className="bg-white border border-primary/20 p-6">
             <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
               Quick Actions
@@ -685,12 +670,13 @@ export default function InquiryDetailPage() {
         </div>
       </div>
 
-      {/* ── Delete Modal ── */}
       {deleteStatus === "confirm" || deleteStatus === "deleting" ? (
         <DeleteModal
           name={coupleNames}
           onConfirm={deleteInquiryById}
-          onCancel={() => deleteStatus !== "deleting" && setDeleteStatus("idle")}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
           isLoading={deleteStatus === "deleting"}
         />
       ) : null}

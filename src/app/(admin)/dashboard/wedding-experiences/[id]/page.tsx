@@ -14,7 +14,6 @@ import {
   Trash2,
   Plus,
   X,
-  Sparkles,
   ChevronDown,
   ImageIcon,
   Loader2,
@@ -38,12 +37,8 @@ import {
 } from "@/utils/form-validators";
 import { toSlug } from "@/utils";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 type FAQ = ExperienceFaq;
 type ExperienceFormData = WeddingExperienceFormData;
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function expToForm(e: WeddingExperience): ExperienceFormData {
   return {
@@ -121,8 +116,6 @@ function formToDto(form: ExperienceFormData) {
   };
 }
 
-// ─── HeadingEditor ────────────────────────────────────────────────────────────
-
 function HeadingEditor({
   value,
   onChange,
@@ -150,8 +143,6 @@ function HeadingEditor({
     </div>
   );
 }
-
-// ─── FAQ Editor ───────────────────────────────────────────────────────────────
 
 function FAQEditor({
   experienceId,
@@ -264,6 +255,7 @@ function FAQEditor({
             #{i + 1}
           </span>
           <button
+            type="button"
             onClick={() => deleteFaqById(i)}
             disabled={deletingIdx === i}
             className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-400 hover:bg-red-50 transition-colors disabled:opacity-50"
@@ -316,6 +308,7 @@ function FAQEditor({
             #{faqs.length + i + 1} — unsaved
           </span>
           <button
+            type="button"
             onClick={() => removeDraft(i)}
             className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-400 hover:bg-red-50 transition-colors"
           >
@@ -345,6 +338,7 @@ function FAQEditor({
             />
           </div>
           <button
+            type="button"
             onClick={() => createFaq(i)}
             disabled={!draft.question.trim() || savingIdx === -(i + 1)}
             className="flex items-center gap-1.5 text-xs text-primary/60 border border-primary/20 px-3 py-1.5 hover:bg-primary/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
@@ -366,6 +360,7 @@ function FAQEditor({
       )}
 
       <button
+        type="button"
         onClick={addDraft}
         className="flex items-center gap-1.5 text-xs text-primary/50 hover:text-primary transition-colors hover:cursor-pointer"
       >
@@ -376,15 +371,12 @@ function FAQEditor({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function ExperiencesDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   const isNew = id === "new";
 
-  // ── React Hook Form ──
   const {
     handleSubmit,
     setValue,
@@ -431,7 +423,6 @@ export default function ExperiencesDetailPage() {
     },
   });
 
-  // ── setField helper: always triggers validation so errors show immediately ──
   const setField = (key: keyof ExperienceFormData, value: unknown) =>
     setValue(key as any, value as any, {
       shouldValidate: true,
@@ -441,30 +432,26 @@ export default function ExperiencesDetailPage() {
 
   const formData = watch();
 
-  // ── FAQs ──
   const [faqs, setFaqs] = useState<FAQ[]>([]);
 
-  // ── Page state ──
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
   const [experienceId, setExperienceId] = useState<string | null>(
     isNew ? null : id,
   );
 
-  // ── Save state (consolidated): idle | confirm | saving | saved
   const [saveStatus, setSaveStatus] = useState<
     "idle" | "confirm" | "saving" | "saved"
   >("idle");
 
-  // ── Delete state (consolidated): idle | confirm | deleting
   const [deleteStatus, setDeleteStatus] = useState<
     "idle" | "confirm" | "deleting"
   >("idle");
 
-  // ── Unsaved changes guard ──
-  // Create mode: any non-empty field counts as "dirty"
-  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const hasUnsavedChanges = isNew
     ? Boolean(
@@ -476,11 +463,10 @@ export default function ExperiencesDetailPage() {
         formData.closing_body ||
         formData.closing_image ||
         (formData.intro_list && formData.intro_list.some(Boolean)) ||
-        (formData.services_list && formData.services_list.some(Boolean))
+        (formData.services_list && formData.services_list.some(Boolean)),
       )
     : isDirty;
 
-  // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && saveStatus !== "saving") {
@@ -492,19 +478,21 @@ export default function ExperiencesDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, saveStatus]);
 
-  // Helper: navigate with guard check
   const guardedNavigate = useCallback(
     (href: string) => {
-      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+      if (
+        hasUnsavedChanges &&
+        saveStatus !== "saving" &&
+        saveStatus !== "saved"
+      ) {
         setUnsavedModal({ open: true, pendingHref: href });
       } else {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, saveStatus, router]
+    [hasUnsavedChanges, saveStatus, router],
   );
 
-  // ── Load experience data (edit mode only) ──
   useEffect(() => {
     if (isNew) return;
     setIsLoading(true);
@@ -534,7 +522,6 @@ export default function ExperiencesDetailPage() {
     getExperienceById();
   }, [id, isNew, reset]);
 
-  // ── Save flow ──
   const onSubmitForm = async () => {
     setSaveStatus("confirm");
   };
@@ -559,7 +546,7 @@ export default function ExperiencesDetailPage() {
         toast.success("Experience created!", {
           description: "Your new experience has been added to the system.",
         });
-        reset(); // clear dirty state before navigating
+        reset();
         router.push("/dashboard/wedding-experiences");
       } else {
         await axios.patch(`/api/wedding-experiences/${id}`, dto, {
@@ -569,7 +556,7 @@ export default function ExperiencesDetailPage() {
         toast.success("Changes saved!", {
           description: "Your experience has been updated.",
         });
-        // Re-sync RHF baseline so isDirty becomes false
+
         reset(formData);
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -581,11 +568,10 @@ export default function ExperiencesDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to save", { description: errorMsg });
-      setSaveStatus("confirm"); // keep modal open on error
+      setSaveStatus("confirm");
     }
   };
 
-  // ── Delete flow ──
   const deleteExperienceById = async () => {
     setDeleteStatus("deleting");
     try {
@@ -605,11 +591,10 @@ export default function ExperiencesDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
-      setDeleteStatus("confirm"); // keep modal open on error
+      setDeleteStatus("confirm");
     }
   };
 
-  // ── Not found ──
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
@@ -630,7 +615,6 @@ export default function ExperiencesDetailPage() {
     );
   }
 
-  // ── Loading skeleton ──
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1200px] mx-auto animate-pulse">
@@ -691,7 +675,6 @@ export default function ExperiencesDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1200px] mx-auto">
-      {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -745,21 +728,17 @@ export default function ExperiencesDetailPage() {
         </div>
       </div>
 
-      {/* ── Two-column layout ── */}
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
       >
-        {/* ── Left Column ── */}
         <div className="lg:col-span-2 space-y-6">
-          {/* ── Identity ── */}
           <Section
             title="Identity"
             subtitle="Core identifiers for this experience"
           >
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* name — required (min 2) */}
                 <FormField label="Experience Name" required>
                   <TextInput
                     value={formData.name}
@@ -776,7 +755,6 @@ export default function ExperiencesDetailPage() {
                   />
                 </FormField>
 
-                {/* category — required (enum) */}
                 <FormField label="Category" required>
                   <div className="relative">
                     <select
@@ -806,7 +784,6 @@ export default function ExperiencesDetailPage() {
                 </FormField>
               </div>
 
-              {/* Auto-derived meta preview */}
               <div className="bg-primary/5 border border-primary/20 p-4 space-y-2.5">
                 <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40 font-semibold mb-3">
                   Auto-generated Meta
@@ -853,10 +830,8 @@ export default function ExperiencesDetailPage() {
             </div>
           </Section>
 
-          {/* ── Hero ── */}
           <Section title="Hero Section" subtitle="The first thing visitors see">
             <div className="space-y-5">
-              {/* hero_style — required (enum) */}
               <FormField label="Hero Style" required>
                 <div className="relative">
                   <select
@@ -885,7 +860,6 @@ export default function ExperiencesDetailPage() {
                 )}
               </FormField>
 
-              {/* hero_image — required (url) */}
               <FormField label="Hero Image" required>
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
@@ -918,7 +892,6 @@ export default function ExperiencesDetailPage() {
                 </div>
               </FormField>
 
-              {/* Auto-derived hero text */}
               <div className="bg-primary/5 border border-primary/20 p-4 space-y-2.5">
                 <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40 font-semibold mb-3">
                   Auto-generated Hero Text
@@ -951,7 +924,6 @@ export default function ExperiencesDetailPage() {
                 </div>
               </div>
 
-              {/* hero_desc — required (min 1) */}
               <FormField label="Description" required>
                 <TextareaInput
                   value={formData.hero_desc}
@@ -968,11 +940,9 @@ export default function ExperiencesDetailPage() {
             </div>
           </Section>
 
-          {/* ── Intro ── */}
           <Section title="Intro Section" subtitle="Why choose this experience">
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* intro_label — required (min 1) */}
                 <FormField label="Section Label" required>
                   <TextInput
                     value={formData.intro_label}
@@ -985,7 +955,7 @@ export default function ExperiencesDetailPage() {
                     }
                   />
                 </FormField>
-                {/* intro_list_label — optional */}
+
                 <FormField label="List Label (optional)">
                   <TextInput
                     value={formData.intro_list_label ?? ""}
@@ -995,7 +965,6 @@ export default function ExperiencesDetailPage() {
                 </FormField>
               </div>
 
-              {/* intro_heading — required (tuple[string, string]) */}
               <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
                   value={formData.intro_heading as [string, string]}
@@ -1010,7 +979,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* intro_body — required (min 1) */}
               <FormField label="Body Text" required>
                 <TextareaInput
                   value={formData.intro_body}
@@ -1025,7 +993,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* intro_list — optional (array) */}
               <FormField label="List Items">
                 <TagsInput
                   values={formData.intro_list}
@@ -1034,7 +1001,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* intro_footnote — optional */}
               <FormField label="Footnote (optional)">
                 <TextInput
                   value={formData.intro_footnote ?? ""}
@@ -1043,7 +1009,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* intro_images — optional (max 2 urls) */}
               <FormField label="Intro Images (max 2)">
                 <div className="grid sm:grid-cols-2 gap-4">
                   {[0, 1].map((idx) => (
@@ -1092,11 +1057,9 @@ export default function ExperiencesDetailPage() {
             </div>
           </Section>
 
-          {/* ── Approach ── */}
           <Section title="Approach Section" subtitle="How you design or work">
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* approach_label — required (min 1) */}
                 <FormField label="Section Label" required>
                   <TextInput
                     value={formData.approach_label}
@@ -1109,7 +1072,7 @@ export default function ExperiencesDetailPage() {
                     }
                   />
                 </FormField>
-                {/* approach_list_label — optional */}
+
                 <FormField label="List Label (optional)">
                   <TextInput
                     value={formData.approach_list_label ?? ""}
@@ -1119,7 +1082,6 @@ export default function ExperiencesDetailPage() {
                 </FormField>
               </div>
 
-              {/* approach_heading — required (tuple) */}
               <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
                   value={formData.approach_heading as [string, string]}
@@ -1136,7 +1098,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* approach_body — required (min 1) */}
               <FormField label="Body Text" required>
                 <TextareaInput
                   value={formData.approach_body}
@@ -1151,7 +1112,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* approach_list — optional */}
               <FormField label="List Items">
                 <TagsInput
                   values={formData.approach_list}
@@ -1159,7 +1119,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* approach_image — required (url) */}
               <FormField label="Approach Image" required>
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
@@ -1194,11 +1153,9 @@ export default function ExperiencesDetailPage() {
             </div>
           </Section>
 
-          {/* ── Services ── */}
           <Section title="Services Section" subtitle="What you offer">
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* services_label — required (min 1) */}
                 <FormField label="Section Label" required>
                   <TextInput
                     value={formData.services_label}
@@ -1213,7 +1170,6 @@ export default function ExperiencesDetailPage() {
                 </FormField>
               </div>
 
-              {/* services_heading — required (tuple) */}
               <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
                   value={formData.services_heading as [string, string]}
@@ -1230,7 +1186,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* services_list — required (min 1 item) */}
               <FormField label="Services List" required>
                 <TagsInput
                   values={formData.services_list}
@@ -1248,7 +1203,6 @@ export default function ExperiencesDetailPage() {
                 )}
               </FormField>
 
-              {/* services_footnote — required (min 1) */}
               <FormField label="Footnote" required>
                 <TextInput
                   value={formData.services_footnote}
@@ -1262,13 +1216,11 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* Dark panel */}
               <div className="border border-primary/20 bg-primary/5 p-4 space-y-5 mt-2">
                 <p className="text-[10px] tracking-[0.2em] uppercase text-primary/60 font-semibold">
                   Dark Panel
                 </p>
 
-                {/* services_dark_label — required (min 1) */}
                 <FormField label="Panel Label" required>
                   <TextInput
                     value={formData.services_dark_label}
@@ -1282,7 +1234,6 @@ export default function ExperiencesDetailPage() {
                   />
                 </FormField>
 
-                {/* services_dark_heading — required (tuple) */}
                 <FormField label="Heading (2 lines)" required>
                   <HeadingEditor
                     value={formData.services_dark_heading as [string, string]}
@@ -1304,7 +1255,6 @@ export default function ExperiencesDetailPage() {
                   />
                 </FormField>
 
-                {/* services_dark_body — required (min 1) */}
                 <FormField label="Body Text" required>
                   <TextareaInput
                     value={formData.services_dark_body}
@@ -1319,7 +1269,6 @@ export default function ExperiencesDetailPage() {
                   />
                 </FormField>
 
-                {/* services_dark_list — required (min 1 item) */}
                 <FormField label="List Items" required>
                   <TagsInput
                     values={formData.services_dark_list}
@@ -1340,10 +1289,8 @@ export default function ExperiencesDetailPage() {
             </div>
           </Section>
 
-          {/* ── Closing ── */}
           <Section title="Closing Section" subtitle="Final call-to-action area">
             <div className="space-y-5">
-              {/* closing_label — required (min 1) */}
               <FormField label="Section Label" required>
                 <TextInput
                   value={formData.closing_label}
@@ -1357,7 +1304,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* closing_heading — required (tuple) */}
               <FormField label="Heading (2 lines)" required>
                 <HeadingEditor
                   value={formData.closing_heading as [string, string]}
@@ -1372,7 +1318,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* closing_body — required (min 1) */}
               <FormField label="Body Text" required>
                 <TextareaInput
                   value={formData.closing_body}
@@ -1387,7 +1332,6 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* closing_image — required (url) */}
               <FormField label="Section Image" required>
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
@@ -1420,7 +1364,6 @@ export default function ExperiencesDetailPage() {
                 </div>
               </FormField>
 
-              {/* closing_couple_label — optional */}
               <FormField label="Couple Label (optional)">
                 <TextInput
                   value={formData.closing_couple_label ?? ""}
@@ -1429,20 +1372,28 @@ export default function ExperiencesDetailPage() {
                 />
               </FormField>
 
-              {/* closing_couple_values — optional (array) */}
               {formData.closing_couple_label && (
-                <FormField label="Couple Values">
+                <FormField label="Couple Values" required>
                   <TagsInput
                     values={formData.closing_couple_values}
                     onChange={(v) => setField("closing_couple_values", v)}
                     placeholder="e.g. Seclusion and intimacy"
                   />
+                  {formErrors.closing_couple_values && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {String(
+                        formErrors.closing_couple_values.message ??
+                          (formErrors.closing_couple_values as any)?.root
+                            ?.message ??
+                          "At least one couple value is required",
+                      )}
+                    </p>
+                  )}
                 </FormField>
               )}
             </div>
           </Section>
 
-          {/* ── FAQs ── */}
           <Section
             title="FAQs"
             subtitle={
@@ -1465,9 +1416,7 @@ export default function ExperiencesDetailPage() {
           </Section>
         </div>
 
-        {/* ── Right Column ── */}
         <div className="space-y-6">
-          {/* Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
             <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
               Summary
@@ -1489,7 +1438,6 @@ export default function ExperiencesDetailPage() {
             </div>
           </div>
 
-          {/* Sections checklist */}
           <div className="bg-white border border-primary/20 p-5">
             <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
               Sections
@@ -1529,7 +1477,6 @@ export default function ExperiencesDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -1541,7 +1488,6 @@ export default function ExperiencesDetailPage() {
         />
       )}
 
-      {/* ── Save Modal ── */}
       {(saveStatus === "confirm" || saveStatus === "saving") && (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -1553,7 +1499,6 @@ export default function ExperiencesDetailPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
           name={formData.name}

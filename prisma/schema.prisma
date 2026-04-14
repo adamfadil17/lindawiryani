@@ -30,6 +30,7 @@ enum WeddingExperienceType {
 
 enum ArticleCategory {
   Guides
+  Featured
   Planning_Advice       @map("Planning Advice")
   Destination_Knowledge @map("Destination Knowledge")
   Venue_and_Location    @map("Venue & Location")
@@ -80,7 +81,7 @@ model DestinationCategory {
   id        String                @id @default(uuid())
   name      String
   slug      String                @unique // "bali" | "islands" | "outside-bali"
-
+  description String
   locations DestinationLocation[]
 
   @@map("destination_categories")
@@ -92,8 +93,8 @@ model DestinationCategory {
 
 model DestinationLocation {
   id          String @id @default(uuid())
-  name        String                       // "South Bali", "Ubud & Gianyar"
-  slug        String @unique               // "south-bali", "ubud-gianyar"
+  name        String                       
+  slug        String @unique  
   category_id String
 
   category     DestinationCategory @relation(fields: [category_id], references: [id], onDelete: Cascade)

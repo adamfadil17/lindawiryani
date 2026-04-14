@@ -37,7 +37,6 @@ export default function OurApproachPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-10 mt-6"

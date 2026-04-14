@@ -21,11 +21,7 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const LIMIT = 6;
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface ExperienceFilterOption {
   id: string;
@@ -36,8 +32,6 @@ interface ExperienceFilterOption {
 interface ThemeFilters {
   experiences: ExperienceFilterOption[];
 }
-
-// ─── Skeleton Card ────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
   return (
@@ -57,8 +51,6 @@ function SkeletonCard() {
   );
 }
 
-// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
-
 function SkeletonStatCard() {
   return (
     <div className="p-5 border border-primary/20 bg-white animate-pulse">
@@ -67,8 +59,6 @@ function SkeletonStatCard() {
     </div>
   );
 }
-
-// ─── Wedding Theme Card ───────────────────────────────────────────────────────
 
 function WeddingThemeCard({
   theme,
@@ -81,7 +71,6 @@ function WeddingThemeCard({
 
   return (
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
-      {/* Image */}
       <div className="relative aspect-[16/9] overflow-hidden">
         <Image
           src={theme.image || "https://placehold.net/default.svg"}
@@ -90,7 +79,7 @@ function WeddingThemeCard({
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Experience badge */}
+
         {theme.experience && (
           <div className="absolute top-3 left-3">
             <span className="inline-flex items-center text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/80 text-white">
@@ -98,7 +87,7 @@ function WeddingThemeCard({
             </span>
           </div>
         )}
-        {/* Gallery count */}
+
         {galleryCount > 1 && (
           <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs tracking-widest uppercase px-2 py-1">
             +{galleryCount - 1} photos
@@ -106,7 +95,6 @@ function WeddingThemeCard({
         )}
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <div className="mb-3">
           <p className="text-primary/60 text-xs tracking-widest uppercase mb-1">
@@ -121,7 +109,6 @@ function WeddingThemeCard({
           {theme.description}
         </p>
 
-        {/* Meta */}
         <div className="flex items-center gap-3 mb-5 text-xs text-primary/80">
           <span>{theme.inclusions?.length ?? 0} inclusions</span>
           {theme.venue && (
@@ -138,7 +125,6 @@ function WeddingThemeCard({
           )}
         </div>
 
-        {/* Divider + Actions */}
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
             <span className="text-xs text-primary/80 font-semibold tracking-wider truncate max-w-[140px]">
@@ -174,8 +160,6 @@ function WeddingThemeCard({
     </div>
   );
 }
-
-// ─── Pagination ───────────────────────────────────────────────────────────────
 
 function Pagination({
   meta,
@@ -265,31 +249,33 @@ function Pagination({
   );
 }
 
-// ─── Page State (useReducer) ──────────────────────────────────────────────────
-
 interface PageState {
-  // data
   themes: WeddingTheme[];
   paginationMeta: PaginationMeta | null;
   isLoading: boolean;
-  // filters
+
   searchTerm: string;
   debouncedSearch: string;
   experienceFilter: string;
   currentPage: number;
-  // delete state machine
+
   deleteStatus: "idle" | "confirm" | "deleting";
   deleteTarget: WeddingTheme | null;
-  // faceted filter options
+
   filters: ThemeFilters;
   isFiltersLoading: boolean;
-  // cached counts per experience
+
   experienceCounts: Record<string, number>;
 }
 
 type PageAction =
   | { type: "FETCH_THEMES_START" }
-  | { type: "FETCH_THEMES_SUCCESS"; themes: WeddingTheme[]; meta: PaginationMeta | null; experienceFilter: string }
+  | {
+      type: "FETCH_THEMES_SUCCESS";
+      themes: WeddingTheme[];
+      meta: PaginationMeta | null;
+      experienceFilter: string;
+    }
   | { type: "FETCH_THEMES_ERROR" }
   | { type: "SET_FILTERS"; filters: ThemeFilters }
   | { type: "FILTERS_LOADED" }
@@ -330,8 +316,7 @@ function pageReducer(state: PageState, action: PageAction): PageState {
         isLoading: false,
         themes: action.themes,
         paginationMeta: action.meta,
-        // Cache count for the active experience filter so stat card
-        // shows the real total immediately on subsequent visits to the same filter.
+
         experienceCounts: {
           ...state.experienceCounts,
           [action.experienceFilter]: action.meta?.total ?? 0,
@@ -351,7 +336,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "SET_SEARCH":
       return { ...state, searchTerm: action.value };
     case "SET_DEBOUNCED_SEARCH":
-      // Reset page whenever the debounced search term changes.
       return { ...state, debouncedSearch: action.value, currentPage: 1 };
     case "SET_EXPERIENCE":
       return { ...state, experienceFilter: action.id, currentPage: 1 };
@@ -367,7 +351,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "OPEN_DELETE":
       return { ...state, deleteTarget: action.theme, deleteStatus: "confirm" };
     case "CLOSE_DELETE":
-      // Block closing while a delete is in-flight.
       return state.deleteStatus === "deleting"
         ? state
         : { ...state, deleteTarget: null, deleteStatus: "idle" };
@@ -376,14 +359,11 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "DELETE_SUCCESS":
       return { ...state, deleteTarget: null, deleteStatus: "idle" };
     case "DELETE_ERROR":
-      // Revert to confirm so the user can retry or cancel.
       return { ...state, deleteStatus: "confirm" };
     default:
       return state;
   }
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DashboardWeddingThemesPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
@@ -403,13 +383,10 @@ export default function DashboardWeddingThemesPage() {
     experienceCounts,
   } = state;
 
-  // ── useRef: debounce timer (mutating ref avoids spurious re-renders) ──
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── useRef: AbortController cancels stale in-flight theme fetches ──
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search: fire SET_DEBOUNCED_SEARCH 400 ms after last keystroke ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -420,7 +397,6 @@ export default function DashboardWeddingThemesPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch faceted filter options once on mount ──
   useEffect(() => {
     const fetchFilters = async () => {
       try {
@@ -430,8 +406,6 @@ export default function DashboardWeddingThemesPage() {
         const themeFilters = data.data;
         dispatch({ type: "SET_FILTERS", filters: themeFilters });
 
-        // Pre-fetch counts for every experience in parallel so stat cards
-        // show real values immediately — without waiting for the user to click each card.
         if (themeFilters.experiences.length > 0) {
           const countResults = await Promise.allSettled(
             themeFilters.experiences.map((exp) =>
@@ -463,11 +437,7 @@ export default function DashboardWeddingThemesPage() {
     fetchFilters();
   }, []);
 
-  // ── Fetch themes (paginated, searched, filtered) ──
-  // Wrapped in useCallback so the useEffect below only re-fires when a real
-  // dependency changes — not on every render.
   const getThemes = useCallback(async () => {
-    // Cancel any previous in-flight request to prevent race conditions.
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
@@ -492,8 +462,6 @@ export default function DashboardWeddingThemesPage() {
         experienceFilter,
       });
     } catch (err) {
-      // axios.isCancel covers both CancelToken and AbortController aborts —
-      // these are intentional so we silently ignore them.
       if (axios.isCancel(err)) return;
       const errorMsg = axios.isAxiosError(err)
         ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
@@ -509,8 +477,6 @@ export default function DashboardWeddingThemesPage() {
     getThemes();
   }, [getThemes]);
 
-  // ── Filter change helpers ──
-  // useCallback with empty deps because they only call dispatch (stable reference).
   const handleExperienceChange = useCallback(
     (id: string) => dispatch({ type: "SET_EXPERIENCE", id }),
     [],
@@ -521,7 +487,6 @@ export default function DashboardWeddingThemesPage() {
     [],
   );
 
-  // ── Delete flow ──
   const openDeleteModal = useCallback(
     (theme: WeddingTheme) => dispatch({ type: "OPEN_DELETE", theme }),
     [],
@@ -542,7 +507,6 @@ export default function DashboardWeddingThemesPage() {
       const isLastOnPage = themes.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
       if (isLastOnPage) {
-        // Go back one page instead of landing on an empty page.
         dispatch({ type: "SET_PAGE", page: currentPage - 1 });
       } else {
         getThemes();
@@ -552,8 +516,6 @@ export default function DashboardWeddingThemesPage() {
       dispatch({ type: "DELETE_ERROR" });
     }
   }, [deleteTarget, themes.length, currentPage, getThemes]);
-
-  // ── useMemo: derived values — only recompute when their specific deps change ──
 
   const totalCount = useMemo(
     () => paginationMeta?.total ?? 0,
@@ -565,7 +527,6 @@ export default function DashboardWeddingThemesPage() {
     [debouncedSearch, experienceFilter],
   );
 
-  // Stat cards: "All" card + one card per experience.
   const statCards = useMemo(
     () => [
       { id: "all", label: "Total" },
@@ -574,7 +535,6 @@ export default function DashboardWeddingThemesPage() {
     [filters.experiences],
   );
 
-  // Dropdown options for the experience select.
   const experienceOptions = useMemo(
     () => [
       { id: "all", label: "All Experiences" },
@@ -585,7 +545,6 @@ export default function DashboardWeddingThemesPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -612,7 +571,6 @@ export default function DashboardWeddingThemesPage() {
         </Link>
       </div>
 
-      {/* ── Stats Row ── */}
       {isFiltersLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -663,7 +621,6 @@ export default function DashboardWeddingThemesPage() {
         )
       )}
 
-      {/* ── Search & Filter Bar ── */}
       <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
@@ -671,7 +628,9 @@ export default function DashboardWeddingThemesPage() {
             type="text"
             placeholder="Search wedding themes..."
             value={searchTerm}
-            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
             className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (
@@ -700,7 +659,6 @@ export default function DashboardWeddingThemesPage() {
           <ChevronRight className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40 rotate-90" />
         </div>
 
-        {/* Clear all */}
         {hasActiveFilters && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
@@ -715,7 +673,6 @@ export default function DashboardWeddingThemesPage() {
         )}
       </div>
 
-      {/* ── Results Info ── */}
       {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} wedding theme
@@ -726,7 +683,6 @@ export default function DashboardWeddingThemesPage() {
         </p>
       )}
 
-      {/* ── Grid ── */}
       {isLoading ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {Array.from({ length: LIMIT }).map((_, i) => (
@@ -765,7 +721,6 @@ export default function DashboardWeddingThemesPage() {
         </div>
       )}
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
         <Pagination
           meta={paginationMeta}
@@ -773,7 +728,6 @@ export default function DashboardWeddingThemesPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
         deleteTarget && (
           <DeleteModal

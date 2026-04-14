@@ -34,7 +34,6 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
 
         <div className="overflow-y-auto p-4 md:p-8">
           <article className="flex flex-col gap-8">
-            {/* Main Header */}
             <div className="flex flex-col gap-4 border-b border-stone-100 pb-8">
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
                 About Linda Wiryani Design and Event Planning
@@ -47,9 +46,7 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
               </span>
             </div>
 
-            {/* Content Sections */}
             <div className="flex flex-col gap-10">
-              {/* Introduction */}
               <div className="flex flex-col gap-4">
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
                   At Linda Wiryani Design & Event Planning, every celebration
@@ -90,7 +87,6 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
                 </p>
               </div>
 
-              {/* Intimate Villa Weddings Section */}
               <div className="bg-stone-50 p-6 md:p-8">
                 <p className="text-lg md:text-xl text-primary font-bold mb-4 leading-tight">
                   Intimate and Private Villa Weddings in Bali
@@ -107,42 +103,53 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
                 </p>
               </div>
 
-              {/* Architecture & Fashion Section */}
               <div className="flex flex-col gap-4">
                 <p className="text-lg md:text-xl text-primary font-bold leading-tight">
                   Where Architecture, Fashion, and Artful Design Meet
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  Our aesthetic favors clarity over excess, restraint over spectacle, and warmth over performance.
+                  Our aesthetic favors clarity over excess, restraint over
+                  spectacle, and warmth over performance.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  Architectural sensibility, refined textures, and subtle details come together to create celebrations that feel intimate and considered.
+                  Architectural sensibility, refined textures, and subtle
+                  details come together to create celebrations that feel
+                  intimate and considered.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  As the Creative Director of fashion brand My Lindway, Linda Wiryani brings an artistic sensibility and appreciation for craftsmanship into each celebration, from bespoke styling to visual storytelling.
+                  As the Creative Director of fashion brand My Lindway, Linda
+                  Wiryani brings an artistic sensibility and appreciation for
+                  craftsmanship into each celebration, from bespoke styling to
+                  visual storytelling.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  This vision is often enriched through creative collaboration with her architect husband, resulting in weddings that feel cohesive, intentional, and visually timeless.
+                  This vision is often enriched through creative collaboration
+                  with her architect husband, resulting in weddings that feel
+                  cohesive, intentional, and visually timeless.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed italic">
                   Design exists to support emotion, never to overpower it.
                 </p>
               </div>
 
-              {/* For Couples Section */}
               <div className="bg-stone-50 p-6 md:p-8">
                 <p className="text-base md:text-lg text-primary font-bold mb-4 leading-tight">
                   For Couples Who Value Meaning Over Excess
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
-                  Linda Wiryani Design & Event Planning works with couples who appreciate thoughtful design, subtle luxury, and authentic experiences, couples who seek weddings that feel personal, unforced, and deeply connected to their story.
+                  Linda Wiryani Design & Event Planning works with couples who
+                  appreciate thoughtful design, subtle luxury, and authentic
+                  experiences, couples who seek weddings that feel personal,
+                  unforced, and deeply connected to their story.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
-                  Weddings are moments where people gather, connect, and remember.
-
+                  Weddings are moments where people gather, connect, and
+                  remember.
                 </p>
                 <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
-                  Our role is to design those moments with care, transforming them into experiences that feel honest, refined, and deeply personal.
+                  Our role is to design those moments with care, transforming
+                  them into experiences that feel honest, refined, and deeply
+                  personal.
                 </p>
               </div>
             </div>

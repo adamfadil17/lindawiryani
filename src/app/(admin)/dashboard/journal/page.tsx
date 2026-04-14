@@ -23,26 +23,18 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const LIMIT = 6;
 
-// Single source of truth — diambil langsung dari articleCategories di @/types
 const ARTICLE_CATEGORIES = [...articleCategories] as ArticleCategory[];
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface PageState {
-  // data
   articles: Article[];
   paginationMeta: PaginationMeta | null;
   isLoading: boolean;
-  // filters
   searchTerm: string;
   debouncedSearch: string;
   categoryFilter: "all" | ArticleCategory;
   currentPage: number;
-  // delete state machine: idle → confirm → deleting → idle
   deleteStatus: "idle" | "confirm" | "deleting";
   deleteTarget: Article | null;
 }
@@ -91,7 +83,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "SET_SEARCH":
       return { ...state, searchTerm: action.value };
     case "SET_DEBOUNCED_SEARCH":
-      // Reset ke halaman 1 setiap kali search term berubah
       return { ...state, debouncedSearch: action.value, currentPage: 1 };
 
     case "SET_CATEGORY":
@@ -110,7 +101,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "OPEN_DELETE":
       return { ...state, deleteTarget: action.article, deleteStatus: "confirm" };
     case "CLOSE_DELETE":
-      // Guard: tidak bisa close modal saat sedang proses delete
       return state.deleteStatus === "deleting"
         ? state
         : { ...state, deleteTarget: null, deleteStatus: "idle" };
@@ -125,8 +115,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return state;
   }
 }
-
-// ─── Skeleton Card ────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
   return (
@@ -145,8 +133,6 @@ function SkeletonCard() {
   );
 }
 
-// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
-
 function SkeletonStatCard() {
   return (
     <div className="p-4 border border-primary/20 bg-white animate-pulse">
@@ -155,8 +141,6 @@ function SkeletonStatCard() {
     </div>
   );
 }
-
-// ─── Article Card ─────────────────────────────────────────────────────────────
 
 function ArticleCard({
   article,
@@ -172,7 +156,7 @@ function ArticleCard({
 
   return (
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
-      {/* Image */}
+      
       <div className="relative aspect-[16/9] overflow-hidden">
         <Image
           src={article.image || "https://placehold.net/default.svg"}
@@ -181,7 +165,7 @@ function ArticleCard({
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Category badge */}
+        
         <div className="absolute top-3 left-3">
           <span className="inline-flex items-center gap-1.5 text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary text-white">
             {article.category}
@@ -189,7 +173,7 @@ function ArticleCard({
         </div>
       </div>
 
-      {/* Content */}
+      
       <div className="p-5">
         <div className="mb-3">
           <div className="flex items-center gap-1.5 text-primary/50 text-sm mb-2">
@@ -201,12 +185,12 @@ function ArticleCard({
           </h3>
         </div>
 
-        {/* Excerpt */}
+        
         <p className="text-primary/80 text-sm leading-relaxed line-clamp-2 mb-4">
           {article.excerpt}
         </p>
 
-        {/* Divider + Actions */}
+        
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
             <span className="text-xs text-primary/80 font-semibold tracking-wider truncate max-w-[140px]">
@@ -245,8 +229,6 @@ function ArticleCard({
     </div>
   );
 }
-
-// ─── Pagination ───────────────────────────────────────────────────────────────
 
 function Pagination({
   meta,
@@ -336,8 +318,6 @@ function Pagination({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DashboardJournalPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
 
@@ -353,13 +333,10 @@ export default function DashboardJournalPage() {
     deleteTarget,
   } = state;
 
-  // ── useRef: debounce timer — tidak perlu trigger re-render ──
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── useRef: AbortController — cancel request lama saat params berubah ──
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search input ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -370,9 +347,7 @@ export default function DashboardJournalPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch articles ──
   const getArticles = useCallback(async () => {
-    // Cancel in-flight request sebelumnya agar tidak ada race condition
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
@@ -396,7 +371,6 @@ export default function DashboardJournalPage() {
         meta: response.data.meta ?? null,
       });
     } catch (err) {
-      // Abaikan error dari request yang sengaja di-cancel
       if (axios.isCancel(err)) return;
       const errorMsg = axios.isAxiosError(err)
         ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
@@ -408,13 +382,10 @@ export default function DashboardJournalPage() {
     }
   }, [currentPage, debouncedSearch, categoryFilter]);
 
-  // getArticles dipanggil ulang setiap kali fungsinya berubah
-  // (yaitu saat currentPage / debouncedSearch / categoryFilter berubah)
   useEffect(() => {
     getArticles();
   }, [getArticles]);
 
-  // ── Filter change helpers — stable reference dengan useCallback ──
   const handleCategoryChange = useCallback(
     (cat: "all" | ArticleCategory) => dispatch({ type: "SET_CATEGORY", category: cat }),
     [],
@@ -425,7 +396,6 @@ export default function DashboardJournalPage() {
     [],
   );
 
-  // ── Delete flow ──
   const openDeleteModal = useCallback(
     (article: Article) => dispatch({ type: "OPEN_DELETE", article }),
     [],
@@ -443,8 +413,6 @@ export default function DashboardJournalPage() {
       await axios.delete(`/api/articles/${deleteTarget.id}`, {
         headers: getAuthHeaders(),
       });
-      // Jika artikel yang dihapus adalah satu-satunya di halaman terakhir,
-      // mundur satu halaman agar tidak stuck di halaman kosong
       const isLastOnPage = articles.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
       if (isLastOnPage) {
@@ -459,7 +427,6 @@ export default function DashboardJournalPage() {
     }
   }, [deleteTarget, articles.length, currentPage, getArticles]);
 
-  // ── useMemo: derived values — hanya dihitung ulang saat deps berubah ──
   const totalCount = useMemo(
     () => paginationMeta?.total ?? 0,
     [paginationMeta],
@@ -470,18 +437,17 @@ export default function DashboardJournalPage() {
     [debouncedSearch, categoryFilter],
   );
 
-  // Stat cards di-memo agar tidak rebuild array setiap render
   const statCards = useMemo(
     () => [
       { id: "all", label: "Total" },
       ...ARTICLE_CATEGORIES.map((c) => ({ id: c, label: c })),
     ],
-    [], // ARTICLE_CATEGORIES adalah modul-level constant, tidak pernah berubah
+    [],
   );
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
+      
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -508,7 +474,7 @@ export default function DashboardJournalPage() {
         </Link>
       </div>
 
-      {/* ── Stats Row ── */}
+      
       {isLoading && articles.length === 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-7 gap-3 mb-8">
           {Array.from({ length: 7 }).map((_, i) => (
@@ -556,9 +522,9 @@ export default function DashboardJournalPage() {
         </div>
       )}
 
-      {/* ── Search & Filter Bar ── */}
+      
       <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-        {/* Search */}
+        
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
@@ -580,10 +546,10 @@ export default function DashboardJournalPage() {
           )}
         </div>
 
-        {/* Divider */}
+        
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
-        {/* Category dropdown */}
+        
         <div className="relative shrink-0 h-[42px]">
           <select
             value={categoryFilter}
@@ -619,7 +585,7 @@ export default function DashboardJournalPage() {
           />
         </div>
 
-        {/* Clear all */}
+        
         {hasActiveFilters && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
@@ -634,7 +600,7 @@ export default function DashboardJournalPage() {
         )}
       </div>
 
-      {/* ── Results Info ── */}
+      
       {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} article
@@ -644,7 +610,7 @@ export default function DashboardJournalPage() {
         </p>
       )}
 
-      {/* ── Grid ── */}
+      
       {isLoading ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {Array.from({ length: LIMIT }).map((_, i) => (
@@ -683,7 +649,7 @@ export default function DashboardJournalPage() {
         </div>
       )}
 
-      {/* ── Pagination ── */}
+      
       {paginationMeta && !isLoading && (
         <Pagination
           meta={paginationMeta}
@@ -691,7 +657,7 @@ export default function DashboardJournalPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
+      
       {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
         deleteTarget && (
           <DeleteModal

@@ -38,15 +38,11 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Token ada di dalam envelope: { success: true, data: { token, user, expiresIn } }
         const token = data.data?.token ?? data.token;
 
         if (token) {
-          // Simpan ke localStorage (dibaca oleh useCurrentUser)
           localStorage.setItem("token", token);
 
-          // Simpan ke cookie juga agar konsisten dengan proses logout
-          // max-age: 7 hari (sesuai JWT_EXPIRES_IN default "7d")
           document.cookie = `token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
         }
 
@@ -59,9 +55,11 @@ export default function LoginPage() {
           router.push("/dashboard");
         }, 1000);
       } else {
-        // Error message ada di data.error (envelope ApiResponse) atau data.message
         toast.error("Sign in failed", {
-          description: data.error ?? data.message ?? "Invalid credentials. Please try again.",
+          description:
+            data.error ??
+            data.message ??
+            "Invalid credentials. Please try again.",
         });
       }
     } catch {
@@ -80,7 +78,6 @@ export default function LoginPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden flex">
-      {/* ── Left Panel — Visual ─────────────────────────────────────────── */}
       <div className="hidden lg:block lg:w-1/2 xl:w-3/5 relative">
         <Image
           src="/images/venues/banner/signature-bg.png"
@@ -90,13 +87,11 @@ export default function LoginPage() {
           className="object-cover object-center"
           sizes="60vw"
         />
-        {/* Gradient overlays */}
+
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/40" />
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary/20" />
 
-        {/* Brand overlay content */}
         <div className="absolute inset-0 flex flex-col justify-between p-12 xl:p-16">
-          {/* Bottom tagline */}
           <div className="max-w-md">
             <p className="text-white/70 tracking-[0.25em] uppercase text-xs mb-4">
               Studio Portal
@@ -111,9 +106,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ── Right Panel — Login Form ─────────────────────────────────────── */}
       <div className="w-full lg:w-1/2 xl:w-2/5 flex flex-col justify-center bg-white relative">
-        {/* Subtle pattern texture */}
         <div
           className="absolute inset-0 opacity-[0.015] pointer-events-none"
           style={{
@@ -123,7 +116,6 @@ export default function LoginPage() {
         />
 
         <div className="relative z-10 w-full max-w-md mx-auto px-8 sm:px-12 py-16">
-          {/* Logo */}
           <div className="mb-10 text-center">
             <div className="inline-flex flex-col items-center gap-4">
               <div className="relative h-14 w-[120px]">
@@ -133,13 +125,13 @@ export default function LoginPage() {
                   className="h-14 w-auto mx-auto"
                   width={120}
                   height={56}
+                  priority
                 />
               </div>
               <div className="w-8 h-px bg-primary/30" />
             </div>
           </div>
 
-          {/* Heading */}
           <div className="mb-10 text-center">
             <h1 className="text-2xl md:text-3xl text-primary font-semibold leading-tight">
               Welcome Back
@@ -150,9 +142,7 @@ export default function LoginPage() {
             </h1>
           </div>
 
-          {/* ── Form ─────────────────────────────────────────────────────── */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email */}
             <div>
               <label className={labelClass} htmlFor="email">
                 Email Address <span className="text-red-400">*</span>
@@ -171,7 +161,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label
@@ -240,7 +229,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Submit */}
             <div className="pt-2">
               <button
                 type="submit"
@@ -277,7 +265,6 @@ export default function LoginPage() {
             </div>
           </form>
 
-          {/* Forgot password */}
           <div className="mt-8 text-center">
             <p className="text-primary/80 text-sm tracking-wide">
               Forgot your password?{" "}
@@ -290,7 +277,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Back to site */}
           <div className="mt-8 text-center">
             <Link
               href="/"

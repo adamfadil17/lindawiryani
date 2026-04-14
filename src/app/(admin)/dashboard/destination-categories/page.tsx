@@ -29,25 +29,19 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 import { toSlug } from "@/utils";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 const LIMIT = 20;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface PageState {
-  // data
   categories: DestinationCategory[];
   paginationMeta: PaginationMeta | null;
   isLoading: boolean;
-  // search & pagination
   searchTerm: string;
   debouncedSearch: string;
   currentPage: number;
-  // delete state machine
   deleteStatus: "idle" | "confirm" | "deleting";
   deleteTarget: DestinationCategory | null;
-  // create modal
   createStatus: "idle" | "open" | "creating";
 }
 
@@ -133,7 +127,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
   }
 }
 
-// ─── Skeleton Row ─────────────────────────────────────────────────────────────
 
 function SkeletonRow() {
   return (
@@ -160,7 +153,6 @@ function SkeletonRowMobile() {
   );
 }
 
-// ─── Pagination ───────────────────────────────────────────────────────────────
 
 function Pagination({
   meta,
@@ -240,7 +232,6 @@ function Pagination({
   );
 }
 
-// ─── Category Row ─────────────────────────────────────────────────────────────
 
 function CategoryRow({
   category,
@@ -255,7 +246,6 @@ function CategoryRow({
 
   return (
     <>
-      {/* ── Mobile ── */}
       <div className="flex sm:hidden items-center gap-3 px-4 py-3.5 border-b border-primary/10 active:bg-primary/5 transition-colors">
         <div className="w-9 h-9 bg-primary/5 flex items-center justify-center shrink-0">
           <FolderOpen className="w-4 h-4 text-primary/40" />
@@ -295,7 +285,6 @@ function CategoryRow({
         </div>
       </div>
 
-      {/* ── Desktop ── */}
       <div className="hidden sm:flex items-center gap-4 px-6 py-4 border-b border-primary/10 hover:bg-primary/2 transition-colors group">
         <span className="w-8 text-xs text-primary/30 font-mono shrink-0">
           {String(index + 1).padStart(2, "0")}
@@ -344,7 +333,6 @@ function CategoryRow({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DashboardDestinationCategoriesPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
@@ -364,7 +352,6 @@ export default function DashboardDestinationCategoriesPage() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -375,7 +362,6 @@ export default function DashboardDestinationCategoriesPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch categories ──
   const getCategories = useCallback(async () => {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
@@ -411,7 +397,6 @@ export default function DashboardDestinationCategoriesPage() {
     getCategories();
   }, [getCategories]);
 
-  // ── Create ──
   const {
     register: registerCreate,
     handleSubmit: handleCreateSubmit,
@@ -421,10 +406,9 @@ export default function DashboardDestinationCategoriesPage() {
     setValue: setValueCreate,
   } = useForm<DestinationCategoryFormData>({
     resolver: zodResolver(destinationCategoryFormSchema),
-    defaultValues: { name: "", slug: "" },
+    defaultValues: { name: "", slug: "", description: "" },
   });
 
-  // Auto-generate slug dari name
   const createName = watchCreate("name");
   useEffect(() => {
     setValueCreate("slug", toSlug(createName), { shouldValidate: false });
@@ -458,7 +442,6 @@ export default function DashboardDestinationCategoriesPage() {
     resetCreate();
   }, [resetCreate]);
 
-  // ── Delete ──
   const openDeleteModal = useCallback(
     (category: DestinationCategory) => dispatch({ type: "OPEN_DELETE", category }),
     []
@@ -489,7 +472,6 @@ export default function DashboardDestinationCategoriesPage() {
     }
   }, [deleteTarget, categories.length, currentPage, getCategories]);
 
-  // ── Derived values ──
   const totalCategories = useMemo(() => paginationMeta?.total ?? 0, [paginationMeta]);
   const totalLocations = useMemo(
     () => categories.reduce((acc, c) => acc + (c.locations?.length ?? 0), 0),
@@ -501,7 +483,6 @@ export default function DashboardDestinationCategoriesPage() {
     []
   );
 
-  // ── Stable submit handler for CreateModal ──
   const onConfirmCreate = useMemo(
     () => handleCreateSubmit(handleCreateCategory),
     [handleCreateSubmit, handleCreateCategory]
@@ -509,7 +490,6 @@ export default function DashboardDestinationCategoriesPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -536,7 +516,6 @@ export default function DashboardDestinationCategoriesPage() {
         </button>
       </div>
 
-      {/* ── Stats Cards ── */}
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {Array.from({ length: 2 }).map((_, i) => (
@@ -563,7 +542,6 @@ export default function DashboardDestinationCategoriesPage() {
         </div>
       )}
 
-      {/* ── Search Bar ── */}
       <div className="bg-white border border-primary/20 p-3 sm:p-4 mb-4 sm:mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
@@ -585,7 +563,6 @@ export default function DashboardDestinationCategoriesPage() {
         </div>
       </div>
 
-      {/* ── Results info ── */}
       {hasActiveSearch && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} categor
@@ -593,9 +570,7 @@ export default function DashboardDestinationCategoriesPage() {
         </p>
       )}
 
-      {/* ── List / Table ── */}
       <div className="bg-white border border-primary/20 overflow-hidden">
-        {/* Desktop header */}
         <div className="hidden sm:flex items-center gap-4 px-6 py-3 bg-primary/3 border-b border-primary/10">
           <span className="w-8 text-xs tracking-widest uppercase text-primary/40">#</span>
           <span className="w-9 shrink-0" />
@@ -604,12 +579,10 @@ export default function DashboardDestinationCategoriesPage() {
           <span className="w-24 shrink-0 text-xs tracking-widest uppercase text-primary/40 text-right">Actions</span>
         </div>
 
-        {/* Mobile header */}
         <div className="flex sm:hidden items-center px-4 py-2.5 bg-primary/3 border-b border-primary/10">
           <span className="text-xs tracking-widest uppercase text-primary/40">Categories</span>
         </div>
 
-        {/* Loading skeletons */}
         {isLoading && (
           <>
             {Array.from({ length: LIMIT }).map((_, i) => (
@@ -621,7 +594,6 @@ export default function DashboardDestinationCategoriesPage() {
           </>
         )}
 
-        {/* Empty state */}
         {!isLoading && categories.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 sm:py-24 text-center px-4">
             <FolderOpen className="w-8 h-8 text-primary/20 mb-4" />
@@ -642,7 +614,6 @@ export default function DashboardDestinationCategoriesPage() {
           </div>
         )}
 
-        {/* Rows */}
         {!isLoading &&
           categories.map((category, index) => (
             <CategoryRow
@@ -654,12 +625,10 @@ export default function DashboardDestinationCategoriesPage() {
           ))}
       </div>
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
         <Pagination meta={paginationMeta} onPageChange={handlePageChange} />
       )}
 
-      {/* ── Create Modal ── */}
       {(createStatus === "open" || createStatus === "creating") && (
         <CreateModal
           onSubmit={onConfirmCreate}
@@ -670,7 +639,6 @@ export default function DashboardDestinationCategoriesPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") && deleteTarget && (
         <DeleteModal
           name={deleteTarget.name}

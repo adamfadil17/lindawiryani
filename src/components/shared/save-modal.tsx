@@ -7,13 +7,13 @@ export interface SaveModalProps {
   onCancel: () => void;
   mode: SaveModalMode;
   isLoading: boolean;
-  // Entity info
-  entityName: string;       // e.g. "Destination", "Article", "User"
-  itemName?: string;        // e.g. "Bali Paradise", "My First Post"
-  // Optional overrides
-  subtitle?: string;        // overrides "Confirm Action"
-  description?: string;     // overrides the default description
-  icon?: LucideIcon;        // overrides the Save icon
+
+  entityName: string;
+  itemName?: string;
+
+  subtitle?: string;
+  description?: string;
+  icon?: LucideIcon;
 }
 
 export default function SaveModal({
@@ -61,9 +61,7 @@ export default function SaveModal({
         <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-2">
           {subtitle ?? "Confirm Action"}
         </p>
-        <h2 className="text-primary text-xl font-semibold mb-3">
-          {title}
-        </h2>
+        <h2 className="text-primary text-xl font-semibold mb-3">{title}</h2>
         <p className="text-primary/70 text-sm leading-relaxed mb-8">
           {description ?? defaultDescription}
         </p>
@@ -86,8 +84,10 @@ export default function SaveModal({
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 {isNew ? "Creating..." : "Updating..."}
               </>
+            ) : isNew ? (
+              "Create"
             ) : (
-              isNew ? "Create" : "Update"
+              "Update"
             )}
           </button>
         </div>

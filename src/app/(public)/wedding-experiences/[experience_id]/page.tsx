@@ -6,8 +6,6 @@ import type { WeddingExperience } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 function toArray<T>(value: unknown, fallback: T): T {
   if (Array.isArray(value)) return value as T;
   if (typeof value === "string") {
@@ -24,26 +22,26 @@ function toArray<T>(value: unknown, fallback: T): T {
 function normaliseExperience(raw: Record<string, unknown>): WeddingExperience {
   return {
     ...raw,
-    intro_heading:         toArray(raw.intro_heading,         ["", ""]),
-    intro_list:            toArray(raw.intro_list,            []),
-    intro_images:          toArray(raw.intro_images,          []),
-    approach_heading:      toArray(raw.approach_heading,      ["", ""]),
-    approach_list:         toArray(raw.approach_list,         []),
-    services_heading:      toArray(raw.services_heading,      ["", ""]),
-    services_list:         toArray(raw.services_list,         []),
+    intro_heading: toArray(raw.intro_heading, ["", ""]),
+    intro_list: toArray(raw.intro_list, []),
+    intro_images: toArray(raw.intro_images, []),
+    approach_heading: toArray(raw.approach_heading, ["", ""]),
+    approach_list: toArray(raw.approach_list, []),
+    services_heading: toArray(raw.services_heading, ["", ""]),
+    services_list: toArray(raw.services_list, []),
     services_dark_heading: toArray(raw.services_dark_heading, ["", ""]),
-    services_dark_list:    toArray(raw.services_dark_list,    []),
-    closing_heading:       toArray(raw.closing_heading,       ["", ""]),
+    services_dark_list: toArray(raw.services_dark_list, []),
+    closing_heading: toArray(raw.closing_heading, ["", ""]),
     closing_couple_values: toArray(raw.closing_couple_values, []),
-    faqs:                  toArray(raw.faqs,                  []),
-    venues:                toArray(raw.venues,                []),
-    themes:                toArray(raw.themes,                []),
+    faqs: toArray(raw.faqs, []),
+    venues: toArray(raw.venues, []),
+    themes: toArray(raw.themes, []),
   } as unknown as WeddingExperience;
 }
 
-// ─── Fetchers ─────────────────────────────────────────────────────────────────
-
-async function fetchExperienceBySlug(slug: string): Promise<WeddingExperience | null> {
+async function fetchExperienceBySlug(
+  slug: string,
+): Promise<WeddingExperience | null> {
   try {
     const { data } = await axios.get(`${BASE_URL}/api/wedding-experiences`, {
       params: { slug },
@@ -66,8 +64,6 @@ async function fetchAllExperiences(): Promise<WeddingExperience[]> {
   }
 }
 
-// ─── Metadata ─────────────────────────────────────────────────────────────────
-
 export async function generateMetadata({
   params,
 }: {
@@ -77,7 +73,9 @@ export async function generateMetadata({
   const experience = await fetchExperienceBySlug(experience_id);
 
   if (!experience) {
-    return { title: "Wedding Experiences | Linda Wiryani Design and Event Planning" };
+    return {
+      title: "Wedding Experiences | Linda Wiryani Design and Event Planning",
+    };
   }
 
   return {
@@ -86,12 +84,17 @@ export async function generateMetadata({
     openGraph: {
       title: `${experience.name} in Bali`,
       description: experience.hero_desc,
-      images: [{ url: experience.hero_image, width: 1200, height: 630, alt: `${experience.name} in Bali` }],
+      images: [
+        {
+          url: experience.hero_image,
+          width: 1200,
+          height: 630,
+          alt: `${experience.name} in Bali`,
+        },
+      ],
     },
   };
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function WeddingExperiencePage({
   params,

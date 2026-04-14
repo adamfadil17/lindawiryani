@@ -16,7 +16,12 @@ import {
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const WEDDING_THEME_INCLUDE = {
-  venue: true,
+  venue: {
+    include: {
+      gallery: { orderBy: { sort_order: "asc" as const } },
+      destination: true,
+    },
+  },
   experience: true,
   gallery: { orderBy: { sort_order: "asc" as const } },
 };

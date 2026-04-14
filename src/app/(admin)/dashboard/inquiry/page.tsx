@@ -20,16 +20,10 @@ import {
   CalendarDays,
   Heart,
 } from "lucide-react";
-import {
-  InquiryStatus,
-  InquirySubmission,
-  inquiryStatusConfig,
-} from "@/types";
+import { InquiryStatus, InquirySubmission, inquiryStatusConfig } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import type { PaginationMeta } from "@/lib/api-response";
-
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 const LIMIT = 9;
 const ALL_STATUSES: InquiryStatus[] = [
@@ -39,8 +33,6 @@ const ALL_STATUSES: InquiryStatus[] = [
   "booked",
   "archived",
 ];
-
-// ─── Skeleton Card ────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
   return (
@@ -79,8 +71,6 @@ function SkeletonCard() {
   );
 }
 
-// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
-
 function SkeletonStatCard() {
   return (
     <div className="p-5 border border-primary/20 bg-white animate-pulse">
@@ -89,8 +79,6 @@ function SkeletonStatCard() {
     </div>
   );
 }
-
-// ─── Status Badge ─────────────────────────────────────────────────────────────
 
 function StatusBadge({ status }: { status: InquiryStatus }) {
   const { label, classes } = inquiryStatusConfig[status];
@@ -102,8 +90,6 @@ function StatusBadge({ status }: { status: InquiryStatus }) {
     </span>
   );
 }
-
-// ─── Inquiry Card ─────────────────────────────────────────────────────────────
 
 function InquiryCard({
   inquiry,
@@ -127,7 +113,6 @@ function InquiryCard({
 
   return (
     <div className="bg-white border border-primary/20 hover:border-primary/30 transition-all duration-300 hover:shadow-md group p-5">
-      {/* Top row */}
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-start gap-3 min-w-0">
           <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center mt-0.5 bg-rose-50">
@@ -148,7 +133,6 @@ function InquiryCard({
         <StatusBadge status={inquiry.status} />
       </div>
 
-      {/* Info rows */}
       <div className="space-y-1.5 mb-4">
         <div className="flex items-center gap-1.5">
           <Mail className="w-3 h-3 text-primary/40 flex-shrink-0" />
@@ -168,11 +152,12 @@ function InquiryCard({
         </div>
         <div className="flex items-center gap-1.5">
           <CalendarDays className="w-3 h-3 text-primary/40 flex-shrink-0" />
-          <span className="text-primary/70 text-xs">{weddingDateFormatted}</span>
+          <span className="text-primary/70 text-xs">
+            {weddingDateFormatted}
+          </span>
         </div>
       </div>
 
-      {/* Guest & Budget pills */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
         <span className="text-xs tracking-wider text-primary/60 bg-primary/5 border border-primary/10 px-2.5 py-1">
           {inquiry.number_of_attendance} guests
@@ -182,7 +167,6 @@ function InquiryCard({
         </span>
       </div>
 
-      {/* Footer */}
       <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Clock className="w-3 h-3 text-primary/30" />
@@ -209,8 +193,6 @@ function InquiryCard({
   );
 }
 
-// ─── Pagination ───────────────────────────────────────────────────────────────
-
 function Pagination({
   meta,
   onPageChange,
@@ -228,7 +210,15 @@ function Pagination({
     } else if (meta.page >= meta.totalPages - 3) {
       range.push(1, "...", ...pages.slice(meta.totalPages - 5));
     } else {
-      range.push(1, "...", meta.page - 1, meta.page, meta.page + 1, "...", meta.totalPages);
+      range.push(
+        1,
+        "...",
+        meta.page - 1,
+        meta.page,
+        meta.page + 1,
+        "...",
+        meta.totalPages,
+      );
     }
     return range;
   };
@@ -240,9 +230,11 @@ function Pagination({
       <p className="text-primary/60 text-xs tracking-wider">
         Showing{" "}
         <span className="text-primary font-medium">
-          {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
+          {(meta.page - 1) * meta.limit + 1}–
+          {Math.min(meta.page * meta.limit, meta.total)}
         </span>{" "}
-        of <span className="text-primary font-medium">{meta.total}</span> inquiries
+        of <span className="text-primary font-medium">{meta.total}</span>{" "}
+        inquiries
       </p>
 
       <div className="flex items-center gap-1">
@@ -289,25 +281,27 @@ function Pagination({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DashboardInquiryPage() {
-  // ── Data state ──
   const [inquiries, setInquiries] = useState<InquirySubmission[]>([]);
-  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
+  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
 
-  // ── Filter & search state ──
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | InquiryStatus>("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | InquiryStatus>(
+    "all",
+  );
   const [currentPage, setCurrentPage] = useState(1);
 
-  // ── Delete state (consolidated): idle | confirm | deleting ──
-  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
-  const [deleteTarget, setDeleteTarget] = useState<InquirySubmission | null>(null);
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
+  const [deleteTarget, setDeleteTarget] = useState<InquirySubmission | null>(
+    null,
+  );
 
-  // ── Debounce search — 400ms, reset page ke 1 setiap search berubah ──
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
@@ -316,7 +310,6 @@ export default function DashboardInquiryPage() {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // ── Fetch inquiries — reaktif terhadap semua filter & page ──
   const getInquiries = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -346,7 +339,6 @@ export default function DashboardInquiryPage() {
     getInquiries();
   }, [getInquiries]);
 
-  // ── Filter change helpers — selalu reset page ke 1 ──
   const handleStatusChange = (value: "all" | InquiryStatus) => {
     setStatusFilter(value);
     setCurrentPage(1);
@@ -358,14 +350,13 @@ export default function DashboardInquiryPage() {
     setCurrentPage(1);
   };
 
-  // ── Delete flow ──
   const openDeleteModal = (inquiry: InquirySubmission) => {
     setDeleteTarget(inquiry);
     setDeleteStatus("confirm");
   };
 
   const closeDeleteModal = () => {
-    if (deleteStatus === "deleting") return; // blokir close saat request berjalan
+    if (deleteStatus === "deleting") return;
     setDeleteTarget(null);
     setDeleteStatus("idle");
   };
@@ -384,7 +375,7 @@ export default function DashboardInquiryPage() {
       setDeleteTarget(null);
       setDeleteStatus("idle");
       if (isLastOnPage) {
-        setCurrentPage((prev) => prev - 1); // trigger useEffect → getInquiries otomatis
+        setCurrentPage((prev) => prev - 1);
       } else {
         getInquiries();
       }
@@ -396,17 +387,15 @@ export default function DashboardInquiryPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
-      setDeleteStatus("confirm"); // keep modal open on error
+      setDeleteStatus("confirm");
     }
   };
 
-  // ── Derived values ──
   const totalCount = paginationMeta?.total ?? 0;
   const hasActiveFilters = !!debouncedSearch || statusFilter !== "all";
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -425,7 +414,6 @@ export default function DashboardInquiryPage() {
         </div>
       </div>
 
-      {/* ── Stats Row ── */}
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -434,7 +422,6 @@ export default function DashboardInquiryPage() {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-          {/* All */}
           <button
             onClick={() => handleStatusChange("all")}
             className={`p-5 border text-left transition-all duration-200 hover:cursor-pointer ${
@@ -458,7 +445,6 @@ export default function DashboardInquiryPage() {
             <p className="text-2xl font-semibold">{totalCount}</p>
           </button>
 
-          {/* Per-status stat buttons */}
           {ALL_STATUSES.map((status) => {
             const isActive = statusFilter === status;
             const { label } = inquiryStatusConfig[status];
@@ -488,9 +474,7 @@ export default function DashboardInquiryPage() {
         </div>
       )}
 
-      {/* ── Search & Filter Bar ── */}
       <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-        {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
@@ -510,14 +494,14 @@ export default function DashboardInquiryPage() {
           )}
         </div>
 
-        {/* Divider */}
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
-        {/* Status filter dropdown */}
         <div className="relative shrink-0">
           <select
             value={statusFilter}
-            onChange={(e) => handleStatusChange(e.target.value as "all" | InquiryStatus)}
+            onChange={(e) =>
+              handleStatusChange(e.target.value as "all" | InquiryStatus)
+            }
             className="w-full sm:w-44 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer"
           >
             <option value="all">All Statuses</option>
@@ -530,7 +514,6 @@ export default function DashboardInquiryPage() {
           <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
         </div>
 
-        {/* Clear all */}
         {hasActiveFilters && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
@@ -545,17 +528,16 @@ export default function DashboardInquiryPage() {
         )}
       </div>
 
-      {/* ── Results Info ── */}
       {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
-          Showing {paginationMeta.total} inquir{paginationMeta.total !== 1 ? "ies" : "y"}
+          Showing {paginationMeta.total} inquir
+          {paginationMeta.total !== 1 ? "ies" : "y"}
           {statusFilter !== "all" &&
             ` · ${inquiryStatusConfig[statusFilter].label}`}
           {debouncedSearch && ` for "${debouncedSearch}"`}
         </p>
       )}
 
-      {/* ── Grid ── */}
       {isLoading ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {Array.from({ length: LIMIT }).map((_, i) => (
@@ -594,20 +576,19 @@ export default function DashboardInquiryPage() {
         </div>
       )}
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
         <Pagination meta={paginationMeta} onPageChange={setCurrentPage} />
       )}
 
-      {/* ── Delete Modal ── */}
-      {(deleteStatus === "confirm" || deleteStatus === "deleting") && deleteTarget && (
-        <DeleteModal
-          name={`${deleteTarget.name_of_bride} & ${deleteTarget.name_of_groom}`}
-          onConfirm={deleteInquiryById}
-          onCancel={closeDeleteModal}
-          isLoading={deleteStatus === "deleting"}
-        />
-      )}
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
+        deleteTarget && (
+          <DeleteModal
+            name={`${deleteTarget.name_of_bride} & ${deleteTarget.name_of_groom}`}
+            onConfirm={deleteInquiryById}
+            onCancel={closeDeleteModal}
+            isLoading={deleteStatus === "deleting"}
+          />
+        )}
     </div>
   );
 }

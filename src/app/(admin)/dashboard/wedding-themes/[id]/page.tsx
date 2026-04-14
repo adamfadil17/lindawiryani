@@ -37,16 +37,10 @@ import {
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { Venue, WeddingExperience } from "@/types";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 type GalleryImage = { id: string; url: string; sort_order: number };
 
-// ─── Gallery Manager ──────────────────────────────────────────────────────────
-// Edit mode: add = POST /api/wedding-themes/:id/gallery, remove = DELETE.
-// Create mode: images queued locally, flushed after theme is created.
-
 type GalleryManagerProps = {
-  themeId: string | null; // null = new (not yet created)
+  themeId: string | null;
   images: GalleryImage[];
   onChange: (images: GalleryImage[]) => void;
 };
@@ -79,10 +73,13 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
         setIsAdding(false);
       }
     } else {
-      // Create mode — queue locally
       onChange([
         ...images,
-        { id: `temp-${Date.now()}`, url: pendingUrl, sort_order: images.length },
+        {
+          id: `temp-${Date.now()}`,
+          url: pendingUrl,
+          sort_order: images.length,
+        },
       ]);
       setPendingUrl("");
     }
@@ -109,7 +106,6 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
 
   return (
     <div className="space-y-4">
-      {/* Preview grid */}
       {images.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
           {images.map((img, i) => (
@@ -143,7 +139,6 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
         </div>
       )}
 
-      {/* Add new gallery image */}
       <div className="space-y-2">
         <ImageUpload
           value={pendingUrl}
@@ -152,7 +147,6 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
         />
         {pendingUrl && (
           <>
-            {/* Preview before confirming add */}
             <div className="relative w-full aspect-[4/3] overflow-hidden border border-primary/20 bg-primary/5">
               <Image
                 src={pendingUrl}
@@ -185,15 +179,12 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function WeddingThemeDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   const isNew = id === "new";
 
-  // ── React Hook Form ──
   const {
     watch,
     handleSubmit,
@@ -214,7 +205,6 @@ export default function WeddingThemeDetailPage() {
     },
   });
 
-  // setField helper — always triggers validation + touch so errors show immediately
   const setField = (key: keyof WeddingThemeFormData, value: unknown) =>
     setValue(key as keyof WeddingThemeFormData, value as never, {
       shouldValidate: true,
@@ -224,23 +214,23 @@ export default function WeddingThemeDetailPage() {
 
   const formData = watch();
 
-  // ── Gallery state (managed separately) ──
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
 
-  // ── Page state ──
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
 
-  // ── Save state machine: idle | confirm | saving | saved ──
-  const [saveStatus, setSaveStatus] = useState<"idle" | "confirm" | "saving" | "saved">("idle");
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "confirm" | "saving" | "saved"
+  >("idle");
 
-  // ── Delete state machine: idle | confirm | deleting ──
-  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
 
-  // ── Unsaved changes guard ──
-  // Create mode: any non-empty field counts as "dirty"
-  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const hasUnsavedChanges = isNew
     ? Boolean(
@@ -248,11 +238,10 @@ export default function WeddingThemeDetailPage() {
         formData.description ||
         formData.image ||
         (formData.inclusions && formData.inclusions.length > 0) ||
-        galleryImages.length > 0
+        galleryImages.length > 0,
       )
     : isDirty;
 
-  // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && saveStatus !== "saving") {
@@ -264,29 +253,32 @@ export default function WeddingThemeDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, saveStatus]);
 
-  // Helper: navigate with guard check
   const guardedNavigate = useCallback(
     (href: string) => {
-      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+      if (
+        hasUnsavedChanges &&
+        saveStatus !== "saving" &&
+        saveStatus !== "saved"
+      ) {
         setUnsavedModal({ open: true, pendingHref: href });
       } else {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, saveStatus, router]
+    [hasUnsavedChanges, saveStatus, router],
   );
 
-  // ── Reference data for dropdowns ──
   const [allVenues, setAllVenues] = useState<Venue[]>([]);
   const [allExperiences, setAllExperiences] = useState<WeddingExperience[]>([]);
   const [isVenuesLoading, setIsVenuesLoading] = useState(true);
   const [isExperiencesLoading, setIsExperiencesLoading] = useState(true);
 
-  // ── Fetch venues ──
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const response = await axios.get("/api/venues", { params: { limit: 100 } });
+        const response = await axios.get("/api/venues", {
+          params: { limit: 100 },
+        });
         setAllVenues(response.data.data ?? []);
       } catch (err) {
         console.error("Failed to load venues:", err);
@@ -297,11 +289,12 @@ export default function WeddingThemeDetailPage() {
     fetchVenues();
   }, []);
 
-  // ── Fetch wedding experiences ──
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
-        const response = await axios.get("/api/wedding-experiences", { params: { limit: 100 } });
+        const response = await axios.get("/api/wedding-experiences", {
+          params: { limit: 100 },
+        });
         const data: WeddingExperience[] = response.data.data ?? [];
         setAllExperiences(data);
         if (isNew && data.length > 0) {
@@ -320,7 +313,6 @@ export default function WeddingThemeDetailPage() {
     fetchExperiences();
   }, [isNew, setValue]);
 
-  // ── Load theme data (edit mode only) ──
   const fetchTheme = useCallback(async () => {
     if (isNew) return;
     setIsLoading(true);
@@ -334,18 +326,19 @@ export default function WeddingThemeDetailPage() {
         description: String(data.description ?? ""),
         image: String(data.image ?? ""),
         inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
-        // venue_id may be null when the previously linked venue was deleted
+
         venue_id: data.venue_id ?? undefined,
         experience_id: String(data.experience_id ?? ""),
       });
 
-      // Load gallery from nested include
       const gallery: GalleryImage[] = Array.isArray(data.gallery)
-        ? data.gallery.map((g: { id: string; url: string; sort_order: number }) => ({
-            id: g.id,
-            url: g.url,
-            sort_order: g.sort_order,
-          }))
+        ? data.gallery.map(
+            (g: { id: string; url: string; sort_order: number }) => ({
+              id: g.id,
+              url: g.url,
+              sort_order: g.sort_order,
+            }),
+          )
         : [];
       setGalleryImages(gallery);
     } catch (err) {
@@ -369,12 +362,10 @@ export default function WeddingThemeDetailPage() {
     fetchTheme();
   }, [fetchTheme]);
 
-  // ── Save flow ──
   const onSubmitForm = async (_data: WeddingThemeFormData) => {
     setSaveStatus("confirm");
   };
 
-  // Called when handleSubmit validation fails — force all errors visible
   const onSubmitError = async () => {
     await trigger();
   };
@@ -392,7 +383,6 @@ export default function WeddingThemeDetailPage() {
         const createdTheme = response.data.data ?? response.data;
         const newThemeId: string = createdTheme.id;
 
-        // Flush queued gallery images
         for (const img of galleryImages) {
           try {
             await axios.post(
@@ -400,16 +390,14 @@ export default function WeddingThemeDetailPage() {
               { url: img.url, sort_order: img.sort_order },
               { headers: getAuthHeaders(true) },
             );
-          } catch {
-            // Non-blocking
-          }
+          } catch {}
         }
 
         setSaveStatus("idle");
         toast.success("Wedding theme created!", {
           description: "Your new wedding theme has been added to the system.",
         });
-        reset(); // clear dirty state before navigating
+        reset();
         router.push("/dashboard/wedding-themes");
       } else {
         await axios.patch(`/api/wedding-themes/${id}`, payload, {
@@ -419,7 +407,7 @@ export default function WeddingThemeDetailPage() {
         toast.success("Changes saved!", {
           description: "Your wedding theme has been updated.",
         });
-        // Re-sync RHF baseline so isDirty becomes false
+
         reset({ ...formData, slug: toSlug(formData.title) });
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -431,11 +419,10 @@ export default function WeddingThemeDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to save", { description: errorMsg });
-      setSaveStatus("confirm"); // keep modal open on error
+      setSaveStatus("confirm");
     }
   };
 
-  // ── Delete flow ──
   const deleteThemeById = async () => {
     setDeleteStatus("deleting");
     try {
@@ -455,11 +442,10 @@ export default function WeddingThemeDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
-      setDeleteStatus("confirm"); // keep modal open on error
+      setDeleteStatus("confirm");
     }
   };
 
-  // ── Sync slug ke form state setiap kali title berubah ──
   useEffect(() => {
     if (formData.title) {
       setValue("slug", toSlug(formData.title), {
@@ -469,17 +455,19 @@ export default function WeddingThemeDetailPage() {
     }
   }, [formData.title, setValue]);
 
-  // ── Derived values ──
   const slugPreview = formData.title ? toSlug(formData.title) : "";
   const selectedVenue = allVenues.find((v) => v.id === formData.venue_id);
-  const selectedExperience = allExperiences.find((e) => e.id === formData.experience_id);
+  const selectedExperience = allExperiences.find(
+    (e) => e.id === formData.experience_id,
+  );
 
-  // ── Not found ──
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">Not Found</p>
+        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+          Not Found
+        </p>
         <p className="text-primary/80 text-sm mb-6">
           This wedding theme does not exist.
         </p>
@@ -493,7 +481,6 @@ export default function WeddingThemeDetailPage() {
     );
   }
 
-  // ── Loading skeleton ──
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
@@ -507,7 +494,10 @@ export default function WeddingThemeDetailPage() {
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white border border-primary/20 p-6 space-y-4">
+              <div
+                key={i}
+                className="bg-white border border-primary/20 p-6 space-y-4"
+              >
                 <div className="h-4 w-36 bg-primary/10 rounded" />
                 <div className="h-10 bg-primary/5 rounded" />
                 <div className="h-10 bg-primary/5 rounded" />
@@ -536,7 +526,6 @@ export default function WeddingThemeDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -557,7 +546,6 @@ export default function WeddingThemeDetailPage() {
         </div>
 
         <div className="flex items-center gap-3 self-start sm:self-auto">
-          {/* Save success indicator */}
           {saveStatus === "saved" && (
             <div className="flex items-center gap-1.5 text-green-600 text-xs tracking-wider">
               <CheckCircle2 className="w-4 h-4" />
@@ -565,7 +553,6 @@ export default function WeddingThemeDetailPage() {
             </div>
           )}
 
-          {/* Delete button (edit mode only) */}
           {!isNew && (
             <button
               type="button"
@@ -578,7 +565,6 @@ export default function WeddingThemeDetailPage() {
             </button>
           )}
 
-          {/* Save button */}
           <button
             type="button"
             onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
@@ -599,17 +585,13 @@ export default function WeddingThemeDetailPage() {
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
       >
-        {/* ── Left Column ── */}
         <div className="lg:col-span-2 space-y-6">
-
-          {/* Basic Information */}
           <Section
             title="Basic Information"
             subtitle="Core details about this wedding theme"
           >
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* title — required, min 2, max 255 */}
                 <FormField label="Title" required>
                   <TextInput
                     value={formData.title}
@@ -624,7 +606,6 @@ export default function WeddingThemeDetailPage() {
                 </FormField>
               </div>
 
-              {/* description — required, min 1 */}
               <FormField
                 label="Description"
                 required
@@ -645,14 +626,15 @@ export default function WeddingThemeDetailPage() {
             </div>
           </Section>
 
-          {/* Venue & Experience Assignment */}
           <Section
             title="Venue & Experience Assignment"
             subtitle="Optionally link this theme to a specific venue and wedding experience"
           >
             <div className="grid sm:grid-cols-2 gap-5">
-              {/* venue_id — optional, uuid */}
-              <FormField label="Venue" hint="Optional — You can set the venue later">
+              <FormField
+                label="Venue"
+                hint="Optional — You can set the venue later"
+              >
                 <div className="relative">
                   <select
                     value={formData.venue_id ?? ""}
@@ -663,7 +645,9 @@ export default function WeddingThemeDetailPage() {
                     className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isVenuesLoading ? (
-                      <option value="" disabled>Loading venues…</option>
+                      <option value="" disabled>
+                        Loading venues…
+                      </option>
                     ) : (
                       <>
                         <option value="">— To Be Confirmed —</option>
@@ -684,7 +668,6 @@ export default function WeddingThemeDetailPage() {
                 )}
               </FormField>
 
-              {/* experience_id — required, uuid */}
               <FormField label="Wedding Experience" required>
                 <div className="relative">
                   <select
@@ -694,7 +677,9 @@ export default function WeddingThemeDetailPage() {
                     className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isExperiencesLoading ? (
-                      <option value="" disabled>Loading experiences…</option>
+                      <option value="" disabled>
+                        Loading experiences…
+                      </option>
                     ) : (
                       <>
                         <option value="">— Select an experience —</option>
@@ -717,12 +702,10 @@ export default function WeddingThemeDetailPage() {
             </div>
           </Section>
 
-          {/* Package Inclusions */}
           <Section
             title="Package Inclusions"
             subtitle="What is included in this wedding theme package"
           >
-            {/* inclusions — required, array min 1 */}
             <FormField label="Inclusions" required>
               <TagsInput
                 values={formData.inclusions}
@@ -738,12 +721,8 @@ export default function WeddingThemeDetailPage() {
           </Section>
         </div>
 
-        {/* ── Right Column ── */}
         <div className="space-y-6">
-
-          {/* Cover Image — required, valid URL */}
           <Section title="Cover Image">
-            {/* Preview */}
             <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden border border-primary/20 bg-primary/5">
               {formData.image ? (
                 <Image
@@ -753,13 +732,16 @@ export default function WeddingThemeDetailPage() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                    (e.currentTarget as HTMLImageElement).style.display =
+                      "none";
                   }}
                 />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                   <ImageIcon className="w-8 h-8 text-primary/20" />
-                  <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                  <p className="text-primary/30 text-xs tracking-wider">
+                    No image set
+                  </p>
                 </div>
               )}
             </div>
@@ -777,7 +759,6 @@ export default function WeddingThemeDetailPage() {
             )}
           </Section>
 
-          {/* Gallery Images */}
           <Section
             title="Gallery"
             subtitle={`${galleryImages.length} image${galleryImages.length !== 1 ? "s" : ""}`}
@@ -789,7 +770,6 @@ export default function WeddingThemeDetailPage() {
             />
           </Section>
 
-          {/* URL & SEO */}
           <Section title="URL & SEO">
             <div className="space-y-2">
               <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
@@ -804,7 +784,6 @@ export default function WeddingThemeDetailPage() {
             </div>
           </Section>
 
-          {/* Quick Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
             <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
               Summary
@@ -812,7 +791,10 @@ export default function WeddingThemeDetailPage() {
             <div className="space-y-3">
               {[
                 { label: "Slug", value: slugPreview || "—" },
-                { label: "Inclusions", value: `${formData.inclusions.length} items` },
+                {
+                  label: "Inclusions",
+                  value: `${formData.inclusions.length} items`,
+                },
                 { label: "Gallery", value: `${galleryImages.length} photos` },
                 {
                   label: "Venue",
@@ -820,10 +802,15 @@ export default function WeddingThemeDetailPage() {
                 },
                 {
                   label: "Experience",
-                  value: selectedExperience?.name ?? (formData.experience_id ? "—" : "None"),
+                  value:
+                    selectedExperience?.name ??
+                    (formData.experience_id ? "—" : "None"),
                 },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between">
+                <div
+                  key={item.label}
+                  className="flex items-center justify-between"
+                >
                   <span className="text-primary/80 font-semibold text-xs">
                     {item.label}
                   </span>
@@ -837,7 +824,6 @@ export default function WeddingThemeDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -849,7 +835,6 @@ export default function WeddingThemeDetailPage() {
         />
       )}
 
-      {/* ── Save Modal ── */}
       {(saveStatus === "confirm" || saveStatus === "saving") && (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -861,12 +846,13 @@ export default function WeddingThemeDetailPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
           name={formData.title}
           onConfirm={deleteThemeById}
-          onCancel={() => deleteStatus !== "deleting" && setDeleteStatus("idle")}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
           isLoading={deleteStatus === "deleting"}
         />
       )}

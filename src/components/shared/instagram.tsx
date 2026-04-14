@@ -42,7 +42,7 @@ export default function Instagram() {
 
 
       <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        {/* Header — matches page.tsx section headers */}
+        
         <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
           <p className="text-primary tracking-[0.25em] uppercase mb-3">
             Follow Along
@@ -63,7 +63,7 @@ export default function Instagram() {
           </div>
         </motion.div>
 
-        {/* Desktop Grid — 4 columns, square-ish cards */}
+        
         <motion.div
           className="hidden lg:grid lg:grid-cols-4 gap-4 mb-16"
           variants={staggerContainer}
@@ -88,10 +88,10 @@ export default function Instagram() {
                 sizes="25vw"
               />
 
-              {/* Gradient overlay on hover */}
+              
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-              {/* Video play button — styled like page.tsx nav buttons */}
+              
               {post.isVideo && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-14 h-14 flex items-center justify-center group-hover:bg-white/40 group-hover:border-white/40 transition-all duration-300">
@@ -107,7 +107,7 @@ export default function Instagram() {
           ))}
         </motion.div>
 
-        {/* Mobile Slider — matches page.tsx venue slider pattern */}
+        
         <motion.div className="lg:hidden mb-16" variants={fadeInUp}>
           <div className="relative">
             <AnimatePresence mode="wait">
@@ -151,7 +151,7 @@ export default function Instagram() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Nav buttons — same style as page.tsx venue slider */}
+            
             <button
               onClick={prevSlide}
               className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 hover:bg-primary hover:border-primary group"
@@ -165,7 +165,7 @@ export default function Instagram() {
               <ArrowRight className="w-4 h-4 text-white group-hover:text-white transition-colors" />
             </button>
 
-            {/* Dot indicators — same style as page.tsx */}
+            
             <div className="flex justify-center gap-2 mt-4">
               {instagramPosts.map((_, index) => (
                 <button
@@ -182,7 +182,7 @@ export default function Instagram() {
           </div>
         </motion.div>
 
-        {/* Follow Us CTA — styled like page.tsx button row */}
+        
         <motion.div
           variants={fadeInUp}
           className="flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-primary/20 pt-12"

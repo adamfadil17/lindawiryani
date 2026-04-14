@@ -24,7 +24,7 @@ export function useInquiryBadge() {
 
     fetchBadge();
 
-    // Refresh setiap 60 detik agar badge tetap up-to-date
+
     const interval = setInterval(fetchBadge, 60_000);
 
     return () => {

@@ -1,19 +1,72 @@
-import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import PortfolioDetail from "./components/portfolio-detail";
-import { portfolioItems } from "@/lib/data/portfolio-data";
-import { destinationList } from "@/lib/data/destination-data";
-import { weddingExperienceList } from "@/lib/data/wedding-experience-data";
+import { notFound } from "next/navigation";
+import axios from "axios";
+import type { Portfolio } from "@/types";
+import { PortfolioDetail } from "./components/portfolio-detail";
 
-// ─── generateStaticParams ─────────────────────────────────────────────────────
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-export async function generateStaticParams() {
-  return portfolioItems.map((item) => ({
-    portfolio_id: item.slug,
-  }));
+async function fetchPortfolioBySlug(slug: string): Promise<Portfolio | null> {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/api/portfolios`, {
+      params: { slug },
+    });
+    return data.data ?? null;
+  } catch {
+    return null;
+  }
 }
 
-// ─── generateMetadata ─────────────────────────────────────────────────────────
+async function fetchRelatedPortfolios(
+  currentId: string,
+  destinationId: string | null,
+  experienceId: string | null,
+): Promise<Portfolio[]> {
+  try {
+    const queries: Promise<Portfolio[]>[] = [];
+
+    if (destinationId) {
+      queries.push(
+        axios
+          .get(`${BASE_URL}/api/portfolios`, {
+            params: { destinationId, limit: 10 },
+          })
+          .then((r) => r.data.data ?? [])
+          .catch(() => []),
+      );
+    }
+
+    if (experienceId) {
+      queries.push(
+        axios
+          .get(`${BASE_URL}/api/portfolios`, {
+            params: { experienceId, limit: 10 },
+          })
+          .then((r) => r.data.data ?? [])
+          .catch(() => []),
+      );
+    }
+
+    const results = await Promise.all(queries);
+
+    const seen = new Set<string>([currentId]);
+    const merged: Portfolio[] = [];
+    for (const list of results) {
+      for (const p of list) {
+        if (!seen.has(p.id)) {
+          seen.add(p.id);
+          merged.push(p);
+        }
+        if (merged.length === 3) break;
+      }
+      if (merged.length === 3) break;
+    }
+
+    return merged;
+  } catch {
+    return [];
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -21,12 +74,10 @@ export async function generateMetadata({
   params: Promise<{ portfolio_id: string }>;
 }): Promise<Metadata> {
   const { portfolio_id } = await params;
-  const item = portfolioItems.find((p) => p.slug === portfolio_id);
+  const item = await fetchPortfolioBySlug(portfolio_id);
 
   if (!item) {
-    return {
-      title: "Portfolio | Linda Wiryani Design and Event Planning",
-    };
+    return { title: "Portfolio | Linda Wiryani Design and Event Planning" };
   }
 
   return {
@@ -40,40 +91,21 @@ export async function generateMetadata({
   };
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
-export default async function PortfolioDetailPage({
+export default async function Page({
   params,
 }: {
   params: Promise<{ portfolio_id: string }>;
 }) {
   const { portfolio_id } = await params;
-  const item = portfolioItems.find((p) => p.slug === portfolio_id);
 
-  if (!item) {
-    notFound();
-  }
+  const item = await fetchPortfolioBySlug(portfolio_id);
+  if (!item) notFound();
 
-  const relatedItems = portfolioItems
-    .filter(
-      (p) =>
-        p.id !== item.id &&
-        (p.destination_id === item.destination_id ||
-          p.experience_id === item.experience_id),
-    )
-    .slice(0, 3);
-
-  const destination = destinationList.find((d) => d.id === item.destination_id);
-  const experience = weddingExperienceList.find(
-    (e) => e.id === item.experience_id,
+  const relatedItems = await fetchRelatedPortfolios(
+    item.id,
+    item.destination_id,
+    item.experience_id,
   );
 
-  return (
-    <PortfolioDetail
-      item={item}
-      relatedItems={relatedItems}
-      destination={destination}
-      experience={experience}
-    />
-  );
+  return <PortfolioDetail item={item} relatedItems={relatedItems} />;
 }

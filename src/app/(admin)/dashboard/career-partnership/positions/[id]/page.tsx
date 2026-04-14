@@ -28,16 +28,14 @@ import TextareaInput from "@/components/shared/text-area-input";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
-import { openPositionFormSchema, OpenPositionFormData } from "@/utils/form-validators";
+import {
+  openPositionFormSchema,
+  OpenPositionFormData,
+} from "@/utils/form-validators";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { OpenPosition } from "@/types";
 
-// z.input<>  → type yang resolver terima: is_active?: boolean | undefined (sebelum .default())
-// z.infer<>  → type output setelah .default() diaplikasikan: is_active: boolean
-// useForm harus pakai z.input agar cocok dengan apa yang zodResolver ekspektasikan
 type OpenPositionFormInput = z.input<typeof openPositionFormSchema>;
-
-// ─── Employment type options ──────────────────────────────────────────────────
 
 const employmentTypes = [
   "Full-time",
@@ -58,15 +56,12 @@ const levelOptions = [
   "Manager",
 ];
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function PositionDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   const isNew = id === "new";
 
-  // ── React Hook Form ──
   const {
     watch,
     handleSubmit,
@@ -85,7 +80,6 @@ export default function PositionDetailPage() {
     },
   });
 
-  // ── setField helper: triggers validation + touch so errors show immediately ──
   const setField = (key: keyof OpenPositionFormData, value: unknown) =>
     setValue(key as any, value as any, {
       shouldValidate: true,
@@ -95,31 +89,27 @@ export default function PositionDetailPage() {
 
   const formData = watch();
 
-  // ── Page state ──
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
 
-  // ── Save state (consolidated): idle | confirm | saving | saved ──
-  const [saveStatus, setSaveStatus] = useState<"idle" | "confirm" | "saving" | "saved">("idle");
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "confirm" | "saving" | "saved"
+  >("idle");
 
-  // ── Delete state (consolidated): idle | confirm | deleting ──
-  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
 
-  // ── Unsaved changes guard ──────────────────────────────────────────────────────
-  // Create mode: any non-empty field counts as "dirty"
-  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const hasUnsavedChanges = isNew
     ? Boolean(
-        formData.title ||
-        formData.type ||
-        formData.level ||
-        formData.desc
+        formData.title || formData.type || formData.level || formData.desc,
       )
     : isDirty;
-
-  // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && saveStatus !== "saving") {
@@ -131,19 +121,21 @@ export default function PositionDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, saveStatus]);
 
-  // Helper: navigate with guard check
   const guardedNavigate = useCallback(
     (href: string) => {
-      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+      if (
+        hasUnsavedChanges &&
+        saveStatus !== "saving" &&
+        saveStatus !== "saved"
+      ) {
         setUnsavedModal({ open: true, pendingHref: href });
       } else {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, saveStatus, router]
+    [hasUnsavedChanges, saveStatus, router],
   );
 
-  // ── Load position data (edit mode only) ──
   useEffect(() => {
     if (isNew) return;
     setIsLoading(true);
@@ -178,12 +170,10 @@ export default function PositionDetailPage() {
     getPositionById();
   }, [id, isNew, reset]);
 
-  // ── Save flow ──
   const onSubmitForm = async (_data: OpenPositionFormData) => {
     setSaveStatus("confirm");
   };
 
-  // Called when handleSubmit validation fails — force all errors to show
   const onSubmitError = async () => {
     await trigger();
   };
@@ -201,7 +191,7 @@ export default function PositionDetailPage() {
         toast.success("Position created!", {
           description: "The new open position has been added to the system.",
         });
-        reset(); // clear dirty state before navigating
+        reset();
         router.push("/dashboard/career-partnership");
       } else {
         await axios.patch(`/api/open-positions/${id}`, payload, {
@@ -211,7 +201,6 @@ export default function PositionDetailPage() {
         toast.success("Changes saved!", {
           description: "The position has been updated.",
         });
-        // Re-sync RHF baseline so isDirty becomes false
         reset({ ...formData });
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -223,11 +212,10 @@ export default function PositionDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to save", { description: errorMsg });
-      setSaveStatus("confirm"); // keep modal open on error
+      setSaveStatus("confirm");
     }
   };
 
-  // ── Delete flow ──
   const deletePositionById = async () => {
     setDeleteStatus("deleting");
     try {
@@ -247,11 +235,10 @@ export default function PositionDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
-      setDeleteStatus("confirm"); // keep modal open on error
+      setDeleteStatus("confirm");
     }
   };
 
-  // ── Not found ──
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
@@ -272,11 +259,9 @@ export default function PositionDetailPage() {
     );
   }
 
-  // ── Loading skeleton ──
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
-        {/* Header skeleton */}
         <div className="flex items-center gap-4 mb-8">
           <div className="w-9 h-9 bg-primary/10 border border-primary/20" />
           <div className="space-y-2">
@@ -284,7 +269,6 @@ export default function PositionDetailPage() {
             <div className="h-6 w-48 bg-primary/10 rounded" />
           </div>
         </div>
-        {/* Content skeleton — mirrors the real layout */}
         <div className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
           <div className="space-y-6">
             <div className="bg-white border border-primary/20 p-6 space-y-4">
@@ -324,7 +308,6 @@ export default function PositionDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -378,20 +361,16 @@ export default function PositionDetailPage() {
         </div>
       </div>
 
-      {/* ── Form ── */}
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-[1fr_320px] gap-6 items-start"
       >
-        {/* ── Left Column ── */}
         <div className="space-y-6">
-          {/* Position Details */}
           <Section
             title="Position Details"
             subtitle="Basic information about this open role"
           >
             <div className="space-y-5">
-              {/* title — required, min 2 chars, max 255 chars */}
               <FormField label="Position Title" required>
                 <TextInput
                   value={formData.title}
@@ -406,7 +385,6 @@ export default function PositionDetailPage() {
               </FormField>
 
               <div className="grid sm:grid-cols-2 gap-5">
-                {/* type — required (min 1) */}
                 <FormField label="Employment Type" required>
                   <div className="relative">
                     <select
@@ -432,14 +410,15 @@ export default function PositionDetailPage() {
                   )}
                 </FormField>
 
-                {/* level — required (min 1) */}
                 <FormField label="Level" required>
                   <div className="relative">
                     <select
                       value={formData.level}
                       onChange={(e) => setField("level", e.target.value)}
                       className={`w-full appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
-                        formErrors.level ? "border-red-300" : "border-primary/20"
+                        formErrors.level
+                          ? "border-red-300"
+                          : "border-primary/20"
                       }`}
                     >
                       <option value="">Select level...</option>
@@ -461,12 +440,10 @@ export default function PositionDetailPage() {
             </div>
           </Section>
 
-          {/* Role Description */}
           <Section
             title="Role Description"
             subtitle="Describe the responsibilities and expectations for this role"
           >
-            {/* desc — required, min 1 */}
             <FormField label="Description" required>
               <TextareaInput
                 value={formData.desc}
@@ -474,18 +451,14 @@ export default function PositionDetailPage() {
                 placeholder="e.g. Lead end-to-end planning and on-site execution of luxury destination weddings in Bali..."
                 rows={5}
                 error={
-                  formErrors.desc
-                    ? String(formErrors.desc.message)
-                    : undefined
+                  formErrors.desc ? String(formErrors.desc.message) : undefined
                 }
               />
             </FormField>
           </Section>
         </div>
 
-        {/* ── Right Column (sidebar) ── */}
         <div className="space-y-6">
-          {/* Visibility — is_active toggle */}
           <Section title="Visibility">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -513,7 +486,6 @@ export default function PositionDetailPage() {
             </div>
           </Section>
 
-          {/* Preview Card */}
           <Section title="Preview">
             <div className="border border-primary/10 bg-primary/[0.02] p-4">
               <div className="flex items-start gap-3 mb-3">
@@ -551,7 +523,6 @@ export default function PositionDetailPage() {
             </div>
           </Section>
 
-          {/* Quick Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
             <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
               Summary
@@ -561,7 +532,10 @@ export default function PositionDetailPage() {
                 { label: "Title", value: formData.title || "—" },
                 { label: "Type", value: formData.type || "—" },
                 { label: "Level", value: formData.level || "—" },
-                { label: "Status", value: formData.is_active ? "Active" : "Inactive" },
+                {
+                  label: "Status",
+                  value: formData.is_active ? "Active" : "Inactive",
+                },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -576,7 +550,6 @@ export default function PositionDetailPage() {
             </div>
           </div>
 
-          {/* Sticky save button on mobile */}
           <div className="sticky bottom-6 lg:static">
             <button
               type="button"
@@ -595,7 +568,6 @@ export default function PositionDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -607,7 +579,6 @@ export default function PositionDetailPage() {
         />
       )}
 
-      {/* ── Save Modal ── */}
       {saveStatus === "confirm" || saveStatus === "saving" ? (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -619,12 +590,13 @@ export default function PositionDetailPage() {
         />
       ) : null}
 
-      {/* ── Delete Modal ── */}
       {deleteStatus === "confirm" || deleteStatus === "deleting" ? (
         <DeleteModal
           name={formData.title}
           onConfirm={deletePositionById}
-          onCancel={() => deleteStatus !== "deleting" && setDeleteStatus("idle")}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
           isLoading={deleteStatus === "deleting"}
         />
       ) : null}

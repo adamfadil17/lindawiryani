@@ -41,7 +41,6 @@ export default function Gallery() {
   return (
     <section id="gallery" className="bg-white py-16 lg:py-24 relative">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        {/* Header Section */}
         <motion.div
           className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 relative"
           initial="hidden"
@@ -53,14 +52,12 @@ export default function Gallery() {
           }}
           variants={staggerContainer}
         >
-          {/* Gallery Title - Left */}
           <motion.div variants={fadeInUp} className="mb-8 md:mb-0">
             <h2 className="text-2xl text-primary tracking-wider italic font-semibold">
               GALLERY
             </h2>
           </motion.div>
 
-          {/* Main Title - Right */}
           <motion.div variants={fadeInUp} className="flex-1 md:text-right">
             <h3 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
               Bali Wedding Gallery – Real Celebrations, Artful Design, and
@@ -69,7 +66,6 @@ export default function Gallery() {
           </motion.div>
         </motion.div>
 
-        {/* Mobile & Tablet Layout - 2 Columns with Staggered/Offset Layout */}
         <motion.div
           className="block lg:hidden"
           initial="hidden"
@@ -82,9 +78,7 @@ export default function Gallery() {
           variants={staggerContainer}
         >
           <div className="grid grid-cols-2 gap-3 md:gap-4">
-            {/* Left Column - starts from top */}
             <div className="space-y-3 md:space-y-4">
-              {/* Image 1 */}
               <motion.div
                 variants={fadeIn}
                 className="relative h-[280px] md:h-[480px] overflow-hidden group"
@@ -100,7 +94,6 @@ export default function Gallery() {
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
 
-              {/* Image 2 */}
               <motion.div
                 variants={fadeIn}
                 className="relative h-[280px] md:h-[480px] overflow-hidden group"
@@ -116,7 +109,6 @@ export default function Gallery() {
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
 
-              {/* Image 3 */}
               <motion.div
                 variants={fadeIn}
                 className="relative h-[280px] md:h-[480px] overflow-hidden group"
@@ -133,9 +125,7 @@ export default function Gallery() {
               </motion.div>
             </div>
 
-            {/* Right Column - starts with offset/padding top */}
             <div className="space-y-3 md:space-y-4 pt-20 md:pt-24">
-              {/* Image 4 */}
               <motion.div
                 variants={fadeIn}
                 className="relative h-[280px] md:h-[480px] overflow-hidden group"
@@ -151,7 +141,6 @@ export default function Gallery() {
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
 
-              {/* Image 5 */}
               <motion.div
                 variants={fadeIn}
                 className="relative h-[280px] md:h-[480px] overflow-hidden group"
@@ -167,7 +156,6 @@ export default function Gallery() {
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
 
-              {/* Image 6 */}
               <motion.div
                 variants={fadeIn}
                 className="relative h-[280px] md:h-[480px] overflow-hidden group"
@@ -186,10 +174,8 @@ export default function Gallery() {
           </div>
         </motion.div>
 
-        {/* Desktop Layout - Original Grid */}
         <div className="hidden lg:block">
           <div className="space-y-6">
-            {/* Row 1: Landscape + Portrait + Portrait */}
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]"
               initial="hidden"
@@ -201,7 +187,6 @@ export default function Gallery() {
               }}
               variants={staggerContainer}
             >
-              {/* Landscape image spanning 2 columns */}
               <div className="lg:col-span-2">
                 <motion.div
                   variants={fadeIn}
@@ -219,7 +204,6 @@ export default function Gallery() {
                 </motion.div>
               </div>
 
-              {/* Portrait image 1 */}
               <div className="lg:col-span-1">
                 <motion.div
                   variants={fadeIn}
@@ -237,7 +221,6 @@ export default function Gallery() {
                 </motion.div>
               </div>
 
-              {/* Portrait image 2 */}
               <div className="lg:col-span-1">
                 <motion.div
                   variants={fadeIn}
@@ -256,7 +239,6 @@ export default function Gallery() {
               </div>
             </motion.div>
 
-            {/* Row 2: Portrait + Portrait + Landscape */}
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-auto lg:h-[420px]"
               initial="hidden"
@@ -268,7 +250,6 @@ export default function Gallery() {
               }}
               variants={staggerContainer}
             >
-              {/* Portrait image 1 */}
               <div className="lg:col-span-1">
                 <motion.div
                   variants={fadeIn}
@@ -286,7 +267,6 @@ export default function Gallery() {
                 </motion.div>
               </div>
 
-              {/* Portrait image 2 */}
               <div className="lg:col-span-1">
                 <motion.div
                   variants={fadeIn}
@@ -304,7 +284,6 @@ export default function Gallery() {
                 </motion.div>
               </div>
 
-              {/* Landscape image spanning 2 columns */}
               <div className="lg:col-span-2">
                 <motion.div
                   variants={fadeIn}

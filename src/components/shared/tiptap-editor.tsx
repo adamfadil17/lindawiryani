@@ -1,6 +1,5 @@
 "use client";
 
-import "./tiptap-editor.css";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import { BubbleMenu, FloatingMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
@@ -41,8 +40,6 @@ import {
   CodeSquare,
 } from "lucide-react";
 
-// ─── Toolbar Button ───────────────────────────────────────────────────────────
-
 function ToolbarBtn({
   onClick,
   active,
@@ -76,8 +73,6 @@ function ToolbarBtn({
 function Divider() {
   return <div className="w-px h-5 bg-primary/15 mx-0.5" />;
 }
-
-// ─── Link Modal ───────────────────────────────────────────────────────────────
 
 function LinkModal({
   initialUrl,
@@ -129,8 +124,6 @@ function LinkModal({
     </div>
   );
 }
-
-// ─── Image URL Modal ──────────────────────────────────────────────────────────
 
 function ImageModal({
   onConfirm,
@@ -188,8 +181,6 @@ function ImageModal({
   );
 }
 
-// ─── Main TipTap Editor Component ────────────────────────────────────────────
-
 interface TipTapEditorProps {
   value: string;
   onChange: (html: string) => void;
@@ -211,9 +202,7 @@ export default function TipTapEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
-        horizontalRule: false, // use standalone extension below
-        // HTMLAttributes dihapus dari code, codeBlock, blockquote —
-        // styling sekarang ditangani oleh prose-* classes di editorProps
+        horizontalRule: false,
       }),
       Underline,
       Highlight.configure({ multicolor: false }),
@@ -238,17 +227,12 @@ export default function TipTapEditor({
     },
     editorProps: {
       attributes: {
-        // Tailwind v4: prose-* chaining kompleks (prose-code:before:content-none, dll)
-        // tidak didukung sebagai class string. Semua override detail ada di
-        // tiptap-editor.css yang di-import di bawah.
-        // Class di sini: prose prose-sm untuk aktifkan Typography, + class dasar.
         class:
           "tiptap-content prose prose-sm max-w-none min-h-[420px] px-5 py-5 focus:outline-none",
       },
     },
   });
 
-  // ── Link helpers ──
   const openLinkModal = useCallback(() => {
     setShowLinkModal(true);
   }, []);
@@ -270,7 +254,6 @@ export default function TipTapEditor({
     editor?.chain().focus().unsetLink().run();
   }, [editor]);
 
-  // ── Image helpers ──
   const applyImage = useCallback(
     (url: string, alt: string) => {
       setShowImageModal(false);
@@ -279,7 +262,6 @@ export default function TipTapEditor({
     [editor],
   );
 
-  // ── Reactive toolbar state — re-renders saat cursor / selection berpindah ──
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
@@ -316,14 +298,29 @@ export default function TipTapEditor({
   if (!editor) return null;
 
   const s = editorState ?? {
-    canUndo: false, canRedo: false,
-    isH1: false, isH2: false, isH3: false,
-    isBold: false, isItalic: false, isUnderline: false,
-    isStrike: false, isHighlight: false, isCode: false,
-    isAlignLeft: false, isAlignCenter: false, isAlignRight: false, isAlignJustify: false,
-    isBulletList: false, isOrderedList: false, isBlockquote: false, isCodeBlock: false,
-    isLink: false, linkHref: "",
-    charCount: 0, wordCount: 0,
+    canUndo: false,
+    canRedo: false,
+    isH1: false,
+    isH2: false,
+    isH3: false,
+    isBold: false,
+    isItalic: false,
+    isUnderline: false,
+    isStrike: false,
+    isHighlight: false,
+    isCode: false,
+    isAlignLeft: false,
+    isAlignCenter: false,
+    isAlignRight: false,
+    isAlignJustify: false,
+    isBulletList: false,
+    isOrderedList: false,
+    isBlockquote: false,
+    isCodeBlock: false,
+    isLink: false,
+    linkHref: "",
+    charCount: 0,
+    wordCount: 0,
   };
 
   const currentLinkUrl = s.linkHref;
@@ -337,9 +334,7 @@ export default function TipTapEditor({
           error ? "border-red-400" : "border-primary/20"
         } bg-white`}
       >
-        {/* ── Toolbar ── */}
         <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-primary/15 bg-primary/[0.02]">
-          {/* History */}
           <ToolbarBtn
             title="Undo (Ctrl+Z)"
             onClick={() => editor.chain().focus().undo().run()}
@@ -357,7 +352,6 @@ export default function TipTapEditor({
 
           <Divider />
 
-          {/* Headings */}
           <ToolbarBtn
             title="Heading 1"
             onClick={() =>
@@ -388,7 +382,6 @@ export default function TipTapEditor({
 
           <Divider />
 
-          {/* Inline marks */}
           <ToolbarBtn
             title="Bold (Ctrl+B)"
             onClick={() => editor.chain().focus().toggleBold().run()}
@@ -434,7 +427,6 @@ export default function TipTapEditor({
 
           <Divider />
 
-          {/* Alignment */}
           <ToolbarBtn
             title="Align Left"
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
@@ -466,7 +458,6 @@ export default function TipTapEditor({
 
           <Divider />
 
-          {/* Lists & blocks */}
           <ToolbarBtn
             title="Bullet List"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -504,7 +495,6 @@ export default function TipTapEditor({
 
           <Divider />
 
-          {/* Link */}
           <ToolbarBtn
             title="Insert / Edit Link"
             onClick={openLinkModal}
@@ -518,7 +508,6 @@ export default function TipTapEditor({
             </ToolbarBtn>
           )}
 
-          {/* Image */}
           <ToolbarBtn
             title="Insert Image"
             onClick={() => setShowImageModal(true)}
@@ -528,7 +517,6 @@ export default function TipTapEditor({
 
           <Divider />
 
-          {/* Clear formatting */}
           <ToolbarBtn
             title="Clear Formatting"
             onClick={() =>
@@ -539,7 +527,6 @@ export default function TipTapEditor({
           </ToolbarBtn>
         </div>
 
-        {/* ── Bubble Menu (appears on text selection) ── */}
         <BubbleMenu
           editor={editor}
           shouldShow={({ editor, state }) => {
@@ -597,7 +584,6 @@ export default function TipTapEditor({
           ))}
         </BubbleMenu>
 
-        {/* ── Floating Menu (appears on empty line) ── */}
         <FloatingMenu
           editor={editor}
           shouldShow={({ state }) => {
@@ -651,12 +637,10 @@ export default function TipTapEditor({
           ))}
         </FloatingMenu>
 
-        {/* ── Editor area ── */}
         <div className="relative">
           <EditorContent editor={editor} />
         </div>
 
-        {/* ── Footer ── */}
         <div className="flex items-center justify-between px-4 py-2 border-t border-primary/20 bg-primary/[0.02]">
           <span className="text-xs tracking-widest uppercase text-primary/80">
             Linda Wiryani Weddings Planner
@@ -670,7 +654,6 @@ export default function TipTapEditor({
 
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
 
-      {/* ── Modals ── */}
       {showLinkModal && (
         <LinkModal
           initialUrl={currentLinkUrl}

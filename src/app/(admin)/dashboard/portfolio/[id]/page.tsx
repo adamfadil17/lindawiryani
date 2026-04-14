@@ -40,22 +40,19 @@ import {
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { PortfolioStory } from "@/types";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface SelectOption {
   id: string;
   name: string;
 }
 
-// GalleryImage mengikuti pola VenueDetailPage:
-// - id "temp-*" = belum tersimpan di server (create mode atau queue)
-// - id UUID = sudah tersimpan di server (edit mode)
-type GalleryImage = { id: string; url: string; sort_order: number };
+interface DestinationOption {
+  id: string;
+  name: string;
+  location?: { name: string; category?: { name: string } };
+  type?: string;
+}
 
-// ─── GalleryManager ───────────────────────────────────────────────────────────
-// Mengikuti persis pola dari VenueDetailPage:
-// - Edit mode (portfolioId ada): setiap add/remove langsung hit API
-// - Create mode (portfolioId null): tambah ke array lokal, flush setelah POST portfolio
+type GalleryImage = { id: string; url: string; sort_order: number };
 
 type GalleryManagerProps = {
   portfolioId: string | null;
@@ -63,7 +60,11 @@ type GalleryManagerProps = {
   onChange: (images: GalleryImage[]) => void;
 };
 
-function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) {
+function GalleryManager({
+  portfolioId,
+  images,
+  onChange,
+}: GalleryManagerProps) {
   const [pendingUrl, setPendingUrl] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
@@ -71,7 +72,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
     if (!pendingUrl) return;
 
     if (portfolioId) {
-      // Edit mode — persists immediately ke API
       setIsAdding(true);
       try {
         const response = await axios.post(
@@ -92,7 +92,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
         setIsAdding(false);
       }
     } else {
-      // Create mode — antre secara lokal, flush setelah portfolio di-POST
       const tempImage: GalleryImage = {
         id: `temp-${Date.now()}`,
         url: pendingUrl,
@@ -105,7 +104,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
 
   const handleRemove = async (image: GalleryImage) => {
     if (portfolioId && !image.id.startsWith("temp-")) {
-      // Edit mode — hapus langsung dari API
       try {
         await axios.delete(
           `/api/portfolios/${portfolioId}/gallery/${image.id}`,
@@ -117,16 +115,15 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
             ? err.response.data.message
             : "Failed to remove gallery image";
         toast.error(msg);
-        return; // Jangan update state kalau API gagal
+        return;
       }
     }
-    // Baik create mode (temp) maupun edit mode setelah API berhasil
+
     onChange(images.filter((img) => img.id !== image.id));
   };
 
   return (
     <div className="space-y-4">
-      {/* Preview grid — tampilkan semua gambar yang sudah ada */}
       {images.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
           {images.map((img, i) => (
@@ -152,7 +149,7 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
               >
                 <X className="w-3 h-3" />
               </button>
-              {/* Badge: nomor urut — konsisten dengan VenueDetailPage */}
+
               <div className="absolute bottom-1 left-1 text-xs text-white bg-black/50 px-1.5 py-0.5">
                 {i + 1}
               </div>
@@ -161,7 +158,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
         </div>
       )}
 
-      {/* Empty state */}
       {images.length === 0 && (
         <div className="border border-dashed border-primary/20 py-8 flex flex-col items-center justify-center gap-2">
           <ImageIcon className="w-6 h-6 text-primary/20" />
@@ -171,7 +167,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
         </div>
       )}
 
-      {/* Input untuk menambah gambar baru */}
       <div className="space-y-2">
         <ImageUpload
           value={pendingUrl}
@@ -180,7 +175,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
         />
         {pendingUrl && (
           <>
-            {/* Preview sebelum dikonfirmasi */}
             <div className="relative w-full aspect-[4/3] overflow-hidden border border-primary/20 bg-primary/5">
               <Image
                 src={pendingUrl}
@@ -212,8 +206,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
     </div>
   );
 }
-
-// ─── Story Sections Editor ────────────────────────────────────────────────────
 
 function StorySectionsEditor({
   value,
@@ -280,7 +272,6 @@ function StorySectionsEditor({
             </button>
           </div>
 
-          {/* Section Heading (optional) */}
           <div>
             <label className="text-[10px] tracking-widest uppercase text-primary/60 font-medium block mb-1.5">
               Heading <span className="normal-case opacity-60">(optional)</span>
@@ -294,7 +285,6 @@ function StorySectionsEditor({
             />
           </div>
 
-          {/* Paragraphs */}
           <div className="space-y-2">
             <label className="text-[10px] tracking-widest uppercase text-primary/60 font-medium block">
               Paragraphs
@@ -343,15 +333,12 @@ function StorySectionsEditor({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function PortfolioDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   const isNew = id === "new";
 
-  // ── React Hook Form ──────────────────────────────────────────────────────────
   const {
     watch,
     handleSubmit,
@@ -376,13 +363,12 @@ export default function PortfolioDetailPage() {
       content: "",
       story_sections: [],
       credit_role: "",
-      credit_planner: "",
+      credit_planner: "Linda Wiryani Design and Event Planning",
       credit_location_detail: "",
       credit_couple_origin: "",
     },
   });
 
-  // setField helper — validasi + touch langsung saat tiap perubahan field
   const setField = <K extends keyof PortfolioFormData>(
     key: K,
     value: PortfolioFormData[K],
@@ -393,40 +379,36 @@ export default function PortfolioDetailPage() {
       shouldTouch: true,
     });
 
-  // watch() — subscribe ke semua nilai form untuk preview/summary di sidebar
   const formData = watch();
 
-  // ── Gallery state (pola VenueDetailPage) ─────────────────────────────────────
-  // Terpisah dari RHF karena gallery tidak ada di portfolioFormSchema.
-  // GalleryManager mengelola logika dual-mode (create vs edit) secara internal.
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
 
-  // ── Page state ───────────────────────────────────────────────────────────────
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
 
-  // ── Select options state ──────────────────────────────────────────────────────
-  const [destinationOptions, setDestinationOptions] = useState<SelectOption[]>([]);
+  const [destinationOptions, setDestinationOptions] = useState<
+    DestinationOption[]
+  >([]);
   const [venueOptions, setVenueOptions] = useState<SelectOption[]>([]);
-  const [experienceOptions, setExperienceOptions] = useState<SelectOption[]>([]);
+  const [experienceOptions, setExperienceOptions] = useState<SelectOption[]>(
+    [],
+  );
   const [isDestinationsLoading, setIsDestinationsLoading] = useState(true);
   const [isVenuesLoading, setIsVenuesLoading] = useState(true);
   const [isExperiencesLoading, setIsExperiencesLoading] = useState(true);
 
-  // ── Save state machine: idle | confirm | saving | saved ──────────────────────
   const [saveStatus, setSaveStatus] = useState<
     "idle" | "confirm" | "saving" | "saved"
   >("idle");
 
-  // ── Delete state machine: idle | confirm | deleting ──────────────────────────
   const [deleteStatus, setDeleteStatus] = useState<
     "idle" | "confirm" | "deleting"
   >("idle");
 
-  // ── Unsaved changes guard ──────────────────────────────────────────────────────
-  // Create mode: any non-empty field counts as "dirty"
-  // Edit mode: react-hook-form's isDirty tracks real changes vs. loaded data
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const hasUnsavedChanges = isNew
     ? Boolean(
@@ -436,11 +418,10 @@ export default function PortfolioDetailPage() {
         formData.image ||
         formData.content ||
         (formData.tags && formData.tags.length > 0) ||
-        galleryImages.length > 0
+        galleryImages.length > 0,
       )
     : isDirty;
 
-  // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && saveStatus !== "saving") {
@@ -452,26 +433,28 @@ export default function PortfolioDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, saveStatus]);
 
-  // Helper: navigate with guard check
   const guardedNavigate = useCallback(
     (href: string) => {
-      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+      if (
+        hasUnsavedChanges &&
+        saveStatus !== "saving" &&
+        saveStatus !== "saved"
+      ) {
         setUnsavedModal({ open: true, pendingHref: href });
       } else {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, saveStatus, router]
+    [hasUnsavedChanges, saveStatus, router],
   );
 
-  // ── Fetch destinations dari /api/destinations (route.ts yang disertakan) ──────
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
         const res = await axios.get("/api/destinations", {
           params: { limit: 100 },
         });
-        // Response: paginated → { data: Destination[], meta: {...} }
+
         setDestinationOptions(res.data.data ?? []);
       } catch {
         console.warn("Failed to load destinations");
@@ -482,14 +465,13 @@ export default function PortfolioDetailPage() {
     fetchDestinations();
   }, []);
 
-  // ── Fetch venues dari /api/venues (route.ts yang disertakan) ─────────────────
   useEffect(() => {
     const fetchVenues = async () => {
       try {
         const res = await axios.get("/api/venues", {
           params: { limit: 100 },
         });
-        // Response: paginated → { data: Venue[], meta: {...} }
+
         setVenueOptions(res.data.data ?? []);
       } catch {
         console.warn("Failed to load venues");
@@ -500,14 +482,13 @@ export default function PortfolioDetailPage() {
     fetchVenues();
   }, []);
 
-  // ── Fetch wedding experiences dari /api/wedding-experiences (route.ts yang disertakan)
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
         const res = await axios.get("/api/wedding-experiences", {
           params: { limit: 100 },
         });
-        // Response: paginated → { data: WeddingExperience[], meta: {...} }
+
         setExperienceOptions(res.data.data ?? []);
       } catch {
         console.warn("Failed to load experiences");
@@ -518,7 +499,6 @@ export default function PortfolioDetailPage() {
     fetchExperiences();
   }, []);
 
-  // ── Fetch portfolio (edit mode) ───────────────────────────────────────────────
   const fetchPortfolio = useCallback(async () => {
     if (isNew) return;
     setIsLoading(true);
@@ -548,14 +528,14 @@ export default function PortfolioDetailPage() {
         credit_couple_origin: String(data.credit_couple_origin ?? ""),
       });
 
-      // Populate galleryImages dari data.gallery (PortfolioImage[] dari PORTFOLIO_INCLUDE)
-      // Mengikuti pola VenueDetailPage: map ke GalleryImage { id, url, sort_order }
       const gallery: GalleryImage[] = Array.isArray(data.gallery)
-        ? data.gallery.map((g: { id: string; url: string; sort_order: number }) => ({
-            id: g.id,
-            url: g.url,
-            sort_order: g.sort_order,
-          }))
+        ? data.gallery.map(
+            (g: { id: string; url: string; sort_order: number }) => ({
+              id: g.id,
+              url: g.url,
+              sort_order: g.sort_order,
+            }),
+          )
         : [];
       setGalleryImages(gallery);
     } catch (err) {
@@ -579,7 +559,6 @@ export default function PortfolioDetailPage() {
     fetchPortfolio();
   }, [fetchPortfolio]);
 
-  // ── Slug: auto-generate dari couple name ─────────────────────────────────────
   const handleCoupleChange = (v: string) => {
     setField("couple", v);
     if (isNew) {
@@ -587,7 +566,14 @@ export default function PortfolioDetailPage() {
     }
   };
 
-  // ── Save flow ─────────────────────────────────────────────────────────────────
+  const originValue = formData.origin;
+  useEffect(() => {
+    setValue("credit_couple_origin", originValue ?? "", {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  }, [originValue, setValue]);
+
   const onSubmitForm = async () => {
     setSaveStatus("confirm");
   };
@@ -601,7 +587,7 @@ export default function PortfolioDetailPage() {
     setSaveStatus("saving");
     try {
       const slugValue = toSlug(formData.couple);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       const { slug: _slug, ...restFormData } = formData;
       const payload = {
         ...restFormData,
@@ -615,14 +601,11 @@ export default function PortfolioDetailPage() {
       };
 
       if (isNew) {
-        // POST /api/portfolios → created(portfolio)
         const res = await axios.post("/api/portfolios", payload, {
           headers: getAuthHeaders(true),
         });
         const newPortfolioId: string = res.data.data?.id ?? res.data.id;
 
-        // Flush gallery queue — mengikuti persis pola VenueDetailPage
-        // Semua gambar temp di galleryImages di-POST ke API satu per satu
         for (const img of galleryImages) {
           try {
             await axios.post(
@@ -630,28 +613,25 @@ export default function PortfolioDetailPage() {
               { url: img.url, sort_order: img.sort_order },
               { headers: getAuthHeaders(true) },
             );
-          } catch {
-            // Non-blocking — lanjutkan meski satu gambar gagal
-          }
+          } catch {}
         }
 
         setSaveStatus("idle");
         toast.success("Portfolio published!", {
           description: "Your new portfolio has been added to the collection.",
         });
-        reset(); // clear dirty state before navigating
+        reset();
         router.push("/dashboard/portfolio");
       } else {
-        // PATCH /api/portfolios/:id → ok(portfolio)
         await axios.patch(`/api/portfolios/${id}`, payload, {
           headers: getAuthHeaders(true),
         });
-        // Gallery sudah di-sync real-time oleh GalleryManager di edit mode
+
         setSaveStatus("saved");
         toast.success("Changes saved!", {
           description: "Your portfolio has been updated.",
         });
-        // Re-sync RHF baseline so isDirty becomes false
+
         reset({ ...formData, slug: toSlug(formData.couple) });
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -663,11 +643,10 @@ export default function PortfolioDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to save", { description: errorMsg });
-      setSaveStatus("confirm"); // Biarkan modal terbuka agar user bisa coba lagi
+      setSaveStatus("confirm");
     }
   };
 
-  // ── Delete flow ───────────────────────────────────────────────────────────────
   const deletePortfolio = async () => {
     setDeleteStatus("deleting");
     try {
@@ -691,7 +670,6 @@ export default function PortfolioDetailPage() {
     }
   };
 
-  // ── Derived values ────────────────────────────────────────────────────────────
   const slugPreview = formData.couple ? toSlug(formData.couple) : "";
 
   const wordCount = formData.content
@@ -701,7 +679,6 @@ export default function PortfolioDetailPage() {
         .filter(Boolean).length
     : 0;
 
-  // ── Not found ─────────────────────────────────────────────────────────────────
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
@@ -722,7 +699,6 @@ export default function PortfolioDetailPage() {
     );
   }
 
-  // ── Skeleton loading ──────────────────────────────────────────────────────────
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
@@ -773,7 +749,10 @@ export default function PortfolioDetailPage() {
               <div className="h-4 w-28 bg-primary/10 rounded" />
               <div className="grid grid-cols-3 gap-2">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="aspect-square bg-primary/10 rounded" />
+                  <div
+                    key={i}
+                    className="aspect-square bg-primary/10 rounded"
+                  />
                 ))}
               </div>
               <div className="h-10 bg-primary/5 rounded" />
@@ -793,10 +772,8 @@ export default function PortfolioDetailPage() {
     );
   }
 
-  // ── Main render ───────────────────────────────────────────────────────────────
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -824,7 +801,6 @@ export default function PortfolioDetailPage() {
             </div>
           )}
 
-          {/* View Live — gunakan slug yang sudah tersimpan di DB */}
           {!isNew && (
             <Link
               href={`/portfolio/${formData.slug}`}
@@ -836,7 +812,6 @@ export default function PortfolioDetailPage() {
             </Link>
           )}
 
-          {/* Delete button — hanya di edit mode */}
           {!isNew && (
             <button
               type="button"
@@ -849,7 +824,6 @@ export default function PortfolioDetailPage() {
             </button>
           )}
 
-          {/* Save button */}
           <button
             type="button"
             onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
@@ -871,20 +845,16 @@ export default function PortfolioDetailPage() {
         </div>
       </div>
 
-      {/* ── Two Column Layout ── */}
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid xl:grid-cols-[1fr_340px] gap-6"
       >
-        {/* ── Left Column ── */}
         <div className="space-y-6">
-          {/* ── Basic Information ── */}
           <Section
             title="Basic Information"
             subtitle="Core couple and page details"
           >
             <div className="space-y-4">
-              {/* Couple Names */}
               <FormField label="Couple Names" required>
                 <TextInput
                   value={formData.couple}
@@ -898,7 +868,6 @@ export default function PortfolioDetailPage() {
                 />
               </FormField>
 
-              {/* Subtitle */}
               <FormField label="Subtitle" required>
                 <TextInput
                   value={formData.subtitle ?? ""}
@@ -912,7 +881,6 @@ export default function PortfolioDetailPage() {
                 />
               </FormField>
 
-              {/* Excerpt */}
               <FormField label="Excerpt" required>
                 <TextareaInput
                   value={formData.excerpt ?? ""}
@@ -930,7 +898,6 @@ export default function PortfolioDetailPage() {
                 </p>
               </FormField>
 
-              {/* Origin — optional */}
               <FormField label="Couple Origin">
                 <TextInput
                   value={formData.origin ?? ""}
@@ -941,13 +908,11 @@ export default function PortfolioDetailPage() {
             </div>
           </Section>
 
-          {/* ── Venue & Location ── */}
           <Section
             title="Venue & Location"
             subtitle="Where the wedding took place"
           >
             <div className="space-y-4">
-              {/* Destination — dari GET /api/destinations */}
               <FormField label="Destination">
                 <div className="relative">
                   <select
@@ -955,14 +920,18 @@ export default function PortfolioDetailPage() {
                     onChange={(e) =>
                       setField(
                         "destination_id",
-                        (e.target.value as PortfolioFormData["destination_id"]) || undefined,
+                        (e.target
+                          .value as PortfolioFormData["destination_id"]) ||
+                          undefined,
                       )
                     }
                     disabled={isDestinationsLoading}
                     className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isDestinationsLoading ? (
-                      <option value="" disabled>Loading destinations…</option>
+                      <option value="" disabled>
+                        Loading destinations…
+                      </option>
                     ) : (
                       <>
                         <option value="">Select a destination…</option>
@@ -983,7 +952,6 @@ export default function PortfolioDetailPage() {
                 )}
               </FormField>
 
-              {/* Venue — dari GET /api/venues */}
               <FormField label="Venue">
                 <div className="relative">
                   <select
@@ -991,14 +959,17 @@ export default function PortfolioDetailPage() {
                     onChange={(e) =>
                       setField(
                         "venue_id",
-                        (e.target.value as PortfolioFormData["venue_id"]) || undefined,
+                        (e.target.value as PortfolioFormData["venue_id"]) ||
+                          undefined,
                       )
                     }
                     disabled={isVenuesLoading}
                     className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isVenuesLoading ? (
-                      <option value="" disabled>Loading venues…</option>
+                      <option value="" disabled>
+                        Loading venues…
+                      </option>
                     ) : (
                       <>
                         <option value="">Select a venue…</option>
@@ -1019,7 +990,6 @@ export default function PortfolioDetailPage() {
                 )}
               </FormField>
 
-              {/* Experience — dari GET /api/wedding-experiences */}
               <FormField label="Experience">
                 <div className="relative">
                   <select
@@ -1027,14 +997,18 @@ export default function PortfolioDetailPage() {
                     onChange={(e) =>
                       setField(
                         "experience_id",
-                        (e.target.value as PortfolioFormData["experience_id"]) || undefined,
+                        (e.target
+                          .value as PortfolioFormData["experience_id"]) ||
+                          undefined,
                       )
                     }
                     disabled={isExperiencesLoading}
                     className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isExperiencesLoading ? (
-                      <option value="" disabled>Loading experiences…</option>
+                      <option value="" disabled>
+                        Loading experiences…
+                      </option>
                     ) : (
                       <>
                         <option value="">Select an experience…</option>
@@ -1057,7 +1031,6 @@ export default function PortfolioDetailPage() {
             </div>
           </Section>
 
-          {/* ── Portfolio Content (TipTap) ── */}
           <Section
             title="Portfolio Content"
             subtitle="Full narrative body in rich text"
@@ -1074,7 +1047,6 @@ export default function PortfolioDetailPage() {
             />
           </Section>
 
-          {/* ── Story Sections ── */}
           <Section
             title="Story Sections"
             subtitle="Narrative paragraphs displayed on the portfolio page"
@@ -1090,78 +1062,138 @@ export default function PortfolioDetailPage() {
             />
           </Section>
 
-          {/* ── Couple Review ── */}
           <Section
             title="Couple Review"
             subtitle="Quote or testimonial from the couple"
           >
-            <TextareaInput
-              value={formData.review ?? ""}
-              onChange={(v) => setField("review", v || undefined)}
-              placeholder="&ldquo;Working with the team was an absolute dream…&rdquo;"
-              rows={4}
-            />
+            <FormField label="Review">
+              <TextareaInput
+                value={formData.review ?? ""}
+                onChange={(v) => setField("review", v || undefined)}
+                placeholder="&ldquo;Working with the team was an absolute dream…&rdquo;"
+                rows={4}
+              />
+              {formErrors.review && (
+                <p className="text-red-500 text-xs mt-1">
+                  {String(formErrors.review.message)}
+                </p>
+              )}
+            </FormField>
           </Section>
 
-          {/* ── Credits ── */}
           <Section title="Credits" subtitle="Team and attribution details">
             <div className="space-y-4">
-              {[
-                {
-                  key: "credit_role" as const,
-                  label: "Role / Service Type",
-                  placeholder: "e.g. Full Wedding Planning & Design",
-                },
-                {
-                  key: "credit_planner" as const,
-                  label: "Planner / Coordinator",
-                  placeholder: "e.g. Raisa Dewi",
-                },
-                {
-                  key: "credit_location_detail" as const,
-                  label: "Location Detail",
-                  placeholder: "e.g. Uluwatu Cliff, Bali",
-                },
-                {
-                  key: "credit_couple_origin" as const,
-                  label: "Couple Origin",
-                  placeholder: "e.g. Sydney, Australia",
-                },
-              ].map(({ key, label, placeholder }) => (
-                <FormField key={key} label={label} required>
+              <FormField label="Role / Service Type" required>
+                <TextInput
+                  value={formData.credit_role ?? ""}
+                  onChange={(v) => setField("credit_role", v)}
+                  placeholder="e.g. Full Wedding Planning & Design"
+                  error={
+                    formErrors.credit_role
+                      ? String(formErrors.credit_role?.message)
+                      : undefined
+                  }
+                />
+              </FormField>
+
+              <FormField label="Planner / Coordinator" required>
+                <TextInput
+                  value={formData.credit_planner ?? ""}
+                  onChange={(v) => setField("credit_planner", v)}
+                  placeholder="e.g. Raisa Dewi"
+                  error={
+                    formErrors.credit_planner
+                      ? String(formErrors.credit_planner?.message)
+                      : undefined
+                  }
+                />
+              </FormField>
+
+              <FormField label="Location Detail" required>
+                <div className="relative">
+                  <select
+                    value={formData.credit_location_detail ?? ""}
+                    onChange={(e) =>
+                      setField("credit_location_detail", e.target.value)
+                    }
+                    disabled={isDestinationsLoading}
+                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isDestinationsLoading ? (
+                      <option value="" disabled>
+                        Loading destinations…
+                      </option>
+                    ) : (
+                      <>
+                        <option value="">Select a location…</option>
+                        {destinationOptions.map((d) => {
+                          const label = [
+                            d.name,
+                            d.location?.name,
+                            d.location?.category?.name,
+                          ]
+                            .filter(Boolean)
+                            .join(", ");
+                          return (
+                            <option key={d.id} value={label}>
+                              {label}
+                            </option>
+                          );
+                        })}
+                      </>
+                    )}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                </div>
+                {formErrors.credit_location_detail && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {String(formErrors.credit_location_detail?.message)}
+                  </p>
+                )}
+              </FormField>
+
+              <FormField label="Couple Origin" required>
+                <div className="relative">
                   <TextInput
-                    value={formData[key] ?? ""}
-                    onChange={(v) => setField(key, v)}
-                    placeholder={placeholder}
+                    value={formData.credit_couple_origin ?? ""}
+                    onChange={() => {}}
+                    placeholder="—"
                     error={
-                      formErrors[key]
-                        ? String(formErrors[key]?.message)
+                      formErrors.credit_couple_origin
+                        ? String(formErrors.credit_couple_origin?.message)
                         : undefined
                     }
                   />
-                </FormField>
-              ))}
+                  <p className="text-primary/40 text-xs mt-1.5 flex items-center gap-1">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary/30" />
+                    Auto-filled from{" "}
+                    <strong className="font-medium text-primary/60">
+                      Couple Origin
+                    </strong>{" "}
+                    in Basic Information
+                  </p>
+                </div>
+              </FormField>
             </div>
           </Section>
 
-          {/* ── Tags ── */}
           <Section title="Tags" subtitle="Keywords for filtering and discovery">
-            <TagsInput
-              values={formData.tags ?? []}
-              onChange={(v) => setField("tags", v)}
-              placeholder="Type a tag and press Enter…"
-            />
-            {formErrors.tags && (
-              <p className="text-red-500 text-xs mt-1">
-                {String(formErrors.tags.message)}
-              </p>
-            )}
+            <FormField label="Tags" required>
+              <TagsInput
+                values={formData.tags ?? []}
+                onChange={(v) => setField("tags", v)}
+                placeholder="Type a tag and press Enter…"
+              />
+              {formErrors.tags && (
+                <p className="text-red-500 text-xs mt-1">
+                  {String(formErrors.tags.message)}
+                </p>
+              )}
+            </FormField>
           </Section>
         </div>
 
-        {/* ── Right Column ── */}
         <div className="space-y-6">
-          {/* Hero Image */}
           <Section title="Hero Image">
             <div className="space-y-4">
               <div className="relative aspect-[3/2] bg-primary/5 border border-primary/20 overflow-hidden">
@@ -1201,7 +1233,6 @@ export default function PortfolioDetailPage() {
             </div>
           </Section>
 
-          {/* Gallery Images — menggunakan GalleryManager pola VenueDetailPage */}
           <Section
             title="Gallery Images"
             subtitle={`${galleryImages.length} image${galleryImages.length !== 1 ? "s" : ""}`}
@@ -1213,7 +1244,6 @@ export default function PortfolioDetailPage() {
             />
           </Section>
 
-          {/* URL & SEO */}
           <Section title="URL & SEO">
             <div className="space-y-2">
               <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
@@ -1228,7 +1258,6 @@ export default function PortfolioDetailPage() {
             </div>
           </Section>
 
-          {/* Quick Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
             <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
               Summary
@@ -1305,7 +1334,6 @@ export default function PortfolioDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -1317,7 +1345,6 @@ export default function PortfolioDetailPage() {
         />
       )}
 
-      {/* ── Save Modal ── */}
       {(saveStatus === "confirm" || saveStatus === "saving") && (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -1329,7 +1356,6 @@ export default function PortfolioDetailPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
           name={formData.couple}

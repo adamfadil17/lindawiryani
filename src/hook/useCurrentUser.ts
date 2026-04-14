@@ -26,7 +26,6 @@ export function useCurrentUser() {
         return res.json();
       })
       .then((json) => {
-        // Support both { data: {...} } envelope and flat response
         setUser(json.data ?? json);
       })
       .catch(() => setUser(null))

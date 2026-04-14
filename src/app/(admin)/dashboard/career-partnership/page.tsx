@@ -36,74 +36,58 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { toast } from "sonner";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 const SUBMISSION_LIMIT = 6;
 const POSITION_LIMIT = 8;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 type TypeFilter = "All" | SubmissionType;
 type StatusFilter = "All" | SubmissionStatus;
 type DeleteStatus = "idle" | "confirm" | "deleting";
 
-// ─── Page State ───────────────────────────────────────────────────────────────
 
 interface PageState {
-  // ── Submissions data ──
   submissions: Submission[];
   submissionMeta: PaginationMeta | null;
   isSubmissionsLoading: boolean;
-  // ── Submissions filter ──
   submissionSearch: string;
   submissionDebouncedSearch: string;
   typeFilter: TypeFilter;
   statusFilter: StatusFilter;
   submissionPage: number;
-  // ── Submissions delete FSM ──
   deleteSubmissionStatus: DeleteStatus;
   deleteSubmissionTarget: Submission | null;
-
-  // ── Positions data ──
   positions: OpenPosition[];
   positionMeta: PaginationMeta | null;
   isPositionsLoading: boolean;
-  // ── Positions filter ──
   positionSearch: string;
   positionDebouncedSearch: string;
   positionPage: number;
-  // ── Positions delete FSM ──
   deletePositionStatus: DeleteStatus;
   deletePositionTarget: OpenPosition | null;
 }
 
 type PageAction =
-  // submissions fetch
   | { type: "FETCH_SUBMISSIONS_START" }
   | { type: "FETCH_SUBMISSIONS_SUCCESS"; submissions: Submission[]; meta: PaginationMeta | null }
   | { type: "FETCH_SUBMISSIONS_ERROR" }
-  // positions fetch
   | { type: "FETCH_POSITIONS_START" }
   | { type: "FETCH_POSITIONS_SUCCESS"; positions: OpenPosition[]; meta: PaginationMeta | null }
   | { type: "FETCH_POSITIONS_ERROR" }
-  // submission filters
   | { type: "SET_SUBMISSION_SEARCH"; value: string }
   | { type: "SET_SUBMISSION_DEBOUNCED"; value: string }
   | { type: "SET_TYPE_FILTER"; value: TypeFilter }
   | { type: "SET_STATUS_FILTER"; value: StatusFilter }
   | { type: "SET_SUBMISSION_PAGE"; page: number }
   | { type: "CLEAR_SUBMISSION_FILTERS" }
-  // position filters
   | { type: "SET_POSITION_SEARCH"; value: string }
   | { type: "SET_POSITION_DEBOUNCED"; value: string }
   | { type: "SET_POSITION_PAGE"; page: number }
-  // submission delete FSM
   | { type: "OPEN_DELETE_SUBMISSION"; submission: Submission }
   | { type: "CLOSE_DELETE_SUBMISSION" }
   | { type: "DELETE_SUBMISSION_START" }
   | { type: "DELETE_SUBMISSION_SUCCESS" }
   | { type: "DELETE_SUBMISSION_ERROR" }
-  // position delete FSM
   | { type: "OPEN_DELETE_POSITION"; position: OpenPosition }
   | { type: "CLOSE_DELETE_POSITION" }
   | { type: "DELETE_POSITION_START" }
@@ -121,7 +105,6 @@ const initialState: PageState = {
   submissionPage: 1,
   deleteSubmissionStatus: "idle",
   deleteSubmissionTarget: null,
-
   positions: [],
   positionMeta: null,
   isPositionsLoading: true,
@@ -134,23 +117,18 @@ const initialState: PageState = {
 
 function pageReducer(state: PageState, action: PageAction): PageState {
   switch (action.type) {
-    // ── Submissions fetch ──
     case "FETCH_SUBMISSIONS_START":
       return { ...state, isSubmissionsLoading: true };
     case "FETCH_SUBMISSIONS_SUCCESS":
       return { ...state, isSubmissionsLoading: false, submissions: action.submissions, submissionMeta: action.meta };
     case "FETCH_SUBMISSIONS_ERROR":
       return { ...state, isSubmissionsLoading: false };
-
-    // ── Positions fetch ──
     case "FETCH_POSITIONS_START":
       return { ...state, isPositionsLoading: true };
     case "FETCH_POSITIONS_SUCCESS":
       return { ...state, isPositionsLoading: false, positions: action.positions, positionMeta: action.meta };
     case "FETCH_POSITIONS_ERROR":
       return { ...state, isPositionsLoading: false };
-
-    // ── Submission filters ──
     case "SET_SUBMISSION_SEARCH":
       return { ...state, submissionSearch: action.value };
     case "SET_SUBMISSION_DEBOUNCED":
@@ -163,16 +141,12 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, submissionPage: action.page };
     case "CLEAR_SUBMISSION_FILTERS":
       return { ...state, submissionSearch: "", submissionDebouncedSearch: "", typeFilter: "All", statusFilter: "All", submissionPage: 1 };
-
-    // ── Position filters ──
     case "SET_POSITION_SEARCH":
       return { ...state, positionSearch: action.value };
     case "SET_POSITION_DEBOUNCED":
       return { ...state, positionDebouncedSearch: action.value, positionPage: 1 };
     case "SET_POSITION_PAGE":
       return { ...state, positionPage: action.page };
-
-    // ── Submission delete FSM ──
     case "OPEN_DELETE_SUBMISSION":
       return { ...state, deleteSubmissionTarget: action.submission, deleteSubmissionStatus: "confirm" };
     case "CLOSE_DELETE_SUBMISSION":
@@ -185,8 +159,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, deleteSubmissionTarget: null, deleteSubmissionStatus: "idle" };
     case "DELETE_SUBMISSION_ERROR":
       return { ...state, deleteSubmissionStatus: "confirm" };
-
-    // ── Position delete FSM ──
     case "OPEN_DELETE_POSITION":
       return { ...state, deletePositionTarget: action.position, deletePositionStatus: "confirm" };
     case "CLOSE_DELETE_POSITION":
@@ -204,8 +176,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return state;
   }
 }
-
-// ─── Skeleton Card ────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
   return (
@@ -270,7 +240,6 @@ function SkeletonStatCard() {
   );
 }
 
-// ─── Status Badge ─────────────────────────────────────────────────────────────
 
 function StatusBadge({ status }: { status: SubmissionStatus }) {
   const { label, classes } = submissionStatusConfig[status];
@@ -281,7 +250,6 @@ function StatusBadge({ status }: { status: SubmissionStatus }) {
   );
 }
 
-// ─── Pagination ───────────────────────────────────────────────────────────────
 
 function Pagination({ meta, onPageChange }: { meta: PaginationMeta; onPageChange: (page: number) => void }) {
   const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1);
@@ -347,7 +315,6 @@ function Pagination({ meta, onPageChange }: { meta: PaginationMeta; onPageChange
   );
 }
 
-// ─── Position Card ────────────────────────────────────────────────────────────
 
 function PositionCard({ position, onDelete }: { position: OpenPosition; onDelete: (position: OpenPosition) => void }) {
   return (
@@ -400,7 +367,6 @@ function PositionCard({ position, onDelete }: { position: OpenPosition; onDelete
   );
 }
 
-// ─── Submission Card ──────────────────────────────────────────────────────────
 
 function SubmissionCard({ submission, onDelete }: { submission: Submission; onDelete: (submission: Submission) => void }) {
   const isVendor = submission.type === "vendor";
@@ -494,7 +460,6 @@ function SubmissionCard({ submission, onDelete }: { submission: Submission; onDe
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function CareerPartnershipPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
@@ -508,15 +473,12 @@ export default function CareerPartnershipPage() {
     deletePositionStatus, deletePositionTarget,
   } = state;
 
-  // ── useRef: debounce timers (no re-render needed) ──
   const submissionDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const positionDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── useRef: AbortControllers to cancel stale in-flight requests ──
   const submissionAbortRef = useRef<AbortController | null>(null);
   const positionAbortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce: submissions search ──
   useEffect(() => {
     if (submissionDebounceRef.current) clearTimeout(submissionDebounceRef.current);
     submissionDebounceRef.current = setTimeout(() => {
@@ -527,7 +489,6 @@ export default function CareerPartnershipPage() {
     };
   }, [submissionSearch]);
 
-  // ── Debounce: positions search ──
   useEffect(() => {
     if (positionDebounceRef.current) clearTimeout(positionDebounceRef.current);
     positionDebounceRef.current = setTimeout(() => {
@@ -538,9 +499,7 @@ export default function CareerPartnershipPage() {
     };
   }, [positionSearch]);
 
-  // ── Fetch submissions ──
   const getSubmissions = useCallback(async () => {
-    // Cancel any previous in-flight request
     submissionAbortRef.current?.abort();
     submissionAbortRef.current = new AbortController();
 
@@ -574,9 +533,7 @@ export default function CareerPartnershipPage() {
     getSubmissions();
   }, [getSubmissions]);
 
-  // ── Fetch positions ──
   const getPositions = useCallback(async () => {
-    // Cancel any previous in-flight request
     positionAbortRef.current?.abort();
     positionAbortRef.current = new AbortController();
 
@@ -585,7 +542,7 @@ export default function CareerPartnershipPage() {
       const params: Record<string, unknown> = {
         page: positionPage,
         limit: POSITION_LIMIT,
-        isActive: "all", // admin view — show all regardless of active status
+        isActive: "all", 
       };
       if (positionDebouncedSearch) params.search = positionDebouncedSearch;
 
@@ -612,12 +569,10 @@ export default function CareerPartnershipPage() {
     getPositions();
   }, [getPositions]);
 
-  // ── Filter change helpers (useCallback: stable refs, no deps needed — dispatch is stable) ──
   const handleTypeChange = useCallback((value: TypeFilter) => dispatch({ type: "SET_TYPE_FILTER", value }), []);
   const handleStatusChange = useCallback((value: StatusFilter) => dispatch({ type: "SET_STATUS_FILTER", value }), []);
   const clearSubmissionFilters = useCallback(() => dispatch({ type: "CLEAR_SUBMISSION_FILTERS" }), []);
 
-  // ── Submission delete handlers ──
   const openDeleteSubmissionModal = useCallback(
     (submission: Submission) => dispatch({ type: "OPEN_DELETE_SUBMISSION", submission }),
     [],
@@ -642,7 +597,6 @@ export default function CareerPartnershipPage() {
     }
   }, [deleteSubmissionTarget, submissions.length, submissionPage, getSubmissions]);
 
-  // ── Position delete handlers ──
   const openDeletePositionModal = useCallback(
     (position: OpenPosition) => dispatch({ type: "OPEN_DELETE_POSITION", position }),
     [],
@@ -667,7 +621,6 @@ export default function CareerPartnershipPage() {
     }
   }, [deletePositionTarget, positions.length, positionPage, getPositions]);
 
-  // ── useMemo: derived values ──
   const submissionTotalCount = useMemo(() => submissionMeta?.total ?? 0, [submissionMeta]);
 
   const hasActiveSubmissionFilters = useMemo(
@@ -675,7 +628,6 @@ export default function CareerPartnershipPage() {
     [submissionDebouncedSearch, typeFilter, statusFilter],
   );
 
-  // Stat card definitions — stable unless filter options change
   const submissionStatCards = useMemo(
     () => [
       { id: "All" as const, label: "All", icon: Users },
@@ -685,7 +637,6 @@ export default function CareerPartnershipPage() {
     [],
   );
 
-  // Helper — stable reference
   const getSubmissionName = useCallback(
     (s: Submission) =>
       s.type === "vendor"
@@ -696,7 +647,7 @@ export default function CareerPartnershipPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
+      
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -715,7 +666,7 @@ export default function CareerPartnershipPage() {
         </div>
       </div>
 
-      {/* ── Stats Row — Submissions ── */}
+      
       {isSubmissionsLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 mb-8">
           {Array.from({ length: 7 }).map((_, i) => (
@@ -724,7 +675,7 @@ export default function CareerPartnershipPage() {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 mb-8">
-          {/* Type filter stat cards */}
+          
           {submissionStatCards.map((item) => {
             const isActive = typeFilter === item.id;
             const Icon = item.icon;
@@ -755,7 +706,7 @@ export default function CareerPartnershipPage() {
             );
           })}
 
-          {/* Status filter stat cards */}
+          
           {(["new", "reviewed", "contacted", "archived"] as SubmissionStatus[]).map((status) => {
             const isActive = statusFilter === status;
             const { label } = submissionStatusConfig[status];
@@ -779,7 +730,7 @@ export default function CareerPartnershipPage() {
         </div>
       )}
 
-      {/* ── Open Positions Section ── */}
+      
       <div className="mb-10">
         <div className="flex items-center justify-between mb-5">
           <div>
@@ -795,7 +746,7 @@ export default function CareerPartnershipPage() {
           </Link>
         </div>
 
-        {/* Position search bar */}
+        
         <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
@@ -817,7 +768,7 @@ export default function CareerPartnershipPage() {
           </div>
         </div>
 
-        {/* Results info */}
+        
         {positionDebouncedSearch && !isPositionsLoading && positionMeta && (
           <p className="text-primary/80 text-sm tracking-wider mb-4">
             Showing {positionMeta.total} position{positionMeta.total !== 1 ? "s" : ""}
@@ -825,7 +776,7 @@ export default function CareerPartnershipPage() {
           </p>
         )}
 
-        {/* Positions grid */}
+        
         {isPositionsLoading ? (
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
             {Array.from({ length: POSITION_LIMIT }).map((_, i) => (
@@ -866,7 +817,7 @@ export default function CareerPartnershipPage() {
           </div>
         )}
 
-        {/* Positions pagination */}
+        
         {positionMeta && !isPositionsLoading && (
           <Pagination
             meta={positionMeta}
@@ -875,14 +826,14 @@ export default function CareerPartnershipPage() {
         )}
       </div>
 
-      {/* ── Submissions Section ── */}
+      
       <div>
         <div className="mb-5">
           <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-1">Inbox</p>
           <h2 className="text-primary text-lg font-semibold tracking-wide">Submissions</h2>
         </div>
 
-        {/* Submissions search & filter bar */}
+        
         <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
@@ -903,7 +854,7 @@ export default function CareerPartnershipPage() {
             )}
           </div>
 
-          {/* Type filter */}
+          
           <div className="relative shrink-0">
             <select
               value={typeFilter}
@@ -917,7 +868,7 @@ export default function CareerPartnershipPage() {
             <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
           </div>
 
-          {/* Status filter */}
+          
           <div className="relative shrink-0">
             <select
               value={statusFilter}
@@ -933,7 +884,7 @@ export default function CareerPartnershipPage() {
             <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
           </div>
 
-          {/* Clear all filters */}
+          
           {hasActiveSubmissionFilters && (
             <>
               <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
@@ -948,7 +899,7 @@ export default function CareerPartnershipPage() {
           )}
         </div>
 
-        {/* Results info */}
+        
         {hasActiveSubmissionFilters && !isSubmissionsLoading && submissionMeta && (
           <p className="text-primary/80 text-sm tracking-wider mb-4">
             Showing {submissionMeta.total} submission{submissionMeta.total !== 1 ? "s" : ""}
@@ -958,7 +909,7 @@ export default function CareerPartnershipPage() {
           </p>
         )}
 
-        {/* Submissions grid */}
+        
         {isSubmissionsLoading ? (
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
             {Array.from({ length: SUBMISSION_LIMIT }).map((_, i) => (
@@ -991,7 +942,7 @@ export default function CareerPartnershipPage() {
           </div>
         )}
 
-        {/* Submissions pagination */}
+        
         {submissionMeta && !isSubmissionsLoading && (
           <Pagination
             meta={submissionMeta}
@@ -1000,7 +951,7 @@ export default function CareerPartnershipPage() {
         )}
       </div>
 
-      {/* ── Delete Submission Modal ── */}
+      
       {(deleteSubmissionStatus === "confirm" || deleteSubmissionStatus === "deleting") &&
         deleteSubmissionTarget && (
           <DeleteModal
@@ -1011,7 +962,7 @@ export default function CareerPartnershipPage() {
           />
         )}
 
-      {/* ── Delete Position Modal ── */}
+      
       {(deletePositionStatus === "confirm" || deletePositionStatus === "deleting") &&
         deletePositionTarget && (
           <DeleteModal

@@ -59,6 +59,7 @@ export async function POST(req: NextRequest) {
       data: {
         name: dto.name,
         slug: dto.slug,
+        description: dto.description,
       },
       include: DESTINATION_CATEGORY_INCLUDE,
     });

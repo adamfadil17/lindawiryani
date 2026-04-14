@@ -43,6 +43,7 @@ export const destinationCategoryFormSchema = z.object({
     .min(2, "Category name must be at least 2 characters")
     .max(255, "Category name must be at most 255 characters"),
   slug: slugSchema,
+  description: z.string().min(1).max(250, "Category Description must be at most 250 characters"),
 });
 
 export type DestinationCategoryFormData = z.infer<
@@ -142,9 +143,9 @@ export const weddingExperienceFormSchema = z.object({
     z.string().min(1, "Intro heading part 2 is required"),
   ]),
   intro_body: z.string().min(1, "Intro body is required"),
-  intro_list_label: z.string().optional(),
+  intro_list_label: z.string().nullable().optional(),
   intro_list: z.array(z.string()),
-  intro_footnote: z.string().optional(),
+  intro_footnote: z.string().nullable().optional(),
   intro_images: z
     .array(z.string().url("Invalid image URL"))
     .max(2, "Maximum 2 intro images"),
@@ -155,7 +156,7 @@ export const weddingExperienceFormSchema = z.object({
     z.string().min(1, "Approach heading part 2 is required"),
   ]),
   approach_body: z.string().min(1, "Approach body is required"),
-  approach_list_label: z.string().optional(),
+  approach_list_label: z.string().nullable().optional(),
   approach_list: z.array(z.string()),
   // backend: url() — no empty string
   approach_image: z.string().url("Invalid image URL"),
@@ -185,7 +186,7 @@ export const weddingExperienceFormSchema = z.object({
   closing_body: z.string().min(1, "Closing body is required"),
   // backend: url() — no empty string
   closing_image: z.string().url("Invalid image URL"),
-  closing_couple_label: z.string().optional(),
+  closing_couple_label: z.string().nullable().optional(),
   closing_couple_values: z.array(z.string()),
 });
 
@@ -283,6 +284,7 @@ export type WeddingThemeImageFormData = z.infer<
 // backend: enum menggunakan underscore dan "and"
 export const articleCategoryEnum = z.enum([
   "Guides",
+  "Featured",
   "Planning_Advice",
   "Destination_Knowledge",
   "Venue_and_Location",

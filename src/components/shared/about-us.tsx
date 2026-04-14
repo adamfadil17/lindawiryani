@@ -29,10 +29,8 @@ export default function AboutUs() {
     >
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative">
-          {/* Centered Vertical Divider Line */}
           <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-primary transform -translate-x-1/2 z-10"></div>
 
-          {/* Left Content */}
           <div className="space-y-6 relative pr-0 lg:pr-8">
             <motion.div variants={scaleIn} className="w-24 h-24 mb-8">
               <Image
@@ -83,7 +81,6 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Right Images Grid */}
           <div className="relative grid grid-cols-3 gap-4 h-[420px] pl-0 lg:pl-8">
             <motion.div variants={slideInRight} className="col-span-1">
               <div className="relative h-full overflow-hidden">

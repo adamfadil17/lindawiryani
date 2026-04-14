@@ -24,8 +24,8 @@ export function CreateModal({
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={!isLoading ? onCancel : undefined}
       />
-      {/* Mobile: slide up dari bawah. Desktop: modal tengah */}
-      <div className="relative bg-white w-full sm:max-w-md sm:mx-4 p-6 sm:p-8 shadow-2xl rounded-t-2xl sm:rounded-none">
+
+      <div className="relative bg-white w-full sm:max-w-lg sm:mx-4 p-6 sm:p-8 shadow-2xl rounded-t-2xl sm:rounded-none">
         <button
           onClick={onCancel}
           disabled={isLoading}
@@ -47,15 +47,15 @@ export function CreateModal({
           Create Category
         </h2>
         <p className="text-primary/70 text-sm leading-relaxed mb-6 sm:mb-8">
-          Enter a name for the new destination category.
+          Enter the details for the new destination category.
         </p>
 
-        <form
-          onSubmit={onSubmit}
-          className="space-y-4"
-        >
+        <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-xs tracking-widest uppercase text-primary/40 mb-2">
+            <label
+              htmlFor="name"
+              className="block text-xs tracking-widest uppercase text-primary/40 mb-2"
+            >
               Category Name
             </label>
             <input
@@ -68,6 +68,48 @@ export function CreateModal({
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="slug"
+              className="block text-xs tracking-widest uppercase text-primary/40 mb-2"
+            >
+              Slug{" "}
+              <span className="normal-case tracking-normal text-primary/30">
+                (auto-generated)
+              </span>
+            </label>
+            <input
+              id="slug"
+              {...register("slug")}
+              type="text"
+              readOnly
+              className="w-full px-3 py-2.5 text-sm text-primary/50 bg-primary/5 border border-primary/20 font-mono cursor-not-allowed select-none"
+              tabIndex={-1}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-xs tracking-widest uppercase text-primary/40 mb-2"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              {...register("description")}
+              rows={4}
+              placeholder="Describe this destination category..."
+              className="w-full px-3 py-2.5 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors resize-none"
+              disabled={isLoading}
+            />
+            {errors.description && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.description.message}
+              </p>
             )}
           </div>
 

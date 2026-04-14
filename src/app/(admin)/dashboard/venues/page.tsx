@@ -25,11 +25,7 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const LIMIT = 6;
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface FilterOption {
   id: string;
@@ -44,8 +40,6 @@ interface VenueFilters {
   destinations: FilterOption[];
   experiences: ExperienceFilterOption[];
 }
-
-// ─── Skeleton Card ────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
   return (
@@ -66,8 +60,6 @@ function SkeletonCard() {
   );
 }
 
-// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
-
 function SkeletonStatCard() {
   return (
     <div className="p-5 border border-primary/20 bg-white animate-pulse">
@@ -76,8 +68,6 @@ function SkeletonStatCard() {
     </div>
   );
 }
-
-// ─── Venue Card ───────────────────────────────────────────────────────────────
 
 function VenueCard({
   venue,
@@ -96,11 +86,11 @@ function VenueCard({
   };
 
   const badgeClass =
-    experienceBadgeClass[venue.experience?.category ?? ""] ?? "bg-primary text-white";
+    experienceBadgeClass[venue.experience?.category ?? ""] ??
+    "bg-primary text-white";
 
   return (
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
-      {/* Image */}
       <div className="relative aspect-[16/9] overflow-hidden">
         <Image
           src={venue.image || "https://placehold.net/default.svg"}
@@ -110,7 +100,6 @@ function VenueCard({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
 
-        {/* Experience badge */}
         {venue.experience && (
           <div className="absolute top-3 left-3">
             <span
@@ -122,7 +111,6 @@ function VenueCard({
           </div>
         )}
 
-        {/* Gallery count */}
         {galleryCount > 0 && (
           <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs tracking-widest uppercase px-2 py-1">
             +{galleryCount} photos
@@ -130,7 +118,6 @@ function VenueCard({
         )}
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <div className="mb-3">
           <div className="flex items-center gap-1 text-primary/60 text-xs tracking-widest uppercase mb-1">
@@ -141,7 +128,9 @@ function VenueCard({
             {venue.name}
           </h3>
           {venue.slogan && (
-            <p className="text-primary/50 text-xs italic mt-0.5">{venue.slogan}</p>
+            <p className="text-primary/50 text-xs italic mt-0.5">
+              {venue.slogan}
+            </p>
           )}
         </div>
 
@@ -149,7 +138,6 @@ function VenueCard({
           {venue.description}
         </p>
 
-        {/* Meta */}
         <div className="flex items-center gap-3 mb-5 text-xs text-primary/80">
           <span className="flex items-center gap-1">
             <Users className="w-3 h-3" />
@@ -158,11 +146,10 @@ function VenueCard({
           <span className="text-primary/20">·</span>
           <span className="flex items-center gap-1">
             <DollarSign className="w-3 h-3" />
-            from ${Number(venue.starting_price).toLocaleString()}
+            from IDR{Number(venue.starting_price).toLocaleString()}
           </span>
         </div>
 
-        {/* Tags */}
         <div className="flex gap-2 mb-5">
           {venue.experience && (
             <span className="text-xs tracking-widest uppercase px-2 py-0.5 bg-primary/5 text-primary/60 border border-primary/20">
@@ -176,7 +163,6 @@ function VenueCard({
           )}
         </div>
 
-        {/* Divider + Actions */}
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
             <span className="text-xs text-primary/80 font-semibold tracking-wider">
@@ -212,8 +198,6 @@ function VenueCard({
     </div>
   );
 }
-
-// ─── Filter Dropdown ──────────────────────────────────────────────────────────
 
 function FilterDropdown({
   value,
@@ -259,8 +243,6 @@ function FilterDropdown({
   );
 }
 
-// ─── Pagination ───────────────────────────────────────────────────────────────
-
 function Pagination({
   meta,
   onPageChange,
@@ -278,7 +260,15 @@ function Pagination({
     } else if (meta.page >= meta.totalPages - 3) {
       range.push(1, "...", ...pages.slice(meta.totalPages - 5));
     } else {
-      range.push(1, "...", meta.page - 1, meta.page, meta.page + 1, "...", meta.totalPages);
+      range.push(
+        1,
+        "...",
+        meta.page - 1,
+        meta.page,
+        meta.page + 1,
+        "...",
+        meta.totalPages,
+      );
     }
     return range;
   };
@@ -290,7 +280,8 @@ function Pagination({
       <p className="text-primary/60 text-xs tracking-wider">
         Showing{" "}
         <span className="text-primary font-medium">
-          {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
+          {(meta.page - 1) * meta.limit + 1}–
+          {Math.min(meta.page * meta.limit, meta.total)}
         </span>{" "}
         of <span className="text-primary font-medium">{meta.total}</span> venues
       </p>
@@ -339,32 +330,34 @@ function Pagination({
   );
 }
 
-// ─── Page State (useReducer) ──────────────────────────────────────────────────
-
 interface PageState {
-  // data
   venues: Venue[];
   paginationMeta: PaginationMeta | null;
   isLoading: boolean;
-  // filters
+
   searchTerm: string;
   debouncedSearch: string;
   destinationFilter: string;
   experienceFilter: string;
   currentPage: number;
-  // delete state machine
+
   deleteStatus: "idle" | "confirm" | "deleting";
   deleteTarget: Venue | null;
-  // faceted filter options
+
   filters: VenueFilters;
   isFiltersLoading: boolean;
-  // cached counts per experience
+
   experienceCounts: Record<string, number>;
 }
 
 type PageAction =
   | { type: "FETCH_VENUES_START" }
-  | { type: "FETCH_VENUES_SUCCESS"; venues: Venue[]; meta: PaginationMeta | null; experienceFilter: string }
+  | {
+      type: "FETCH_VENUES_SUCCESS";
+      venues: Venue[];
+      meta: PaginationMeta | null;
+      experienceFilter: string;
+    }
   | { type: "FETCH_VENUES_ERROR" }
   | { type: "SET_FILTERS"; filters: VenueFilters }
   | { type: "FILTERS_LOADED" }
@@ -434,7 +427,13 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "SET_PAGE":
       return { ...state, currentPage: action.page };
     case "CLEAR_FILTERS":
-      return { ...state, searchTerm: "", destinationFilter: "all", experienceFilter: "all", currentPage: 1 };
+      return {
+        ...state,
+        searchTerm: "",
+        destinationFilter: "all",
+        experienceFilter: "all",
+        currentPage: 1,
+      };
     case "OPEN_DELETE":
       return { ...state, deleteTarget: action.venue, deleteStatus: "confirm" };
     case "CLOSE_DELETE":
@@ -452,26 +451,29 @@ function pageReducer(state: PageState, action: PageAction): PageState {
   }
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DashboardVenuesPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
 
   const {
-    venues, paginationMeta, isLoading,
-    searchTerm, debouncedSearch, destinationFilter, experienceFilter, currentPage,
-    deleteStatus, deleteTarget,
-    filters, isFiltersLoading,
+    venues,
+    paginationMeta,
+    isLoading,
+    searchTerm,
+    debouncedSearch,
+    destinationFilter,
+    experienceFilter,
+    currentPage,
+    deleteStatus,
+    deleteTarget,
+    filters,
+    isFiltersLoading,
     experienceCounts,
   } = state;
 
-  // ── useRef: debounce timer (no re-render needed) ──
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── useRef: AbortController to cancel stale in-flight venue fetches ──
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -482,23 +484,27 @@ export default function DashboardVenuesPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch faceted filter options (once on mount) ──
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const { data } = await axios.get<{ data: VenueFilters }>("/api/venues/filters");
+        const { data } = await axios.get<{ data: VenueFilters }>(
+          "/api/venues/filters",
+        );
         const venueFilters = data.data;
         dispatch({ type: "SET_FILTERS", filters: venueFilters });
 
-        // Fetch counts for every experience in parallel so stat cards
-        // show real values immediately without needing to click each card first
         if (venueFilters.experiences.length > 0) {
           const countResults = await Promise.allSettled(
             venueFilters.experiences.map((exp) =>
-              axios.get<{ meta: PaginationMeta }>("/api/venues", {
-                params: { page: 1, limit: 1, experienceId: exp.id },
-              }).then((res) => ({ id: exp.id, total: res.data.meta?.total ?? 0 }))
-            )
+              axios
+                .get<{ meta: PaginationMeta }>("/api/venues", {
+                  params: { page: 1, limit: 1, experienceId: exp.id },
+                })
+                .then((res) => ({
+                  id: exp.id,
+                  total: res.data.meta?.total ?? 0,
+                })),
+            ),
           );
 
           const counts: Record<string, number> = {};
@@ -518,15 +524,16 @@ export default function DashboardVenuesPage() {
     fetchFilters();
   }, []);
 
-  // ── Fetch venues ──
   const getVenues = useCallback(async () => {
-    // Cancel any previous in-flight request
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
     dispatch({ type: "FETCH_VENUES_START" });
     try {
-      const params: Record<string, unknown> = { page: currentPage, limit: LIMIT };
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        limit: LIMIT,
+      };
       if (debouncedSearch) params.search = debouncedSearch;
       if (destinationFilter !== "all") params.destinationId = destinationFilter;
       if (experienceFilter !== "all") params.experienceId = experienceFilter;
@@ -542,7 +549,7 @@ export default function DashboardVenuesPage() {
         experienceFilter,
       });
     } catch (err) {
-      if (axios.isCancel(err)) return; // ignore intentional cancellations
+      if (axios.isCancel(err)) return;
       const errorMsg = axios.isAxiosError(err)
         ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
         : err instanceof Error
@@ -557,20 +564,35 @@ export default function DashboardVenuesPage() {
     getVenues();
   }, [getVenues]);
 
-  // ── Filter change helpers ──
-  const handleExperienceChange = useCallback((id: string) => dispatch({ type: "SET_EXPERIENCE", id }), []);
-  const handleDestinationChange = useCallback((id: string) => dispatch({ type: "SET_DESTINATION", id }), []);
-  const clearAllFilters = useCallback(() => dispatch({ type: "CLEAR_FILTERS" }), []);
+  const handleExperienceChange = useCallback(
+    (id: string) => dispatch({ type: "SET_EXPERIENCE", id }),
+    [],
+  );
+  const handleDestinationChange = useCallback(
+    (id: string) => dispatch({ type: "SET_DESTINATION", id }),
+    [],
+  );
+  const clearAllFilters = useCallback(
+    () => dispatch({ type: "CLEAR_FILTERS" }),
+    [],
+  );
 
-  // ── Delete flow ──
-  const openDeleteModal = useCallback((venue: Venue) => dispatch({ type: "OPEN_DELETE", venue }), []);
-  const closeDeleteModal = useCallback(() => dispatch({ type: "CLOSE_DELETE" }), []);
+  const openDeleteModal = useCallback(
+    (venue: Venue) => dispatch({ type: "OPEN_DELETE", venue }),
+    [],
+  );
+  const closeDeleteModal = useCallback(
+    () => dispatch({ type: "CLOSE_DELETE" }),
+    [],
+  );
 
   const deleteVenueById = useCallback(async () => {
     if (!deleteTarget) return;
     dispatch({ type: "DELETE_START" });
     try {
-      await axios.delete(`/api/venues/${deleteTarget.id}`, { headers: getAuthHeaders() });
+      await axios.delete(`/api/venues/${deleteTarget.id}`, {
+        headers: getAuthHeaders(),
+      });
       const isLastOnPage = venues.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
       if (isLastOnPage) {
@@ -584,32 +606,45 @@ export default function DashboardVenuesPage() {
     }
   }, [deleteTarget, venues.length, currentPage, getVenues]);
 
-  // ── useMemo: derived + dropdown options (recalculate only when deps change) ──
-  const totalCount = useMemo(() => paginationMeta?.total ?? 0, [paginationMeta]);
+  const totalCount = useMemo(
+    () => paginationMeta?.total ?? 0,
+    [paginationMeta],
+  );
 
   const hasActiveFilters = useMemo(
-    () => !!debouncedSearch || destinationFilter !== "all" || experienceFilter !== "all",
+    () =>
+      !!debouncedSearch ||
+      destinationFilter !== "all" ||
+      experienceFilter !== "all",
     [debouncedSearch, destinationFilter, experienceFilter],
   );
 
   const experienceOptions = useMemo(
-    () => [{ id: "all", label: "All Experiences" }, ...filters.experiences.map((e) => ({ id: e.id, label: e.name }))],
+    () => [
+      { id: "all", label: "All Experiences" },
+      ...filters.experiences.map((e) => ({ id: e.id, label: e.name })),
+    ],
     [filters.experiences],
   );
 
   const destinationOptions = useMemo(
-    () => [{ id: "all", label: "All Destinations" }, ...filters.destinations.map((d) => ({ id: d.id, label: d.name }))],
+    () => [
+      { id: "all", label: "All Destinations" },
+      ...filters.destinations.map((d) => ({ id: d.id, label: d.name })),
+    ],
     [filters.destinations],
   );
 
   const statCards = useMemo(
-    () => [{ id: "all", label: "Total" }, ...filters.experiences.map((e) => ({ id: e.id, label: e.name }))],
+    () => [
+      { id: "all", label: "Total" },
+      ...filters.experiences.map((e) => ({ id: e.id, label: e.name })),
+    ],
     [filters.experiences],
   );
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -636,7 +671,6 @@ export default function DashboardVenuesPage() {
         </Link>
       </div>
 
-      {/* ── Stats Row ── */}
       {isFiltersLoading ? (
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -687,16 +721,16 @@ export default function DashboardVenuesPage() {
         )
       )}
 
-      {/* ── Search & Filter Bar ── */}
       <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-        {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
             type="text"
             placeholder="Search venues..."
             value={searchTerm}
-            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
             className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (
@@ -709,10 +743,8 @@ export default function DashboardVenuesPage() {
           )}
         </div>
 
-        {/* Divider */}
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
-        {/* Dropdowns */}
         <div className="flex gap-2 items-stretch h-[42px]">
           <FilterDropdown
             value={experienceFilter}
@@ -728,7 +760,6 @@ export default function DashboardVenuesPage() {
           />
         </div>
 
-        {/* Clear all */}
         {hasActiveFilters && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
@@ -743,7 +774,6 @@ export default function DashboardVenuesPage() {
         )}
       </div>
 
-      {/* ── Results Info ── */}
       {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} venue
@@ -756,7 +786,6 @@ export default function DashboardVenuesPage() {
         </p>
       )}
 
-      {/* ── Grid ── */}
       {isLoading ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {Array.from({ length: LIMIT }).map((_, i) => (
@@ -786,25 +815,31 @@ export default function DashboardVenuesPage() {
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {venues.map((venue) => (
-            <VenueCard key={venue.id} venue={venue} onDelete={openDeleteModal} />
+            <VenueCard
+              key={venue.id}
+              venue={venue}
+              onDelete={openDeleteModal}
+            />
           ))}
         </div>
       )}
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
-        <Pagination meta={paginationMeta} onPageChange={(page) => dispatch({ type: "SET_PAGE", page })} />
-      )}
-
-      {/* ── Delete Modal ── */}
-      {(deleteStatus === "confirm" || deleteStatus === "deleting") && deleteTarget && (
-        <DeleteModal
-          name={deleteTarget.name}
-          onConfirm={deleteVenueById}
-          onCancel={closeDeleteModal}
-          isLoading={deleteStatus === "deleting"}
+        <Pagination
+          meta={paginationMeta}
+          onPageChange={(page) => dispatch({ type: "SET_PAGE", page })}
         />
       )}
+
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
+        deleteTarget && (
+          <DeleteModal
+            name={deleteTarget.name}
+            onConfirm={deleteVenueById}
+            onCancel={closeDeleteModal}
+            isLoading={deleteStatus === "deleting"}
+          />
+        )}
     </div>
   );
 }

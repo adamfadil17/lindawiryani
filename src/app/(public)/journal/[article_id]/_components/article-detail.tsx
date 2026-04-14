@@ -21,8 +21,6 @@ function TipTapContent({ html }: { html: string }) {
   );
 }
 
-// ─── Related Article Card ──────────────────────────────────────────────────────
-
 function RelatedCard({ article }: { article: Article }) {
   return (
     <Link href={`/journal/${article.slug}`} className="group block">
@@ -59,8 +57,6 @@ function RelatedCard({ article }: { article: Article }) {
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
-
 export function ArticleDetail({ article, related }: ArticleDetailProps) {
   const formattedDate = new Date(article.published_at).toLocaleDateString(
     "en-GB",
@@ -69,7 +65,6 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
 
   return (
     <main className="relative overflow-hidden">
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-end overflow-hidden pt-20 sm:pt-24 md:pt-32">
         <div className="absolute inset-0">
           <Image
@@ -90,7 +85,6 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-8"
@@ -107,14 +101,12 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
             </span>
           </motion.div>
 
-          {/* Category tag */}
           <motion.div variants={fadeInUp} className="mb-5">
             <span className="bg-white/90 text-primary text-sm tracking-widest px-3 py-1">
               {article.category}
             </span>
           </motion.div>
 
-          {/* Title */}
           <motion.h1
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl"
@@ -122,7 +114,6 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
             {article.title}
           </motion.h1>
 
-          {/* Meta */}
           <motion.div
             variants={fadeInUp}
             className="flex flex-wrap items-center gap-4 mt-6 text-white text-sm tracking-widest uppercase"
@@ -132,7 +123,6 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
         </motion.div>
       </section>
 
-      {/* ── ARTICLE BODY ──────────────────────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -142,13 +132,11 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
-            {/* ── Sticky Sidebar ─────────────────────────────────────── */}
             <motion.aside
               variants={fadeInUp}
               className="lg:col-span-3 order-2 lg:order-1"
             >
               <div className="lg:sticky lg:top-32 space-y-10">
-                {/* Back link */}
                 <Link
                   href="/journal"
                   className="group flex items-center gap-3 text-primary/80 hover:text-primary transition-colors tracking-widest uppercase"
@@ -157,10 +145,8 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
                   <span>All Articles</span>
                 </Link>
 
-                {/* Divider */}
                 <div className="w-12 h-px bg-primary/50" />
 
-                {/* Article metadata */}
                 <div className="space-y-5">
                   <div>
                     <p className="text-primary/80 text-sm tracking-[0.2em] uppercase mb-1">
@@ -178,10 +164,8 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
                   </div>
                 </div>
 
-                {/* Divider */}
                 <div className="w-12 h-px bg-primary/50" />
 
-                {/* CTA */}
                 <div className="space-y-4">
                   <p className="text-primary leading-relaxed">
                     Ready to begin planning your Bali wedding?
@@ -195,24 +179,20 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
               </div>
             </motion.aside>
 
-            {/* ── Article Content ────────────────────────────────────── */}
             <motion.div
               variants={fadeIn}
               className="lg:col-span-9 order-1 lg:order-2"
             >
-              {/* Excerpt / Lead */}
               <p className="text-primary text-lg md:text-xl leading-relaxed font-light border-l-2 border-primary pl-6 mb-12 text-justify">
                 {article.excerpt}
               </p>
 
-              {/* TipTap HTML */}
               <TipTapContent html={article.content} />
             </motion.div>
           </div>
         </div>
       </motion.section>
 
-      {/* ── RELATED ARTICLES ──────────────────────────────────────────── */}
       {related.length > 0 && (
         <motion.section
           className="bg-primary/10 py-20 lg:py-28"
@@ -244,7 +224,6 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
         </motion.section>
       )}
 
-      {/* ── CLOSING CTA ───────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

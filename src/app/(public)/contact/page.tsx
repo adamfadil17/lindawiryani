@@ -1,60 +1,63 @@
 "use client";
 
-import type React from "react";
 import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
+import {
+  inquirySubmissionFormSchema,
+  type InquirySubmissionFormData,
+} from "@/utils/form-validators";
 
 export default function ContactPage() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
-
-  const [formData, setFormData] = useState({
-    yourName: "",
-    yourEmail: "",
-    yourAddress: "",
-    telephone: "",
-    nameOfGroom: "",
-    religionOfGroom: "",
-    nationalityOfGroom: "",
-    nameOfBride: "",
-    religionOfBride: "",
-    nationalityOfBride: "",
-    weddingDate: "",
-    weddingVenue: "",
-    numberOfAttendance: "",
-    approximateWeddingBudget: "",
-    hotelNameInBali: "",
-    arrivalDate: "",
-    departureDate: "",
-    yourMessage: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<{
     type: "success" | "error" | null;
     message: string;
   }>({ type: null, message: "" });
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<InquirySubmissionFormData>({
+    resolver: zodResolver(inquirySubmissionFormSchema),
+    defaultValues: {
+      your_name: "",
+      your_email: "",
+      your_address: "",
+      telephone: "",
+      name_of_groom: "",
+      religion_of_groom: "",
+      nationality_of_groom: "",
+      name_of_bride: "",
+      religion_of_bride: "",
+      nationality_of_bride: "",
+      wedding_date: "",
+      wedding_venue: "",
+      number_of_attendance: "",
+      approximate_wedding_budget: "",
+      hotel_name_in_bali: "",
+      arrival_date: "",
+      departure_date: "",
+      your_message: "",
+    },
+  });
 
-  const handleRecaptchaChange = (token: string | null) => {
-    setRecaptchaToken(token);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  /**
+   * Submit inquiry:
+   * 1. POST /api/inquiries  → simpan ke database (public, no auth)
+   * 2. POST /api/send-email/contact  → kirim notifikasi email
+   * Email gagal tidak membatalkan submission — data sudah aman di database.
+   */
+  const onSubmit = async (data: InquirySubmissionFormData) => {
     if (!recaptchaToken) {
       setSubmitStatus({
         type: "error",
@@ -63,78 +66,50 @@ export default function ContactPage() {
       return;
     }
 
-    setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
     try {
-      const response = await fetch("/api/send-email/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, recaptchaToken }),
-      });
+      await axios.post("/api/inquiries", data);
 
-      const data = await response.json();
+      try {
+        await fetch("/api/send-email/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...data, recaptchaToken }),
+        });
+      } catch {}
 
-      if (response.ok) {
-        setSubmitStatus({
-          type: "success",
-          message:
-            "Thank you for your inquiry! We'll get back to you within 24-48 hours.",
-        });
-        setFormData({
-          yourName: "",
-          yourEmail: "",
-          yourAddress: "",
-          telephone: "",
-          nameOfGroom: "",
-          religionOfGroom: "",
-          nationalityOfGroom: "",
-          nameOfBride: "",
-          religionOfBride: "",
-          nationalityOfBride: "",
-          weddingDate: "",
-          weddingVenue: "",
-          numberOfAttendance: "",
-          approximateWeddingBudget: "",
-          hotelNameInBali: "",
-          arrivalDate: "",
-          departureDate: "",
-          yourMessage: "",
-        });
-        recaptchaRef.current?.reset();
-        setRecaptchaToken(null);
-      } else {
-        setSubmitStatus({
-          type: "error",
-          message:
-            data.message ||
-            "Failed to send your inquiry. Please try again or contact us directly.",
-        });
-      }
-    } catch {
       setSubmitStatus({
-        type: "error",
+        type: "success",
         message:
-          "An error occurred. Please try again or contact us via WhatsApp.",
+          "Thank you for your inquiry! We'll get back to you within 24-48 hours.",
       });
-    } finally {
-      setIsSubmitting(false);
+      reset();
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
+    } catch (err) {
+      const msg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "Failed to send your inquiry. Please try again or contact us directly.";
+      setSubmitStatus({ type: "error", message: msg });
     }
   };
 
-  const inputClass =
-    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/30";
-
+  const inputBase =
+    "w-full px-4 py-3 border bg-transparent focus:outline-none transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/30";
+  const inputClass = (hasError: boolean) =>
+    `${inputBase} ${hasError ? "border-red-400 focus:border-red-500" : "border-primary/50 focus:border-primary"}`;
   const labelClass =
     "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
+  const errorClass = "text-red-500 text-xs mt-1";
 
   return (
     <main className="relative overflow-hidden">
-      {/* ── Hero Section ── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773709789/singaraja_mt8hqt.png"
             alt="Contact Linda Wiryani Events"
             fill
             priority
@@ -151,7 +126,6 @@ export default function ContactPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-10 mt-6"
@@ -163,6 +137,7 @@ export default function ContactPage() {
               Contact
             </Link>
           </motion.div>
+
           <div className="grid lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-7">
               <motion.p
@@ -204,7 +179,6 @@ export default function ContactPage() {
         </motion.div>
       </section>
 
-      {/* ── Keep In Touch + Form Side by Side ── */}
       <motion.section
         className="bg-primary/10 py-20 lg:py-28"
         initial="hidden"
@@ -214,7 +188,6 @@ export default function ContactPage() {
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-            {/* Left – Keep In Touch */}
             <div className="lg:col-span-4 space-y-10">
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -253,7 +226,7 @@ export default function ContactPage() {
                     label: "lindawiryanievents",
                     href: "https://pinterest.com/lindawiryanievents",
                   },
-                ].map((item, i) => (
+                ].map((item) => (
                   <div
                     key={item.alt}
                     className="flex items-center gap-4 pb-4 border-b border-primary/20 last:border-0"
@@ -284,7 +257,6 @@ export default function ContactPage() {
               </motion.div>
             </div>
 
-            {/* Right – Form */}
             <motion.div className="lg:col-span-8 space-y-8" variants={fadeInUp}>
               <div className="space-y-4">
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -299,13 +271,11 @@ export default function ContactPage() {
                 </h2>
               </div>
 
-              {/* Form */}
               <motion.form
                 variants={fadeInUp}
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 className="space-y-6"
               >
-                {/* — Personal Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Personal Details
@@ -317,13 +287,13 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="text"
-                        name="yourName"
-                        value={formData.yourName}
-                        onChange={handleInputChange}
-                        required
+                        {...register("your_name")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.your_name)}
                       />
+                      {errors.your_name && (
+                        <p className={errorClass}>{errors.your_name.message}</p>
+                      )}
                     </div>
                     <div>
                       <label className={labelClass}>
@@ -331,13 +301,15 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="email"
-                        name="yourEmail"
-                        value={formData.yourEmail}
-                        onChange={handleInputChange}
-                        required
+                        {...register("your_email")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.your_email)}
                       />
+                      {errors.your_email && (
+                        <p className={errorClass}>
+                          {errors.your_email.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -347,261 +319,338 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="text"
-                        name="yourAddress"
-                        value={formData.yourAddress}
-                        onChange={handleInputChange}
-                        required
+                        {...register("your_address")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.your_address)}
                       />
+                      {errors.your_address && (
+                        <p className={errorClass}>
+                          {errors.your_address.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Telephone</label>
+                      <label className={labelClass}>
+                        Telephone <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="tel"
-                        name="telephone"
-                        value={formData.telephone}
-                        onChange={handleInputChange}
+                        {...register("telephone")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.telephone)}
                       />
+                      {errors.telephone && (
+                        <p className={errorClass}>{errors.telephone.message}</p>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* — Groom Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Groom Details
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className={labelClass}>Name of Groom</label>
+                      <label className={labelClass}>
+                        Name of Groom <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="nameOfGroom"
-                        value={formData.nameOfGroom}
-                        onChange={handleInputChange}
+                        {...register("name_of_groom")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.name_of_groom)}
                       />
+                      {errors.name_of_groom && (
+                        <p className={errorClass}>
+                          {errors.name_of_groom.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Religion of Groom</label>
+                      <label className={labelClass}>
+                        Religion of Groom{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="religionOfGroom"
-                        value={formData.religionOfGroom}
-                        onChange={handleInputChange}
+                        {...register("religion_of_groom")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.religion_of_groom)}
                       />
+                      {errors.religion_of_groom && (
+                        <p className={errorClass}>
+                          {errors.religion_of_groom.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Nationality of Groom</label>
+                      <label className={labelClass}>
+                        Nationality of Groom{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="nationalityOfGroom"
-                        value={formData.nationalityOfGroom}
-                        onChange={handleInputChange}
+                        {...register("nationality_of_groom")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.nationality_of_groom)}
                       />
+                      {errors.nationality_of_groom && (
+                        <p className={errorClass}>
+                          {errors.nationality_of_groom.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* — Bride Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Bride Details
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className={labelClass}>Name of Bride</label>
+                      <label className={labelClass}>
+                        Name of Bride <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="nameOfBride"
-                        value={formData.nameOfBride}
-                        onChange={handleInputChange}
+                        {...register("name_of_bride")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.name_of_bride)}
                       />
+                      {errors.name_of_bride && (
+                        <p className={errorClass}>
+                          {errors.name_of_bride.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Religion of Bride</label>
+                      <label className={labelClass}>
+                        Religion of Bride{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="religionOfBride"
-                        value={formData.religionOfBride}
-                        onChange={handleInputChange}
+                        {...register("religion_of_bride")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.religion_of_bride)}
                       />
+                      {errors.religion_of_bride && (
+                        <p className={errorClass}>
+                          {errors.religion_of_bride.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Nationality of Bride</label>
+                      <label className={labelClass}>
+                        Nationality of Bride{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="nationalityOfBride"
-                        value={formData.nationalityOfBride}
-                        onChange={handleInputChange}
+                        {...register("nationality_of_bride")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.nationality_of_bride)}
                       />
+                      {errors.nationality_of_bride && (
+                        <p className={errorClass}>
+                          {errors.nationality_of_bride.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* — Wedding Details — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Wedding Details
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className={labelClass}>Wedding Date</label>
+                      <label className={labelClass}>
+                        Wedding Date <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="date"
-                        name="weddingDate"
-                        value={formData.weddingDate}
-                        onChange={handleInputChange}
+                        {...register("wedding_date")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.wedding_date)}
                       />
+                      {errors.wedding_date && (
+                        <p className={errorClass}>
+                          {errors.wedding_date.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Wedding Venue</label>
+                      <label className={labelClass}>
+                        Wedding Venue <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="weddingVenue"
-                        value={formData.weddingVenue}
-                        onChange={handleInputChange}
+                        {...register("wedding_venue")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.wedding_venue)}
                       />
+                      {errors.wedding_venue && (
+                        <p className={errorClass}>
+                          {errors.wedding_venue.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                     <div>
-                      <label className={labelClass}>Number of Attendance</label>
-                      <input
-                        type="text"
-                        name="numberOfAttendance"
-                        placeholder="Including Bride & Groom"
-                        value={formData.numberOfAttendance}
-                        onChange={handleInputChange}
-                        disabled={isSubmitting}
-                        className={inputClass}
-                      />
-                    </div>
-                    <div>
                       <label className={labelClass}>
-                        Approximate Wedding Budget
+                        Number of Attendance{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
-                        name="approximateWeddingBudget"
-                        placeholder="Including Currency"
-                        value={formData.approximateWeddingBudget}
-                        onChange={handleInputChange}
+                        placeholder="Including Bride & Groom"
+                        {...register("number_of_attendance")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.number_of_attendance)}
                       />
+                      {errors.number_of_attendance && (
+                        <p className={errorClass}>
+                          {errors.number_of_attendance.message}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label className={labelClass}>
+                        Approximate Wedding Budget{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Including Currency"
+                        {...register("approximate_wedding_budget")}
+                        disabled={isSubmitting}
+                        className={inputClass(
+                          !!errors.approximate_wedding_budget,
+                        )}
+                      />
+                      {errors.approximate_wedding_budget && (
+                        <p className={errorClass}>
+                          {errors.approximate_wedding_budget.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* — Accommodation & Travel — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Accommodation & Travel
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className={labelClass}>Hotel Name in Bali</label>
+                      <label className={labelClass}>
+                        Hotel Name in Bali{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="text"
-                        name="hotelNameInBali"
-                        value={formData.hotelNameInBali}
-                        onChange={handleInputChange}
+                        {...register("hotel_name_in_bali")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.hotel_name_in_bali)}
                       />
+                      {errors.hotel_name_in_bali && (
+                        <p className={errorClass}>
+                          {errors.hotel_name_in_bali.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Arrival Date</label>
+                      <label className={labelClass}>
+                        Arrival Date <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="date"
-                        name="arrivalDate"
-                        value={formData.arrivalDate}
-                        onChange={handleInputChange}
+                        {...register("arrival_date")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.arrival_date)}
                       />
+                      {errors.arrival_date && (
+                        <p className={errorClass}>
+                          {errors.arrival_date.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className={labelClass}>Departure Date</label>
+                      <label className={labelClass}>
+                        Departure Date <span className="text-red-500">*</span>
+                      </label>
                       <input
                         type="date"
-                        name="departureDate"
-                        value={formData.departureDate}
-                        onChange={handleInputChange}
+                        {...register("departure_date")}
                         disabled={isSubmitting}
-                        className={inputClass}
+                        className={inputClass(!!errors.departure_date)}
                       />
+                      {errors.departure_date && (
+                        <p className={errorClass}>
+                          {errors.departure_date.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* — Your Vision — */}
                 <div className="mb-8">
                   <p className="text-primary tracking-[0.2em] uppercase text-sm font-semibold mb-6 border-b border-primary/20 pb-3">
                     Your Vision
                   </p>
                   <label className={labelClass}>
-                    Share your story and the vision for your celebration
+                    Share your story and the vision for your celebration{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <p className="text-primary text-sm italic mb-3">
                     This helps us understand your vision and prepare a
                     thoughtful response.
                   </p>
                   <textarea
-                    name="yourMessage"
                     placeholder="Write your story and the vision for your celebration here..."
-                    value={formData.yourMessage}
-                    onChange={handleInputChange}
+                    {...register("your_message")}
                     rows={6}
                     disabled={isSubmitting}
-                    className={`${inputClass} resize-vertical`}
+                    className={`${inputClass(!!errors.your_message)} resize-vertical`}
                   />
+                  {errors.your_message && (
+                    <p className={errorClass}>{errors.your_message.message}</p>
+                  )}
                 </div>
 
-                {/* reCAPTCHA */}
                 <div className="flex justify-start">
                   <ReCAPTCHA
                     ref={recaptchaRef}
                     sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-                    onChange={handleRecaptchaChange}
+                    onChange={setRecaptchaToken}
                   />
                 </div>
 
-                {/* Status Message */}
-                {submitStatus.type && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 ${
-                      submitStatus.type === "success"
-                        ? "bg-green-50 text-green-800 border border-green-200"
-                        : "bg-red-50 text-red-800 border border-red-200"
-                    }`}
-                  >
-                    {submitStatus.message}
-                  </motion.div>
-                )}
+                {submitStatus.type === "error" &&
+                  submitStatus.message.includes("reCAPTCHA") && (
+                    <p className={errorClass}>{submitStatus.message}</p>
+                  )}
 
-                {/* Submit */}
+                {submitStatus.type &&
+                  !submitStatus.message.includes("reCAPTCHA") && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`p-4 ${
+                        submitStatus.type === "success"
+                          ? "bg-green-50 text-green-800 border border-green-200"
+                          : "bg-red-50 text-red-800 border border-red-200"
+                      }`}
+                    >
+                      {submitStatus.message}
+                    </motion.div>
+                  )}
+
                 <button
                   type="submit"
                   disabled={isSubmitting || !recaptchaToken}
@@ -615,7 +664,6 @@ export default function ContactPage() {
         </div>
       </motion.section>
 
-      {/* ── CTA Section ── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"
@@ -625,7 +673,7 @@ export default function ContactPage() {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311292/Lake_Buyan_bt7cbw.png"
             alt="Your Bali destination wedding"
             fill
             loading="lazy"

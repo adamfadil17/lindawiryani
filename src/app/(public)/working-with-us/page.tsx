@@ -1,108 +1,131 @@
 "use client";
 
-import type React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
+import { vendorCategories, vendorValues } from "@/lib/data/working-with-us";
 import {
-  openPositions,
-  vendorCategories,
-  vendorValues,
-} from "@/lib/data/working-with-us";
-
-// ─── Types ───────────────────────────────────────────────────────────────────
+  vendorSubmissionFormSchema,
+  careerSubmissionFormSchema,
+  type VendorSubmissionFormData,
+  type CareerSubmissionFormData,
+} from "@/utils/form-validators";
 
 type Tab = "vendor" | "career";
 
-interface VendorForm {
-  companyName: string;
-  contactPerson: string;
-  email: string;
-  phone: string;
-  website: string;
-  vendorCategory: string;
-  yearsInBusiness: string;
-  portfolioLink: string;
-  message: string;
+interface OpenPosition {
+  id: string;
+  title: string;
+  type: string;
+  level: string;
+  desc: string;
+  is_active: boolean;
+  created_at: string;
 }
 
-interface CareerForm {
-  fullName: string;
-  email: string;
-  phone: string;
-  position: string;
-  experience: string;
-  linkedIn: string;
-  portfolioLink: string;
-  coverLetter: string;
-}
+type StatusState = { type: "success" | "error" | null; message: string };
 
 export default function WorkingWithUsPage() {
   const [activeTab, setActiveTab] = useState<Tab>("vendor");
 
-  // Vendor form
+  const [openPositions, setOpenPositions] = useState<OpenPosition[]>([]);
+  const [positionsLoading, setPositionsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPositions = async () => {
+      try {
+        const response = await axios.get("/api/open-positions", {
+          params: { limit: 100, isActive: "true" },
+        });
+        const data: OpenPosition[] = response.data.data ?? [];
+        setOpenPositions(data);
+      } catch (err) {
+        console.error("Failed to load open positions:", err);
+      } finally {
+        setPositionsLoading(false);
+      }
+    };
+    fetchPositions();
+  }, []);
+
   const vendorRecaptchaRef = useRef<ReCAPTCHA>(null);
-  const [vendorForm, setVendorForm] = useState<VendorForm>({
-    companyName: "",
-    contactPerson: "",
-    email: "",
-    phone: "",
-    website: "",
-    vendorCategory: "",
-    yearsInBusiness: "",
-    portfolioLink: "",
+  const [vendorRecaptcha, setVendorRecaptcha] = useState<string | null>(null);
+  const [vendorStatus, setVendorStatus] = useState<StatusState>({
+    type: null,
     message: "",
   });
-  const [vendorSubmitting, setVendorSubmitting] = useState(false);
-  const [vendorStatus, setVendorStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
-  const [vendorRecaptcha, setVendorRecaptcha] = useState<string | null>(null);
 
-  // Career form
-  const careerRecaptchaRef = useRef<ReCAPTCHA>(null);
-  const [careerForm, setCareerForm] = useState<CareerForm>({
-    fullName: "",
-    email: "",
-    phone: "",
-    position: "",
-    experience: "",
-    linkedIn: "",
-    portfolioLink: "",
-    coverLetter: "",
+  const {
+    register: registerVendor,
+    handleSubmit: handleSubmitVendor,
+    reset: resetVendor,
+    formState: { errors: vendorErrors, isSubmitting: vendorSubmitting },
+  } = useForm<VendorSubmissionFormData>({
+    resolver: zodResolver(vendorSubmissionFormSchema),
+    defaultValues: {
+      type: "vendor",
+      company_name: "",
+      contact_person: "",
+      email: "",
+      phone: "",
+      website: "",
+      vendor_category: "",
+      years_in_business: "",
+      portfolio_link: "",
+      message: "",
+    },
   });
-  const [careerSubmitting, setCareerSubmitting] = useState(false);
-  const [careerStatus, setCareerStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
+
+  const careerRecaptchaRef = useRef<ReCAPTCHA>(null);
   const [careerRecaptcha, setCareerRecaptcha] = useState<string | null>(null);
+  const [careerStatus, setCareerStatus] = useState<StatusState>({
+    type: null,
+    message: "",
+  });
 
-  // Handlers
-  const handleVendorChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setVendorForm((prev) => ({ ...prev, [name]: value }));
-  };
+  const {
+    register: registerCareer,
+    handleSubmit: handleSubmitCareer,
+    reset: resetCareer,
+    formState: { errors: careerErrors, isSubmitting: careerSubmitting },
+  } = useForm<CareerSubmissionFormData>({
+    resolver: zodResolver(careerSubmissionFormSchema),
+    defaultValues: {
+      type: "career",
+      full_name: "",
+      email: "",
+      phone: "",
+      position: "",
+      experience: "",
+      linked_in: "",
+      cover_letter: "",
+    },
+  });
 
-  const handleCareerChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-    setCareerForm((prev) => ({ ...prev, [name]: value }));
-  };
+  const inputBase =
+    "w-full px-4 py-3 border bg-transparent focus:outline-none transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/30";
+  const inputClass = (hasError: boolean) =>
+    `${inputBase} ${hasError ? "border-red-400 focus:border-red-500" : "border-primary/50 focus:border-primary"}`;
+  const selectClass = (hasError: boolean) =>
+    `${inputClass(hasError)} appearance-none cursor-pointer`;
+  const labelClass =
+    "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
+  const errorClass = "text-red-500 text-xs mt-1";
 
-  const handleVendorSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  /**
+   * Submit vendor:
+   * 1. POST /api/submissions  → simpan ke database (public, no auth)
+   * 2. POST /api/send-email/working-with-us/vendor-inquiry  → kirim notif email
+   * Data dari RHF sudah snake_case sesuai schema, langsung dikirim tanpa mapping.
+   * Email gagal tidak membatalkan submission — data sudah aman di database.
+   */
+  const onVendorSubmit = async (data: VendorSubmissionFormData) => {
     if (!vendorRecaptcha) {
       setVendorStatus({
         type: "error",
@@ -110,59 +133,45 @@ export default function WorkingWithUsPage() {
       });
       return;
     }
-    setVendorSubmitting(true);
+
     setVendorStatus({ type: null, message: "" });
+
     try {
-      const response = await fetch(
-        "/api/send-email/working-with-us/vendor-inquiry",
-        {
+      await axios.post("/api/submissions", data);
+
+      try {
+        await fetch("/api/send-email/working-with-us/vendor-inquiry", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...vendorForm,
-            recaptchaToken: vendorRecaptcha,
-          }),
-        },
-      );
-      const data = await response.json();
-      if (response.ok) {
-        setVendorStatus({
-          type: "success",
-          message:
-            "Thank you! We'll review your application and be in touch within 5–7 business days.",
+          body: JSON.stringify({ ...data, recaptchaToken: vendorRecaptcha }),
         });
-        setVendorForm({
-          companyName: "",
-          contactPerson: "",
-          email: "",
-          phone: "",
-          website: "",
-          vendorCategory: "",
-          yearsInBusiness: "",
-          portfolioLink: "",
-          message: "",
-        });
-        vendorRecaptchaRef.current?.reset();
-        setVendorRecaptcha(null);
-      } else {
-        setVendorStatus({
-          type: "error",
-          message: data.message || "Something went wrong. Please try again.",
-        });
-      }
-    } catch {
+      } catch {}
+
       setVendorStatus({
-        type: "error",
+        type: "success",
         message:
-          "An error occurred. Please try again or contact us via WhatsApp.",
+          "Thank you! We'll review your application and be in touch within 5–7 business days.",
       });
-    } finally {
-      setVendorSubmitting(false);
+      resetVendor();
+      vendorRecaptchaRef.current?.reset();
+      setVendorRecaptcha(null);
+    } catch (err) {
+      const msg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "Something went wrong. Please try again.";
+      setVendorStatus({ type: "error", message: msg });
     }
   };
 
-  const handleCareerSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  /**
+   * Submit career:
+   * 1. POST /api/submissions  → simpan ke database (public, no auth)
+   * 2. POST /api/send-email/working-with-us/career-application  → kirim notif email
+   * Data dari RHF sudah snake_case sesuai schema, langsung dikirim tanpa mapping.
+   * Email gagal tidak membatalkan submission — data sudah aman di database.
+   */
+  const onCareerSubmit = async (data: CareerSubmissionFormData) => {
     if (!careerRecaptcha) {
       setCareerStatus({
         type: "error",
@@ -170,65 +179,39 @@ export default function WorkingWithUsPage() {
       });
       return;
     }
-    setCareerSubmitting(true);
+
     setCareerStatus({ type: null, message: "" });
+
     try {
-      const response = await fetch(
-        "/api/send-email/working-with-us/career-application",
-        {
+      await axios.post("/api/submissions", data);
+
+      try {
+        await fetch("/api/send-email/working-with-us/career-application", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...careerForm,
-            recaptchaToken: careerRecaptcha,
-          }),
-        },
-      );
-      const data = await response.json();
-      if (response.ok) {
-        setCareerStatus({
-          type: "success",
-          message:
-            "Application received. We'll review your profile carefully and reach out if there's a fit.",
+          body: JSON.stringify({ ...data, recaptchaToken: careerRecaptcha }),
         });
-        setCareerForm({
-          fullName: "",
-          email: "",
-          phone: "",
-          position: "",
-          experience: "",
-          linkedIn: "",
-          portfolioLink: "",
-          coverLetter: "",
-        });
-        careerRecaptchaRef.current?.reset();
-        setCareerRecaptcha(null);
-      } else {
-        setCareerStatus({
-          type: "error",
-          message: data.message || "Something went wrong. Please try again.",
-        });
-      }
-    } catch {
+      } catch {}
+
       setCareerStatus({
-        type: "error",
+        type: "success",
         message:
-          "An error occurred. Please try again or contact us via WhatsApp.",
+          "Application received. We'll review your profile carefully and reach out if there's a fit.",
       });
-    } finally {
-      setCareerSubmitting(false);
+      resetCareer();
+      careerRecaptchaRef.current?.reset();
+      setCareerRecaptcha(null);
+    } catch (err) {
+      const msg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "An error occurred. Please try again or contact us via WhatsApp.";
+      setCareerStatus({ type: "error", message: msg });
     }
   };
 
-  const inputClass =
-    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/30";
-  const labelClass =
-    "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
-  const selectClass = `${inputClass} appearance-none cursor-pointer`;
-
   return (
     <main className="relative overflow-hidden">
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -249,7 +232,6 @@ export default function WorkingWithUsPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Breadcrumb */}
           <motion.div
             variants={fadeInUp}
             className="flex items-center gap-2 mb-10 mt-6"
@@ -313,7 +295,6 @@ export default function WorkingWithUsPage() {
         </motion.div>
       </section>
 
-      {/* ── Why Work With Us ─────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -328,109 +309,47 @@ export default function WorkingWithUsPage() {
                 Our Studio
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                Rooted in Bali
+                Why Work
                 <br />
-                <span className="italic font-light">Driven by Craft</span>
+                <span className="italic font-light">With Linda Wiryani</span>
               </h2>
             </motion.div>
+            <motion.p
+              variants={fadeInUp}
+              className="text-primary leading-relaxed"
+            >
+              We believe in building lasting relationships — with our couples,
+              our team, and our creative partners. When you work with us, you
+              become part of something that truly matters.
+            </motion.p>
+          </div>
 
-            <motion.div variants={fadeInUp} className="space-y-4">
-              <p className="text-primary mb-6">What We Bring:</p>
-              {[
-                "A curated network of international couples",
-                "High-profile, luxury destination weddings",
-                "A creative studio that values excellence",
-                "Long-term, meaningful collaborations",
-                "Transparent and professional processes",
-              ].map((item, i) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-4 pb-4 border-b border-primary/20 last:border-0"
+          <div className="lg:col-span-7">
+            {vendorValues.map(
+              (item: { title: string; desc: string }, i: number) => (
+                <motion.div
+                  key={item.title}
+                  variants={fadeInUp}
+                  className="flex gap-6 pb-8 border-b border-primary/20 last:border-0 last:pb-0 mb-8 last:mb-0"
                 >
-                  <span className="text-primary font-mono w-6 flex-shrink-0">
+                  <span className="text-primary font-mono w-8 flex-shrink-0 pt-0.5">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-primary">{item}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          <div className="lg:col-span-7 space-y-8">
-            <motion.p
-              variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
-            >
-              Linda Wiryani Events is a Bali-based luxury wedding studio
-              creating emotionally meaningful, beautifully designed celebrations
-              for couples from around the world. Our work is rooted in deep
-              creative intention, cultural respect, and an unwavering commitment
-              to quality.
-            </motion.p>
-            <motion.p
-              variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
-            >
-              We believe that the best weddings are built through genuine
-              collaboration — between our studio, the couple, and the vendors
-              and team members who bring each vision to life. Every person who
-              works with us becomes part of something larger than a single
-              event.
-            </motion.p>
-            <motion.p
-              variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
-            >
-              We are selective. We are intentional. We are looking for people
-              who share our standards, our values, and our passion for creating
-              experiences that couples will carry with them for the rest of
-              their lives.
-            </motion.p>
+                  <div>
+                    <h3 className="text-primary font-semibold mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-primary/70 leading-relaxed text-sm">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ),
+            )}
           </div>
         </div>
       </motion.section>
 
-      {/* ── Vendor Values ────────────────────────────────────────────────── */}
-      <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          <motion.div variants={fadeInUp} className="mb-14">
-            <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Our Standards
-            </p>
-            <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              What We Look For
-              <br />
-              <span className="italic font-light">In Every Partner</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {vendorValues.map((v) => (
-              <motion.div
-                key={v.no}
-                variants={fadeInUp}
-                className="flex flex-col gap-6 bg-white/60 p-8"
-              >
-                <span className="text-primary font-semibold text-3xl tracking-widest">
-                  {v.no}
-                </span>
-                <h3 className="text-primary font-semibold text-lg">
-                  {v.title}
-                </h3>
-                <p className="text-primary leading-relaxed">{v.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ── Open Positions Preview ───────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -449,44 +368,79 @@ export default function WorkingWithUsPage() {
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {openPositions.map((pos, i) => (
-            <motion.div
-              key={pos.title}
-              variants={fadeInUp}
-              className="border border-primary/20 p-8 space-y-4 group hover:border-primary/60 transition-colors duration-300"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <span className="text-primary text-lg font-mono">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="flex gap-2 flex-wrap justify-end">
-                  <span className="text-sm tracking-widest uppercase text-primary border border-primary/50 px-3 py-1">
-                    {pos.type}
-                  </span>
-                  <span className="text-sm tracking-widest uppercase text-primary border border-primary/50 px-3 py-1">
-                    {pos.level}
-                  </span>
-                </div>
+        {positionsLoading && (
+          <div className="grid md:grid-cols-2 gap-6 animate-pulse">
+            {[1, 2].map((i) => (
+              <div key={i} className="border border-primary/10 p-8 space-y-4">
+                <div className="h-4 w-24 bg-primary/10 rounded" />
+                <div className="h-6 w-48 bg-primary/10 rounded" />
+                <div className="h-4 w-full bg-primary/10 rounded" />
+                <div className="h-4 w-3/4 bg-primary/10 rounded" />
               </div>
-              <h3 className="text-primary font-semibold text-xl">
-                {pos.title}
-              </h3>
-              <p className="text-primary/80 text-sm leading-relaxed">
-                {pos.desc}
-              </p>
+            ))}
+          </div>
+        )}
+
+        {!positionsLoading && openPositions.length === 0 && (
+          <motion.div
+            variants={fadeInUp}
+            className="border border-primary/20 p-12 text-center"
+          >
+            <p className="text-primary/50 text-sm tracking-widest uppercase mb-2">
+              No open positions at this time
+            </p>
+            <p className="text-primary/70 text-sm">
+              We're not actively hiring, but we're always open to{" "}
               <button
                 onClick={() => setActiveTab("career")}
-                className="inline-block mt-2 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 hover:border-primary hover:cursor-pointer transition-colors duration-300"
+                className="underline underline-offset-2 hover:text-primary transition-colors"
               >
-                Apply Now
+                open applications
               </button>
-            </motion.div>
-          ))}
-        </div>
+              .
+            </p>
+          </motion.div>
+        )}
+
+        {!positionsLoading && openPositions.length > 0 && (
+          <div className="grid md:grid-cols-2 gap-6">
+            {openPositions.map((pos, i) => (
+              <motion.div
+                key={pos.id}
+                variants={fadeInUp}
+                className="border border-primary/20 p-8 space-y-4 group hover:border-primary/60 transition-colors duration-300"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span className="text-primary text-lg font-mono">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="flex gap-2 flex-wrap justify-end">
+                    <span className="text-sm tracking-widest uppercase text-primary border border-primary/50 px-3 py-1">
+                      {pos.type}
+                    </span>
+                    <span className="text-sm tracking-widest uppercase text-primary border border-primary/50 px-3 py-1">
+                      {pos.level}
+                    </span>
+                  </div>
+                </div>
+                <h3 className="text-primary font-semibold text-xl">
+                  {pos.title}
+                </h3>
+                <p className="text-primary/80 text-sm leading-relaxed">
+                  {pos.desc}
+                </p>
+                <button
+                  onClick={() => setActiveTab("career")}
+                  className="inline-block mt-2 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 hover:border-primary hover:cursor-pointer transition-colors duration-300"
+                >
+                  Apply Now
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </motion.section>
 
-      {/* ── Tab Forms Section ────────────────────────────────────────────── */}
       <motion.section
         id="apply"
         className="bg-primary/5 py-20 lg:py-28"
@@ -496,7 +450,6 @@ export default function WorkingWithUsPage() {
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Tab Switcher */}
           <motion.div variants={fadeInUp} className="mb-14">
             <p className="text-primary tracking-[0.25em] uppercase mb-6">
               Get In Touch
@@ -520,7 +473,6 @@ export default function WorkingWithUsPage() {
             </div>
           </motion.div>
 
-          {/* ── Vendor Form ── */}
           <AnimatePresence mode="wait">
             {activeTab === "vendor" && (
               <motion.div
@@ -531,7 +483,6 @@ export default function WorkingWithUsPage() {
                 transition={{ duration: 0.35 }}
               >
                 <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-                  {/* Left – info */}
                   <div className="lg:col-span-4 space-y-10">
                     <div>
                       <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -573,10 +524,13 @@ export default function WorkingWithUsPage() {
                     </div>
                   </div>
 
-                  {/* Right – form */}
                   <div className="lg:col-span-8">
-                    <form onSubmit={handleVendorSubmit} className="space-y-6">
-                      {/* — Company Info — */}
+                    <form
+                      onSubmit={handleSubmitVendor(onVendorSubmit)}
+                      className="space-y-6"
+                    >
+                      <input type="hidden" {...registerVendor("type")} />
+
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
                           Company Information
@@ -589,13 +543,17 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="text"
-                              name="companyName"
-                              value={vendorForm.companyName}
-                              onChange={handleVendorChange}
-                              required
+                              {...registerVendor("company_name")}
                               disabled={vendorSubmitting}
-                              className={inputClass}
+                              className={inputClass(
+                                !!vendorErrors.company_name,
+                              )}
                             />
+                            {vendorErrors.company_name && (
+                              <p className={errorClass}>
+                                {vendorErrors.company_name.message}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <label className={labelClass}>
@@ -604,15 +562,20 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="text"
-                              name="contactPerson"
-                              value={vendorForm.contactPerson}
-                              onChange={handleVendorChange}
-                              required
+                              {...registerVendor("contact_person")}
                               disabled={vendorSubmitting}
-                              className={inputClass}
+                              className={inputClass(
+                                !!vendorErrors.contact_person,
+                              )}
                             />
+                            {vendorErrors.contact_person && (
+                              <p className={errorClass}>
+                                {vendorErrors.contact_person.message}
+                              </p>
+                            )}
                           </div>
                         </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                           <div>
                             <label className={labelClass}>
@@ -621,13 +584,15 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="email"
-                              name="email"
-                              value={vendorForm.email}
-                              onChange={handleVendorChange}
-                              required
+                              {...registerVendor("email")}
                               disabled={vendorSubmitting}
-                              className={inputClass}
+                              className={inputClass(!!vendorErrors.email)}
                             />
+                            {vendorErrors.email && (
+                              <p className={errorClass}>
+                                {vendorErrors.email.message}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <label className={labelClass}>
@@ -635,29 +600,35 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="tel"
-                              name="phone"
-                              value={vendorForm.phone}
-                              onChange={handleVendorChange}
+                              {...registerVendor("phone")}
                               disabled={vendorSubmitting}
-                              className={inputClass}
+                              className={inputClass(!!vendorErrors.phone)}
                             />
+                            {vendorErrors.phone && (
+                              <p className={errorClass}>
+                                {vendorErrors.phone.message}
+                              </p>
+                            )}
                           </div>
                         </div>
+
                         <div className="mt-6">
                           <label className={labelClass}>Website</label>
                           <input
                             type="url"
-                            name="website"
                             placeholder="https://"
-                            value={vendorForm.website}
-                            onChange={handleVendorChange}
+                            {...registerVendor("website")}
                             disabled={vendorSubmitting}
-                            className={inputClass}
+                            className={inputClass(!!vendorErrors.website)}
                           />
+                          {vendorErrors.website && (
+                            <p className={errorClass}>
+                              {vendorErrors.website.message}
+                            </p>
+                          )}
                         </div>
                       </div>
 
-                      {/* — Service Details — */}
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
                           Service Details
@@ -670,15 +641,14 @@ export default function WorkingWithUsPage() {
                             </label>
                             <div className="relative">
                               <select
-                                name="vendorCategory"
-                                value={vendorForm.vendorCategory}
-                                onChange={handleVendorChange}
-                                required
+                                {...registerVendor("vendor_category")}
                                 disabled={vendorSubmitting}
-                                className={selectClass}
+                                className={selectClass(
+                                  !!vendorErrors.vendor_category,
+                                )}
                               >
                                 <option value="">Select a category</option>
-                                {vendorCategories.map((cat) => (
+                                {vendorCategories.map((cat: string) => (
                                   <option key={cat} value={cat}>
                                     {cat}
                                   </option>
@@ -700,6 +670,11 @@ export default function WorkingWithUsPage() {
                                 </svg>
                               </div>
                             </div>
+                            {vendorErrors.vendor_category && (
+                              <p className={errorClass}>
+                                {vendorErrors.vendor_category.message}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <label className={labelClass}>
@@ -707,32 +682,42 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="text"
-                              name="yearsInBusiness"
                               placeholder="e.g. 5 years"
-                              value={vendorForm.yearsInBusiness}
-                              onChange={handleVendorChange}
+                              {...registerVendor("years_in_business")}
                               disabled={vendorSubmitting}
-                              className={inputClass}
+                              className={inputClass(
+                                !!vendorErrors.years_in_business,
+                              )}
                             />
+                            {vendorErrors.years_in_business && (
+                              <p className={errorClass}>
+                                {vendorErrors.years_in_business.message}
+                              </p>
+                            )}
                           </div>
                         </div>
+
                         <div className="mt-6">
                           <label className={labelClass}>
                             Portfolio / Instagram Link
                           </label>
                           <input
                             type="url"
-                            name="portfolioLink"
                             placeholder="https://"
-                            value={vendorForm.portfolioLink}
-                            onChange={handleVendorChange}
+                            {...registerVendor("portfolio_link")}
                             disabled={vendorSubmitting}
-                            className={inputClass}
+                            className={inputClass(
+                              !!vendorErrors.portfolio_link,
+                            )}
                           />
+                          {vendorErrors.portfolio_link && (
+                            <p className={errorClass}>
+                              {vendorErrors.portfolio_link.message}
+                            </p>
+                          )}
                         </div>
                       </div>
 
-                      {/* — Message — */}
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
                           Tell Us More
@@ -746,17 +731,19 @@ export default function WorkingWithUsPage() {
                           studio.
                         </p>
                         <textarea
-                          name="message"
                           placeholder="Write your introduction here..."
-                          value={vendorForm.message}
-                          onChange={handleVendorChange}
+                          {...registerVendor("message")}
                           rows={6}
                           disabled={vendorSubmitting}
-                          className={`${inputClass} resize-vertical`}
+                          className={`${inputClass(!!vendorErrors.message)} resize-vertical`}
                         />
+                        {vendorErrors.message && (
+                          <p className={errorClass}>
+                            {vendorErrors.message.message}
+                          </p>
+                        )}
                       </div>
 
-                      {/* reCAPTCHA */}
                       <div className="flex justify-start">
                         <ReCAPTCHA
                           ref={vendorRecaptchaRef}
@@ -767,20 +754,25 @@ export default function WorkingWithUsPage() {
                         />
                       </div>
 
-                      {/* Status */}
-                      {vendorStatus.type && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={`p-4 ${
-                            vendorStatus.type === "success"
-                              ? "bg-green-50 text-green-800 border border-green-200"
-                              : "bg-red-50 text-red-800 border border-red-200"
-                          }`}
-                        >
-                          {vendorStatus.message}
-                        </motion.div>
-                      )}
+                      {vendorStatus.type === "error" &&
+                        vendorStatus.message.includes("reCAPTCHA") && (
+                          <p className={errorClass}>{vendorStatus.message}</p>
+                        )}
+
+                      {vendorStatus.type &&
+                        !vendorStatus.message.includes("reCAPTCHA") && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={`p-4 ${
+                              vendorStatus.type === "success"
+                                ? "bg-green-50 text-green-800 border border-green-200"
+                                : "bg-red-50 text-red-800 border border-red-200"
+                            }`}
+                          >
+                            {vendorStatus.message}
+                          </motion.div>
+                        )}
 
                       <button
                         type="submit"
@@ -795,7 +787,6 @@ export default function WorkingWithUsPage() {
               </motion.div>
             )}
 
-            {/* ── Career Form ── */}
             {activeTab === "career" && (
               <motion.div
                 key="career"
@@ -805,7 +796,6 @@ export default function WorkingWithUsPage() {
                 transition={{ duration: 0.35 }}
               >
                 <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-                  {/* Left – info */}
                   <div className="lg:col-span-4 space-y-10">
                     <div>
                       <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -825,7 +815,6 @@ export default function WorkingWithUsPage() {
                       about weddings, design, and human connection — we'd love
                       to meet you.
                     </p>
-
                     <div className="space-y-4">
                       <p className="text-primary mb-4">
                         What we value in our team:
@@ -850,10 +839,13 @@ export default function WorkingWithUsPage() {
                     </div>
                   </div>
 
-                  {/* Right – form */}
                   <div className="lg:col-span-8">
-                    <form onSubmit={handleCareerSubmit} className="space-y-6">
-                      {/* — Personal Info — */}
+                    <form
+                      onSubmit={handleSubmitCareer(onCareerSubmit)}
+                      className="space-y-6"
+                    >
+                      <input type="hidden" {...registerCareer("type")} />
+
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
                           Personal Information
@@ -865,13 +857,15 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="text"
-                              name="fullName"
-                              value={careerForm.fullName}
-                              onChange={handleCareerChange}
-                              required
+                              {...registerCareer("full_name")}
                               disabled={careerSubmitting}
-                              className={inputClass}
+                              className={inputClass(!!careerErrors.full_name)}
                             />
+                            {careerErrors.full_name && (
+                              <p className={errorClass}>
+                                {careerErrors.full_name.message}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <label className={labelClass}>
@@ -880,29 +874,34 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="email"
-                              name="email"
-                              value={careerForm.email}
-                              onChange={handleCareerChange}
-                              required
+                              {...registerCareer("email")}
                               disabled={careerSubmitting}
-                              className={inputClass}
+                              className={inputClass(!!careerErrors.email)}
                             />
+                            {careerErrors.email && (
+                              <p className={errorClass}>
+                                {careerErrors.email.message}
+                              </p>
+                            )}
                           </div>
                         </div>
+
                         <div className="mt-6">
                           <label className={labelClass}>Phone / WhatsApp</label>
                           <input
                             type="tel"
-                            name="phone"
-                            value={careerForm.phone}
-                            onChange={handleCareerChange}
+                            {...registerCareer("phone")}
                             disabled={careerSubmitting}
-                            className={inputClass}
+                            className={inputClass(!!careerErrors.phone)}
                           />
+                          {careerErrors.phone && (
+                            <p className={errorClass}>
+                              {careerErrors.phone.message}
+                            </p>
+                          )}
                         </div>
                       </div>
 
-                      {/* — Role Details — */}
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
                           Role & Experience
@@ -914,16 +913,14 @@ export default function WorkingWithUsPage() {
                           </label>
                           <div className="relative">
                             <select
-                              name="position"
-                              value={careerForm.position}
-                              onChange={handleCareerChange}
-                              required
+                              {...registerCareer("position")}
                               disabled={careerSubmitting}
-                              className={selectClass}
+                              className={selectClass(!!careerErrors.position)}
                             >
                               <option value="">Select a position</option>
+
                               {openPositions.map((p) => (
-                                <option key={p.title} value={p.title}>
+                                <option key={p.id} value={p.title}>
                                   {p.title}
                                 </option>
                               ))}
@@ -947,21 +944,31 @@ export default function WorkingWithUsPage() {
                               </svg>
                             </div>
                           </div>
+                          {careerErrors.position && (
+                            <p className={errorClass}>
+                              {careerErrors.position.message}
+                            </p>
+                          )}
                         </div>
+
                         <div className="mt-6">
                           <label className={labelClass}>
                             Years of Relevant Experience
                           </label>
                           <input
                             type="text"
-                            name="experience"
                             placeholder="e.g. 3 years in wedding planning"
-                            value={careerForm.experience}
-                            onChange={handleCareerChange}
+                            {...registerCareer("experience")}
                             disabled={careerSubmitting}
-                            className={inputClass}
+                            className={inputClass(!!careerErrors.experience)}
                           />
+                          {careerErrors.experience && (
+                            <p className={errorClass}>
+                              {careerErrors.experience.message}
+                            </p>
+                          )}
                         </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                           <div>
                             <label className={labelClass}>
@@ -969,32 +976,25 @@ export default function WorkingWithUsPage() {
                             </label>
                             <input
                               type="url"
-                              name="linkedIn"
                               placeholder="https://linkedin.com/in/"
-                              value={careerForm.linkedIn}
-                              onChange={handleCareerChange}
+                              {...registerCareer("linked_in")}
                               disabled={careerSubmitting}
-                              className={inputClass}
+                              className={inputClass(!!careerErrors.linked_in)}
                             />
+                            {careerErrors.linked_in && (
+                              <p className={errorClass}>
+                                {careerErrors.linked_in.message}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <label className={labelClass}>
                               Portfolio / Website
                             </label>
-                            <input
-                              type="url"
-                              name="portfolioLink"
-                              placeholder="https://"
-                              value={careerForm.portfolioLink}
-                              onChange={handleCareerChange}
-                              disabled={careerSubmitting}
-                              className={inputClass}
-                            />
                           </div>
                         </div>
                       </div>
 
-                      {/* — Cover Letter — */}
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
                           Your Story
@@ -1008,18 +1008,19 @@ export default function WorkingWithUsPage() {
                           draws you to Linda Wiryani Events specifically.
                         </p>
                         <textarea
-                          name="coverLetter"
                           placeholder="Write your cover letter here..."
-                          value={careerForm.coverLetter}
-                          onChange={handleCareerChange}
+                          {...registerCareer("cover_letter")}
                           rows={8}
-                          required
                           disabled={careerSubmitting}
-                          className={`${inputClass} resize-vertical`}
+                          className={`${inputClass(!!careerErrors.cover_letter)} resize-vertical`}
                         />
+                        {careerErrors.cover_letter && (
+                          <p className={errorClass}>
+                            {careerErrors.cover_letter.message}
+                          </p>
+                        )}
                       </div>
 
-                      {/* reCAPTCHA */}
                       <div className="flex justify-start">
                         <ReCAPTCHA
                           ref={careerRecaptchaRef}
@@ -1030,20 +1031,25 @@ export default function WorkingWithUsPage() {
                         />
                       </div>
 
-                      {/* Status */}
-                      {careerStatus.type && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={`p-4 ${
-                            careerStatus.type === "success"
-                              ? "bg-green-50 text-green-800 border border-green-200"
-                              : "bg-red-50 text-red-800 border border-red-200"
-                          }`}
-                        >
-                          {careerStatus.message}
-                        </motion.div>
-                      )}
+                      {careerStatus.type === "error" &&
+                        careerStatus.message.includes("reCAPTCHA") && (
+                          <p className={errorClass}>{careerStatus.message}</p>
+                        )}
+
+                      {careerStatus.type &&
+                        !careerStatus.message.includes("reCAPTCHA") && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={`p-4 ${
+                              careerStatus.type === "success"
+                                ? "bg-green-50 text-green-800 border border-green-200"
+                                : "bg-red-50 text-red-800 border border-red-200"
+                            }`}
+                          >
+                            {careerStatus.message}
+                          </motion.div>
+                        )}
 
                       <button
                         type="submit"
@@ -1061,7 +1067,6 @@ export default function WorkingWithUsPage() {
         </div>
       </motion.section>
 
-      {/* ── CTA ──────────────────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

@@ -1,11 +1,29 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+  notFound,
+  ok,
+} from "@/lib";
 import { createArticleSchema, parsePagination, paginateQuery } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 export async function GET(req: NextRequest) {
   try {
+    const slug = req.nextUrl.searchParams.get("slug") ?? undefined;
+    if (slug) {
+      const article = await prisma.article.findUnique({
+        where: { slug },
+      });
+      if (!article) return notFound("Article");
+      return ok(article);
+    }
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const category = req.nextUrl.searchParams.get("category") ?? undefined;
 

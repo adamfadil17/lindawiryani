@@ -22,7 +22,6 @@ export default function WeddingConceptsPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCurrency] = useState<Currency>("IDR");
 
-  // Venue yang dipilih dari ThemeDetailModal — diteruskan ke VenuesSection
   const [venueFromTheme, setVenueFromTheme] = useState<Venue | null>(null);
 
   const exchangeRate = useCurrencyConverter();
@@ -40,7 +39,6 @@ export default function WeddingConceptsPage() {
 
   return (
     <main className="relative overflow-hidden">
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
         <div className="absolute inset-0">
           <Image
@@ -95,7 +93,6 @@ export default function WeddingConceptsPage() {
         </motion.div>
       </section>
 
-      {/* ── INTRO SPLIT ───────────────────────────────────────────────── */}
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -182,7 +179,6 @@ export default function WeddingConceptsPage() {
         </div>
       </motion.section>
 
-      {/* ── CONCEPT LAYERS ────────────────────────────────────────────── */}
       <motion.section
         className="bg-primary py-20 lg:py-28"
         initial="hidden"
@@ -278,7 +274,6 @@ export default function WeddingConceptsPage() {
         </div>
       </motion.section>
 
-      {/* ── VENUE CURATION DETAIL ─────────────────────────────────────── */}
       <motion.section
         id="venue-curation-section"
         className="py-20 lg:py-28"
@@ -370,7 +365,6 @@ export default function WeddingConceptsPage() {
         </div>
       </motion.section>
 
-      {/* ── WEDDING THEMES ────────────────────────────────────────────── */}
       {/*
         WeddingThemesSection menggunakan weddingThemeList dari new-data.
         elopementThemes  = filter type === "ELOPEMENT"
@@ -383,7 +377,6 @@ export default function WeddingConceptsPage() {
         onExploreVenue={handleExploreVenueFromTheme}
       />
 
-      {/* ── VENUES & SETTINGS ─────────────────────────────────────────── */}
       {/*
         VenuesSection menggunakan venueList, weddingExperienceList,
         dan weddingThemeList dari new-data.
@@ -400,7 +393,6 @@ export default function WeddingConceptsPage() {
         onExternalModalClose={() => setVenueFromTheme(null)}
       />
 
-      {/* ── STYLING CONCEPTS DETAIL ───────────────────────────────────── */}
       <motion.section
         id="styling-concepts-section"
         className="py-20 lg:py-28"
@@ -484,7 +476,6 @@ export default function WeddingConceptsPage() {
         </div>
       </motion.section>
 
-      {/* ── EDITORIAL INSPIRATION ─────────────────────────────────────── */}
       <motion.section
         id="editorial-inspiration-section"
         className="relative py-20 lg:py-28 overflow-hidden"
@@ -584,7 +575,6 @@ export default function WeddingConceptsPage() {
         </div>
       </motion.section>
 
-      {/* ── FROM CONCEPT TO CELEBRATION ───────────────────────────────── */}
       <motion.section
         className="py-20 lg:py-28"
         initial="hidden"
@@ -644,7 +634,6 @@ export default function WeddingConceptsPage() {
         </div>
       </motion.section>
 
-      {/* ── CLOSING CTA ───────────────────────────────────────────────── */}
       <motion.section
         className="relative py-24 lg:py-36 overflow-hidden"
         initial="hidden"

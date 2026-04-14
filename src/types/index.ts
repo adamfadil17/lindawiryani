@@ -1,4 +1,3 @@
-// ─── ENUMS ──────────────────────────────────────────────
 export type VenueImageType = "HERO" | "GALLERY";
 export type ThemeType = "ELOPEMENT" | "INTIMATE";
 export type WeddingExperienceType =
@@ -45,7 +44,6 @@ export interface AuthResponse {
   expiresIn: string;
 }
 
-// ─── EXPERIENCE FAQ ─────────────────────────────────────
 export interface ExperienceFaq {
   id: string;
   experience_id: string;
@@ -60,21 +58,18 @@ export interface WeddingExperience {
   category: WeddingExperienceType;
   name: string;
 
-  // Hero
   hero_style: WeddingExperienceHeroStyle;
   hero_image: string;
   hero_desc: string;
 
-  // Intro
   intro_label: string;
   intro_heading: [string, string];
   intro_body: string;
   intro_list_label: string | null;
   intro_list: string[];
   intro_footnote: string | null;
-  intro_images: string[]; // max 2 images
+  intro_images: string[];
 
-  // Approach
   approach_label: string;
   approach_heading: [string, string];
   approach_body: string;
@@ -82,7 +77,6 @@ export interface WeddingExperience {
   approach_list: string[];
   approach_image: string;
 
-  // Services
   services_label: string;
   services_heading: [string, string];
   services_list: string[];
@@ -92,7 +86,6 @@ export interface WeddingExperience {
   services_dark_body: string;
   services_dark_list: string[];
 
-  // Closing
   closing_label: string;
   closing_heading: [string, string];
   closing_body: string;
@@ -100,22 +93,20 @@ export interface WeddingExperience {
   closing_couple_label: string | null;
   closing_couple_values: string[];
 
-  // Relations
   faqs: ExperienceFaq[];
   venues?: Venue[];
   themes?: WeddingTheme[];
   portfolios?: Portfolio[];
 }
 
-// ─── DESTINATION CATEGORY ───────────────────────────────
 export interface DestinationCategory {
   id: string;
   name: string;
   slug: string;
+  description: string;
   locations: DestinationLocation[];
 }
 
-// ─── DESTINATION LOCATION ───────────────────────────────
 export interface DestinationLocation {
   id: string;
   name: string;
@@ -125,7 +116,6 @@ export interface DestinationLocation {
   destinations?: Destination[];
 }
 
-// ─── DESTINATION ────────────────────────────────────────
 export interface Destination {
   id: string;
   name: string;
@@ -150,7 +140,6 @@ export interface Destination {
   venues?: Venue[];
 }
 
-// ─── VENUE ──────────────────────────────────────────────
 export interface Venue {
   id: string;
   slug: string;
@@ -176,7 +165,6 @@ export interface VenueImage {
   venue_id: string;
 }
 
-// ─── WEDDING THEME ──────────────────────────────────────
 export interface WeddingTheme {
   id: string;
   slug: string;
@@ -199,9 +187,9 @@ export interface WeddingThemeImage {
   theme_id: string;
 }
 
-// ─── ARTICLE ────────────────────────────────────────────
 export const articleCategories = [
   "Guides",
+  "Featured",
   "Planning Advice",
   "Destination Knowledge",
   "Venue & Location",
@@ -219,10 +207,8 @@ export interface Article {
   excerpt: string;
   published_at: string;
   image: string;
-  content: string; // TipTap-serialised HTML
+  content: string;
 }
-
-// ─── PORTFOLIO ──────────────────────────────────────────
 
 export interface PortfolioStory {
   heading?: string;
@@ -261,7 +247,6 @@ export interface Portfolio {
   credit_couple_origin: string;
 }
 
-// ─── VENDOR INQUIRY ─────────────────────────────────────
 export interface Vendor {
   company_name: string;
   contact_person: string;
@@ -274,7 +259,6 @@ export interface Vendor {
   message: string;
 }
 
-// ─── CAREER APPLICATION ──────────────────────────────────
 export interface Career {
   full_name: string;
   email: string;
@@ -286,7 +270,6 @@ export interface Career {
   cover_letter: string;
 }
 
-// ─── SUBMISSION (Career & Partnership) ──────────────────
 export type SubmissionType = "vendor" | "career";
 export type SubmissionStatus = "new" | "reviewed" | "contacted" | "archived";
 
@@ -328,35 +311,32 @@ export const submissionStatusConfig: Record<
   },
 };
 
-// ─── INQUIRY FORM ────────────────────────────────────────
 export interface Inquiry {
-  // Contact Info
   your_name: string;
   your_email: string;
   your_address: string;
   telephone: string;
-  // Groom
+
   name_of_groom: string;
   religion_of_groom: string;
   nationality_of_groom: string;
-  // Bride
+
   name_of_bride: string;
   religion_of_bride: string;
   nationality_of_bride: string;
-  // Wedding Details
+
   wedding_date: string;
   wedding_venue: string;
   number_of_attendance: string;
   approximate_wedding_budget: string;
-  // Accommodation & Travel
+
   hotel_name_in_bali: string;
   arrival_date: string;
   departure_date: string;
-  // Vision
+
   your_message: string;
 }
 
-// ─── INQUIRY SUBMISSION ──────────────────────────────────
 export type InquiryStatus =
   | "new"
   | "reviewed"
@@ -396,19 +376,24 @@ export const inquiryStatusConfig: Record<
   },
 };
 
-// ─── OPEN POSITION ───────────────────────────────────────
 export interface OpenPosition {
   id: string;
   title: string;
-  type: string; // e.g. "Full-time", "Part-time / Freelance"
-  level: string; // e.g. "Mid–Senior", "All levels"
+  type: string;
+  level: string;
   desc: string;
   is_active: boolean;
 }
 
-export type ExperienceData = Omit<WeddingExperience, "venues" | "themes" | "portfolios">;
+export type ExperienceData = Omit<
+  WeddingExperience,
+  "venues" | "themes" | "portfolios"
+>;
 
-export type ExperienceWithRelations = Omit<WeddingExperience, "venues" | "themes"> & {
+export type ExperienceWithRelations = Omit<
+  WeddingExperience,
+  "venues" | "themes"
+> & {
   venues: Venue[];
   themes: WeddingTheme[];
 };

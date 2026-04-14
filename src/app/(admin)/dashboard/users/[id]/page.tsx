@@ -24,9 +24,12 @@ import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { User, Role } from "@/types";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const ROLE_OPTIONS: { value: Role; label: string; icon: React.ReactNode; desc: string }[] = [
+const ROLE_OPTIONS: {
+  value: Role;
+  label: string;
+  icon: React.ReactNode;
+  desc: string;
+}[] = [
   {
     value: "admin",
     label: "Admin",
@@ -47,8 +50,6 @@ const ROLE_OPTIONS: { value: Role; label: string; icon: React.ReactNode; desc: s
   },
 ];
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function UserDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -57,8 +58,10 @@ export default function UserDetailPage() {
   const [isFetching, setIsFetching] = useState(!isNew);
   const [showPassword, setShowPassword] = useState(false);
 
-  // ── Unsaved changes guard ──────────────────────────────────────────────────────
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const {
     register,
@@ -82,13 +85,10 @@ export default function UserDetailPage() {
   const watchedEmail = watch("email");
   const watchedPassword = watch("password");
 
-  // Create mode: any non-default field counts as "dirty"
-  // Edit mode: RHF's isDirty tracks real changes vs. loaded data
   const hasUnsavedChanges = isNew
     ? Boolean(watchedName || watchedEmail || watchedPassword)
     : isDirty;
 
-  // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges && !isSubmitting) {
@@ -100,7 +100,6 @@ export default function UserDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, isSubmitting]);
 
-  // Helper: navigate with guard check
   const guardedNavigate = useCallback(
     (href: string) => {
       if (hasUnsavedChanges && !isSubmitting) {
@@ -109,10 +108,9 @@ export default function UserDetailPage() {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, isSubmitting, router]
+    [hasUnsavedChanges, isSubmitting, router],
   );
 
-  // ── Fetch existing user for edit mode ──
   const fetchUser = useCallback(async () => {
     setIsFetching(true);
     try {
@@ -143,14 +141,12 @@ export default function UserDetailPage() {
     if (!isNew) fetchUser();
   }, [isNew, fetchUser]);
 
-  // ── Submit ──
   const onSubmit = async (data: UserFormData) => {
     try {
       if (isNew) {
         await axios.post("/api/users", data, { headers: getAuthHeaders() });
         toast.success("User created successfully.");
       } else {
-        // Password kosong = tidak diubah, hapus dari payload
         const payload: Partial<UserFormData> = { ...data };
         if (!payload.password) delete payload.password;
         await axios.patch(`/api/users/${params.id}`, payload, {
@@ -158,11 +154,11 @@ export default function UserDetailPage() {
         });
         toast.success("User updated successfully.");
       }
-      reset(data); // clear dirty state before navigating
+      reset(data);
       router.push("/dashboard/users");
     } catch (err) {
       const msg = axios.isAxiosError(err)
-        ? err.response?.data?.message ?? err.message
+        ? (err.response?.data?.message ?? err.message)
         : "Something went wrong.";
       toast.error(isNew ? "Failed to create user." : "Failed to update user.", {
         description: msg,
@@ -170,7 +166,6 @@ export default function UserDetailPage() {
     }
   };
 
-  // ── Loading state ──
   if (isFetching) {
     return (
       <div className="p-6 lg:p-8 max-w-2xl mx-auto">
@@ -189,7 +184,6 @@ export default function UserDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-2xl mx-auto">
-      {/* ── Header ── */}
       <div className="mb-8">
         <button
           type="button"
@@ -208,9 +202,7 @@ export default function UserDetailPage() {
         </h1>
       </div>
 
-      {/* ── Form ── */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Name */}
         <div>
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
             Full Name <span className="text-red-400">*</span>
@@ -227,7 +219,6 @@ export default function UserDetailPage() {
           )}
         </div>
 
-        {/* Email */}
         <div>
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
             Email <span className="text-red-400">*</span>
@@ -245,7 +236,6 @@ export default function UserDetailPage() {
           )}
         </div>
 
-        {/* Password */}
         <div>
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
             Password{" "}
@@ -261,7 +251,9 @@ export default function UserDetailPage() {
             <input
               {...register("password")}
               type={showPassword ? "text" : "password"}
-              placeholder={isNew ? "Min. 8 chars, 1 uppercase, 1 number" : "••••••••"}
+              placeholder={
+                isNew ? "Min. 8 chars, 1 uppercase, 1 number" : "••••••••"
+              }
               className={`w-full px-3 py-2.5 pr-10 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
                 errors.password ? "border-red-400" : "border-primary/30"
               }`}
@@ -279,11 +271,12 @@ export default function UserDetailPage() {
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+            <p className="text-red-500 text-xs mt-1">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
-        {/* Role */}
         <div>
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-2">
             Role <span className="text-red-400">*</span>
@@ -326,7 +319,6 @@ export default function UserDetailPage() {
           )}
         </div>
 
-        {/* Actions */}
         <div className="flex items-center justify-between pt-2 border-t border-primary/10">
           <button
             type="button"
@@ -351,7 +343,6 @@ export default function UserDetailPage() {
         </div>
       </form>
 
-      {/* ── Unsaved Changes Modal ── */}
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}

@@ -53,7 +53,7 @@ export async function PATCH(
 
     let slug: string | undefined;
     if (dto.name) {
-      const baseSlug = toSlug(dto.name);
+      const baseSlug = `${toSlug(dto.name)}-wedding`
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
         const existing = await prisma.destination.findUnique({
           where: { slug: s },

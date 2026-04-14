@@ -18,7 +18,9 @@ const paginationSchema = z.object({
 
 export type PaginationQuery = z.infer<typeof paginationSchema>;
 
-export function parsePagination(searchParams: URLSearchParams): PaginationQuery {
+export function parsePagination(
+  searchParams: URLSearchParams,
+): PaginationQuery {
   return paginationSchema.parse({
     page: searchParams.get("page") ?? 1,
     limit: searchParams.get("limit") ?? 10,
@@ -43,7 +45,9 @@ export const createUserSchema = z.object({
   role: z.enum(["admin", "editor", "user"]).default("user"),
 });
 
-export const updateUserSchema = createUserSchema.omit({ password: true }).partial();
+export const updateUserSchema = createUserSchema
+  .omit({ password: true })
+  .partial();
 
 export const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -61,12 +65,18 @@ export type LoginDto = z.infer<typeof loginSchema>;
 export const createDestinationCategorySchema = z.object({
   name: z.string().min(2).max(255),
   slug: slugSchema,
+  description: z.string().min(1).max(250),
 });
 
-export const updateDestinationCategorySchema = createDestinationCategorySchema.partial();
+export const updateDestinationCategorySchema =
+  createDestinationCategorySchema.partial();
 
-export type CreateDestinationCategoryDto = z.infer<typeof createDestinationCategorySchema>;
-export type UpdateDestinationCategoryDto = z.infer<typeof updateDestinationCategorySchema>;
+export type CreateDestinationCategoryDto = z.infer<
+  typeof createDestinationCategorySchema
+>;
+export type UpdateDestinationCategoryDto = z.infer<
+  typeof updateDestinationCategorySchema
+>;
 
 // ─────────────────────────────────────────────
 // DESTINATION LOCATION
@@ -78,10 +88,15 @@ export const createDestinationLocationSchema = z.object({
   category_id: uuidSchema,
 });
 
-export const updateDestinationLocationSchema = createDestinationLocationSchema.partial();
+export const updateDestinationLocationSchema =
+  createDestinationLocationSchema.partial();
 
-export type CreateDestinationLocationDto = z.infer<typeof createDestinationLocationSchema>;
-export type UpdateDestinationLocationDto = z.infer<typeof updateDestinationLocationSchema>;
+export type CreateDestinationLocationDto = z.infer<
+  typeof createDestinationLocationSchema
+>;
+export type UpdateDestinationLocationDto = z.infer<
+  typeof updateDestinationLocationSchema
+>;
 
 // ─────────────────────────────────────────────
 // DESTINATION
@@ -145,16 +160,16 @@ export const createWeddingExperienceSchema = z.object({
   intro_label: z.string().min(1),
   intro_heading: z.tuple([z.string(), z.string()]),
   intro_body: z.string().min(1),
-  intro_list_label: z.string().optional(),
+  intro_list_label: z.string().nullable().optional(),
   intro_list: z.array(z.string()),
-  intro_footnote: z.string().optional(),
+  intro_footnote: z.string().nullable().optional(),
   intro_images: z.array(z.string().url()).max(2),
 
   // Approach
   approach_label: z.string().min(1),
   approach_heading: z.tuple([z.string(), z.string()]),
   approach_body: z.string().min(1),
-  approach_list_label: z.string().optional(),
+  approach_list_label: z.string().nullable().optional(),
   approach_list: z.array(z.string()),
   approach_image: z.string().url(),
 
@@ -173,14 +188,19 @@ export const createWeddingExperienceSchema = z.object({
   closing_heading: z.tuple([z.string(), z.string()]),
   closing_body: z.string().min(1),
   closing_image: z.string().url(),
-  closing_couple_label: z.string().optional(),
+  closing_couple_label: z.string().nullable().optional(),
   closing_couple_values: z.array(z.string()),
 });
 
-export const updateWeddingExperienceSchema = createWeddingExperienceSchema.partial();
+export const updateWeddingExperienceSchema =
+  createWeddingExperienceSchema.partial();
 
-export type CreateWeddingExperienceDto = z.infer<typeof createWeddingExperienceSchema>;
-export type UpdateWeddingExperienceDto = z.infer<typeof updateWeddingExperienceSchema>;
+export type CreateWeddingExperienceDto = z.infer<
+  typeof createWeddingExperienceSchema
+>;
+export type UpdateWeddingExperienceDto = z.infer<
+  typeof updateWeddingExperienceSchema
+>;
 
 // ─────────────────────────────────────────────
 // EXPERIENCE FAQ
@@ -193,7 +213,9 @@ export const createExperienceFaqSchema = z.object({
   sort_order: z.number().int().min(0).default(0),
 });
 
-export const updateExperienceFaqSchema = createExperienceFaqSchema.omit({ experience_id: true }).partial();
+export const updateExperienceFaqSchema = createExperienceFaqSchema
+  .omit({ experience_id: true })
+  .partial();
 
 export type CreateExperienceFaqDto = z.infer<typeof createExperienceFaqSchema>;
 export type UpdateExperienceFaqDto = z.infer<typeof updateExperienceFaqSchema>;
@@ -229,7 +251,9 @@ export const createVenueImageSchema = z.object({
   sort_order: z.number().int().min(0).default(0),
 });
 
-export const updateVenueImageSchema = createVenueImageSchema.omit({ venue_id: true }).partial();
+export const updateVenueImageSchema = createVenueImageSchema
+  .omit({ venue_id: true })
+  .partial();
 
 export type CreateVenueImageDto = z.infer<typeof createVenueImageSchema>;
 export type UpdateVenueImageDto = z.infer<typeof updateVenueImageSchema>;
@@ -247,8 +271,8 @@ export const createWeddingThemeSchema = z.object({
   image: z.string().url(),
   inclusions: z.array(z.string()).min(1),
   venue_id: z
-      .union([uuidSchema, z.literal(""), z.undefined()])
-      .transform((v) => v || undefined),
+    .union([uuidSchema, z.literal(""), z.undefined()])
+    .transform((v) => v || undefined),
   experience_id: uuidSchema,
 });
 
@@ -267,10 +291,16 @@ export const createWeddingThemeImageSchema = z.object({
   sort_order: z.number().int().min(0).default(0),
 });
 
-export const updateWeddingThemeImageSchema = createWeddingThemeImageSchema.omit({ theme_id: true }).partial();
+export const updateWeddingThemeImageSchema = createWeddingThemeImageSchema
+  .omit({ theme_id: true })
+  .partial();
 
-export type CreateWeddingThemeImageDto = z.infer<typeof createWeddingThemeImageSchema>;
-export type UpdateWeddingThemeImageDto = z.infer<typeof updateWeddingThemeImageSchema>;
+export type CreateWeddingThemeImageDto = z.infer<
+  typeof createWeddingThemeImageSchema
+>;
+export type UpdateWeddingThemeImageDto = z.infer<
+  typeof updateWeddingThemeImageSchema
+>;
 
 // ─────────────────────────────────────────────
 // ARTICLE
@@ -278,6 +308,7 @@ export type UpdateWeddingThemeImageDto = z.infer<typeof updateWeddingThemeImageS
 
 export const articleCategoryEnum = z.enum([
   "Guides",
+  "Featured",
   "Planning_Advice",
   "Destination_Knowledge",
   "Venue_and_Location",
@@ -350,17 +381,28 @@ export const createPortfolioImageSchema = z.object({
   sort_order: z.number().int().min(0).default(0),
 });
 
-export const updatePortfolioImageSchema = createPortfolioImageSchema.omit({ portfolio_id: true }).partial();
+export const updatePortfolioImageSchema = createPortfolioImageSchema
+  .omit({ portfolio_id: true })
+  .partial();
 
-export type CreatePortfolioImageDto = z.infer<typeof createPortfolioImageSchema>;
-export type UpdatePortfolioImageDto = z.infer<typeof updatePortfolioImageSchema>;
+export type CreatePortfolioImageDto = z.infer<
+  typeof createPortfolioImageSchema
+>;
+export type UpdatePortfolioImageDto = z.infer<
+  typeof updatePortfolioImageSchema
+>;
 
 // ─────────────────────────────────────────────
 // SUBMISSION (Vendor & Career)
 // ─────────────────────────────────────────────
 
 export const submissionTypeEnum = z.enum(["vendor", "career"]);
-export const submissionStatusEnum = z.enum(["new", "reviewed", "contacted", "archived"]);
+export const submissionStatusEnum = z.enum([
+  "new",
+  "reviewed",
+  "contacted",
+  "archived",
+]);
 
 export const createVendorSubmissionSchema = z.object({
   type: z.literal("vendor"),
@@ -396,16 +438,28 @@ export const updateSubmissionStatusSchema = z.object({
   status: submissionStatusEnum,
 });
 
-export type CreateVendorSubmissionDto = z.infer<typeof createVendorSubmissionSchema>;
-export type CreateCareerSubmissionDto = z.infer<typeof createCareerSubmissionSchema>;
+export type CreateVendorSubmissionDto = z.infer<
+  typeof createVendorSubmissionSchema
+>;
+export type CreateCareerSubmissionDto = z.infer<
+  typeof createCareerSubmissionSchema
+>;
 export type CreateSubmissionDto = z.infer<typeof createSubmissionSchema>;
-export type UpdateSubmissionStatusDto = z.infer<typeof updateSubmissionStatusSchema>;
+export type UpdateSubmissionStatusDto = z.infer<
+  typeof updateSubmissionStatusSchema
+>;
 
 // ─────────────────────────────────────────────
 // INQUIRY SUBMISSION
 // ─────────────────────────────────────────────
 
-export const inquiryStatusEnum = z.enum(["new", "reviewed", "quoted", "booked", "archived"]);
+export const inquiryStatusEnum = z.enum([
+  "new",
+  "reviewed",
+  "quoted",
+  "booked",
+  "archived",
+]);
 
 export const createInquirySchema = z.object({
   // Contact Info

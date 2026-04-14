@@ -7,6 +7,8 @@ import {
   requireAuth,
   requireRole,
   created,
+  notFound,
+  ok,
 } from "@/lib";
 import {
   createDestinationSchema,
@@ -25,6 +27,16 @@ const DESTINATION_INCLUDE = {
 
 export async function GET(req: NextRequest) {
   try {
+    const slug = req.nextUrl.searchParams.get("slug") ?? undefined;
+    if (slug) {
+      const destination = await prisma.destination.findUnique({
+        where: { slug },
+        include: DESTINATION_INCLUDE,
+      });
+      if (!destination) return notFound("Destination");
+      return ok(destination);
+    }
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const categoryId = req.nextUrl.searchParams.get("categoryId") ?? undefined;
     const locationId = req.nextUrl.searchParams.get("locationId") ?? undefined;
@@ -69,7 +81,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const dto = createDestinationSchema.parse(body);
 
-    const baseSlug = toSlug(dto.name);
+    const baseSlug = `${toSlug(dto.name)}-wedding`;
     const slug = await ensureUniqueSlug(baseSlug, async (s) => {
       const existing = await prisma.destination.findUnique({
         where: { slug: s },

@@ -9,7 +9,7 @@ export function useLogout() {
     try {
       await axios.post("/api/auth/logout", {}, { headers: getAuthHeaders() });
     } catch {
-      // lanjut logout meskipun request gagal
+
     } finally {
       localStorage.removeItem("token");
       router.push("/auth/login");

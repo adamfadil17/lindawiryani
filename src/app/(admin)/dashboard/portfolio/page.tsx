@@ -25,11 +25,7 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const LIMIT = 6;
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface FilterOption {
   id: string;
@@ -45,8 +41,6 @@ interface PortfolioFilters {
   venues: FilterOption[];
   experiences: ExperienceFilterOption[];
 }
-
-// ─── Skeleton Card ────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
   return (
@@ -66,8 +60,6 @@ function SkeletonCard() {
   );
 }
 
-// ─── Skeleton Stat Card ───────────────────────────────────────────────────────
-
 function SkeletonStatCard() {
   return (
     <div className="p-5 border border-primary/20 bg-white animate-pulse">
@@ -76,8 +68,6 @@ function SkeletonStatCard() {
     </div>
   );
 }
-
-// ─── Portfolio Card ───────────────────────────────────────────────────────────
 
 function PortfolioCard({
   portfolio,
@@ -88,7 +78,6 @@ function PortfolioCard({
 }) {
   return (
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
-      {/* Hero Image */}
       <div className="relative aspect-[3/2] overflow-hidden">
         <Image
           src={portfolio.image || "https://placehold.net/default.svg"}
@@ -97,14 +86,14 @@ function PortfolioCard({
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Gallery count badge */}
+
         <div className="absolute top-3 right-3">
           <span className="inline-flex items-center gap-1 text-[10px] tracking-widest uppercase px-2.5 py-1 font-medium bg-black/60 text-white backdrop-blur-sm">
             <Images className="w-3 h-3" />
             {portfolio.gallery?.length ?? 0}
           </span>
         </div>
-        {/* Tags */}
+
         {portfolio.tags && portfolio.tags.length > 0 && (
           <div className="absolute bottom-3 left-3 flex flex-wrap gap-1">
             {portfolio.tags.slice(0, 2).map((tag) => (
@@ -124,7 +113,6 @@ function PortfolioCard({
         )}
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <div className="mb-3">
           <h3 className="text-primary font-semibold text-base leading-snug">
@@ -137,7 +125,6 @@ function PortfolioCard({
           )}
         </div>
 
-        {/* Meta info */}
         <div className="space-y-1.5 mb-4">
           {portfolio.destination?.name && (
             <div className="flex items-center gap-1.5 text-primary/60 text-xs">
@@ -159,14 +146,12 @@ function PortfolioCard({
           )}
         </div>
 
-        {/* Excerpt */}
         {portfolio.excerpt && (
           <p className="text-primary/70 text-sm leading-relaxed line-clamp-2 mb-4">
             {portfolio.excerpt}
           </p>
         )}
 
-        {/* Divider + Actions */}
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
             <span className="text-xs text-primary/80 font-semibold tracking-wider truncate max-w-[140px]">
@@ -206,8 +191,6 @@ function PortfolioCard({
   );
 }
 
-// ─── Filter Dropdown ──────────────────────────────────────────────────────────
-
 function FilterDropdown({
   value,
   onChange,
@@ -235,7 +218,10 @@ function FilterDropdown({
             : "bg-white text-primary/60 border-primary/20 hover:border-primary/40 hover:text-primary/80"
         }`}
       >
-        <option value="" className="bg-white text-primary normal-case font-normal tracking-normal">
+        <option
+          value=""
+          className="bg-white text-primary normal-case font-normal tracking-normal"
+        >
           {placeholder}
         </option>
         {options.map((opt) => (
@@ -256,8 +242,6 @@ function FilterDropdown({
     </div>
   );
 }
-
-// ─── Pagination ───────────────────────────────────────────────────────────────
 
 function Pagination({
   meta,
@@ -347,33 +331,35 @@ function Pagination({
   );
 }
 
-// ─── Page State (useReducer) ──────────────────────────────────────────────────
-
 interface PageState {
-  // data
   portfolios: Portfolio[];
   paginationMeta: PaginationMeta | null;
   isLoading: boolean;
-  // filters
+
   searchTerm: string;
   debouncedSearch: string;
   filterDestination: string;
   filterVenue: string;
   filterExperience: string;
   currentPage: number;
-  // delete state machine
+
   deleteStatus: "idle" | "confirm" | "deleting";
   deleteTarget: Portfolio | null;
-  // faceted filter options (satu request, bukan tiga)
+
   filters: PortfolioFilters;
   isFiltersLoading: boolean;
-  // cached counts per experience untuk stat cards
+
   experienceCounts: Record<string, number>;
 }
 
 type PageAction =
   | { type: "FETCH_PORTFOLIOS_START" }
-  | { type: "FETCH_PORTFOLIOS_SUCCESS"; portfolios: Portfolio[]; meta: PaginationMeta | null; experienceFilter: string }
+  | {
+      type: "FETCH_PORTFOLIOS_SUCCESS";
+      portfolios: Portfolio[];
+      meta: PaginationMeta | null;
+      experienceFilter: string;
+    }
   | { type: "FETCH_PORTFOLIOS_ERROR" }
   | { type: "SET_FILTERS"; filters: PortfolioFilters }
   | { type: "FILTERS_LOADED" }
@@ -419,8 +405,7 @@ function pageReducer(state: PageState, action: PageAction): PageState {
         isLoading: false,
         portfolios: action.portfolios,
         paginationMeta: action.meta,
-        // Cache total untuk filter experience yang sedang aktif.
-        // Dipakai di stat cards tanpa perlu refetch.
+
         experienceCounts: {
           ...state.experienceCounts,
           [action.experienceFilter]: action.meta?.total ?? 0,
@@ -446,7 +431,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, searchTerm: action.value };
 
     case "SET_DEBOUNCED_SEARCH":
-      // Search baru → selalu kembali ke halaman 1
       return { ...state, debouncedSearch: action.value, currentPage: 1 };
 
     case "SET_DESTINATION":
@@ -472,10 +456,13 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       };
 
     case "OPEN_DELETE":
-      return { ...state, deleteTarget: action.portfolio, deleteStatus: "confirm" };
+      return {
+        ...state,
+        deleteTarget: action.portfolio,
+        deleteStatus: "confirm",
+      };
 
     case "CLOSE_DELETE":
-      // Blokir close saat delete sedang berjalan
       return state.deleteStatus === "deleting"
         ? state
         : { ...state, deleteTarget: null, deleteStatus: "idle" };
@@ -487,7 +474,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, deleteTarget: null, deleteStatus: "idle" };
 
     case "DELETE_ERROR":
-      // Kembalikan ke confirm agar user bisa retry atau cancel
       return { ...state, deleteStatus: "confirm" };
 
     default:
@@ -495,28 +481,30 @@ function pageReducer(state: PageState, action: PageAction): PageState {
   }
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DashboardPortfolioPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
 
   const {
-    portfolios, paginationMeta, isLoading,
-    searchTerm, debouncedSearch,
-    filterDestination, filterVenue, filterExperience,
+    portfolios,
+    paginationMeta,
+    isLoading,
+    searchTerm,
+    debouncedSearch,
+    filterDestination,
+    filterVenue,
+    filterExperience,
     currentPage,
-    deleteStatus, deleteTarget,
-    filters, isFiltersLoading,
+    deleteStatus,
+    deleteTarget,
+    filters,
+    isFiltersLoading,
     experienceCounts,
   } = state;
 
-  // ── useRef: timer debounce — mutasi ref tidak memicu re-render ──
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── useRef: AbortController — batalkan fetch lama saat deps berubah ──
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search: dispatch SET_DEBOUNCED_SEARCH 400ms setelah berhenti mengetik ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -527,7 +515,6 @@ export default function DashboardPortfolioPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch semua filter options sekaligus (satu request, bukan tiga) ──
   useEffect(() => {
     const fetchFilters = async () => {
       try {
@@ -537,8 +524,6 @@ export default function DashboardPortfolioPage() {
         const portfolioFilters = data.data;
         dispatch({ type: "SET_FILTERS", filters: portfolioFilters });
 
-        // Pre-fetch count per experience secara paralel agar stat cards
-        // langsung menampilkan angka real tanpa user harus klik satu per satu.
         if (portfolioFilters.experiences.length > 0) {
           const countResults = await Promise.allSettled(
             portfolioFilters.experiences.map((exp) =>
@@ -546,7 +531,10 @@ export default function DashboardPortfolioPage() {
                 .get<{ meta: PaginationMeta }>("/api/portfolios", {
                   params: { page: 1, limit: 1, experienceId: exp.id },
                 })
-                .then((res) => ({ id: exp.id, total: res.data.meta?.total ?? 0 })),
+                .then((res) => ({
+                  id: exp.id,
+                  total: res.data.meta?.total ?? 0,
+                })),
             ),
           );
 
@@ -567,21 +555,20 @@ export default function DashboardPortfolioPage() {
     fetchFilters();
   }, []);
 
-  // ── Fetch portfolios (paginated, searched, filtered) ──
-  // useCallback memastikan getPortfolios hanya dibuat ulang saat deps benar-benar berubah,
-  // sehingga useEffect di bawah tidak loop tanpa sebab.
   const getPortfolios = useCallback(async () => {
-    // Batalkan request sebelumnya untuk mencegah race condition
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
     dispatch({ type: "FETCH_PORTFOLIOS_START" });
     try {
-      const params: Record<string, unknown> = { page: currentPage, limit: LIMIT };
-      if (debouncedSearch)   params.search        = debouncedSearch;
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        limit: LIMIT,
+      };
+      if (debouncedSearch) params.search = debouncedSearch;
       if (filterDestination) params.destinationId = filterDestination;
-      if (filterVenue)       params.venueId       = filterVenue;
-      if (filterExperience)  params.experienceId  = filterExperience;
+      if (filterVenue) params.venueId = filterVenue;
+      if (filterExperience) params.experienceId = filterExperience;
 
       const response = await axios.get("/api/portfolios", {
         params,
@@ -595,7 +582,6 @@ export default function DashboardPortfolioPage() {
         experienceFilter: filterExperience,
       });
     } catch (err) {
-      // Abort yang disengaja tidak dianggap error — langsung return
       if (axios.isCancel(err)) return;
       const errorMsg = axios.isAxiosError(err)
         ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
@@ -605,14 +591,18 @@ export default function DashboardPortfolioPage() {
       toast.error("Failed to load portfolios", { description: errorMsg });
       dispatch({ type: "FETCH_PORTFOLIOS_ERROR" });
     }
-  }, [currentPage, debouncedSearch, filterDestination, filterVenue, filterExperience]);
+  }, [
+    currentPage,
+    debouncedSearch,
+    filterDestination,
+    filterVenue,
+    filterExperience,
+  ]);
 
   useEffect(() => {
     getPortfolios();
   }, [getPortfolios]);
 
-  // ── Filter change handlers ──
-  // useCallback dengan deps [] karena hanya memanggil dispatch (referensi stabil)
   const handleDestinationChange = useCallback(
     (id: string) => dispatch({ type: "SET_DESTINATION", id }),
     [],
@@ -633,7 +623,6 @@ export default function DashboardPortfolioPage() {
     [],
   );
 
-  // ── Delete flow ──
   const openDeleteModal = useCallback(
     (portfolio: Portfolio) => dispatch({ type: "OPEN_DELETE", portfolio }),
     [],
@@ -654,7 +643,6 @@ export default function DashboardPortfolioPage() {
       const isLastOnPage = portfolios.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
       if (isLastOnPage) {
-        // Mundur satu halaman agar tidak landing di halaman kosong
         dispatch({ type: "SET_PAGE", page: currentPage - 1 });
       } else {
         getPortfolios();
@@ -665,9 +653,6 @@ export default function DashboardPortfolioPage() {
       dispatch({ type: "DELETE_ERROR" });
     }
   }, [deleteTarget, portfolios.length, currentPage, getPortfolios]);
-
-  // ── useMemo: derived values & dropdown options ──
-  // Hanya dihitung ulang saat deps spesifiknya berubah, bukan setiap render
 
   const totalCount = useMemo(
     () => paginationMeta?.total ?? 0,
@@ -698,7 +683,6 @@ export default function DashboardPortfolioPage() {
     [filters.experiences],
   );
 
-  // Stat cards: "Total" + satu kartu per experience
   const statCards = useMemo(
     () => [
       { id: "", label: "Total" },
@@ -709,7 +693,6 @@ export default function DashboardPortfolioPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -736,7 +719,6 @@ export default function DashboardPortfolioPage() {
         </Link>
       </div>
 
-      {/* ── Stats Row ── */}
       {isFiltersLoading ? (
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -787,16 +769,16 @@ export default function DashboardPortfolioPage() {
         )
       )}
 
-      {/* ── Search & Filter Bar ── */}
       <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center flex-wrap">
-        {/* Search */}
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
             type="text"
             placeholder="Search by couple, venue, destination, or tag…"
             value={searchTerm}
-            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
             className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (
@@ -809,10 +791,8 @@ export default function DashboardPortfolioPage() {
           )}
         </div>
 
-        {/* Divider */}
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
-        {/* Filter Dropdowns */}
         <div className="flex gap-2 items-stretch h-[42px]">
           <FilterDropdown
             value={filterDestination}
@@ -837,7 +817,6 @@ export default function DashboardPortfolioPage() {
           />
         </div>
 
-        {/* Clear all */}
         {hasActiveFilters && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
@@ -852,7 +831,6 @@ export default function DashboardPortfolioPage() {
         )}
       </div>
 
-      {/* ── Results Info ── */}
       {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} portfolio
@@ -867,7 +845,6 @@ export default function DashboardPortfolioPage() {
         </p>
       )}
 
-      {/* ── Grid ── */}
       {isLoading ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {Array.from({ length: LIMIT }).map((_, i) => (
@@ -908,7 +885,6 @@ export default function DashboardPortfolioPage() {
         </div>
       )}
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
         <Pagination
           meta={paginationMeta}
@@ -916,7 +892,6 @@ export default function DashboardPortfolioPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
         deleteTarget && (
           <DeleteModal

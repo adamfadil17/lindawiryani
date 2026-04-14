@@ -2,8 +2,6 @@ import axios from "axios";
 import type { WeddingExperience } from "@/types";
 import { WeddingExperiencesPage } from "./_components/wedding-experiences-page";
 
-// ─── Data fetching ────────────────────────────────────────────────────────────
-
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 async function fetchAllExperiences(): Promise<WeddingExperience[]> {
@@ -16,8 +14,6 @@ async function fetchAllExperiences(): Promise<WeddingExperience[]> {
     return [];
   }
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function Page() {
   const experiences = await fetchAllExperiences();

@@ -10,30 +10,18 @@ import {
   MapPin,
   Users,
   ChevronDown,
+  Loader2,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { venueList } from "@/lib/data/venue-data";
 import { weddingExperienceList } from "@/lib/data/wedding-experience-data";
 import { weddingThemeList } from "@/lib/data/wedding-theme-data";
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import type { Venue, Currency } from "@/types";
-
-// ─── Derived data ─────────────────────────────────────────────────────────────
+import { useVenueFilters } from "@/hook/useVenueFilters";
 
 const elopementThemes = weddingThemeList.filter((t) => t.type === "ELOPEMENT");
 const intimateThemes = weddingThemeList.filter((t) => t.type === "INTIMATE");
 
-// Semua nama destinasi unik dari venueList, diawali "All"
-const locations = [
-  "All",
-  ...Array.from(
-    new Set(
-      venueList.map((v) => v.destination?.name).filter(Boolean) as string[],
-    ),
-  ),
-];
-
-// Mapping slug experience → label tampilan
 const EXPERIENCE_LABEL_MAP: Record<string, string> = {
   "private-villa-weddings": "Private Villa Weddings",
   "intimate-weddings": "Intimate Weddings",
@@ -41,7 +29,6 @@ const EXPERIENCE_LABEL_MAP: Record<string, string> = {
   "luxury-weddings": "Luxury Weddings",
 };
 
-// Deskripsi per kategori (experience.category sebagai key)
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   luxury_weddings:
     "A curated selection of venues known for distinctive architecture, setting, and experience.",
@@ -52,8 +39,6 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   intimate_weddings:
     "Thoughtfully curated venues for scaled celebrations — connection, elegance, and refined hospitality.",
 };
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const formatPrice = (
   price: number | undefined,
@@ -67,8 +52,6 @@ const formatPrice = (
   }
   return finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-
-// ─── VenueCard ────────────────────────────────────────────────────────────────
 
 interface VenueCardProps {
   venue: Venue;
@@ -141,8 +124,6 @@ function VenueCard({
   );
 }
 
-// ─── NoVenuesFound ────────────────────────────────────────────────────────────
-
 function NoVenuesFound({
   selectedLocation,
   selectedExperienceLabel,
@@ -173,7 +154,15 @@ function NoVenuesFound({
   );
 }
 
-// ─── VenuesSection ────────────────────────────────────────────────────────────
+function VenueListSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="aspect-[4/5] bg-primary/10 animate-pulse" />
+      ))}
+    </div>
+  );
+}
 
 interface VenuesSectionProps {
   isMobile: boolean;
@@ -192,62 +181,47 @@ export default function VenuesSection({
   externalSelectedVenue,
   onExternalModalClose,
 }: VenuesSectionProps) {
-  // State filter experience berdasarkan slug dari weddingExperienceList
-  const [selectedExperienceSlug, setSelectedExperienceSlug] = useState<string>(
-    weddingExperienceList[0]?.slug ?? "",
-  );
-  const [selectedLocation, setSelectedLocation] = useState("All");
+  const {
+    experiences,
+    venues: filteredVenues,
+    locations,
+    selectedExperienceSlug,
+    selectedLocation,
+    setSelectedExperienceSlug,
+    setSelectedLocation,
+    selectedExperience,
+    totalVenuesCount,
+    isLoadingExperiences,
+    isLoadingVenues,
+    venuesError,
+  } = useVenueFilters();
+
   const [selectedCurrencyLocal, setSelectedCurrencyLocal] =
     useState<Currency>(selectedCurrency);
   const [isExperienceDropdownOpen, setIsExperienceDropdownOpen] =
     useState(false);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
-
   const [visibleCount, setVisibleCount] = useState(6);
   const [currentVenueSlide, setCurrentVenueSlide] = useState(0);
   const [selectedVenueForModal, setSelectedVenueForModal] =
     useState<Venue | null>(null);
 
-  // Sync venue yang dipilih dari luar (mis. ThemeDetailModal)
   useEffect(() => {
     if (externalSelectedVenue) {
       setSelectedVenueForModal(externalSelectedVenue);
     }
   }, [externalSelectedVenue]);
 
-  // Reset posisi & pagination saat filter berubah
   useEffect(() => {
     setCurrentVenueSlide(0);
     setVisibleCount(6);
   }, [selectedLocation, selectedExperienceSlug]);
 
-  // Cari experience yang sedang dipilih
-  const selectedExperience = useMemo(
-    () => weddingExperienceList.find((e) => e.slug === selectedExperienceSlug),
-    [selectedExperienceSlug],
-  );
-
-  // Filter venue: cocokkan experience_id, lalu filter destination
-  const filteredVenues = useMemo(() => {
-    if (!selectedExperience) return [];
-
-    let list = venueList.filter(
-      (v) => v.experience_id === selectedExperience.id,
-    );
-
-    if (selectedLocation !== "All") {
-      list = list.filter((v) => v.destination?.name === selectedLocation);
-    }
-
-    return list;
-  }, [selectedExperience, selectedLocation]);
-
   const visibleVenues = useMemo(
     () => (isMobile ? filteredVenues : filteredVenues.slice(0, visibleCount)),
     [filteredVenues, visibleCount, isMobile],
   );
-  const totalVenuesCount = filteredVenues.length;
   const hasMoreVenues = visibleCount < totalVenuesCount;
 
   const nextVenueSlide = () =>
@@ -262,13 +236,11 @@ export default function VenuesSection({
     onExternalModalClose?.();
   };
 
-  // Label tampilan untuk experience yang dipilih
   const selectedExperienceLabel =
     EXPERIENCE_LABEL_MAP[selectedExperienceSlug] ??
     selectedExperience?.name ??
     "";
 
-  // Deskripsi kategori berdasarkan experience.category
   const categoryDescription =
     CATEGORY_DESCRIPTIONS[selectedExperience?.category ?? ""] ?? "";
 
@@ -283,7 +255,6 @@ export default function VenuesSection({
         variants={staggerContainer}
       >
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-          {/* Section Header */}
           <motion.div
             variants={fadeInUp}
             className="mb-14 lg:mb-20 grid lg:grid-cols-12 gap-8"
@@ -306,9 +277,7 @@ export default function VenuesSection({
             </div>
           </motion.div>
 
-          {/* Wedding Experiences — card grid dari weddingExperienceList */}
           <motion.div className="mb-16" variants={fadeInUp}>
-            {/* Desktop: 3 kartu pertama di atas, 1 kartu penuh di bawah */}
             <div className="hidden lg:grid grid-cols-3 gap-px mb-px bg-white/10">
               {weddingExperienceList.slice(0, 3).map((exp, i) => (
                 <Link
@@ -350,7 +319,6 @@ export default function VenuesSection({
               ))}
             </div>
 
-            {/* Desktop: kartu ke-4 (jika ada) — full width */}
             {weddingExperienceList[3] && (
               <div className="hidden lg:block mb-14">
                 <Link
@@ -398,7 +366,6 @@ export default function VenuesSection({
               </div>
             )}
 
-            {/* Mobile & Tablet: semua kartu full-width stacked */}
             <div className="flex flex-col gap-px lg:hidden mb-8 sm:mb-10 md:mb-12">
               {weddingExperienceList.map((exp, i) => (
                 <Link
@@ -440,54 +407,57 @@ export default function VenuesSection({
               ))}
             </div>
 
-            {/* ── Filters ─────────────────────────────────────────────── */}
             <motion.div
               variants={fadeInUp}
               className="flex items-center justify-center gap-4 md:gap-6 lg:gap-8 mb-4 mt-8 sm:mt-10 lg:mt-0 flex-wrap"
             >
-              {/* Experience Filter — dari weddingExperienceList */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   EXPERIENCE
                 </span>
                 <div className="relative">
-                  <button
-                    onClick={() =>
-                      setIsExperienceDropdownOpen(!isExperienceDropdownOpen)
-                    }
-                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
-                  >
-                    <span>{selectedExperienceLabel}</span>
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform ${
-                        isExperienceDropdownOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                  {isExperienceDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[200px]">
-                      {weddingExperienceList.map((exp) => (
-                        <button
-                          key={exp.slug}
-                          onClick={() => {
-                            setSelectedExperienceSlug(exp.slug);
-                            setIsExperienceDropdownOpen(false);
-                          }}
-                          className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
-                            selectedExperienceSlug === exp.slug
-                              ? "bg-primary text-white"
-                              : "text-primary hover:bg-stone-100"
+                  {isLoadingExperiences ? (
+                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                  ) : (
+                    <>
+                      <button
+                        onClick={() =>
+                          setIsExperienceDropdownOpen(!isExperienceDropdownOpen)
+                        }
+                        className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
+                      >
+                        <span>{selectedExperienceLabel}</span>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${
+                            isExperienceDropdownOpen ? "rotate-180" : ""
                           }`}
-                        >
-                          {EXPERIENCE_LABEL_MAP[exp.slug] ?? exp.name}
-                        </button>
-                      ))}
-                    </div>
+                        />
+                      </button>
+                      {isExperienceDropdownOpen && (
+                        <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[200px]">
+                          {experiences.map((exp) => (
+                            <button
+                              key={exp.slug}
+                              onClick={() => {
+                                setSelectedExperienceSlug(exp.slug);
+                                setIsExperienceDropdownOpen(false);
+                              }}
+                              className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
+                                selectedExperienceSlug === exp.slug
+                                  ? "bg-primary text-white"
+                                  : "text-primary hover:bg-stone-100"
+                              }`}
+                            >
+                              {EXPERIENCE_LABEL_MAP[exp.slug] ?? exp.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
 
-              {/* Location Filter — dari destination venue */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   LOCATION
@@ -529,7 +499,6 @@ export default function VenuesSection({
                 </div>
               </div>
 
-              {/* Currency Filter */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
                   CURRENCY
@@ -584,7 +553,6 @@ export default function VenuesSection({
             </motion.p>
           </motion.div>
 
-          {/* Venue Cards */}
           <div id="venue-list-container" className="mb-24">
             <div className="mb-12 text-center">
               <AnimatePresence mode="wait">
@@ -601,13 +569,24 @@ export default function VenuesSection({
               </AnimatePresence>
             </div>
 
-            {/* ── No Venues Found State ── */}
-            {filteredVenues.length === 0 ? (
+            {isLoadingVenues ? (
+              <VenueListSkeleton />
+            ) : venuesError ? (
+              <motion.div
+                variants={fadeInUp}
+                initial="hidden"
+                animate="visible"
+                className="flex flex-col items-center justify-center py-24 text-center"
+              >
+                <p className="text-primary/60 text-sm">{venuesError}</p>
+              </motion.div>
+            ) : filteredVenues.length === 0 ? (
               <NoVenuesFound
                 selectedLocation={selectedLocation}
                 selectedExperienceLabel={selectedExperienceLabel}
               />
             ) : isMobile ? (
+              /* Mobile slider */
               <div className="relative">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -660,6 +639,7 @@ export default function VenuesSection({
                 )}
               </div>
             ) : (
+              /* Desktop grid */
               <>
                 <div
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -701,7 +681,6 @@ export default function VenuesSection({
         </div>
       </motion.section>
 
-      {/* Modal — pass elopementThemes & intimateThemes sesuai pola wedding-experiences-detail */}
       {selectedVenueForModal && (
         <VenueDetailModal
           venue={selectedVenueForModal}

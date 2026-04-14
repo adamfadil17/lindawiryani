@@ -20,38 +20,42 @@ import DeleteModal from "@/components/shared/delete-modal";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import type { PaginationMeta } from "@/lib/api-response";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const LIMIT = 6;
 
 const STAT_CATEGORIES = [
-  { id: "luxury_weddings",        label: "Luxury",       color: "border-l-amber-400"  },
-  { id: "private_villa_weddings", label: "Private Villa", color: "border-l-teal-400"   },
-  { id: "intimate_weddings",      label: "Intimate",     color: "border-l-violet-400" },
-  { id: "elopement_weddings",     label: "Elopement",    color: "border-l-rose-400"   },
+  { id: "luxury_weddings", label: "Luxury", color: "border-l-amber-400" },
+  {
+    id: "private_villa_weddings",
+    label: "Private Villa",
+    color: "border-l-teal-400",
+  },
+  { id: "intimate_weddings", label: "Intimate", color: "border-l-violet-400" },
+  { id: "elopement_weddings", label: "Elopement", color: "border-l-rose-400" },
 ] as const;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 const categoryColor: Record<string, { badge: string; dot: string }> = {
-  luxury_weddings:        { badge: "bg-amber-500 text-white",  dot: "bg-amber-400"  },
-  private_villa_weddings: { badge: "bg-teal-500 text-white",   dot: "bg-teal-400"   },
-  intimate_weddings:      { badge: "bg-violet-500 text-white", dot: "bg-violet-400" },
-  elopement_weddings:     { badge: "bg-rose-500 text-white",   dot: "bg-rose-400"   },
+  luxury_weddings: { badge: "bg-amber-500 text-white", dot: "bg-amber-400" },
+  private_villa_weddings: {
+    badge: "bg-teal-500 text-white",
+    dot: "bg-teal-400",
+  },
+  intimate_weddings: {
+    badge: "bg-violet-500 text-white",
+    dot: "bg-violet-400",
+  },
+  elopement_weddings: { badge: "bg-rose-500 text-white", dot: "bg-rose-400" },
 };
 
 function categoryLabel(id: string) {
   return (
     {
-      luxury_weddings:        "Luxury",
+      luxury_weddings: "Luxury",
       private_villa_weddings: "Private Villa",
-      intimate_weddings:      "Intimate",
-      elopement_weddings:     "Elopement",
+      intimate_weddings: "Intimate",
+      elopement_weddings: "Elopement",
     }[id] ?? id
   );
 }
-
-// ─── Experience Card ──────────────────────────────────────────────────────────
 
 function ExperienceCard({
   exp,
@@ -62,20 +66,18 @@ function ExperienceCard({
 }) {
   const venueCount = exp.venues?.length ?? 0;
   const themeCount = exp.themes?.length ?? 0;
-  const faqCount   = exp.faqs?.length   ?? 0;
+  const faqCount = exp.faqs?.length ?? 0;
 
   const colors = categoryColor[exp.category] ?? {
     badge: "bg-primary text-white",
-    dot:   "bg-primary",
+    dot: "bg-primary",
   };
 
   return (
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
-      {/* Top color bar */}
       <div className={`h-1 w-full ${colors.dot}`} />
 
       <div className="p-6">
-        {/* Header row */}
         <div className="flex items-start justify-between gap-3 mb-4">
           <div>
             <span
@@ -90,23 +92,23 @@ function ExperienceCard({
           </div>
         </div>
 
-        {/* Hero desc */}
         <p className="text-primary/80 text-sm leading-relaxed line-clamp-2 mb-5">
           {exp.hero_desc}
         </p>
 
-        {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-5">
           {[
             { label: "Venues", value: venueCount },
             { label: "Themes", value: themeCount },
-            { label: "FAQs",   value: faqCount   },
+            { label: "FAQs", value: faqCount },
           ].map((stat) => (
             <div
               key={stat.label}
               className="bg-primary/5 border border-primary/10 p-3 text-center"
             >
-              <p className="text-2xl font-semibold text-primary">{stat.value}</p>
+              <p className="text-2xl font-semibold text-primary">
+                {stat.value}
+              </p>
               <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40">
                 {stat.label}
               </p>
@@ -114,19 +116,19 @@ function ExperienceCard({
           ))}
         </div>
 
-        {/* Sections preview */}
         <div className="flex flex-wrap gap-1.5 mb-5">
-          {["Hero", "Intro", "Approach", "Services", "Closing", "FAQs"].map((s) => (
-            <span
-              key={s}
-              className="text-[10px] tracking-[0.2em] uppercase px-2 py-0.5 bg-primary/5 text-primary/40 border border-primary/15"
-            >
-              {s}
-            </span>
-          ))}
+          {["Hero", "Intro", "Approach", "Services", "Closing", "FAQs"].map(
+            (s) => (
+              <span
+                key={s}
+                className="text-[10px] tracking-[0.2em] uppercase px-2 py-0.5 bg-primary/5 text-primary/40 border border-primary/15"
+              >
+                {s}
+              </span>
+            ),
+          )}
         </div>
 
-        {/* Divider + actions */}
         <div className="border-t border-primary/20 pt-4 flex items-center justify-between">
           <span className="text-[10px] text-primary/40 tracking-wider font-mono truncate max-w-[120px]">
             {exp.slug}
@@ -161,8 +163,6 @@ function ExperienceCard({
   );
 }
 
-// ─── Skeleton Card ────────────────────────────────────────────────────────────
-
 function SkeletonCard() {
   return (
     <div className="bg-white border border-primary/20 animate-pulse">
@@ -180,8 +180,6 @@ function SkeletonCard() {
     </div>
   );
 }
-
-// ─── Pagination ───────────────────────────────────────────────────────────────
 
 function Pagination({
   meta,
@@ -201,9 +199,13 @@ function Pagination({
       range.push(1, "...", ...pages.slice(meta.totalPages - 5));
     } else {
       range.push(
-        1, "...",
-        meta.page - 1, meta.page, meta.page + 1,
-        "...", meta.totalPages,
+        1,
+        "...",
+        meta.page - 1,
+        meta.page,
+        meta.page + 1,
+        "...",
+        meta.totalPages,
       );
     }
     return range;
@@ -267,8 +269,6 @@ function Pagination({
   );
 }
 
-// ─── Page State (useReducer) ──────────────────────────────────────────────────
-
 interface PageState {
   experiences: WeddingExperience[];
   paginationMeta: PaginationMeta | null;
@@ -282,7 +282,11 @@ interface PageState {
 
 type PageAction =
   | { type: "FETCH_START" }
-  | { type: "FETCH_SUCCESS"; experiences: WeddingExperience[]; meta: PaginationMeta | null }
+  | {
+      type: "FETCH_SUCCESS";
+      experiences: WeddingExperience[];
+      meta: PaginationMeta | null;
+    }
   | { type: "FETCH_ERROR" }
   | { type: "SET_SEARCH"; value: string }
   | { type: "SET_DEBOUNCED_SEARCH"; value: string }
@@ -324,7 +328,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, search: action.value };
 
     case "SET_DEBOUNCED_SEARCH":
-      // Search baru selalu kembali ke halaman 1
       return { ...state, debouncedSearch: action.value, currentPage: 1 };
 
     case "SET_PAGE":
@@ -334,7 +337,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, deleteTarget: action.exp, deleteStatus: "confirm" };
 
     case "CLOSE_DELETE":
-      // Blokir close saat delete sedang berjalan
       return state.deleteStatus === "deleting"
         ? state
         : { ...state, deleteTarget: null, deleteStatus: "idle" };
@@ -346,7 +348,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, deleteTarget: null, deleteStatus: "idle" };
 
     case "DELETE_ERROR":
-      // Kembalikan ke confirm agar user bisa retry atau cancel
       return { ...state, deleteStatus: "confirm" };
 
     default:
@@ -354,24 +355,24 @@ function pageReducer(state: PageState, action: PageAction): PageState {
   }
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DashboardExperiencesPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
 
   const {
-    experiences, paginationMeta, isLoading,
-    search, debouncedSearch, currentPage,
-    deleteStatus, deleteTarget,
+    experiences,
+    paginationMeta,
+    isLoading,
+    search,
+    debouncedSearch,
+    currentPage,
+    deleteStatus,
+    deleteTarget,
   } = state;
 
-  // ── useRef: debounce timer — mutasi ref tidak memicu re-render ──
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── useRef: AbortController — batalkan fetch lama saat deps berubah ──
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search: dispatch SET_DEBOUNCED_SEARCH 400ms setelah berhenti mengetik ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -382,17 +383,16 @@ export default function DashboardExperiencesPage() {
     };
   }, [search]);
 
-  // ── Fetch experiences ──
-  // useCallback memastikan fungsi hanya dibuat ulang saat deps benar-benar berubah,
-  // sehingga useEffect di bawah tidak loop tanpa sebab.
   const getExperiences = useCallback(async () => {
-    // Batalkan request sebelumnya untuk mencegah race condition
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
     dispatch({ type: "FETCH_START" });
     try {
-      const params: Record<string, unknown> = { page: currentPage, limit: LIMIT };
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        limit: LIMIT,
+      };
       if (debouncedSearch) params.search = debouncedSearch;
 
       const response = await axios.get("/api/wedding-experiences", {
@@ -406,7 +406,6 @@ export default function DashboardExperiencesPage() {
         meta: response.data.meta ?? null,
       });
     } catch (err) {
-      // Abort yang disengaja tidak dianggap error — langsung return
       if (axios.isCancel(err)) return;
       const errorMsg =
         axios.isAxiosError(err) && err.response?.data?.message
@@ -423,8 +422,6 @@ export default function DashboardExperiencesPage() {
     getExperiences();
   }, [getExperiences]);
 
-  // ── Delete flow ──
-  // useCallback dengan deps [] karena hanya memanggil dispatch (referensi stabil)
   const openDeleteModal = useCallback(
     (exp: WeddingExperience) => dispatch({ type: "OPEN_DELETE", exp }),
     [],
@@ -448,7 +445,6 @@ export default function DashboardExperiencesPage() {
         description: "The experience has been removed from the system.",
       });
       if (isLastOnPage) {
-        // Mundur satu halaman agar tidak landing di halaman kosong
         dispatch({ type: "SET_PAGE", page: currentPage - 1 });
       } else {
         getExperiences();
@@ -465,22 +461,15 @@ export default function DashboardExperiencesPage() {
     }
   }, [deleteTarget, experiences.length, currentPage, getExperiences]);
 
-  // ── useMemo: derived values ──
-
   const totalCount = useMemo(
     () => paginationMeta?.total ?? 0,
     [paginationMeta],
   );
 
-  // Dipakai untuk kondisi "X results" di search bar dan empty state
-  const hasActiveSearch = useMemo(
-    () => !!debouncedSearch,
-    [debouncedSearch],
-  );
+  const hasActiveSearch = useMemo(() => !!debouncedSearch, [debouncedSearch]);
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -506,7 +495,6 @@ export default function DashboardExperiencesPage() {
         </Link>
       </div>
 
-      {/* ── Stats Row ── */}
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {STAT_CATEGORIES.map((stat) => (
@@ -534,7 +522,9 @@ export default function DashboardExperiencesPage() {
                 <p className="text-xs tracking-[0.2em] uppercase text-primary/60 mb-1.5">
                   {stat.label}
                 </p>
-                <p className="text-2xl font-semibold text-primary">{venueCount}</p>
+                <p className="text-2xl font-semibold text-primary">
+                  {venueCount}
+                </p>
                 <p className="text-[10px] text-primary/40 tracking-wider mt-0.5">
                   venues
                 </p>
@@ -544,7 +534,6 @@ export default function DashboardExperiencesPage() {
         </div>
       )}
 
-      {/* ── Search Bar ── */}
       <div className="bg-white border border-primary/20 p-3 mb-6 flex gap-2 items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
@@ -552,7 +541,9 @@ export default function DashboardExperiencesPage() {
             type="text"
             placeholder="Search experiences…"
             value={search}
-            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
             className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {search && (
@@ -571,7 +562,6 @@ export default function DashboardExperiencesPage() {
         )}
       </div>
 
-      {/* ── Grid ── */}
       {isLoading ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
           {Array.from({ length: LIMIT }).map((_, i) => (
@@ -610,7 +600,6 @@ export default function DashboardExperiencesPage() {
         </div>
       )}
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
         <Pagination
           meta={paginationMeta}
@@ -618,7 +607,6 @@ export default function DashboardExperiencesPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
       {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
         deleteTarget && (
           <DeleteModal

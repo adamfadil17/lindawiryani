@@ -9,7 +9,6 @@ import {
   Pencil,
   Trash2,
   X,
-  Users,
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
@@ -22,15 +21,9 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const LIMIT = 10;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 type RoleFilter = "all" | Role;
-
-// ─── Skeleton ────────────────────────────────────────────────────────────────
 
 function SkeletonRow() {
   return (
@@ -69,8 +62,6 @@ function SkeletonStatCard() {
   );
 }
 
-// ─── Role Badge ───────────────────────────────────────────────────────────────
-
 const roleBadgeClass: Record<Role, string> = {
   admin: "bg-violet-50 text-violet-700 border border-violet-200",
   editor: "bg-amber-50 text-amber-700 border border-amber-200",
@@ -87,8 +78,6 @@ function RoleBadge({ role }: { role: Role }) {
     </span>
   );
 }
-
-// ─── User Row ─────────────────────────────────────────────────────────────────
 
 function UserRow({
   user,
@@ -112,7 +101,6 @@ function UserRow({
 
   return (
     <tr className="border-b border-primary/10 hover:bg-primary/[0.02] transition-colors group">
-      {/* Name + email */}
       <td className="px-5 py-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -129,19 +117,16 @@ function UserRow({
         </div>
       </td>
 
-      {/* Role */}
       <td className="px-5 py-4">
         <RoleBadge role={user.role} />
       </td>
 
-      {/* Created at */}
       <td className="px-5 py-4">
         <span className="text-xs text-primary/50 tracking-wider">
           {formattedDate}
         </span>
       </td>
 
-      {/* Actions */}
       <td className="px-5 py-4">
         <div className="flex items-center gap-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
           <Link
@@ -163,8 +148,6 @@ function UserRow({
     </tr>
   );
 }
-
-// ─── Filter Dropdown ──────────────────────────────────────────────────────────
 
 function FilterDropdown({
   value,
@@ -207,8 +190,6 @@ function FilterDropdown({
   );
 }
 
-// ─── Pagination ───────────────────────────────────────────────────────────────
-
 function Pagination({
   meta,
   onPageChange,
@@ -226,7 +207,15 @@ function Pagination({
     } else if (meta.page >= meta.totalPages - 3) {
       range.push(1, "...", ...pages.slice(meta.totalPages - 5));
     } else {
-      range.push(1, "...", meta.page - 1, meta.page, meta.page + 1, "...", meta.totalPages);
+      range.push(
+        1,
+        "...",
+        meta.page - 1,
+        meta.page,
+        meta.page + 1,
+        "...",
+        meta.totalPages,
+      );
     }
     return range;
   };
@@ -238,7 +227,8 @@ function Pagination({
       <p className="text-primary/60 text-xs tracking-wider">
         Showing{" "}
         <span className="text-primary font-medium">
-          {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
+          {(meta.page - 1) * meta.limit + 1}–
+          {Math.min(meta.page * meta.limit, meta.total)}
         </span>{" "}
         of <span className="text-primary font-medium">{meta.total}</span> users
       </p>
@@ -287,22 +277,19 @@ function Pagination({
   );
 }
 
-// ─── Page State (useReducer) ──────────────────────────────────────────────────
-
 interface PageState {
-  // data
   users: User[];
   paginationMeta: PaginationMeta | null;
   isLoading: boolean;
-  // filters
+
   searchTerm: string;
   debouncedSearch: string;
   roleFilter: RoleFilter;
   currentPage: number;
-  // delete state machine
+
   deleteStatus: "idle" | "confirm" | "deleting";
   deleteTarget: User | null;
-  // cached counts per role
+
   roleCounts: Partial<Record<RoleFilter, number>>;
   isCountsLoading: boolean;
 }
@@ -352,7 +339,10 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "FETCH_USERS_ERROR":
       return { ...state, isLoading: false };
     case "SET_ROLE_COUNTS":
-      return { ...state, roleCounts: { ...state.roleCounts, ...action.counts } };
+      return {
+        ...state,
+        roleCounts: { ...state.roleCounts, ...action.counts },
+      };
     case "COUNTS_LOADED":
       return { ...state, isCountsLoading: false };
     case "SET_SEARCH":
@@ -382,25 +372,27 @@ function pageReducer(state: PageState, action: PageAction): PageState {
   }
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DashboardUsersPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
 
   const {
-    users, paginationMeta, isLoading,
-    searchTerm, debouncedSearch, roleFilter, currentPage,
-    deleteStatus, deleteTarget,
-    roleCounts, isCountsLoading,
+    users,
+    paginationMeta,
+    isLoading,
+    searchTerm,
+    debouncedSearch,
+    roleFilter,
+    currentPage,
+    deleteStatus,
+    deleteTarget,
+    roleCounts,
+    isCountsLoading,
   } = state;
 
-  // ── useRef: debounce timer ──
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── useRef: AbortController untuk batalkan request venues yang sedang berjalan ──
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search: set debouncedSearch 400ms setelah user berhenti mengetik ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -411,7 +403,6 @@ export default function DashboardUsersPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch role counts sekali saat mount untuk stat cards ──
   useEffect(() => {
     const fetchCounts = async () => {
       const roles: Role[] = ["admin", "editor", "user"];
@@ -423,8 +414,8 @@ export default function DashboardUsersPage() {
                 params: { page: 1, limit: 1, role },
                 headers: getAuthHeaders(),
               })
-              .then((res) => ({ role, total: res.data.meta?.total ?? 0 }))
-          )
+              .then((res) => ({ role, total: res.data.meta?.total ?? 0 })),
+          ),
         );
 
         const counts: Partial<Record<RoleFilter, number>> = {};
@@ -443,14 +434,16 @@ export default function DashboardUsersPage() {
     fetchCounts();
   }, []);
 
-  // ── Fetch users ──
   const getUsers = useCallback(async () => {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
     dispatch({ type: "FETCH_USERS_START" });
     try {
-      const params: Record<string, unknown> = { page: currentPage, limit: LIMIT };
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        limit: LIMIT,
+      };
       if (debouncedSearch) params.search = debouncedSearch;
       if (roleFilter !== "all") params.role = roleFilter;
 
@@ -481,16 +474,23 @@ export default function DashboardUsersPage() {
     getUsers();
   }, [getUsers]);
 
-  // ── Filter change handlers ──
   const handleRoleChange = useCallback(
     (role: string) => dispatch({ type: "SET_ROLE", role: role as RoleFilter }),
-    []
+    [],
   );
-  const clearAllFilters = useCallback(() => dispatch({ type: "CLEAR_FILTERS" }), []);
+  const clearAllFilters = useCallback(
+    () => dispatch({ type: "CLEAR_FILTERS" }),
+    [],
+  );
 
-  // ── Delete flow ──
-  const openDeleteModal = useCallback((user: User) => dispatch({ type: "OPEN_DELETE", user }), []);
-  const closeDeleteModal = useCallback(() => dispatch({ type: "CLOSE_DELETE" }), []);
+  const openDeleteModal = useCallback(
+    (user: User) => dispatch({ type: "OPEN_DELETE", user }),
+    [],
+  );
+  const closeDeleteModal = useCallback(
+    () => dispatch({ type: "CLOSE_DELETE" }),
+    [],
+  );
 
   const deleteUserById = useCallback(async () => {
     if (!deleteTarget) return;
@@ -514,12 +514,14 @@ export default function DashboardUsersPage() {
     }
   }, [deleteTarget, users.length, currentPage, getUsers]);
 
-  // ── useMemo: derived values ──
-  const totalCount = useMemo(() => paginationMeta?.total ?? 0, [paginationMeta]);
+  const totalCount = useMemo(
+    () => paginationMeta?.total ?? 0,
+    [paginationMeta],
+  );
 
   const hasActiveFilters = useMemo(
     () => !!debouncedSearch || roleFilter !== "all",
-    [debouncedSearch, roleFilter]
+    [debouncedSearch, roleFilter],
   );
 
   const roleOptions = useMemo(
@@ -529,10 +531,9 @@ export default function DashboardUsersPage() {
       { id: "editor", label: "Editor" },
       { id: "user", label: "User" },
     ],
-    []
+    [],
   );
 
-  // ── Stat cards: Total + setiap role ──
   const statCards = useMemo(
     () => [
       { id: "all" as RoleFilter, label: "Total" },
@@ -540,12 +541,11 @@ export default function DashboardUsersPage() {
       { id: "editor" as RoleFilter, label: "Editor" },
       { id: "user" as RoleFilter, label: "User" },
     ],
-    []
+    [],
   );
 
   return (
     <div className="p-6 lg:p-8 max-w-[1400px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
           <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
@@ -572,7 +572,6 @@ export default function DashboardUsersPage() {
         </Link>
       </div>
 
-      {/* ── Stat Cards ── */}
       {isCountsLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -614,16 +613,16 @@ export default function DashboardUsersPage() {
         </div>
       )}
 
-      {/* ── Search & Filter Bar ── */}
       <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-        {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
             type="text"
             placeholder="Search by name or email..."
             value={searchTerm}
-            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
             className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (
@@ -636,10 +635,8 @@ export default function DashboardUsersPage() {
           )}
         </div>
 
-        {/* Divider */}
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
-        {/* Role filter */}
         <div className="flex gap-2 items-stretch h-[42px]">
           <FilterDropdown
             value={roleFilter}
@@ -648,7 +645,6 @@ export default function DashboardUsersPage() {
           />
         </div>
 
-        {/* Clear all */}
         {hasActiveFilters && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
@@ -663,7 +659,6 @@ export default function DashboardUsersPage() {
         )}
       </div>
 
-      {/* ── Results Info ── */}
       {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} user
@@ -674,7 +669,6 @@ export default function DashboardUsersPage() {
         </p>
       )}
 
-      {/* ── Table ── */}
       <div className="bg-white border border-primary/20 overflow-hidden">
         <table className="w-full">
           <thead>
@@ -695,7 +689,9 @@ export default function DashboardUsersPage() {
           </thead>
           <tbody>
             {isLoading ? (
-              Array.from({ length: LIMIT }).map((_, i) => <SkeletonRow key={i} />)
+              Array.from({ length: LIMIT }).map((_, i) => (
+                <SkeletonRow key={i} />
+              ))
             ) : users.length === 0 ? (
               <tr>
                 <td colSpan={4}>
@@ -729,7 +725,6 @@ export default function DashboardUsersPage() {
         </table>
       </div>
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
         <Pagination
           meta={paginationMeta}
@@ -737,15 +732,15 @@ export default function DashboardUsersPage() {
         />
       )}
 
-      {/* ── Delete Modal ── */}
-      {(deleteStatus === "confirm" || deleteStatus === "deleting") && deleteTarget && (
-        <DeleteModal
-          name={deleteTarget.name}
-          onConfirm={deleteUserById}
-          onCancel={closeDeleteModal}
-          isLoading={deleteStatus === "deleting"}
-        />
-      )}
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
+        deleteTarget && (
+          <DeleteModal
+            name={deleteTarget.name}
+            onConfirm={deleteUserById}
+            onCancel={closeDeleteModal}
+            isLoading={deleteStatus === "deleting"}
+          />
+        )}
     </div>
   );
 }

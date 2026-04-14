@@ -18,8 +18,6 @@ import Link from "next/link";
 import axios from "axios";
 import type { DashboardSummary } from "@/app/api/dashboard/route";
 
-// ─── SVG donut arc helper ─────────────────────────────────────────────────────
-
 const polarToCartesian = (cx: number, cy: number, r: number, deg: number) => {
   const rad = ((deg - 90) * Math.PI) / 180;
   return {
@@ -39,8 +37,6 @@ const describeArc = (
   const large = end - start > 180 ? 1 : 0;
   return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y}`;
 };
-
-// ─── Panel wrapper ────────────────────────────────────────────────────────────
 
 function Panel({
   title,
@@ -84,8 +80,6 @@ function Panel({
   );
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const INQUIRY_STYLES: Record<
   string,
   { fill: string; stroke: string; label: string }
@@ -123,8 +117,6 @@ const MONTHS = [
   "Dec",
 ];
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<DashboardSummary | null>(null);
@@ -136,8 +128,6 @@ export default function DashboardPage() {
       .catch((err) => console.error("Dashboard fetch error:", err))
       .finally(() => setLoading(false));
   }, []);
-
-  // ─── Derived values (all from single `data` object) ───────────────────────
 
   const inquiryFunnel = (data?.inquiryFunnel ?? []).map((step) => ({
     ...step,
@@ -170,7 +160,6 @@ export default function DashboardPage() {
   }));
   const maxPortfolio = portfolioByExp[0]?.count ?? 1;
 
-  // Booking trend chart
   const timelineData = (data?.bookingTrend ?? []).map(({ month, count }) => ({
     month: MONTHS[parseInt(month.split("-")[1], 10) - 1],
     val: count,
@@ -196,7 +185,6 @@ export default function DashboardPage() {
     timelineData.map((d, i) => `L ${tx(i)},${ty(d.val)}`).join(" ") +
     ` L ${tx(timelineData.length - 1)},${CH - CPY} L ${tx(0)},${CH - CPY} Z`;
 
-  // Stat cards
   const m = data?.meta;
   const stats = [
     {
@@ -260,8 +248,6 @@ export default function DashboardPage() {
     },
   ];
 
-  // ─── Render ───────────────────────────────────────────────────────────────
-
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto">
       <motion.div
@@ -270,7 +256,6 @@ export default function DashboardPage() {
         variants={staggerContainer}
         className="space-y-8"
       >
-        {/* ── Welcome ─────────────────────────────────────────────────── */}
         <motion.div variants={fadeInUp}>
           <p className="text-primary/60 tracking-[0.3em] uppercase text-xs mb-1">
             Good morning
@@ -281,7 +266,6 @@ export default function DashboardPage() {
           <div className="mt-3 w-10 h-px bg-primary/40" />
         </motion.div>
 
-        {/* ── Stats ───────────────────────────────────────────────────── */}
         <motion.div
           variants={fadeInUp}
           className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4"
@@ -339,14 +323,11 @@ export default function DashboardPage() {
           ))}
         </motion.div>
 
-        {/* ── Main panels ─────────────────────────────────────────────── */}
         <div className="grid lg:grid-cols-5 gap-4">
-          {/* ── LEFT col (2/5) ──────────────────────────────────────── */}
           <motion.div
             variants={fadeInUp}
             className="lg:col-span-2 flex flex-col gap-4"
           >
-            {/* #1 — Inquiry Pipeline ─────────────────────────────────── */}
             <Panel
               title="Inquiry Pipeline"
               href="/dashboard/inquiry"
@@ -406,7 +387,6 @@ export default function DashboardPage() {
               </div>
             </Panel>
 
-            {/* #2 — Submissions ──────────────────────────────────────── */}
             <Panel
               title="Submissions"
               href="/dashboard/job-partnership"
@@ -505,7 +485,6 @@ export default function DashboardPage() {
               </div>
             </Panel>
 
-            {/* #3 — Articles by Category ─────────────────────────────── */}
             <Panel
               title="Articles by Category"
               href="/dashboard/journal"
@@ -543,13 +522,11 @@ export default function DashboardPage() {
             </Panel>
           </motion.div>
 
-          {/* ── RIGHT col (3/5) ─────────────────────────────────────── */}
           <motion.div
             variants={fadeInUp}
             className="lg:col-span-3 flex flex-col gap-4"
           >
             <div className="grid grid-cols-2 gap-4 flex-1">
-              {/* #4 — Venues by Destination ────────────────────────────── */}
               <Panel
                 title="Venues by Destination"
                 href="/dashboard/venues"
@@ -589,7 +566,6 @@ export default function DashboardPage() {
                 </div>
               </Panel>
 
-              {/* #5 — Portfolio by Experience ───────────────────────────── */}
               <Panel
                 title="Portfolio by Experience"
                 href="/dashboard/portfolio"
@@ -628,7 +604,6 @@ export default function DashboardPage() {
               </Panel>
             </div>
 
-            {/* #6 — Booking Trend ────────────────────────────────────── */}
             <Panel
               title="Booking Trend"
               badge="Last 8 months"
@@ -751,7 +726,6 @@ export default function DashboardPage() {
           </motion.div>
         </div>
 
-        {/* ── Footer ──────────────────────────────────────────────────── */}
         <motion.div variants={fadeInUp}>
           <p className="text-primary/45 text-xs tracking-[0.35em] uppercase text-center">
             Linda Wiryani Events — Studio Portal

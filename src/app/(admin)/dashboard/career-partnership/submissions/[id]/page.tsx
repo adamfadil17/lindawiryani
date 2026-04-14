@@ -34,7 +34,6 @@ import {
   submissionStatusConfig,
 } from "@/types";
 
-// ─── Config ───────────────────────────────────────────────────────────────────
 
 const status_options: SubmissionStatus[] = [
   "new",
@@ -43,7 +42,6 @@ const status_options: SubmissionStatus[] = [
   "archived",
 ];
 
-// ─── Info Row ─────────────────────────────────────────────────────────────────
 
 function InfoRow({
   icon: Icon,
@@ -83,7 +81,6 @@ function InfoRow({
   );
 }
 
-// ─── Section Block ────────────────────────────────────────────────────────────
 
 function SectionBlock({
   title,
@@ -102,27 +99,20 @@ function SectionBlock({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SubmissionDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
 
-  // ── Page state ──
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  // ── Status update state ──
-  // idle | saving
   const [statusUpdateStatus, setStatusUpdateStatus] = useState<"idle" | "saving">("idle");
 
-  // ── Delete state (consolidated) ──
-  // idle | confirm | deleting
   const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
 
-  // ── Load submission data on mount ──
   useEffect(() => {
     setIsLoading(true);
     const getSubmissionById = async () => {
@@ -149,7 +139,6 @@ export default function SubmissionDetailPage() {
     getSubmissionById();
   }, [id]);
 
-  // ── Status update flow ──
   const handleStatusChange = async (newStatus: SubmissionStatus) => {
     if (!submission || newStatus === submission.status) return;
     setStatusUpdateStatus("saving");
@@ -176,7 +165,6 @@ export default function SubmissionDetailPage() {
     }
   };
 
-  // ── Delete flow ──
   const handleDelete = async () => {
     setDeleteStatus("deleting");
     try {
@@ -196,11 +184,10 @@ export default function SubmissionDetailPage() {
             ? err.message
             : "Unknown error";
       toast.error("Failed to delete", { description: errorMsg });
-      setDeleteStatus("confirm"); // keep modal open on error
+      setDeleteStatus("confirm");
     }
   };
 
-  // ── Not found ──
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
@@ -221,11 +208,9 @@ export default function SubmissionDetailPage() {
     );
   }
 
-  // ── Loading skeleton ──
   if (isLoading) {
     return (
       <div className="p-6 lg:p-8 max-w-[1600px] mx-auto animate-pulse">
-        {/* Header skeleton */}
         <div className="flex items-center gap-4 mb-8">
           <div className="w-9 h-9 bg-primary/10 border border-primary/20" />
           <div className="space-y-2">
@@ -233,7 +218,6 @@ export default function SubmissionDetailPage() {
             <div className="h-6 w-48 bg-primary/10 rounded" />
           </div>
         </div>
-        {/* Content skeleton */}
         <div className="grid lg:grid-cols-[1fr_320px] gap-6">
           <div className="space-y-6">
             {[1, 2, 3].map((i) => (
@@ -271,7 +255,6 @@ export default function SubmissionDetailPage() {
 
   if (!submission) return null;
 
-  // ── Derived values ──
   const isVendor = submission.type === "vendor";
   const vendor = submission as VendorSubmission;
   const career = submission as CareerSubmission;
@@ -292,7 +275,6 @@ export default function SubmissionDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <Link
@@ -323,11 +305,8 @@ export default function SubmissionDetailPage() {
         </div>
       </div>
 
-      {/* ── Layout ── */}
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        {/* ── Left Column ── */}
         <div className="space-y-6">
-          {/* Identity */}
           <SectionBlock title={isVendor ? "Company Information" : "Applicant Information"}>
             <div className="flex items-start gap-4 mb-6">
               <div
@@ -399,7 +378,6 @@ export default function SubmissionDetailPage() {
             </div>
           </SectionBlock>
 
-          {/* Vendor-specific details */}
           {isVendor && (
             <SectionBlock title="Vendor Details">
               <div>
@@ -417,7 +395,6 @@ export default function SubmissionDetailPage() {
             </SectionBlock>
           )}
 
-          {/* Career-specific details */}
           {!isVendor && (
             <SectionBlock title="Application Details">
               <div>
@@ -435,7 +412,6 @@ export default function SubmissionDetailPage() {
             </SectionBlock>
           )}
 
-          {/* Message / Cover Letter */}
           {(isVendor ? submission.message : career.cover_letter) && (
             <SectionBlock title={isVendor ? "Message" : "Cover Letter"}>
               <div className="flex items-start gap-3">
@@ -454,9 +430,7 @@ export default function SubmissionDetailPage() {
           )}
         </div>
 
-        {/* ── Right Sidebar ── */}
         <div className="space-y-5">
-          {/* Status Manager */}
           <div className="bg-white border border-primary/20 p-6">
             <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
               Submission Status
@@ -495,7 +469,6 @@ export default function SubmissionDetailPage() {
             </p>
           </div>
 
-          {/* Submission Meta */}
           <div className="bg-white border border-primary/20 p-6">
             <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
               Submission Details
@@ -537,7 +510,6 @@ export default function SubmissionDetailPage() {
             </div>
           </div>
 
-          {/* Quick Actions */}
           <div className="bg-white border border-primary/20 p-6">
             <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
               Quick Actions
@@ -564,7 +536,6 @@ export default function SubmissionDetailPage() {
         </div>
       </div>
 
-      {/* ── Delete Modal ── */}
       {deleteStatus === "confirm" || deleteStatus === "deleting" ? (
         <DeleteModal
           name={displayName}

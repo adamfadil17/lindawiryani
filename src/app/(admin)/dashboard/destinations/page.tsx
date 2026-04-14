@@ -22,11 +22,7 @@ import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const LIMIT = 6;
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface LocationOption {
   id: string;
@@ -48,8 +44,8 @@ interface PageState {
   isLoading: boolean;
   searchTerm: string;
   debouncedSearch: string;
-  categoryFilter: string; // "all" | category uuid
-  locationFilter: string; // "all" | location uuid
+  categoryFilter: string;
+  locationFilter: string;
   currentPage: number;
   categories: CategoryOption[];
   isFiltersLoading: boolean;
@@ -59,7 +55,11 @@ interface PageState {
 
 type PageAction =
   | { type: "FETCH_START" }
-  | { type: "FETCH_SUCCESS"; destinations: Destination[]; meta: PaginationMeta | null }
+  | {
+      type: "FETCH_SUCCESS";
+      destinations: Destination[];
+      meta: PaginationMeta | null;
+    }
   | { type: "FETCH_ERROR" }
   | { type: "SET_FILTERS"; categories: CategoryOption[] }
   | { type: "FILTERS_LOADED" }
@@ -95,7 +95,12 @@ function pageReducer(state: PageState, action: PageAction): PageState {
     case "FETCH_START":
       return { ...state, isLoading: true };
     case "FETCH_SUCCESS":
-      return { ...state, isLoading: false, destinations: action.destinations, paginationMeta: action.meta };
+      return {
+        ...state,
+        isLoading: false,
+        destinations: action.destinations,
+        paginationMeta: action.meta,
+      };
     case "FETCH_ERROR":
       return { ...state, isLoading: false };
 
@@ -110,17 +115,32 @@ function pageReducer(state: PageState, action: PageAction): PageState {
       return { ...state, debouncedSearch: action.value, currentPage: 1 };
 
     case "SET_CATEGORY":
-      // Reset location filter when category changes
-      return { ...state, categoryFilter: action.id, locationFilter: "all", currentPage: 1 };
+      return {
+        ...state,
+        categoryFilter: action.id,
+        locationFilter: "all",
+        currentPage: 1,
+      };
     case "SET_LOCATION":
       return { ...state, locationFilter: action.id, currentPage: 1 };
     case "SET_PAGE":
       return { ...state, currentPage: action.page };
     case "CLEAR_FILTERS":
-      return { ...state, searchTerm: "", debouncedSearch: "", categoryFilter: "all", locationFilter: "all", currentPage: 1 };
+      return {
+        ...state,
+        searchTerm: "",
+        debouncedSearch: "",
+        categoryFilter: "all",
+        locationFilter: "all",
+        currentPage: 1,
+      };
 
     case "OPEN_DELETE":
-      return { ...state, deleteTarget: action.destination, deleteStatus: "confirm" };
+      return {
+        ...state,
+        deleteTarget: action.destination,
+        deleteStatus: "confirm",
+      };
     case "CLOSE_DELETE":
       return state.deleteStatus === "deleting"
         ? state
@@ -137,7 +157,6 @@ function pageReducer(state: PageState, action: PageAction): PageState {
   }
 }
 
-// ─── Skeleton Cards ───────────────────────────────────────────────────────────
 
 function SkeletonStatCard() {
   return (
@@ -163,7 +182,6 @@ function SkeletonCard() {
   );
 }
 
-// ─── Destination Card ─────────────────────────────────────────────────────────
 
 function DestinationCard({
   destination,
@@ -172,7 +190,6 @@ function DestinationCard({
   destination: Destination;
   onDelete: (destination: Destination) => void;
 }) {
-  // location sekarang adalah relasi object, bukan string
   const locationName = destination.location?.name ?? "—";
   const categoryName = destination.location?.category?.name ?? "—";
 
@@ -207,7 +224,9 @@ function DestinationCard({
 
         <div className="flex items-center gap-1.5 mb-3">
           <MapPin className="w-3 h-3 text-primary/50 flex-shrink-0" />
-          <span className="text-primary/80 text-sm truncate">{locationName}</span>
+          <span className="text-primary/80 text-sm truncate">
+            {locationName}
+          </span>
         </div>
 
         <p className="text-primary/80 text-sm leading-relaxed line-clamp-2 mb-5">
@@ -250,7 +269,6 @@ function DestinationCard({
   );
 }
 
-// ─── Pagination ───────────────────────────────────────────────────────────────
 
 function Pagination({
   meta,
@@ -269,7 +287,15 @@ function Pagination({
     } else if (meta.page >= meta.totalPages - 3) {
       range.push(1, "...", ...pages.slice(meta.totalPages - 5));
     } else {
-      range.push(1, "...", meta.page - 1, meta.page, meta.page + 1, "...", meta.totalPages);
+      range.push(
+        1,
+        "...",
+        meta.page - 1,
+        meta.page,
+        meta.page + 1,
+        "...",
+        meta.totalPages,
+      );
     }
     return range;
   };
@@ -281,9 +307,11 @@ function Pagination({
       <p className="text-primary/60 text-xs tracking-wider">
         Showing{" "}
         <span className="text-primary font-medium">
-          {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
+          {(meta.page - 1) * meta.limit + 1}–
+          {Math.min(meta.page * meta.limit, meta.total)}
         </span>{" "}
-        of <span className="text-primary font-medium">{meta.total}</span> destinations
+        of <span className="text-primary font-medium">{meta.total}</span>{" "}
+        destinations
       </p>
 
       <div className="flex items-center gap-1">
@@ -297,7 +325,12 @@ function Pagination({
 
         {getVisiblePages().map((p, i) =>
           p === "..." ? (
-            <span key={`ellipsis-${i}`} className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm">…</span>
+            <span
+              key={`ellipsis-${i}`}
+              className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm"
+            >
+              …
+            </span>
           ) : (
             <button
               key={p}
@@ -310,7 +343,7 @@ function Pagination({
             >
               {p}
             </button>
-          )
+          ),
         )}
 
         <button
@@ -325,7 +358,6 @@ function Pagination({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DashboardDestinationsPage() {
   const [state, dispatch] = useReducer(pageReducer, initialState);
@@ -348,7 +380,6 @@ export default function DashboardDestinationsPage() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // ── Debounce search ──
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -359,7 +390,6 @@ export default function DashboardDestinationsPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch filter options (sekali saat mount) ──
   useEffect(() => {
     const fetchFilters = async () => {
       try {
@@ -376,16 +406,17 @@ export default function DashboardDestinationsPage() {
     fetchFilters();
   }, []);
 
-  // ── Fetch destinations ──
   const getDestinations = useCallback(async () => {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
     dispatch({ type: "FETCH_START" });
     try {
-      const params: Record<string, unknown> = { page: currentPage, limit: LIMIT };
+      const params: Record<string, unknown> = {
+        page: currentPage,
+        limit: LIMIT,
+      };
       if (debouncedSearch) params.search = debouncedSearch;
-      // Prioritas: locationFilter lebih spesifik dari categoryFilter
       if (locationFilter !== "all") {
         params.locationId = locationFilter;
       } else if (categoryFilter !== "all") {
@@ -406,7 +437,9 @@ export default function DashboardDestinationsPage() {
       if (axios.isCancel(err)) return;
       const errorMsg = axios.isAxiosError(err)
         ? `Error: ${err.response?.status ?? "Unknown"} ${err.message}`
-        : err instanceof Error ? err.message : "Failed to load destinations";
+        : err instanceof Error
+          ? err.message
+          : "Failed to load destinations";
       toast.error("Failed to load destinations", { description: errorMsg });
       dispatch({ type: "FETCH_ERROR" });
     }
@@ -416,21 +449,27 @@ export default function DashboardDestinationsPage() {
     getDestinations();
   }, [getDestinations]);
 
-  // ── Filter helpers ──
   const handleCategoryChange = useCallback(
     (id: string) => dispatch({ type: "SET_CATEGORY", id }),
-    []
+    [],
   );
   const handleLocationChange = useCallback(
     (id: string) => dispatch({ type: "SET_LOCATION", id }),
-    []
+    [],
   );
-  const clearAllFilters = useCallback(() => dispatch({ type: "CLEAR_FILTERS" }), []);
+  const clearAllFilters = useCallback(
+    () => dispatch({ type: "CLEAR_FILTERS" }),
+    [],
+  );
   const openDeleteModal = useCallback(
-    (destination: Destination) => dispatch({ type: "OPEN_DELETE", destination }),
-    []
+    (destination: Destination) =>
+      dispatch({ type: "OPEN_DELETE", destination }),
+    [],
   );
-  const closeDeleteModal = useCallback(() => dispatch({ type: "CLOSE_DELETE" }), []);
+  const closeDeleteModal = useCallback(
+    () => dispatch({ type: "CLOSE_DELETE" }),
+    [],
+  );
 
   const deleteDestinationById = useCallback(async () => {
     if (!deleteTarget) return;
@@ -453,33 +492,38 @@ export default function DashboardDestinationsPage() {
     }
   }, [deleteTarget, destinations.length, currentPage, getDestinations]);
 
-  // ── Derived values ──
-  const totalCount = useMemo(() => paginationMeta?.total ?? 0, [paginationMeta]);
+  const totalCount = useMemo(
+    () => paginationMeta?.total ?? 0,
+    [paginationMeta],
+  );
   const hasActiveFilters = useMemo(
-    () => !!debouncedSearch || categoryFilter !== "all" || locationFilter !== "all",
-    [debouncedSearch, categoryFilter, locationFilter]
+    () =>
+      !!debouncedSearch || categoryFilter !== "all" || locationFilter !== "all",
+    [debouncedSearch, categoryFilter, locationFilter],
   );
 
-  // Stat cards: All + tiap category
   const statCards = useMemo(
-    () => [{ id: "all", name: "All", slug: "all", count: totalCount, locations: [] }, ...categories],
-    [categories, totalCount]
+    () => [
+      { id: "all", name: "All", slug: "all", count: totalCount, locations: [] },
+      ...categories,
+    ],
+    [categories, totalCount],
   );
 
-  // Category dropdown options
   const categoryOptions = useMemo(
-    () => [{ id: "all", name: "All Categories" }, ...categories.map((c) => ({ id: c.id, name: c.name }))],
-    [categories]
+    () => [
+      { id: "all", name: "All Categories" },
+      ...categories.map((c) => ({ id: c.id, name: c.name })),
+    ],
+    [categories],
   );
 
-  // Location dropdown options — berdasarkan category yang dipilih
   const locationOptions = useMemo(() => {
     if (categoryFilter === "all") return [];
     const cat = categories.find((c) => c.id === categoryFilter);
     return cat?.locations ?? [];
   }, [categories, categoryFilter]);
 
-  // Label filter aktif untuk results info
   const activeFilterLabel = useMemo(() => {
     if (locationFilter !== "all") {
       const cat = categories.find((c) => c.id === categoryFilter);
@@ -494,11 +538,14 @@ export default function DashboardDestinationsPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
-          <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">Content Management</p>
-          <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">Destinations</h1>
+          <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+            Content Management
+          </p>
+          <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+            Destinations
+          </h1>
           <p className="text-primary/80 text-sm mt-1">
             {isLoading ? (
               <span className="inline-block w-24 h-3 bg-primary/10 animate-pulse rounded" />
@@ -517,20 +564,28 @@ export default function DashboardDestinationsPage() {
         </Link>
       </div>
 
-      {/* ── Stats Row ── */}
       {isFiltersLoading ? (
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-          {Array.from({ length: 4 }).map((_, i) => <SkeletonStatCard key={i} />)}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonStatCard key={i} />
+          ))}
         </div>
       ) : (
         statCards.length > 1 && (
           <div
             className="grid gap-4 mb-8"
-            style={{ gridTemplateColumns: `repeat(${Math.min(statCards.length, 6)}, minmax(0, 1fr))` }}
+            style={{
+              gridTemplateColumns: `repeat(${Math.min(statCards.length, 6)}, minmax(0, 1fr))`,
+            }}
           >
             {statCards.map((stat) => {
               const isActive = categoryFilter === stat.id;
-              const displayValue = stat.id === "all" ? totalCount : stat.count > 0 ? stat.count : "—";
+              const displayValue =
+                stat.id === "all"
+                  ? totalCount
+                  : stat.count > 0
+                    ? stat.count
+                    : "—";
               return (
                 <button
                   key={stat.id}
@@ -541,7 +596,9 @@ export default function DashboardDestinationsPage() {
                       : "bg-white border-primary/20 text-primary hover:border-primary/30"
                   }`}
                 >
-                  <p className={`text-sm tracking-[0.2em] uppercase mb-1.5 truncate ${isActive ? "text-white/80" : "text-primary/80"}`}>
+                  <p
+                    className={`text-sm tracking-[0.2em] uppercase mb-1.5 truncate ${isActive ? "text-white/80" : "text-primary/80"}`}
+                  >
                     {stat.name}
                   </p>
                   {isLoading && stat.id === "all" ? (
@@ -556,16 +613,16 @@ export default function DashboardDestinationsPage() {
         )
       )}
 
-      {/* ── Search & Filter Bar ── */}
       <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-        {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
           <input
             type="text"
             placeholder="Search destinations..."
             value={searchTerm}
-            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
             className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (
@@ -580,7 +637,6 @@ export default function DashboardDestinationsPage() {
 
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
-        {/* Category dropdown */}
         <div className="relative shrink-0 h-[42px]">
           <select
             value={categoryFilter}
@@ -593,15 +649,20 @@ export default function DashboardDestinationsPage() {
             }`}
           >
             {categoryOptions.map((opt) => (
-              <option key={opt.id} value={opt.id} className="bg-white text-primary normal-case font-normal tracking-normal">
+              <option
+                key={opt.id}
+                value={opt.id}
+                className="bg-white text-primary normal-case font-normal tracking-normal"
+              >
                 {opt.name}
               </option>
             ))}
           </select>
-          <ChevronDown className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${categoryFilter !== "all" ? "text-white/70" : "text-primary/40"}`} />
+          <ChevronDown
+            className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${categoryFilter !== "all" ? "text-white/70" : "text-primary/40"}`}
+          />
         </div>
 
-        {/* Location dropdown — muncul hanya jika category dipilih dan punya locations */}
         {categoryFilter !== "all" && locationOptions.length > 0 && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
@@ -615,21 +676,29 @@ export default function DashboardDestinationsPage() {
                     : "bg-white text-primary/60 border-primary/20 hover:border-primary/40 hover:text-primary/80"
                 }`}
               >
-                <option value="all" className="bg-white text-primary normal-case font-normal tracking-normal">
+                <option
+                  value="all"
+                  className="bg-white text-primary normal-case font-normal tracking-normal"
+                >
                   All Locations
                 </option>
                 {locationOptions.map((loc) => (
-                  <option key={loc.id} value={loc.id} className="bg-white text-primary normal-case font-normal tracking-normal">
+                  <option
+                    key={loc.id}
+                    value={loc.id}
+                    className="bg-white text-primary normal-case font-normal tracking-normal"
+                  >
                     {loc.name}
                   </option>
                 ))}
               </select>
-              <ChevronDown className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${locationFilter !== "all" ? "text-white/70" : "text-primary/40"}`} />
+              <ChevronDown
+                className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${locationFilter !== "all" ? "text-white/70" : "text-primary/40"}`}
+              />
             </div>
           </>
         )}
 
-        {/* Clear all */}
         {hasActiveFilters && (
           <>
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
@@ -644,26 +713,31 @@ export default function DashboardDestinationsPage() {
         )}
       </div>
 
-      {/* ── Results Info ── */}
       {hasActiveFilters && !isLoading && paginationMeta && (
         <p className="text-primary/80 text-sm tracking-wider mb-4">
-          Showing {paginationMeta.total} destination{paginationMeta.total !== 1 ? "s" : ""}
+          Showing {paginationMeta.total} destination
+          {paginationMeta.total !== 1 ? "s" : ""}
           {activeFilterLabel && ` in ${activeFilterLabel}`}
           {debouncedSearch && ` for "${debouncedSearch}"`}
         </p>
       )}
 
-      {/* ── Grid ── */}
       {isLoading ? (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {Array.from({ length: LIMIT }).map((_, i) => <SkeletonCard key={i} />)}
+          {Array.from({ length: LIMIT }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : destinations.length === 0 ? (
         <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
           <MapPin className="w-8 h-8 text-primary/20 mb-4" />
-          <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">No Results</p>
+          <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
+            No Results
+          </p>
           <p className="text-primary/80 text-sm">
-            {debouncedSearch ? `No destinations match "${debouncedSearch}"` : "No destinations in this filter yet"}
+            {debouncedSearch
+              ? `No destinations match "${debouncedSearch}"`
+              : "No destinations in this filter yet"}
           </p>
           {hasActiveFilters && (
             <button
@@ -677,25 +751,31 @@ export default function DashboardDestinationsPage() {
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
           {destinations.map((destination) => (
-            <DestinationCard key={destination.id} destination={destination} onDelete={openDeleteModal} />
+            <DestinationCard
+              key={destination.id}
+              destination={destination}
+              onDelete={openDeleteModal}
+            />
           ))}
         </div>
       )}
 
-      {/* ── Pagination ── */}
       {paginationMeta && !isLoading && (
-        <Pagination meta={paginationMeta} onPageChange={(page) => dispatch({ type: "SET_PAGE", page })} />
-      )}
-
-      {/* ── Delete Modal ── */}
-      {(deleteStatus === "confirm" || deleteStatus === "deleting") && deleteTarget && (
-        <DeleteModal
-          name={deleteTarget.name}
-          onConfirm={deleteDestinationById}
-          onCancel={closeDeleteModal}
-          isLoading={deleteStatus === "deleting"}
+        <Pagination
+          meta={paginationMeta}
+          onPageChange={(page) => dispatch({ type: "SET_PAGE", page })}
         />
       )}
+
+      {(deleteStatus === "confirm" || deleteStatus === "deleting") &&
+        deleteTarget && (
+          <DeleteModal
+            name={deleteTarget.name}
+            onConfirm={deleteDestinationById}
+            onCancel={closeDeleteModal}
+            isLoading={deleteStatus === "deleting"}
+          />
+        )}
     </div>
   );
 }
