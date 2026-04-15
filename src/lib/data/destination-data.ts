@@ -1,32 +1,141 @@
-import { Destination, DestinationCategory } from "@/types";
+import { Destination, DestinationCategory, DestinationLocation } from "@/types";
+
 // ─── CATEGORIES ───────────────────────────────────────────────────────────────
 
 export const destinationCategories: DestinationCategory[] = [
-  { id: "cat-bali", name: "Bali", destinations: [] },
-  { id: "cat-themes", name: "Themes", destinations: [] },
-  { id: "cat-islands", name: "Islands", destinations: [] },
-  { id: "cat-outsite-bali", name: "Outside Bali", destinations: [] },
+  {
+    id: "cat-bali",
+    name: "Bali",
+    slug: "bali",
+    description: "Discover Bali's most iconic wedding destinations across its diverse regions.",
+    locations: [], // populated below
+  },
+  {
+    id: "cat-islands",
+    name: "Islands",
+    slug: "islands",
+    description: "Exclusive island escapes surrounding Bali for intimate destination weddings.",
+    locations: [],
+  },
+  {
+    id: "cat-outside-bali",
+    name: "Outside Bali",
+    slug: "outside-bali",
+    description: "Beyond Bali — extraordinary destination wedding locations across Indonesia and beyond.",
+    locations: [],
+  },
 ];
 
 const getCat = (id: string): DestinationCategory =>
   destinationCategories.find((c) => c.id === id)!;
 
+// ─── LOCATIONS ────────────────────────────────────────────────────────────────
+
+export const destinationLocations: DestinationLocation[] = [
+  // ── BALI ──────────────────────────────────────────────────────────────────
+  {
+    id: "loc-south-bali",
+    name: "South Bali",
+    slug: "south-bali",
+    category_id: "cat-bali",
+    category: getCat("cat-bali"),
+  },
+  {
+    id: "loc-ubud-gianyar",
+    name: "Ubud & Gianyar",
+    slug: "ubud-gianyar",
+    category_id: "cat-bali",
+    category: getCat("cat-bali"),
+  },
+  {
+    id: "loc-east-bali",
+    name: "East Bali",
+    slug: "east-bali",
+    category_id: "cat-bali",
+    category: getCat("cat-bali"),
+  },
+  {
+    id: "loc-north-bali",
+    name: "North Bali",
+    slug: "north-bali",
+    category_id: "cat-bali",
+    category: getCat("cat-bali"),
+  },
+  {
+    id: "loc-west-bali",
+    name: "West Bali",
+    slug: "west-bali",
+    category_id: "cat-bali",
+    category: getCat("cat-bali"),
+  },
+  {
+    id: "loc-highlands",
+    name: "Highlands, Lakes and Mountains",
+    slug: "highlands-lakes-mountains",
+    category_id: "cat-bali",
+    category: getCat("cat-bali"),
+  },
+  // ── ISLANDS ───────────────────────────────────────────────────────────────
+  {
+    id: "loc-nusa-islands",
+    name: "Nusa Islands",
+    slug: "nusa-islands",
+    category_id: "cat-islands",
+    category: getCat("cat-islands"),
+  },
+  // ── OUTSIDE BALI ──────────────────────────────────────────────────────────
+  {
+    id: "loc-lombok",
+    name: "Lombok",
+    slug: "lombok",
+    category_id: "cat-outside-bali",
+    category: getCat("cat-outside-bali"),
+  },
+  {
+    id: "loc-sumba",
+    name: "Sumba",
+    slug: "sumba",
+    category_id: "cat-outside-bali",
+    category: getCat("cat-outside-bali"),
+  },
+  {
+    id: "loc-java",
+    name: "Java",
+    slug: "java",
+    category_id: "cat-outside-bali",
+    category: getCat("cat-outside-bali"),
+  },
+];
+
+const getLoc = (id: string): DestinationLocation =>
+  destinationLocations.find((l) => l.id === id)!;
+
+// Populate locations into categories
+destinationCategories.find((c) => c.id === "cat-bali")!.locations =
+  destinationLocations.filter((l) => l.category_id === "cat-bali");
+destinationCategories.find((c) => c.id === "cat-islands")!.locations =
+  destinationLocations.filter((l) => l.category_id === "cat-islands");
+destinationCategories.find((c) => c.id === "cat-outside-bali")!.locations =
+  destinationLocations.filter((l) => l.category_id === "cat-outside-bali");
+
 // ─── DESTINATIONS ─────────────────────────────────────────────────────────────
 // id slug digunakan sebagai destinationId di venue-data.ts
 
 export const destinationList: Destination[] = [
+  // ════════════════════════════════════════════════════════════════════════════
+  // SOUTH BALI
+  // ════════════════════════════════════════════════════════════════════════════
   {
     id: "1",
     name: "Uluwatu",
     slug: "uluwatu-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Luxury Cliffside",
     description:
       "Dramatic ocean cliffs, open horizons, and architectural venues, ideal for cinematic, luxury destination weddings and sunset ceremonies shaped by scale and elegance.",
     long_description:
       "Uluwatu is one of Bali's most breathtaking wedding destinations, known for its dramatic cliffs, expansive ocean views, and unforgettable sunsets over the Indian Ocean. We design weddings in Uluwatu that embrace the power of the landscape — creating celebrations that feel elevated, intentional, and visually striking. Our Uluwatu weddings are shaped by open horizons, ocean winds, and the interplay between architecture and nature. From private clifftop villas to exclusive oceanfront resorts, our weddings in Uluwatu are curated as complete experiences, not just beautifully decorated events.",
-    location: "South Bali",
     atmosphere:
       "Dramatic yet refined — expansive, open, and light-filled, where the setting itself becomes the ceremony with a strong sense of place",
     accessibility_notes:
@@ -86,86 +195,16 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "2",
-    name: "Ubud",
-    slug: "ubud-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
-    type: "Spiritual & Artistic",
-    description:
-      "Jungle valleys, rivers, rice terraces, and spiritual depth, ideal for intimate, artistic, and emotionally grounded weddings rooted in nature and culture.",
-    long_description:
-      "Ubud is one of Bali's most iconic and soulful wedding destinations, known for its lush jungles, rice terraces, river valleys, and a deep connection to culture and nature. We design weddings in Ubud that go beyond visual beauty — creating celebrations that feel immersive, intentional, and emotionally resonant. Our Ubud weddings are shaped by natural textures, filtered light, and a sense of stillness that allows each moment to feel grounded and meaningful. We work with couples drawn to Ubud for its atmosphere, connection to nature, and its ability to create a wedding experience that feels deeply personal.",
-    location: "Ubud & Gianyar",
-    atmosphere:
-      "Calm yet deeply expressive — nature-led and immersive, intimate and emotionally grounded, with an organic elegance shaped by jungle, valley, and filtered light",
-    accessibility_notes:
-      "Some venues involve steps, slopes, or natural terrain requiring careful guest movement planning; many venues are tucked into jungle landscapes needing realistic transportation scheduling",
-    seasonal_considerations:
-      "Jungle environments require preparation for humidity and potential rain; timing carefully planned to capture the most beautiful light within forest and valley settings; sound and event flow influenced by venue's natural and peaceful atmosphere",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311396/Ubud_final1_-_crop_atau_edit_dikit_biar_beda_dari_aslinya_ya_qolh2y.png",
-    guest_capacity: "20 - 200",
-    highlights: [
-      "Lush jungle, rice terraces, and river valley settings",
-      "Deep cultural and spiritual connection",
-      "Filtered natural light through tropical landscapes",
-      "Boutique villas and resorts integrated with nature",
-      "Intimate and emotionally resonant atmosphere",
-    ],
-    best_for: [
-      "Nature-integrated ceremony settings",
-      "Couples seeking calm, privacy, and emotional depth",
-      "Unique non-traditional venue experiences",
-      "Intimate and meaningful wedding journeys",
-      "A deeper connection to Bali's cultural landscape",
-    ],
-    ceremony_options: [
-      "Jungle and forest ceremonies",
-      "Riverside and valley settings",
-      "Rice terrace ceremony backdrops",
-      "Private villa garden ceremonies",
-      "Sacred and spiritual spaces",
-    ],
-    reception_options: [
-      "Private villa and boutique resort receptions",
-      "Eco-resort intimate gatherings",
-      "Riverside dinners surrounded by nature",
-      "Garden settings with organic design",
-      "Retreat-style multi-day event experiences",
-    ],
-    accommodation_nearby: [
-      "Private jungle villas and boutique resorts",
-      "Heritage hotels with cultural character",
-      "Wellness and spiritual retreat centers",
-      "Nature-integrated eco-lodges",
-    ],
-    dining_experiences: [
-      "Farm-to-table and organic cuisine",
-      "Traditional Balinese cultural dining",
-      "Private chef nature-immersive experiences",
-      "Wellness-focused and holistic menus",
-    ],
-    unique_features: [
-      "A ceremony surrounded by nature",
-      "Quiet and meaningful gathering atmosphere",
-      "Immersive experience shaped by landscape",
-      "Deeply personal and emotionally unforgettable",
-      "Multi-day retreat possibilities",
-    ],
-  },
-  {
     id: "3",
     name: "Canggu",
     slug: "canggu-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Contemporary Villa",
     description:
       "Contemporary private villas, relaxed coastal energy, and creative culture, ideal for modern destination weddings with a private villa lifestyle atmosphere.",
     long_description:
       "Canggu is one of Bali's most dynamic coastal destinations, known for its black-sand beaches, modern venues, and a vibrant creative energy that blends lifestyle, design, and community. We design weddings in Canggu that reflect its contemporary spirit — creating celebrations that feel stylish, expressive, and thoughtfully curated. Our Canggu weddings are shaped by modern architecture, sunset light, and a balance between relaxed atmosphere and elevated design. From private villas to stylish beach clubs, Canggu provides versatile venues for weddings that blend celebration, design, and social energy.",
-    location: "South Bali",
     atmosphere:
       "Stylish yet relaxed — creative, design-forward, and social, feeling less like formal events and more like beautifully curated modern gatherings",
     accessibility_notes:
@@ -227,14 +266,13 @@ export const destinationList: Destination[] = [
     id: "4",
     name: "Seminyak",
     slug: "seminyak-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Elegant Boutique",
     description:
       "Boutique resorts, elegant villas, and central accessibility, ideal for refined destination weddings with polished hospitality and vibrant guest experiences.",
     long_description:
       "Seminyak is one of Bali's most refined coastal destinations, known for its upscale beach clubs, stylish venues, and a vibrant yet sophisticated atmosphere that blends luxury with lifestyle. We design weddings in Seminyak that reflect its polished character — creating celebrations that feel elegant, contemporary, and effortlessly curated. Our Seminyak weddings are shaped by sunset light, refined spaces, and a seamless balance between design and guest experience. We work with couples drawn to Seminyak for its combination of beachfront beauty, high-end venues, and a cosmopolitan yet relaxed energy.",
-    location: "South Bali",
     atmosphere:
       "Elegant yet relaxed — refined and design-conscious, social and beautifully orchestrated, with modern coastal sophistication and timeless appeal",
     accessibility_notes:
@@ -296,14 +334,13 @@ export const destinationList: Destination[] = [
     id: "5",
     name: "Sanur",
     slug: "sanur-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Seaside Charm",
     description:
       "Calm coastlines, heritage charm, and timeless seaside elegance, ideal for intimate, family-friendly destination weddings with a gentle, unhurried rhythm.",
     long_description:
       "Sanur is one of Bali's most refined coastal destinations, known for its gentle beaches, sunrise views, and a sense of quiet sophistication that feels distinctly different from the island's more vibrant west coast. We design weddings in Sanur that embrace its calm atmosphere — creating celebrations that feel intimate, elegant, and deeply connected to the natural rhythm of the sea. Our Sanur weddings are shaped by soft morning light, ocean breezes, and a slower pace that allows each moment to unfold with intention.",
-    location: "South Bali",
     atmosphere:
       "Calm yet beautifully curated — intimate, soft, airy, and light-filled with timeless seaside elegance and a slower, more meaningful pace",
     accessibility_notes:
@@ -365,14 +402,13 @@ export const destinationList: Destination[] = [
     id: "6",
     name: "Nusa Dua",
     slug: "nusa-dua-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Luxury Resort",
     description:
       "Expansive beachfront resorts, controlled environments, and polished service, ideal for formal luxury destination weddings with large guest logistics.",
     long_description:
       "Nusa Dua is one of Bali's most prestigious coastal destinations, known for its pristine beaches, world-class resorts, and a highly refined environment designed for comfort, privacy, and elevated experiences. We design weddings in Nusa Dua that reflect its polished character — creating celebrations that feel luxurious, seamless, and thoughtfully executed. Our Nusa Dua weddings are shaped by clean beachfront landscapes, refined architecture, and a level of service that ensures every detail is carefully managed. We work with couples drawn to Nusa Dua for its exclusivity, safety, and the ease of hosting a beautifully organized destination wedding.",
-    location: "South Bali",
     atmosphere:
       "Elegant and well-structured — refined, polished, and seamless in execution, luxurious without feeling excessive with world-class resort hospitality",
     accessibility_notes:
@@ -430,554 +466,16 @@ export const destinationList: Destination[] = [
     ],
   },
   {
-    id: "7",
-    name: "Tabanan",
-    slug: "tabanan-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
-    type: "Retreat & Landscape",
-    description:
-      "Rice terraces, jungle valleys, cool highland lakes, and wild west coast beaches — ideal for retreat-style, sustainable, and landscape-led celebrations.",
-    long_description:
-      "Tabanan offers diverse landscapes: rice terraces, jungle valleys, cool highland lakes, and wild west coast beaches. We design retreat-style, sustainable, and landscape-led celebrations here that feel immersive and environmentally thoughtful. Perfect for couples seeking multi-day experiences shaped by nature.",
-    location: "West Bali",
-    atmosphere:
-      "Retreat-like and immersive, with a sustainable, landscape-driven quality that feels connected to nature",
-    accessibility_notes:
-      "Diverse terrain requires planning; multiple venue options, scenic drives, various accommodation levels",
-    seasonal_considerations:
-      "West coast exposure means different weather; seasonal planning important for outdoor activities",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773709788/tabanan_poexyo.jpg",
-    guest_capacity: "20 - 200",
-    highlights: [
-      "Rice terraces",
-      "Jungle valleys",
-      "Highland lakes",
-      "Wild west coast beaches",
-      "Diverse landscapes",
-    ],
-    best_for: [
-      "Retreat-style celebrations",
-      "Sustainable practices",
-      "Landscape-led design",
-      "Multi-day events",
-      "Nature-immersive experiences",
-    ],
-    ceremony_options: [
-      "Rice terrace ceremonies",
-      "Jungle clearings",
-      "Lakeside settings",
-      "Beach ceremonies",
-    ],
-    reception_options: [
-      "Multi-location celebrations",
-      "Retreat-style events",
-      "Outdoor gatherings",
-      "Multi-day experiences",
-    ],
-    accommodation_nearby: [
-      "Eco-lodges",
-      "Heritage resorts",
-      "Farm stays",
-      "Sustainable properties",
-    ],
-    dining_experiences: [
-      "Farm-to-table cuisine",
-      "Local agricultural experiences",
-      "Sustainable dining",
-      "Community-style meals",
-    ],
-    unique_features: [
-      "Rice paddy backdrops",
-      "Diverse landscapes",
-      "Retreat atmosphere",
-      "Sustainability focus",
-      "Multi-day possibilities",
-    ],
-  },
-  {
-    id: "8",
-    name: "Nusa Penida",
-    slug: "nusa-penida-wedding",
-    category_id: "cat-islands",
-    category: getCat("cat-islands"),
-    type: "Clifftop & Cinematic Drama",
-    description:
-      "Rugged cliffs, deep blue ocean, and open horizons, ideal for bold, cinematic, and visually extraordinary destination weddings shaped by scale, light, and untamed natural beauty.",
-    long_description:
-      "Nusa Penida offers one of Bali's most dramatic and visually striking landscapes — where rugged cliffs, deep blue ocean, and open horizons create a setting that feels vast, powerful, and unforgettable. Unlike the softer rhythm of mainland Bali, Nusa Penida carries a raw and untamed energy — making it ideal for weddings that feel bold, cinematic, and deeply connected to nature. At Linda Wiryani Design and Event Planning, we design weddings in Nusa Penida that embrace this scale — creating celebrations that feel intentional, immersive, and visually extraordinary. Our Nusa Penida weddings are shaped by cliffside views, strong natural light, and the expansive meeting point between land and ocean.",
-    location: "Nusa Islands",
-    atmosphere:
-      "Bold yet refined — expansive and visually striking, minimal and landscape-driven, elegant within a raw natural setting where cliffs, ocean, and sky create a naturally dramatic composition",
-    accessibility_notes:
-      "Island access requires coordinated boat transfers for guests and vendors; cliffside locations require careful planning for safety and guest movement; strong coastal winds must be considered in design and setup; certain technical elements may need to be arranged from mainland Bali",
-    seasonal_considerations:
-      "Strong coastal winds and open environmental exposure must be carefully considered in design and structure planning; natural light across exposed cliff landscapes is particularly dramatic at sunrise and sunset; dry season preferred for travel logistics and outdoor ceremony conditions",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309453/Nusa_Penida_final_h8b3bp.png",
-    guest_capacity: "5 - 80",
-    highlights: [
-      "Dramatic clifftop ceremony settings with expansive ocean views",
-      "Raw and untamed natural environment unlike any mainland Bali setting",
-      "Bold, cinematic, and editorial-quality wedding landscapes",
-      "Strong visual storytelling shaped by cliff, sky, and deep blue sea",
-      "A unique and visually powerful island wedding destination",
-    ],
-    best_for: [
-      "Couples seeking a one-of-a-kind dramatic landscape setting",
-      "Clifftop ceremonies with expansive ocean and horizon views",
-      "Bold, adventurous, and visually striking wedding experiences",
-      "Editorial and concept-driven island celebrations",
-      "A raw, elevated, and deeply unforgettable Bali wedding",
-    ],
-    ceremony_options: [
-      "Clifftop ceremonies with dramatic ocean backdrop",
-      "Beachfront and coastal settings within rugged terrain",
-      "Intimate elopements on remote island landscapes",
-      "Scenic viewpoint and elevated open-air ceremonies",
-    ],
-    reception_options: [
-      "Intimate clifftop dinner gatherings with ocean views",
-      "Beachfront and open-air island receptions",
-      "Small-scale editorial and concept-driven celebrations",
-      "Adventure-style and landscape-immersive experiences",
-    ],
-    accommodation_nearby: [
-      "Boutique island eco-lodges and nature retreats",
-      "Small resort and villa properties",
-      "Guesthouse stays with island character",
-      "Clifftop and coastal accommodation options",
-    ],
-    dining_experiences: [
-      "Private chef clifftop and coastal dining experiences",
-      "Fresh seafood and local island cuisine",
-      "Intimate beachfront dinner settings",
-      "Concept-driven bespoke catering in dramatic surroundings",
-    ],
-    unique_features: [
-      "Ceremony on the edge of Bali's most dramatic cliffside landscape",
-      "Bold and visually powerful gathering shaped by ocean and sky",
-      "A wedding that feels raw, cinematic, and deeply extraordinary",
-      "One of Bali's most striking and emotionally impactful island settings",
-      "An immersive, visually unforgettable, and truly one-of-a-kind experience",
-    ],
-  },
-  {
-    id: "8b",
-    name: "Nusa Lembongan",
-    slug: "nusa-lembongan-wedding",
-    category_id: "cat-islands",
-    category: getCat("cat-islands"),
-    type: "Relaxed Island Elegance",
-    description:
-      "Clear waters, soft coastal light, and a relaxed island atmosphere, ideal for intimate, effortless, and naturally beautiful destination weddings shaped by ocean, simplicity, and ease.",
-    long_description:
-      "Nusa Lembongan offers a different rhythm of Bali — one that feels slower, lighter, and more connected to the ocean. Surrounded by clear waters, soft coastal light, and a relaxed island atmosphere, this destination creates a wedding experience that feels intimate, effortless, and naturally beautiful. At Linda Wiryani Design and Event Planning, we design weddings in Nusa Lembongan that embrace this simplicity — creating celebrations that feel calm, refined, and deeply connected to the island environment. Our Nusa Lembongan weddings are shaped by ocean views, open skies, and a sense of ease that allows each moment to unfold naturally.",
-    location: "Nusa Islands",
-    atmosphere:
-      "Relaxed yet refined — light-filled and naturally elegant, intimate and atmosphere-led, effortless with quiet sophistication shaped by ocean, open sky, and the unhurried rhythm of island life",
-    accessibility_notes:
-      "Island access requires boat transfers for guests and vendors; guest accommodation planning is important due to the island's limited but curated options; wind and ocean conditions must be carefully considered; certain technical elements may need to be arranged from mainland Bali; schedules must account for island transport and setup timing",
-    seasonal_considerations:
-      "Light transitions from day to sunset must be considered for ceremony timing; wind conditions and coastal exposure influence design and structure choices; dry season provides the most stable conditions for island access and outdoor celebrations",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309427/Nusa_Lembongan_Final_vc5hxp.png",
-    guest_capacity: "10 - 100",
-    highlights: [
-      "Clear waters and soft coastal light creating a naturally beautiful setting",
-      "Relaxed and intimate island atmosphere away from mainland crowds",
-      "Oceanfront ceremony locations with open sky and sea views",
-      "Curated villas and boutique properties offering privacy and natural beauty",
-      "A slower, more intentional wedding experience shaped by island rhythm",
-    ],
-    best_for: [
-      "Couples seeking a quiet island setting away from crowds",
-      "Intimate and meaningful oceanfront celebrations",
-      "A relaxed yet elegantly refined wedding atmosphere",
-      "Private villa and boutique venue island experiences",
-      "A destination that feels both private and accessible",
-    ],
-    ceremony_options: [
-      "Oceanfront ceremonies with clear water and open sky backdrops",
-      "Beachfront and coastal garden settings",
-      "Private villa ocean-view ceremonies",
-      "Intimate island elopements in relaxed coastal surroundings",
-    ],
-    reception_options: [
-      "Relaxed open-air dining under open skies",
-      "Boutique villa and private resort receptions",
-      "Intimate beachfront dinner gatherings",
-      "Small-scale island celebration experiences",
-    ],
-    accommodation_nearby: [
-      "Curated boutique villas and private island properties",
-      "Small resort properties with ocean views",
-      "Intimate guesthouses and eco-lodge stays",
-      "Beachfront villa rentals with direct water access",
-    ],
-    dining_experiences: [
-      "Private chef ocean-view dining experiences",
-      "Fresh seafood and local island cuisine",
-      "Relaxed beachfront and open-air dinner settings",
-      "Intimate and effortlessly curated catering experiences",
-    ],
-    unique_features: [
-      "Ceremony by the ocean in one of Bali's most relaxed island settings",
-      "Quiet and meaningful gathering shaped by light, water, and open sky",
-      "A wedding that feels calm, intimate, and naturally effortless",
-      "Bali's most accessible yet private island wedding destination",
-      "A celebration defined by simplicity, ocean, and genuine connection",
-    ],
-  },
-  {
-    id: "8c",
-    name: "Nusa Ceningan",
-    slug: "nusa-ceningan-wedding",
-    category_id: "cat-islands",
-    category: getCat("cat-islands"),
-    type: "Intimate Coastal Charm",
-    description:
-      "Smaller scale, coastal textures, and a slower island rhythm, ideal for intimate, understated, and naturally connected destination weddings shaped by simplicity and quiet coastal beauty.",
-    long_description:
-      "Nusa Ceningan offers one of Bali's most intimate and understated island experiences — where smaller scale, coastal textures, and a slower rhythm create a setting that feels personal, relaxed, and naturally beautiful. Located between Nusa Lembongan and Nusa Penida, this island carries a unique balance — combining the ease of Lembongan with the character and edge of Penida, yet in a more quiet and intimate form. At Linda Wiryani Design and Event Planning, we design weddings in Nusa Ceningan that embrace this simplicity — creating celebrations that feel calm, intentional, and effortlessly refined. Our Nusa Ceningan weddings are shaped by ocean views, coastal cliffs, and a sense of stillness that allows each moment to feel grounded and present.",
-    location: "Nusa Islands",
-    atmosphere:
-      "Intimate yet elevated — simple and thoughtfully curated, calm, natural, and atmosphere-led, elegant with quiet character shaped by coastal cliffs, ocean views, and the stillness of a lesser-explored island",
-    accessibility_notes:
-      "Guests typically arrive via Nusa Lembongan requiring coordinated transfers; limited but curated accommodation options require early planning; open coastal environments require careful consideration for setup and design; some elements may need to be arranged from mainland Bali; schedules must align with island transport and setup timing",
-    seasonal_considerations:
-      "Open environments and wind conditions require thoughtful design and structural choices; natural light and soft ocean reflections create beautiful ceremony conditions particularly at golden hour; dry season preferred for stable access and outdoor event planning",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309438/Nusa_Ceningan_Wedding_xhxycj.png",
-    guest_capacity: "5 - 60",
-    highlights: [
-      "Intimate and quiet island atmosphere unlike any other Bali destination",
-      "Coastal cliffs and ocean views in a smaller, more personal setting",
-      "A unique balance between ease and edge — calm yet characterful",
-      "Less explored and genuinely private island environment",
-      "Naturally beautiful surroundings shaped by simplicity and texture",
-    ],
-    best_for: [
-      "Couples seeking a quiet and private intimate island setting",
-      "Coastal and cliffside ceremony locations in a relaxed environment",
-      "A unique and less commercial island wedding destination",
-      "Intimate elopements with a slower and more intentional pace",
-      "A wedding experience that feels simple, personal, and authentic",
-    ],
-    ceremony_options: [
-      "Coastal cliffside ceremonies with expansive ocean views",
-      "Intimate beachfront and shoreline settings",
-      "Private villa and boutique venue ceremonies",
-      "Elopements in quiet and secluded island surroundings",
-    ],
-    reception_options: [
-      "Intimate open-air gatherings by the coast",
-      "Small boutique venue and private villa receptions",
-      "Quiet beachfront dinner celebrations",
-      "Relaxed and personal island gathering experiences",
-    ],
-    accommodation_nearby: [
-      "Small boutique villas and private island retreats",
-      "Intimate guesthouses with coastal views",
-      "Eco-lodge and nature-integrated stays",
-      "Nearby Nusa Lembongan accommodation options",
-    ],
-    dining_experiences: [
-      "Private chef intimate coastal dining experiences",
-      "Fresh seafood and simple local island cuisine",
-      "Quiet beachfront and open-air meal settings",
-      "Understated and authentically curated catering",
-    ],
-    unique_features: [
-      "Ceremony in one of Bali's most intimate and less explored island settings",
-      "Quiet and personal gathering shaped by coastal simplicity and stillness",
-      "A wedding that feels calm, authentic, and deeply connected to its surroundings",
-      "Bali's most understated and genuinely private island wedding destination",
-      "A celebration defined by intimacy, texture, and natural coastal beauty",
-    ],
-  },
-  {
-    id: "9",
-    name: "Lombok",
-    slug: "lombok-wedding",
-    category_id: "cat-outsite-bali",
-    category: getCat("cat-outsite-bali"),
-    type: "Island Escape & Coastal Simplicity",
-    description:
-      "Wide open beaches, gentle landscapes, and a slower island rhythm, ideal for intimate, effortless, and quietly elegant destination weddings shaped by space, simplicity, and natural beauty.",
-    long_description:
-      "Lombok offers a quieter and more understated alternative to Bali — where wide open beaches, gentle landscapes, and a slower rhythm create a setting that feels calm, spacious, and deeply relaxing. Less developed and more natural in character, Lombok allows weddings to unfold in a way that feels unhurried, intimate, and beautifully connected to its surroundings. At Linda Wiryani Design and Event Planning, we design weddings in Lombok that embrace this sense of space — creating celebrations that feel effortless, refined, and quietly elevated. Our Lombok weddings are shaped by open coastlines, soft light, and a sense of stillness that allows each moment to feel grounded and intentional.",
-    location: "Lombok",
-    atmosphere:
-      "Spacious yet intimate — calm and naturally elegant, light-filled and atmosphere-led, refined with quiet sophistication shaped by wide coastlines, open horizons, and the unhurried rhythm of a less developed island",
-    accessibility_notes:
-      "Accessible via Lombok International Airport or fast boat from Bali; flights, transfers, and logistics must be carefully coordinated; guest accommodations require early planning due to more limited options compared to Bali; certain vendors and technical elements may need to be brought from Bali; schedules must allow for travel and setup logistics",
-    seasonal_considerations:
-      "Wind and sun exposure across open coastal landscapes must be carefully considered in design and timing; dry season (May–October) provides the most stable conditions for outdoor ceremonies; natural light across wide horizons is particularly beautiful at golden hour and sunset",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309336/Lombok_uo3d50.png",
-    guest_capacity: "10 - 150",
-    highlights: [
-      "Wide and untouched beachfront ceremony settings",
-      "A quieter and more relaxed island atmosphere away from crowds",
-      "Natural and less commercial open coastal environment",
-      "Curated villas and boutique resorts offering privacy and flexibility",
-      "A true sense of space, openness, and peaceful escape",
-    ],
-    best_for: [
-      "Couples seeking a calm and exclusive beachfront destination",
-      "Intimate weddings in a natural and unhurried setting",
-      "Private villa and boutique resort celebrations",
-      "A wedding experience that feels peaceful and immersive",
-      "A destination that offers both space and quiet refinement",
-    ],
-    ceremony_options: [
-      "Beachfront ceremonies along wide open coastlines",
-      "Oceanfront resort and villa garden settings",
-      "Intimate elopements in quiet natural surroundings",
-      "Cliffside and elevated viewpoint ceremonies",
-    ],
-    reception_options: [
-      "Private resort and villa outdoor dinner receptions",
-      "Beachfront open-air celebration gatherings",
-      "Intimate boutique venue experiences",
-      "Relaxed and nature-surrounded evening events",
-    ],
-    accommodation_nearby: [
-      "Boutique beachfront resorts and eco-luxury retreats",
-      "Private villa rentals with ocean views",
-      "Intimate island guesthouses and glamping stays",
-      "Curated properties with privacy and natural character",
-    ],
-    dining_experiences: [
-      "Private chef beachfront dining experiences",
-      "Fresh seafood and local Sasak cuisine",
-      "Sunset and open-air coastal dinner settings",
-      "Intimate and effortlessly curated catering experiences",
-    ],
-    unique_features: [
-      "Ceremony along one of Indonesia's most unspoiled and spacious coastlines",
-      "Quiet and meaningful gathering shaped by space, light, and open horizon",
-      "A wedding that feels peaceful, natural, and beautifully understated",
-      "A private and exclusive destination beyond the pace of Bali",
-      "A celebration defined by simplicity, calm, and genuine escape",
-    ],
-  },
-  {
-    id: "9b",
-    name: "Sumba",
-    slug: "sumba-wedding",
-    category_id: "cat-outsite-bali",
-    category: getCat("cat-outsite-bali"),
-    type: "Remote Luxury & Cinematic Landscape",
-    description:
-      "Vast savannahs, dramatic coastlines, and a deep cultural presence, ideal for exclusive, immersive, and truly extraordinary destination weddings shaped by landscape, authenticity, and quiet luxury.",
-    long_description:
-      "Sumba offers one of Indonesia's most extraordinary and untouched landscapes — where vast savannahs, dramatic coastlines, and a deep cultural presence create a setting that feels both powerful and rare. Far removed from the pace of Bali, Sumba invites a different kind of wedding experience — one that is slower, more intentional, and deeply connected to land, tradition, and space. At Linda Wiryani Design and Event Planning, we design weddings in Sumba that embrace this scale and authenticity — creating celebrations that feel immersive, refined, and truly one of a kind. Our Sumba weddings are shaped by open horizons, raw textures, and a quiet sense of luxury that comes from simplicity, isolation, and meaning.",
-    location: "Sumba",
-    atmosphere:
-      "Expansive yet deeply intimate — raw yet refined, minimal and landscape-driven, elevated with quiet sophistication shaped by vast savannahs, dramatic coastal cliffs, and the rare sense of an untouched and culturally rich island",
-    accessibility_notes:
-      "Remote destination requiring detailed coordination for flights, transfers, and all guest logistics; limited but high-end accommodation options require early planning; many elements including vendors and technical setups may need to be brought from Bali; open landscapes require careful planning for sun, wind, and natural exposure; extended planning timelines are essential for smooth execution",
-    seasonal_considerations:
-      "Open savannahs and coastal environments require full preparation for sun, wind, and natural elements; dry season is strongly preferred for ceremony conditions and travel logistics; natural light across vast open landscapes creates particularly dramatic and cinematic conditions at sunrise and sunset",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309390/Sumba_wedding_erkew6.png",
-    guest_capacity: "10 - 100",
-    highlights: [
-      "Vast savannah and dramatic clifftop coastal ceremony settings",
-      "One of Indonesia's most exclusive and rarely explored destinations",
-      "Deep cultural presence and authenticity shaped by Sumbanese heritage",
-      "Cinematic and editorial-quality natural landscapes",
-      "Ultra-luxury private resort properties with rare exclusivity",
-    ],
-    best_for: [
-      "Couples seeking a remote, exclusive, and truly extraordinary destination",
-      "Savannah and clifftop ceremonies with cinematic visual impact",
-      "A deeply immersive and culturally connected wedding experience",
-      "Ultra-luxury private resort and concept-driven celebrations",
-      "A wedding that feels rare, refined, and profoundly unforgettable",
-    ],
-    ceremony_options: [
-      "Open savannah ceremonies with vast landscape backdrops",
-      "Clifftop and coastal ceremonies along dramatic shorelines",
-      "Private resort and ultra-luxury venue ceremony settings",
-      "Intimate elopements within raw and untouched natural surroundings",
-    ],
-    reception_options: [
-      "Private resort and clifftop open-air dinner receptions",
-      "Savannah landscape intimate gathering experiences",
-      "Ultra-luxury concept-driven celebration events",
-      "Small and deeply personal nature-immersed gatherings",
-    ],
-    accommodation_nearby: [
-      "Ultra-luxury private resorts and eco-retreats",
-      "Clifftop and ocean-view boutique properties",
-      "Exclusive private villa and estate stays",
-      "Curated high-end nature-integrated accommodations",
-    ],
-    dining_experiences: [
-      "Private chef savannah and clifftop dining experiences",
-      "Fresh local cuisine with authentic Sumbanese flavours",
-      "Sunset and open landscape intimate dinner settings",
-      "Concept-driven bespoke catering in extraordinary surroundings",
-    ],
-    unique_features: [
-      "Ceremony within one of Indonesia's most vast and untouched landscapes",
-      "Rare and powerful gathering shaped by savannah, culture, and open horizon",
-      "A wedding that feels exclusive, cinematic, and deeply extraordinary",
-      "Indonesia's most remote and visually striking luxury wedding destination",
-      "A transformative, one-of-a-kind, and profoundly memorable experience",
-    ],
-  },
-  {
-    id: "9c",
-    name: "Banyuwangi",
-    slug: "banyuwangi-wedding",
-    category_id: "cat-outsite-bali",
-    category: getCat("cat-outsite-bali"),
-    type: "Nature-Led Discovery & Landscape",
-    description:
-      "Mountains, forests, coastline, and open natural environments layered together, ideal for immersive, adventurous, and quietly extraordinary destination weddings shaped by natural diversity and quiet discovery.",
-    long_description:
-      "Banyuwangi offers one of Indonesia's most diverse and lesser-known landscapes — where mountains, forests, coastline, and open natural environments come together in a setting that feels both raw and quietly beautiful. Located at the eastern edge of Java, Banyuwangi carries a sense of discovery — offering wedding experiences that feel unique, immersive, and far removed from more familiar destinations. At Linda Wiryani Design and Event Planning, we design weddings in Banyuwangi that embrace this diversity — creating celebrations that feel grounded, intentional, and deeply connected to nature. Our Banyuwangi weddings are shaped by layered landscapes, shifting light, and a sense of calm that allows each moment to unfold naturally.",
-    location: "Java",
-    atmosphere:
-      "Natural yet refined — immersive and visually layered, calm with a sense of exploration, elegant within a raw natural context shaped by the contrast between mountain, forest, and coastal landscapes",
-    accessibility_notes:
-      "Accessible via flights and land transfers from Bali; all travel logistics and coordination must be carefully planned for guests and vendors; certain vendors and technical elements may need to be arranged from Bali; different landscape types require tailored planning for layout, terrain, and guest safety; schedules must account for travel distances and setup logistics",
-    seasonal_considerations:
-      "Layered landscape types — mountain, forest, and coastal — each require specific seasonal considerations and contingency planning; natural light varies significantly across different environments requiring careful ceremony timing; dry season preferred for outdoor events and travel logistics",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309279/Banyuwangi_wdrvji.png",
-    guest_capacity: "10 - 120",
-    highlights: [
-      "Diverse natural landscapes combining mountain, forest, and coastal settings",
-      "A lesser-known and genuinely unique destination beyond Bali",
-      "Volcano and elevated landscape ceremony settings with dramatic views",
-      "Lush forest and jungle environments for immersive celebrations",
-      "A calm, uncrowded, and visually rich natural environment",
-    ],
-    best_for: [
-      "Couples seeking a unique and nature-diverse wedding destination",
-      "Mountain, volcano, and forest landscape ceremony settings",
-      "A wedding that feels adventurous yet refined and intentional",
-      "Intimate celebrations with strong visual richness and natural depth",
-      "A setting that offers both exploration and quiet natural beauty",
-    ],
-    ceremony_options: [
-      "Mountain and volcano landscape ceremonies with dramatic views",
-      "Forest and jungle-immersive nature ceremony settings",
-      "Coastal and ocean-view beachfront ceremonies",
-      "Elevated viewpoint and open natural landscape elopements",
-    ],
-    reception_options: [
-      "Nature-surrounded intimate dinner gatherings",
-      "Forest and mountain-view open-air celebrations",
-      "Boutique venue and private resort receptions",
-      "Concept-driven landscape-integrated experiences",
-    ],
-    accommodation_nearby: [
-      "Boutique nature lodges and eco-retreats",
-      "Mountain and forest-view villa properties",
-      "Coastal resort and beachfront stays",
-      "Nature-integrated guesthouse and retreat accommodations",
-    ],
-    dining_experiences: [
-      "Private chef nature and landscape dining experiences",
-      "Fresh local East Java cuisine and produce",
-      "Mountain-view and forest-surrounded intimate meals",
-      "Concept-driven bespoke catering within natural settings",
-    ],
-    unique_features: [
-      "Ceremony within one of Indonesia's most diverse and layered natural landscapes",
-      "Quiet and meaningful gathering shaped by mountain, forest, and coastal contrast",
-      "A wedding that feels unique, immersive, and quietly extraordinary",
-      "One of Indonesia's most emerging and visually rich destination experiences",
-      "A celebration defined by natural diversity, discovery, and genuine beauty",
-    ],
-  },
-  {
-    id: "9d",
-    name: "Magelang",
-    slug: "magelang-wedding",
-    category_id: "cat-outsite-bali",
-    category: getCat("cat-outsite-bali"),
-    type: "Heritage & Architectural Elegance",
-    description:
-      "Ancient heritage, volcanic landscapes, and architectural beauty, ideal for serene, culturally rich, and timeless destination weddings shaped by stillness, symmetry, and refined elegance.",
-    long_description:
-      "Magelang offers one of Indonesia's most refined and culturally significant wedding settings — where ancient heritage, volcanic landscapes, and architectural beauty come together in quiet harmony. Set within a region rich in history and surrounded by mountains, this destination creates a wedding experience that feels both grounded and elevated — where every moment carries a sense of presence and meaning. At Linda Wiryani Design and Event Planning, we design weddings in Magelang that embrace this balance — creating celebrations that feel serene, intentional, and deeply connected to both landscape and culture. Our Magelang weddings are shaped by symmetry, natural light, and a sense of stillness that allows the experience to unfold with quiet refinement.",
-    location: "Java",
-    atmosphere:
-      "Timeless and refined — calm and architecturally grounded, minimal yet visually powerful, elegant with quiet depth shaped by ancient heritage, volcanic mountain surroundings, and the stillness of a culturally significant landscape",
-    accessibility_notes:
-      "Accessible via flights to Yogyakarta and coordinated land transfers; all travel logistics must be carefully planned for guests and vendors; certain venue locations may have specific usage and operational guidelines; structured environments require thoughtful guest movement and spatial planning; careful scheduling ensures a smooth and well-paced experience",
-    seasonal_considerations:
-      "Outdoor and semi-open settings require weather contingency planning; natural light across open courtyards, terraces, and architectural spaces creates beautiful ceremony conditions particularly in the morning and late afternoon; dry season preferred for open-air ceremonies and guest comfort",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433444/Magelang_q1pjqj.png",
-    guest_capacity: "20 - 200",
-    highlights: [
-      "Ancient heritage and iconic architectural settings with deep cultural significance",
-      "Volcanic mountain surroundings creating a powerful and serene natural backdrop",
-      "Refined and timeless atmosphere unlike any other Indonesian destination",
-      "Architectural symmetry and spatial beauty ideal for ceremony design",
-      "A calm and contemplative environment shaped by history and landscape",
-    ],
-    best_for: [
-      "Couples seeking a culturally rich and historically significant setting",
-      "Architectural and heritage ceremony environments with strong visual presence",
-      "A serene and timeless wedding atmosphere shaped by culture and landscape",
-      "Refined and design-led celebrations within iconic Indonesian settings",
-      "A wedding experience that feels deeply intentional and quietly luxurious",
-    ],
-    ceremony_options: [
-      "Architectural and heritage site ceremony settings",
-      "Open courtyard and terrace ceremonies with mountain views",
-      "Intimate elopements within culturally significant surroundings",
-      "Landscape and volcanic mountain view ceremony backdrops",
-    ],
-    reception_options: [
-      "Heritage garden and architectural ground dinner receptions",
-      "Open courtyard and terrace elegant gathering experiences",
-      "Refined boutique venue and private estate celebrations",
-      "Intimate and culturally immersive evening gatherings",
-    ],
-    accommodation_nearby: [
-      "Boutique heritage hotels and refined retreat properties",
-      "Mountain-view villas and nature-integrated stays",
-      "Cultural guesthouses and curated private accommodations",
-      "Yogyakarta area luxury hotels and resort properties",
-    ],
-    dining_experiences: [
-      "Private chef heritage and architectural setting dining experiences",
-      "Fresh Central Java cuisine and traditional local dishes",
-      "Open courtyard and terrace intimate dinner settings",
-      "Refined and culturally inspired bespoke catering experiences",
-    ],
-    unique_features: [
-      "Ceremony within one of Indonesia's most iconic and culturally significant landscapes",
-      "Timeless and meaningful gathering shaped by heritage, architecture, and mountain presence",
-      "A wedding that feels refined, serene, and deeply connected to Indonesian culture",
-      "One of Indonesia's most elegant and historically resonant destination settings",
-      "A celebration defined by stillness, symmetry, and quiet architectural beauty",
-    ],
-  },
-
-  {
     id: "10",
     name: "Kuta",
     slug: "kuta-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Beachfront Celebration",
     description:
       "Golden beaches, legendary sunsets, and vibrant coastal energy, ideal for joyful, relaxed, and accessible beachfront destination weddings shaped by the rhythm of the ocean.",
     long_description:
       "Kuta is one of Bali's most iconic coastal destinations, known for its golden beaches, vibrant energy, and legendary sunsets over the Indian Ocean. We design weddings in Kuta that celebrate the beauty of the oceanfront while creating an experience that feels joyful, relaxed, and thoughtfully curated. Our Kuta weddings embrace the natural rhythm of the coastline — where ocean views, sunset light, and shared celebration shape the atmosphere of the day. We work with international couples who are drawn to Kuta for its accessibility, beachfront venues, and the lively yet welcoming spirit that defines this part of Bali.",
-    location: "South Bali",
     atmosphere:
       "Relaxed yet beautifully curated — celebratory rather than formal, open, airy, and ocean-inspired with elegant warmth",
     accessibility_notes:
@@ -1037,14 +535,13 @@ export const destinationList: Destination[] = [
     id: "11",
     name: "Legian",
     slug: "legian-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Beachfront & Lifestyle",
     description:
       "Beachfront settings, vibrant coastal atmosphere, and relaxed energy, ideal for lively yet refined destination weddings shaped by flow, light, and effortless social elegance.",
     long_description:
-      "Legian is one of Bali's most balanced coastal destinations, situated between Seminyak and Kuta, offering a blend of beachfront beauty, vibrant atmosphere, and approachable rhythm that makes it ideal for celebrations that feel social, warm, and naturally enjoyable. We design weddings in Legian that embrace this energy — creating celebrations that feel effortless, intentional, and beautifully curated. Our Legian weddings are shaped by open coastal settings, sunset light, and a seamless flow between ceremony, cocktail, and reception that allows each moment to feel engaging and alive. We work with couples drawn to Legian for its accessibility, lively character, and a setting that feels both welcoming and refined.",
-    location: "South Bali",
+      "Legian is one of Bali's most balanced coastal destinations, situated between Seminyak and Kuta, offering a blend of beachfront beauty, vibrant atmosphere, and approachable rhythm that makes it ideal for celebrations that feel social, warm, and naturally enjoyable. We design weddings in Legian that embrace this energy — creating celebrations that feel effortless, intentional, and beautifully curated. Our Legian weddings are shaped by open coastal settings, sunset light, and a seamless flow between ceremony, cocktail, and reception that allows each moment to feel engaging and alive.",
     atmosphere:
       "Relaxed yet stylish — vibrant, social, and light-filled, where beachfront energy meets effortless elegance and each celebration feels warm, lively, and beautifully curated",
     accessibility_notes:
@@ -1106,14 +603,13 @@ export const destinationList: Destination[] = [
     id: "12",
     name: "Jimbaran",
     slug: "jimbaran-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-south-bali",
+    location: getLoc("loc-south-bali"),
     type: "Beachfront Intimacy",
     description:
       "Calm bay, golden sunsets, and understated luxury, ideal for intimate and refined beachfront weddings shaped by warmth, flowing light, and the quiet beauty of the ocean.",
     long_description:
-      "Jimbaran is one of Bali's most timeless coastal destinations, known for its calm bay, golden sunsets, and a sense of understated luxury that feels both welcoming and refined. We design weddings in Jimbaran that embrace the natural warmth of the coastline — creating celebrations that feel intimate, elegant, and effortlessly connected to the ocean. Our Jimbaran weddings are shaped by soft waves, glowing sunset light, and a slower, more grounded rhythm that allows each moment to feel meaningful. We work with couples who are drawn to Jimbaran for its balance of beachfront beauty, privacy, and a relaxed yet sophisticated atmosphere.",
-    location: "South Bali",
+      "Jimbaran is one of Bali's most timeless coastal destinations, known for its calm bay, golden sunsets, and a sense of understated luxury that feels both welcoming and refined. We design weddings in Jimbaran that embrace the natural warmth of the coastline — creating celebrations that feel intimate, elegant, and effortlessly connected to the ocean. Our Jimbaran weddings are shaped by soft waves, glowing sunset light, and a slower, more grounded rhythm that allows each moment to feel meaningful.",
     atmosphere:
       "Warm yet refined — intimate, welcoming, and soft with glowing ocean-inspired light that feels elegant without formality",
     accessibility_notes:
@@ -1170,18 +666,88 @@ export const destinationList: Destination[] = [
     ],
   },
 
+  // ════════════════════════════════════════════════════════════════════════════
+  // UBUD & GIANYAR
+  // ════════════════════════════════════════════════════════════════════════════
+  {
+    id: "2",
+    name: "Ubud",
+    slug: "ubud-wedding",
+    location_id: "loc-ubud-gianyar",
+    location: getLoc("loc-ubud-gianyar"),
+    type: "Spiritual & Artistic",
+    description:
+      "Jungle valleys, rivers, rice terraces, and spiritual depth, ideal for intimate, artistic, and emotionally grounded weddings rooted in nature and culture.",
+    long_description:
+      "Ubud is one of Bali's most iconic and soulful wedding destinations, known for its lush jungles, rice terraces, river valleys, and a deep connection to culture and nature. We design weddings in Ubud that go beyond visual beauty — creating celebrations that feel immersive, intentional, and emotionally resonant. Our Ubud weddings are shaped by natural textures, filtered light, and a sense of stillness that allows each moment to feel grounded and meaningful. We work with couples drawn to Ubud for its atmosphere, connection to nature, and its ability to create a wedding experience that feels deeply personal.",
+    atmosphere:
+      "Calm yet deeply expressive — nature-led and immersive, intimate and emotionally grounded, with an organic elegance shaped by jungle, valley, and filtered light",
+    accessibility_notes:
+      "Some venues involve steps, slopes, or natural terrain requiring careful guest movement planning; many venues are tucked into jungle landscapes needing realistic transportation scheduling",
+    seasonal_considerations:
+      "Jungle environments require preparation for humidity and potential rain; timing carefully planned to capture the most beautiful light within forest and valley settings; sound and event flow influenced by venue's natural and peaceful atmosphere",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311396/Ubud_final1_-_crop_atau_edit_dikit_biar_beda_dari_aslinya_ya_qolh2y.png",
+    guest_capacity: "20 - 200",
+    highlights: [
+      "Lush jungle, rice terraces, and river valley settings",
+      "Deep cultural and spiritual connection",
+      "Filtered natural light through tropical landscapes",
+      "Boutique villas and resorts integrated with nature",
+      "Intimate and emotionally resonant atmosphere",
+    ],
+    best_for: [
+      "Nature-integrated ceremony settings",
+      "Couples seeking calm, privacy, and emotional depth",
+      "Unique non-traditional venue experiences",
+      "Intimate and meaningful wedding journeys",
+      "A deeper connection to Bali's cultural landscape",
+    ],
+    ceremony_options: [
+      "Jungle and forest ceremonies",
+      "Riverside and valley settings",
+      "Rice terrace ceremony backdrops",
+      "Private villa garden ceremonies",
+      "Sacred and spiritual spaces",
+    ],
+    reception_options: [
+      "Private villa and boutique resort receptions",
+      "Eco-resort intimate gatherings",
+      "Riverside dinners surrounded by nature",
+      "Garden settings with organic design",
+      "Retreat-style multi-day event experiences",
+    ],
+    accommodation_nearby: [
+      "Private jungle villas and boutique resorts",
+      "Heritage hotels with cultural character",
+      "Wellness and spiritual retreat centers",
+      "Nature-integrated eco-lodges",
+    ],
+    dining_experiences: [
+      "Farm-to-table and organic cuisine",
+      "Traditional Balinese cultural dining",
+      "Private chef nature-immersive experiences",
+      "Wellness-focused and holistic menus",
+    ],
+    unique_features: [
+      "A ceremony surrounded by nature",
+      "Quiet and meaningful gathering atmosphere",
+      "Immersive experience shaped by landscape",
+      "Deeply personal and emotionally unforgettable",
+      "Multi-day retreat possibilities",
+    ],
+  },
   {
     id: "13",
     name: "Ketewel",
     slug: "ketewel-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-ubud-gianyar",
+    location: getLoc("loc-ubud-gianyar"),
     type: "Coastal Privacy",
     description:
       "Black-sand beaches, ocean views, and quiet coastal authenticity, ideal for private, intimate, and naturally elegant weddings away from Bali's more crowded destinations.",
     long_description:
-      "Ketewel is one of Bali's more understated coastal destinations, located along the island's east coast and known for its black-sand beaches, ocean views, and a sense of calm that feels untouched and authentic. We design weddings in Ketewel that embrace its quiet beauty — creating celebrations that feel intimate, grounded, and naturally elegant. Our Ketewel weddings are shaped by open coastlines, soft ocean light, and a slower rhythm that allows each moment to feel personal and unhurried. We work with couples drawn to Ketewel for its privacy, its proximity to Ubud, and its ability to offer a peaceful alternative to Bali's more crowded beach destinations.",
-    location: "Ubud & Gianyar",
+      "Ketewel is one of Bali's more understated coastal destinations, located along the island's east coast and known for its black-sand beaches, ocean views, and a sense of calm that feels untouched and authentic. We design weddings in Ketewel that embrace its quiet beauty — creating celebrations that feel intimate, grounded, and naturally elegant. Our Ketewel weddings are shaped by open coastlines, soft ocean light, and a slower rhythm that allows each moment to feel personal and unhurried.",
     atmosphere:
       "Intimate yet refined — natural and understated, calm, airy, and grounded with elegant restraint that allows the setting to lead",
     accessibility_notes:
@@ -1241,14 +807,13 @@ export const destinationList: Destination[] = [
     id: "14",
     name: "Saba",
     slug: "saba-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-ubud-gianyar",
+    location: getLoc("loc-ubud-gianyar"),
     type: "Beachfront & Garden Calm",
     description:
       "Quiet coastlines, open beaches, and surrounding greenery along Bali's east coast, ideal for calm, intimate, and naturally refined destination weddings shaped by coastal openness and understated elegance.",
     long_description:
-      "Saba is located along Bali's east coast in Gianyar, offering a quieter and more understated coastal setting — where open beaches, soft light, and surrounding greenery create a wedding atmosphere that feels calm, intimate, and naturally refined. Less commercial than Bali's west coast, Saba carries a sense of privacy and ease, making it ideal for couples who seek a peaceful yet beautiful environment for their celebration. At Linda Wiryani Design and Event Planning, we design weddings in Saba that embrace this balance — creating celebrations that feel relaxed, intentional, and seamlessly connected to both nature and space. Our Saba weddings are shaped by coastal openness, gentle light, and the interplay between beachfront and garden environments.",
-    location: "Ubud & Gianyar",
+      "Saba is located along Bali's east coast in Gianyar, offering a quieter and more understated coastal setting — where open beaches, soft light, and surrounding greenery create a wedding atmosphere that feels calm, intimate, and naturally refined. Less commercial than Bali's west coast, Saba carries a sense of privacy and ease, making it ideal for couples who seek a peaceful yet beautiful environment for their celebration.",
     atmosphere:
       "Calm yet beautifully curated — light-filled and naturally elegant, open, airy, and inviting, refined without excess, where soft coastal light, beachfront openness, and surrounding greenery create a wedding experience that feels intimate, spacious, and effortlessly meaningful",
     accessibility_notes:
@@ -1310,14 +875,13 @@ export const destinationList: Destination[] = [
     id: "15",
     name: "Tegallalang",
     slug: "tegallalang-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-ubud-gianyar",
+    location: getLoc("loc-ubud-gianyar"),
     type: "Rice Terrace Landscape",
     description:
       "Layered rice terraces, soft natural light, and iconic Bali scenery, ideal for intimate, scenic, and landscape-led weddings that feel both expansive and deeply personal.",
     long_description:
-      "Tegallalang is one of Bali's most iconic landscapes, known for its layered rice terraces, soft natural light, and a sense of openness that feels both serene and visually striking. We design weddings in Tegallalang that are deeply connected to the land — creating celebrations that feel organic, intentional, and visually poetic. Our Tegallalang weddings are shaped by sweeping green terraces, morning mist, and a quiet atmosphere that allows each moment to feel grounded and present. We work with couples drawn to Tegallalang for its unique scenery, its proximity to Ubud, and its ability to create a wedding experience that feels both intimate and expansive.",
-    location: "Ubud & Gianyar",
+      "Tegallalang is one of Bali's most iconic landscapes, known for its layered rice terraces, soft natural light, and a sense of openness that feels both serene and visually striking. We design weddings in Tegallalang that are deeply connected to the land — creating celebrations that feel organic, intentional, and visually poetic. Our Tegallalang weddings are shaped by sweeping green terraces, morning mist, and a quiet atmosphere that allows each moment to feel grounded and present.",
     atmosphere:
       "Scenic yet intimate — organic and design-conscious, light-filled and naturally expressive, with an elegant grounded simplicity shaped by landscape and horizon",
     accessibility_notes:
@@ -1374,18 +938,20 @@ export const destinationList: Destination[] = [
     ],
   },
 
+  // ════════════════════════════════════════════════════════════════════════════
+  // EAST BALI
+  // ════════════════════════════════════════════════════════════════════════════
   {
     id: "16",
     name: "Sidemen",
     slug: "sidemen-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Valley & Rice Field",
     description:
       "Sweeping rice fields, river valleys, and Mount Agung views, ideal for intimate, deeply personal, and nature-immersed weddings rooted in stillness and authenticity.",
     long_description:
-      "Sidemen is one of Bali's most untouched and atmospheric regions, known for its sweeping rice fields, river valleys, and views of Mount Agung that create a landscape both powerful and deeply serene. We design weddings in Sidemen that are rooted in stillness and connection — creating celebrations that feel intimate, meaningful, and immersed in nature. Our Sidemen weddings are shaped by open valleys, layered greenery, and a sense of quiet that allows each moment to unfold with clarity and intention. We work with couples drawn to Sidemen for its authenticity, its distance from the crowds, and its ability to offer a wedding experience that feels truly personal.",
-    location: "East Bali",
+      "Sidemen is one of Bali's most untouched and atmospheric regions, known for its sweeping rice fields, river valleys, and views of Mount Agung that create a landscape both powerful and deeply serene. We design weddings in Sidemen that are rooted in stillness and connection — creating celebrations that feel intimate, meaningful, and immersed in nature. Our Sidemen weddings are shaped by open valleys, layered greenery, and a sense of quiet that allows each moment to unfold with clarity and intention.",
     atmosphere:
       "Deeply calm and immersive — intimate and emotionally grounded, natural and understated, with an elegant quiet refinement shaped by valley, rice field, and mountain",
     accessibility_notes:
@@ -1445,14 +1011,13 @@ export const destinationList: Destination[] = [
     id: "17",
     name: "Amed",
     slug: "amed-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Raw Coastal Simplicity",
     description:
       "Black volcanic beaches, calm waters, and expansive horizon views, ideal for intimate, authentic, and nature-immersed weddings shaped by simplicity and raw coastal beauty.",
     long_description:
-      "Amed is one of Bali's most raw and unspoiled coastal destinations, known for its black volcanic beaches, calm waters, and expansive views that stretch toward the horizon. We design weddings in Amed that embrace its natural simplicity — creating celebrations that feel intimate, grounded, and deeply connected to the environment. Our Amed weddings are shaped by open coastlines, gentle ocean rhythms, and a sense of stillness that allows each moment to feel present and unfiltered. We work with couples drawn to Amed for its authenticity, its distance from the crowds, and its ability to offer a wedding experience that feels truly personal.",
-    location: "East Bali",
+      "Amed is one of Bali's most raw and unspoiled coastal destinations, known for its black volcanic beaches, calm waters, and expansive views that stretch toward the horizon. We design weddings in Amed that embrace its natural simplicity — creating celebrations that feel intimate, grounded, and deeply connected to the environment. Our Amed weddings are shaped by open coastlines, gentle ocean rhythms, and a sense of stillness that allows each moment to feel present and unfiltered.",
     atmosphere:
       "Simple yet refined — intimate and grounded, calm, open, and horizon-led with an elegant restraint that feels raw, real, and deeply connected",
     accessibility_notes:
@@ -1512,14 +1077,13 @@ export const destinationList: Destination[] = [
     id: "18",
     name: "Manggis",
     slug: "manggis-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Coastal & Nature Balance",
     description:
       "Calm shoreline, lush tropical surroundings, and understated elegance, ideal for serene, intimate, and naturally balanced weddings in East Bali.",
     long_description:
-      "Manggis is one of Bali's most quietly refined coastal destinations, located in East Bali and known for its calm shoreline, lush surroundings, and a sense of understated elegance that feels both natural and elevated. We design weddings in Manggis that embrace this balance — creating celebrations that feel serene, intimate, and thoughtfully composed. Our Manggis weddings are shaped by the meeting of ocean and greenery, where coastal views blend seamlessly with tropical landscapes. We work with couples drawn to Manggis for its peaceful atmosphere, its proximity to Sidemen and Candidasa, and its ability to offer a wedding experience that feels both private and refined.",
-    location: "East Bali",
+      "Manggis is one of Bali's most quietly refined coastal destinations, located in East Bali and known for its calm shoreline, lush surroundings, and a sense of understated elegance that feels both natural and elevated. We design weddings in Manggis that embrace this balance — creating celebrations that feel serene, intimate, and thoughtfully composed. Our Manggis weddings are shaped by the meeting of ocean and greenery, where coastal views blend seamlessly with tropical landscapes.",
     atmosphere:
       "Serene yet refined — intimate and well-balanced, natural and softly elegant, relaxed with a polished touch where ocean and tropical greenery harmoniously meet",
     accessibility_notes:
@@ -1579,14 +1143,13 @@ export const destinationList: Destination[] = [
     id: "19",
     name: "Candidasa",
     slug: "candidasa-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Tranquil Coastal Horizon",
     description:
       "Calm shoreline, open horizon views, and quiet authenticity, ideal for intimate, tranquil, and naturally elegant coastal weddings away from Bali's busier destinations.",
     long_description:
-      "Candidasa is one of Bali's most peaceful coastal destinations, located in East Bali and known for its calm shoreline, oceanfront views, and a quiet atmosphere that feels both authentic and refined. We design weddings in Candidasa that embrace this sense of tranquility — creating celebrations that feel intimate, balanced, and naturally elegant. Our Candidasa weddings are shaped by open ocean views, gentle coastal light, and a slower rhythm that allows each moment to feel present and meaningful. We work with couples drawn to Candidasa for its peaceful environment, its understated charm, and its ability to offer a wedding experience away from the crowds.",
-    location: "East Bali",
+      "Candidasa is one of Bali's most peaceful coastal destinations, located in East Bali and known for its calm shoreline, oceanfront views, and a quiet atmosphere that feels both authentic and refined. We design weddings in Candidasa that embrace this sense of tranquility — creating celebrations that feel intimate, balanced, and naturally elegant.",
     atmosphere:
       "Calm yet refined — intimate and grounded, open, airy, and horizon-led with an elegant understated simplicity and authentic coastal charm",
     accessibility_notes:
@@ -1646,14 +1209,13 @@ export const destinationList: Destination[] = [
     id: "20",
     name: "Taman Ujung",
     slug: "taman-ujung-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Heritage Water Palace",
     description:
       "Royal water palace, reflective pools, and classical Balinese architecture against Mount Agung, ideal for timeless, artistic, and culturally rich destination weddings.",
     long_description:
-      "Taman Ujung is one of Bali's most unique and historic wedding destinations, known for its royal water palace, expansive gardens, and architectural beauty set against the backdrop of Mount Agung and the eastern coastline. We design weddings in Taman Ujung that honor both the setting and its heritage — creating celebrations that feel timeless, atmospheric, and deeply intentional. Our Taman Ujung weddings are shaped by reflective water, open landscapes, and classical Balinese architecture that brings a sense of quiet grandeur to every moment. We work with couples drawn to Taman Ujung for its cultural significance, its visual symmetry, and its ability to create a wedding experience that feels truly distinctive.",
-    location: "East Bali",
+      "Taman Ujung is one of Bali's most unique and historic wedding destinations, known for its royal water palace, expansive gardens, and architectural beauty set against the backdrop of Mount Agung and the eastern coastline. We design weddings in Taman Ujung that honor both the setting and its heritage — creating celebrations that feel timeless, atmospheric, and deeply intentional.",
     atmosphere:
       "Timeless yet distinctive — elegant and visually structured, artistic and atmospheric, grand yet serene with a sense of quiet grandeur rooted in heritage and reflection",
     accessibility_notes:
@@ -1713,14 +1275,13 @@ export const destinationList: Destination[] = [
     id: "21",
     name: "Tulamben",
     slug: "tulamben-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Raw Volcanic Coast",
     description:
       "Volcanic shoreline, calm waters, and quiet oceanfront atmosphere shaped by Mount Agung, ideal for intimate, elemental, and deeply authentic coastal destination weddings.",
     long_description:
-      "Tulamben is one of Bali's most unique coastal destinations, known for its volcanic shoreline, calm waters, and a quiet atmosphere shaped by the presence of Mount Agung and the vast open sea. At Linda Wiryani Design and Event Planning, we design weddings in Tulamben that embrace its raw and elemental character — creating celebrations that feel intimate, grounded, and deeply connected to nature. Our Tulamben weddings are shaped by dark volcanic stones, still ocean horizons, and a sense of depth that allows each moment to feel quiet and meaningful. We work with couples who are drawn to Tulamben for its authenticity, its peaceful environment, and its ability to offer a wedding experience far removed from the usual.",
-    location: "East Bali",
+      "Tulamben is one of Bali's most unique coastal destinations, known for its volcanic shoreline, calm waters, and a quiet atmosphere shaped by the presence of Mount Agung and the vast open sea. At Linda Wiryani Design and Event Planning, we design weddings in Tulamben that embrace its raw and elemental character — creating celebrations that feel intimate, grounded, and deeply connected to nature.",
     atmosphere:
       "Raw yet refined — intimate and deeply grounded, calm, open, and elemental, with elegant natural simplicity shaped by volcanic coast and open sea horizon",
     accessibility_notes:
@@ -1780,14 +1341,13 @@ export const destinationList: Destination[] = [
     id: "22",
     name: "Tirta Gangga",
     slug: "tirta-gangga-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Heritage Water Garden",
     description:
       "Royal water gardens, reflective pools, and stone pathways within an iconic cultural landscape, ideal for intimate, timeless, and culturally rich destination weddings.",
     long_description:
-      "Tirta Gangga is one of Bali's most iconic cultural landscapes, known for its royal water gardens, stone pathways, and tranquil pools that create a setting both serene and visually poetic. At Linda Wiryani Design and Event Planning, we design weddings in Tirta Gangga that honor its heritage and atmosphere — creating celebrations that feel intimate, timeless, and deeply connected to place. Our Tirta Gangga weddings are shaped by reflective water, carved stone, and a sense of stillness that allows each moment to feel calm and intentional. We work with couples who are drawn to Tirta Gangga for its cultural depth, its unique aesthetic, and its ability to create a wedding experience that feels truly distinctive.",
-    location: "East Bali",
+      "Tirta Gangga is one of Bali's most iconic cultural landscapes, known for its royal water gardens, stone pathways, and tranquil pools that create a setting both serene and visually poetic. At Linda Wiryani Design and Event Planning, we design weddings in Tirta Gangga that honor its heritage and atmosphere — creating celebrations that feel intimate, timeless, and deeply connected to place.",
     atmosphere:
       "Serene yet visually striking — intimate and atmospheric, artistic and culturally grounded, elegant with quiet refinement shaped by water, stone, and heritage",
     accessibility_notes:
@@ -1847,14 +1407,13 @@ export const destinationList: Destination[] = [
     id: "23",
     name: "Savana Tianyar",
     slug: "savana-tianyar-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-east-bali",
+    location: getLoc("loc-east-bali"),
     type: "Cinematic Savannah & Volcano",
     description:
       "Wide-open savannah, golden grasses, and dramatic Mount Agung views, ideal for bold, cinematic, and visually extraordinary destination weddings in an untamed natural setting.",
     long_description:
-      "Savana Tianyar is one of Bali's most extraordinary and lesser-known landscapes, located along the eastern coastline and known for its wide-open savannah, golden grasses, and dramatic views of Mount Agung. At Linda Wiryani Design and Event Planning, we design weddings in Savana Tianyar that embrace its vast and untamed beauty — creating celebrations that feel expansive, cinematic, and deeply connected to nature. Our Savana Tianyar weddings are shaped by open horizons, earthy textures, and a sense of freedom that allows each moment to feel powerful and unfiltered. We work with couples who are drawn to Savana Tianyar for its uniqueness, its dramatic landscape, and its ability to create a wedding experience unlike anywhere else in Bali.",
-    location: "East Bali",
+      "Savana Tianyar is one of Bali's most extraordinary and lesser-known landscapes, located along the eastern coastline and known for its wide-open savannah, golden grasses, and dramatic views of Mount Agung. At Linda Wiryani Design and Event Planning, we design weddings in Savana Tianyar that embrace its vast and untamed beauty — creating celebrations that feel expansive, cinematic, and deeply connected to nature.",
     atmosphere:
       "Cinematic yet grounded — bold and visually expressive, open, airy, and expansive, elegant within a raw and untamed natural landscape shaped by savannah and volcano",
     accessibility_notes:
@@ -1910,18 +1469,21 @@ export const destinationList: Destination[] = [
       "Bali's most dramatic and unconventional landscape venue",
     ],
   },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // NORTH BALI
+  // ════════════════════════════════════════════════════════════════════════════
   {
     id: "24",
     name: "Lovina",
     slug: "lovina-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-north-bali",
+    location: getLoc("loc-north-bali"),
     type: "Serene North Coast",
     description:
       "Calm sea, black sand beaches, and authentic northern Bali atmosphere, ideal for peaceful, intimate, and meaningfully grounded destination weddings away from the crowds.",
     long_description:
-      "Lovina offers a very different side of Bali — quieter, slower, and deeply connected to the island's natural beauty and local life. Located on Bali's north coast, Lovina is known for its calm sea, black sand beaches, and peaceful coastal atmosphere. At Linda Wiryani Design and Event Planning, we design weddings in Lovina for couples who seek stillness, authenticity, and meaningful connection with nature. Lovina weddings unfold at a gentler pace — where the ocean is calm, the horizon feels expansive, and celebrations feel intimate and grounded. Many couples choose Lovina when they want a Bali wedding experience that feels away from the crowds and closer to the essence of the island.",
-    location: "North Bali",
+      "Lovina offers a very different side of Bali — quieter, slower, and deeply connected to the island's natural beauty and local life. Located on Bali's north coast, Lovina is known for its calm sea, black sand beaches, and peaceful coastal atmosphere. At Linda Wiryani Design and Event Planning, we design weddings in Lovina for couples who seek stillness, authenticity, and meaningful connection with nature.",
     atmosphere:
       "Peaceful rather than busy — natural rather than heavily styled, intimate rather than grand, elegant in a quiet and understated way shaped by calm sea and authentic local life",
     accessibility_notes:
@@ -1981,14 +1543,13 @@ export const destinationList: Destination[] = [
     id: "25",
     name: "Munduk",
     slug: "munduk-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-north-bali",
+    location: getLoc("loc-north-bali"),
     type: "Misty Highland Jungle",
     description:
       "Mountain air, misty jungle valleys, and dramatic highland viewpoints, ideal for intimate, nature-immersive, and emotionally grounded destination weddings in Bali's highlands.",
     long_description:
-      "Munduk is one of Bali's most breathtaking highland destinations — a place where mountain air, misty valleys, and jungle landscapes create a setting unlike anywhere else on the island. Located in the hills of North Bali, Munduk is known for its cool climate, dramatic viewpoints, waterfalls, and peaceful atmosphere. At Linda Wiryani Design and Event Planning, we design weddings in Munduk for couples who are drawn to nature, landscape, and a sense of quiet intimacy. Munduk weddings feel immersive — surrounded by mountains, forest, and open horizons that create an atmosphere both emotional and unforgettable. Many couples choose Munduk when they want their wedding to feel deeply connected to nature and away from the busier areas of Bali.",
-    location: "North Bali",
+      "Munduk is one of Bali's most breathtaking highland destinations — a place where mountain air, misty valleys, and jungle landscapes create a setting unlike anywhere else on the island. Located in the hills of North Bali, Munduk is known for its cool climate, dramatic viewpoints, waterfalls, and peaceful atmosphere.",
     atmosphere:
       "Immersive rather than decorative — natural rather than overly styled, intimate rather than grand, atmospheric and deeply memorable shaped by mountain mist, jungle, and cool highland air",
     accessibility_notes:
@@ -2048,14 +1609,13 @@ export const destinationList: Destination[] = [
     id: "26",
     name: "Pemuteran",
     slug: "pemuteran-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-north-bali",
+    location: getLoc("loc-north-bali"),
     type: "Eco Coastal Serenity",
     description:
       "Calm seas, mountain backdrops, and eco-conscious boutique resorts in North-West Bali, ideal for intimate, nature-led, and restorative destination weddings far from the crowds.",
     long_description:
-      "Pemuteran is one of Bali's most peaceful and nature-focused coastal destinations, located in North-West Bali and known for its calm seas, mountain backdrops, and close connection to marine conservation. At Linda Wiryani Design and Event Planning, we design weddings in Pemuteran that embrace its quiet beauty — creating celebrations that feel intimate, grounded, and deeply connected to nature. Our Pemuteran weddings are shaped by still waters, soft coastal light, and a sense of simplicity that allows each moment to feel meaningful and unhurried. We work with couples who are drawn to Pemuteran for its tranquility, its distance from the crowds, and its ability to offer a wedding experience that feels both authentic and restorative.",
-    location: "North Bali",
+      "Pemuteran is one of Bali's most peaceful and nature-focused coastal destinations, located in North-West Bali and known for its calm seas, mountain backdrops, and close connection to marine conservation. At Linda Wiryani Design and Event Planning, we design weddings in Pemuteran that embrace its quiet beauty — creating celebrations that feel intimate, grounded, and deeply connected to nature.",
     atmosphere:
       "Calm yet refined — intimate and nature-led, soft, open, and grounded, elegant with understated simplicity shaped by still waters, mountain views, and eco-conscious surroundings",
     accessibility_notes:
@@ -2111,18 +1671,21 @@ export const destinationList: Destination[] = [
       "Intimate, grounding, and deeply personal wedding atmosphere",
     ],
   },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // WEST BALI
+  // ════════════════════════════════════════════════════════════════════════════
   {
     id: "27",
     name: "Menjangan",
     slug: "menjangan-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-west-bali",
+    location: getLoc("loc-west-bali"),
     type: "Protected Nature Reserve Coast",
     description:
       "Pristine coastline within West Bali National Park, crystal-clear waters, and complete seclusion, ideal for rare, immersive, and deeply intimate destination weddings in untouched nature.",
     long_description:
-      "Menjangan is one of Bali's most exclusive and untouched destinations, located within the protected area of West Bali National Park and known for its pristine coastline, calm waters, and extraordinary natural surroundings. At Linda Wiryani Design and Event Planning, we design weddings in Menjangan that embrace its rare sense of seclusion — creating celebrations that feel intimate, immersive, and deeply connected to nature. Our Menjangan weddings are shaped by still ocean horizons, wild landscapes, and a quiet atmosphere that allows each moment to feel truly present. We work with couples who are drawn to Menjangan for its privacy, its natural purity, and its ability to offer a wedding experience that feels completely removed from the ordinary.",
-    location: "West Bali",
+      "Menjangan is one of Bali's most exclusive and untouched destinations, located within the protected area of West Bali National Park and known for its pristine coastline, calm waters, and extraordinary natural surroundings. At Linda Wiryani Design and Event Planning, we design weddings in Menjangan that embrace its rare sense of seclusion — creating celebrations that feel intimate, immersive, and deeply connected to nature.",
     atmosphere:
       "Pure yet refined — intimate and immersive, calm, open, and nature-led, elegant with minimal intervention shaped by pristine coastline, crystal-clear sea, and protected wilderness",
     accessibility_notes:
@@ -2182,14 +1745,13 @@ export const destinationList: Destination[] = [
     id: "28",
     name: "Pupuan",
     slug: "pupuan-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-west-bali",
+    location: getLoc("loc-west-bali"),
     type: "Hidden Jungle & Waterfall",
     description:
       "Dense jungles, terraced landscapes, and hidden waterfalls in West Bali, ideal for intimate, adventurous, and deeply immersive destination weddings in untouched nature.",
     long_description:
-      "Pupuan is one of Bali's most untouched and lesser-known regions, located in West Bali and known for its dense jungles, terraced landscapes, and hidden waterfalls that create a setting both raw and deeply atmospheric. At Linda Wiryani Design and Event Planning, we design weddings in Pupuan that embrace its hidden beauty — creating celebrations that feel intimate, immersive, and naturally refined. Our Pupuan weddings are shaped by lush greenery, flowing water, and a sense of quiet discovery that allows each moment to feel deeply personal. We work with couples who are drawn to Pupuan for its seclusion, its natural richness, and its ability to offer a wedding experience far from the familiar.",
-    location: "West Bali",
+      "Pupuan is one of Bali's most untouched and lesser-known regions, located in West Bali and known for its dense jungles, terraced landscapes, and hidden waterfalls that create a setting both raw and deeply atmospheric. At Linda Wiryani Design and Event Planning, we design weddings in Pupuan that embrace its hidden beauty — creating celebrations that feel intimate, immersive, and naturally refined.",
     atmosphere:
       "Immersive yet refined — intimate and adventurous, natural and expressive, elegant within a raw environment shaped by dense jungle, hidden waterfalls, and terraced landscapes",
     accessibility_notes:
@@ -2249,14 +1811,13 @@ export const destinationList: Destination[] = [
     id: "29",
     name: "Jatiluwih",
     slug: "jatiluwih-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-west-bali",
+    location: getLoc("loc-west-bali"),
     type: "UNESCO Rice Terrace Heritage",
     description:
       "Expansive UNESCO-recognized rice terraces, sweeping mountain views, and timeless cultural heritage, ideal for grand yet serene, landscape-led, and culturally meaningful destination weddings.",
     long_description:
-      "Jatiluwih is one of Bali's most iconic and protected landscapes, known for its expansive rice terraces, UNESCO-recognized heritage, and a sense of openness that feels both grand and deeply serene. At Linda Wiryani Design and Event Planning, we design weddings in Jatiluwih that honor its cultural and natural significance — creating celebrations that feel immersive, intentional, and timeless. Our Jatiluwih weddings are shaped by sweeping green landscapes, mountain air, and a quiet atmosphere that allows each moment to feel grounded and meaningful. We work with couples who are drawn to Jatiluwih for its scale, its authenticity, and its ability to create a wedding experience that feels both iconic and deeply connected to Bali's heritage.",
-    location: "West Bali",
+      "Jatiluwih is one of Bali's most iconic and protected landscapes, known for its expansive rice terraces, UNESCO-recognized heritage, and a sense of openness that feels both grand and deeply serene. At Linda Wiryani Design and Event Planning, we design weddings in Jatiluwih that honor its cultural and natural significance — creating celebrations that feel immersive, intentional, and timeless.",
     atmosphere:
       "Grand yet serene — natural and culturally grounded, open, airy, and landscape-led, elegant with timeless simplicity shaped by vast rice terraces, mountain air, and heritage surroundings",
     accessibility_notes:
@@ -2316,14 +1877,13 @@ export const destinationList: Destination[] = [
     id: "30",
     name: "Secluded Waterfalls",
     slug: "secluded-waterfalls-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-west-bali",
+    location: getLoc("loc-west-bali"),
     type: "Hidden Waterfall Nature",
     description:
       "Hidden cascading waterfalls, dense greenery, and raw natural light in West Bali, ideal for intimate, adventurous, and emotionally powerful destination weddings in nature's most dramatic settings.",
     long_description:
-      "Hidden within the lush landscapes of West Bali, secluded waterfalls offer one of the most intimate and atmospheric wedding settings on the island — where cascading water, dense greenery, and natural light create a space that feels both powerful and deeply serene. At Linda Wiryani Design and Event Planning, we design waterfall weddings that embrace this sense of discovery — creating celebrations that feel immersive, personal, and connected to nature at its most raw and beautiful. Our waterfall weddings are shaped by sound, movement, and texture — where water, stone, and forest come together to form a setting unlike any other. We work with couples who are drawn to these hidden locations for their privacy, their natural drama, and their ability to create a wedding experience that feels truly unique.",
-    location: "West Bali",
+      "Hidden within the lush landscapes of West Bali, secluded waterfalls offer one of the most intimate and atmospheric wedding settings on the island — where cascading water, dense greenery, and natural light create a space that feels both powerful and deeply serene. At Linda Wiryani Design and Event Planning, we design waterfall weddings that embrace this sense of discovery — creating celebrations that feel immersive, personal, and connected to nature at its most raw and beautiful.",
     atmosphere:
       "Immersive yet refined — intimate and emotionally powerful, natural and expressive, elegant within a raw environment shaped by cascading water, dense forest, and dramatic natural light",
     accessibility_notes:
@@ -2380,17 +1940,86 @@ export const destinationList: Destination[] = [
     ],
   },
   {
+    id: "7",
+    name: "Tabanan",
+    slug: "tabanan-wedding",
+    location_id: "loc-west-bali",
+    location: getLoc("loc-west-bali"),
+    type: "Retreat & Landscape",
+    description:
+      "Rice terraces, jungle valleys, cool highland lakes, and wild west coast beaches — ideal for retreat-style, sustainable, and landscape-led celebrations.",
+    long_description:
+      "Tabanan offers diverse landscapes: rice terraces, jungle valleys, cool highland lakes, and wild west coast beaches. We design retreat-style, sustainable, and landscape-led celebrations here that feel immersive and environmentally thoughtful. Perfect for couples seeking multi-day experiences shaped by nature.",
+    atmosphere:
+      "Retreat-like and immersive, with a sustainable, landscape-driven quality that feels connected to nature",
+    accessibility_notes:
+      "Diverse terrain requires planning; multiple venue options, scenic drives, various accommodation levels",
+    seasonal_considerations:
+      "West coast exposure means different weather; seasonal planning important for outdoor activities",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773709788/tabanan_poexyo.jpg",
+    guest_capacity: "20 - 200",
+    highlights: [
+      "Rice terraces",
+      "Jungle valleys",
+      "Highland lakes",
+      "Wild west coast beaches",
+      "Diverse landscapes",
+    ],
+    best_for: [
+      "Retreat-style celebrations",
+      "Sustainable practices",
+      "Landscape-led design",
+      "Multi-day events",
+      "Nature-immersive experiences",
+    ],
+    ceremony_options: [
+      "Rice terrace ceremonies",
+      "Jungle clearings",
+      "Lakeside settings",
+      "Beach ceremonies",
+    ],
+    reception_options: [
+      "Multi-location celebrations",
+      "Retreat-style events",
+      "Outdoor gatherings",
+      "Multi-day experiences",
+    ],
+    accommodation_nearby: [
+      "Eco-lodges",
+      "Heritage resorts",
+      "Farm stays",
+      "Sustainable properties",
+    ],
+    dining_experiences: [
+      "Farm-to-table cuisine",
+      "Local agricultural experiences",
+      "Sustainable dining",
+      "Community-style meals",
+    ],
+    unique_features: [
+      "Rice paddy backdrops",
+      "Diverse landscapes",
+      "Retreat atmosphere",
+      "Sustainability focus",
+      "Multi-day possibilities",
+    ],
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // HIGHLANDS, LAKES AND MOUNTAINS
+  // ════════════════════════════════════════════════════════════════════════════
+  {
     id: "31",
     name: "Kintamani",
     slug: "kintamani-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Volcano & Lake View Highland",
     description:
       "Dramatic volcano and crater lake views, expansive highland landscapes, and cool mountain air, ideal for elevated, cinematic, and landscape-led destination weddings shaped by scale and atmosphere.",
     long_description:
-      "Kintamani is one of Bali's most dramatic and iconic landscapes, known for its sweeping views of Mount Batur, volcanic terrain, and the serene presence of Lake Batur that together create a setting both powerful and contemplative. At Linda Wiryani Design and Event Planning, we design weddings in Kintamani that embrace its scale and atmosphere — creating celebrations that feel elevated, intentional, and deeply connected to the land. Our Kintamani weddings are shaped by mountain air, expansive horizons, and a sense of quiet that allows each moment to feel grounded and meaningful. We work with couples who are drawn to Kintamani for its dramatic scenery, its cooler climate, and its ability to create a wedding experience that feels both cinematic and serene.",
-    location: "Highlands, Lakes and Mountains",
+      "Kintamani is one of Bali's most dramatic and iconic landscapes, known for its sweeping views of Mount Batur, volcanic terrain, and the serene presence of Lake Batur that together create a setting both powerful and contemplative. At Linda Wiryani Design and Event Planning, we design weddings in Kintamani that embrace its scale and atmosphere — creating celebrations that feel elevated, intentional, and deeply connected to the land.",
     atmosphere:
       "Expansive yet serene — dramatic and visually expressive, light-filled and landscape-led, elegant with natural simplicity shaped by volcano views, crater lake, and mountain air",
     accessibility_notes:
@@ -2452,14 +2081,13 @@ export const destinationList: Destination[] = [
     id: "32",
     name: "Bedugul",
     slug: "bedugul-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Lake & Highland Nature",
     description:
       "Cool highland lakes, misty mountain landscapes, and serene botanical surroundings, ideal for calm, intimate, and nature-led destination weddings shaped by soft light and quiet elegance.",
     long_description:
-      "Bedugul is one of Bali's most atmospheric highland destinations, known for its cool climate, misty landscapes, and the serene beauty of its lakes surrounded by mountains and forest. At Linda Wiryani Design and Event Planning, we design weddings in Bedugul that embrace its quiet and poetic character — creating celebrations that feel calm, intimate, and deeply connected to nature. Our Bedugul weddings are shaped by soft light, mountain air, and reflective lake surfaces that create an atmosphere both serene and visually captivating. We work with couples who are drawn to Bedugul for its unique highland setting, its cooler climate, and its ability to create a wedding experience that feels peaceful and refined.",
-    location: "Highlands, Lakes and Mountains",
+      "Bedugul is one of Bali's most atmospheric highland destinations, known for its cool climate, misty landscapes, and the serene beauty of its lakes surrounded by mountains and forest. At Linda Wiryani Design and Event Planning, we design weddings in Bedugul that embrace its quiet and poetic character — creating celebrations that feel calm, intimate, and deeply connected to nature.",
     atmosphere:
       "Soft yet visually striking — calm and atmospheric, intimate and refined, elegant with natural simplicity shaped by misty lakes, mountain air, and cool highland environment",
     accessibility_notes:
@@ -2521,14 +2149,13 @@ export const destinationList: Destination[] = [
     id: "33",
     name: "Lake Beratan",
     slug: "lake-beratan-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Sacred Lake Temple & Highland",
     description:
       "Iconic floating temple on calm highland waters, misty mountain atmosphere, and cultural depth, ideal for symbolic, atmospheric, and visually timeless destination weddings shaped by reflection and heritage.",
     long_description:
-      "Lake Beratan is one of Bali's most iconic and visually recognizable destinations, known for its serene waters and the presence of the floating temple that appears to rise gently from the lake. At Linda Wiryani Design and Event Planning, we design weddings at Lake Beratan that embrace its cultural and natural beauty — creating celebrations that feel calm, symbolic, and deeply atmospheric. Our Lake Beratan weddings are shaped by still water, mountain air, and soft mist that together create a setting both poetic and unforgettable. We work with couples who are drawn to Lake Beratan for its iconic scenery, its spiritual presence, and its ability to create a wedding experience that feels both meaningful and visually striking.",
-    location: "Highlands, Lakes and Mountains",
+      "Lake Beratan is one of Bali's most iconic and visually recognizable destinations, known for its serene waters and the presence of the floating temple that appears to rise gently from the lake. At Linda Wiryani Design and Event Planning, we design weddings at Lake Beratan that embrace its cultural and natural beauty — creating celebrations that feel calm, symbolic, and deeply atmospheric.",
     atmosphere:
       "Serene yet iconic — cultural and visually refined, soft, atmospheric, and poetic, elegant with quiet depth shaped by still lake waters, floating temple, and misty highland landscape",
     accessibility_notes:
@@ -2590,14 +2217,13 @@ export const destinationList: Destination[] = [
     id: "34",
     name: "Lake Buyan",
     slug: "lake-buyan-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Secluded Forest Lake Highland",
     description:
       "Calm and untouched highland lake waters, dense surrounding forest, and deeply quiet atmosphere, ideal for intimate, nature-immersive, and emotionally personal destination weddings shaped by stillness.",
     long_description:
-      "Lake Buyan is one of Bali's most serene and untouched highland destinations, known for its calm waters, surrounding forest, and a sense of quiet that feels deeply immersive and restorative. At Linda Wiryani Design and Event Planning, we design weddings at Lake Buyan that embrace its natural stillness — creating celebrations that feel intimate, atmospheric, and deeply connected to nature. Our Lake Buyan weddings are shaped by misty mornings, reflective water, and dense greenery that create a setting both peaceful and visually poetic. We work with couples who are drawn to Lake Buyan for its seclusion, its natural beauty, and its ability to create a wedding experience that feels quiet, personal, and away from the ordinary.",
-    location: "Highlands, Lakes and Mountains",
+      "Lake Buyan is one of Bali's most serene and untouched highland destinations, known for its calm waters, surrounding forest, and a sense of quiet that feels deeply immersive and restorative. At Linda Wiryani Design and Event Planning, we design weddings at Lake Buyan that embrace its natural stillness — creating celebrations that feel intimate, atmospheric, and deeply connected to nature.",
     atmosphere:
       "Calm yet immersive — intimate and nature-led, soft, atmospheric, and expressive, elegant with natural simplicity shaped by misty forest, reflective lake, and secluded highland surroundings",
     accessibility_notes:
@@ -2659,14 +2285,13 @@ export const destinationList: Destination[] = [
     id: "35",
     name: "Lake Tamblingan",
     slug: "lake-tamblingan-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Sacred & Ancient Forest Lake",
     description:
       "Bali's most untouched and sacred highland lake, surrounded by ancient forest and temples, ideal for intimate, spiritually meaningful, and deeply contemplative destination weddings shaped by stillness and culture.",
     long_description:
-      "Lake Tamblingan is one of Bali's most untouched and sacred highland destinations, known for its quiet waters, surrounding forest, and ancient temples that create an atmosphere both serene and deeply spiritual. At Linda Wiryani Design and Event Planning, we design weddings at Lake Tamblingan that honor its purity and presence — creating celebrations that feel intimate, meaningful, and deeply connected to nature and culture. Our Lake Tamblingan weddings are shaped by still water, misty forest, and a sense of silence that allows each moment to feel grounded and intentional. We work with couples who are drawn to Lake Tamblingan for its sacred character, its seclusion, and its ability to create a wedding experience that feels truly reflective and unique.",
-    location: "Highlands, Lakes and Mountains",
+      "Lake Tamblingan is one of Bali's most untouched and sacred highland destinations, known for its quiet waters, surrounding forest, and ancient temples that create an atmosphere both serene and deeply spiritual. At Linda Wiryani Design and Event Planning, we design weddings at Lake Tamblingan that honor its purity and presence — creating celebrations that feel intimate, meaningful, and deeply connected to nature and culture.",
     atmosphere:
       "Serene yet powerful — intimate and spiritually grounded, soft, atmospheric, and immersive, elegant with quiet depth shaped by sacred lake, misty forest, and ancient temple surroundings",
     accessibility_notes:
@@ -2728,14 +2353,13 @@ export const destinationList: Destination[] = [
     id: "36",
     name: "Bali Botanical Garden",
     slug: "bali-botanical-garden-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Garden & Highland Nature",
     description:
       "Expansive botanical gardens with towering trees, vast open greenery, and cool highland air in Bedugul, ideal for open, relaxed, and naturally elegant destination weddings shaped by space and simplicity.",
     long_description:
-      "Bali Botanical Garden in Bedugul is one of the island's most expansive and serene natural destinations, known for its vast greenery, towering trees, and open landscapes set within the cool highlands. At Linda Wiryani Design and Event Planning, we design weddings in Bali Botanical Garden that embrace its sense of space and nature — creating celebrations that feel open, calm, and beautifully integrated with the environment. Our Botanical Garden weddings are shaped by forest textures, soft highland light, and a sense of quiet that allows each moment to feel grounded and intentional. We work with couples who are drawn to this location for its scale, its natural beauty, and its ability to create a wedding experience that feels both relaxed and visually refined.",
-    location: "Highlands, Lakes and Mountains",
+      "Bali Botanical Garden in Bedugul is one of the island's most expansive and serene natural destinations, known for its vast greenery, towering trees, and open landscapes set within the cool highlands. At Linda Wiryani Design and Event Planning, we design weddings in Bali Botanical Garden that embrace its sense of space and nature — creating celebrations that feel open, calm, and beautifully integrated with the environment.",
     atmosphere:
       "Open yet intimate — natural and softly structured, calm, airy, and refreshing, elegant with understated simplicity shaped by vast garden spaces, towering trees, and cool highland light",
     accessibility_notes:
@@ -2797,14 +2421,13 @@ export const destinationList: Destination[] = [
     id: "37",
     name: "Mount Batur & Volcanic Landscapes",
     slug: "mount-batur-volcanic-landscapes-wedding",
-    category_id: "cat-bali",
-    category: getCat("cat-bali"),
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Volcanic Terrain & Lava Field",
     description:
       "Raw volcanic terrain, dramatic black lava fields, and sweeping views of Mount Batur, ideal for bold, cinematic, and visually powerful destination weddings shaped by earth, energy, and raw natural beauty.",
     long_description:
-      "The Mount Batur area is one of Bali's most dramatic and elemental landscapes, defined by volcanic terrain, black lava fields, and expansive views shaped by past eruptions and natural forces. At Linda Wiryani Design and Event Planning, we design weddings in the Batur region that embrace this raw beauty — creating celebrations that feel powerful, grounded, and visually unforgettable. Our Batur weddings are shaped by rugged textures, open horizons, and the presence of the volcano itself — creating an atmosphere that feels both intense and deeply meaningful. We work with couples who are drawn to this landscape for its uniqueness, its dramatic character, and its ability to create a wedding experience unlike any other in Bali.",
-    location: "Highlands, Lakes and Mountains",
+      "The Mount Batur area is one of Bali's most dramatic and elemental landscapes, defined by volcanic terrain, black lava fields, and expansive views shaped by past eruptions and natural forces. At Linda Wiryani Design and Event Planning, we design weddings in the Batur region that embrace this raw beauty — creating celebrations that feel powerful, grounded, and visually unforgettable.",
     atmosphere:
       "Bold yet refined — minimal and landscape-driven, expansive, open, and powerful, elegant within a raw natural context shaped by volcanic terrain, lava fields, and dramatic mountain presence",
     accessibility_notes:
@@ -2862,21 +2485,17 @@ export const destinationList: Destination[] = [
       "A transformative, one-of-a-kind, and truly powerful experience",
     ],
   },
-
-  // ─── THEMES ───────────────────────────────────────────────────────────────
-
   {
-    id: "t1",
-    name: "Lake Weddings",
-    slug: "lake-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
+    id: "38",
+    name: "Bali Lakes",
+    slug: "bali-lakes-wedding",
+    location_id: "loc-highlands",
+    location: getLoc("loc-highlands"),
     type: "Reflective Highland Serenity",
     description:
       "Stillwater reflections, mountain mist, and atmospheric highland calm, ideal for intimate, contemplative, and visually poetic weddings shaped by nature, stillness, and quiet emotional depth.",
     long_description:
-      "Lake weddings in Bali offer a rare kind of experience — one defined not by movement, but by stillness. Surrounded by mountains, forest, and mist, these settings create a natural sense of calm where every moment feels more present, more intentional, and more deeply felt. At Linda Wiryani Design and Event Planning, we design lake weddings that embrace this atmosphere — creating celebrations that feel intimate, immersive, and visually poetic. Our approach is not to impose design, but to work in harmony with the environment — where water, light, and landscape shape the experience naturally.",
-    location: "Highlands, Lakes and Mountains",
+      "Lake weddings in Bali offer a rare kind of experience — one defined not by movement, but by stillness. Surrounded by mountains, forest, and mist, these settings create a natural sense of calm where every moment feels more present, more intentional, and more deeply felt. At Linda Wiryani Design and Event Planning, we design lake weddings that embrace this atmosphere — creating celebrations that feel intimate, immersive, and visually poetic.",
     atmosphere:
       "Calm and contemplative — visually soft and layered, emotionally grounded and naturally elegant, where the still surface of the water, cooler highland air, and soft diffused light slow everything down and allow each moment to unfold with clarity and presence",
     accessibility_notes:
@@ -2934,692 +2553,474 @@ export const destinationList: Destination[] = [
       "A celebration defined by stillness, reflection, and natural elegance",
     ],
   },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // NUSA ISLANDS
+  // ════════════════════════════════════════════════════════════════════════════
   {
-    id: "t2",
-    name: "Waterfall Weddings",
-    slug: "waterfall-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Nature-Immersive & Intimate Flow",
+    id: "8",
+    name: "Nusa Penida",
+    slug: "nusa-penida-wedding",
+    location_id: "loc-nusa-islands",
+    location: getLoc("loc-nusa-islands"),
+    type: "Clifftop & Cinematic Drama",
     description:
-      "Cascading water, lush forest textures, and soft diffused natural light, ideal for intimate, nature-driven, and emotionally grounded weddings shaped by movement, sound, and refined accessibility.",
+      "Rugged cliffs, deep blue ocean, and open horizons, ideal for bold, cinematic, and visually extraordinary destination weddings shaped by scale, light, and untamed natural beauty.",
     long_description:
-      "Waterfall weddings in Bali offer a rare balance — where nature feels powerful, yet the experience remains calm, intimate, and beautifully curated. Unlike more extreme or adventurous locations, there are waterfalls across Ubud, Central Bali, West Bali, and North Bali that allow couples to experience this setting without compromising comfort or accessibility. At Linda Wiryani Design and Event Planning, we design waterfall weddings that feel immersive without being overwhelming — creating celebrations that are safe, intentional, and deeply connected to the natural environment. Our approach focuses on selecting locations where the beauty of cascading water, lush greenery, and natural light can be experienced with ease.",
-    location: "Ubud & Gianyar, North Bali, West Bali",
+      "Nusa Penida offers one of Bali's most dramatic and visually striking landscapes — where rugged cliffs, deep blue ocean, and open horizons create a setting that feels vast, powerful, and unforgettable. Unlike the softer rhythm of mainland Bali, Nusa Penida carries a raw and untamed energy — making it ideal for weddings that feel bold, cinematic, and deeply connected to nature.",
     atmosphere:
-      "Intimate yet visually striking — natural and softly curated, safe and well-considered, elegant within a raw natural setting where the sound of water, the texture of stone, and surrounding forest create a layered and deeply immersive atmosphere",
+      "Bold yet refined — expansive and visually striking, minimal and landscape-driven, elegant within a raw natural setting where cliffs, ocean, and sky create a naturally dramatic composition",
     accessibility_notes:
-      "Carefully selected waterfall locations prioritise safe access and manageable walking distances with minimal steps; terrain and safety conditions are assessed for each site; water levels and slippery surfaces require careful setup planning; natural light within forest environments varies and requires precise timing for ceremony and photography",
+      "Island access requires coordinated boat transfers for guests and vendors; cliffside locations require careful planning for safety and guest movement; strong coastal winds must be considered in design and setup; certain technical elements may need to be arranged from mainland Bali",
     seasonal_considerations:
-      "Water flow varies depending on season influencing both design choices and ceremony timing; dry season generally preferred for most accessible and stable conditions; soft natural light is most beautiful in the morning and late afternoon within forest environments",
+      "Strong coastal winds and open environmental exposure must be carefully considered in design and structure planning; natural light across exposed cliff landscapes is particularly dramatic at sunrise and sunset; dry season preferred for travel logistics and outdoor ceremony conditions",
     image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309703/Pupuan_wedding_qvxx0o.png",
-    guest_capacity: "5 - 60",
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309453/Nusa_Penida_final_h8b3bp.png",
+    guest_capacity: "5 - 80",
     highlights: [
-      "Cascading waterfall as a naturally dramatic and intimate ceremony backdrop",
-      "Accessible locations across Ubud, North Bali, West Bali, and Central Highlands",
-      "Soft diffused forest light ideal for photography and atmosphere",
-      "A sense of natural enclosure, privacy, and emotional intimacy",
-      "A unique and personal alternative to traditional beach or villa venues",
+      "Dramatic clifftop ceremony settings with expansive ocean views",
+      "Raw and untamed natural environment unlike any mainland Bali setting",
+      "Bold, cinematic, and editorial-quality wedding landscapes",
+      "Strong visual storytelling shaped by cliff, sky, and deep blue sea",
+      "A unique and visually powerful island wedding destination",
     ],
     best_for: [
-      "Couples seeking a unique, non-traditional, and nature-connected ceremony",
-      "Intimate elopements in private and naturally immersive settings",
-      "A wedding experience that feels emotionally grounded and quietly personal",
-      "Nature-integrated celebrations with refined styling and comfort",
-      "Editorial and soft-adventure weddings in accessible natural environments",
+      "Couples seeking a one-of-a-kind dramatic landscape setting",
+      "Clifftop ceremonies with expansive ocean and horizon views",
+      "Bold, adventurous, and visually striking wedding experiences",
+      "Editorial and concept-driven island celebrations",
+      "A raw, elevated, and deeply unforgettable Bali wedding",
     ],
     ceremony_options: [
-      "Ceremonies directly framed by cascading waterfall backdrops",
-      "Forest and jungle-enclosed intimate ceremony settings",
-      "Accessible waterfall locations suitable for small groups and guests",
-      "Intimate elopements in private and hidden waterfall surroundings",
+      "Clifftop ceremonies with dramatic ocean backdrop",
+      "Beachfront and coastal settings within rugged terrain",
+      "Intimate elopements on remote island landscapes",
+      "Scenic viewpoint and elevated open-air ceremonies",
     ],
     reception_options: [
-      "Nature gatherings near waterfall settings with forest surroundings",
-      "Private intimate dinners within lush natural environments",
-      "Small and meaningful open-air celebrations shaped by natural textures",
-      "Editorial and concept-driven nature reception experiences",
+      "Intimate clifftop dinner gatherings with ocean views",
+      "Beachfront and open-air island receptions",
+      "Small-scale editorial and concept-driven celebrations",
+      "Adventure-style and landscape-immersive experiences",
     ],
     accommodation_nearby: [
-      "Boutique eco-lodges and jungle retreat properties near waterfall locations",
-      "Private nature villas in Ubud, West Bali, and North Bali",
-      "Forest-integrated guesthouses and highland retreat accommodations",
-      "Nearby boutique resort and villa stays with nature access",
+      "Boutique island eco-lodges and nature retreats",
+      "Small resort and villa properties",
+      "Guesthouse stays with island character",
+      "Clifftop and coastal accommodation options",
     ],
     dining_experiences: [
-      "Private chef forest and nature-immersive dining experiences",
-      "Fresh local Balinese cuisine with organic produce",
-      "Waterfall-side intimate and atmospheric meal settings",
-      "Soft and naturally curated catering in forest surroundings",
+      "Private chef clifftop and coastal dining experiences",
+      "Fresh seafood and local island cuisine",
+      "Intimate beachfront dinner settings",
+      "Concept-driven bespoke catering in dramatic surroundings",
     ],
     unique_features: [
-      "Ceremony framed by the sound and movement of cascading water",
-      "Deeply personal and immersive gathering shaped by water, stone, and forest",
-      "A wedding that feels intimate, natural, and beautifully effortless",
-      "Access to Bali's most beautiful and accessible waterfall locations",
-      "A celebration defined by connection, nature, and quiet emotional depth",
+      "Ceremony on the edge of Bali's most dramatic cliffside landscape",
+      "Bold and visually powerful gathering shaped by ocean and sky",
+      "A wedding that feels raw, cinematic, and deeply extraordinary",
+      "One of Bali's most striking and emotionally impactful island settings",
+      "An immersive, visually unforgettable, and truly one-of-a-kind experience",
     ],
   },
   {
-    id: "t3",
-    name: "Private Villa Weddings",
-    slug: "private-villa-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Exclusive Privacy & Creative Freedom",
+    id: "8b",
+    name: "Nusa Lembongan",
+    slug: "nusa-lembongan-wedding",
+    location_id: "loc-nusa-islands",
+    location: getLoc("loc-nusa-islands"),
+    type: "Relaxed Island Elegance",
     description:
-      "Complete privacy, design freedom, and a fully immersive personal environment, ideal for elegant, creative, and deeply personalised destination weddings shaped by architecture, intimacy, and seamless experience.",
+      "Clear waters, soft coastal light, and a relaxed island atmosphere, ideal for intimate, effortless, and naturally beautiful destination weddings shaped by ocean, simplicity, and ease.",
     long_description:
-      "Private villa weddings in Bali offer a fundamentally different experience — one defined by privacy, flexibility, and the freedom to create a celebration that is entirely your own. Unlike traditional venues, private villas provide a blank canvas — where architecture, landscape, and design come together to shape a wedding that feels personal, immersive, and deeply intentional. At Linda Wiryani Design and Event Planning, we specialise in designing private villa weddings that balance creative vision with seamless execution — creating celebrations that feel both elevated and effortless. Our approach is rooted in understanding space, flow, and experience — ensuring that every element of the wedding feels considered, refined, and uniquely yours.",
-    location: "South Bali, Ubud & Gianyar, East Bali, North Bali, West Bali",
+      "Nusa Lembongan offers a different rhythm of Bali — one that feels slower, lighter, and more connected to the ocean. Surrounded by clear waters, soft coastal light, and a relaxed island atmosphere, this destination creates a wedding experience that feels intimate, effortless, and naturally beautiful.",
     atmosphere:
-      "Intimate yet elevated — design-led and highly curated, seamless and well-orchestrated, elegant without feeling excessive, where complete creative freedom transforms a private space into a fully personalised and immersive celebration environment",
+      "Relaxed yet refined — light-filled and naturally elegant, intimate and atmosphere-led, effortless with quiet sophistication shaped by ocean, open sky, and the unhurried rhythm of island life",
     accessibility_notes:
-      "Each villa has its own policies regarding events, sound, and capacity requiring individual coordination; lighting, power, catering, and technical requirements must typically be sourced and brought in by the planning team; sound and curfew restrictions vary by area and local regulations; weather contingency plans are essential as most villas are outdoor-focused",
+      "Island access requires boat transfers for guests and vendors; guest accommodation planning is important due to the island's limited but curated options; wind and ocean conditions must be carefully considered; certain technical elements may need to be arranged from mainland Bali; schedules must account for island transport and setup timing",
     seasonal_considerations:
-      "Most villas are outdoor-focused requiring flexible weather contingency planning; lighting transitions from day to evening must be carefully designed; timing of ceremony, cocktail, and reception flow should align with natural light and Bali's seasonal sunset conditions",
+      "Light transitions from day to sunset must be considered for ceremony timing; wind conditions and coastal exposure influence design and structure choices; dry season provides the most stable conditions for island access and outdoor celebrations",
     image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309730/Private_Villa_Weddings_ckh0kd.png",
-    guest_capacity: "10 - 300",
-    highlights: [
-      "Complete creative freedom in design, layout, and celebration format",
-      "A fully private and exclusive environment for couple and guests",
-      "Flexible timelines without the constraints of traditional venues",
-      "Multi-day wedding experiences from welcome dinners to post-wedding brunches",
-      "Villas available across all of Bali's key regions — cliffside, jungle, coastal, and highland",
-    ],
-    best_for: [
-      "Couples seeking complete privacy and a fully personalised wedding experience",
-      "Design-led and creatively directed celebration environments",
-      "Multi-day gatherings combining ceremony, dining, and guest stay",
-      "Intimate and meaningful celebrations with a strong editorial vision",
-      "A wedding that feels entirely personal, refined, and uniquely yours",
-    ],
-    ceremony_options: [
-      "Villa garden and pool ceremonies with full design freedom",
-      "Clifftop villa ceremonies with expansive ocean views in South Bali",
-      "Jungle and valley-view villa ceremonies in Ubud and surroundings",
-      "Coastal and beachfront villa settings in Canggu, Seminyak, and East Bali",
-      "Intimate elopements within private and beautifully curated villa spaces",
-    ],
-    reception_options: [
-      "Full-scale villa destination wedding receptions combining ceremony and dining",
-      "Multi-day immersive experiences flowing across villa spaces",
-      "Design-led and editorial receptions in architecturally curated environments",
-      "Intimate villa gatherings focused on connection, atmosphere, and personal meaning",
-      "Luxury lifestyle receptions blending design, hospitality, and experience",
-    ],
-    accommodation_nearby: [
-      "Private villa estate properties with full guest accommodation",
-      "Clifftop and oceanview villas in Uluwatu and South Bali",
-      "Jungle and valley villas in Ubud with nature-integrated surroundings",
-      "Coastal lifestyle villas in Canggu and Seminyak",
-    ],
-    dining_experiences: [
-      "Private chef villa dining experiences tailored to the couple's vision",
-      "Multi-course sunset dinners on villa terraces and pool decks",
-      "Bespoke catering and lifestyle dining within intimate villa environments",
-      "Welcome dinners, wedding feasts, and post-celebration brunches",
-    ],
-    unique_features: [
-      "A fully personalised celebration environment shaped entirely by design vision",
-      "Privacy and exclusivity that transforms a wedding into an immersive experience",
-      "Seamless flow between ceremony, cocktail, reception, and overnight guest stay",
-      "Creative freedom to design without the limitations of traditional venues",
-      "A wedding experience that feels deeply personal, refined, and completely your own",
-    ],
-  },
-  {
-    id: "t4",
-    name: "Mountain Weddings",
-    slug: "mountain-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Elevated Highland & Volcanic Grandeur",
-    description:
-      "Panoramic views, cooler mountain air, and an expansive sense of space and light, ideal for elevated, calm, and visually refined destination weddings shaped by landscape, atmosphere, and natural grandeur.",
-    long_description:
-      "Mountain weddings in Bali offer a distinct kind of experience — one defined by elevation, atmosphere, and an expansive sense of space. Set within highland regions surrounded by volcanoes, valleys, and forest, these settings create a natural environment where the air feels lighter, the views feel endless, and every moment feels more present. At Linda Wiryani Design and Event Planning, we design mountain weddings that embrace this elevated atmosphere — creating celebrations that feel calm, intentional, and visually striking. Our approach focuses on working with the landscape — allowing light, air, and horizon to shape the experience in a way that feels both powerful and refined.",
-    location: "Highlands, Lakes and Mountains",
-    atmosphere:
-      "Expansive yet intimate — calm and atmosphere-led, light-filled and visually refined, elegant with natural restraint, where cooler temperatures, panoramic valley views, and the sense of elevation above the ordinary create a deeply grounded and powerful wedding environment",
-    accessibility_notes:
-      "Highland locations require coordinated transport for guests and vendors; open elevated landscapes require careful design and structural considerations for wind and environmental exposure; elevated terrain may involve slopes or uneven ground requiring thoughtful layout and guest flow planning; cooler temperatures require preparation for guest comfort, particularly in early morning or evening events",
-    seasonal_considerations:
-      "Mountain views can be influenced by cloud cover and changing weather conditions requiring flexible planning; morning and late afternoon provide the most beautiful natural light for ceremonies and photography; dry season preferred for most stable highland conditions and outdoor ceremony planning",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775314171/Kintamani_romzer.png",
-    guest_capacity: "15 - 200",
-    highlights: [
-      "Panoramic views across volcanic landscapes, valleys, and open horizons",
-      "Cooler highland temperatures and fresh, light mountain air",
-      "Kintamani and Mount Batur area offering bold and cinematic volcanic views",
-      "Bedugul highlands with cool lakes, forests, and serene garden environments",
-      "Sidemen Valley combining rice fields, mountain views, and intimate natural depth",
-    ],
-    best_for: [
-      "Couples seeking a setting with panoramic views and elevated atmosphere",
-      "Volcano and crater lake view ceremony settings in Kintamani and Batur",
-      "A cooler, calmer, and less crowded alternative to beach or coastal weddings",
-      "Intimate highland and nature-led weddings with strong visual presence",
-      "A wedding experience that feels elevated, refined, and quietly extraordinary",
-    ],
-    ceremony_options: [
-      "Volcano-view open-air ceremonies overlooking Mount Batur and crater lake",
-      "Bedugul highland ceremonies with misty lakes and garden surroundings",
-      "Munduk and North Bali highland ceremonies with forest and valley views",
-      "Sidemen Valley ceremonies combining mountain, rice field, and valley scenery",
-      "Intimate highland elopements in open and elevated natural landscapes",
-    ],
-    reception_options: [
-      "Panoramic mountain and valley view intimate dinner receptions",
-      "Open-air highland terrace celebration gatherings",
-      "Boutique highland retreat and venue dinner experiences",
-      "Candlelit and landscape-led evening celebration flows",
-      "Multi-moment highland experiences from ceremony to sunset dining",
-    ],
-    accommodation_nearby: [
-      "Boutique highland retreats and caldera-view eco-lodges",
-      "Mountain-view villas and nature-integrated retreat properties",
-      "Bedugul and Kintamani area guesthouses and highland resorts",
-      "Munduk and North Bali highland retreat and nature lodge accommodations",
-    ],
-    dining_experiences: [
-      "Caldera and mountain-view private chef dining experiences",
-      "Fresh highland produce and traditional local Balinese cuisine",
-      "Open-air terrace and valley-view intimate dinner settings",
-      "Atmospheric candlelit highland dining surrounded by nature",
-    ],
-    unique_features: [
-      "Ceremony overlooking volcanic landscapes and expansive mountain horizons",
-      "Elevated gathering shaped by cool air, vast views, and open highland space",
-      "A wedding that feels powerful, refined, and deeply connected to the land",
-      "Access to Bali's most dramatic highland and volcanic wedding settings",
-      "A celebration defined by elevation, atmosphere, and natural grandeur",
-    ],
-  },
-  {
-    id: "t5",
-    name: "Jungle & Forest Weddings",
-    slug: "jungle-forest-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Nature-Integrated Atmosphere & Depth",
-    description:
-      "Layered jungle greenery, filtered natural light, and a deeply immersive forest atmosphere, ideal for intimate, emotionally rich, and nature-led weddings shaped by texture, organic beauty, and authentic connection.",
-    long_description:
-      "Jungle and forest weddings in Bali offer a deeply immersive experience — where nature is not a backdrop, but an integral part of the celebration. Surrounded by layered greenery, filtered light, and natural textures, these settings create an atmosphere that feels intimate, grounded, and emotionally rich. At Linda Wiryani Design and Event Planning, we design jungle weddings that move beyond decoration — creating celebrations that feel connected, intentional, and naturally expressive. Our approach focuses on allowing the environment to lead — where light, foliage, and landscape shape the tone and flow of the day.",
-    location: "Ubud & Gianyar, East Bali, North Bali, West Bali",
-    atmosphere:
-      "Intimate yet visually rich — immersive and atmospheric, soft, layered, and expressive, elegant with natural restraint, where a sense of enclosure, filtered natural light, organic textures, and a calm sensory experience create a wedding that feels less staged and more deeply lived",
-    accessibility_notes:
-      "Forest environments may involve uneven ground or natural terrain requiring careful layout and guest flow planning; humidity requires preparation for guest comfort including ventilation and shaded seating areas; filtered light conditions require precise timing for ceremony and photography; natural settings with dense vegetation require thoughtful pathway and accessibility planning",
-    seasonal_considerations:
-      "Jungle areas may experience sudden rain requiring contingency planning and flexible structure options; filtered forest light is most beautiful and gentle in the morning and late afternoon; humidity levels increase during wet season requiring additional guest comfort preparations; dry season preferred for most outdoor jungle ceremony and reception experiences",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311974/Pupuan_Jungle_Wedding_not_the_rice_field_image_ufaadl.png",
-    guest_capacity: "10 - 150",
-    highlights: [
-      "Layered jungle greenery and organic textures as natural ceremony surroundings",
-      "Soft, filtered natural light creating a gentle and immersive atmosphere",
-      "Ubud and Central Bali offering refined jungle venues with accessibility",
-      "Sidemen Valley and Tegallalang for lush, intimate forest and rice field settings",
-      "Pupuan and North Bali highlands for deeper, more secluded jungle immersion",
-    ],
-    best_for: [
-      "Couples seeking an emotionally grounded and nature-integrated ceremony setting",
-      "Intimate weddings with a strong connection to natural texture and atmosphere",
-      "A unique and deeply immersive alternative to beach or open landscape venues",
-      "Nature-led celebrations that feel authentic, personal, and beautifully organic",
-      "A wedding experience that feels alive, connected, and naturally expressive",
-    ],
-    ceremony_options: [
-      "Jungle and forest-enclosed ceremony settings with canopy and greenery",
-      "Riverside and valley-floor ceremonies surrounded by tropical nature",
-      "Tegallalang and rice field–forest transition intimate ceremony settings",
-      "Sidemen Valley ceremonies combining jungle, mountain, and valley depth",
-      "Elopements in private and secluded forest surroundings",
-    ],
-    reception_options: [
-      "Private jungle retreat and nature-immersive dinner receptions",
-      "Forest-surrounded open-air gathering and celebration experiences",
-      "Editorial and design-led jungle receptions with refined natural styling",
-      "Intimate candlelit dinners within enclosed and atmospheric natural settings",
-      "Multi-moment nature experiences flowing from ceremony to forest dining",
-    ],
-    accommodation_nearby: [
-      "Boutique jungle villas and eco-lodge retreat properties in Ubud",
-      "Nature-integrated private villas in Tegallalang and Sidemen",
-      "Forest guesthouses and retreat accommodations in North and West Bali",
-      "Eco-resorts and sustainable properties within jungle landscapes",
-    ],
-    dining_experiences: [
-      "Private chef jungle and forest atmosphere dining experiences",
-      "Farm-to-table and organic cuisine sourced from local surroundings",
-      "Riverside and valley-view intimate dinner settings",
-      "Immersive and naturally curated catering within forest environments",
-    ],
-    unique_features: [
-      "Ceremony surrounded by layered green jungle canopy and organic textures",
-      "Intimate and emotionally rich gathering shaped by filtered light and forest depth",
-      "A wedding that feels immersive, alive, and deeply connected to nature",
-      "Access to Bali's most beautiful and diverse jungle and forest wedding settings",
-      "A celebration defined by atmosphere, texture, and natural emotional resonance",
-    ],
-  },
-  {
-    id: "t6",
-    name: "Beachfront & Oceanfront Weddings",
-    slug: "beachfront-oceanfront-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Coastal Horizon & Effortless Elegance",
-    description:
-      "Endless ocean horizons, evolving natural light, and the open rhythm of the coast, ideal for relaxed yet refined destination weddings shaped by freedom, warmth, and the iconic beauty of Bali's shoreline.",
-    long_description:
-      "Beachfront weddings in Bali offer one of the most iconic and emotionally resonant experiences — where the horizon stretches endlessly, the light shifts gently toward sunset, and every moment feels open and alive. Set along Bali's coastline, these weddings are shaped by ocean air, natural light, and a sense of freedom that allows the celebration to feel both relaxed and elevated. At Linda Wiryani Design and Event Planning, we design beachfront weddings that go beyond scenery — creating celebrations that feel intentional, refined, and deeply connected to the rhythm of the coast. Our approach is to work with the environment — allowing ocean, light, and space to guide the atmosphere and flow of the day.",
-    location: "South Bali, East Bali, North Bali",
-    atmosphere:
-      "Relaxed yet beautifully curated — light-filled and atmosphere-led, open, airy, and elegant, social, warm, and effortlessly refined, where uninterrupted ocean views, natural light evolving from afternoon to sunset, and coastal air create a wedding experience that feels both expansive and deeply welcoming",
-    accessibility_notes:
-      "Wind and coastal exposure must be carefully considered in structural design, florals, and styling elements; ceremony timing must be precisely planned to align with Bali's sunset light and photography conditions; shading, flooring, and seating are essential for guest comfort in open beachfront environments; beach and coastal venues often have specific sound and operational guidelines that must be respected",
-    seasonal_considerations:
-      "West-facing beaches capture Bali's most iconic golden sunset tones — ceremony timing is carefully planned for maximum visual and photographic impact; dry season provides more stable coastal wind conditions; coastal breeze and open exposure require flexible contingency planning year-round",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309697/Beachfront_or_oceanfront_wedding_cpcdau.png",
-    guest_capacity: "20 - 500",
-    highlights: [
-      "Iconic Bali sunset ceremonies along the ocean coastline",
-      "Dramatic clifftop settings in Uluwatu with expansive ocean views",
-      "Calm bay and beachfront elegance in Jimbaran and Nusa Dua",
-      "Stylish coastal energy at Seminyak, Canggu, and Kuta beachfronts",
-      "Peaceful sunrise and gentle coastal settings along Sanur's east coast",
-    ],
-    best_for: [
-      "Couples seeking an iconic Bali ocean ceremony at golden hour",
-      "A relaxed yet elevated beachfront celebration with social warmth",
-      "Clifftop and oceanfront settings with dramatic visual impact",
-      "Large celebrations combining sunset ceremony with open-air reception",
-      "A wedding experience that feels open, warm, and naturally memorable",
-    ],
-    ceremony_options: [
-      "Sunset beach ceremonies along Bali's west-facing coastlines",
-      "Clifftop ocean-view ceremonies in Uluwatu and South Bali",
-      "Calm bay beachfront ceremonies in Jimbaran and Nusa Dua",
-      "Stylish contemporary beachfront settings in Seminyak and Canggu",
-      "Intimate sunrise and gentle east coast ceremonies in Sanur",
-    ],
-    reception_options: [
-      "Beachfront dinner receptions under open evening skies",
-      "Sunset cocktail and flowing evening celebration experiences",
-      "Clifftop and ocean-view resort banquet and terrace gatherings",
-      "Beach club and contemporary coastal reception environments",
-      "Intimate oceanfront dining and small-scale coastal celebrations",
-    ],
-    accommodation_nearby: [
-      "Clifftop villas and luxury resorts in Uluwatu and South Bali",
-      "Boutique beachfront hotels and villas in Seminyak and Canggu",
-      "Luxury resort properties in Nusa Dua and Jimbaran",
-      "Heritage beachfront hotels and peaceful coastal stays in Sanur",
-    ],
-    dining_experiences: [
-      "Beachfront sunset dinner experiences on the sand",
-      "Multi-course ocean-view resort dining and bespoke catering",
-      "Sunset cocktail and lifestyle catering along the coast",
-      "Private chef beachfront and clifftop dining settings",
-    ],
-    unique_features: [
-      "Ceremony by the ocean with Bali's iconic sunset as a natural backdrop",
-      "A joyful and open gathering shaped by light, horizon, and coastal warmth",
-      "A wedding that feels relaxed, alive, and beautifully effortless",
-      "Access to Bali's most diverse and iconic beachfront wedding settings",
-      "A celebration defined by openness, natural light, and the rhythm of the sea",
-    ],
-  },
-  {
-    id: "t7",
-    name: "Royal Balinese Weddings",
-    slug: "royal-balinese-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Heritage Architecture & Cultural Artistry",
-    description:
-      "Traditional Balinese architecture, intricate carvings, and layered ceremonial spaces, ideal for culturally meaningful, visually distinctive, and deeply intentional weddings shaped by heritage, artistry, and timeless elegance.",
-    long_description:
-      "Royal Balinese weddings offer a deeply distinctive experience — where celebration is shaped not only by design, but by culture, symbolism, and architectural beauty. Set within spaces defined by intricate carvings, traditional pavilions, and layered courtyards, these weddings carry a sense of heritage that feels both visually striking and emotionally meaningful. At Linda Wiryani Design and Event Planning, we design Royal Balinese weddings that honor this richness — creating celebrations that feel respectful, refined, and thoughtfully integrated with their surroundings. Our approach is rooted in understanding both space and meaning — ensuring that every element feels aligned with the cultural and architectural context.",
-    location: "Ubud & Gianyar, East Bali",
-    atmosphere:
-      "Timeless and refined — culturally grounded yet elevated, visually rich yet balanced, elegant with depth and meaning, where traditional Balinese architecture with detailed carvings, open-air pavilions, structured courtyards, and natural materials of stone, wood, and thatch create a space that carries a sense of story and makes the setting itself part of the wedding narrative",
-    accessibility_notes:
-      "Cultural sensitivity and respect for local customs must be carefully integrated throughout planning; certain heritage locations may have specific rules, restrictions, and usage guidelines; traditional compounds require thoughtful movement planning across multiple pavilions and courtyards; décor and styling must enhance rather than overpower the existing architectural setting; many traditional venues are semi-open requiring weather contingency planning",
-    seasonal_considerations:
-      "Semi-open traditional venues require flexible contingency planning for rain; natural light within carved courtyards and pavilions is most beautiful in the morning and late afternoon; timing of ceremonies and processions should respect local cultural calendars and ceremonial considerations",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309659/Royal_Balinese_Wedding_g6qmts.png",
-    guest_capacity: "20 - 250",
-    highlights: [
-      "Authentic traditional Balinese architecture with intricate stone carvings",
-      "Open-air pavilions, layered courtyards, and natural material surroundings",
-      "Ubud and Gianyar — the cultural heart of Bali with refined heritage venues",
-      "East Bali heritage palaces and water gardens with strong architectural presence",
-      "Boutique heritage venues and private villas preserving traditional Balinese design",
-    ],
-    best_for: [
-      "Couples seeking a culturally rich and architecturally distinctive setting",
-      "Weddings that blend Balinese heritage with refined contemporary design",
-      "A celebration with deep cultural meaning and visual artistry",
-      "Intimate ceremonies that feel rooted in tradition and place",
-      "A uniquely Balinese wedding experience that feels both timeless and intentional",
-    ],
-    ceremony_options: [
-      "Ceremonies within traditional pavilions and carved courtyard settings",
-      "Heritage palace and water garden ceremony environments",
-      "Boutique venue ceremonies preserving authentic Balinese architectural style",
-      "Private villa ceremonies integrating traditional Balinese design elements",
-      "Intimate elopements within culturally significant architectural surroundings",
-    ],
-    reception_options: [
-      "Layered courtyard and pavilion-flow reception experiences",
-      "Heritage garden and architectural ground dinner gatherings",
-      "Culturally inspired multi-space celebrations across traditional compounds",
-      "Editorial and design-led receptions within architecturally rich environments",
-      "Intimate cultural gatherings focused on atmosphere, meaning, and connection",
-    ],
-    accommodation_nearby: [
-      "Boutique heritage hotels and traditional-style villa properties in Ubud",
-      "Cultural compounds and privately owned heritage stays in Gianyar",
-      "Historic palace-adjacent properties in the Karangasem region",
-      "Private villas with authentic Balinese architectural character",
-    ],
-    dining_experiences: [
-      "Traditional Balinese cuisine served within courtyard and pavilion settings",
-      "Private chef experiences integrating cultural flavours and refined presentation",
-      "Heritage-inspired multi-course dinners within architectural surroundings",
-      "Culturally rich communal and celebratory dining experiences",
-    ],
-    unique_features: [
-      "Ceremony within a space defined by centuries of Balinese artistry and tradition",
-      "A deeply meaningful gathering shaped by architecture, culture, and symbolism",
-      "A wedding that feels timeless, visually rich, and authentically Balinese",
-      "Access to Bali's most architecturally significant and culturally resonant settings",
-      "A celebration where the space itself becomes an integral part of the story",
-    ],
-  },
-  {
-    id: "t8",
-    name: "Rice Paddy Field Weddings",
-    slug: "rice-paddy-field-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Iconic Landscape & Cultural Harmony",
-    description:
-      "Layered terraces, open skies, and the living cultural landscape of Bali's rice fields, ideal for expansive, grounded, and authentically Balinese weddings shaped by natural light, agricultural heritage, and iconic scenery.",
-    long_description:
-      "Rice paddy field weddings in Bali capture one of the island's most recognizable and meaningful landscapes — where layered terraces, open skies, and the rhythm of nature create a setting that feels both expansive and deeply grounded. These environments are more than visually beautiful; they represent a living cultural landscape shaped by tradition, community, and harmony with nature. At Linda Wiryani Design and Event Planning, we design rice field weddings that honor this balance — creating celebrations that feel immersive, intentional, and connected to place. Our approach is to work with the landscape — allowing space, light, and natural texture to shape the atmosphere of the day.",
-    location: "Ubud & Gianyar, East Bali, West Bali",
-    atmosphere:
-      "Expansive yet intimate — natural and visually balanced, light-filled and atmosphere-led, elegant with quiet simplicity, where layered terraces, open skies, soft natural light, and a connection to Bali's living agricultural and cultural heritage create a wedding that feels both iconic and meaningfully grounded",
-    accessibility_notes:
-      "Terraced landscapes may involve slopes, steps, or uneven paths requiring careful layout and guest flow planning; open environments require preparation for sun exposure, wind, and rain with shading and flooring essential; rice fields are working cultural landscapes requiring respectful planning and environmental sensitivity; morning and late afternoon provide the most beautiful natural light for ceremonies and photography",
-    seasonal_considerations:
-      "Rice field colour and visual character change through agricultural cycles — green terraces are most lush during and after rainy season while golden pre-harvest periods offer a different beauty; open terrain requires full weather contingency planning; morning and golden hour light is particularly beautiful across terraced landscapes",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433769/Pupuan_rice_paddy_field_ogv5b9.png",
-    guest_capacity: "15 - 200",
-    highlights: [
-      "Iconic Tegallalang terraced landscapes with dramatic visual layering",
-      "UNESCO-recognised Jatiluwih rice terraces offering expansive open-scale views",
-      "Sidemen Valley combining rice fields with mountain views and quiet intimacy",
-      "Refined Ubud-area venues integrating rice field views with comfort and access",
-      "Secluded Pupuan and West Bali settings with untouched rice field privacy",
-    ],
-    best_for: [
-      "Couples seeking Bali's most iconic and authentically recognizable landscape",
-      "Rice terrace view ceremonies with open skies and expansive natural surroundings",
-      "A culturally meaningful and visually timeless wedding backdrop",
-      "Nature-integrated celebrations with a strong sense of Balinese place and identity",
-      "A wedding that feels both elegantly grounded and deeply connected to the island",
-    ],
-    ceremony_options: [
-      "Rice terrace overlook ceremonies with sweeping landscape views",
-      "UNESCO Jatiluwih open-scale terrace ceremony settings",
-      "Tegallalang iconic layered terrace and valley ceremony backdrops",
-      "Sidemen Valley intimate rice field and mountain view ceremonies",
-      "Intimate elopements within quiet and secluded rice terrace surroundings",
-    ],
-    reception_options: [
-      "Rice field view terrace dinner and gathering receptions",
-      "Boutique venue and villa receptions overlooking agricultural landscapes",
-      "Cultural and landscape-inspired celebratory dining experiences",
-      "Intimate and nature-surrounded small-scale evening gatherings",
-      "Multi-moment experiences flowing from ceremony to sunset rice field dining",
-    ],
-    accommodation_nearby: [
-      "Boutique villas and eco-lodges with direct rice field and terrace views",
-      "Nature-integrated private villas in Tegallalang and Ubud surroundings",
-      "Heritage retreat properties in Sidemen Valley with valley and mountain views",
-      "Jatiluwih area guesthouses and sustainable retreat accommodations",
-    ],
-    dining_experiences: [
-      "Private chef terrace and rice field view dining experiences",
-      "Farm-to-table cuisine using locally grown Balinese produce",
-      "Organic and culturally inspired multi-course meal settings",
-      "Intimate dinners overlooking layered green rice terraces",
-    ],
-    unique_features: [
-      "Ceremony overlooking Bali's most iconic and culturally significant landscape",
-      "A gathering surrounded by the living agricultural heritage of the island",
-      "A wedding that feels timeless, authentic, and deeply connected to Bali",
-      "Access to the island's most recognizable and visually striking terrace settings",
-      "A celebration where landscape, culture, and natural beauty are inseparable",
-    ],
-  },
-  {
-    id: "t9",
-    name: "Riverside Weddings",
-    slug: "riverside-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Intimate Flow & Sensory Atmosphere",
-    description:
-      "Flowing water, layered valley greenery, and soft filtered light along Bali's riverside landscapes, ideal for intimate, emotionally rich, and deeply immersive weddings shaped by sound, texture, and natural rhythm.",
-    long_description:
-      "Riverside weddings in Bali offer a deeply immersive experience — where the gentle flow of water, surrounding greenery, and layered landscape create a setting that feels calm, intimate, and naturally alive. Unlike expansive coastal or mountain environments, riverside settings bring a sense of closeness — where sound, texture, and movement create a space that feels both grounding and emotionally rich. At Linda Wiryani Design and Event Planning, we design riverside weddings that embrace this atmosphere — creating celebrations that feel personal, immersive, and beautifully connected to nature. Our approach is to work with the rhythm of the environment — allowing water, light, and landscape to shape the experience organically.",
-    location: "Ubud & Gianyar, East Bali, North Bali, West Bali",
-    atmosphere:
-      "Intimate yet visually rich — calm and atmosphere-led, soft, layered, and immersive, elegant with natural refinement, where the sound of flowing water, a sense of enclosure provided by valley walls and tropical greenery, and soft filtered light within natural surroundings create a wedding that feels less staged and more deeply experiential",
-    accessibility_notes:
-      "Riverbanks and valley settings may involve uneven ground, slopes, or natural terrain requiring careful layout and guest pathway planning; humidity and natural moisture require preparation for guest comfort including ventilation and appropriate flooring; water levels and river flow may vary seasonally affecting setup areas and accessibility; filtered light within valley environments requires precise ceremony and photography timing",
-    seasonal_considerations:
-      "River flow and water levels vary depending on rainfall and season requiring flexible site assessment and planning; valley and jungle-edge environments experience increased humidity during wet season; filtered forest light within valleys is most gentle and beautiful in the morning and late afternoon; dry season preferred for most accessible and comfortable riverside ceremony conditions",
-    image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309711/Riverside_Wedding_Setting_iyvxh5.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309427/Nusa_Lembongan_Final_vc5hxp.png",
     guest_capacity: "10 - 100",
     highlights: [
-      "Natural flowing water as the defining sound and atmosphere of the ceremony",
-      "Refined Ubud and Ayung River settings with accessible jungle riverside beauty",
-      "Sidemen Valley combining riverside landscapes with rice fields and mountain views",
-      "Hidden central Bali valley rivers offering complete privacy and layered natural depth",
-      "North and West Bali remote riverside environments with deep seclusion",
+      "Clear waters and soft coastal light creating a naturally beautiful setting",
+      "Relaxed and intimate island atmosphere away from mainland crowds",
+      "Oceanfront ceremony locations with open sky and sea views",
+      "Curated villas and boutique properties offering privacy and natural beauty",
+      "A slower, more intentional wedding experience shaped by island rhythm",
     ],
     best_for: [
-      "Couples seeking an intimate, sensory-rich, and emotionally grounded setting",
-      "A unique nature-immersive alternative to beach or open landscape ceremonies",
-      "Riverside elopements with a strong sense of calm, flow, and personal connection",
-      "Nature-integrated celebrations where water, sound, and texture lead the atmosphere",
-      "A wedding experience that feels deeply personal, alive, and quietly unforgettable",
+      "Couples seeking a quiet island setting away from crowds",
+      "Intimate and meaningful oceanfront celebrations",
+      "A relaxed yet elegantly refined wedding atmosphere",
+      "Private villa and boutique venue island experiences",
+      "A destination that feels both private and accessible",
     ],
     ceremony_options: [
-      "Riverside ceremonies beside flowing water with jungle and valley surroundings",
-      "Ubud and Ayung River valley ceremony settings with refined natural character",
-      "Sidemen Valley riverside ceremonies combining water, rice fields, and mountain views",
-      "Hidden central Bali valley ceremonies with complete privacy and natural enclosure",
-      "Intimate elopements along quiet and secluded riverside landscapes",
+      "Oceanfront ceremonies with clear water and open sky backdrops",
+      "Beachfront and coastal garden settings",
+      "Private villa ocean-view ceremonies",
+      "Intimate island elopements in relaxed coastal surroundings",
     ],
     reception_options: [
-      "Riverside terrace and valley-floor intimate dinner receptions",
-      "Nature-immersive open-air gathering experiences beside flowing water",
-      "Editorial and design-led riverside celebrations with refined natural styling",
-      "Candlelit intimate dinners within enclosed and atmospheric valley settings",
-      "Multi-moment experiences flowing from ceremony to riverside dining",
+      "Relaxed open-air dining under open skies",
+      "Boutique villa and private resort receptions",
+      "Intimate beachfront dinner gatherings",
+      "Small-scale island celebration experiences",
     ],
     accommodation_nearby: [
-      "Boutique jungle and riverside villas in Ubud and Ayung River valley",
-      "Nature-integrated private retreat properties in Sidemen Valley",
-      "Eco-lodges and valley guesthouses in Central Bali hidden river settings",
-      "Remote nature retreat accommodations in North and West Bali",
+      "Curated boutique villas and private island properties",
+      "Small resort properties with ocean views",
+      "Intimate guesthouses and eco-lodge stays",
+      "Beachfront villa rentals with direct water access",
     ],
     dining_experiences: [
-      "Private chef riverside and valley atmosphere dining experiences",
-      "Farm-to-table and locally sourced Balinese cuisine",
-      "Valley-floor and jungle-edge intimate candlelit dinner settings",
-      "Nature-immersive and sensory catering alongside flowing water",
+      "Private chef ocean-view dining experiences",
+      "Fresh seafood and local island cuisine",
+      "Relaxed beachfront and open-air dinner settings",
+      "Intimate and effortlessly curated catering experiences",
     ],
     unique_features: [
-      "Ceremony beside flowing water in one of Bali's most intimate natural settings",
-      "A deeply sensory gathering shaped by the sound, movement, and texture of the river",
-      "A wedding that feels calm, immersive, and profoundly connected to nature",
-      "Access to Bali's most beautiful and atmospheric riverside valley settings",
-      "A celebration defined by flow, intimacy, and quiet emotional depth",
+      "Ceremony by the ocean in one of Bali's most relaxed island settings",
+      "Quiet and meaningful gathering shaped by light, water, and open sky",
+      "A wedding that feels calm, intimate, and naturally effortless",
+      "Bali's most accessible yet private island wedding destination",
+      "A celebration defined by simplicity, ocean, and genuine connection",
     ],
   },
   {
-    id: "t10",
-    name: "Garden Weddings",
-    slug: "garden-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Outdoor Elegance & Effortless Balance",
+    id: "8c",
+    name: "Nusa Ceningan",
+    slug: "nusa-ceningan-wedding",
+    location_id: "loc-nusa-islands",
+    location: getLoc("loc-nusa-islands"),
+    type: "Intimate Coastal Charm",
     description:
-      "Open lawns, curated greenery, and a structured yet naturally relaxed outdoor environment, ideal for fresh, elegant, and versatile destination weddings shaped by space, light, and effortless refinement.",
+      "Smaller scale, coastal textures, and a slower island rhythm, ideal for intimate, understated, and naturally connected destination weddings shaped by simplicity and quiet coastal beauty.",
     long_description:
-      "Garden weddings in Bali offer a beautifully balanced experience — where nature feels present, yet the setting remains structured, comfortable, and refined. Surrounded by greenery, open lawns, and curated landscapes, these environments create a setting that feels fresh, airy, and naturally elegant. At Linda Wiryani Design and Event Planning, we design garden weddings that embrace this harmony — creating celebrations that feel relaxed, intentional, and visually cohesive. Our approach is to work with both nature and space — allowing greenery, light, and layout to shape a wedding that feels effortless and elevated.",
-    location: "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains",
+      "Nusa Ceningan offers one of Bali's most intimate and understated island experiences — where smaller scale, coastal textures, and a slower rhythm create a setting that feels personal, relaxed, and naturally beautiful. Located between Nusa Lembongan and Nusa Penida, this island carries a unique balance — combining the ease of Lembongan with the character and edge of Penida, yet in a more quiet and intimate form.",
     atmosphere:
-      "Open yet intimate — fresh, airy, and inviting, structured yet relaxed, elegant with understated charm, where open lawns balanced with natural greenery, soft even light throughout the day, and a setting that feels both natural and comfortable create a wedding experience that is approachable yet refined",
+      "Intimate yet elevated — simple and thoughtfully curated, calm, natural, and atmosphere-led, elegant with quiet character shaped by coastal cliffs, ocean views, and the stillness of a lesser-explored island",
     accessibility_notes:
-      "Large open areas require careful spatial planning for guest flow, ceremony layout, and reception transitions; shading, seating, and flooring must be thoughtfully arranged for guest comfort in outdoor environments; technical elements including lighting, sound, and catering infrastructure must be integrated smoothly; weather contingency planning is essential for outdoor settings",
+      "Guests typically arrive via Nusa Lembongan requiring coordinated transfers; limited but curated accommodation options require early planning; open coastal environments require careful consideration for setup and design; some elements may need to be arranged from mainland Bali; schedules must align with island transport and setup timing",
     seasonal_considerations:
-      "Open garden environments require flexible planning for sun exposure and potential rain; natural light transitions throughout the day should be considered for both ceremony and reception timing; morning and late afternoon provide the most beautiful and even lighting conditions for photography and atmosphere",
+      "Open environments and wind conditions require thoughtful design and structural choices; natural light and soft ocean reflections create beautiful ceremony conditions particularly at golden hour; dry season preferred for stable access and outdoor event planning",
     image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775313016/Garden_Weddings_b0lzyq.png",
-    guest_capacity: "20 - 400",
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309438/Nusa_Ceningan_Wedding_xhxycj.png",
+    guest_capacity: "5 - 60",
     highlights: [
-      "Bedugul Botanical Garden with cool highland greenery and expansive open lawns",
-      "Ubud and Central Bali lush garden environments integrated with jungle landscapes",
-      "Exclusive private villa garden grounds combining privacy with natural beauty",
-      "Coastal garden venues offering a balance between greenery and ocean atmosphere",
-      "Boutique resort outdoor venues with curated landscapes and hospitality infrastructure",
+      "Intimate and quiet island atmosphere unlike any other Bali destination",
+      "Coastal cliffs and ocean views in a smaller, more personal setting",
+      "A unique balance between ease and edge — calm yet characterful",
+      "Less explored and genuinely private island environment",
+      "Naturally beautiful surroundings shaped by simplicity and texture",
     ],
     best_for: [
-      "Couples seeking a natural yet structured outdoor celebration environment",
-      "A versatile setting suitable for both ceremony and flowing reception",
-      "Fresh, airy, and elegantly relaxed outdoor wedding experiences",
-      "Editorial and design-led celebrations within beautifully curated garden spaces",
-      "A wedding that feels natural, timeless, and effortlessly refined",
+      "Couples seeking a quiet and private intimate island setting",
+      "Coastal and cliffside ceremony locations in a relaxed environment",
+      "A unique and less commercial island wedding destination",
+      "Intimate elopements with a slower and more intentional pace",
+      "A wedding experience that feels simple, personal, and authentic",
     ],
     ceremony_options: [
-      "Open lawn ceremonies surrounded by curated garden greenery",
-      "Bedugul highland botanical garden and open landscape ceremony settings",
-      "Private villa garden and pool terrace ceremony environments",
-      "Boutique resort outdoor ceremony and reception spaces",
-      "Intimate elopements within enclosed and beautifully landscaped garden surroundings",
+      "Coastal cliffside ceremonies with expansive ocean views",
+      "Intimate beachfront and shoreline settings",
+      "Private villa and boutique venue ceremonies",
+      "Elopements in quiet and secluded island surroundings",
     ],
     reception_options: [
-      "Open garden lawn dinner receptions with natural greenery surroundings",
-      "Seamless indoor-outdoor venue transitions from ceremony to reception",
-      "Botanical garden and highland outdoor celebration gatherings",
-      "Editorial and design-led garden receptions with refined styling",
-      "Multi-space villa and resort garden celebration experiences",
+      "Intimate open-air gatherings by the coast",
+      "Small boutique venue and private villa receptions",
+      "Quiet beachfront dinner celebrations",
+      "Relaxed and personal island gathering experiences",
     ],
     accommodation_nearby: [
-      "Boutique resort properties with landscaped garden grounds",
-      "Private villa estates with curated garden and lawn spaces",
-      "Highland retreats and eco-lodges near Bedugul Botanical Garden",
-      "Nature-integrated villa accommodations in Ubud and Central Bali",
+      "Small boutique villas and private island retreats",
+      "Intimate guesthouses with coastal views",
+      "Eco-lodge and nature-integrated stays",
+      "Nearby Nusa Lembongan accommodation options",
     ],
     dining_experiences: [
-      "Private chef garden and open-air lawn dining experiences",
-      "Farm-to-table and organic garden cuisine with fresh local produce",
-      "Boutique resort catering within structured outdoor environments",
-      "Sunset and evening garden dining with ambient lighting and natural surroundings",
+      "Private chef intimate coastal dining experiences",
+      "Fresh seafood and simple local island cuisine",
+      "Quiet beachfront and open-air meal settings",
+      "Understated and authentically curated catering",
     ],
     unique_features: [
-      "Ceremony surrounded by curated greenery in one of Bali's most versatile natural settings",
-      "A balanced and elegantly refined gathering shaped by open space and natural beauty",
-      "A wedding that feels fresh, timeless, and effortlessly connected to the outdoors",
-      "Access to Bali's most diverse and beautifully curated garden wedding environments",
-      "A celebration defined by openness, balance, and naturally elegant simplicity",
+      "Ceremony in one of Bali's most intimate and less explored island settings",
+      "Quiet and personal gathering shaped by coastal simplicity and stillness",
+      "A wedding that feels calm, authentic, and deeply connected to its surroundings",
+      "Bali's most understated and genuinely private island wedding destination",
+      "A celebration defined by intimacy, texture, and natural coastal beauty",
     ],
   },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // OUTSIDE BALI
+  // ════════════════════════════════════════════════════════════════════════════
   {
-    id: "t11",
-    name: "Chapel Weddings",
-    slug: "chapel-weddings",
-    category_id: "cat-themes",
-    category: getCat("cat-themes"),
-    type: "Architectural Elegance & Intimate Atmosphere",
+    id: "9",
+    name: "Lombok",
+    slug: "lombok-wedding",
+    location_id: "loc-lombok",
+    location: getLoc("loc-lombok"),
+    type: "Island Escape & Coastal Simplicity",
     description:
-      "Defined architecture, controlled light, and symmetrical elegance, ideal for refined and timeless destination wedding ceremonies shaped by structure, clarity, and intimate focus.",
+      "Wide open beaches, gentle landscapes, and a slower island rhythm, ideal for intimate, effortless, and quietly elegant destination weddings shaped by space, simplicity, and natural beauty.",
     long_description:
-      "Chapel weddings in Bali offer a refined and structured setting — where architecture, light, and symmetry come together to create a ceremony that feels both intimate and timeless. Defined by clean lines, controlled environments, and carefully framed views, chapels provide a space where every detail feels intentional and beautifully composed. At Linda Wiryani Design and Event Planning, we design chapel weddings that embrace this sense of clarity — creating celebrations that feel elegant, meaningful, and seamlessly orchestrated. Our approach is to work with architecture and atmosphere — allowing light, space, and proportion to shape a wedding that feels calm, elevated, and refined.",
-    location: "Ubud, South Bali",
+      "Lombok offers a quieter and more understated alternative to Bali — where wide open beaches, gentle landscapes, and a slower rhythm create a setting that feels calm, spacious, and deeply relaxing. Less developed and more natural in character, Lombok allows weddings to unfold in a way that feels unhurried, intimate, and beautifully connected to its surroundings.",
     atmosphere:
-      "Elegant and composed — intimate, focused, and architecturally refined, where clean lines and controlled light draw attention to the couple and the ceremony itself, creating a setting that feels timeless, calm, and deeply meaningful",
+      "Spacious yet intimate — calm and naturally elegant, light-filled and atmosphere-led, refined with quiet sophistication shaped by wide coastlines, open horizons, and the unhurried rhythm of a less developed island",
     accessibility_notes:
-      "Chapel venues vary in location across Bali from resort-integrated settings to standalone architectural spaces; guest capacity and seating are defined by the chapel structure and must be planned accordingly; each chapel may have specific guidelines and regulations that must be respected",
+      "Accessible via Lombok International Airport or fast boat from Bali; flights, transfers, and logistics must be carefully coordinated; guest accommodations require early planning due to more limited options compared to Bali; certain vendors and technical elements may need to be brought from Bali; schedules must allow for travel and setup logistics",
     seasonal_considerations:
-      "Controlled indoor environments provide weather-independent reliability; natural and artificial lighting must be carefully aligned for ceremony timing; indoor chapel settings offer consistent atmosphere regardless of season or weather conditions",
+      "Wind and sun exposure across open coastal landscapes must be carefully considered in design and timing; dry season (May–October) provides the most stable conditions for outdoor ceremonies; natural light across wide horizons is particularly beautiful at golden hour and sunset",
     image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775361533/chapel-wedding_ejqsqz.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309336/Lombok_uo3d50.png",
     guest_capacity: "10 - 150",
     highlights: [
-      "Defined architectural spaces with clean lines and visual symmetry",
-      "Controlled environment providing comfort and consistency in any weather",
-      "Intimate and focused ceremony atmosphere",
-      "Ocean view and landscape-framed chapel settings across Bali",
-      "Seamless integration with nearby reception areas and resort venues",
+      "Wide and untouched beachfront ceremony settings",
+      "A quieter and more relaxed island atmosphere away from crowds",
+      "Natural and less commercial open coastal environment",
+      "Curated villas and boutique resorts offering privacy and flexibility",
+      "A true sense of space, openness, and peaceful escape",
     ],
     best_for: [
-      "Couples seeking a structured and elegantly composed ceremony environment",
-      "A refined and timeless setting protected from outdoor conditions",
-      "Ceremonies where architecture and light shape the emotional experience",
-      "Intimate gatherings with a formal and focused atmosphere",
-      "A wedding that feels classic, elegant, and beautifully orchestrated",
+      "Couples seeking a calm and exclusive beachfront destination",
+      "Intimate weddings in a natural and unhurried setting",
+      "Private villa and boutique resort celebrations",
+      "A wedding experience that feels peaceful and immersive",
+      "A destination that offers both space and quiet refinement",
     ],
     ceremony_options: [
-      "Intimate chapel ceremonies within resort and private estate settings",
-      "Ocean view chapel ceremonies with framed landscape surroundings",
-      "Destination chapel ceremonies with full planning and design integration",
-      "Intimate chapel elopements with a calm and focused atmosphere",
-      "Luxury resort chapel ceremonies with seamless reception transitions",
+      "Beachfront ceremonies along wide open coastlines",
+      "Oceanfront resort and villa garden settings",
+      "Intimate elopements in quiet natural surroundings",
+      "Cliffside and elevated viewpoint ceremonies",
     ],
     reception_options: [
-      "Seamless chapel to reception transitions within resort environments",
-      "Intimate indoor receptions following structured chapel ceremonies",
-      "Garden and terrace receptions connected to chapel ceremony spaces",
-      "Multi-space resort celebrations flowing from chapel to open-air dining",
-      "Candlelit and elegantly styled evening receptions",
+      "Private resort and villa outdoor dinner receptions",
+      "Beachfront open-air celebration gatherings",
+      "Intimate boutique venue experiences",
+      "Relaxed and nature-surrounded evening events",
     ],
     accommodation_nearby: [
-      "Luxury resort properties with integrated chapel and reception venues",
-      "Boutique hotels and private villas near chapel settings",
-      "Highland and lakeside accommodations with nearby architectural venues",
-      "Full-service resort properties with comprehensive guest amenities",
+      "Boutique beachfront resorts and eco-luxury retreats",
+      "Private villa rentals with ocean views",
+      "Intimate island guesthouses and glamping stays",
+      "Curated properties with privacy and natural character",
     ],
     dining_experiences: [
-      "Resort fine dining and gourmet catering within elegant settings",
-      "Private chef and bespoke multi-course dinner experiences",
-      "Intimate candlelit receptions with refined styling and ambiance",
-      "Sunset cocktail and evening reception flows following chapel ceremonies",
+      "Private chef beachfront dining experiences",
+      "Fresh seafood and local Sasak cuisine",
+      "Sunset and open-air coastal dinner settings",
+      "Intimate and effortlessly curated catering experiences",
     ],
     unique_features: [
-      "A ceremony framed by architecture, light, and beautifully composed symmetry",
-      "A controlled and intimate environment focused entirely on the couple",
-      "Weather-independent reliability within an elegant and refined setting",
-      "A wedding experience that feels timeless, composed, and deeply meaningful",
-      "Access to Bali's most refined architectural ceremony spaces",
+      "Ceremony along one of Indonesia's most unspoiled and spacious coastlines",
+      "Quiet and meaningful gathering shaped by space, light, and open horizon",
+      "A wedding that feels peaceful, natural, and beautifully understated",
+      "A private and exclusive destination beyond the pace of Bali",
+      "A celebration defined by simplicity, calm, and genuine escape",
+    ],
+  },
+  {
+    id: "9b",
+    name: "Sumba",
+    slug: "sumba-wedding",
+    location_id: "loc-sumba",
+    location: getLoc("loc-sumba"),
+    type: "Remote Luxury & Cinematic Landscape",
+    description:
+      "Vast savannahs, dramatic coastlines, and a deep cultural presence, ideal for exclusive, immersive, and truly extraordinary destination weddings shaped by landscape, authenticity, and quiet luxury.",
+    long_description:
+      "Sumba offers one of Indonesia's most extraordinary and untouched landscapes — where vast savannahs, dramatic coastlines, and a deep cultural presence create a setting that feels both powerful and rare. Far removed from the pace of Bali, Sumba invites a different kind of wedding experience — one that is slower, more intentional, and deeply connected to land, tradition, and space.",
+    atmosphere:
+      "Expansive yet deeply intimate — raw yet refined, minimal and landscape-driven, elevated with quiet sophistication shaped by vast savannahs, dramatic coastal cliffs, and the rare sense of an untouched and culturally rich island",
+    accessibility_notes:
+      "Remote destination requiring detailed coordination for flights, transfers, and all guest logistics; limited but high-end accommodation options require early planning; many elements including vendors and technical setups may need to be brought from Bali; open landscapes require careful planning for sun, wind, and natural exposure; extended planning timelines are essential for smooth execution",
+    seasonal_considerations:
+      "Open savannahs and coastal environments require full preparation for sun, wind, and natural elements; dry season is strongly preferred for ceremony conditions and travel logistics; natural light across vast open landscapes creates particularly dramatic and cinematic conditions at sunrise and sunset",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309390/Sumba_wedding_erkew6.png",
+    guest_capacity: "10 - 100",
+    highlights: [
+      "Vast savannah and dramatic clifftop coastal ceremony settings",
+      "One of Indonesia's most exclusive and rarely explored destinations",
+      "Deep cultural presence and authenticity shaped by Sumbanese heritage",
+      "Cinematic and editorial-quality natural landscapes",
+      "Ultra-luxury private resort properties with rare exclusivity",
+    ],
+    best_for: [
+      "Couples seeking a remote, exclusive, and truly extraordinary destination",
+      "Savannah and clifftop ceremonies with cinematic visual impact",
+      "A deeply immersive and culturally connected wedding experience",
+      "Ultra-luxury private resort and concept-driven celebrations",
+      "A wedding that feels rare, refined, and profoundly unforgettable",
+    ],
+    ceremony_options: [
+      "Open savannah ceremonies with vast landscape backdrops",
+      "Clifftop and coastal ceremonies along dramatic shorelines",
+      "Private resort and ultra-luxury venue ceremony settings",
+      "Intimate elopements within raw and untouched natural surroundings",
+    ],
+    reception_options: [
+      "Private resort and clifftop open-air dinner receptions",
+      "Savannah landscape intimate gathering experiences",
+      "Ultra-luxury concept-driven celebration events",
+      "Small and deeply personal nature-immersed gatherings",
+    ],
+    accommodation_nearby: [
+      "Ultra-luxury private resorts and eco-retreats",
+      "Clifftop and ocean-view boutique properties",
+      "Exclusive private villa and estate stays",
+      "Curated high-end nature-integrated accommodations",
+    ],
+    dining_experiences: [
+      "Private chef savannah and clifftop dining experiences",
+      "Fresh local cuisine with authentic Sumbanese flavours",
+      "Sunset and open landscape intimate dinner settings",
+      "Concept-driven bespoke catering in extraordinary surroundings",
+    ],
+    unique_features: [
+      "Ceremony within one of Indonesia's most vast and untouched landscapes",
+      "Rare and powerful gathering shaped by savannah, culture, and open horizon",
+      "A wedding that feels exclusive, cinematic, and deeply extraordinary",
+      "Indonesia's most remote and visually striking luxury wedding destination",
+      "A transformative, one-of-a-kind, and profoundly memorable experience",
+    ],
+  },
+  {
+    id: "9c",
+    name: "Banyuwangi",
+    slug: "banyuwangi-wedding",
+    location_id: "loc-java",
+    location: getLoc("loc-java"),
+    type: "Nature-Led Discovery & Landscape",
+    description:
+      "Mountains, forests, coastline, and open natural environments layered together, ideal for immersive, adventurous, and quietly extraordinary destination weddings shaped by natural diversity and quiet discovery.",
+    long_description:
+      "Banyuwangi offers one of Indonesia's most diverse and lesser-known landscapes — where mountains, forests, coastline, and open natural environments come together in a setting that feels both raw and quietly beautiful. Located at the eastern edge of Java, Banyuwangi carries a sense of discovery — offering wedding experiences that feel unique, immersive, and far removed from more familiar destinations.",
+    atmosphere:
+      "Natural yet refined — immersive and visually layered, calm with a sense of exploration, elegant within a raw natural context shaped by the contrast between mountain, forest, and coastal landscapes",
+    accessibility_notes:
+      "Accessible via flights and land transfers from Bali; all travel logistics and coordination must be carefully planned for guests and vendors; certain vendors and technical elements may need to be arranged from Bali; different landscape types require tailored planning for layout, terrain, and guest safety; schedules must account for travel distances and setup logistics",
+    seasonal_considerations:
+      "Layered landscape types — mountain, forest, and coastal — each require specific seasonal considerations and contingency planning; natural light varies significantly across different environments requiring careful ceremony timing; dry season preferred for outdoor events and travel logistics",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775309279/Banyuwangi_wdrvji.png",
+    guest_capacity: "10 - 120",
+    highlights: [
+      "Diverse natural landscapes combining mountain, forest, and coastal settings",
+      "A lesser-known and genuinely unique destination beyond Bali",
+      "Volcano and elevated landscape ceremony settings with dramatic views",
+      "Lush forest and jungle environments for immersive celebrations",
+      "A calm, uncrowded, and visually rich natural environment",
+    ],
+    best_for: [
+      "Couples seeking a unique and nature-diverse wedding destination",
+      "Mountain, volcano, and forest landscape ceremony settings",
+      "A wedding that feels adventurous yet refined and intentional",
+      "Intimate celebrations with strong visual richness and natural depth",
+      "A setting that offers both exploration and quiet natural beauty",
+    ],
+    ceremony_options: [
+      "Mountain and volcano landscape ceremonies with dramatic views",
+      "Forest and jungle-immersive nature ceremony settings",
+      "Coastal and ocean-view beachfront ceremonies",
+      "Elevated viewpoint and open natural landscape elopements",
+    ],
+    reception_options: [
+      "Nature-surrounded intimate dinner gatherings",
+      "Forest and mountain-view open-air celebrations",
+      "Boutique venue and private resort receptions",
+      "Concept-driven landscape-integrated experiences",
+    ],
+    accommodation_nearby: [
+      "Boutique nature lodges and eco-retreats",
+      "Mountain and forest-view villa properties",
+      "Coastal resort and beachfront stays",
+      "Nature-integrated guesthouse and retreat accommodations",
+    ],
+    dining_experiences: [
+      "Private chef nature and landscape dining experiences",
+      "Fresh local East Java cuisine and produce",
+      "Mountain-view and forest-surrounded intimate meals",
+      "Concept-driven bespoke catering within natural settings",
+    ],
+    unique_features: [
+      "Ceremony within one of Indonesia's most diverse and layered natural landscapes",
+      "Quiet and meaningful gathering shaped by mountain, forest, and coastal contrast",
+      "A wedding that feels unique, immersive, and quietly extraordinary",
+      "One of Indonesia's most emerging and visually rich destination experiences",
+      "A celebration defined by natural diversity, discovery, and genuine beauty",
+    ],
+  },
+  {
+    id: "9d",
+    name: "Magelang",
+    slug: "magelang-wedding",
+    location_id: "loc-java",
+    location: getLoc("loc-java"),
+    type: "Heritage & Architectural Elegance",
+    description:
+      "Ancient heritage, volcanic landscapes, and architectural beauty, ideal for serene, culturally rich, and timeless destination weddings shaped by stillness, symmetry, and refined elegance.",
+    long_description:
+      "Magelang offers one of Indonesia's most refined and culturally significant wedding settings — where ancient heritage, volcanic landscapes, and architectural beauty come together in quiet harmony. Set within a region rich in history and surrounded by mountains, this destination creates a wedding experience that feels both grounded and elevated — where every moment carries a sense of presence and meaning.",
+    atmosphere:
+      "Timeless and refined — calm and architecturally grounded, minimal yet visually powerful, elegant with quiet depth shaped by ancient heritage, volcanic mountain surroundings, and the stillness of a culturally significant landscape",
+    accessibility_notes:
+      "Accessible via flights to Yogyakarta and coordinated land transfers; all travel logistics must be carefully planned for guests and vendors; certain venue locations may have specific usage and operational guidelines; structured environments require thoughtful guest movement and spatial planning; careful scheduling ensures a smooth and well-paced experience",
+    seasonal_considerations:
+      "Outdoor and semi-open settings require weather contingency planning; natural light across open courtyards, terraces, and architectural spaces creates beautiful ceremony conditions particularly in the morning and late afternoon; dry season preferred for open-air ceremonies and guest comfort",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775433444/Magelang_q1pjqj.png",
+    guest_capacity: "20 - 200",
+    highlights: [
+      "Ancient heritage and iconic architectural settings with deep cultural significance",
+      "Volcanic mountain surroundings creating a powerful and serene natural backdrop",
+      "Refined and timeless atmosphere unlike any other Indonesian destination",
+      "Architectural symmetry and spatial beauty ideal for ceremony design",
+      "A calm and contemplative environment shaped by history and landscape",
+    ],
+    best_for: [
+      "Couples seeking a culturally rich and historically significant setting",
+      "Architectural and heritage ceremony environments with strong visual presence",
+      "A serene and timeless wedding atmosphere shaped by culture and landscape",
+      "Refined and design-led celebrations within iconic Indonesian settings",
+      "A wedding experience that feels deeply intentional and quietly luxurious",
+    ],
+    ceremony_options: [
+      "Architectural and heritage site ceremony settings",
+      "Open courtyard and terrace ceremonies with mountain views",
+      "Intimate elopements within culturally significant surroundings",
+      "Landscape and volcanic mountain view ceremony backdrops",
+    ],
+    reception_options: [
+      "Heritage garden and architectural ground dinner receptions",
+      "Open courtyard and terrace elegant gathering experiences",
+      "Refined boutique venue and private estate celebrations",
+      "Intimate and culturally immersive evening gatherings",
+    ],
+    accommodation_nearby: [
+      "Boutique heritage hotels and refined retreat properties",
+      "Mountain-view villas and nature-integrated stays",
+      "Cultural guesthouses and curated private accommodations",
+      "Yogyakarta area luxury hotels and resort properties",
+    ],
+    dining_experiences: [
+      "Private chef heritage and architectural setting dining experiences",
+      "Fresh Central Java cuisine and traditional local dishes",
+      "Open courtyard and terrace intimate dinner settings",
+      "Refined and culturally inspired bespoke catering experiences",
+    ],
+    unique_features: [
+      "Ceremony within one of Indonesia's most iconic and culturally significant landscapes",
+      "Timeless and meaningful gathering shaped by heritage, architecture, and mountain presence",
+      "A wedding that feels refined, serene, and deeply connected to Indonesian culture",
+      "One of Indonesia's most elegant and historically resonant destination settings",
+      "A celebration defined by stillness, symmetry, and quiet architectural beauty",
     ],
   },
 ];

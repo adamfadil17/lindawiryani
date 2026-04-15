@@ -265,7 +265,7 @@ export default function LoginPage() {
             </div>
           </form>
 
-          <div className="mt-8 text-center">
+          {/* <div className="mt-8 text-center">
             <p className="text-primary/80 text-sm tracking-wide">
               Forgot your password?{" "}
               <Link
@@ -275,7 +275,7 @@ export default function LoginPage() {
                 Reset here
               </Link>
             </p>
-          </div>
+          </div> */}
 
           <div className="mt-8 text-center">
             <Link
