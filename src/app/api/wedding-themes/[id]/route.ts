@@ -11,6 +11,23 @@ import {
 } from "@/lib";
 import { updateWeddingThemeSchema } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import path from "path";
+import { existsSync } from "fs";
+import { unlink } from "fs/promises";
+import { moveFromTemp } from "@/utils/file";
+
+const UPLOAD_DIR =
+  process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "uploads");
+const UPLOAD_URL_BASE = process.env.UPLOAD_URL_BASE ?? "/uploads";
+
+async function deleteFile(url: string) {
+  if (!url || !url.startsWith(UPLOAD_URL_BASE)) return;
+  const relativePath = url.slice(UPLOAD_URL_BASE.length);
+  const filepath = path.join(UPLOAD_DIR, relativePath);
+  if (existsSync(filepath)) {
+    await unlink(filepath).catch(() => {});
+  }
+}
 
 const WEDDING_THEME_INCLUDE = {
   venue: true,
@@ -46,6 +63,9 @@ export async function PATCH(
     const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
+    const existing = await prisma.weddingTheme.findUnique({ where: { id } });
+    if (!existing) return notFound("Wedding Theme");
+
     const body = await req.json();
     const dto = updateWeddingThemeSchema.parse(body);
 
@@ -60,10 +80,19 @@ export async function PATCH(
       });
     }
 
+    const finalSlug = slug ?? existing.slug;
+
+    let image = dto.image;
+    if (image && image !== existing.image) {
+      image = await moveFromTemp(image, `wedding-themes/${finalSlug}`);
+      await deleteFile(existing.image);
+    }
+
     const theme = await prisma.weddingTheme.update({
       where: { id },
       data: {
         ...dto,
+        ...(image !== undefined && { image }),
         ...(slug !== undefined && { slug }),
       },
       include: WEDDING_THEME_INCLUDE,
@@ -84,8 +113,14 @@ export async function DELETE(
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    const existing = await prisma.weddingTheme.findUnique({ where: { id } });
+    const existing = await prisma.weddingTheme.findUnique({
+      where: { id },
+      include: { gallery: true },
+    });
     if (!existing) return notFound("Wedding Theme");
+
+    await deleteFile(existing.image);
+    await Promise.all(existing.gallery.map((g) => deleteFile(g.url)));
 
     await prisma.weddingTheme.delete({ where: { id } });
 

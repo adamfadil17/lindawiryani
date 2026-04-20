@@ -52,7 +52,6 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
     if (!pendingUrl) return;
 
     if (venueId) {
-
       setIsAdding(true);
       try {
         const response = await axios.post(
@@ -64,15 +63,15 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
         setPendingUrl("");
         toast.success("Gallery image added");
       } catch (err) {
-        const msg = axios.isAxiosError(err) && err.response?.data?.message
-          ? err.response.data.message
-          : "Failed to add gallery image";
+        const msg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to add gallery image";
         toast.error(msg);
       } finally {
         setIsAdding(false);
       }
     } else {
-
       const tempImage: GalleryImage = {
         id: `temp-${Date.now()}`,
         url: pendingUrl,
@@ -90,23 +89,34 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
           headers: getAuthHeaders(),
         });
       } catch (err) {
-        const msg = axios.isAxiosError(err) && err.response?.data?.message
-          ? err.response.data.message
-          : "Failed to remove gallery image";
+        const msg =
+          axios.isAxiosError(err) && err.response?.data?.message
+            ? err.response.data.message
+            : "Failed to remove gallery image";
         toast.error(msg);
         return;
       }
+    } else if (image.id.startsWith("temp-")) {
+      try {
+        await axios.delete("/api/files/delete", {
+          data: { url: image.url },
+          headers: getAuthHeaders(),
+        });
+      } catch {}
     }
+
     onChange(images.filter((img) => img.id !== image.id));
   };
 
   return (
     <div className="space-y-4">
-      
       {images.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
           {images.map((img, i) => (
-            <div key={img.id} className="relative aspect-square group overflow-hidden border border-primary/20">
+            <div
+              key={img.id}
+              className="relative aspect-square group overflow-hidden border border-primary/20"
+            >
               <Image
                 src={img.url}
                 alt={`Gallery ${i + 1}`}
@@ -133,7 +143,6 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
         </div>
       )}
 
-      
       <div className="space-y-2">
         <ImageUpload
           value={pendingUrl}
@@ -142,7 +151,6 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
         />
         {pendingUrl && (
           <>
-            
             <div className="relative w-full aspect-[4/3] overflow-hidden border border-primary/20 bg-primary/5">
               <Image
                 src={pendingUrl}
@@ -181,7 +189,6 @@ export default function VenueDetailPage() {
   const id = params?.id as string;
   const isNew = id === "new";
 
-
   const {
     watch,
     handleSubmit,
@@ -204,7 +211,6 @@ export default function VenueDetailPage() {
     },
   });
 
-
   const setField = (key: keyof VenueFormData, value: unknown) =>
     setValue(key as keyof VenueFormData, value as never, {
       shouldValidate: true,
@@ -214,23 +220,23 @@ export default function VenueDetailPage() {
 
   const formData = watch();
 
-
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
-
 
   const [isLoading, setIsLoading] = useState(!isNew);
   const [notFound, setNotFound] = useState(false);
 
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "confirm" | "saving" | "saved"
+  >("idle");
 
-  const [saveStatus, setSaveStatus] = useState<"idle" | "confirm" | "saving" | "saved">("idle");
+  const [deleteStatus, setDeleteStatus] = useState<
+    "idle" | "confirm" | "deleting"
+  >("idle");
 
-
-  const [deleteStatus, setDeleteStatus] = useState<"idle" | "confirm" | "deleting">("idle");
-
-
-
-
-  const [unsavedModal, setUnsavedModal] = useState<{ open: boolean; pendingHref?: string }>({ open: false });
+  const [unsavedModal, setUnsavedModal] = useState<{
+    open: boolean;
+    pendingHref?: string;
+  }>({ open: false });
 
   const hasUnsavedChanges = isNew
     ? Boolean(
@@ -240,10 +246,9 @@ export default function VenueDetailPage() {
         formData.image ||
         formData.capacity ||
         formData.starting_price ||
-        galleryImages.length > 0
+        galleryImages.length > 0,
       )
     : isDirty;
-
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -256,29 +261,32 @@ export default function VenueDetailPage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, saveStatus]);
 
-
   const guardedNavigate = useCallback(
     (href: string) => {
-      if (hasUnsavedChanges && saveStatus !== "saving" && saveStatus !== "saved") {
+      if (
+        hasUnsavedChanges &&
+        saveStatus !== "saving" &&
+        saveStatus !== "saved"
+      ) {
         setUnsavedModal({ open: true, pendingHref: href });
       } else {
         router.push(href);
       }
     },
-    [hasUnsavedChanges, saveStatus, router]
+    [hasUnsavedChanges, saveStatus, router],
   );
-
 
   const [allDestinations, setAllDestinations] = useState<Destination[]>([]);
   const [allExperiences, setAllExperiences] = useState<WeddingExperience[]>([]);
   const [isDestinationsLoading, setIsDestinationsLoading] = useState(true);
   const [isExperiencesLoading, setIsExperiencesLoading] = useState(true);
 
-
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
-        const response = await axios.get("/api/destinations", { params: { limit: 100 } });
+        const response = await axios.get("/api/destinations", {
+          params: { limit: 100 },
+        });
         const data: Destination[] = response.data.data ?? [];
         setAllDestinations(data);
         if (isNew && data.length > 0) {
@@ -297,11 +305,12 @@ export default function VenueDetailPage() {
     fetchDestinations();
   }, [isNew, setValue]);
 
-
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
-        const response = await axios.get("/api/wedding-experiences", { params: { limit: 100 } });
+        const response = await axios.get("/api/wedding-experiences", {
+          params: { limit: 100 },
+        });
         const data: WeddingExperience[] = response.data.data ?? [];
         setAllExperiences(data);
         if (isNew && data.length > 0) {
@@ -319,7 +328,6 @@ export default function VenueDetailPage() {
     };
     fetchExperiences();
   }, [isNew, setValue]);
-
 
   const fetchVenue = useCallback(async () => {
     if (isNew) return;
@@ -340,13 +348,14 @@ export default function VenueDetailPage() {
         experience_id: String(data.experience_id ?? ""),
       });
 
-
       const gallery: GalleryImage[] = Array.isArray(data.gallery)
-        ? data.gallery.map((g: { id: string; url: string; sort_order: number }) => ({
-            id: g.id,
-            url: g.url,
-            sort_order: g.sort_order,
-          }))
+        ? data.gallery.map(
+            (g: { id: string; url: string; sort_order: number }) => ({
+              id: g.id,
+              url: g.url,
+              sort_order: g.sort_order,
+            }),
+          )
         : [];
       setGalleryImages(gallery);
     } catch (err) {
@@ -370,11 +379,9 @@ export default function VenueDetailPage() {
     fetchVenue();
   }, [fetchVenue]);
 
-
   const onSubmitForm = async (_data: VenueFormData) => {
     setSaveStatus("confirm");
   };
-
 
   const onSubmitError = async () => {
     await trigger();
@@ -393,7 +400,6 @@ export default function VenueDetailPage() {
         const createdVenue = response.data.data ?? response.data;
         const newVenueId: string = createdVenue.id;
 
-
         for (const img of galleryImages) {
           try {
             await axios.post(
@@ -401,9 +407,7 @@ export default function VenueDetailPage() {
               { url: img.url, sort_order: img.sort_order },
               { headers: getAuthHeaders(true) },
             );
-          } catch {
-
-          }
+          } catch {}
         }
 
         setSaveStatus("idle");
@@ -436,7 +440,6 @@ export default function VenueDetailPage() {
     }
   };
 
-
   const deleteVenueById = async () => {
     setDeleteStatus("deleting");
     try {
@@ -460,18 +463,24 @@ export default function VenueDetailPage() {
     }
   };
 
-
   const slugPreview = formData.name ? toSlug(formData.name) : "";
-  const selectedDestination = allDestinations.find((d) => d.id === formData.destination_id);
-  const selectedExperience = allExperiences.find((e) => e.id === formData.experience_id);
-
+  const selectedDestination = allDestinations.find(
+    (d) => d.id === formData.destination_id,
+  );
+  const selectedExperience = allExperiences.find(
+    (e) => e.id === formData.experience_id,
+  );
 
   if (notFound) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">Not Found</p>
-        <p className="text-primary/80 text-sm mb-6">This venue does not exist.</p>
+        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+          Not Found
+        </p>
+        <p className="text-primary/80 text-sm mb-6">
+          This venue does not exist.
+        </p>
         <Link
           href="/dashboard/venues"
           className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
@@ -481,7 +490,6 @@ export default function VenueDetailPage() {
       </div>
     );
   }
-
 
   if (isLoading) {
     return (
@@ -496,7 +504,10 @@ export default function VenueDetailPage() {
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white border border-primary/20 p-6 space-y-4">
+              <div
+                key={i}
+                className="bg-white border border-primary/20 p-6 space-y-4"
+              >
                 <div className="h-4 w-32 bg-primary/10 rounded" />
                 <div className="h-10 bg-primary/5 rounded" />
                 <div className="h-10 bg-primary/5 rounded" />
@@ -511,7 +522,9 @@ export default function VenueDetailPage() {
             </div>
             <div className="bg-white border border-primary/20 p-6">
               <div className="grid grid-cols-3 gap-2 mb-4">
-                {[1, 2, 3].map((i) => <div key={i} className="aspect-square bg-primary/10" />)}
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="aspect-square bg-primary/10" />
+                ))}
               </div>
               <div className="h-10 bg-primary/5 rounded" />
             </div>
@@ -523,7 +536,6 @@ export default function VenueDetailPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1200px] mx-auto">
-      
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -566,7 +578,11 @@ export default function VenueDetailPage() {
           <button
             type="button"
             onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
-            disabled={saveStatus === "saving" || isDestinationsLoading || isExperiencesLoading}
+            disabled={
+              saveStatus === "saving" ||
+              isDestinationsLoading ||
+              isExperiencesLoading
+            }
             className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-2.5 hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
             {saveStatus === "saving" ? (
@@ -583,16 +599,12 @@ export default function VenueDetailPage() {
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
       >
-        
         <div className="lg:col-span-2 space-y-6">
-
-          
           <Section
             title="Basic Information"
             subtitle="Core details about this venue"
           >
             <div className="space-y-5">
-              
               <FormField label="Venue Name" required>
                 <TextInput
                   value={formData.name}
@@ -601,37 +613,45 @@ export default function VenueDetailPage() {
                     setField("slug", toSlug(v));
                   }}
                   placeholder="e.g. The Edge Bali"
-                  error={formErrors.name ? String(formErrors.name.message) : undefined}
+                  error={
+                    formErrors.name
+                      ? String(formErrors.name.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
-              
               <FormField label="Slogan" required>
                 <TextInput
                   value={formData.slogan}
                   onChange={(v) => setField("slogan", v)}
                   placeholder="e.g. Where the ocean meets the sky"
-                  error={formErrors.slogan ? String(formErrors.slogan.message) : undefined}
+                  error={
+                    formErrors.slogan
+                      ? String(formErrors.slogan.message)
+                      : undefined
+                  }
                 />
               </FormField>
 
-              
               <FormField label="Description" required>
                 <TextareaInput
                   value={formData.description}
                   onChange={(v) => setField("description", v)}
                   placeholder="Describe the venue — the setting, atmosphere, and what makes it unique..."
                   rows={4}
-                  error={formErrors.description ? String(formErrors.description.message) : undefined}
+                  error={
+                    formErrors.description
+                      ? String(formErrors.description.message)
+                      : undefined
+                  }
                 />
               </FormField>
             </div>
           </Section>
 
-          
           <Section title="Destination" subtitle="Where this venue is situated">
             <div className="grid sm:grid-cols-2 gap-5">
-              
               <FormField label="Destination" required>
                 <div className="relative">
                   <select
@@ -641,10 +661,14 @@ export default function VenueDetailPage() {
                     className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isDestinationsLoading ? (
-                      <option value="" disabled>Loading destinations…</option>
+                      <option value="" disabled>
+                        Loading destinations…
+                      </option>
                     ) : (
                       <>
-                        <option value="" disabled>— Select a destination —</option>
+                        <option value="" disabled>
+                          — Select a destination —
+                        </option>
                         {allDestinations.map((dest) => (
                           <option key={dest.id} value={dest.id}>
                             {dest.name}
@@ -662,23 +686,22 @@ export default function VenueDetailPage() {
                 )}
               </FormField>
 
-              
               <FormField label="Destination Type">
                 <div className="flex items-center gap-2 px-3 py-2.5 bg-primary/5 border border-primary/20 text-sm text-primary/60">
                   <MapPin className="w-4 h-4 text-primary/30 flex-shrink-0" />
                   <span>{selectedDestination?.type ?? "—"}</span>
-                  <span className="ml-auto text-xs text-primary/30 tracking-widest uppercase">Auto</span>
+                  <span className="ml-auto text-xs text-primary/30 tracking-widest uppercase">
+                    Auto
+                  </span>
                 </div>
               </FormField>
             </div>
           </Section>
 
-          
           <Section
             title="Wedding Experience"
             subtitle="Which experience category this venue belongs to"
           >
-            
             <FormField label="Experience" required>
               <div className="relative">
                 <select
@@ -688,10 +711,14 @@ export default function VenueDetailPage() {
                   className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isExperiencesLoading ? (
-                    <option value="" disabled>Loading experiences…</option>
+                    <option value="" disabled>
+                      Loading experiences…
+                    </option>
                   ) : (
                     <>
-                      <option value="" disabled>— Select an experience —</option>
+                      <option value="" disabled>
+                        — Select an experience —
+                      </option>
                       {allExperiences.map((exp) => (
                         <option key={exp.id} value={exp.id}>
                           {exp.name}
@@ -710,10 +737,11 @@ export default function VenueDetailPage() {
             </FormField>
           </Section>
 
-          
-          <Section title="Capacity & Pricing" subtitle="Guest count and starting rate">
+          <Section
+            title="Capacity & Pricing"
+            subtitle="Guest count and starting rate"
+          >
             <div className="grid sm:grid-cols-2 gap-5">
-              
               <FormField label="Max Capacity" required>
                 <div className="relative">
                   <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none" />
@@ -721,10 +749,14 @@ export default function VenueDetailPage() {
                     type="number"
                     min={1}
                     value={formData.capacity || ""}
-                    onChange={(e) => setField("capacity", parseInt(e.target.value) || 0)}
+                    onChange={(e) =>
+                      setField("capacity", parseInt(e.target.value) || 0)
+                    }
                     placeholder="e.g. 150"
                     className={`w-full pl-9 pr-4 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
-                      formErrors.capacity ? "border-red-400" : "border-primary/30"
+                      formErrors.capacity
+                        ? "border-red-400"
+                        : "border-primary/30"
                     }`}
                   />
                 </div>
@@ -735,7 +767,6 @@ export default function VenueDetailPage() {
                 )}
               </FormField>
 
-              
               <FormField label="Starting Price (IDR)" required>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none" />
@@ -743,10 +774,17 @@ export default function VenueDetailPage() {
                     type="number"
                     min={1}
                     value={formData.starting_price || ""}
-                    onChange={(e) => setField("starting_price", parseFloat(e.target.value) || 0)}
+                    onChange={(e) =>
+                      setField(
+                        "starting_price",
+                        parseFloat(e.target.value) || 0,
+                      )
+                    }
                     placeholder="e.g. 350000000"
                     className={`w-full pl-9 pr-4 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
-                      formErrors.starting_price ? "border-red-400" : "border-primary/30"
+                      formErrors.starting_price
+                        ? "border-red-400"
+                        : "border-primary/30"
                     }`}
                   />
                 </div>
@@ -760,12 +798,8 @@ export default function VenueDetailPage() {
           </Section>
         </div>
 
-        
         <div className="space-y-6">
-
-          
           <Section title="Hero Image">
-            
             <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden border border-primary/20 bg-primary/5">
               {formData.image ? (
                 <Image
@@ -775,13 +809,16 @@ export default function VenueDetailPage() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                    (e.currentTarget as HTMLImageElement).style.display =
+                      "none";
                   }}
                 />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                   <ImageIcon className="w-8 h-8 text-primary/20" />
-                  <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                  <p className="text-primary/30 text-xs tracking-wider">
+                    No image set
+                  </p>
                 </div>
               )}
             </div>
@@ -799,7 +836,6 @@ export default function VenueDetailPage() {
             )}
           </Section>
 
-          
           <Section
             title="Gallery"
             subtitle={`${galleryImages.length} image${galleryImages.length !== 1 ? "s" : ""}`}
@@ -811,47 +847,62 @@ export default function VenueDetailPage() {
             />
           </Section>
 
-          
           <Section title="URL & SEO">
             <div className="space-y-2">
-              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">URL Slug</p>
+              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
+                URL Slug
+              </p>
               <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
                 {slugPreview || "—"}
               </p>
-              <p className="text-primary/50 text-xs">Auto-generated from venue name</p>
+              <p className="text-primary/50 text-xs">
+                Auto-generated from venue name
+              </p>
             </div>
           </Section>
 
-          
           <div className="bg-primary/5 border border-primary/20 p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">Summary</p>
+            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
+              Summary
+            </p>
             <div className="space-y-3">
               {[
                 {
                   label: "Destination",
-                  value: selectedDestination?.name ?? (formData.destination_id ? "—" : "Not set"),
+                  value:
+                    selectedDestination?.name ??
+                    (formData.destination_id ? "—" : "Not set"),
                 },
                 {
                   label: "Experience",
-                  value: selectedExperience?.name ?? (formData.experience_id ? "—" : "Not set"),
+                  value:
+                    selectedExperience?.name ??
+                    (formData.experience_id ? "—" : "Not set"),
                 },
                 {
                   label: "Capacity",
-                  value: formData.capacity > 0 ? `${formData.capacity} guests` : "—",
+                  value:
+                    formData.capacity > 0 ? `${formData.capacity} guests` : "—",
                 },
                 {
                   label: "Starting",
-                  value: formData.starting_price > 0
-                    ? `$${Number(formData.starting_price).toLocaleString()}`
-                    : "—",
+                  value:
+                    formData.starting_price > 0
+                      ? `$${Number(formData.starting_price).toLocaleString()}`
+                      : "—",
                 },
                 {
                   label: "Gallery",
                   value: `${galleryImages.length} photos`,
                 },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-primary/80 font-semibold text-xs">{item.label}</span>
+                <div
+                  key={item.label}
+                  className="flex items-center justify-between"
+                >
+                  <span className="text-primary/80 font-semibold text-xs">
+                    {item.label}
+                  </span>
                   <span className="text-xs font-medium bg-primary text-white px-2 py-0.5">
                     {item.value}
                   </span>
@@ -862,7 +913,6 @@ export default function VenueDetailPage() {
         </div>
       </form>
 
-      
       {unsavedModal.open && (
         <UnsavedChangesModal
           mode={isNew ? "create" : "update"}
@@ -874,7 +924,6 @@ export default function VenueDetailPage() {
         />
       )}
 
-      
       {(saveStatus === "confirm" || saveStatus === "saving") && (
         <SaveModal
           mode={isNew ? "create" : "update"}
@@ -886,12 +935,13 @@ export default function VenueDetailPage() {
         />
       )}
 
-      
       {(deleteStatus === "confirm" || deleteStatus === "deleting") && (
         <DeleteModal
           name={formData.name}
           onConfirm={deleteVenueById}
-          onCancel={() => deleteStatus !== "deleting" && setDeleteStatus("idle")}
+          onCancel={() =>
+            deleteStatus !== "deleting" && setDeleteStatus("idle")
+          }
           isLoading={deleteStatus === "deleting"}
         />
       )}

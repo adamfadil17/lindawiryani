@@ -14,6 +14,7 @@ import {
   paginateQuery,
 } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
 
 const WEDDING_THEME_INCLUDE = {
   venue: {
@@ -81,12 +82,14 @@ export async function POST(req: NextRequest) {
       return !!existing;
     });
 
+    const image = await moveFromTemp(dto.image, `wedding-themes/${slug}`);
+
     const theme = await prisma.weddingTheme.create({
       data: {
         slug,
         title: dto.title,
         description: dto.description,
-        image: dto.image,
+        image,
         inclusions: dto.inclusions,
         venue_id: dto.venue_id ?? null,
         experience_id: dto.experience_id,

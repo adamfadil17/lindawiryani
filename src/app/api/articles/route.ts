@@ -12,6 +12,7 @@ import {
 } from "@/lib";
 import { createArticleSchema, parsePagination, paginateQuery } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
 
 export async function GET(req: NextRequest) {
   try {
@@ -69,6 +70,8 @@ export async function POST(req: NextRequest) {
       return !!existing;
     });
 
+    const image = await moveFromTemp(dto.image, `articles/${slug}`);
+
     const article = await prisma.article.create({
       data: {
         slug,
@@ -76,7 +79,7 @@ export async function POST(req: NextRequest) {
         title: dto.title,
         excerpt: dto.excerpt,
         published_at: dto.published_at,
-        image: dto.image,
+        image,
         content: dto.content,
       },
     });

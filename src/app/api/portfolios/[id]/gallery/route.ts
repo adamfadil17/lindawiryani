@@ -14,6 +14,7 @@ import {
   parsePagination,
   paginateQuery,
 } from "@/utils";
+import { moveFromTemp } from "@/utils/file";
 
 export async function GET(
   req: NextRequest,
@@ -63,7 +64,7 @@ export async function POST(
 
     const portfolio = await prisma.portfolio.findUnique({
       where: { id },
-      select: { id: true },
+      select: { id: true, slug: true },
     });
     if (!portfolio) return notFound("Portfolio");
 
@@ -73,10 +74,15 @@ export async function POST(
       portfolio_id: id,
     });
 
+    const url = await moveFromTemp(
+      dto.url,
+      `portfolios/${portfolio.slug}/gallery`,
+    );
+
     const image = await prisma.portfolioImage.create({
       data: {
         portfolio_id: dto.portfolio_id,
-        url: dto.url,
+        url,
         sort_order: dto.sort_order,
       },
     });

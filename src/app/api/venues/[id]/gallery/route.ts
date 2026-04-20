@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-
 import {
   prisma,
   handleError,
@@ -14,6 +13,7 @@ import {
   parsePagination,
   paginateQuery,
 } from "@/utils";
+import { moveFromTemp } from "@/utils/file";
 
 export async function GET(
   req: NextRequest,
@@ -21,7 +21,6 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-
     const venue = await prisma.venue.findUnique({
       where: { id },
       select: { id: true },
@@ -29,7 +28,6 @@ export async function GET(
     if (!venue) return notFound("Venue");
 
     const { page, limit } = parsePagination(req.nextUrl.searchParams);
-
     const where = { venue_id: id };
 
     const { data, meta } = await paginateQuery(
@@ -63,17 +61,19 @@ export async function POST(
 
     const venue = await prisma.venue.findUnique({
       where: { id },
-      select: { id: true },
+      select: { id: true, slug: true },
     });
     if (!venue) return notFound("Venue");
 
     const body = await req.json();
     const dto = createVenueImageSchema.parse({ ...body, venue_id: id });
 
+    const url = await moveFromTemp(dto.url, `venues/${venue.slug}/gallery`);
+
     const image = await prisma.venueImage.create({
       data: {
         venue_id: dto.venue_id,
-        url: dto.url,
+        url, 
         sort_order: dto.sort_order,
       },
     });

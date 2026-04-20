@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-
 import {
   prisma,
   handleError,
@@ -11,6 +10,23 @@ import {
 } from "@/lib";
 import { updateVenueSchema } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
+import { unlink } from "fs/promises";
+import { existsSync } from "fs";
+import path from "path";
+
+const UPLOAD_DIR =
+  process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "uploads");
+const UPLOAD_URL_BASE = process.env.UPLOAD_URL_BASE ?? "/uploads";
+
+async function deleteFile(url: string) {
+  if (!url || !url.startsWith(UPLOAD_URL_BASE)) return;
+  const relativePath = url.slice(UPLOAD_URL_BASE.length);
+  const filepath = path.join(UPLOAD_DIR, relativePath);
+  if (existsSync(filepath)) {
+    await unlink(filepath).catch(() => {});
+  }
+}
 
 const VENUE_INCLUDE = {
   destination: true,
@@ -26,7 +42,6 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-
     const venue = await prisma.venue.findUnique({
       where: { id },
       include: VENUE_INCLUDE,
@@ -48,24 +63,34 @@ export async function PATCH(
     const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
+    const existing = await prisma.venue.findUnique({ where: { id } });
+    if (!existing) return notFound("Venue");
+
     const body = await req.json();
     const dto = updateVenueSchema.parse(body);
 
-    // Auto-regenerate slug jika name ikut diupdate
     let slug: string | undefined;
     if (dto.name) {
       const baseSlug = toSlug(dto.name);
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.venue.findUnique({ where: { slug: s } });
-        // Skip slug milik diri sendiri
-        return !!existing && existing.id !== id;
+        const found = await prisma.venue.findUnique({ where: { slug: s } });
+        return !!found && found.id !== id;
       });
+    }
+
+    const finalSlug = slug ?? existing.slug;
+
+    let image = dto.image;
+    if (image && image !== existing.image) {
+      image = await moveFromTemp(image, `venues/${finalSlug}`);
+      await deleteFile(existing.image);
     }
 
     const venue = await prisma.venue.update({
       where: { id },
       data: {
         ...dto,
+        ...(image !== undefined && { image }),
         ...(slug !== undefined && { slug }),
       },
       include: VENUE_INCLUDE,
@@ -86,8 +111,14 @@ export async function DELETE(
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    const existing = await prisma.venue.findUnique({ where: { id } });
+    const existing = await prisma.venue.findUnique({
+      where: { id },
+      include: { gallery: true },
+    });
     if (!existing) return notFound("Venue");
+
+    await deleteFile(existing.image);
+    await Promise.all(existing.gallery.map((g) => deleteFile(g.url)));
 
     await prisma.venue.delete({ where: { id } });
 

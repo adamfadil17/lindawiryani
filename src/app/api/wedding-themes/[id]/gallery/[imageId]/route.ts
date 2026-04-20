@@ -10,6 +10,23 @@ import {
   noContent,
 } from "@/lib";
 import { updateWeddingThemeImageSchema } from "@/utils";
+import path from "path";
+import { existsSync } from "fs";
+import { unlink } from "fs/promises";
+import { moveFromTemp } from "@/utils/file";
+
+const UPLOAD_DIR =
+  process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "uploads");
+const UPLOAD_URL_BASE = process.env.UPLOAD_URL_BASE ?? "/uploads";
+
+async function deleteFile(url: string) {
+  if (!url || !url.startsWith(UPLOAD_URL_BASE)) return;
+  const relativePath = url.slice(UPLOAD_URL_BASE.length);
+  const filepath = path.join(UPLOAD_DIR, relativePath);
+  if (existsSync(filepath)) {
+    await unlink(filepath).catch(() => {});
+  }
+}
 
 export async function GET(
   _req: NextRequest,
@@ -40,13 +57,25 @@ export async function PATCH(
 
     const existing = await prisma.weddingThemeImage.findUnique({
       where: { id: imageId },
-      select: { theme_id: true },
     });
     if (!existing || existing.theme_id !== id)
       return notFound("Wedding Theme Image");
 
     const body = await req.json();
     const dto = updateWeddingThemeImageSchema.parse(body);
+
+    if (dto.url && dto.url !== existing.url) {
+      const theme = await prisma.weddingTheme.findUnique({
+        where: { id },
+        select: { slug: true },
+      });
+
+      dto.url = await moveFromTemp(
+        dto.url,
+        `wedding-themes/${theme!.slug}/gallery`,
+      );
+      await deleteFile(existing.url);
+    }
 
     const image = await prisma.weddingThemeImage.update({
       where: { id: imageId },
@@ -70,10 +99,11 @@ export async function DELETE(
 
     const existing = await prisma.weddingThemeImage.findUnique({
       where: { id: imageId },
-      select: { theme_id: true },
     });
     if (!existing || existing.theme_id !== id)
       return notFound("Wedding Theme Image");
+
+    await deleteFile(existing.url);
 
     await prisma.weddingThemeImage.delete({ where: { id: imageId } });
     return noContent();

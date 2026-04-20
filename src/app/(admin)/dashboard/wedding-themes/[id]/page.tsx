@@ -100,7 +100,15 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
         toast.error(msg);
         return;
       }
+    } else if (image.id.startsWith("temp-")) {
+      try {
+        await axios.delete("/api/files/delete", {
+          data: { url: image.url },
+          headers: getAuthHeaders(),
+        });
+      } catch {}
     }
+
     onChange(images.filter((img) => img.id !== image.id));
   };
 

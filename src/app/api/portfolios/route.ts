@@ -12,6 +12,7 @@ import {
 } from "@/lib";
 import { createPortfolioSchema, parsePagination, paginateQuery } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
 
 const PORTFOLIO_INCLUDE = {
   destination: true,
@@ -89,6 +90,8 @@ export async function POST(req: NextRequest) {
       return !!existing;
     });
 
+    const image = await moveFromTemp(dto.image, `portfolios/${slug}`);
+
     const portfolio = await prisma.portfolio.create({
       data: {
         slug,
@@ -97,7 +100,7 @@ export async function POST(req: NextRequest) {
         destination_id: dto.destination_id ?? null,
         venue_id: dto.venue_id ?? null,
         experience_id: dto.experience_id ?? null,
-        image: dto.image,
+        image,
         tags: dto.tags,
         excerpt: dto.excerpt,
         origin: dto.origin ?? null,

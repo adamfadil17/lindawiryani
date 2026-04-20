@@ -16,6 +16,7 @@ import {
   paginateQuery,
 } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
 
 const DESTINATION_INCLUDE = {
   location: {
@@ -89,6 +90,8 @@ export async function POST(req: NextRequest) {
       return !!existing;
     });
 
+    const image = await moveFromTemp(dto.image, `destinations/${slug}`);
+
     const destination = await prisma.destination.create({
       data: {
         name: dto.name,
@@ -100,7 +103,7 @@ export async function POST(req: NextRequest) {
         atmosphere: dto.atmosphere,
         accessibility_notes: dto.accessibility_notes,
         seasonal_considerations: dto.seasonal_considerations,
-        image: dto.image,
+        image,
         guest_capacity: dto.guest_capacity,
         highlights: dto.highlights,
         best_for: dto.best_for,

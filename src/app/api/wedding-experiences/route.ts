@@ -16,6 +16,7 @@ import {
   paginateQuery,
 } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
 
 const WEDDING_EXPERIENCE_INCLUDE = {
   faqs: { orderBy: { sort_order: "asc" as const } },
@@ -89,6 +90,13 @@ export async function POST(req: NextRequest) {
       return !!existing;
     });
 
+    const hero_image = await moveFromTemp(dto.hero_image, `experiences/${slug}`);
+    const intro_images = await Promise.all(
+      dto.intro_images.map((url: string) => moveFromTemp(url, `experiences/${slug}`))
+    );
+    const approach_image = await moveFromTemp(dto.approach_image, `experiences/${slug}`);
+    const closing_image = await moveFromTemp(dto.closing_image, `experiences/${slug}`);
+
     const experience = await prisma.weddingExperience.create({
       data: {
         slug,
@@ -97,7 +105,7 @@ export async function POST(req: NextRequest) {
 
         // Hero
         hero_style: dto.hero_style,
-        hero_image: dto.hero_image,
+        hero_image,
         hero_desc: dto.hero_desc,
 
         // Intro
@@ -107,7 +115,7 @@ export async function POST(req: NextRequest) {
         intro_list_label: dto.intro_list_label ?? null,
         intro_list: dto.intro_list,
         intro_footnote: dto.intro_footnote ?? null,
-        intro_images: dto.intro_images,
+        intro_images,
 
         // Approach
         approach_label: dto.approach_label,
@@ -115,7 +123,7 @@ export async function POST(req: NextRequest) {
         approach_body: dto.approach_body,
         approach_list_label: dto.approach_list_label ?? null,
         approach_list: dto.approach_list,
-        approach_image: dto.approach_image,
+        approach_image,
 
         // Services
         services_label: dto.services_label,
@@ -131,7 +139,7 @@ export async function POST(req: NextRequest) {
         closing_label: dto.closing_label,
         closing_heading: dto.closing_heading,
         closing_body: dto.closing_body,
-        closing_image: dto.closing_image,
+        closing_image,
         closing_couple_label: dto.closing_couple_label ?? null,
         closing_couple_values: dto.closing_couple_values,
       },

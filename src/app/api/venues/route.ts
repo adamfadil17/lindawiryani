@@ -10,6 +10,7 @@ import {
 } from "@/lib";
 import { createVenueSchema, parsePagination, paginateQuery } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
 
 const VENUE_INCLUDE = {
   destination: true,
@@ -72,13 +73,15 @@ export async function POST(req: NextRequest) {
       return !!existing;
     });
 
+     const image = await moveFromTemp(dto.image, `venues/${slug}`);
+
     const venue = await prisma.venue.create({
       data: {
         slug,
         name: dto.name,
         slogan: dto.slogan,
         description: dto.description,
-        image: dto.image,
+        image,
         capacity: dto.capacity,
         starting_price: dto.starting_price,
         destination_id: dto.destination_id,

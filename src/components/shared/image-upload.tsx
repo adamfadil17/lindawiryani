@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 
@@ -37,24 +38,17 @@ export default function ImageUpload({
     const toastId = toast.loading("Uploading image...");
 
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error ?? "Upload failed");
-      }
-
-      const { url } = await res.json();
-      onChange(url);
+      const { data } = await axios.post<{ url: string }>(
+        "/api/files/add",
+        formData,
+      );
+      onChange(data.url);
       toast.success("Image uploaded successfully!", { id: toastId });
     } catch (err) {
-      toast.error("Upload failed", {
-        id: toastId,
-        description: err instanceof Error ? err.message : "Please try again",
-      });
+      const message = axios.isAxiosError(err)
+        ? (err.response?.data?.error ?? "Upload failed")
+        : "Please try again";
+      toast.error("Upload failed", { id: toastId, description: message });
     }
   };
 

@@ -4,6 +4,10 @@ import { existsSync } from "fs";
 import path from "path";
 import { requireAuth, requireRole, handleError } from "@/lib";
 
+const UPLOAD_DIR =
+  process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "uploads");
+const UPLOAD_URL_BASE = process.env.UPLOAD_URL_BASE ?? "/uploads";
+
 export async function POST(req: NextRequest) {
   try {
     const payload = await requireAuth(req);
@@ -25,30 +29,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "File too large" }, { status: 400 });
     }
 
-    // Bikin folder biar bisa simpen di /public/uploads/ hel ?
-    {
-      /* mkdir -p /var/www/yourapp/public/uploads */
-    }
-    {
-      /* chown -R www-data:www-data /var/www/yourapp/public/uploads */
-    }
-    {
-      /* chmod 755 /var/www/yourapp/public/uploads */
-    }
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
+    const tempDir = path.join(UPLOAD_DIR, "temp");
+    if (!existsSync(tempDir)) {
+      await mkdir(tempDir, { recursive: true });
     }
 
     const ext = file.type === "image/png" ? "png" : "jpg";
     const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const filepath = path.join(uploadDir, filename);
+    const filepath = path.join(tempDir, filename);
 
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(filepath, buffer);
 
-    const url = `/uploads/${filename}`;
-    return NextResponse.json({ url }, { status: 201 });
+    return NextResponse.json(
+      { url: `${UPLOAD_URL_BASE}/temp/${filename}` },
+      { status: 201 },
+    );
   } catch (error) {
     return handleError(error);
   }

@@ -14,6 +14,7 @@ import {
   parsePagination,
   paginateQuery,
 } from "@/utils";
+import { moveFromTemp } from "@/utils/file";
 
 export async function GET(
   req: NextRequest,
@@ -63,7 +64,7 @@ export async function POST(
 
     const theme = await prisma.weddingTheme.findUnique({
       where: { id },
-      select: { id: true },
+      select: { id: true, slug: true },
     });
     if (!theme) return notFound("Wedding Theme");
 
@@ -73,10 +74,15 @@ export async function POST(
       theme_id: id,
     });
 
+    const url = await moveFromTemp(
+      dto.url,
+      `wedding-themes/${theme.slug}/gallery`,
+    );
+
     const image = await prisma.weddingThemeImage.create({
       data: {
         theme_id: dto.theme_id,
-        url: dto.url,
+        url,
         sort_order: dto.sort_order,
       },
     });

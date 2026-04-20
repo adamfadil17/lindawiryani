@@ -11,6 +11,23 @@ import {
 } from "@/lib";
 import { updateDestinationSchema } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { moveFromTemp } from "@/utils/file";
+import path from "path";
+import { existsSync } from "fs";
+import { unlink } from "fs/promises";
+
+const UPLOAD_DIR =
+  process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "uploads");
+const UPLOAD_URL_BASE = process.env.UPLOAD_URL_BASE ?? "/uploads";
+
+async function deleteFile(url: string) {
+  if (!url || !url.startsWith(UPLOAD_URL_BASE)) return;
+  const relativePath = url.slice(UPLOAD_URL_BASE.length);
+  const filepath = path.join(UPLOAD_DIR, relativePath);
+  if (existsSync(filepath)) {
+    await unlink(filepath).catch(() => {});
+  }
+}
 
 const DESTINATION_INCLUDE = {
   location: {
@@ -48,12 +65,15 @@ export async function PATCH(
     const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
+    const existing = await prisma.destination.findUnique({ where: { id } });
+    if (!existing) return notFound("Destination");
+
     const body = await req.json();
     const dto = updateDestinationSchema.parse(body);
 
     let slug: string | undefined;
     if (dto.name) {
-      const baseSlug = `${toSlug(dto.name)}-wedding`
+      const baseSlug = `${toSlug(dto.name)}-wedding`;
       slug = await ensureUniqueSlug(baseSlug, async (s) => {
         const existing = await prisma.destination.findUnique({
           where: { slug: s },
@@ -62,10 +82,19 @@ export async function PATCH(
       });
     }
 
+    const finalSlug = slug ?? existing.slug;
+
+    let image = dto.image;
+    if (image && image !== existing.image) {
+      image = await moveFromTemp(image, `destinations/${finalSlug}`);
+      await deleteFile(existing.image);
+    }
+
     const destination = await prisma.destination.update({
       where: { id },
       data: {
         ...dto,
+        ...(image !== undefined && { image }),
         ...(slug !== undefined && { slug }),
       },
       include: DESTINATION_INCLUDE,
@@ -89,7 +118,10 @@ export async function DELETE(
     const existing = await prisma.destination.findUnique({ where: { id } });
     if (!existing) return notFound("Destination");
 
+    await deleteFile(existing.image);
+
     await prisma.destination.delete({ where: { id } });
+
     return noContent();
   } catch (error) {
     return handleError(error);

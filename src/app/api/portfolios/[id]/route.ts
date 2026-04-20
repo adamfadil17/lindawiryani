@@ -11,6 +11,23 @@ import {
 } from "@/lib";
 import { updatePortfolioSchema } from "@/utils";
 import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import path from "path";
+import { existsSync } from "fs";
+import { unlink } from "fs/promises";
+import { moveFromTemp } from "@/utils/file";
+
+const UPLOAD_DIR =
+  process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "uploads");
+const UPLOAD_URL_BASE = process.env.UPLOAD_URL_BASE ?? "/uploads";
+
+async function deleteFile(url: string) {
+  if (!url || !url.startsWith(UPLOAD_URL_BASE)) return;
+  const relativePath = url.slice(UPLOAD_URL_BASE.length);
+  const filepath = path.join(UPLOAD_DIR, relativePath);
+  if (existsSync(filepath)) {
+    await unlink(filepath).catch(() => {});
+  }
+}
 
 const PORTFOLIO_INCLUDE = {
   destination: true,
@@ -47,6 +64,9 @@ export async function PATCH(
     const payload = await requireAuth(req);
     requireRole(payload, "admin", "editor");
 
+    const existing = await prisma.portfolio.findUnique({ where: { id } });
+    if (!existing) return notFound("Portfolio");
+
     const body = await req.json();
     const dto = updatePortfolioSchema.parse(body);
 
@@ -61,10 +81,19 @@ export async function PATCH(
       });
     }
 
+    const finalSlug = slug ?? existing.slug;
+
+    let image = dto.image;
+    if (image && image !== existing.image) {
+      image = await moveFromTemp(image, `portfolios/${finalSlug}`);
+      await deleteFile(existing.image);
+    }
+
     const portfolio = await prisma.portfolio.update({
       where: { id },
       data: {
         ...dto,
+        ...(image !== undefined && { image }),
         ...(slug !== undefined && { slug }),
       },
       include: PORTFOLIO_INCLUDE,
@@ -85,8 +114,14 @@ export async function DELETE(
     const payload = await requireAuth(req);
     requireRole(payload, "admin");
 
-    const existing = await prisma.portfolio.findUnique({ where: { id } });
+    const existing = await prisma.portfolio.findUnique({
+      where: { id },
+      include: { gallery: true },
+    });
     if (!existing) return notFound("Portfolio");
+
+    await deleteFile(existing.image);
+    await Promise.all(existing.gallery.map((g) => deleteFile(g.url)));
 
     await prisma.portfolio.delete({ where: { id } });
 
