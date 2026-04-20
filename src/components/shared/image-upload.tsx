@@ -12,36 +12,49 @@ export default function ImageUpload({
   error?: string;
   inputId?: string;
 }) {
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const allowedTypes = ["image/png", "image/jpeg"];
-      if (!allowedTypes.includes(file.type)) {
-        toast.error("Invalid file type", {
-          description: "Please upload a PNG or JPG image",
-        });
-        return;
+    if (!file) return;
+
+    const allowedTypes = ["image/png", "image/jpeg"];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Invalid file type", {
+        description: "Please upload a PNG or JPG image",
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File too large", {
+        description: "Image must be less than 5MB",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const toastId = toast.loading("Uploading image...");
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error ?? "Upload failed");
       }
 
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("File too large", {
-          description: "Image must be less than 5MB",
-        });
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const dataUrl = event.target?.result as string;
-        onChange(dataUrl);
-        toast.success("Image uploaded successfully!");
-      };
-      reader.onerror = () => {
-        toast.error("Failed to read file", {
-          description: "Please try uploading again",
-        });
-      };
-      reader.readAsDataURL(file);
+      const { url } = await res.json();
+      onChange(url);
+      toast.success("Image uploaded successfully!", { id: toastId });
+    } catch (err) {
+      toast.error("Upload failed", {
+        id: toastId,
+        description: err instanceof Error ? err.message : "Please try again",
+      });
     }
   };
 
