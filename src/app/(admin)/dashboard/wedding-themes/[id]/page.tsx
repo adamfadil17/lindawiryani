@@ -29,6 +29,7 @@ import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import TipTapEditor from "@/components/shared/tiptap-editor";
 import { toSlug } from "@/utils";
 import {
   weddingThemeFormSchema,
@@ -619,11 +620,10 @@ export default function WeddingThemeDetailPage() {
                 required
                 hint="Describe the atmosphere, style, and experience couples can expect"
               >
-                <TextareaInput
+                <TipTapEditor
                   value={formData.description}
                   onChange={(v) => setField("description", v)}
                   placeholder="Describe this wedding theme — the atmosphere, style, and experience couples can expect..."
-                  rows={4}
                   error={
                     formErrors.description
                       ? String(formErrors.description.message)

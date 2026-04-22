@@ -12,6 +12,15 @@ interface ThemeDetailModalProps {
   onExploreVenue: (venue: Venue) => void;
 }
 
+function TipTapContent({ html }: { html: string }) {
+  return (
+    <div
+      className="tiptap-content text-primary"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
 const ImageLoadingSkeleton = () => (
   <div className="absolute inset-0 bg-stone-200 animate-pulse">
     <div className="w-full h-full flex items-center justify-center">
@@ -207,9 +216,7 @@ export default function ThemeDetailModal({
                   <span className="block text-sm text-primary tracking-widest uppercase font-bold">
                     The Experience
                   </span>
-                  <p className="text-sm md:text-base text-primary text-justify leading-relaxed italic">
-                    &ldquo;{theme.description}&rdquo;
-                  </p>
+                  <TipTapContent html={theme.description} />
                 </div>
 
                 <div className="bg-stone-50 p-6 md:p-8">
