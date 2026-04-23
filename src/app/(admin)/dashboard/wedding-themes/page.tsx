@@ -123,7 +123,7 @@ function WeddingThemeCard({
 
         {/* Meta */}
         <div className="flex items-center gap-3 mb-5 text-xs text-primary/80">
-          <span>{theme.inclusions?.length ?? 0} inclusions</span>
+          {/* <span>{theme.inclusions?.length ?? 0} inclusions</span> */}
           {theme.venue && (
             <>
               <span className="text-primary/20">·</span>
@@ -289,7 +289,12 @@ interface PageState {
 
 type PageAction =
   | { type: "FETCH_THEMES_START" }
-  | { type: "FETCH_THEMES_SUCCESS"; themes: WeddingTheme[]; meta: PaginationMeta | null; experienceFilter: string }
+  | {
+      type: "FETCH_THEMES_SUCCESS";
+      themes: WeddingTheme[];
+      meta: PaginationMeta | null;
+      experienceFilter: string;
+    }
   | { type: "FETCH_THEMES_ERROR" }
   | { type: "SET_FILTERS"; filters: ThemeFilters }
   | { type: "FILTERS_LOADED" }
@@ -671,7 +676,9 @@ export default function DashboardWeddingThemesPage() {
             type="text"
             placeholder="Search wedding themes..."
             value={searchTerm}
-            onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_SEARCH", value: e.target.value })
+            }
             className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (

@@ -208,7 +208,7 @@ export default function WeddingThemeDetailPage() {
       title: "",
       description: "",
       image: "",
-      inclusions: [],
+      // inclusions: [],
       venue_id: undefined,
       experience_id: "",
     },
@@ -247,7 +247,7 @@ export default function WeddingThemeDetailPage() {
         formData.title ||
         formData.description ||
         formData.image ||
-        (formData.inclusions && formData.inclusions.length > 0) ||
+        // (formData.inclusions && formData.inclusions.length > 0) ||
         galleryImages.length > 0
       )
     : isDirty;
@@ -333,7 +333,7 @@ export default function WeddingThemeDetailPage() {
         title: String(data.title ?? ""),
         description: String(data.description ?? ""),
         image: String(data.image ?? ""),
-        inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
+        // inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
         // venue_id may be null when the previously linked venue was deleted
         venue_id: data.venue_id ?? undefined,
         experience_id: String(data.experience_id ?? ""),
@@ -718,11 +718,10 @@ export default function WeddingThemeDetailPage() {
           </Section>
 
           {/* Package Inclusions */}
-          <Section
+          {/* <Section
             title="Package Inclusions"
             subtitle="What is included in this wedding theme package"
           >
-            {/* inclusions — required, array min 1 */}
             <FormField label="Inclusions" required>
               <TagsInput
                 values={formData.inclusions}
@@ -735,7 +734,7 @@ export default function WeddingThemeDetailPage() {
                 </p>
               )}
             </FormField>
-          </Section>
+          </Section> */}
         </div>
 
         {/* ── Right Column ── */}
@@ -812,7 +811,7 @@ export default function WeddingThemeDetailPage() {
             <div className="space-y-3">
               {[
                 { label: "Slug", value: slugPreview || "—" },
-                { label: "Inclusions", value: `${formData.inclusions.length} items` },
+                // { label: "Inclusions", value: `${formData.inclusions.length} items` },
                 { label: "Gallery", value: `${galleryImages.length} photos` },
                 {
                   label: "Venue",
