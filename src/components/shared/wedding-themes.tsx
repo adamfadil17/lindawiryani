@@ -10,6 +10,10 @@ import { venueList } from "@/lib/data/venue-data";
 import ThemeDetailModal from "@/components/shared/theme-detail-modal";
 import type { Venue, WeddingTheme } from "@/types";
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const CARDS_PER_PAGE = 6;
+
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
 // Filter tema per kategori dari weddingThemeList
@@ -145,15 +149,24 @@ export default function WeddingThemesSection({
   >("elopement");
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const [currentThemeSlide, setCurrentThemeSlide] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [selectedThemeForModal, setSelectedThemeForModal] =
     useState<WeddingTheme | null>(null);
 
   const currentThemes =
     selectedThemeCategory === "elopement" ? elopementThemes : intimateThemes;
 
+  // Pagination untuk desktop
+  const totalPages = Math.ceil(currentThemes.length / CARDS_PER_PAGE);
+  const paginatedThemes = currentThemes.slice(
+    currentPage * CARDS_PER_PAGE,
+    currentPage * CARDS_PER_PAGE + CARDS_PER_PAGE,
+  );
+
   const handleCategoryClick = (category: "elopement" | "intimate") => {
     setSelectedThemeCategory(category);
     setCurrentThemeSlide(0);
+    setCurrentPage(0);
     setTimeout(() => {
       document
         .getElementById("wedding-themes-selector")
@@ -161,12 +174,17 @@ export default function WeddingThemesSection({
     }, 100);
   };
 
+  // Mobile slider navigation
   const nextThemeSlide = () =>
     setCurrentThemeSlide((p) => (p + 1) % currentThemes.length);
   const prevThemeSlide = () =>
     setCurrentThemeSlide(
       (p) => (p - 1 + currentThemes.length) % currentThemes.length,
     );
+
+  // Desktop page navigation
+  const nextPage = () => setCurrentPage((p) => Math.min(p + 1, totalPages - 1));
+  const prevPage = () => setCurrentPage((p) => Math.max(p - 1, 0));
 
   return (
     <>
@@ -253,6 +271,7 @@ export default function WeddingThemesSection({
                           setSelectedThemeCategory(cat);
                           setIsThemeDropdownOpen(false);
                           setCurrentThemeSlide(0);
+                          setCurrentPage(0);
                         }}
                         className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer capitalize ${
                           selectedThemeCategory === cat
@@ -299,7 +318,7 @@ export default function WeddingThemesSection({
               </AnimatePresence>
             </div>
 
-            {/* Theme Cards — Mobile slider / Desktop grid */}
+            {/* Theme Cards — Mobile slider / Desktop grid with pagination */}
             {isMobile ? (
               <div className="relative">
                 <AnimatePresence mode="wait">
@@ -351,20 +370,62 @@ export default function WeddingThemesSection({
                 )}
               </div>
             ) : (
-              <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                variants={staggerContainer}
-                initial="hidden"
-                animate="visible"
-              >
-                {currentThemes.map((theme) => (
-                  <WeddingThemeCard
-                    key={theme.id}
-                    theme={theme}
-                    onClick={() => setSelectedThemeForModal(theme)}
-                  />
-                ))}
-              </motion.div>
+              <div>
+                {/* Grid 6 cards */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${selectedThemeCategory}-page-${currentPage}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {paginatedThemes.map((theme) => (
+                      <WeddingThemeCard
+                        key={theme.id}
+                        theme={theme}
+                        onClick={() => setSelectedThemeForModal(theme)}
+                      />
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Pagination controls */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-6 mt-10">
+                    <button
+                      onClick={prevPage}
+                      disabled={currentPage === 0}
+                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      {Array.from({ length: totalPages }).map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentPage(index)}
+                          className={`w-2.5 h-2.5 rounded-full transition-all hover:cursor-pointer ${
+                            currentPage === index
+                              ? "bg-primary w-8 rounded-full"
+                              : "bg-stone-300 hover:bg-primary/50"
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={nextPage}
+                      disabled={currentPage === totalPages - 1}
+                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </motion.div>
         </div>
