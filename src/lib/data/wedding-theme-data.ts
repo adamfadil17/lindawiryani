@@ -72,30 +72,18 @@ export const weddingThemeList: WeddingTheme[] = [
 <h3>Not Included</h3>
 <p>The following can be arranged separately upon request: venue or event fees, accommodation or villa stay, transportation, sound system or audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors.</p>`,
     image:
-      "https://res.cloudinary.com/dzerxindp/image/upload/v1776939440/Private_Villa_1_Villa_Vivara_rqlfen.webp",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1776940317/Private_Villa_Elopement_Mutiara_6_etnh26.png",
     gallery: [
       {
         id: "private-villa-elopement-img-1",
-        url: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939440/Private_Villa_1_Villa_Vivara_rqlfen.webp",
+        url: "https://res.cloudinary.com/dzerxindp/image/upload/v1776940317/Private_Villa_Elopement_Mutiara_6_etnh26.png",
         sort_order: 0,
         theme_id: "private-villa-elopement",
       },
       {
         id: "private-villa-elopement-img-2",
-        url: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939441/Private_Villa_2_nzpo7m.png",
-        sort_order: 1,
-        theme_id: "private-villa-elopement",
-      },
-      {
-        id: "private-villa-elopement-img-2",
-        url: "https://res.cloudinary.com/dzerxindp/image/upload/v1776940317/Private_Villa_Elopement_Mutiara_6_etnh26.png",
-        sort_order: 2,
-        theme_id: "private-villa-elopement",
-      },
-      {
-        id: "private-villa-elopement-img-2",
         url: "https://res.cloudinary.com/dzerxindp/image/upload/v1776940317/Private_Villa_Elopement_Vivara1_wqecfn.png",
-        sort_order: 3,
+        sort_order: 1,
         theme_id: "private-villa-elopement",
       },
     ],
@@ -251,6 +239,12 @@ export const weddingThemeList: WeddingTheme[] = [
       {
         id: "architectural-modern-tropical-elopement-img-1",
         url: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939440/Architectural_Modern_Tropical_Elopements_nlnd5r.jpg",
+        sort_order: 0,
+        theme_id: "architectural-modern-tropical-elopement",
+      },
+      {
+        id: "architectural-modern-tropical-elopement-img-1",
+        url: "https://res.cloudinary.com/dzerxindp/image/upload/v1777015076/architectural-2_gafx5l.jpg",
         sort_order: 0,
         theme_id: "architectural-modern-tropical-elopement",
       },
