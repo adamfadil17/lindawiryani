@@ -90,7 +90,6 @@ export async function POST(req: NextRequest) {
         title: dto.title,
         description: dto.description,
         image,
-        inclusions: dto.inclusions,
         venue_id: dto.venue_id ?? null,
         experience_id: dto.experience_id,
       },

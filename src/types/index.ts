@@ -172,7 +172,6 @@ export interface WeddingTheme {
   title: string;
   description: string;
   image: string;
-  inclusions: string[];
   venue_id: string | null;
   venue?: Venue | null;
   experience_id: string;

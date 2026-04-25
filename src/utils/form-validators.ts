@@ -254,7 +254,6 @@ export const weddingThemeFormSchema = z.object({
     .max(255, "Title must be at most 255 characters"),
   description: z.string().min(1, "Description is required"),
   image: z.string().url("Invalid image URL"),
-  inclusions: z.array(z.string()).min(1, "At least one inclusion is required"),
   venue_id: z
     .union([uuidSchema, z.literal(""), z.undefined()])
     .transform((v) => v || undefined),

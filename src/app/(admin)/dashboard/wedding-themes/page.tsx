@@ -110,7 +110,6 @@ function WeddingThemeCard({
         </p>
 
         <div className="flex items-center gap-3 mb-5 text-xs text-primary/80">
-          <span>{theme.inclusions?.length ?? 0} inclusions</span>
           {theme.venue && (
             <>
               <span className="text-primary/20">·</span>

@@ -269,7 +269,6 @@ export const createWeddingThemeSchema = z.object({
   title: z.string().min(2).max(255),
   description: z.string().min(1),
   image: z.string().url(),
-  inclusions: z.array(z.string()).min(1),
   venue_id: z
     .union([uuidSchema, z.literal(""), z.undefined()])
     .transform((v) => v || undefined),

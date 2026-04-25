@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight, MapPin, Check } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import type { Venue, WeddingTheme } from "@/types";
 
@@ -211,30 +211,11 @@ export default function ThemeDetailModal({
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
-                <div className="flex flex-col gap-4">
-                  <span className="block text-sm text-primary tracking-widest uppercase font-bold">
-                    The Experience
-                  </span>
-                  <TipTapContent html={theme.description} />
-                </div>
-
-                <div className="bg-stone-50 p-6 md:p-8">
-                  <span className="block text-sm text-primary tracking-widest uppercase font-bold mb-6">
-                    Curated Wedding Inclusions
-                  </span>
-                  <ul className="grid grid-cols-1 gap-4">
-                    {theme.inclusions?.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-3 text-sm text-primary/80 leading-snug"
-                      >
-                        <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="flex flex-col gap-4">
+                <span className="block text-sm text-primary tracking-widest uppercase font-bold">
+                  The Experience
+                </span>
+                <TipTapContent html={theme.description} />
               </div>
             </article>
           </div>

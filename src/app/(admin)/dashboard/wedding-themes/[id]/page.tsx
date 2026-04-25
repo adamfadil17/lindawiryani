@@ -208,7 +208,6 @@ export default function WeddingThemeDetailPage() {
       title: "",
       description: "",
       image: "",
-      inclusions: [],
       venue_id: undefined,
       experience_id: "",
     },
@@ -246,7 +245,6 @@ export default function WeddingThemeDetailPage() {
         formData.title ||
         formData.description ||
         formData.image ||
-        (formData.inclusions && formData.inclusions.length > 0) ||
         galleryImages.length > 0,
       )
     : isDirty;
@@ -334,8 +332,6 @@ export default function WeddingThemeDetailPage() {
         title: String(data.title ?? ""),
         description: String(data.description ?? ""),
         image: String(data.image ?? ""),
-        inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
-
         venue_id: data.venue_id ?? undefined,
         experience_id: String(data.experience_id ?? ""),
       });
@@ -709,24 +705,6 @@ export default function WeddingThemeDetailPage() {
               </FormField>
             </div>
           </Section>
-
-          <Section
-            title="Package Inclusions"
-            subtitle="What is included in this wedding theme package"
-          >
-            <FormField label="Inclusions" required>
-              <TagsInput
-                values={formData.inclusions}
-                onChange={(v) => setField("inclusions", v)}
-                placeholder="e.g. Professional wedding celebrant"
-              />
-              {formErrors.inclusions && (
-                <p className="text-red-500 text-xs mt-1">
-                  {String(formErrors.inclusions.message)}
-                </p>
-              )}
-            </FormField>
-          </Section>
         </div>
 
         <div className="space-y-6">
@@ -799,10 +777,6 @@ export default function WeddingThemeDetailPage() {
             <div className="space-y-3">
               {[
                 { label: "Slug", value: slugPreview || "—" },
-                {
-                  label: "Inclusions",
-                  value: `${formData.inclusions.length} items`,
-                },
                 { label: "Gallery", value: `${galleryImages.length} photos` },
                 {
                   label: "Venue",

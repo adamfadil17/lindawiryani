@@ -264,7 +264,6 @@ model WeddingTheme {
   title         String
   description   String
   image         String
-  inclusions    Json      // string[]
   venue_id      String?
   experience_id String
 
