@@ -1,3 +1,4 @@
+import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import axios from "axios";
 import { ImageIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -41,6 +42,9 @@ export default function ImageUpload({
       const { data } = await axios.post<{ url: string }>(
         "/api/files/add",
         formData,
+        {
+          headers: getAuthHeaders(),
+        },
       );
       onChange(data.url);
       toast.success("Image uploaded successfully!", { id: toastId });
