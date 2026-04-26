@@ -50,6 +50,16 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
   const [pendingUrl, setPendingUrl] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
+  const handleCancelPending = async (url: string) => {
+    if (!url) return;
+    try {
+      await axios.delete("/api/files/delete", {
+        data: { url },
+        headers: getAuthHeaders(),
+      });
+    } catch {}
+  };
+
   const handleAdd = async () => {
     if (!pendingUrl) return;
 
@@ -151,7 +161,12 @@ function GalleryManager({ themeId, images, onChange }: GalleryManagerProps) {
       <div className="space-y-2">
         <ImageUpload
           value={pendingUrl}
-          onChange={setPendingUrl}
+          onChange={(v) => {
+            if (v === "") {
+              handleCancelPending(pendingUrl);
+            }
+            setPendingUrl(v);
+          }}
           inputId="gallery-add-upload"
         />
         {pendingUrl && (
