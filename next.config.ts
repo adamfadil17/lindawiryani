@@ -5,20 +5,10 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    localPatterns: [
-      {
-        pathname: "/uploads/**",
-        search: "",
-      },
-    ],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "res.cloudinary.com",
-      },
-      {
-        protocol: "https",
-        hostname: "placehold.net",
+        hostname: "**",
       },
     ],
   },
