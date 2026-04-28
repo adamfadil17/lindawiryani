@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    localPatterns: [
+      {
+        pathname: "/uploads/**",
+        search: "",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",
@@ -21,7 +27,10 @@ const nextConfig: NextConfig = {
       {
         source: "/uploads/:path*",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
         ],
       },
     ];
