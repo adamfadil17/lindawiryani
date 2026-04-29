@@ -78,7 +78,7 @@ export default function ImageUpload({
         >
           <ImageIcon className="w-8 h-8 text-primary/40" />
           <div className="text-sm text-primary">
-            <p className="font-medium">Click to upload or drag and drop</p>
+            <p className="font-medium">Click to upload</p>
             <p className="text-xs text-primary/60">PNG or JPG up to 5MB</p>
           </div>
         </label>

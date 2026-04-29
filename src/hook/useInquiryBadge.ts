@@ -25,7 +25,7 @@ export function useInquiryBadge() {
     fetchBadge();
 
 
-    const interval = setInterval(fetchBadge, 60_000);
+    const interval = setInterval(fetchBadge, 30 * 60 * 1000);
 
     return () => {
       cancelled = true;
