@@ -17,7 +17,7 @@ export const weddingThemeList: WeddingTheme[] = [
     slug: "private-villa-elopement",
     type: "ELOPEMENT",
     title: "Private Villa Elopements",
-    description: `<p>Private Villa Elopements are designed for couples who value privacy, calm, and a deeply personal setting. Set within carefully curated private villas, these celebrations are guided by architecture, landscape, and the natural flow of the space — creating an atmosphere that feels intimate, unhurried, and intentionally refined.</p>
+    description: `<p>Private Villa Elopements are designed for couples who value privacy, calm, and a deeply personal setting. Set within carefully curated private villas, these celebrations are guided by architecture, landscape, and the natural flow of the space, creating an atmosphere that feels intimate, unhurried, and intentionally refined.</p>
 
 <p>Linda Wiryani Design and Event Planning works with a selection of stunning private villas ideal for intimate elopements. Couples may also choose to celebrate at a villa they have independently booked, subject to suitability and venue guidelines.</p>
 
@@ -56,21 +56,39 @@ export const weddingThemeList: WeddingTheme[] = [
 <h3>Ceremony Timing</h3>
 <p>Private Villa Elopements are most beautifully experienced during two natural light windows, when the atmosphere within the villa feels most serene and balanced.</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Soft, diffused light and a tranquil atmosphere before the day fully unfolds. The air is typically cooler, the environment quieter, and natural light gently enhances architectural lines and surrounding landscapes.</li>
-  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — A warm, golden ambiance as light moves through the villa's architecture and surrounding greenery. The gradual transition from daylight to evening adds depth and romance, offering a refined and atmospheric setting.</li>
+  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning ceremonies offer soft, diffused light and a tranquil atmosphere before the day fully unfolds. The air is typically cooler, the environment quieter, and natural light gently enhances architectural lines and surrounding landscapes. This timing feels intimate, fresh, and unhurried.</li>
+  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — Sunset ceremonies create a warm, golden ambiance as light moves through the villa's architecture and surrounding greenery. The gradual transition from daylight to evening adds depth and romance, offering a refined and atmospheric setting.</li>
 </ul>
+<p>Final ceremony timing will be confirmed based on the villa's architectural orientation, natural light direction and shadow movement, seasonal sunset variation, and overall spatial flow and atmosphere. Morning ceremonies often provide greater flexibility and calmer conditions, while sunset offers richer tonal warmth and visual depth. The chosen timing will always be guided by light, spatial harmony, and the overall aesthetic intention of the ceremony.</p>
 
 <h3>Important Notes</h3>
 <ul>
   <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
   <li>Only items listed above are included</li>
-  <li>Ceremony timing will be confirmed once the private villa is selected, taking into consideration natural light, atmosphere, and the villa's layout</li>
+  <li>This package is designed for a couple only</li>
+  <li>Ceremony timing will be confirmed once the private villa is selected, taking into consideration natural light, atmosphere, and the villa's layout to ensure the most serene setting possible</li>
   <li>Villa accommodation rates are not included and will be added upon request</li>
   <li>Package rates start from <strong>IDR 25,000,000</strong></li>
 </ul>
 
+<h3>Weather &amp; Nature Conditions</h3>
+<p>Private Villa Elopements take place within open-air or semi-outdoor villa environments that remain naturally influenced by Bali's tropical climate. While private villas offer greater structural protection than fully outdoor settings, weather conditions such as rain, humidity, wind, or sudden tropical showers remain beyond our control.</p>
+<p>In the event of rain, there is no fixed outdoor backup plan. The ceremony may pause briefly to allow weather conditions to settle, or be thoughtfully relocated to a covered or indoor area within the villa, depending on timing, spatial layout, and accessibility. Décor placement may be adjusted when time reasonably permits, ensuring harmony with the villa's architectural flow.</p>
+<p>The couple acknowledges that weather conditions are considered part of the natural environment of Bali and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Linda Wiryani Design &amp; Event Planning will always prioritize safety, comfort, and aesthetic integrity while working within the limitations of time, venue, and weather conditions.</p>
+
+<h3>Payment &amp; Booking Conditions</h3>
+<ul>
+  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
+  <li>The remaining 50% balance is due no later than 30 days prior to the event date</li>
+  <li>The event date is not considered secured until the deposit payment has been received</li>
+  <li>All payments made are non-refundable, unless otherwise stated in writing</li>
+  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the initial deposit</li>
+  <li>If the couple chooses to change the ceremony date, location, or key elements after confirmation, any adjustments remain subject to availability and may incur additional fees</li>
+  <li>Villa rental and accommodation fees (if applicable) are separate from this ceremony package and follow the respective villa's own payment and cancellation policies</li>
+</ul>
+
 <h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees, accommodation or villa stay, transportation, sound system or audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors.</p>`,
+<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or villa stay, transportation, sound system or audio equipment, videography or drone, additional musicians or live entertainment, hair-do and make up, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776940317/Private_Villa_Elopement_Mutiara_6_etnh26.png",
     gallery: [
@@ -98,7 +116,7 @@ export const weddingThemeList: WeddingTheme[] = [
     slug: "cliffside-elopement",
     type: "ELOPEMENT",
     title: "Cliffside Elopements",
-    description: `<p>Cliffside Elopements are designed for couples drawn to open horizons, dramatic elevation, and the quiet power of the sea. Set along Bali's coastal cliffs, these celebrations are shaped by light, wind, and expansive views — creating an atmosphere that feels intimate yet awe-inspiring.</p>
+    description: `<p>Cliffside Elopements are designed for couples drawn to open horizons, dramatic elevation, and the quiet power of the sea. Set along Bali's coastal cliffs, these celebrations are shaped by light, wind, and expansive views, creating an atmosphere that feels intimate yet awe-inspiring.</p>
 
 <p>Linda Wiryani Design and Event Planning works with a curated selection of stunning cliffside venues and private estates suited for intimate elopements. Venue selection is guided by accessibility, safety, and overall design harmony.</p>
 
@@ -138,20 +156,38 @@ export const weddingThemeList: WeddingTheme[] = [
 <h3>Ceremony Timing</h3>
 <p>Cliffside Elopements are most beautifully experienced during two natural light windows:</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Softer wind conditions, clearer skies, and gentle natural light. The atmosphere feels calm, intimate, and serene, with fewer visitors and a quieter coastal environment.</li>
-  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — Dramatic golden light, expansive horizon tones, and a naturally cinematic atmosphere. The sky gradually shifts in color, creating a powerful and emotive backdrop against the ocean and cliffs.</li>
+  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning ceremonies offer softer wind conditions, clearer skies, and gentle natural light. The atmosphere feels calm, intimate, and serene, with fewer visitors and a quieter coastal environment.</li>
+  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — Sunset ceremonies provide dramatic golden light, expansive horizon tones, and a naturally cinematic atmosphere. The sky gradually shifts in color, creating a powerful and emotive backdrop against the ocean and cliffs.</li>
 </ul>
+<p>Final ceremony timing will be confirmed based on seasonal sunset variation, wind conditions, venue accessibility and regulations, and overall safety and comfort. While sunset offers visual drama, it may also involve stronger coastal winds. Morning ceremonies are generally more stable in terms of weather conditions. The selected timing will always be guided by natural light, safety considerations, and the overall aesthetic intention of the ceremony.</p>
 
 <h3>Important Notes</h3>
 <ul>
   <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
   <li>Only items listed above are included</li>
+  <li>This package is designed for a couple only</li>
   <li>Ceremony timing will be confirmed once the venue is selected, taking into consideration natural light, tide conditions, and overall atmosphere</li>
   <li>Package rates start from <strong>IDR 25,000,000</strong></li>
 </ul>
 
+<h3>Weather &amp; Nature Conditions</h3>
+<p>Cliffside Elopements take place in naturally exposed coastal environments where wind, sea air, and shifting weather patterns are inherent to the setting. Cliff locations are particularly influenced by strong or sudden wind gusts, heat and direct sun exposure, sudden tropical rain, and changing coastal conditions.</p>
+<p>In the event of rain or strong wind, there is no fixed outdoor backup plan. The ceremony may pause briefly to allow conditions to stabilize. If the venue provides an indoor or covered space, the ceremony may be thoughtfully relocated subject to availability and timing. Floral structures and décor installations may be adjusted, secured, simplified, or repositioned to ensure safety while preserving overall aesthetic integrity.</p>
+<p>Safety remains the highest priority. If conditions are deemed unsafe by the Planner or venue management, necessary adjustments will be made accordingly. The couple acknowledges that weather and coastal wind conditions are natural elements of a cliffside environment and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
+
+<h3>Payment &amp; Booking Conditions</h3>
+<ul>
+  <li>A 50% non-refundable deposit is required upon confirmation</li>
+  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
+  <li>The date is not secured until the deposit has been received</li>
+  <li>All payments made are non-refundable unless otherwise stated in writing</li>
+  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
+  <li>Should the couple request changes to the venue, ceremony date, timing, or key elements after confirmation, all changes are subject to availability and additional costs may apply depending on logistical adjustments, vendor rescheduling, or venue policy</li>
+  <li>Venue rental and accommodation fees (if applicable) follow the individual venue's own payment and cancellation policies and are separate from this package unless explicitly included</li>
+</ul>
+
 <h3>Not Included</h3>
-<p>The following can be arranged separately upon request: additional venue or event fees, accommodation or stay, transportation, sound system or audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors.</p>`,
+<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair-do and make up, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939445/Cliffside_Elopement_1_vof9yx.png",
     gallery: [
@@ -179,7 +215,9 @@ export const weddingThemeList: WeddingTheme[] = [
     slug: "architectural-modern-tropical-elopement",
     type: "ELOPEMENT",
     title: "Architectural & Modern Tropical Elopements",
-    description: `<p>Architectural and Modern Tropical Elopements are designed for couples drawn to clean lines, natural materials, and spaces with strong visual character. Set within thoughtfully designed venues — from modern tropical villas to architect-led estates — these celebrations are guided by proportion, light, texture, and spatial flow.</p>
+    description: `<p>Architectural and Modern Tropical Elopements are designed for couples drawn to clean lines, natural materials, and spaces with strong visual character. Set within thoughtfully designed venues from modern tropical villas to architect-led estates, these celebrations are guided by proportion, light, texture, and spatial flow.</p>
+
+<p>Here, architecture is not simply a setting. It shapes the ceremony's rhythm, framing each moment with clarity and intention.</p>
 
 <p>Linda Wiryani Design and Event Planning works with a curated selection of design-forward venues where structure, materiality, and landscape exist in quiet harmony. Venue selection is guided by architectural integrity, privacy, and aesthetic coherence.</p>
 
@@ -227,12 +265,29 @@ export const weddingThemeList: WeddingTheme[] = [
 <ul>
   <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
   <li>Only items listed above are included</li>
+  <li>This package is designed for a couple only</li>
   <li>Ceremony timing will be confirmed once the venue is selected, taking into consideration natural light, architectural shadows, and overall spatial composition</li>
   <li>Package rates start from <strong>IDR 25,000,000</strong></li>
 </ul>
 
+<h3>Weather &amp; Nature Conditions</h3>
+<p>While these ceremonies take place within architectural environments, most modern tropical spaces in Bali are semi-open, naturally ventilated, or partially exposed to the elements. Weather factors may include sudden tropical rain, humidity and heat, wind movement through open structures, and shifting natural light conditions.</p>
+<p>In the event of rain or strong weather conditions, there is no guaranteed fixed outdoor backup unless provided by the venue. The ceremony may pause briefly to allow conditions to settle, or be relocated to a covered or interior architectural space within the property, subject to layout and availability. Floral structures and decorative elements may be simplified, secured, or repositioned to ensure safety and aesthetic coherence.</p>
+<p>As these settings intentionally embrace tropical architecture, the couple acknowledges that environmental elements are part of the experience and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Safety, structural suitability, and venue regulations will always guide final decisions.</p>
+
+<h3>Payment &amp; Booking Conditions</h3>
+<ul>
+  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
+  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
+  <li>The event date is not secured until the deposit has been received</li>
+  <li>All payments made are non-refundable unless otherwise stated in writing</li>
+  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
+  <li>Any changes requested after confirmation — including venue, ceremony date, styling elements, or key logistics — are subject to availability and may incur additional fees depending on vendor adjustments or venue policies</li>
+  <li>Venue rental fees, accommodation, and property-specific deposits (if applicable) follow the individual venue's own terms and are separate from this ceremony package unless explicitly included</li>
+</ul>
+
 <h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees, accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors.</p>`,
+<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair-do and make up, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939440/Architectural_Modern_Tropical_Elopements_nlnd5r.jpg",
     gallery: [
