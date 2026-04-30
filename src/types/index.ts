@@ -318,31 +318,71 @@ export const submissionStatusConfig: Record<
 };
 
 // ─── INQUIRY FORM ────────────────────────────────────────
+
+export type WeddingLocationInterest =
+  | "Private Villa"
+  | "Beachfront or Oceanfront"
+  | "Cliffside"
+  | "Jungle or Forest"
+  | "Rice Field"
+  | "Waterfall"
+  | "Riverside"
+  | "Lakeside"
+  | "Mountain / Volcano Backdrop"
+  | "Garden"
+  | "Resort / Hotel"
+  | "Not sure yet, please recommend";
+
+export type WeddingStyle =
+  | "Elopement"
+  | "Intimate Wedding"
+  | "Private Villa Wedding"
+  | "Luxury Wedding"
+  | "Full Destination Wedding";
+
+export type EstimatedBudget =
+  | "Under IDR 100 million"
+  | "IDR 100–250 million"
+  | "IDR 250–500 million"
+  | "IDR 500 million–1 billion"
+  | "Above IDR 1 billion"
+  | "Not sure yet";
+
+export type ServiceNeeded =
+  | "Full Wedding Planning & Coordination"
+  | "Wedding Styling & Creative Direction"
+  | "Private Villa Wedding (Specialist)"
+  | "Concept & Design Consultation"
+  | "Event & Table Styling"
+  | "Destination Guest Management"
+  | "Not sure yet";
+
+export type VenueSecured = "Yes" | "No" | "Currently exploring options";
+
+export type HowDidYouFindUs =
+  | "Google"
+  | "Instagram"
+  | "Venue / Hotel Partner"
+  | "Referral"
+  | "Other";
+
 export interface Inquiry {
   // Contact Info
-  your_name: string;
-  your_email: string;
-  your_address: string;
-  telephone: string;
-  // Groom
-  name_of_groom: string;
-  religion_of_groom: string;
-  nationality_of_groom: string;
-  // Bride
-  name_of_bride: string;
-  religion_of_bride: string;
-  nationality_of_bride: string;
+  full_name: string;
+  email_or_whatsapp: string;
   // Wedding Details
   wedding_date: string;
-  wedding_venue: string;
-  number_of_attendance: string;
-  approximate_wedding_budget: string;
-  // Accommodation & Travel
-  hotel_name_in_bali: string;
-  arrival_date: string;
-  departure_date: string;
+  number_of_guests: string;
+  // Preferences (multi-select / single-select)
+  wedding_location_interest: WeddingLocationInterest[];
+  wedding_style: WeddingStyle | "";
+  estimated_budget: EstimatedBudget | "";
+  services_needed: ServiceNeeded[];
+  venue_secured: VenueSecured | "";
   // Vision
-  your_message: string;
+  your_vision: string;
+  // Discovery
+  how_did_you_find_us: HowDidYouFindUs | "";
 }
 
 // ─── INQUIRY SUBMISSION ──────────────────────────────────

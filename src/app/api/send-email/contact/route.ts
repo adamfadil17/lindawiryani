@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 // Fungsi untuk verifikasi reCAPTCHA
 async function verifyRecaptcha(token: string): Promise<boolean> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  
+
   if (!secretKey) {
     console.error("RECAPTCHA_SECRET_KEY is not set");
     return false;
@@ -30,6 +30,12 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 }
 
+// Helper: render array as comma-separated or "Not provided"
+function listOrEmpty(arr: string[] | undefined | null): string {
+  if (!arr || arr.length === 0) return "Not provided";
+  return arr.join(", ");
+}
+
 export async function POST(req: Request) {
   try {
     const formData = await req.json();
@@ -44,7 +50,7 @@ export async function POST(req: Request) {
     }
 
     const isValidRecaptcha = await verifyRecaptcha(recaptchaToken);
-    
+
     if (!isValidRecaptcha) {
       return NextResponse.json(
         { message: "reCAPTCHA verification failed. Please try again." },
@@ -61,11 +67,11 @@ export async function POST(req: Request) {
       },
     });
 
-    // Email untuk Admin
+    // ── Email untuk Admin ──────────────────────────────────────────────────
     const adminMailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: `New Wedding Inquiry from ${emailData.yourName}`,
+      subject: `New Wedding Enquiry from ${emailData.fullName}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -160,143 +166,93 @@ export async function POST(req: Request) {
               line-height: 1.5;
               font-weight: 400;
             }
-
           </style>
         </head>
         <body>
           <div class="email-container">
             <div class="header">
-              <h1>New Wedding Inquiry</h1>
+              <h1>New Wedding Enquiry</h1>
               <p>Linda Wiryani | Luxury Wedding Planner & Designer in Bali</p>
             </div>
-            
+
             <div class="content">
+
               <div class="section">
                 <div class="section-title">Contact Information</div>
                 <div class="field">
-                  <div class="label">Name</div>
-                  <div class="value">${emailData.yourName}</div>
+                  <div class="label">Full Name</div>
+                  <div class="value">${emailData.fullName || "Not provided"}</div>
                 </div>
                 <div class="field">
-                  <div class="label">Email</div>
-                  <div class="value">${emailData.yourEmail}</div>
-                </div>
-                <div class="field">
-                  <div class="label">Address</div>
-                  <div class="value">${emailData.yourAddress}</div>
-                </div>
-                <div class="field">
-                  <div class="label">Telephone</div>
-                  <div class="value">${
-                    emailData.telephone || "Not provided"
-                  }</div>
-                </div>
-              </div>
-
-              <div class="section">
-                <div class="section-title">Groom Information</div>
-                <div class="field">
-                  <div class="label">Name</div>
-                  <div class="value">${
-                    emailData.nameOfGroom || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Religion</div>
-                  <div class="value">${
-                    emailData.religionOfGroom || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Nationality</div>
-                  <div class="value">${
-                    emailData.nationalityOfGroom || "Not provided"
-                  }</div>
-                </div>
-              </div>
-
-              <div class="section">
-                <div class="section-title">Bride Information</div>
-                <div class="field">
-                  <div class="label">Name</div>
-                  <div class="value">${
-                    emailData.nameOfBride || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Religion</div>
-                  <div class="value">${
-                    emailData.religionOfBride || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Nationality</div>
-                  <div class="value">${
-                    emailData.nationalityOfBride || "Not provided"
-                  }</div>
+                  <div class="label">Email / WhatsApp</div>
+                  <div class="value">${emailData.emailOrWhatsapp || "Not provided"}</div>
                 </div>
               </div>
 
               <div class="section">
                 <div class="section-title">Wedding Details</div>
                 <div class="field">
-                  <div class="label">Wedding Date</div>
-                  <div class="value">${
-                    emailData.weddingDate || "Not provided"
-                  }</div>
+                  <div class="label">Wedding Date / Preferred Month</div>
+                  <div class="value">${emailData.weddingDate || "Not provided"}</div>
                 </div>
                 <div class="field">
-                  <div class="label">Wedding Venue</div>
-                  <div class="value">${
-                    emailData.weddingVenue || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Number of Attendance</div>
-                  <div class="value">${
-                    emailData.numberOfAttendance || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Approximate Budget</div>
-                  <div class="value">${
-                    emailData.approximateWeddingBudget || "Not provided"
-                  }</div>
+                  <div class="label">Number of Guests</div>
+                  <div class="value">${emailData.numberOfGuests || "Not provided"}</div>
                 </div>
               </div>
 
               <div class="section">
-                <div class="section-title">Travel Information</div>
+                <div class="section-title">Wedding Location Interest</div>
                 <div class="field">
-                  <div class="label">Hotel Name in Bali</div>
-                  <div class="value">${
-                    emailData.hotelNameInBali || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Arrival Date</div>
-                  <div class="value">${
-                    emailData.arrivalDate || "Not provided"
-                  }</div>
-                </div>
-                <div class="field">
-                  <div class="label">Departure Date</div>
-                  <div class="value">${
-                    emailData.departureDate || "Not provided"
-                  }</div>
+                  <div class="value">${listOrEmpty(emailData.weddingLocationInterest)}</div>
                 </div>
               </div>
 
               <div class="section">
-                <div class="section-title">Their Story & Vision</div>
+                <div class="section-title">Wedding Style</div>
                 <div class="field">
-                  <div class="value">${
-                    emailData.yourMessage || "No additional information provided"
-                  }</div>
+                  <div class="value">${emailData.weddingStyle || "Not provided"}</div>
                 </div>
               </div>
+
+              <div class="section">
+                <div class="section-title">Estimated Budget</div>
+                <div class="field">
+                  <div class="value">${emailData.estimatedBudget || "Not provided"}</div>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-title">Services Needed</div>
+                <div class="field">
+                  <div class="value">${listOrEmpty(emailData.servicesNeeded)}</div>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-title">Venue Status</div>
+                <div class="field">
+                  <div class="label">Have You Secured a Venue?</div>
+                  <div class="value">${emailData.venueSecured || "Not provided"}</div>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-title">Their Vision</div>
+                <div class="field">
+                  <div class="value">${emailData.yourVision || "No additional information provided"}</div>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-title">How They Found Us</div>
+                <div class="field">
+                  <div class="value">${emailData.howDidYouFindUs || "Not provided"}</div>
+                </div>
+              </div>
+
             </div>
-            
+
             <div class="footer">
               <p class="footer-text">
                 This email was sent from the Linda Wiryani Events website contact form.<br>
@@ -314,10 +270,10 @@ export async function POST(req: Request) {
       `,
     };
 
-    // Email untuk Customer (Auto-reply)
+    // ── Email untuk Customer (Auto-reply) ──────────────────────────────────
     const customerMailOptions = {
       from: process.env.EMAIL_USER,
-      to: emailData.yourEmail,
+      to: emailData.emailOrWhatsapp,
       subject: "Thank You for Your Enquiry",
       html: `
         <!DOCTYPE html>
@@ -456,7 +412,6 @@ export async function POST(req: Request) {
               line-height: 1.5;
               font-weight: 400;
             }
-
           </style>
         </head>
         <body>
@@ -465,32 +420,32 @@ export async function POST(req: Request) {
               <img src="https://res.cloudinary.com/dzerxindp/image/upload/v1766920272/logo-white_lihqc1.png" alt="Linda Wiryani Logo" class="logo">
               <p>Luxury Wedding Planner and Designer in Bali</p>
             </div>
-            
+
             <div class="content">
               <div class="greeting">
-                Dear ${emailData.yourName},
+                Dear ${emailData.fullName},
               </div>
-              
+
               <div class="message">
                 Thank you for sharing your wedding vision with us. At Linda Wiryani Design & Event Planning, we craft timeless, artfully designed weddings that celebrate your unique love story.
               </div>
-              
+
               <div class="message">
                 Our team will review your details and be in touch shortly with ideas to create an unforgettable wedding experience in Bali.
               </div>
-              
+
               <div class="highlight-box">
                 <p>✨ <strong>Explore Our World</strong></p>
                 <p>Discover our inspirations and curated experiences at <a href="https://www.lindawiryani.com">www.lindawiryani.com</a></p>
               </div>
-              
+
               <div class="signature">
                 <p>Warm regards,</p>
                 <p><strong>Linda Wiryani</strong></p>
                 <p>Design and Event Planning</p>
               </div>
             </div>
-            
+
             <div class="footer">
               <h3>Get in Touch</h3>
               <div class="contact-info">
@@ -498,7 +453,7 @@ export async function POST(req: Request) {
                 <div class="contact-item">📱 +62 811 3980 998</div>
                 <div class="contact-item">📷 @lindawiryanievents</div>
               </div>
-              
+
               <div class="disclaimer">
                 This is an automated confirmation email. Please do not reply directly to this message.<br>
                 We look forward to connecting with you personally soon.
