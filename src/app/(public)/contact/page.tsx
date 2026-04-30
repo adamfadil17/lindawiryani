@@ -609,7 +609,7 @@ export default function ContactPage() {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://placehold.net/default.svg"
+            src="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311292/Lake_Buyan_bt7cbw.png"
             alt="Your Bali destination wedding"
             fill
             loading="lazy"
