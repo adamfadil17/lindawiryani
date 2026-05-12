@@ -19,7 +19,7 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: `secret=${secretKey}&response=${token}`,
-      }
+      },
     );
 
     const data = await response.json();
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     if (!recaptchaToken) {
       return NextResponse.json(
         { message: "reCAPTCHA token is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     if (!isValidRecaptcha) {
       return NextResponse.json(
         { message: "reCAPTCHA verification failed. Please try again." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -307,10 +307,15 @@ export async function POST(req: Request) {
               text-align: center;
             }
             .logo {
-              max-width: 150px;
+              max-width: 280px;
+              width: 100%;
               height: auto;
               margin: 0 auto 20px;
               display: block;
+              border: none;
+              outline: none;
+              box-shadow: none;
+              background: transparent;
             }
             .header h1 { 
               color: #ffffff !important; 
@@ -427,11 +432,28 @@ export async function POST(req: Request) {
               </div>
 
               <div class="message">
-                Thank you for sharing your wedding vision with us. At Linda Wiryani Design & Event Planning, we craft timeless, artfully designed weddings that celebrate your unique love story.
+                Greetings from Linda Wiryani Design and Event Planning,
               </div>
 
               <div class="message">
-                Our team will review your details and be in touch shortly with ideas to create an unforgettable wedding experience in Bali.
+                Thank you for sharing your wedding vision with us.
+              </div>
+
+              <div class="message">
+                It was a pleasure learning more about your plans for your celebration in Bali. At Linda Wiryani Design &amp; Event Planning, we believe every wedding should feel deeply personal, thoughtfully curated, and seamlessly experienced by both the couple and their guests.
+              </div>
+
+              <div class="message">
+                Our team is currently reviewing the details you shared, and we are carefully preparing an initial wedding proposal tailored to your celebration style, preferences, and overall experience envisioned for your special day. We would be delighted to share the proposal with you within the next 48 hours.
+              </div>
+
+              <div class="message">
+                In the meantime, please feel free to share any additional inspirations, preferences, or details that may help us further personalize the planning direction.
+              </div>
+
+              <div class="message">
+                Email to <a href="mailto:hello@lindawiryani.com" style="color: #CDAA9E; text-decoration: none;">hello@lindawiryani.com</a> or<br>
+                WhatsApp: <a href="https://wa.me/628113980998" style="color: #CDAA9E; text-decoration: none;">+62 811-3980-998</a>
               </div>
 
               <div class="highlight-box">
@@ -442,14 +464,15 @@ export async function POST(req: Request) {
               <div class="signature">
                 <p>Warm regards,</p>
                 <p><strong>Linda Wiryani</strong></p>
-                <p>Design and Event Planning</p>
+                <p>Founder and Creative Director</p>
+                <p>Linda Wiryani Design &amp; Event Planning</p>
               </div>
             </div>
 
             <div class="footer">
               <h3>Get in Touch</h3>
               <div class="contact-info">
-                <div class="contact-item">📧 lindawiryanievents@gmail.com</div>
+                <div class="contact-item">📧 hello@lindawiryani.com</div>
                 <div class="contact-item">📱 +62 811 3980 998</div>
                 <div class="contact-item">📷 @lindawiryanievents</div>
               </div>
@@ -473,13 +496,13 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { message: "Emails sent successfully" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error sending email:", error);
     return NextResponse.json(
       { message: "Failed to send email", error: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
