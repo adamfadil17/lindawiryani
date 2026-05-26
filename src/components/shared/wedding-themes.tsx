@@ -18,7 +18,8 @@ const CARDS_PER_PAGE = 6;
 const elopementSubtitles: Record<string, string> = {
   "private-villa-elopement": "Curated Private Villa Setting in Bali",
   "cliffside-elopement": "A Curated Cliffside Setting in Bali",
-  "architectural-modern-tropical-elopement": "Curated Architectural Venues in Bali",
+  "architectural-modern-tropical-elopement":
+    "Curated Architectural Venues in Bali",
   "forest-jungle-elopement": "A Curated Jungle Escape in Bali",
   "waterfall-elopement": "Serene Waterfall Settings in Bali",
   "rice-field-elopement": "A Curated Rice Field Setting in Bali",
@@ -26,8 +27,14 @@ const elopementSubtitles: Record<string, string> = {
   "lake-elopement": "A Curated Lakeside Setting in Bali",
   "volcano-mountain-elopement": "Curated Mountain & Volcano Settings in Bali",
   "riverside-elopement": "A Curated Riverside Setting in Bali",
-  "eco-sustainable-elopement": "Thoughtfully Designed with a Sustainable Approach",
-  "sacred-spiritual-elopement": "Thoughtfully Guided with a Sacred & Intentional Approach",
+  "eco-sustainable-elopement":
+    "Thoughtfully Designed with a Sustainable Approach",
+  "sacred-spiritual-elopement":
+    "Thoughtfully Guided with a Sacred & Intentional Approach",
+  "cultural-heritage-elopement": "Curated Cultural & Heritage Settings in Bali",
+  "sunrise-purification-elopement":
+    "A Curated Sunrise & Purification Experience in Bali",
+  "editorial-luxury-elopement": "Curated Editorial Settings in Bali",
 };
 
 // ─── Derived data ─────────────────────────────────────────────────────────────
@@ -123,9 +130,7 @@ function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
   // Lookup nama venue dari venueList menggunakan theme.venue_id (skema baru)
   const venueData = venueList.find((v) => v.id === theme.venue_id);
   const subtitle =
-    venueData?.name ??
-    elopementSubtitles[theme.id] ??
-    "Venue To Be Confirmed";
+    venueData?.name ?? elopementSubtitles[theme.id] ?? "Venue To Be Confirmed";
 
   return (
     <article
