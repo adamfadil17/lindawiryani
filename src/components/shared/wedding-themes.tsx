@@ -14,6 +14,22 @@ import type { Venue, WeddingTheme } from "@/types";
 
 const CARDS_PER_PAGE = 6;
 
+// Subtitle untuk elopement themes yang belum memiliki venue tetap
+const elopementSubtitles: Record<string, string> = {
+  "private-villa-elopement": "Curated Private Villa Setting in Bali",
+  "cliffside-elopement": "A Curated Cliffside Setting in Bali",
+  "architectural-modern-tropical-elopement": "Curated Architectural Venues in Bali",
+  "forest-jungle-elopement": "A Curated Jungle Escape in Bali",
+  "waterfall-elopement": "Serene Waterfall Settings in Bali",
+  "rice-field-elopement": "A Curated Rice Field Setting in Bali",
+  "beachfront-elopement": "Curated Beachfront Venues in Bali",
+  "lake-elopement": "A Curated Lakeside Setting in Bali",
+  "volcano-mountain-elopement": "Curated Mountain & Volcano Settings in Bali",
+  "riverside-elopement": "A Curated Riverside Setting in Bali",
+  "eco-sustainable-elopement": "Thoughtfully Designed with a Sustainable Approach",
+  "sacred-spiritual-elopement": "Thoughtfully Guided with a Sacred & Intentional Approach",
+};
+
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
 // Filter tema per kategori dari weddingThemeList
@@ -106,6 +122,10 @@ interface WeddingThemeCardProps {
 function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
   // Lookup nama venue dari venueList menggunakan theme.venue_id (skema baru)
   const venueData = venueList.find((v) => v.id === theme.venue_id);
+  const subtitle =
+    venueData?.name ??
+    elopementSubtitles[theme.id] ??
+    "Venue To Be Confirmed";
 
   return (
     <article
@@ -125,9 +145,7 @@ function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
         <h3 className="text-xl md:text-2xl font-semibold leading-tight mb-2">
           {theme.title}
         </h3>
-        <p className="text-md text-white/90">
-          {venueData ? venueData.name : "Venue To Be Confirmed"}
-        </p>
+        <p className="text-md text-white/90">{subtitle}</p>
       </div>
     </article>
   );
