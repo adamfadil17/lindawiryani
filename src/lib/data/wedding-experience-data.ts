@@ -270,7 +270,7 @@ export const weddingExperienceList: WeddingExperience[] = [
 
     // Hero
     hero_style: "centered",
-    hero_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346138/Wedding_4_htlkyl.jpg",
+    hero_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Lake_Elopement_hbxm9l.png",
     hero_desc:
       "Bali Elopement Weddings — intimate, emotionally rich, and visually poetic — designed as meaningful experiences, not quick ceremonies.",
 
@@ -303,7 +303,7 @@ export const weddingExperienceList: WeddingExperience[] = [
       "Calm, unhurried flow",
       "Authentic connection",
     ],
-    approach_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346140/Wedding_5_exmfpf.jpg",
+    approach_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Volcano_mount_batur_y3gtwu.png",
 
     // Services
     services_label: "What We Provide",
@@ -334,7 +334,7 @@ export const weddingExperienceList: WeddingExperience[] = [
     closing_heading: ["Timeless. Grounded.", "Emotionally true."],
     closing_body:
       "If you are looking for a Bali elopement wedding planner who approaches elopements as artful experiences, we would be honored to create with you.",
-    closing_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767346143/Wedding_7_gjd4lv.jpg",
+    closing_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939441/Waterfall_Wedding_1_kk2634.png",
     closing_couple_label: null,
     closing_couple_values: [],
 

@@ -48,7 +48,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -148,7 +148,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -248,7 +248,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -349,7 +349,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -444,7 +444,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -539,7 +539,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -634,7 +634,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -729,7 +729,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -824,7 +824,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -919,7 +919,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -1014,7 +1014,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -1119,7 +1119,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -1224,7 +1224,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
@@ -1317,7 +1317,7 @@ export const weddingThemeList: WeddingTheme[] = [
 
 <h4>Photography</h4>
 <ul>
-  <li>Professional photographer for 2 hours (1 pax)</li>
+  <li>Professional photographer for 1,5 hours (1 pax)</li>
   <li>Carefully curated and edited best-selected images</li>
   <li>Final images delivered within 1 week via private Google Drive link</li>
 </ul>
