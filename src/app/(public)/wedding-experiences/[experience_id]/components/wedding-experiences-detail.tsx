@@ -21,6 +21,7 @@ type ExperienceData = Omit<
 >;
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import type { Venue, WeddingTheme, Currency } from "@/types";
+import WeddingThemesSection from "@/components/shared/wedding-themes";
 
 function Breadcrumb({ label }: { label: string }) {
   return (
@@ -832,6 +833,24 @@ function SectionVenueList({
 
   const exchangeRate = useCurrencyConverter();
 
+  // Cek ketersediaan venue dan tema untuk experience ini
+  const experienceVenueCount = useMemo(
+    () => allVenues.filter((v) => v.experience_id === experience.id).length,
+    [allVenues, experience.id],
+  );
+  const hasVenues = experienceVenueCount > 0;
+
+  const experienceElopementThemes = useMemo(
+    () => elopementThemes.filter((t) => t.experience_id === experience.id),
+    [elopementThemes, experience.id],
+  );
+  const experienceIntimateThemes = useMemo(
+    () => intimateThemes.filter((t) => t.experience_id === experience.id),
+    [intimateThemes, experience.id],
+  );
+  const hasThemes =
+    experienceElopementThemes.length > 0 || experienceIntimateThemes.length > 0;
+
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 1024);
     checkIsMobile();
@@ -878,6 +897,34 @@ function SectionVenueList({
     intimate_weddings:
       "Thoughtfully curated venues for scaled celebrations — connection, elegance, and refined hospitality.",
   };
+
+  // Jika tidak ada venue maupun tema, render null
+  if (!hasVenues && !hasThemes) return null;
+
+  // Jika hanya ada tema (venue kosong), tampilkan WeddingThemesSection saja
+  if (!hasVenues && hasThemes) {
+    return (
+      <>
+        <WeddingThemesSection
+          isMobile={isMobile}
+          onExploreVenue={(venue) => setSelectedVenueForModal(venue)}
+          externalElopementThemes={experienceElopementThemes}
+          externalIntimateThemes={experienceIntimateThemes}
+          minimal
+        />
+        {selectedVenueForModal && (
+          <VenueDetailModal
+            venue={selectedVenueForModal}
+            onClose={() => setSelectedVenueForModal(null)}
+            selectedCurrency={selectedCurrency}
+            exchangeRate={exchangeRate}
+            elopementThemes={elopementThemes}
+            intimateThemes={intimateThemes}
+          />
+        )}
+      </>
+    );
+  }
 
   return (
     <>
@@ -1117,6 +1164,17 @@ function SectionVenueList({
           </motion.div>
         </div>
       </motion.section>
+
+      {/* Jika experience punya venue DAN tema, tampilkan WeddingThemesSection setelah venue list */}
+      {hasThemes && (
+        <WeddingThemesSection
+          isMobile={isMobile}
+          onExploreVenue={(venue) => setSelectedVenueForModal(venue)}
+          externalElopementThemes={experienceElopementThemes}
+          externalIntimateThemes={experienceIntimateThemes}
+          minimal
+        />
+      )}
 
       {selectedVenueForModal && (
         <VenueDetailModal

@@ -161,15 +161,32 @@ function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
 interface WeddingThemesSectionProps {
   isMobile: boolean;
   onExploreVenue: (venue: Venue) => void;
+  externalElopementThemes?: WeddingTheme[];
+  externalIntimateThemes?: WeddingTheme[];
+  // Jika true: hanya tampilkan grid theme cards + header sederhana,
+  // tanpa ThemeCategoryCard slideshow dan tanpa dropdown category selector.
+  minimal?: boolean;
 }
 
 export default function WeddingThemesSection({
   isMobile,
   onExploreVenue,
+  externalElopementThemes,
+  externalIntimateThemes,
+  minimal = false,
 }: WeddingThemesSectionProps) {
+  const resolvedElopementThemes = externalElopementThemes ?? elopementThemes;
+  const resolvedIntimateThemes = externalIntimateThemes ?? intimateThemes;
+
+  // Tentukan tab default: jika elopement kosong tapi intimate ada, default ke intimate
+  const defaultCategory: "elopement" | "intimate" =
+    resolvedElopementThemes.length === 0 && resolvedIntimateThemes.length > 0
+      ? "intimate"
+      : "elopement";
+
   const [selectedThemeCategory, setSelectedThemeCategory] = useState<
     "elopement" | "intimate"
-  >("elopement");
+  >(defaultCategory);
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const [currentThemeSlide, setCurrentThemeSlide] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
@@ -177,7 +194,18 @@ export default function WeddingThemesSection({
     useState<WeddingTheme | null>(null);
 
   const currentThemes =
-    selectedThemeCategory === "elopement" ? elopementThemes : intimateThemes;
+    selectedThemeCategory === "elopement"
+      ? resolvedElopementThemes
+      : resolvedIntimateThemes;
+
+  // Hanya tampilkan tab kategori yang memiliki data
+  const availableCategories = (
+    ["elopement", "intimate"] as const
+  ).filter((cat) =>
+    cat === "elopement"
+      ? resolvedElopementThemes.length > 0
+      : resolvedIntimateThemes.length > 0,
+  );
 
   // Pagination untuk desktop
   const totalPages = Math.ceil(currentThemes.length / CARDS_PER_PAGE);
@@ -243,24 +271,34 @@ export default function WeddingThemesSection({
             </div>
           </motion.div>
 
-          {/* Category Cards — gambar slideshow dari tema masing-masing kategori */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
-            variants={fadeInUp}
-          >
-            <ThemeCategoryCard
-              title="Elopement Weddings"
-              description="Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings."
-              images={elopementCategoryImages}
-              onClick={() => handleCategoryClick("elopement")}
-            />
-            <ThemeCategoryCard
-              title="Intimate Weddings"
-              description="Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality."
-              images={intimateCategoryImages}
-              onClick={() => handleCategoryClick("intimate")}
-            />
-          </motion.div>
+          {/* Category Cards — disembunyikan di mode minimal */}
+          {!minimal && (
+            <motion.div
+              className={`grid grid-cols-1 gap-8 mb-16 ${availableCategories.length === 2 ? 'md:grid-cols-2' : ''}`}
+              variants={fadeInUp}
+            >
+              {resolvedElopementThemes.length > 0 && (
+                <ThemeCategoryCard
+                  title="Elopement Weddings"
+                  description="Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings."
+                  images={[
+                    ...new Set(resolvedElopementThemes.map((t) => t.image).filter(Boolean)),
+                  ].slice(0, 5) as string[]}
+                  onClick={() => handleCategoryClick("elopement")}
+                />
+              )}
+              {resolvedIntimateThemes.length > 0 && (
+                <ThemeCategoryCard
+                  title="Intimate Weddings"
+                  description="Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality."
+                  images={[
+                    ...new Set(resolvedIntimateThemes.map((t) => t.image).filter(Boolean)),
+                  ].slice(0, 5) as string[]}
+                  onClick={() => handleCategoryClick("intimate")}
+                />
+              )}
+            </motion.div>
+          )}
 
           {/* Theme Selector + Cards */}
           <motion.div
@@ -268,78 +306,88 @@ export default function WeddingThemesSection({
             variants={fadeInUp}
             className="mb-8"
           >
-            {/* Filter dropdown */}
-            <div className="flex items-center justify-center gap-4 mb-12">
-              <span className="text-base md:text-lg text-primary tracking-widest uppercase font-semibold">
-                WEDDING THEMES
-              </span>
-              <div className="relative">
-                <button
-                  onClick={() => setIsThemeDropdownOpen(!isThemeDropdownOpen)}
-                  className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium capitalize"
-                >
-                  <span>{selectedThemeCategory}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      isThemeDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {isThemeDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
-                    {(["elopement", "intimate"] as const).map((cat) => (
+            {/* Filter dropdown + deskripsi — disembunyikan di mode minimal */}
+            {!minimal && (
+              <>
+                <div className="flex items-center justify-center gap-4 mb-12">
+                  <span className="text-base md:text-lg text-primary tracking-widest uppercase font-semibold">
+                    WEDDING THEMES
+                  </span>
+                  {availableCategories.length > 1 ? (
+                    <div className="relative">
                       <button
-                        key={cat}
-                        onClick={() => {
-                          setSelectedThemeCategory(cat);
-                          setIsThemeDropdownOpen(false);
-                          setCurrentThemeSlide(0);
-                          setCurrentPage(0);
-                        }}
-                        className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer capitalize ${
-                          selectedThemeCategory === cat
-                            ? "bg-primary text-white"
-                            : "text-primary hover:bg-stone-100"
-                        }`}
+                        onClick={() => setIsThemeDropdownOpen(!isThemeDropdownOpen)}
+                        className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium capitalize"
                       >
-                        {cat}
+                        <span>{selectedThemeCategory}</span>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${
+                            isThemeDropdownOpen ? "rotate-180" : ""
+                          }`}
+                        />
                       </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+                      {isThemeDropdownOpen && (
+                        <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
+                          {availableCategories.map((cat) => (
+                            <button
+                              key={cat}
+                              onClick={() => {
+                                setSelectedThemeCategory(cat);
+                                setIsThemeDropdownOpen(false);
+                                setCurrentThemeSlide(0);
+                                setCurrentPage(0);
+                              }}
+                              className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer capitalize ${
+                                selectedThemeCategory === cat
+                                  ? "bg-primary text-white"
+                                  : "text-primary hover:bg-stone-100"
+                              }`}
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-md text-primary font-medium capitalize">
+                      {selectedThemeCategory}
+                    </span>
+                  )}
+                </div>
 
-            {/* Deskripsi kategori aktif */}
-            <div className="mb-12 text-center">
-              <AnimatePresence mode="wait">
-                {selectedThemeCategory === "elopement" ? (
-                  <motion.p
-                    key="elopement-desc"
-                    variants={fadeInUp}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
-                  >
-                    Intimate celebrations designed for couples seeking privacy,
-                    meaning, and extraordinary settings.
-                  </motion.p>
-                ) : (
-                  <motion.p
-                    key="intimate-desc"
-                    variants={fadeInUp}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
-                  >
-                    Thoughtfully scaled celebrations curated for connection,
-                    elegance, and refined hospitality.
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </div>
+                {/* Deskripsi kategori aktif */}
+                <div className="mb-12 text-center">
+                  <AnimatePresence mode="wait">
+                    {selectedThemeCategory === "elopement" ? (
+                      <motion.p
+                        key="elopement-desc"
+                        variants={fadeInUp}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
+                      >
+                        Intimate celebrations designed for couples seeking privacy,
+                        meaning, and extraordinary settings.
+                      </motion.p>
+                    ) : (
+                      <motion.p
+                        key="intimate-desc"
+                        variants={fadeInUp}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
+                      >
+                        Thoughtfully scaled celebrations curated for connection,
+                        elegance, and refined hospitality.
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </>
+            )}
 
             {/* Theme Cards — Mobile slider / Desktop grid with pagination */}
             {isMobile ? (
