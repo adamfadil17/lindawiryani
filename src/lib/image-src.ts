@@ -47,7 +47,7 @@ export const instagramPosts = [
   {
     src: "/images/instagram/instagram3.png",
     alt: "Happy couple at reception",
-    videoUrl: "https://res.cloudinary.com/dzerxindp/video/upload/v1767162826/Req_1_-_30s_Non_Faceless_Coloring_with_Transition_Overlay_vccwxy.mp4",
+    videoUrl: "https://res.cloudinary.com/dzerxindp/video/upload/v1787892104/lv_0_20260825145501_ipnwzd.mp4",
     isVideo: true,
   },
   {

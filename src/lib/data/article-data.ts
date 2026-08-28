@@ -264,4 +264,56 @@ export const articles: Article[] = [
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383711/botanical-wedding_uvhrdv.png",
     content: `<h2>The Botanical Richness of Bali</h2><p>Bali sits at one of the world's great botanical crossroads. Tropical climate, volcanic soil, and a culture that has always placed flowers at the centre of daily and ceremonial life have produced a flora of extraordinary variety and visual intensity. Working with local plant material is not just an aesthetic choice — it is a way of grounding a wedding in its place.</p><h2>Working Local</h2><p>Our approach to floral design in Bali begins with what is actually growing — what is at peak abundance, what the season is offering, what the local markets have that is unexpected and beautiful. This approach produces designs that are fresher, more responsive, and more connected to Bali's actual landscape than a list of imported flowers ever could be.</p><blockquote><p>When you use what Bali gives you, the design feels like it belongs there. That rootedness is something you cannot fake.</p></blockquote><h2>Specific Botanical Languages</h2><p>Ubud weddings tend toward ferns, mosses, tropical leaves, and white flowers — a cooler, deeper palette drawn from the jungle environment. Uluwatu weddings often reach for stronger forms: sculptural tropical varieties, dried grasses, and colours that hold up against the brightness of the ocean and open sky. The location teaches the design.</p>`,
   },
+  {
+    id: "16",
+    slug: "nusa-lembongan-wedding-between-land-and-sea",
+    category: "Design & Concept",
+    title: "Between Land & Sea: A Wedding Ceremony Concept in Nusa Lembongan",
+    excerpt:
+      "Explore Between Land & Sea, an intimate Nusa Lembongan wedding ceremony concept inspired by the island's coastline, natural textures and understated tropical beauty.",
+    published_at: "2026-08-28",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1787892363/Between_Land_Sea_z0jhic.png",
+    content: `
+<p><em>Where the island meets the ocean, a celebration takes shape.</em></p>
+<p>Just beyond Bali, Nusa Lembongan has a rhythm of its own.</p>
+<p>The landscape feels raw yet gentle, shaped by the ocean, coastal textures, open skies and the changing light of the island. It was this relationship between <strong>land and sea</strong> that became the starting point for our latest ceremony concept.</p>
+<p><strong>Between Land &amp; Sea</strong> is an intimate wedding ceremony imagined for Nusa Lembongan, where design does not attempt to transform the landscape, but quietly becomes part of it.</p>
+<p>Rather than creating a setting that competes with the ocean, we wanted every element to feel as though it had naturally arrived there.</p>
+
+<h2>Designed Around the Island</h2>
+<p>The concept begins with the location itself.</p>
+<p>In Nusa Lembongan, the horizon already creates a remarkable backdrop. The movement of the sea brings its own atmosphere, while the textures of the coastline give the setting a beautifully imperfect character.</p>
+<p>Our approach was therefore one of restraint.</p>
+<p>Sculptural floral compositions are kept organic and low enough to preserve the view. Natural textures soften the ceremony setting, while negative space allows the surrounding landscape to remain visible.</p>
+<p>Nothing feels overly arranged. Nothing needs to compete for attention.</p>
+<p>The intention is to create a ceremony that feels <strong>quietly luxurious, romantic and deeply connected to place</strong>.</p>
+
+<h2>Between Land &amp; Sea</h2>
+<p>The name came naturally.</p>
+<p>There is something poetic about beginning a marriage at the meeting point between solid ground and an endless horizon.</p>
+<p>Land gives us a sense of grounding. The sea suggests movement, possibility and everything still ahead. The ceremony exists somewhere between the two.</p>
+<p>For us, this became more than an aesthetic direction. It became the emotional narrative behind the design.</p>
+
+<h2>Details That Reveal Themselves Slowly</h2>
+<p>From afar, the ceremony feels simple. Come closer, and the details begin to emerge.</p>
+<p>The irregular movement of florals. Layers of delicate foliage. Natural materials. Subtle textures catching the afternoon light.</p>
+<p>Rather than filling every space, each element is given room to breathe.</p>
+<p>This sense of restraint allows the smallest details to become more meaningful, something we believe is particularly important when designing an intimate destination wedding.</p>
+
+<h2>Following the Light</h2>
+<p>The experience is also designed around the changing light of Nusa Lembongan.</p>
+<p>In the afternoon, the colours remain natural and luminous. As the sun begins to lower, warmer tones gradually appear across the landscape. Shadows lengthen, textures become softer and the ceremony begins to take on an entirely different mood.</p>
+<p>It is this transition that we wanted to preserve.</p>
+<p>Because a wedding setting is not a static photograph. It moves. It changes with the weather, the people, the light and the landscape around it.</p>
+
+<h2>A Different Kind of Island Wedding</h2>
+<p>A destination wedding on a small island does not necessarily need more decoration to feel extraordinary. Sometimes, it needs less.</p>
+<p>A beautiful location. Thoughtful proportions. Flowers that appear almost naturally within the landscape. And enough space for the ocean to remain present.</p>
+<p><strong>Between Land &amp; Sea</strong> is our exploration of that idea, a Nusa Lembongan wedding ceremony where nature, design and emotion quietly meet.</p>
+<p>Because sometimes the most memorable setting is not the one that transforms a place. It is the one that allows you to experience it.</p>
+<blockquote><p><em>Between Land &amp; Sea is an original wedding design concept by Linda Wiryani Design &amp; Event Planning, created for an intimate destination wedding setting in Nusa Lembongan, Bali.</em></p>
+</blockquote><p><em>Conceptual imagery is used to communicate atmosphere, composition and creative direction. Final design is individually developed following venue assessment, technical feasibility, supplier consultation and each couple's story.</em></p>
+`,
+  },
 ];
