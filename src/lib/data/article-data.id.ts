@@ -1,5 +1,3 @@
-// TODO(i18n): placeholder — currently mirrors English (article-data.en.ts).
-// Replace with real translated content when ready; shape must match article-data.en.ts exactly.
 import { Article } from "@/types";
 
 export const articles: Article[] = [
@@ -8,122 +6,122 @@ export const articles: Article[] = [
     id: "1",
     slug: "how-to-plan-destination-wedding-bali",
     category: "Guides",
-    title: "How to Plan a Destination Wedding in Bali: A Complete Guide",
+    title: "Cara Merencanakan Pernikahan Destinasi di Bali: Panduan Lengkap",
     excerpt:
-      "From defining your wedding experience to understanding legal requirements, this guide walks international couples through every stage of planning a destination wedding in Bali.",
+      "Mulai dari menentukan pengalaman pernikahan Anda hingga memahami persyaratan hukum, panduan ini mendampingi pasangan internasional melewati setiap tahap perencanaan pernikahan destinasi di Bali.",
     published_at: "2026-03-05",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773318719/header2_y85db9.jpg",
     content: `
-<h2>Introduction</h2>
-<p>Planning a destination wedding in Bali is not only about choosing a beautiful island. It is about designing an experience that reflects who you are, how you wish to gather, and what you want your celebration to feel like.</p>
-<p>Bali offers a rare combination of dramatic landscapes, refined hospitality, living culture, and diverse environments — from ocean cliffs and private villas to jungle retreats and sacred valleys.</p>
-<p>Yet with this beauty comes complexity. A destination wedding requires thoughtful structure, local knowledge, and careful guidance — not only to create beauty, but to ensure calmness, flow, and meaning throughout the journey.</p>
-<p>This guide is written to help you understand how destination weddings in Bali truly work — beyond inspiration — and how to plan one with clarity and confidence.</p>
+<h2>Pendahuluan</h2>
+<p>Merencanakan pernikahan destinasi di Bali bukan sekadar memilih pulau yang indah. Ini tentang merancang pengalaman yang mencerminkan siapa Anda, bagaimana Anda ingin berkumpul, dan seperti apa perayaan Anda ingin terasa.</p>
+<p>Bali menawarkan perpaduan langka antara lanskap dramatis, keramahtamahan yang halus, budaya yang hidup, dan beragam lingkungan — dari tebing tepi laut dan vila pribadi hingga retret di tengah hutan dan lembah suci.</p>
+<p>Namun di balik keindahan itu ada kerumitan. Pernikahan destinasi membutuhkan struktur yang matang, pengetahuan lokal, dan pendampingan yang cermat — bukan hanya untuk menciptakan keindahan, tetapi juga untuk menjaga ketenangan, alur, dan makna sepanjang perjalanan.</p>
+<p>Panduan ini ditulis untuk membantu Anda memahami bagaimana pernikahan destinasi di Bali sebenarnya berjalan — melampaui inspirasi — dan bagaimana merencanakannya dengan jelas dan percaya diri.</p>
 
-<h2>Why Bali Remains One of the World's Most Desired Destination Wedding Locations</h2>
-<p>Bali is not one destination. It is many worlds within one island. Couples are drawn to Bali because it offers:</p>
+<h2>Mengapa Bali Tetap Menjadi Salah Satu Lokasi Pernikahan Destinasi Paling Diminati di Dunia</h2>
+<p>Bali bukan satu destinasi. Ia adalah banyak dunia dalam satu pulau. Pasangan tertarik ke Bali karena pulau ini menawarkan:</p>
 <ul>
-  <li><p>Dramatic oceanfront and cliffside landscapes</p></li>
-  <li><p>Lush jungle and riverside environments</p></li>
-  <li><p>Private villas and hidden estates</p></li>
-  <li><p>Five-star resorts and boutique retreats</p></li>
-  <li><p>A deeply spiritual and artistic culture</p></li>
+  <li><p>Lanskap tepi laut dan tebing yang dramatis</p></li>
+  <li><p>Lingkungan hutan tropis dan tepi sungai yang rimbun</p></li>
+  <li><p>Vila pribadi dan estat tersembunyi</p></li>
+  <li><p>Resor bintang lima dan retret butik</p></li>
+  <li><p>Budaya yang sangat spiritual dan artistik</p></li>
 </ul>
-<p>Within short distances, you can move between entirely different atmospheres — allowing weddings to be shaped around feeling, not only visuals. This diversity makes Bali uniquely suited for destination weddings, private villa weddings, intimate celebrations, elopements, and multi-day luxury experiences.</p>
+<p>Dalam jarak yang singkat, Anda dapat berpindah antara suasana yang sama sekali berbeda — sehingga pernikahan dapat dibentuk berdasarkan perasaan, bukan hanya tampilan visual. Keragaman inilah yang membuat Bali sangat cocok untuk pernikahan destinasi, pernikahan di vila pribadi, perayaan intim, elopement, dan pengalaman mewah berhari-hari.</p>
 
-<h2>Step One — Define the Experience You Want to Create</h2>
-<p>Before choosing a venue or style, the most important decision is: <strong>What kind of wedding experience are you creating?</strong></p>
-<p>In Bali, weddings are most successful when they are designed around experience rather than scale. Some couples are drawn to:</p>
+<h2>Langkah Pertama — Tentukan Pengalaman yang Ingin Anda Ciptakan</h2>
+<p>Sebelum memilih venue atau gaya, keputusan terpenting adalah: <strong>Pengalaman pernikahan seperti apa yang ingin Anda ciptakan?</strong></p>
+<p>Di Bali, pernikahan paling berhasil ketika dirancang berdasarkan pengalaman, bukan skala. Sebagian pasangan tertarik pada:</p>
 <ul>
-  <li><p>Destination celebrations with friends and family</p></li>
-  <li><p>Private villa weddings that unfold over several days</p></li>
-  <li><p>Intimate weddings centered on connection</p></li>
-  <li><p>Elopements focused on presence and place</p></li>
-  <li><p>Luxury experiences defined by design and flow</p></li>
+  <li><p>Perayaan destinasi bersama sahabat dan keluarga</p></li>
+  <li><p>Pernikahan di vila pribadi yang berlangsung selama beberapa hari</p></li>
+  <li><p>Pernikahan intim yang berpusat pada kedekatan</p></li>
+  <li><p>Elopement yang berfokus pada kehadiran dan tempat</p></li>
+  <li><p>Pengalaman mewah yang ditentukan oleh desain dan alur</p></li>
 </ul>
-<p>Understanding this from the beginning will guide every other choice — from location to guest experience, design direction, and budget structure.</p>
+<p>Memahami hal ini sejak awal akan memandu setiap keputusan lainnya — dari lokasi hingga pengalaman tamu, arah desain, dan struktur anggaran.</p>
 
-<h2>Step Two — Choose the Right Area of Bali</h2>
-<p>Each region of Bali carries a distinct emotional quality. Choosing the right area is less about popularity, and more about resonance.</p>
+<h2>Langkah Kedua — Pilih Kawasan yang Tepat di Bali</h2>
+<p>Setiap wilayah di Bali memiliki karakter emosional yang berbeda. Memilih kawasan yang tepat bukan soal popularitas, melainkan soal keselarasan rasa.</p>
 <ul>
-  <li><p><strong>Uluwatu</strong> — dramatic cliffs, ocean horizons, refined and cinematic</p></li>
-  <li><p><strong>Ubud &amp; Tegalalang</strong> — jungle, rivers, spirituality, artistic energy</p></li>
-  <li><p><strong>Canggu</strong> — creative, modern, private villa lifestyle</p></li>
-  <li><p><strong>Seminyak</strong> — boutique luxury, central elegance</p></li>
-  <li><p><strong>Nusa Dua</strong> — resort luxury, beachfront formality</p></li>
-  <li><p><strong>East Bali</strong> — sacred mountains, quiet valleys, soulful landscapes</p></li>
-  <li><p><strong>Tabanan</strong> — rice fields, hidden estates, sustainable luxury</p></li>
-  <li><p><strong>Nusa Penida</strong> — remote, cinematic, adventure-driven</p></li>
-  <li><p><strong>North Bali</strong> — eco-luxury, national parks, retreat environments</p></li>
+  <li><p><strong>Uluwatu</strong> — tebing dramatis, cakrawala samudra, anggun dan sinematik</p></li>
+  <li><p><strong>Ubud &amp; Tegalalang</strong> — hutan, sungai, spiritualitas, energi artistik</p></li>
+  <li><p><strong>Canggu</strong> — kreatif, modern, gaya hidup vila pribadi</p></li>
+  <li><p><strong>Seminyak</strong> — kemewahan butik, keanggunan yang sentral</p></li>
+  <li><p><strong>Nusa Dua</strong> — kemewahan resor, formalitas tepi pantai</p></li>
+  <li><p><strong>Bali Timur</strong> — gunung suci, lembah yang tenang, lanskap yang menyentuh jiwa</p></li>
+  <li><p><strong>Tabanan</strong> — sawah, estat tersembunyi, kemewahan berkelanjutan</p></li>
+  <li><p><strong>Nusa Penida</strong> — terpencil, sinematik, penuh petualangan</p></li>
+  <li><p><strong>Bali Utara</strong> — eko-mewah, taman nasional, lingkungan retret</p></li>
 </ul>
-<p>Your destination choice shapes not only your venue — but your entire wedding atmosphere.</p>
+<p>Pilihan destinasi Anda membentuk bukan hanya venue — tetapi seluruh suasana pernikahan Anda.</p>
 
-<h2>Step Three — Select a Venue That Supports Your Story</h2>
-<p>In Bali, venues are not interchangeable. A venue determines guest flow, ceremony atmosphere, design potential, logistical complexity, and emotional rhythm.</p>
-<p>Common Bali wedding settings include:</p>
+<h2>Langkah Ketiga — Pilih Venue yang Mendukung Kisah Anda</h2>
+<p>Di Bali, venue tidak dapat saling menggantikan. Sebuah venue menentukan alur tamu, suasana upacara, potensi desain, kerumitan logistik, dan ritme emosional.</p>
+<p>Latar pernikahan yang umum di Bali meliputi:</p>
 <ul>
-  <li><p>Private villas and estates</p></li>
-  <li><p>Cliffside venues</p></li>
-  <li><p>Jungle and riverside retreats</p></li>
-  <li><p>Boutique resorts</p></li>
-  <li><p>Eco-resorts and national park environments</p></li>
+  <li><p>Vila dan estat pribadi</p></li>
+  <li><p>Venue di tepi tebing</p></li>
+  <li><p>Retret di tengah hutan dan tepi sungai</p></li>
+  <li><p>Resor butik</p></li>
+  <li><p>Eko-resor dan lingkungan taman nasional</p></li>
 </ul>
-<p>Rather than asking <em>"what looks beautiful,"</em> the better question is: <em>"What environment supports the experience we want to create?"</em></p>
+<p>Alih-alih bertanya <em>"apa yang tampak indah,"</em> pertanyaan yang lebih tepat adalah: <em>"Lingkungan seperti apa yang mendukung pengalaman yang ingin kami ciptakan?"</em></p>
 
-<h2>Step Four — Understand the Planning Structure</h2>
-<p>A destination wedding in Bali involves layers that couples often don't see. These include:</p>
+<h2>Langkah Keempat — Pahami Struktur Perencanaan</h2>
+<p>Pernikahan destinasi di Bali melibatkan lapisan-lapisan yang sering tidak terlihat oleh pasangan. Di antaranya:</p>
 <ul>
-  <li><p>Local vendor coordination</p></li>
-  <li><p>Venue and regional logistics</p></li>
-  <li><p>Guest experience design</p></li>
-  <li><p>Ceremony planning</p></li>
-  <li><p>Cultural and environmental considerations</p></li>
-  <li><p>Design development</p></li>
-  <li><p>Production flow</p></li>
+  <li><p>Koordinasi vendor lokal</p></li>
+  <li><p>Logistik venue dan wilayah</p></li>
+  <li><p>Perancangan pengalaman tamu</p></li>
+  <li><p>Perencanaan upacara</p></li>
+  <li><p>Pertimbangan budaya dan lingkungan</p></li>
+  <li><p>Pengembangan desain</p></li>
+  <li><p>Alur produksi</p></li>
 </ul>
-<p>A professional destination wedding studio manages not only vendors, but systems — ensuring that creativity is supported by structure. This is what allows weddings to feel calm, not chaotic.</p>
+<p>Studio pernikahan destinasi profesional mengelola bukan hanya vendor, tetapi juga sistem — memastikan kreativitas ditopang oleh struktur. Inilah yang membuat pernikahan terasa tenang, bukan kacau.</p>
 
-<h2>Step Five — Design the Experience, Not Just the Decor</h2>
-<p>Design in destination weddings goes far beyond flowers and styling. It includes how guests arrive, how spaces transition, how the ceremony unfolds, how sound, light, and movement interact, how moments are paced, and how intimacy is protected.</p>
+<h2>Langkah Kelima — Rancang Pengalamannya, Bukan Sekadar Dekorasinya</h2>
+<p>Desain dalam pernikahan destinasi jauh melampaui bunga dan penataan. Desain mencakup bagaimana tamu tiba, bagaimana ruang berganti, bagaimana upacara berlangsung, bagaimana suara, cahaya, dan gerak saling berpadu, bagaimana momen diatur temponya, dan bagaimana keintiman dijaga.</p>
 <blockquote>
-  <p>The most meaningful weddings in Bali are those where design supports emotion, not distraction.</p>
+  <p>Pernikahan yang paling bermakna di Bali adalah pernikahan di mana desain mendukung emosi, bukan mengalihkannya.</p>
 </blockquote>
 
-<h2>Step Six — Plan for Your Guest Experience</h2>
-<p>Destination weddings are shared journeys. Guest experience planning includes:</p>
+<h2>Langkah Keenam — Rencanakan Pengalaman Tamu Anda</h2>
+<p>Pernikahan destinasi adalah perjalanan bersama. Perencanaan pengalaman tamu mencakup:</p>
 <ul>
-  <li><p>Travel flow</p></li>
-  <li><p>Accommodation selection</p></li>
-  <li><p>Welcome moments</p></li>
-  <li><p>Shared meals</p></li>
-  <li><p>Day-after experiences</p></li>
-  <li><p>Cultural sensitivity</p></li>
-  <li><p>Comfort and accessibility</p></li>
+  <li><p>Alur perjalanan</p></li>
+  <li><p>Pemilihan akomodasi</p></li>
+  <li><p>Momen penyambutan</p></li>
+  <li><p>Santap bersama</p></li>
+  <li><p>Pengalaman di hari sesudahnya</p></li>
+  <li><p>Kepekaan budaya</p></li>
+  <li><p>Kenyamanan dan aksesibilitas</p></li>
 </ul>
-<p>Well-designed destination weddings feel welcoming, unrushed, intuitive, connected, and considered. This is where professional planning has its greatest impact.</p>
+<p>Pernikahan destinasi yang dirancang dengan baik terasa hangat menyambut, tidak terburu-buru, intuitif, terhubung, dan penuh pertimbangan. Di sinilah perencanaan profesional memberi dampak terbesar.</p>
 
-<h2>When to Begin Planning a Bali Destination Wedding</h2>
-<p>Ideally, couples begin planning 10–14 months before their wedding — earlier for private villas, peak seasons, or multi-day celebrations. This allows time for concept development, venue access, thoughtful design, guest planning, and calm execution.</p>
+<h2>Kapan Memulai Perencanaan Pernikahan Destinasi di Bali</h2>
+<p>Idealnya, pasangan mulai merencanakan 10–14 bulan sebelum pernikahan — lebih awal untuk vila pribadi, musim ramai, atau perayaan berhari-hari. Waktu ini memungkinkan pengembangan konsep, akses venue, desain yang matang, perencanaan tamu, dan pelaksanaan yang tenang.</p>
 <blockquote>
-  <p>The couples who feel most at ease on their wedding day are invariably those who gave themselves the gift of time in the planning phase.</p>
+  <p>Pasangan yang paling tenang di hari pernikahannya selalu mereka yang memberi diri mereka hadiah berupa waktu pada tahap perencanaan.</p>
 </blockquote>
 
-<h2>Begin Your Destination Wedding Journey</h2>
-<p>If you are exploring a destination wedding in Bali, we invite you to begin with clarity rather than checklists. Each celebration is custom-designed and intentionally guided — shaped around place, emotion, and artistry.</p>
+<h2>Mulai Perjalanan Pernikahan Destinasi Anda</h2>
+<p>Jika Anda sedang menjajaki pernikahan destinasi di Bali, kami mengundang Anda memulai dengan kejelasan, bukan daftar periksa. Setiap perayaan dirancang khusus dan dipandu dengan penuh kesengajaan — dibentuk oleh tempat, emosi, dan seni.</p>
   `,
   },
   {
     id: "2",
     slug: "destination-wedding-budget-bali",
     category: "Guides",
-    title: "Destination Wedding Budgeting: What to Expect in Bali",
+    title: "Anggaran Pernikahan Destinasi: Apa yang Perlu Diharapkan di Bali",
     excerpt:
-      "A transparent look at destination wedding costs in Bali — from venue hire to vendor fees, travel logistics, and where to invest for the most meaningful impact.",
+      "Tinjauan yang transparan tentang biaya pernikahan destinasi di Bali — dari sewa venue hingga biaya vendor, logistik perjalanan, dan di mana berinvestasi untuk dampak yang paling bermakna.",
     published_at: "2026-02-18",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773384839/destination-wedding-budgeting_k4xrpr.png",
-    content: `<h2>The Cost Landscape</h2><p>Bali offers an exceptional value proposition for destination weddings — world-class venues, highly skilled vendors, and extraordinary natural settings at a fraction of the cost of comparable options in Europe or North America. That said, a Bali destination wedding is still a significant investment, and understanding where costs accumulate is essential to planning with clarity.</p><h2>Key Cost Categories</h2><p>Venue hire typically represents the largest single line item, followed by catering, florals and design, photography and film, and planner fees. Travel and accommodation logistics — for you and your guests — require careful budgeting and early coordination.</p><blockquote><p>Knowing where to invest and where to simplify is the mark of thoughtful destination wedding planning.</p></blockquote><h2>Where to Invest</h2><p>Photography and film are the enduring record of your day — these are worth a considered investment. The same applies to your planner, whose expertise directly affects the quality of every other vendor relationship and decision made on your behalf.</p>`,
+    content: `<h2>Gambaran Biaya</h2><p>Bali menawarkan nilai yang luar biasa untuk pernikahan destinasi — venue kelas dunia, vendor yang sangat terampil, dan latar alam yang menakjubkan dengan biaya jauh lebih rendah dibandingkan pilihan sebanding di Eropa atau Amerika Utara. Meski begitu, pernikahan destinasi di Bali tetap merupakan investasi yang besar, dan memahami di mana biaya menumpuk sangat penting untuk merencanakan dengan jelas.</p><h2>Kategori Biaya Utama</h2><p>Sewa venue biasanya menjadi pos tunggal terbesar, diikuti katering, bunga dan desain, fotografi dan film, serta biaya planner. Logistik perjalanan dan akomodasi — untuk Anda dan para tamu — perlu dianggarkan dengan cermat dan dikoordinasikan sejak dini.</p><blockquote><p>Mengetahui di mana harus berinvestasi dan di mana harus menyederhanakan adalah ciri perencanaan pernikahan destinasi yang matang.</p></blockquote><h2>Di Mana Sebaiknya Berinvestasi</h2><p>Fotografi dan film adalah catatan abadi hari istimewa Anda — layak mendapat investasi yang dipertimbangkan dengan baik. Hal yang sama berlaku untuk planner Anda, yang keahliannya secara langsung memengaruhi kualitas setiap hubungan dengan vendor dan setiap keputusan yang diambil atas nama Anda.</p>`,
   },
 
   // ─── Planning Advice ──────────────────────────────────────────────────────────
@@ -131,37 +129,38 @@ export const articles: Article[] = [
     id: "3",
     slug: "wedding-planning-timeline-bali",
     category: "Planning Advice",
-    title: "The Ideal Wedding Planning Timeline for a Bali Destination Wedding",
+    title: "Linimasa Perencanaan Ideal untuk Pernikahan Destinasi di Bali",
     excerpt:
-      "Understanding what needs to happen and when — a month-by-month planning timeline shaped by years of real destination wedding experience in Bali.",
+      "Memahami apa yang harus dilakukan dan kapan — linimasa perencanaan bulan demi bulan yang dibentuk oleh pengalaman bertahun-tahun menangani pernikahan destinasi di Bali.",
     published_at: "2026-02-01",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773382639/the-ideal-wedding-planning-timeline_kv3oso.jpg",
-    content: `<h2>Why Timeline Matters More for Destination Weddings</h2><p>In destination wedding planning, the timeline is not a suggestion — it is a structural framework that determines what is available to you and what is not. Popular venues and vendors in Bali book out twelve to eighteen months in advance during peak season. Working backwards from your preferred date, with clear decision points, is how you avoid compromising on the elements that matter most.</p><h2>Eighteen to Twelve Months Out</h2><p>At this stage, your priorities are: setting your approximate guest count, establishing your budget framework, researching locations within Bali, and beginning conversations with wedding planners. The planner relationship begins here — before venues, before vendors, before anything else.</p><h2>Twelve to Eight Months Out</h2><p>With your planner engaged, the focus shifts to venue confirmation, vendor shortlisting, and guest communication. Save-the-dates should go out no later than ten months before the wedding for international guests.</p><blockquote><p>A clear timeline is not a constraint — it is the structure within which great weddings are built.</p></blockquote>`,
+    content: `<h2>Mengapa Linimasa Lebih Penting untuk Pernikahan Destinasi</h2><p>Dalam perencanaan pernikahan destinasi, linimasa bukan sekadar saran — ia adalah kerangka struktural yang menentukan apa yang tersedia bagi Anda dan apa yang tidak. Venue dan vendor populer di Bali sudah penuh dipesan dua belas hingga delapan belas bulan sebelumnya pada musim ramai. Bekerja mundur dari tanggal yang Anda inginkan, dengan titik keputusan yang jelas, adalah cara menghindari kompromi pada hal-hal yang paling penting.</p><h2>Delapan Belas hingga Dua Belas Bulan Sebelumnya</h2><p>Pada tahap ini, prioritas Anda adalah: menetapkan perkiraan jumlah tamu, menyusun kerangka anggaran, menjajaki lokasi di Bali, dan mulai berbicara dengan wedding planner. Hubungan dengan planner dimulai di sini — sebelum venue, sebelum vendor, sebelum hal lainnya.</p><h2>Dua Belas hingga Delapan Bulan Sebelumnya</h2><p>Setelah planner Anda terlibat, fokus beralih ke konfirmasi venue, penyaringan vendor, dan komunikasi dengan tamu. Save-the-date sebaiknya dikirim paling lambat sepuluh bulan sebelum pernikahan untuk tamu internasional.</p><blockquote><p>Linimasa yang jelas bukanlah batasan — ia adalah struktur tempat pernikahan-pernikahan hebat dibangun.</p></blockquote>`,
   },
   {
     id: "4",
     slug: "destination-wedding-mistakes-to-avoid",
     category: "Planning Advice",
-    title: "5 Common Destination Wedding Mistakes and How to Avoid Them",
+    title:
+      "5 Kesalahan Umum dalam Pernikahan Destinasi dan Cara Menghindarinya",
     excerpt:
-      "Drawn from real planning journeys, these are the missteps couples most often encounter when planning a destination wedding — and how thoughtful preparation prevents them.",
+      "Bersumber dari perjalanan perencanaan yang nyata, inilah kekeliruan yang paling sering dihadapi pasangan saat merencanakan pernikahan destinasi — dan bagaimana persiapan yang matang mencegahnya.",
     published_at: "2026-01-15",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773382646/5-common-destination_jg19wl.jpg",
-    content: `<h2>The Patterns We See</h2><p>After planning destination weddings in Bali for many years, certain planning mistakes appear again and again — not from carelessness, but from the sheer complexity of planning a significant event from a distance. Understanding these patterns is the first step to avoiding them.</p><h2>1. Underestimating the Lead Time Required</h2><p>The most common mistake is beginning the planning process too late. Twelve months should be considered the minimum for a Bali destination wedding; eighteen is far more comfortable.</p><h2>2. Choosing Vendors Without Local Knowledge</h2><p>Vendor quality in Bali varies widely, and online reviews do not always reflect the on-the-ground reality. Working with an experienced local planner gives you access to a vetted, trusted vendor network built through real working relationships.</p><h2>3. Neglecting the Guest Experience</h2><p>Your guests are travelling significant distances. A destination wedding that considers their journey — with clear information, accommodation guidance, and thoughtful touch-points — is remembered very differently to one that does not.</p><blockquote><p>The couples who avoid these mistakes share a common quality: they ask for help early and trust the people around them.</p></blockquote><h2>4. Over-Designing at the Expense of Atmosphere</h2><p>Bali's natural environment is extraordinary. Some of the most memorable weddings we have been part of were those that allowed the setting to do much of the work, rather than filling every moment with detail.</p><h2>5. Leaving Legal Logistics Too Late</h2><p>If you intend to legally marry in Bali, the documentation requirements need to begin months in advance. Many couples simplify this by handling their legal ceremony at home and celebrating symbolically in Bali.</p>`,
+    content: `<h2>Pola yang Kami Lihat</h2><p>Setelah merencanakan pernikahan destinasi di Bali selama bertahun-tahun, kesalahan perencanaan tertentu muncul berulang kali — bukan karena kelalaian, tetapi karena rumitnya merencanakan acara penting dari jarak jauh. Memahami pola-pola ini adalah langkah pertama untuk menghindarinya.</p><h2>1. Meremehkan Waktu Persiapan yang Dibutuhkan</h2><p>Kesalahan yang paling umum adalah memulai proses perencanaan terlalu terlambat. Dua belas bulan sebaiknya dianggap sebagai batas minimum untuk pernikahan destinasi di Bali; delapan belas bulan jauh lebih nyaman.</p><h2>2. Memilih Vendor Tanpa Pengetahuan Lokal</h2><p>Kualitas vendor di Bali sangat beragam, dan ulasan daring tidak selalu mencerminkan kenyataan di lapangan. Bekerja sama dengan planner lokal yang berpengalaman memberi Anda akses ke jaringan vendor terpilih dan tepercaya yang dibangun melalui hubungan kerja yang nyata.</p><h2>3. Mengabaikan Pengalaman Tamu</h2><p>Tamu Anda menempuh jarak yang jauh. Pernikahan destinasi yang memperhatikan perjalanan mereka — dengan informasi yang jelas, panduan akomodasi, dan sentuhan yang penuh perhatian — akan dikenang sangat berbeda dibandingkan yang tidak.</p><blockquote><p>Pasangan yang terhindar dari kesalahan-kesalahan ini punya satu kesamaan: mereka meminta bantuan sejak dini dan memercayai orang-orang di sekitar mereka.</p></blockquote><h2>4. Terlalu Banyak Mendesain hingga Mengorbankan Suasana</h2><p>Lingkungan alam Bali sungguh luar biasa. Sebagian pernikahan paling berkesan yang pernah kami tangani adalah yang membiarkan latarnya melakukan sebagian besar pekerjaan, alih-alih mengisi setiap momen dengan detail.</p><h2>5. Menunda Urusan Legal Terlalu Lama</h2><p>Jika Anda berniat menikah secara sah di Bali, persyaratan dokumen perlu mulai diurus berbulan-bulan sebelumnya. Banyak pasangan menyederhanakannya dengan menyelesaikan pernikahan sahnya di negara asal dan merayakannya secara simbolis di Bali.</p>`,
   },
   {
     id: "5",
     slug: "guest-experience-destination-wedding",
     category: "Planning Advice",
-    title: "Designing Your Guest Experience for a Destination Wedding",
+    title: "Merancang Pengalaman Tamu untuk Pernikahan Destinasi",
     excerpt:
-      "Your guests are traveling far to celebrate with you. Here is how to design a travel experience that feels generous, thoughtful, and unforgettable.",
+      "Tamu Anda menempuh perjalanan jauh untuk merayakan bersama Anda. Begini cara merancang pengalaman perjalanan yang terasa murah hati, penuh perhatian, dan tak terlupakan.",
     published_at: "2025-12-28",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383429/designing-your-guest_mps7lh.png",
-    content: `<h2>Guests Are Giving You Something Significant</h2><p>When someone travels internationally to celebrate your wedding, they are making a meaningful commitment of time, money, and energy. Acknowledging that — through the way you design their experience around the wedding — creates a relationship of genuine generosity that guests feel and remember.</p><h2>Communication is the Foundation</h2><p>Clear, well-timed information removes anxiety from the travel planning process. A dedicated wedding website with flight guidance, accommodation recommendations at multiple price points, and a clear event schedule allows guests to plan with confidence and excitement rather than uncertainty.</p><h2>Create Moments Beyond the Wedding Day</h2><p>The most warmly remembered destination weddings create a sense of shared experience across the entire trip. A welcome dinner, a morning activity, a curated map of local experiences — these additions do not need to be elaborate to be meaningful.</p><blockquote><p>The most generous thing a couple can do for their guests is to think about the trip, not just the day.</p></blockquote>`,
+    content: `<h2>Tamu Memberi Anda Sesuatu yang Berarti</h2><p>Ketika seseorang bepergian lintas negara untuk merayakan pernikahan Anda, mereka membuat komitmen yang berarti berupa waktu, uang, dan tenaga. Mengakui hal itu — melalui cara Anda merancang pengalaman mereka di sekitar pernikahan — menciptakan hubungan kemurahan hati yang tulus yang dirasakan dan diingat para tamu.</p><h2>Komunikasi adalah Fondasinya</h2><p>Informasi yang jelas dan tepat waktu menghilangkan kecemasan dalam perencanaan perjalanan. Situs web pernikahan khusus dengan panduan penerbangan, rekomendasi akomodasi di berbagai kisaran harga, dan jadwal acara yang jelas memungkinkan tamu merencanakan dengan percaya diri dan antusias, bukan dengan ketidakpastian.</p><h2>Ciptakan Momen di Luar Hari Pernikahan</h2><p>Pernikahan destinasi yang paling hangat dikenang menciptakan rasa pengalaman bersama sepanjang perjalanan. Makan malam penyambutan, kegiatan di pagi hari, peta pengalaman lokal yang telah dikurasi — tambahan-tambahan ini tidak perlu mewah untuk bermakna.</p><blockquote><p>Hal paling murah hati yang dapat dilakukan pasangan untuk tamunya adalah memikirkan perjalanannya, bukan hanya harinya.</p></blockquote>`,
   },
 
   // ─── Destination Knowledge ────────────────────────────────────────────────────
@@ -169,38 +168,38 @@ export const articles: Article[] = [
     id: "6",
     slug: "ubud-vs-uluwatu-bali-wedding-location",
     category: "Destination Knowledge",
-    title: "Ubud vs Uluwatu: Choosing the Right Bali Wedding Location",
+    title: "Ubud vs Uluwatu: Memilih Lokasi Pernikahan yang Tepat di Bali",
     excerpt:
-      "Jungle serenity or clifftop drama? This guide breaks down the atmosphere, environment, and couple profiles that suit each of Bali's most beloved wedding destinations.",
+      "Ketenangan hutan atau drama tepi tebing? Panduan ini mengurai suasana, lingkungan, dan profil pasangan yang cocok untuk masing-masing destinasi pernikahan favorit di Bali.",
     published_at: "2025-12-10",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383433/ubud-vs-uluwatu_tinzk5.png",
-    content: `<h2>Two Different Balis</h2><p>Ubud and Uluwatu are both extraordinary settings for a destination wedding, but they offer fundamentally different experiences — in atmosphere, environment, logistics, and the kind of celebration each makes possible. Understanding these differences is the starting point for choosing the location that is right for you.</p><h2>Ubud: Jungle, Culture, Quiet</h2><p>Ubud sits in the heart of Bali's central highlands, surrounded by rice terraces, river valleys, and dense tropical jungle. The atmosphere is one of depth and quiet — a landscape that feels ancient, layered, and resolutely unhurried. Weddings here tend toward intimacy, ceremony, and considered beauty.</p><blockquote><p>Ubud weddings are remembered for their stillness and their sense of place.</p></blockquote><h2>Uluwatu: Cliffs, Ocean, Drama</h2><p>Uluwatu occupies Bali's southern Bukit Peninsula, where limestone cliffs drop to the Indian Ocean. The landscape is dramatic and open — extraordinary at golden hour, spectacular at sunset. Weddings here have a different energy: elevated, expansive, cinematic.</p><h2>How to Choose</h2><p>The question to ask is not which location is more beautiful — both are extraordinary. The question is which atmosphere resonates with how you want to feel on your wedding day. Couples drawn to intimacy, nature, and quiet tend toward Ubud. Couples drawn to drama, views, and celebration tend toward Uluwatu.</p>`,
+    content: `<h2>Dua Bali yang Berbeda</h2><p>Ubud dan Uluwatu sama-sama latar yang luar biasa untuk pernikahan destinasi, tetapi keduanya menawarkan pengalaman yang pada dasarnya berbeda — dalam suasana, lingkungan, logistik, dan jenis perayaan yang dimungkinkan. Memahami perbedaan ini adalah titik awal untuk memilih lokasi yang tepat bagi Anda.</p><h2>Ubud: Hutan, Budaya, Ketenangan</h2><p>Ubud berada di jantung dataran tinggi tengah Bali, dikelilingi sawah berteras, lembah sungai, dan hutan tropis yang lebat. Suasananya penuh kedalaman dan ketenangan — lanskap yang terasa purba, berlapis, dan sama sekali tidak tergesa-gesa. Pernikahan di sini cenderung intim, sarat upacara, dan indah dengan penuh pertimbangan.</p><blockquote><p>Pernikahan di Ubud dikenang karena keheningannya dan rasa akan tempatnya.</p></blockquote><h2>Uluwatu: Tebing, Samudra, Drama</h2><p>Uluwatu menempati Semenanjung Bukit di selatan Bali, tempat tebing kapur menjulang di atas Samudra Hindia. Lanskapnya dramatis dan terbuka — luar biasa saat golden hour, memukau saat matahari terbenam. Pernikahan di sini memiliki energi yang berbeda: megah, luas, sinematik.</p><h2>Cara Memilih</h2><p>Pertanyaannya bukan lokasi mana yang lebih indah — keduanya luar biasa. Pertanyaannya adalah suasana mana yang selaras dengan perasaan yang ingin Anda rasakan di hari pernikahan. Pasangan yang menyukai keintiman, alam, dan ketenangan cenderung memilih Ubud. Pasangan yang menyukai drama, pemandangan, dan perayaan cenderung memilih Uluwatu.</p>`,
   },
   {
     id: "7",
     slug: "east-bali-nusa-penida-wedding-destinations",
     category: "Destination Knowledge",
     title:
-      "East Bali and Nusa Penida: Hidden Wedding Destinations Worth Knowing",
+      "Bali Timur dan Nusa Penida: Destinasi Pernikahan Tersembunyi yang Layak Diketahui",
     excerpt:
-      "Away from Bali's most visited corridors, East Bali and Nusa Penida offer raw beauty, quietude, and wedding experiences that feel genuinely undiscovered.",
+      "Jauh dari koridor Bali yang paling ramai dikunjungi, Bali Timur dan Nusa Penida menawarkan keindahan yang apa adanya, ketenangan, dan pengalaman pernikahan yang terasa benar-benar belum terjamah.",
     published_at: "2025-11-20",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383434/eastbali-vs-nusa-penida_jme7zc.png",
-    content: `<h2>Beyond the Main Corridor</h2><p>Most destination weddings in Bali take place along the Canggu–Seminyak–Ubud–Uluwatu corridor. These are extraordinary locations — and also locations that have become familiar to anyone who has spent time in Bali. For couples who want something that feels genuinely undiscovered, East Bali and Nusa Penida offer a different quality of experience entirely.</p><h2>East Bali: Volcanic Landscape and Ancient Calm</h2><p>The eastern regency of Karangasem — centred around Candidasa and Amed — offers a landscape shaped by the presence of Mount Agung. Black sand beaches, temple-dotted hillsides, and a slower pace of life characterise this part of the island. Wedding venues here are rare, which is precisely their appeal.</p><blockquote><p>The couples who choose East Bali are looking for something that cannot be found on a shortlist.</p></blockquote><h2>Nusa Penida: Raw and Untamed</h2><p>Nusa Penida, the largest of the three Nusa islands southeast of Bali, has a landscape unlike anywhere else in Indonesia. The cliffs are dramatic, the water is a particular shade of turquoise found almost nowhere else, and the sense of remoteness is genuine. Elopements and intimate ceremonies thrive here.</p>`,
+    content: `<h2>Melampaui Koridor Utama</h2><p>Sebagian besar pernikahan destinasi di Bali berlangsung di sepanjang koridor Canggu–Seminyak–Ubud–Uluwatu. Semuanya lokasi yang luar biasa — sekaligus lokasi yang sudah akrab bagi siapa pun yang pernah menghabiskan waktu di Bali. Bagi pasangan yang menginginkan sesuatu yang terasa benar-benar belum terjamah, Bali Timur dan Nusa Penida menawarkan kualitas pengalaman yang sama sekali berbeda.</p><h2>Bali Timur: Lanskap Vulkanik dan Ketenangan Kuno</h2><p>Kabupaten Karangasem di bagian timur — berpusat di sekitar Candidasa dan Amed — menawarkan lanskap yang dibentuk oleh kehadiran Gunung Agung. Pantai berpasir hitam, perbukitan yang dihiasi pura, dan ritme hidup yang lebih lambat menjadi ciri kawasan ini. Venue pernikahan di sini jarang ditemukan, dan itulah daya tariknya.</p><blockquote><p>Pasangan yang memilih Bali Timur mencari sesuatu yang tidak akan ditemukan dalam daftar pilihan mana pun.</p></blockquote><h2>Nusa Penida: Liar dan Belum Terjinakkan</h2><p>Nusa Penida, yang terbesar di antara tiga pulau Nusa di tenggara Bali, memiliki lanskap yang tidak ada duanya di Indonesia. Tebingnya dramatis, airnya berwarna toska yang nyaris tak ditemukan di tempat lain, dan rasa keterpencilannya benar-benar nyata. Elopement dan upacara intim tumbuh subur di sini.</p>`,
   },
   {
     id: "8",
     slug: "best-season-bali-wedding",
     category: "Destination Knowledge",
-    title: "Understanding Bali's Best Season for a Destination Wedding",
+    title: "Memahami Musim Terbaik di Bali untuk Pernikahan Destinasi",
     excerpt:
-      "Rain, heat, ceremony timings, and light — what couples planning a Bali wedding need to understand about seasons, month-by-month conditions, and environment.",
+      "Hujan, panas, waktu upacara, dan cahaya — yang perlu dipahami pasangan yang merencanakan pernikahan di Bali tentang musim, kondisi bulan demi bulan, dan lingkungan.",
     published_at: "2025-11-05",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383453/understanding-bali-seasons_uhltq2.png",
-    content: `<h2>Bali Has Two Seasons</h2><p>Bali's climate divides into a dry season — roughly April through October — and a wet season from November through March. For destination weddings, this distinction matters, but the nuances within each season are equally important to understand.</p><h2>The Dry Season Window</h2><p>July and August represent Bali's peak dry season: consistently clear skies, low humidity, and reliable conditions for outdoor ceremonies. These months are also the most popular — and the most competitive for venue and vendor availability. If you are planning a dry-season wedding, begin early.</p><blockquote><p>The light in June and July in Bali is genuinely extraordinary — golden, warm, and generous in its duration.</p></blockquote><h2>Shoulder Months</h2><p>May, June, and September–October offer excellent conditions with fewer crowds and more venue availability. These months represent some of the best overall value and experience for destination weddings in Bali.</p><h2>The Wet Season</h2><p>November through March brings afternoon and evening rain, though mornings are often clear and beautiful. Some couples specifically choose the wet season for its lower costs, lush green landscape, and intimate atmosphere. With thoughtful planning, a wet-season wedding can be just as extraordinary as any other.</p>`,
+    content: `<h2>Bali Memiliki Dua Musim</h2><p>Iklim Bali terbagi menjadi musim kemarau — kira-kira April hingga Oktober — dan musim hujan dari November hingga Maret. Untuk pernikahan destinasi, pembagian ini penting, tetapi nuansa di dalam setiap musim sama pentingnya untuk dipahami.</p><h2>Jendela Musim Kemarau</h2><p>Juli dan Agustus adalah puncak musim kemarau Bali: langit yang konsisten cerah, kelembapan rendah, dan kondisi yang dapat diandalkan untuk upacara di luar ruangan. Bulan-bulan ini juga yang paling populer — dan paling kompetitif untuk ketersediaan venue dan vendor. Jika Anda merencanakan pernikahan di musim kemarau, mulailah sejak dini.</p><blockquote><p>Cahaya di bulan Juni dan Juli di Bali sungguh luar biasa — keemasan, hangat, dan murah hati dalam durasinya.</p></blockquote><h2>Bulan-Bulan Peralihan</h2><p>Mei, Juni, dan September–Oktober menawarkan kondisi yang sangat baik dengan lebih sedikit keramaian dan ketersediaan venue yang lebih banyak. Bulan-bulan ini termasuk yang terbaik dalam hal nilai dan pengalaman secara keseluruhan untuk pernikahan destinasi di Bali.</p><h2>Musim Hujan</h2><p>November hingga Maret membawa hujan di sore dan malam hari, meski pagi hari sering kali cerah dan indah. Sebagian pasangan sengaja memilih musim hujan karena biayanya lebih rendah, lanskapnya yang hijau subur, dan suasananya yang intim. Dengan perencanaan yang matang, pernikahan di musim hujan bisa sama luar biasanya dengan yang lain.</p>`,
   },
 
   // ─── Venue & Location ─────────────────────────────────────────────────────────
@@ -208,114 +207,116 @@ export const articles: Article[] = [
     id: "9",
     slug: "private-villa-weddings-bali",
     category: "Venue & Location",
-    title: "Why Private Villa Weddings in Bali Create a Different Kind of Day",
+    title:
+      "Mengapa Pernikahan di Vila Pribadi Bali Menghadirkan Hari yang Berbeda",
     excerpt:
-      "Private villas offer complete creative freedom and an intimacy that resort weddings cannot replicate. Here is what makes them so compelling — and how to find the right one.",
+      "Vila pribadi menawarkan kebebasan kreatif penuh dan keintiman yang tidak dapat ditiru oleh pernikahan di resor. Inilah yang membuatnya begitu memikat — dan cara menemukan vila yang tepat.",
     published_at: "2025-10-15",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383457/why-private-villa_cqlz6o.png",
-    content: `<h2>The Private Villa Difference</h2><p>A private villa wedding in Bali operates on a fundamentally different logic to a resort or venue wedding. When you hire a villa, you hire an entire world — the compound, the staff, the pool, the gardens — for the exclusive use of you and your guests. This exclusivity creates conditions for a celebration that feels intimate, unhurried, and entirely your own.</p><h2>Creative Freedom</h2><p>Resort venues come with their own aesthetic infrastructure — furniture, linens, décor approaches — that inform and sometimes constrain the visual direction of a wedding. A private villa is, in most cases, a blank canvas. Every design decision is yours to make.</p><blockquote><p>The best private villa weddings feel less like an event and more like a very beautiful extension of daily life.</p></blockquote><h2>How to Find the Right Villa</h2><p>The right villa depends on your guest count, your location preference, and your aesthetic sensibility. Some villas are architecturally extraordinary; others offer the best outdoor spaces; others have kitchens and staff teams that support large-scale catering. Your planner's knowledge of Bali's villa landscape is invaluable here — many of the best properties are not listed publicly.</p>`,
+    content: `<h2>Perbedaan Vila Pribadi</h2><p>Pernikahan di vila pribadi di Bali beroperasi dengan logika yang pada dasarnya berbeda dari pernikahan di resor atau venue. Ketika Anda menyewa sebuah vila, Anda menyewa seluruh dunianya — kompleks, staf, kolam renang, taman — untuk penggunaan eksklusif Anda dan para tamu. Eksklusivitas ini menciptakan kondisi bagi perayaan yang terasa intim, tidak terburu-buru, dan sepenuhnya milik Anda.</p><h2>Kebebasan Kreatif</h2><p>Venue resor datang dengan infrastruktur estetikanya sendiri — furnitur, linen, pendekatan dekorasi — yang memengaruhi dan kadang membatasi arah visual sebuah pernikahan. Vila pribadi, dalam sebagian besar kasus, adalah kanvas kosong. Setiap keputusan desain ada di tangan Anda.</p><blockquote><p>Pernikahan vila pribadi terbaik terasa kurang seperti sebuah acara dan lebih seperti perpanjangan kehidupan sehari-hari yang sangat indah.</p></blockquote><h2>Cara Menemukan Vila yang Tepat</h2><p>Vila yang tepat bergantung pada jumlah tamu, preferensi lokasi, dan selera estetika Anda. Sebagian vila luar biasa secara arsitektur; yang lain menawarkan ruang luar terbaik; yang lain lagi memiliki dapur dan tim staf yang mendukung katering skala besar. Pengetahuan planner Anda tentang lanskap vila di Bali sangat berharga di sini — banyak properti terbaik tidak dipublikasikan secara terbuka.</p>`,
   },
   {
     id: "10",
     slug: "hidden-wedding-venues-bali",
     category: "Venue & Location",
     title:
-      "Hidden Estates and Boutique Venues: Bali's Best Kept Wedding Secrets",
+      "Estat Tersembunyi dan Venue Butik: Rahasia Pernikahan Terbaik Bali yang Terjaga",
     excerpt:
-      "Beyond well-known venues, Bali holds extraordinary hidden spaces — jungle estates, coastal properties, and boutique compounds that become entirely yours for the day.",
+      "Di luar venue yang sudah terkenal, Bali menyimpan ruang-ruang tersembunyi yang luar biasa — estat di tengah hutan, properti tepi pantai, dan kompleks butik yang menjadi sepenuhnya milik Anda selama sehari.",
     published_at: "2025-09-25",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383461/hidden-estate_xk8ijr.png",
-    content: `<h2>Bali's Hidden Layer</h2><p>The venues that appear on destination wedding shortlists are beautiful — but they are also known. Bali has a quieter layer of properties: jungle estates, converted colonial compounds, clifftop terraces with no formal wedding infrastructure, and boutique villas whose owners welcome carefully selected celebrations. These are the spaces that require local knowledge to access.</p><h2>What Makes a Hidden Venue</h2><p>Hidden venues are typically places that do not market themselves as wedding venues. They may be private residences made available for select events, architect-designed retreats with extraordinary spatial qualities, or small boutique properties whose owners are selective about the occasions they host. Finding them is a matter of trust and relationship.</p><blockquote><p>The most extraordinary spaces we have worked in were never on any public list.</p></blockquote><h2>Working with Hidden Venues</h2><p>Because these properties have not been designed for weddings, they require more planning infrastructure — catering logistics, power supply, lighting design, and staffing all need to be built from scratch. This is exactly where an experienced planner's value is most visible.</p>`,
+    content: `<h2>Lapisan Tersembunyi Bali</h2><p>Venue yang muncul dalam daftar pilihan pernikahan destinasi memang indah — tetapi juga sudah dikenal. Bali memiliki lapisan properti yang lebih sunyi: estat di tengah hutan, kompleks kolonial yang direnovasi, teras di tepi tebing tanpa infrastruktur pernikahan formal, dan vila butik yang pemiliknya menyambut perayaan-perayaan pilihan. Inilah ruang-ruang yang membutuhkan pengetahuan lokal untuk dapat diakses.</p><h2>Apa yang Membuat Sebuah Venue Tersembunyi</h2><p>Venue tersembunyi biasanya adalah tempat yang tidak mempromosikan diri sebagai venue pernikahan. Bisa berupa kediaman pribadi yang dibuka untuk acara tertentu, retret rancangan arsitek dengan kualitas ruang yang luar biasa, atau properti butik kecil yang pemiliknya selektif terhadap acara yang mereka terima. Menemukannya adalah soal kepercayaan dan hubungan.</p><blockquote><p>Ruang-ruang paling luar biasa yang pernah kami tangani tidak pernah ada dalam daftar publik mana pun.</p></blockquote><h2>Bekerja dengan Venue Tersembunyi</h2><p>Karena properti ini tidak dirancang untuk pernikahan, dibutuhkan lebih banyak infrastruktur perencanaan — logistik katering, pasokan listrik, desain pencahayaan, dan tenaga kerja semuanya harus dibangun dari nol. Justru di sinilah nilai seorang planner berpengalaman paling terlihat.</p>`,
   },
   // ─── Design & Concept ─────────────────────────────────────────────────────────
   {
     id: "13",
     slug: "designing-atmosphere-wedding",
     category: "Design & Concept",
-    title: "Designing Atmosphere: How Emotional Landscape Shapes a Wedding",
+    title:
+      "Merancang Suasana: Bagaimana Lanskap Emosi Membentuk Sebuah Pernikahan",
     excerpt:
-      "Great wedding design is not decoration — it is atmosphere. How we think about emotion, light, movement, and meaning when designing a wedding from the ground up.",
+      "Desain pernikahan yang hebat bukanlah dekorasi — melainkan suasana. Cara kami memikirkan emosi, cahaya, gerak, dan makna saat merancang pernikahan dari dasar.",
     published_at: "2025-07-30",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383890/elopment-wedding_xupkrb.png",
-    content: `<h2>What Atmosphere Actually Is</h2><p>Atmosphere is not what a wedding looks like. It is what a wedding feels like — and the difference between those two things is the difference between decoration and design. When we begin working with a couple, we are not beginning with florals or colour palettes. We are beginning with a question: what do you want people to feel?</p><h2>The Elements of Atmosphere</h2><p>Atmosphere is shaped by many converging forces: light quality and timing, the relationship between indoor and outdoor space, sound and silence, the density or spaciousness of the setting, the pace of the evening, the moments of stillness and movement. Florals are one thread in this. Every decision contributes.</p><blockquote><p>The flowers are the last thing we think about. The feeling is the first.</p></blockquote><h2>Working with Bali's Natural Atmosphere</h2><p>Bali has its own atmospheric intelligence — a quality of light, a quality of air, a presence in the landscape that is difficult to define but unmistakable. The best Bali wedding design does not compete with this atmosphere. It listens to it, works with it, and allows it to do the heavy lifting.</p><h2>Translating Feeling into Design</h2><p>When a couple tells us they want their wedding to feel like a long, unhurried dinner with their closest people — warm, generous, real — every subsequent design decision is held against that feeling. Does this choice support it? Does this add to it? Or is this just decoration?</p>`,
+    content: `<h2>Apa Sebenarnya Suasana Itu</h2><p>Suasana bukanlah tampilan sebuah pernikahan. Ia adalah bagaimana pernikahan itu terasa — dan perbedaan antara keduanya adalah perbedaan antara dekorasi dan desain. Ketika kami mulai bekerja dengan sepasang calon pengantin, kami tidak memulai dari bunga atau palet warna. Kami memulai dengan sebuah pertanyaan: apa yang ingin Anda buat orang lain rasakan?</p><h2>Unsur-Unsur Suasana</h2><p>Suasana dibentuk oleh banyak kekuatan yang bertemu: kualitas dan waktu cahaya, hubungan antara ruang dalam dan luar, suara dan keheningan, kepadatan atau kelapangan latar, tempo malam hari, momen-momen hening dan bergerak. Bunga hanyalah satu benang di dalamnya. Setiap keputusan memberi kontribusi.</p><blockquote><p>Bunga adalah hal terakhir yang kami pikirkan. Perasaan adalah yang pertama.</p></blockquote><h2>Bekerja dengan Suasana Alami Bali</h2><p>Bali memiliki kecerdasan atmosferiknya sendiri — kualitas cahaya, kualitas udara, kehadiran dalam lanskapnya yang sulit didefinisikan namun tak dapat disangkal. Desain pernikahan Bali terbaik tidak bersaing dengan suasana ini. Ia mendengarkannya, bekerja bersamanya, dan membiarkannya mengerjakan bagian yang berat.</p><h2>Menerjemahkan Perasaan menjadi Desain</h2><p>Ketika sepasang calon pengantin berkata bahwa mereka ingin pernikahan mereka terasa seperti makan malam panjang yang tidak terburu-buru bersama orang-orang terdekat — hangat, murah hati, nyata — setiap keputusan desain berikutnya diuji terhadap perasaan itu. Apakah pilihan ini mendukungnya? Apakah ini menambahnya? Atau ini hanya dekorasi?</p>`,
   },
   {
     id: "14",
     slug: "elopement-design-guide",
     category: "Design & Concept",
-    title: "Elopement Design: Creating Beauty for Two",
+    title: "Desain Elopement: Menciptakan Keindahan untuk Berdua",
     excerpt:
-      "Designing for an elopement requires a different sensibility — intimacy, poetry, and precision. How we approach the design of deeply personal, small-scale celebrations.",
+      "Merancang elopement membutuhkan kepekaan yang berbeda — keintiman, puisi, dan ketepatan. Cara kami menangani desain perayaan skala kecil yang sangat personal.",
     published_at: "2025-06-12",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383777/designing-atmosphere_yj5zou.png",
-    content: `<h2>The Elopement as Design Problem</h2><p>Designing for an elopement is a study in precision. Without the structural complexity of a large wedding — the table plan, the guest journey, the evening programme — the designer's attention converges entirely on the ceremony itself and the immediate experience of two people. Every element must earn its place.</p><h2>Scale as Liberation</h2><p>An elopement with a small design budget can achieve a level of considered beauty that a much larger wedding cannot, precisely because the focus is so narrow. A single extraordinary floral arrangement. One perfectly dressed table for two. A ceremony space that has been thought about with the same intensity usually reserved for an entire venue transformation.</p><blockquote><p>Elopements are where we do some of our most precise and poetic work. There is nowhere to hide, and that is what makes them extraordinary.</p></blockquote><h2>The Design Language of Intimacy</h2><p>Intimate celebrations require a different vocabulary from large weddings. Softer florals. More texture. The kind of detail that rewards close attention — a ribbon tied a particular way, a scent in the air, a choice of candle height that changes how the light falls. These things matter enormously when there are only two people to receive them.</p>`,
+    content: `<h2>Elopement sebagai Persoalan Desain</h2><p>Merancang elopement adalah studi tentang ketepatan. Tanpa kerumitan struktural pernikahan besar — denah meja, perjalanan tamu, program malam — perhatian desainer terpusat sepenuhnya pada upacara itu sendiri dan pengalaman langsung dua orang. Setiap elemen harus layak berada di tempatnya.</p><h2>Skala sebagai Pembebasan</h2><p>Elopement dengan anggaran desain kecil dapat mencapai tingkat keindahan yang matang, yang tidak bisa dicapai pernikahan yang jauh lebih besar, justru karena fokusnya sangat sempit. Satu rangkaian bunga yang luar biasa. Satu meja untuk berdua yang ditata sempurna. Ruang upacara yang dipikirkan dengan intensitas yang biasanya dicurahkan untuk transformasi seluruh venue.</p><blockquote><p>Elopement adalah tempat kami mengerjakan sebagian karya kami yang paling presisi dan puitis. Tidak ada tempat untuk bersembunyi, dan itulah yang membuatnya luar biasa.</p></blockquote><h2>Bahasa Desain Keintiman</h2><p>Perayaan yang intim membutuhkan kosakata yang berbeda dari pernikahan besar. Bunga yang lebih lembut. Lebih banyak tekstur. Jenis detail yang membalas perhatian yang dekat — pita yang diikat dengan cara tertentu, aroma di udara, pilihan tinggi lilin yang mengubah jatuhnya cahaya. Hal-hal ini sangat berarti ketika hanya ada dua orang yang menerimanya.</p>`,
   },
   {
     id: "15",
     slug: "botanical-bali-wedding-floral-design",
     category: "Design & Concept",
-    title: "Botanical Bali: Working with Local Flora in Wedding Design",
+    title: "Botani Bali: Bekerja dengan Flora Lokal dalam Desain Pernikahan",
     excerpt:
-      "Bali's tropical landscape offers extraordinary botanical material. How we draw from Bali's native flora to create floral and design identities that feel rooted in place.",
+      "Lanskap tropis Bali menawarkan bahan botani yang luar biasa. Cara kami menggali flora asli Bali untuk menciptakan identitas floral dan desain yang terasa berakar pada tempatnya.",
     published_at: "2025-05-01",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383711/botanical-wedding_uvhrdv.png",
-    content: `<h2>The Botanical Richness of Bali</h2><p>Bali sits at one of the world's great botanical crossroads. Tropical climate, volcanic soil, and a culture that has always placed flowers at the centre of daily and ceremonial life have produced a flora of extraordinary variety and visual intensity. Working with local plant material is not just an aesthetic choice — it is a way of grounding a wedding in its place.</p><h2>Working Local</h2><p>Our approach to floral design in Bali begins with what is actually growing — what is at peak abundance, what the season is offering, what the local markets have that is unexpected and beautiful. This approach produces designs that are fresher, more responsive, and more connected to Bali's actual landscape than a list of imported flowers ever could be.</p><blockquote><p>When you use what Bali gives you, the design feels like it belongs there. That rootedness is something you cannot fake.</p></blockquote><h2>Specific Botanical Languages</h2><p>Ubud weddings tend toward ferns, mosses, tropical leaves, and white flowers — a cooler, deeper palette drawn from the jungle environment. Uluwatu weddings often reach for stronger forms: sculptural tropical varieties, dried grasses, and colours that hold up against the brightness of the ocean and open sky. The location teaches the design.</p>`,
+    content: `<h2>Kekayaan Botani Bali</h2><p>Bali berada di salah satu persimpangan botani terbesar di dunia. Iklim tropis, tanah vulkanik, dan budaya yang sejak dulu menempatkan bunga di pusat kehidupan sehari-hari dan upacara telah melahirkan flora dengan keragaman dan intensitas visual yang luar biasa. Bekerja dengan bahan tanaman lokal bukan sekadar pilihan estetika — melainkan cara untuk menambatkan sebuah pernikahan pada tempatnya.</p><h2>Bekerja Secara Lokal</h2><p>Pendekatan kami terhadap desain floral di Bali dimulai dari apa yang benar-benar tumbuh — apa yang sedang melimpah, apa yang ditawarkan musim, apa yang ada di pasar lokal yang tak terduga dan indah. Pendekatan ini menghasilkan desain yang lebih segar, lebih responsif, dan lebih terhubung dengan lanskap Bali yang sebenarnya dibandingkan daftar bunga impor mana pun.</p><blockquote><p>Ketika Anda memakai apa yang diberikan Bali, desainnya terasa memang berada di sana. Keberakaran itu tidak bisa dipalsukan.</p></blockquote><h2>Bahasa Botani yang Spesifik</h2><p>Pernikahan di Ubud cenderung memakai pakis, lumut, dedaunan tropis, dan bunga putih — palet yang lebih sejuk dan dalam, diambil dari lingkungan hutan. Pernikahan di Uluwatu sering memilih bentuk yang lebih tegas: varietas tropis yang skulptural, rumput kering, dan warna yang tetap tampil di tengah terangnya laut dan langit terbuka. Lokasi yang mengajarkan desainnya.</p>`,
   },
   {
     id: "16",
     slug: "nusa-lembongan-wedding-between-land-and-sea",
     category: "Design & Concept",
-    title: "Between Land & Sea: A Wedding Ceremony Concept in Nusa Lembongan",
+    title: "Between Land & Sea: Konsep Upacara Pernikahan di Nusa Lembongan",
     excerpt:
-      "Explore Between Land & Sea, an intimate Nusa Lembongan wedding ceremony concept inspired by the island's coastline, natural textures and understated tropical beauty.",
+      "Jelajahi Between Land & Sea, konsep upacara pernikahan intim di Nusa Lembongan yang terinspirasi oleh garis pantai pulau, tekstur alami, dan keindahan tropis yang bersahaja.",
     published_at: "2026-08-28",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1787892363/Between_Land_Sea_z0jhic.png",
     content: `
-<p><em>Where the island meets the ocean, a celebration takes shape.</em></p>
-<p>Just beyond Bali, Nusa Lembongan has a rhythm of its own.</p>
-<p>The landscape feels raw yet gentle, shaped by the ocean, coastal textures, open skies and the changing light of the island. It was this relationship between <strong>land and sea</strong> that became the starting point for our latest ceremony concept.</p>
-<p><strong>Between Land &amp; Sea</strong> is an intimate wedding ceremony imagined for Nusa Lembongan, where design does not attempt to transform the landscape, but quietly becomes part of it.</p>
-<p>Rather than creating a setting that competes with the ocean, we wanted every element to feel as though it had naturally arrived there.</p>
+<p><em>Di tempat pulau bertemu samudra, sebuah perayaan mulai terbentuk.</em></p>
+<p>Tepat di seberang Bali, Nusa Lembongan memiliki iramanya sendiri.</p>
+<p>Lanskapnya terasa apa adanya namun lembut, dibentuk oleh laut, tekstur pesisir, langit yang terbuka, dan cahaya pulau yang selalu berubah. Hubungan antara <strong>daratan dan laut</strong> inilah yang menjadi titik awal konsep upacara terbaru kami.</p>
+<p><strong>Between Land &amp; Sea</strong> adalah upacara pernikahan intim yang dibayangkan untuk Nusa Lembongan, di mana desain tidak berusaha mengubah lanskap, melainkan diam-diam menjadi bagian darinya.</p>
+<p>Alih-alih menciptakan latar yang bersaing dengan samudra, kami ingin setiap elemen terasa seolah tiba di sana secara alami.</p>
 
-<h2>Designed Around the Island</h2>
-<p>The concept begins with the location itself.</p>
-<p>In Nusa Lembongan, the horizon already creates a remarkable backdrop. The movement of the sea brings its own atmosphere, while the textures of the coastline give the setting a beautifully imperfect character.</p>
-<p>Our approach was therefore one of restraint.</p>
-<p>Sculptural floral compositions are kept organic and low enough to preserve the view. Natural textures soften the ceremony setting, while negative space allows the surrounding landscape to remain visible.</p>
-<p>Nothing feels overly arranged. Nothing needs to compete for attention.</p>
-<p>The intention is to create a ceremony that feels <strong>quietly luxurious, romantic and deeply connected to place</strong>.</p>
+<h2>Dirancang di Sekitar Pulau</h2>
+<p>Konsep ini dimulai dari lokasinya sendiri.</p>
+<p>Di Nusa Lembongan, cakrawala sudah menciptakan latar yang luar biasa. Gerak laut membawa suasananya sendiri, sementara tekstur garis pantai memberi latar ini karakter yang tidak sempurna secara indah.</p>
+<p>Pendekatan kami karenanya adalah menahan diri.</p>
+<p>Komposisi floral yang skulptural dijaga tetap organik dan cukup rendah untuk mempertahankan pemandangan. Tekstur alami melembutkan latar upacara, sementara ruang kosong membiarkan lanskap di sekitarnya tetap terlihat.</p>
+<p>Tidak ada yang terasa terlalu ditata. Tidak ada yang perlu bersaing merebut perhatian.</p>
+<p>Tujuannya adalah menciptakan upacara yang terasa <strong>mewah dengan tenang, romantis, dan terhubung mendalam dengan tempatnya</strong>.</p>
 
 <h2>Between Land &amp; Sea</h2>
-<p>The name came naturally.</p>
-<p>There is something poetic about beginning a marriage at the meeting point between solid ground and an endless horizon.</p>
-<p>Land gives us a sense of grounding. The sea suggests movement, possibility and everything still ahead. The ceremony exists somewhere between the two.</p>
-<p>For us, this became more than an aesthetic direction. It became the emotional narrative behind the design.</p>
+<p>Namanya datang dengan sendirinya.</p>
+<p>Ada sesuatu yang puitis dalam memulai sebuah pernikahan di titik temu antara daratan yang kokoh dan cakrawala yang tak berujung.</p>
+<p>Daratan memberi kita rasa berpijak. Laut menyiratkan gerak, kemungkinan, dan segala yang masih ada di depan. Upacara ini berada di antara keduanya.</p>
+<p>Bagi kami, ini menjadi lebih dari sekadar arah estetika. Ini menjadi narasi emosional di balik desainnya.</p>
 
-<h2>Details That Reveal Themselves Slowly</h2>
-<p>From afar, the ceremony feels simple. Come closer, and the details begin to emerge.</p>
-<p>The irregular movement of florals. Layers of delicate foliage. Natural materials. Subtle textures catching the afternoon light.</p>
-<p>Rather than filling every space, each element is given room to breathe.</p>
-<p>This sense of restraint allows the smallest details to become more meaningful, something we believe is particularly important when designing an intimate destination wedding.</p>
+<h2>Detail yang Terungkap Perlahan</h2>
+<p>Dari kejauhan, upacara ini tampak sederhana. Mendekatlah, dan detailnya mulai muncul.</p>
+<p>Gerak bunga yang tidak beraturan. Lapisan dedaunan yang halus. Bahan-bahan alami. Tekstur lembut yang menangkap cahaya sore.</p>
+<p>Alih-alih mengisi setiap ruang, setiap elemen diberi ruang untuk bernapas.</p>
+<p>Rasa menahan diri ini membuat detail terkecil menjadi lebih bermakna, sesuatu yang kami yakini sangat penting saat merancang pernikahan destinasi yang intim.</p>
 
-<h2>Following the Light</h2>
-<p>The experience is also designed around the changing light of Nusa Lembongan.</p>
-<p>In the afternoon, the colours remain natural and luminous. As the sun begins to lower, warmer tones gradually appear across the landscape. Shadows lengthen, textures become softer and the ceremony begins to take on an entirely different mood.</p>
-<p>It is this transition that we wanted to preserve.</p>
-<p>Because a wedding setting is not a static photograph. It moves. It changes with the weather, the people, the light and the landscape around it.</p>
+<h2>Mengikuti Cahaya</h2>
+<p>Pengalamannya juga dirancang mengikuti cahaya Nusa Lembongan yang terus berubah.</p>
+<p>Di sore hari, warna-warnanya tetap alami dan berpendar. Saat matahari mulai turun, nuansa yang lebih hangat perlahan muncul di seluruh lanskap. Bayangan memanjang, tekstur menjadi lebih lembut, dan upacara mulai memiliki suasana yang sama sekali berbeda.</p>
+<p>Peralihan inilah yang ingin kami pertahankan.</p>
+<p>Karena latar pernikahan bukanlah foto yang diam. Ia bergerak. Ia berubah bersama cuaca, orang-orang, cahaya, dan lanskap di sekitarnya.</p>
 
-<h2>A Different Kind of Island Wedding</h2>
-<p>A destination wedding on a small island does not necessarily need more decoration to feel extraordinary. Sometimes, it needs less.</p>
-<p>A beautiful location. Thoughtful proportions. Flowers that appear almost naturally within the landscape. And enough space for the ocean to remain present.</p>
-<p><strong>Between Land &amp; Sea</strong> is our exploration of that idea, a Nusa Lembongan wedding ceremony where nature, design and emotion quietly meet.</p>
-<p>Because sometimes the most memorable setting is not the one that transforms a place. It is the one that allows you to experience it.</p>
-<blockquote><p><em>Between Land &amp; Sea is an original wedding design concept by Linda Wiryani Design &amp; Event Planning, created for an intimate destination wedding setting in Nusa Lembongan, Bali.</em></p>
-</blockquote><p><em>Conceptual imagery is used to communicate atmosphere, composition and creative direction. Final design is individually developed following venue assessment, technical feasibility, supplier consultation and each couple's story.</em></p>
+<h2>Jenis Pernikahan Pulau yang Berbeda</h2>
+<p>Pernikahan destinasi di pulau kecil tidak selalu membutuhkan lebih banyak dekorasi untuk terasa luar biasa. Kadang, ia membutuhkan lebih sedikit.</p>
+<p>Lokasi yang indah. Proporsi yang dipikirkan dengan matang. Bunga yang tampak hadir hampir secara alami di dalam lanskap. Dan ruang yang cukup agar samudra tetap terasa hadir.</p>
+<p><strong>Between Land &amp; Sea</strong> adalah eksplorasi kami atas gagasan itu, sebuah upacara pernikahan di Nusa Lembongan tempat alam, desain, dan emosi bertemu dengan tenang.</p>
+<p>Karena kadang latar yang paling berkesan bukanlah yang mengubah sebuah tempat. Melainkan yang memungkinkan Anda merasakannya.</p>
+<blockquote><p><em>Between Land &amp; Sea adalah konsep desain pernikahan orisinal dari Linda Wiryani Design &amp; Event Planning, dibuat untuk latar pernikahan destinasi yang intim di Nusa Lembongan, Bali.</em></p>
+</blockquote><p><em>Citra konseptual digunakan untuk menyampaikan suasana, komposisi, dan arah kreatif. Desain akhir dikembangkan secara individual setelah penilaian venue, kelayakan teknis, konsultasi pemasok, dan kisah masing-masing pasangan.</em></p>
 `,
   },
 ];

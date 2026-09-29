@@ -1,5 +1,3 @@
-// TODO(i18n): placeholder — currently mirrors English (article-data.en.ts).
-// Replace with real translated content when ready; shape must match article-data.en.ts exactly.
 import { Article } from "@/types";
 
 export const articles: Article[] = [
@@ -8,122 +6,122 @@ export const articles: Article[] = [
     id: "1",
     slug: "how-to-plan-destination-wedding-bali",
     category: "Guides",
-    title: "How to Plan a Destination Wedding in Bali: A Complete Guide",
+    title: "如何策划巴厘岛目的地婚礼：完整指南",
     excerpt:
-      "From defining your wedding experience to understanding legal requirements, this guide walks international couples through every stage of planning a destination wedding in Bali.",
+      "从确定您想要的婚礼体验，到了解法律要求，本指南将陪伴国际新人走过巴厘岛目的地婚礼筹备的每一个阶段。",
     published_at: "2026-03-05",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773318719/header2_y85db9.jpg",
     content: `
-<h2>Introduction</h2>
-<p>Planning a destination wedding in Bali is not only about choosing a beautiful island. It is about designing an experience that reflects who you are, how you wish to gather, and what you want your celebration to feel like.</p>
-<p>Bali offers a rare combination of dramatic landscapes, refined hospitality, living culture, and diverse environments — from ocean cliffs and private villas to jungle retreats and sacred valleys.</p>
-<p>Yet with this beauty comes complexity. A destination wedding requires thoughtful structure, local knowledge, and careful guidance — not only to create beauty, but to ensure calmness, flow, and meaning throughout the journey.</p>
-<p>This guide is written to help you understand how destination weddings in Bali truly work — beyond inspiration — and how to plan one with clarity and confidence.</p>
+<h2>引言</h2>
+<p>策划一场巴厘岛目的地婚礼，不只是挑选一座美丽的海岛。更重要的是设计一段体验，让它映照出您是怎样的人、希望以怎样的方式相聚，以及您期待庆典带来怎样的感受。</p>
+<p>巴厘岛拥有难得一见的组合：壮丽的自然景观、细腻的待客之道、鲜活的文化，以及多样的环境——从海边悬崖、私人别墅，到丛林度假村与神圣的山谷。</p>
+<p>然而，美景背后也伴随着复杂性。目的地婚礼需要周全的结构、本地的经验与细心的引导——不仅是为了营造美，更是为了让整个过程从容、流畅、充满意义。</p>
+<p>撰写这份指南，是为了帮助您了解巴厘岛目的地婚礼真正的运作方式——超越灵感本身——并以清晰而自信的姿态开始筹备。</p>
 
-<h2>Why Bali Remains One of the World's Most Desired Destination Wedding Locations</h2>
-<p>Bali is not one destination. It is many worlds within one island. Couples are drawn to Bali because it offers:</p>
+<h2>为何巴厘岛始终是全球最受向往的目的地婚礼之地</h2>
+<p>巴厘岛并不是单一的目的地，而是同一座岛屿上的许多个世界。新人被巴厘岛吸引，是因为这里拥有：</p>
 <ul>
-  <li><p>Dramatic oceanfront and cliffside landscapes</p></li>
-  <li><p>Lush jungle and riverside environments</p></li>
-  <li><p>Private villas and hidden estates</p></li>
-  <li><p>Five-star resorts and boutique retreats</p></li>
-  <li><p>A deeply spiritual and artistic culture</p></li>
+  <li><p>壮丽的海滨与悬崖景观</p></li>
+  <li><p>葱郁的丛林与河畔环境</p></li>
+  <li><p>私人别墅与隐秘庄园</p></li>
+  <li><p>五星级度假村与精品度假酒店</p></li>
+  <li><p>深具灵性与艺术气息的文化</p></li>
 </ul>
-<p>Within short distances, you can move between entirely different atmospheres — allowing weddings to be shaped around feeling, not only visuals. This diversity makes Bali uniquely suited for destination weddings, private villa weddings, intimate celebrations, elopements, and multi-day luxury experiences.</p>
+<p>在很短的距离内，您就能在截然不同的氛围之间切换——让婚礼围绕感受来塑造，而不只是视觉。这种多样性使巴厘岛格外适合目的地婚礼、私人别墅婚礼、亲密庆典、私奔婚礼以及为期数日的奢华体验。</p>
 
-<h2>Step One — Define the Experience You Want to Create</h2>
-<p>Before choosing a venue or style, the most important decision is: <strong>What kind of wedding experience are you creating?</strong></p>
-<p>In Bali, weddings are most successful when they are designed around experience rather than scale. Some couples are drawn to:</p>
+<h2>第一步 — 明确您想创造的体验</h2>
+<p>在选择场地或风格之前，最重要的决定是：<strong>您想创造怎样的婚礼体验？</strong></p>
+<p>在巴厘岛，以体验而非规模为核心设计的婚礼最容易成功。有些新人向往：</p>
 <ul>
-  <li><p>Destination celebrations with friends and family</p></li>
-  <li><p>Private villa weddings that unfold over several days</p></li>
-  <li><p>Intimate weddings centered on connection</p></li>
-  <li><p>Elopements focused on presence and place</p></li>
-  <li><p>Luxury experiences defined by design and flow</p></li>
+  <li><p>与亲友共度的目的地庆典</p></li>
+  <li><p>持续数日的私人别墅婚礼</p></li>
+  <li><p>以情感联结为核心的亲密婚礼</p></li>
+  <li><p>专注于当下与地点的私奔婚礼</p></li>
+  <li><p>由设计与流程定义的奢华体验</p></li>
 </ul>
-<p>Understanding this from the beginning will guide every other choice — from location to guest experience, design direction, and budget structure.</p>
+<p>从一开始就想清楚这一点，将指引之后的每一个选择——从地点到宾客体验、设计方向与预算结构。</p>
 
-<h2>Step Two — Choose the Right Area of Bali</h2>
-<p>Each region of Bali carries a distinct emotional quality. Choosing the right area is less about popularity, and more about resonance.</p>
+<h2>第二步 — 选择巴厘岛合适的区域</h2>
+<p>巴厘岛的每个区域都有独特的情感气质。选择合适的区域，与其说看重人气，不如说看重共鸣。</p>
 <ul>
-  <li><p><strong>Uluwatu</strong> — dramatic cliffs, ocean horizons, refined and cinematic</p></li>
-  <li><p><strong>Ubud &amp; Tegalalang</strong> — jungle, rivers, spirituality, artistic energy</p></li>
-  <li><p><strong>Canggu</strong> — creative, modern, private villa lifestyle</p></li>
-  <li><p><strong>Seminyak</strong> — boutique luxury, central elegance</p></li>
-  <li><p><strong>Nusa Dua</strong> — resort luxury, beachfront formality</p></li>
-  <li><p><strong>East Bali</strong> — sacred mountains, quiet valleys, soulful landscapes</p></li>
-  <li><p><strong>Tabanan</strong> — rice fields, hidden estates, sustainable luxury</p></li>
-  <li><p><strong>Nusa Penida</strong> — remote, cinematic, adventure-driven</p></li>
-  <li><p><strong>North Bali</strong> — eco-luxury, national parks, retreat environments</p></li>
+  <li><p><strong>乌鲁瓦图</strong> — 壮丽的悬崖、海洋地平线，精致而具电影感</p></li>
+  <li><p><strong>乌布与德格拉朗</strong> — 丛林、河流、灵性与艺术能量</p></li>
+  <li><p><strong>仓古</strong> — 创意、现代、私人别墅生活方式</p></li>
+  <li><p><strong>水明漾</strong> — 精品奢华、位居中心的优雅</p></li>
+  <li><p><strong>努沙杜瓦</strong> — 度假村式奢华、海滨的正式感</p></li>
+  <li><p><strong>巴厘岛东部</strong> — 神圣的山峦、宁静的山谷、触动心灵的风景</p></li>
+  <li><p><strong>塔巴南</strong> — 稻田、隐秘庄园、可持续的奢华</p></li>
+  <li><p><strong>佩尼达岛</strong> — 遥远、具电影感、充满冒险气息</p></li>
+  <li><p><strong>巴厘岛北部</strong> — 生态奢华、国家公园、静修式环境</p></li>
 </ul>
-<p>Your destination choice shapes not only your venue — but your entire wedding atmosphere.</p>
+<p>您选择的目的地，塑造的不仅是场地——而是整场婚礼的氛围。</p>
 
-<h2>Step Three — Select a Venue That Supports Your Story</h2>
-<p>In Bali, venues are not interchangeable. A venue determines guest flow, ceremony atmosphere, design potential, logistical complexity, and emotional rhythm.</p>
-<p>Common Bali wedding settings include:</p>
+<h2>第三步 — 选择能够承载您故事的场地</h2>
+<p>在巴厘岛，场地无法互相替代。场地决定了宾客动线、仪式氛围、设计潜力、后勤复杂度以及情感节奏。</p>
+<p>巴厘岛常见的婚礼场景包括：</p>
 <ul>
-  <li><p>Private villas and estates</p></li>
-  <li><p>Cliffside venues</p></li>
-  <li><p>Jungle and riverside retreats</p></li>
-  <li><p>Boutique resorts</p></li>
-  <li><p>Eco-resorts and national park environments</p></li>
+  <li><p>私人别墅与庄园</p></li>
+  <li><p>悬崖场地</p></li>
+  <li><p>丛林与河畔静修地</p></li>
+  <li><p>精品度假酒店</p></li>
+  <li><p>生态度假村与国家公园环境</p></li>
 </ul>
-<p>Rather than asking <em>"what looks beautiful,"</em> the better question is: <em>"What environment supports the experience we want to create?"</em></p>
+<p>与其问 <em>“什么看起来美，”</em> 更好的问题是：<em>“怎样的环境能支持我们想创造的体验？”</em></p>
 
-<h2>Step Four — Understand the Planning Structure</h2>
-<p>A destination wedding in Bali involves layers that couples often don't see. These include:</p>
+<h2>第四步 — 了解筹备的整体架构</h2>
+<p>巴厘岛的目的地婚礼包含许多新人往往看不到的层面，包括：</p>
 <ul>
-  <li><p>Local vendor coordination</p></li>
-  <li><p>Venue and regional logistics</p></li>
-  <li><p>Guest experience design</p></li>
-  <li><p>Ceremony planning</p></li>
-  <li><p>Cultural and environmental considerations</p></li>
-  <li><p>Design development</p></li>
-  <li><p>Production flow</p></li>
+  <li><p>本地供应商的协调</p></li>
+  <li><p>场地与区域间的后勤</p></li>
+  <li><p>宾客体验设计</p></li>
+  <li><p>仪式规划</p></li>
+  <li><p>文化与环境方面的考量</p></li>
+  <li><p>设计开发</p></li>
+  <li><p>执行流程</p></li>
 </ul>
-<p>A professional destination wedding studio manages not only vendors, but systems — ensuring that creativity is supported by structure. This is what allows weddings to feel calm, not chaotic.</p>
+<p>专业的目的地婚礼工作室管理的不只是供应商，还有整套系统——确保创意有结构作为支撑。这正是婚礼能够从容而非混乱的原因。</p>
 
-<h2>Step Five — Design the Experience, Not Just the Decor</h2>
-<p>Design in destination weddings goes far beyond flowers and styling. It includes how guests arrive, how spaces transition, how the ceremony unfolds, how sound, light, and movement interact, how moments are paced, and how intimacy is protected.</p>
+<h2>第五步 — 设计体验，而不只是装饰</h2>
+<p>目的地婚礼中的设计远不止于鲜花与造型。它包括宾客如何抵达、空间如何转换、仪式如何展开、声音、光线与动线如何交织、时刻的节奏如何把握，以及如何守护亲密感。</p>
 <blockquote>
-  <p>The most meaningful weddings in Bali are those where design supports emotion, not distraction.</p>
+  <p>巴厘岛最有意义的婚礼，是设计为情感服务，而非令人分心的婚礼。</p>
 </blockquote>
 
-<h2>Step Six — Plan for Your Guest Experience</h2>
-<p>Destination weddings are shared journeys. Guest experience planning includes:</p>
+<h2>第六步 — 规划您的宾客体验</h2>
+<p>目的地婚礼是一段共同的旅程。宾客体验规划包括：</p>
 <ul>
-  <li><p>Travel flow</p></li>
-  <li><p>Accommodation selection</p></li>
-  <li><p>Welcome moments</p></li>
-  <li><p>Shared meals</p></li>
-  <li><p>Day-after experiences</p></li>
-  <li><p>Cultural sensitivity</p></li>
-  <li><p>Comfort and accessibility</p></li>
+  <li><p>出行动线</p></li>
+  <li><p>住宿选择</p></li>
+  <li><p>欢迎时刻</p></li>
+  <li><p>共享餐叙</p></li>
+  <li><p>婚礼次日的体验</p></li>
+  <li><p>文化敏感度</p></li>
+  <li><p>舒适与无障碍</p></li>
 </ul>
-<p>Well-designed destination weddings feel welcoming, unrushed, intuitive, connected, and considered. This is where professional planning has its greatest impact.</p>
+<p>精心设计的目的地婚礼让人感到被欢迎、不匆忙、顺畅、有联结、处处体贴。这正是专业策划发挥最大作用之处。</p>
 
-<h2>When to Begin Planning a Bali Destination Wedding</h2>
-<p>Ideally, couples begin planning 10–14 months before their wedding — earlier for private villas, peak seasons, or multi-day celebrations. This allows time for concept development, venue access, thoughtful design, guest planning, and calm execution.</p>
+<h2>何时开始筹备巴厘岛目的地婚礼</h2>
+<p>理想情况下，新人在婚礼前 10–14 个月开始筹备——私人别墅、旺季或为期数日的庆典则需更早。这样才有时间进行概念开发、锁定场地、用心设计、安排宾客，并从容执行。</p>
 <blockquote>
-  <p>The couples who feel most at ease on their wedding day are invariably those who gave themselves the gift of time in the planning phase.</p>
+  <p>在婚礼当天感觉最自在的新人，无一例外都是在筹备阶段给了自己时间这份礼物的人。</p>
 </blockquote>
 
-<h2>Begin Your Destination Wedding Journey</h2>
-<p>If you are exploring a destination wedding in Bali, we invite you to begin with clarity rather than checklists. Each celebration is custom-designed and intentionally guided — shaped around place, emotion, and artistry.</p>
+<h2>开启您的目的地婚礼之旅</h2>
+<p>如果您正在考虑巴厘岛目的地婚礼，我们邀请您从清晰的想法开始，而不是从清单开始。每一场庆典都是量身设计、用心引导的——围绕地点、情感与艺术而塑造。</p>
   `,
   },
   {
     id: "2",
     slug: "destination-wedding-budget-bali",
     category: "Guides",
-    title: "Destination Wedding Budgeting: What to Expect in Bali",
+    title: "目的地婚礼预算：巴厘岛费用一览",
     excerpt:
-      "A transparent look at destination wedding costs in Bali — from venue hire to vendor fees, travel logistics, and where to invest for the most meaningful impact.",
+      "坦诚解析巴厘岛目的地婚礼的费用——从场地租赁到供应商费用、出行后勤，以及哪里值得投入才最有意义。",
     published_at: "2026-02-18",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773384839/destination-wedding-budgeting_k4xrpr.png",
-    content: `<h2>The Cost Landscape</h2><p>Bali offers an exceptional value proposition for destination weddings — world-class venues, highly skilled vendors, and extraordinary natural settings at a fraction of the cost of comparable options in Europe or North America. That said, a Bali destination wedding is still a significant investment, and understanding where costs accumulate is essential to planning with clarity.</p><h2>Key Cost Categories</h2><p>Venue hire typically represents the largest single line item, followed by catering, florals and design, photography and film, and planner fees. Travel and accommodation logistics — for you and your guests — require careful budgeting and early coordination.</p><blockquote><p>Knowing where to invest and where to simplify is the mark of thoughtful destination wedding planning.</p></blockquote><h2>Where to Invest</h2><p>Photography and film are the enduring record of your day — these are worth a considered investment. The same applies to your planner, whose expertise directly affects the quality of every other vendor relationship and decision made on your behalf.</p>`,
+    content: `<h2>费用概览</h2><p>巴厘岛为目的地婚礼提供了极高的性价比——世界级的场地、技艺精湛的供应商，以及非凡的自然环境，而费用只是欧洲或北美同类选择的一小部分。即便如此，巴厘岛目的地婚礼依然是一笔可观的投入，了解费用主要花在哪里，是清晰筹备的关键。</p><h2>主要费用类别</h2><p>场地租赁通常是单项最大的支出，其次是餐饮、鲜花与设计、摄影与摄像，以及策划师费用。您与宾客的出行和住宿后勤需要仔细编列预算并及早协调。</p><blockquote><p>懂得在哪里投入、在哪里简化，是用心策划目的地婚礼的标志。</p></blockquote><h2>哪里值得投入</h2><p>摄影与摄像是您这一天长久的记录——值得慎重投入。策划师同样如此，其专业能力直接影响到您委托处理的每一段供应商关系与每一个决定的质量。</p>`,
   },
 
   // ─── Planning Advice ──────────────────────────────────────────────────────────
@@ -131,37 +129,37 @@ export const articles: Article[] = [
     id: "3",
     slug: "wedding-planning-timeline-bali",
     category: "Planning Advice",
-    title: "The Ideal Wedding Planning Timeline for a Bali Destination Wedding",
+    title: "巴厘岛目的地婚礼的理想筹备时间表",
     excerpt:
-      "Understanding what needs to happen and when — a month-by-month planning timeline shaped by years of real destination wedding experience in Bali.",
+      "了解什么事情需要在何时完成——一份逐月的筹备时间表，源自多年巴厘岛目的地婚礼的真实经验。",
     published_at: "2026-02-01",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773382639/the-ideal-wedding-planning-timeline_kv3oso.jpg",
-    content: `<h2>Why Timeline Matters More for Destination Weddings</h2><p>In destination wedding planning, the timeline is not a suggestion — it is a structural framework that determines what is available to you and what is not. Popular venues and vendors in Bali book out twelve to eighteen months in advance during peak season. Working backwards from your preferred date, with clear decision points, is how you avoid compromising on the elements that matter most.</p><h2>Eighteen to Twelve Months Out</h2><p>At this stage, your priorities are: setting your approximate guest count, establishing your budget framework, researching locations within Bali, and beginning conversations with wedding planners. The planner relationship begins here — before venues, before vendors, before anything else.</p><h2>Twelve to Eight Months Out</h2><p>With your planner engaged, the focus shifts to venue confirmation, vendor shortlisting, and guest communication. Save-the-dates should go out no later than ten months before the wedding for international guests.</p><blockquote><p>A clear timeline is not a constraint — it is the structure within which great weddings are built.</p></blockquote>`,
+    content: `<h2>为何时间表对目的地婚礼更为重要</h2><p>在目的地婚礼的筹备中，时间表不是建议——而是决定您能得到什么、得不到什么的结构性框架。旺季时，巴厘岛热门的场地和供应商会提前十二至十八个月被订满。从您理想的日期倒推，设定清晰的决策节点，才能避免在最重要的环节上妥协。</p><h2>十八至十二个月前</h2><p>在这个阶段，您的重点是：确定大致的宾客人数、建立预算框架、研究巴厘岛内的地点，并开始与婚礼策划师交流。与策划师的合作从这里开始——先于场地，先于供应商，先于其他一切。</p><h2>十二至八个月前</h2><p>策划师就位后，重点转向确认场地、筛选供应商以及与宾客沟通。对于海外宾客，请在婚礼前不晚于十个月发出婚期通知。</p><blockquote><p>清晰的时间表不是束缚——而是成就伟大婚礼的结构。</p></blockquote>`,
   },
   {
     id: "4",
     slug: "destination-wedding-mistakes-to-avoid",
     category: "Planning Advice",
-    title: "5 Common Destination Wedding Mistakes and How to Avoid Them",
+    title: "目的地婚礼的 5 个常见错误及避免方法",
     excerpt:
-      "Drawn from real planning journeys, these are the missteps couples most often encounter when planning a destination wedding — and how thoughtful preparation prevents them.",
+      "源自真实的筹备历程，这些是新人在筹备目的地婚礼时最常遇到的失误——以及周全的准备如何避免它们。",
     published_at: "2026-01-15",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773382646/5-common-destination_jg19wl.jpg",
-    content: `<h2>The Patterns We See</h2><p>After planning destination weddings in Bali for many years, certain planning mistakes appear again and again — not from carelessness, but from the sheer complexity of planning a significant event from a distance. Understanding these patterns is the first step to avoiding them.</p><h2>1. Underestimating the Lead Time Required</h2><p>The most common mistake is beginning the planning process too late. Twelve months should be considered the minimum for a Bali destination wedding; eighteen is far more comfortable.</p><h2>2. Choosing Vendors Without Local Knowledge</h2><p>Vendor quality in Bali varies widely, and online reviews do not always reflect the on-the-ground reality. Working with an experienced local planner gives you access to a vetted, trusted vendor network built through real working relationships.</p><h2>3. Neglecting the Guest Experience</h2><p>Your guests are travelling significant distances. A destination wedding that considers their journey — with clear information, accommodation guidance, and thoughtful touch-points — is remembered very differently to one that does not.</p><blockquote><p>The couples who avoid these mistakes share a common quality: they ask for help early and trust the people around them.</p></blockquote><h2>4. Over-Designing at the Expense of Atmosphere</h2><p>Bali's natural environment is extraordinary. Some of the most memorable weddings we have been part of were those that allowed the setting to do much of the work, rather than filling every moment with detail.</p><h2>5. Leaving Legal Logistics Too Late</h2><p>If you intend to legally marry in Bali, the documentation requirements need to begin months in advance. Many couples simplify this by handling their legal ceremony at home and celebrating symbolically in Bali.</p>`,
+    content: `<h2>我们看到的规律</h2><p>多年策划巴厘岛目的地婚礼之后，某些筹备错误一再出现——并非出于疏忽，而是因为远距离筹备一场重要活动本身就极为复杂。了解这些规律，是避开它们的第一步。</p><h2>1. 低估所需的准备时间</h2><p>最常见的错误是过晚开始筹备。对于巴厘岛目的地婚礼，十二个月应视为最低限度；十八个月则从容得多。</p><h2>2. 在缺乏本地知识的情况下选择供应商</h2><p>巴厘岛的供应商质量参差不齐，网上评价也不一定反映实际情况。与经验丰富的本地策划师合作，能让您接触到通过真实合作关系建立起来的、经过筛选且值得信赖的供应商网络。</p><h2>3. 忽视宾客体验</h2><p>您的宾客要长途跋涉而来。一场考虑到他们旅程的目的地婚礼——有清晰的信息、住宿指引和体贴的细节——与没有这些考虑的婚礼，留给人的记忆截然不同。</p><blockquote><p>避开这些错误的新人有一个共同点：他们及早寻求帮助，并信任身边的人。</p></blockquote><h2>4. 过度设计而牺牲氛围</h2><p>巴厘岛的自然环境非同凡响。我们参与过的一些最难忘的婚礼，正是那些让环境本身承担大部分工作，而不是把每一刻都填满细节的婚礼。</p><h2>5. 法律手续拖得太晚</h2><p>如果您打算在巴厘岛办理合法婚姻，文件要求需要提前数月着手。许多新人选择在本国完成法律仪式，再在巴厘岛举行象征性的庆典，以简化流程。</p>`,
   },
   {
     id: "5",
     slug: "guest-experience-destination-wedding",
     category: "Planning Advice",
-    title: "Designing Your Guest Experience for a Destination Wedding",
+    title: "为目的地婚礼设计宾客体验",
     excerpt:
-      "Your guests are traveling far to celebrate with you. Here is how to design a travel experience that feels generous, thoughtful, and unforgettable.",
+      "您的宾客远道而来与您共同庆祝。以下是如何设计一段慷慨、体贴且令人难忘的旅行体验。",
     published_at: "2025-12-28",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383429/designing-your-guest_mps7lh.png",
-    content: `<h2>Guests Are Giving You Something Significant</h2><p>When someone travels internationally to celebrate your wedding, they are making a meaningful commitment of time, money, and energy. Acknowledging that — through the way you design their experience around the wedding — creates a relationship of genuine generosity that guests feel and remember.</p><h2>Communication is the Foundation</h2><p>Clear, well-timed information removes anxiety from the travel planning process. A dedicated wedding website with flight guidance, accommodation recommendations at multiple price points, and a clear event schedule allows guests to plan with confidence and excitement rather than uncertainty.</p><h2>Create Moments Beyond the Wedding Day</h2><p>The most warmly remembered destination weddings create a sense of shared experience across the entire trip. A welcome dinner, a morning activity, a curated map of local experiences — these additions do not need to be elaborate to be meaningful.</p><blockquote><p>The most generous thing a couple can do for their guests is to think about the trip, not just the day.</p></blockquote>`,
+    content: `<h2>宾客给予了您一份重要的心意</h2><p>当有人跨越国界前来参加您的婚礼，他们付出的是时间、金钱与精力上的郑重承诺。通过围绕婚礼所设计的体验来回应这份心意，能建立起宾客切身感受并铭记于心的真诚慷慨。</p><h2>沟通是基础</h2><p>清晰、及时的信息能消除出行筹备中的焦虑。一个专属的婚礼网站，提供航班指引、多个价位的住宿推荐以及清晰的活动日程，让宾客能带着信心与期待，而不是不确定感来规划行程。</p><h2>创造婚礼日之外的时刻</h2><p>最令人温暖怀念的目的地婚礼，会在整段旅程中营造共同经历的感觉。一场欢迎晚宴、一项清晨活动、一张精心整理的本地体验地图——这些补充不必华丽，也同样意义非凡。</p><blockquote><p>新人能为宾客做的最慷慨的事，就是为整趟旅程着想，而不只是那一天。</p></blockquote>`,
   },
 
   // ─── Destination Knowledge ────────────────────────────────────────────────────
@@ -169,38 +167,37 @@ export const articles: Article[] = [
     id: "6",
     slug: "ubud-vs-uluwatu-bali-wedding-location",
     category: "Destination Knowledge",
-    title: "Ubud vs Uluwatu: Choosing the Right Bali Wedding Location",
+    title: "乌布 vs 乌鲁瓦图：如何选择巴厘岛婚礼地点",
     excerpt:
-      "Jungle serenity or clifftop drama? This guide breaks down the atmosphere, environment, and couple profiles that suit each of Bali's most beloved wedding destinations.",
+      "丛林的宁静，还是悬崖的壮丽？本指南解析巴厘岛两大最受喜爱的婚礼目的地各自的氛围、环境，以及适合的新人类型。",
     published_at: "2025-12-10",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383433/ubud-vs-uluwatu_tinzk5.png",
-    content: `<h2>Two Different Balis</h2><p>Ubud and Uluwatu are both extraordinary settings for a destination wedding, but they offer fundamentally different experiences — in atmosphere, environment, logistics, and the kind of celebration each makes possible. Understanding these differences is the starting point for choosing the location that is right for you.</p><h2>Ubud: Jungle, Culture, Quiet</h2><p>Ubud sits in the heart of Bali's central highlands, surrounded by rice terraces, river valleys, and dense tropical jungle. The atmosphere is one of depth and quiet — a landscape that feels ancient, layered, and resolutely unhurried. Weddings here tend toward intimacy, ceremony, and considered beauty.</p><blockquote><p>Ubud weddings are remembered for their stillness and their sense of place.</p></blockquote><h2>Uluwatu: Cliffs, Ocean, Drama</h2><p>Uluwatu occupies Bali's southern Bukit Peninsula, where limestone cliffs drop to the Indian Ocean. The landscape is dramatic and open — extraordinary at golden hour, spectacular at sunset. Weddings here have a different energy: elevated, expansive, cinematic.</p><h2>How to Choose</h2><p>The question to ask is not which location is more beautiful — both are extraordinary. The question is which atmosphere resonates with how you want to feel on your wedding day. Couples drawn to intimacy, nature, and quiet tend toward Ubud. Couples drawn to drama, views, and celebration tend toward Uluwatu.</p>`,
+    content: `<h2>两个不同的巴厘岛</h2><p>乌布与乌鲁瓦图都是目的地婚礼的绝佳场所，但它们提供的体验本质上截然不同——无论是氛围、环境、后勤，还是所能成就的庆典类型。了解这些差异，是选出适合您的地点的起点。</p><h2>乌布：丛林、文化、宁静</h2><p>乌布位于巴厘岛中部高地的中心，被梯田、河谷和茂密的热带丛林环抱。这里的氛围深邃而宁静——景观显得古老、层次丰富、从容不迫。这里的婚礼往往偏向亲密、仪式感与用心的美。</p><blockquote><p>乌布的婚礼，因其静谧与浓厚的地方感而被人铭记。</p></blockquote><h2>乌鲁瓦图：悬崖、海洋、壮丽</h2><p>乌鲁瓦图位于巴厘岛南部的武吉半岛，石灰岩悬崖直落印度洋。景观壮阔而开阔——黄金时刻令人惊叹，日落时分更是壮观。这里的婚礼有着不同的能量：高远、开阔、具电影感。</p><h2>如何选择</h2><p>要问的问题不是哪个地点更美——两者都非同凡响。真正的问题是：哪种氛围与您希望在婚礼当天拥有的感受产生共鸣。向往亲密、自然与宁静的新人，倾向于乌布；向往壮观、景致与庆祝氛围的新人，则倾向于乌鲁瓦图。</p>`,
   },
   {
     id: "7",
     slug: "east-bali-nusa-penida-wedding-destinations",
     category: "Destination Knowledge",
-    title:
-      "East Bali and Nusa Penida: Hidden Wedding Destinations Worth Knowing",
+    title: "巴厘岛东部与佩尼达岛：值得了解的隐秘婚礼目的地",
     excerpt:
-      "Away from Bali's most visited corridors, East Bali and Nusa Penida offer raw beauty, quietude, and wedding experiences that feel genuinely undiscovered.",
+      "远离巴厘岛最热门的游览线路，巴厘岛东部与佩尼达岛拥有原始之美、宁静氛围，以及真正未被发现的婚礼体验。",
     published_at: "2025-11-20",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383434/eastbali-vs-nusa-penida_jme7zc.png",
-    content: `<h2>Beyond the Main Corridor</h2><p>Most destination weddings in Bali take place along the Canggu–Seminyak–Ubud–Uluwatu corridor. These are extraordinary locations — and also locations that have become familiar to anyone who has spent time in Bali. For couples who want something that feels genuinely undiscovered, East Bali and Nusa Penida offer a different quality of experience entirely.</p><h2>East Bali: Volcanic Landscape and Ancient Calm</h2><p>The eastern regency of Karangasem — centred around Candidasa and Amed — offers a landscape shaped by the presence of Mount Agung. Black sand beaches, temple-dotted hillsides, and a slower pace of life characterise this part of the island. Wedding venues here are rare, which is precisely their appeal.</p><blockquote><p>The couples who choose East Bali are looking for something that cannot be found on a shortlist.</p></blockquote><h2>Nusa Penida: Raw and Untamed</h2><p>Nusa Penida, the largest of the three Nusa islands southeast of Bali, has a landscape unlike anywhere else in Indonesia. The cliffs are dramatic, the water is a particular shade of turquoise found almost nowhere else, and the sense of remoteness is genuine. Elopements and intimate ceremonies thrive here.</p>`,
+    content: `<h2>超越主要线路</h2><p>巴厘岛的大多数目的地婚礼集中在仓古–水明漾–乌布–乌鲁瓦图这条线路上。这些地方非同凡响——但也是任何在巴厘岛待过一段时间的人都已熟悉的地方。对于想要真正未被发现之感的新人，巴厘岛东部与佩尼达岛提供了完全不同的体验品质。</p><h2>巴厘岛东部：火山景观与古老的宁静</h2><p>东部的卡朗阿森县——以金塔马尼、坎迪达萨和阿曼为中心——拥有一片由阿贡火山塑造的风景。黑沙滩、点缀着寺庙的山坡，以及更缓慢的生活节奏，是这片区域的特色。这里的婚礼场地十分稀少，而这正是它们的魅力所在。</p><blockquote><p>选择巴厘岛东部的新人，寻找的是任何候选清单上都找不到的东西。</p></blockquote><h2>佩尼达岛：原始而不羁</h2><p>佩尼达岛是巴厘岛东南方三座努沙岛中最大的一座，拥有印度尼西亚其他地方看不到的景观。悬崖壮丽，海水呈现一种几乎别处难寻的独特青绿色，与世隔绝的感觉真实可触。私奔婚礼与亲密仪式在这里格外相宜。</p>`,
   },
   {
     id: "8",
     slug: "best-season-bali-wedding",
     category: "Destination Knowledge",
-    title: "Understanding Bali's Best Season for a Destination Wedding",
+    title: "了解巴厘岛目的地婚礼的最佳季节",
     excerpt:
-      "Rain, heat, ceremony timings, and light — what couples planning a Bali wedding need to understand about seasons, month-by-month conditions, and environment.",
+      "降雨、炎热、仪式时间与光线——计划巴厘岛婚礼的新人需要了解的季节、逐月状况与环境。",
     published_at: "2025-11-05",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383453/understanding-bali-seasons_uhltq2.png",
-    content: `<h2>Bali Has Two Seasons</h2><p>Bali's climate divides into a dry season — roughly April through October — and a wet season from November through March. For destination weddings, this distinction matters, but the nuances within each season are equally important to understand.</p><h2>The Dry Season Window</h2><p>July and August represent Bali's peak dry season: consistently clear skies, low humidity, and reliable conditions for outdoor ceremonies. These months are also the most popular — and the most competitive for venue and vendor availability. If you are planning a dry-season wedding, begin early.</p><blockquote><p>The light in June and July in Bali is genuinely extraordinary — golden, warm, and generous in its duration.</p></blockquote><h2>Shoulder Months</h2><p>May, June, and September–October offer excellent conditions with fewer crowds and more venue availability. These months represent some of the best overall value and experience for destination weddings in Bali.</p><h2>The Wet Season</h2><p>November through March brings afternoon and evening rain, though mornings are often clear and beautiful. Some couples specifically choose the wet season for its lower costs, lush green landscape, and intimate atmosphere. With thoughtful planning, a wet-season wedding can be just as extraordinary as any other.</p>`,
+    content: `<h2>巴厘岛有两个季节</h2><p>巴厘岛的气候分为旱季——大约从四月到十月——和从十一月到三月的雨季。对目的地婚礼而言，这一区分很重要，但每个季节内部的细微差别同样值得了解。</p><h2>旱季的黄金时段</h2><p>七月和八月是巴厘岛旱季的高峰：天空持续晴朗、湿度低，户外仪式的天气可靠。这几个月也最受欢迎——场地和供应商的档期竞争最为激烈。如果您计划旱季婚礼，请尽早开始。</p><blockquote><p>巴厘岛六月和七月的光线着实非凡——金黄、温暖，且持续得十分慷慨。</p></blockquote><h2>过渡月份</h2><p>五月、六月以及九月至十月，天气极佳，人流较少，场地档期也更宽裕。这些月份是巴厘岛目的地婚礼整体性价比与体验最佳的时段之一。</p><h2>雨季</h2><p>十一月至三月午后和傍晚会下雨，不过早晨往往晴朗宜人。一些新人特意选择雨季，看重它较低的费用、葱郁的绿色景观与亲密的氛围。经过周全的规划，雨季婚礼同样可以非同凡响。</p>`,
   },
 
   // ─── Venue & Location ─────────────────────────────────────────────────────────
@@ -208,114 +205,113 @@ export const articles: Article[] = [
     id: "9",
     slug: "private-villa-weddings-bali",
     category: "Venue & Location",
-    title: "Why Private Villa Weddings in Bali Create a Different Kind of Day",
+    title: "为何巴厘岛私人别墅婚礼能带来不一样的一天",
     excerpt:
-      "Private villas offer complete creative freedom and an intimacy that resort weddings cannot replicate. Here is what makes them so compelling — and how to find the right one.",
+      "私人别墅提供完整的创作自由与度假村婚礼无法复制的亲密感。以下是它们如此迷人的原因——以及如何找到合适的那一处。",
     published_at: "2025-10-15",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383457/why-private-villa_cqlz6o.png",
-    content: `<h2>The Private Villa Difference</h2><p>A private villa wedding in Bali operates on a fundamentally different logic to a resort or venue wedding. When you hire a villa, you hire an entire world — the compound, the staff, the pool, the gardens — for the exclusive use of you and your guests. This exclusivity creates conditions for a celebration that feels intimate, unhurried, and entirely your own.</p><h2>Creative Freedom</h2><p>Resort venues come with their own aesthetic infrastructure — furniture, linens, décor approaches — that inform and sometimes constrain the visual direction of a wedding. A private villa is, in most cases, a blank canvas. Every design decision is yours to make.</p><blockquote><p>The best private villa weddings feel less like an event and more like a very beautiful extension of daily life.</p></blockquote><h2>How to Find the Right Villa</h2><p>The right villa depends on your guest count, your location preference, and your aesthetic sensibility. Some villas are architecturally extraordinary; others offer the best outdoor spaces; others have kitchens and staff teams that support large-scale catering. Your planner's knowledge of Bali's villa landscape is invaluable here — many of the best properties are not listed publicly.</p>`,
+    content: `<h2>私人别墅的不同之处</h2><p>巴厘岛的私人别墅婚礼，其运作逻辑与度假村或场地婚礼有着根本区别。当您租下一座别墅，租下的是整个世界——院落、工作人员、泳池、花园——供您和宾客独享。这种专属性，为一场亲密、从容、完全属于您自己的庆典创造了条件。</p><h2>创作自由</h2><p>度假村场地自带其美学基础设施——家具、布草、装饰方式——它们会影响，有时也会限制婚礼的视觉方向。而私人别墅在大多数情况下是一块空白画布，每一个设计决定都由您来做。</p><blockquote><p>最好的私人别墅婚礼，不太像一场活动，更像是日常生活一段非常美丽的延伸。</p></blockquote><h2>如何找到合适的别墅</h2><p>合适的别墅取决于您的宾客人数、地点偏好和审美品味。有些别墅在建筑上非同凡响；有些拥有最好的户外空间；还有些配备了能支持大规模餐饮的厨房与团队。在这方面，您的策划师对巴厘岛别墅版图的了解至关重要——许多最好的物业并未公开挂牌。</p>`,
   },
   {
     id: "10",
     slug: "hidden-wedding-venues-bali",
     category: "Venue & Location",
-    title:
-      "Hidden Estates and Boutique Venues: Bali's Best Kept Wedding Secrets",
+    title: "隐秘庄园与精品场地：巴厘岛最好的婚礼秘密",
     excerpt:
-      "Beyond well-known venues, Bali holds extraordinary hidden spaces — jungle estates, coastal properties, and boutique compounds that become entirely yours for the day.",
+      "在知名场地之外，巴厘岛还藏着非凡的隐秘空间——丛林庄园、海滨物业与精品院落，这一天完全属于您。",
     published_at: "2025-09-25",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383461/hidden-estate_xk8ijr.png",
-    content: `<h2>Bali's Hidden Layer</h2><p>The venues that appear on destination wedding shortlists are beautiful — but they are also known. Bali has a quieter layer of properties: jungle estates, converted colonial compounds, clifftop terraces with no formal wedding infrastructure, and boutique villas whose owners welcome carefully selected celebrations. These are the spaces that require local knowledge to access.</p><h2>What Makes a Hidden Venue</h2><p>Hidden venues are typically places that do not market themselves as wedding venues. They may be private residences made available for select events, architect-designed retreats with extraordinary spatial qualities, or small boutique properties whose owners are selective about the occasions they host. Finding them is a matter of trust and relationship.</p><blockquote><p>The most extraordinary spaces we have worked in were never on any public list.</p></blockquote><h2>Working with Hidden Venues</h2><p>Because these properties have not been designed for weddings, they require more planning infrastructure — catering logistics, power supply, lighting design, and staffing all need to be built from scratch. This is exactly where an experienced planner's value is most visible.</p>`,
+    content: `<h2>巴厘岛隐藏的一层</h2><p>出现在目的地婚礼候选清单上的场地固然美丽——但也是众所周知的。巴厘岛还有更安静的一层物业：丛林庄园、改建的殖民时期院落、没有正式婚礼设施的悬崖露台，以及主人愿意接待精心挑选的庆典的精品别墅。这些空间需要本地的人脉才能进入。</p><h2>什么造就了隐秘场地</h2><p>隐秘场地通常是不以婚礼场地自居的地方。它们可能是为特定活动开放的私人住宅、空间品质非凡的建筑师设计的静修所，或是主人对承办活动十分挑剔的小型精品物业。找到它们，靠的是信任与关系。</p><blockquote><p>我们合作过的最非凡的空间，从未出现在任何公开名单上。</p></blockquote><h2>与隐秘场地合作</h2><p>由于这些物业并非为婚礼而设计，它们需要更多的筹备基础设施——餐饮后勤、电力供应、灯光设计和人员配置都需要从零搭建。这恰恰是经验丰富的策划师价值最为明显之处。</p>`,
   },
   // ─── Design & Concept ─────────────────────────────────────────────────────────
   {
     id: "13",
     slug: "designing-atmosphere-wedding",
     category: "Design & Concept",
-    title: "Designing Atmosphere: How Emotional Landscape Shapes a Wedding",
+    title: "营造氛围：情感景观如何塑造一场婚礼",
     excerpt:
-      "Great wedding design is not decoration — it is atmosphere. How we think about emotion, light, movement, and meaning when designing a wedding from the ground up.",
+      "出色的婚礼设计不是装饰——而是氛围。我们从零开始设计婚礼时，如何思考情感、光线、动线与意义。",
     published_at: "2025-07-30",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383890/elopment-wedding_xupkrb.png",
-    content: `<h2>What Atmosphere Actually Is</h2><p>Atmosphere is not what a wedding looks like. It is what a wedding feels like — and the difference between those two things is the difference between decoration and design. When we begin working with a couple, we are not beginning with florals or colour palettes. We are beginning with a question: what do you want people to feel?</p><h2>The Elements of Atmosphere</h2><p>Atmosphere is shaped by many converging forces: light quality and timing, the relationship between indoor and outdoor space, sound and silence, the density or spaciousness of the setting, the pace of the evening, the moments of stillness and movement. Florals are one thread in this. Every decision contributes.</p><blockquote><p>The flowers are the last thing we think about. The feeling is the first.</p></blockquote><h2>Working with Bali's Natural Atmosphere</h2><p>Bali has its own atmospheric intelligence — a quality of light, a quality of air, a presence in the landscape that is difficult to define but unmistakable. The best Bali wedding design does not compete with this atmosphere. It listens to it, works with it, and allows it to do the heavy lifting.</p><h2>Translating Feeling into Design</h2><p>When a couple tells us they want their wedding to feel like a long, unhurried dinner with their closest people — warm, generous, real — every subsequent design decision is held against that feeling. Does this choice support it? Does this add to it? Or is this just decoration?</p>`,
+    content: `<h2>氛围究竟是什么</h2><p>氛围不是婚礼看起来的样子，而是婚礼感觉起来的样子——这两者之间的差别，就是装饰与设计的差别。当我们开始与一对新人合作时，并不是从鲜花或色彩搭配开始，而是从一个问题开始：您希望人们感受到什么？</p><h2>氛围的构成要素</h2><p>氛围由许多汇聚的力量塑造：光线的质感与时间、室内与室外空间的关系、声音与寂静、场景的密集或开阔、夜晚的节奏、静止与流动的时刻。鲜花只是其中一缕丝线。每一个决定都在贡献力量。</p><blockquote><p>鲜花是我们最后才考虑的。感受才是第一位。</p></blockquote><h2>与巴厘岛的自然氛围共事</h2><p>巴厘岛有自己的氛围智慧——一种光线的质感、空气的质感，一种难以定义却不容错认的风景气场。最好的巴厘岛婚礼设计不会与这种氛围竞争，而是倾听它、配合它，让它承担最吃重的部分。</p><h2>将感受转化为设计</h2><p>当一对新人告诉我们，他们希望婚礼像与最亲近的人共享一顿漫长、从容的晚餐——温暖、慷慨、真实——之后的每一个设计决定都要以这种感受来衡量。这个选择支持它吗？它增添了什么吗？还是这只是装饰？</p>`,
   },
   {
     id: "14",
     slug: "elopement-design-guide",
     category: "Design & Concept",
-    title: "Elopement Design: Creating Beauty for Two",
+    title: "私奔婚礼设计：为两个人创造美",
     excerpt:
-      "Designing for an elopement requires a different sensibility — intimacy, poetry, and precision. How we approach the design of deeply personal, small-scale celebrations.",
+      "为私奔婚礼做设计需要不同的敏感度——亲密、诗意与精准。我们如何处理这类极具个人色彩的小型庆典的设计。",
     published_at: "2025-06-12",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383777/designing-atmosphere_yj5zou.png",
-    content: `<h2>The Elopement as Design Problem</h2><p>Designing for an elopement is a study in precision. Without the structural complexity of a large wedding — the table plan, the guest journey, the evening programme — the designer's attention converges entirely on the ceremony itself and the immediate experience of two people. Every element must earn its place.</p><h2>Scale as Liberation</h2><p>An elopement with a small design budget can achieve a level of considered beauty that a much larger wedding cannot, precisely because the focus is so narrow. A single extraordinary floral arrangement. One perfectly dressed table for two. A ceremony space that has been thought about with the same intensity usually reserved for an entire venue transformation.</p><blockquote><p>Elopements are where we do some of our most precise and poetic work. There is nowhere to hide, and that is what makes them extraordinary.</p></blockquote><h2>The Design Language of Intimacy</h2><p>Intimate celebrations require a different vocabulary from large weddings. Softer florals. More texture. The kind of detail that rewards close attention — a ribbon tied a particular way, a scent in the air, a choice of candle height that changes how the light falls. These things matter enormously when there are only two people to receive them.</p>`,
+    content: `<h2>作为设计课题的私奔婚礼</h2><p>为私奔婚礼做设计，是一场关于精准的修炼。没有大型婚礼的结构性复杂度——座位安排、宾客动线、晚宴流程——设计师的注意力完全集中在仪式本身和两个人的当下体验上。每一个元素都必须配得上它的位置。</p><h2>以小为解放</h2><p>设计预算不大的私奔婚礼，能够达到规模大得多的婚礼所无法企及的用心之美，恰恰因为焦点如此集中。一件非凡的花艺作品。一张布置得完美无缺的双人餐桌。一个被投注了通常只留给整个场地改造的那份专注的仪式空间。</p><blockquote><p>私奔婚礼是我们完成一些最精准、最富诗意的作品之处。这里无处藏身，而这正是它们非凡的原因。</p></blockquote><h2>亲密的设计语言</h2><p>亲密的庆典需要与大型婚礼不同的词汇。更柔和的花材。更多的质感。那种会回报近距离关注的细节——以特定方式系起的丝带、空气中的一缕香气、改变光线洒落方式的烛台高度选择。当接收这一切的只有两个人时，这些事情格外重要。</p>`,
   },
   {
     id: "15",
     slug: "botanical-bali-wedding-floral-design",
     category: "Design & Concept",
-    title: "Botanical Bali: Working with Local Flora in Wedding Design",
+    title: "巴厘岛植物志：在婚礼设计中运用本地植物",
     excerpt:
-      "Bali's tropical landscape offers extraordinary botanical material. How we draw from Bali's native flora to create floral and design identities that feel rooted in place.",
+      "巴厘岛的热带景观提供了非凡的植物素材。我们如何汲取巴厘岛本土植物，打造扎根于地方的花艺与设计风格。",
     published_at: "2025-05-01",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773383711/botanical-wedding_uvhrdv.png",
-    content: `<h2>The Botanical Richness of Bali</h2><p>Bali sits at one of the world's great botanical crossroads. Tropical climate, volcanic soil, and a culture that has always placed flowers at the centre of daily and ceremonial life have produced a flora of extraordinary variety and visual intensity. Working with local plant material is not just an aesthetic choice — it is a way of grounding a wedding in its place.</p><h2>Working Local</h2><p>Our approach to floral design in Bali begins with what is actually growing — what is at peak abundance, what the season is offering, what the local markets have that is unexpected and beautiful. This approach produces designs that are fresher, more responsive, and more connected to Bali's actual landscape than a list of imported flowers ever could be.</p><blockquote><p>When you use what Bali gives you, the design feels like it belongs there. That rootedness is something you cannot fake.</p></blockquote><h2>Specific Botanical Languages</h2><p>Ubud weddings tend toward ferns, mosses, tropical leaves, and white flowers — a cooler, deeper palette drawn from the jungle environment. Uluwatu weddings often reach for stronger forms: sculptural tropical varieties, dried grasses, and colours that hold up against the brightness of the ocean and open sky. The location teaches the design.</p>`,
+    content: `<h2>巴厘岛丰富的植物世界</h2><p>巴厘岛位于世界上重要的植物交汇处之一。热带气候、火山土壤，以及一直将鲜花置于日常与仪式生活中心的文化，孕育了种类繁多、视觉冲击力强烈的植物群落。运用本地植物材料不仅是审美选择——更是让婚礼扎根于其所在之地的方式。</p><h2>因地取材</h2><p>我们在巴厘岛的花艺设计方法，始于真正生长着的东西——什么正值盛放、这个季节能提供什么、本地市场里有什么出人意料又美丽的选择。这样的做法产生的设计更新鲜、更灵动，也比任何一份进口花材清单都更贴近巴厘岛真实的风景。</p><blockquote><p>当您使用巴厘岛所给予的，设计就像本来就属于那里。这份根植感是无法伪造的。</p></blockquote><h2>各具特色的植物语言</h2><p>乌布的婚礼倾向于蕨类、苔藓、热带叶材和白色花朵——取自丛林环境的、更清冷而深邃的色调。乌鲁瓦图的婚礼则常选用更有力的形态：雕塑感的热带品种、干草，以及能与明亮的海洋和开阔天空相抗衡的色彩。是地点在教导设计。</p>`,
   },
   {
     id: "16",
     slug: "nusa-lembongan-wedding-between-land-and-sea",
     category: "Design & Concept",
-    title: "Between Land & Sea: A Wedding Ceremony Concept in Nusa Lembongan",
+    title: "Between Land & Sea：伦邦岸岛的婚礼仪式概念",
     excerpt:
-      "Explore Between Land & Sea, an intimate Nusa Lembongan wedding ceremony concept inspired by the island's coastline, natural textures and understated tropical beauty.",
+      "探索 Between Land & Sea——一场灵感源自伦邦岸岛海岸线、自然质感与含蓄热带之美的亲密婚礼仪式概念。",
     published_at: "2026-08-28",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1787892363/Between_Land_Sea_z0jhic.png",
     content: `
-<p><em>Where the island meets the ocean, a celebration takes shape.</em></p>
-<p>Just beyond Bali, Nusa Lembongan has a rhythm of its own.</p>
-<p>The landscape feels raw yet gentle, shaped by the ocean, coastal textures, open skies and the changing light of the island. It was this relationship between <strong>land and sea</strong> that became the starting point for our latest ceremony concept.</p>
-<p><strong>Between Land &amp; Sea</strong> is an intimate wedding ceremony imagined for Nusa Lembongan, where design does not attempt to transform the landscape, but quietly becomes part of it.</p>
-<p>Rather than creating a setting that competes with the ocean, we wanted every element to feel as though it had naturally arrived there.</p>
+<p><em>在岛屿与海洋相遇之处，一场庆典渐渐成形。</em></p>
+<p>就在巴厘岛之外，伦邦岸岛自有它的节奏。</p>
+<p>这里的风景原始而温柔，由海洋、海岸的质感、开阔的天空与岛上变幻的光线塑造。正是这种<strong>陆地与海洋</strong>之间的关系，成为我们最新仪式概念的起点。</p>
+<p><strong>Between Land &amp; Sea</strong> 是为伦邦岸岛构想的一场亲密婚礼仪式，设计并不试图改造风景，而是悄然成为它的一部分。</p>
+<p>我们希望每一个元素都仿佛是自然而然来到这里的，而不是营造一个与海洋争锋的场景。</p>
 
-<h2>Designed Around the Island</h2>
-<p>The concept begins with the location itself.</p>
-<p>In Nusa Lembongan, the horizon already creates a remarkable backdrop. The movement of the sea brings its own atmosphere, while the textures of the coastline give the setting a beautifully imperfect character.</p>
-<p>Our approach was therefore one of restraint.</p>
-<p>Sculptural floral compositions are kept organic and low enough to preserve the view. Natural textures soften the ceremony setting, while negative space allows the surrounding landscape to remain visible.</p>
-<p>Nothing feels overly arranged. Nothing needs to compete for attention.</p>
-<p>The intention is to create a ceremony that feels <strong>quietly luxurious, romantic and deeply connected to place</strong>.</p>
+<h2>围绕岛屿而设计</h2>
+<p>这个概念从地点本身开始。</p>
+<p>在伦邦岸岛，地平线本身就构成了非凡的背景。海的律动带来自己的氛围，而海岸线的质感赋予这里一种美丽的不完美气质。</p>
+<p>因此，我们的方法是克制。</p>
+<p>雕塑感的花艺构图保持自然，高度足够低，以保留视野。自然质感柔化了仪式场景，而留白则让周围的风景依然清晰可见。</p>
+<p>没有什么显得过度布置。没有什么需要争夺注意力。</p>
+<p>我们的意图是创造一场<strong>低调奢华、浪漫，并与地点深深相连</strong>的仪式。</p>
 
 <h2>Between Land &amp; Sea</h2>
-<p>The name came naturally.</p>
-<p>There is something poetic about beginning a marriage at the meeting point between solid ground and an endless horizon.</p>
-<p>Land gives us a sense of grounding. The sea suggests movement, possibility and everything still ahead. The ceremony exists somewhere between the two.</p>
-<p>For us, this became more than an aesthetic direction. It became the emotional narrative behind the design.</p>
+<p>这个名字自然而然地出现了。</p>
+<p>在坚实的土地与无尽的地平线交汇之处开启一段婚姻，有一种诗意。</p>
+<p>陆地给予我们踏实之感。海洋暗示着流动、可能，以及前方的一切。仪式就存在于两者之间。</p>
+<p>对我们而言，这不只是一种美学方向，更成为设计背后的情感叙事。</p>
 
-<h2>Details That Reveal Themselves Slowly</h2>
-<p>From afar, the ceremony feels simple. Come closer, and the details begin to emerge.</p>
-<p>The irregular movement of florals. Layers of delicate foliage. Natural materials. Subtle textures catching the afternoon light.</p>
-<p>Rather than filling every space, each element is given room to breathe.</p>
-<p>This sense of restraint allows the smallest details to become more meaningful, something we believe is particularly important when designing an intimate destination wedding.</p>
+<h2>缓缓显现的细节</h2>
+<p>从远处看，仪式显得简约。走近一些，细节便开始浮现。</p>
+<p>不规则律动的花材。层层细腻的枝叶。天然的材质。捕捉午后光线的柔和质感。</p>
+<p>与其填满每一处空间，不如让每个元素都有呼吸的余地。</p>
+<p>这种克制让最微小的细节变得更有意义，我们相信这对于设计亲密的目的地婚礼尤为重要。</p>
 
-<h2>Following the Light</h2>
-<p>The experience is also designed around the changing light of Nusa Lembongan.</p>
-<p>In the afternoon, the colours remain natural and luminous. As the sun begins to lower, warmer tones gradually appear across the landscape. Shadows lengthen, textures become softer and the ceremony begins to take on an entirely different mood.</p>
-<p>It is this transition that we wanted to preserve.</p>
-<p>Because a wedding setting is not a static photograph. It moves. It changes with the weather, the people, the light and the landscape around it.</p>
+<h2>追随光线</h2>
+<p>整个体验也围绕伦邦岸岛变幻的光线而设计。</p>
+<p>午后，色彩保持自然而明亮。随着太阳渐渐西沉，更温暖的色调逐渐铺满整片风景。影子拉长，质感变得柔和，仪式开始呈现出全然不同的情绪。</p>
+<p>这正是我们想要留住的转变。</p>
+<p>因为婚礼场景并不是一张静止的照片。它会移动。它随着天气、人群、光线和周围的风景而变化。</p>
 
-<h2>A Different Kind of Island Wedding</h2>
-<p>A destination wedding on a small island does not necessarily need more decoration to feel extraordinary. Sometimes, it needs less.</p>
-<p>A beautiful location. Thoughtful proportions. Flowers that appear almost naturally within the landscape. And enough space for the ocean to remain present.</p>
-<p><strong>Between Land &amp; Sea</strong> is our exploration of that idea, a Nusa Lembongan wedding ceremony where nature, design and emotion quietly meet.</p>
-<p>Because sometimes the most memorable setting is not the one that transforms a place. It is the one that allows you to experience it.</p>
-<blockquote><p><em>Between Land &amp; Sea is an original wedding design concept by Linda Wiryani Design &amp; Event Planning, created for an intimate destination wedding setting in Nusa Lembongan, Bali.</em></p>
-</blockquote><p><em>Conceptual imagery is used to communicate atmosphere, composition and creative direction. Final design is individually developed following venue assessment, technical feasibility, supplier consultation and each couple's story.</em></p>
+<h2>另一种海岛婚礼</h2>
+<p>小岛上的目的地婚礼，未必需要更多装饰才显得非凡。有时，它需要的是更少。</p>
+<p>一处美丽的地点。经过深思的比例。仿佛自然生长于风景之中的花朵。以及足够的空间，让海洋始终在场。</p>
+<p><strong>Between Land &amp; Sea</strong> 是我们对这一理念的探索，一场让自然、设计与情感悄然相遇的伦邦岸岛婚礼仪式。</p>
+<p>因为有时候，最令人难忘的场景，并不是改变一个地方的那个，而是让您得以亲身体验它的那个。</p>
+<blockquote><p><em>Between Land &amp; Sea 是 Linda Wiryani Design &amp; Event Planning 的原创婚礼设计概念，为巴厘岛伦邦岸岛的亲密目的地婚礼场景而创作。</em></p>
+</blockquote><p><em>概念图像用于传达氛围、构图与创意方向。最终设计将在场地评估、技术可行性、供应商咨询以及每对新人的故事之后，单独开发完成。</em></p>
 `,
   },
 ];

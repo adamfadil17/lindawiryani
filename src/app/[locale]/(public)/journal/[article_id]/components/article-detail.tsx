@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -9,6 +9,15 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import { Article } from "@/types";
 import PageClosing from "@/components/shared/page-closing";
+import { useCategoryText } from "@/lib/article-categories";
+
+// BCP-47 tags used to format the published date per site locale
+const DATE_LOCALES: Record<string, string> = {
+  en: "en-GB",
+  id: "id-ID",
+  zh: "zh-CN",
+  fr: "fr-FR",
+};
 
 interface ArticleDetailProps {
   article: Article;
@@ -25,6 +34,8 @@ function TipTapContent({ html }: { html: string }) {
 }
 
 function RelatedCard({ article }: { article: Article }) {
+  const t = useTranslations("journalDetail");
+  const category = useCategoryText();
   return (
     <Link href={`/journal/${article.slug}`} className="group block">
       <div className="relative h-[220px] overflow-hidden mb-4">
@@ -39,7 +50,7 @@ function RelatedCard({ article }: { article: Article }) {
         <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
         <div className="absolute top-4 left-4">
           <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
-            {article.category}
+            {category.label(article.category)}
           </span>
         </div>
         <div className="absolute bottom-4 right-4 w-9 h-9 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
@@ -53,7 +64,7 @@ function RelatedCard({ article }: { article: Article }) {
         {article.excerpt}
       </p>
       <div className="flex items-center gap-2 mt-3 text-primary text-xs tracking-widest group-hover:text-primary/80 transition-colors">
-        <span>READ ARTICLE</span>
+        <span>{t("readArticle")}</span>
         <ArrowRight className="w-3.5 h-3.5" />
       </div>
     </Link>
@@ -62,8 +73,11 @@ function RelatedCard({ article }: { article: Article }) {
 
 export function ArticleDetail({ article, related }: ArticleDetailProps) {
   const t = useTranslations("journalDetail");
+  const locale = useLocale();
+  const category = useCategoryText();
+  const categoryLabel = category.label(article.category);
   const formattedDate = new Date(article.published_at).toLocaleDateString(
-    "en-GB",
+    DATE_LOCALES[locale] ?? "en-GB",
     { day: "numeric", month: "long", year: "numeric" },
   );
 
@@ -97,17 +111,17 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
               href="/journal"
               className="flex items-center gap-2 text-white/80 text-sm tracking-widest uppercase hover:text-white hover:cursor-pointer transition-colors"
             >
-              <span>Journal</span>
+              <span>{t("breadcrumb")}</span>
             </Link>
             <span className="text-white text-sm">/</span>
             <span className="text-white text-sm font-simbold tracking-widest uppercase truncate max-w-[200px]">
-              {article.category}
+              {categoryLabel}
             </span>
           </motion.div>
 
           <motion.div variants={fadeInUp} className="mb-5">
             <span className="bg-white/90 text-primary text-sm tracking-widest px-3 py-1">
-              {article.category}
+              {categoryLabel}
             </span>
           </motion.div>
           <motion.h1
@@ -145,7 +159,7 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
                   className="group flex items-center gap-3 text-primary/80 hover:text-primary transition-colors tracking-widest uppercase"
                 >
                   <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-                  <span>All Articles</span>
+                  <span>{t("allArticles")}</span>
                 </Link>
 
                 <div className="w-12 h-px bg-primary/50" />
@@ -153,15 +167,13 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
                 <div className="space-y-5">
                   <div>
                     <p className="text-primary/80 text-sm tracking-[0.2em] uppercase mb-1">
-                      Category
+                      {t("categoryLabel")}
                     </p>
-                    <p className="text-primary font-medium">
-                      {article.category}
-                    </p>
+                    <p className="text-primary font-medium">{categoryLabel}</p>
                   </div>
                   <div>
                     <p className="text-primary/80 text-sm tracking-[0.2em] uppercase mb-1">
-                      Published
+                      {t("publishedLabel")}
                     </p>
                     <p className="text-primary">{formattedDate}</p>
                   </div>
@@ -171,11 +183,11 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
 
                 <div className="space-y-4">
                   <p className="text-primary leading-relaxed">
-                    Ready to begin planning your Bali wedding?
+                    {t("ctaPrompt")}
                   </p>
                   <Link href="/contact">
                     <button className="w-full bg-primary text-white text-sm tracking-widest uppercase px-5 py-3 hover:bg-primary/85 hover:cursor-pointer transition-colors duration-300">
-                      START A CONVERSATION
+                      {t("ctaButton")}
                     </button>
                   </Link>
                 </div>
@@ -207,12 +219,12 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
           <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
             <motion.div variants={fadeInUp} className="mb-12">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Continue Reading
+                {t("continueReading")}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                More from
+                {t("moreFrom")}
                 <br />
-                <span className="italic font-light">{article.category}</span>
+                <span className="italic font-light">{categoryLabel}</span>
               </h2>
             </motion.div>
 

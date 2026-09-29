@@ -652,7 +652,16 @@
     "closingTitle2": "成就更美好的婚礼。",
     "closingBody": "无论您尚处于憧憬阶段，还是正在积极筹备，我们诚邀您浏览我们的作品，发现与您心意相通的灵感、目的地与体验。",
     "ctaBack": "返回杂志专栏",
-    "ctaContact": "联系我们"
+    "ctaContact": "联系我们",
+    "breadcrumb": "杂志专栏",
+    "allArticles": "全部文章",
+    "categoryLabel": "分类",
+    "publishedLabel": "发布日期",
+    "ctaPrompt": "准备好开始策划您的巴厘岛婚礼了吗？",
+    "ctaButton": "开始对话",
+    "continueReading": "继续阅读",
+    "moreFrom": "更多来自",
+    "readArticle": "阅读文章"
   },
   "destinationsPage": {
     "breadcrumb": "婚礼目的地",

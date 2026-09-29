@@ -652,7 +652,16 @@
     "closingTitle2": "create better weddings.",
     "closingBody": "Whether you are in the early dreaming phase or actively planning, we invite you to explore our work and discover the ideas, destinations, and experiences that resonate with you.",
     "ctaBack": "BACK TO JOURNAL",
-    "ctaContact": "GET IN TOUCH"
+    "ctaContact": "GET IN TOUCH",
+    "breadcrumb": "Journal",
+    "allArticles": "All Articles",
+    "categoryLabel": "Category",
+    "publishedLabel": "Published",
+    "ctaPrompt": "Ready to begin planning your Bali wedding?",
+    "ctaButton": "START A CONVERSATION",
+    "continueReading": "Continue Reading",
+    "moreFrom": "More from",
+    "readArticle": "READ ARTICLE"
   },
   "destinationsPage": {
     "breadcrumb": "Destinations",

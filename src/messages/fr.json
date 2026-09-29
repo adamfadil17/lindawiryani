@@ -652,7 +652,16 @@
     "closingTitle2": "créent de plus beaux mariages.",
     "closingBody": "Que vous en soyez aux premiers rêves ou déjà en pleine préparation, nous vous invitons à explorer nos réalisations et à découvrir les idées, destinations et expériences qui vous ressemblent.",
     "ctaBack": "RETOUR AU JOURNAL",
-    "ctaContact": "CONTACTEZ-NOUS"
+    "ctaContact": "CONTACTEZ-NOUS",
+    "breadcrumb": "Journal",
+    "allArticles": "Tous les articles",
+    "categoryLabel": "Catégorie",
+    "publishedLabel": "Publié le",
+    "ctaPrompt": "Prêt à commencer l'organisation de votre mariage à Bali ?",
+    "ctaButton": "ENTAMER LA CONVERSATION",
+    "continueReading": "Continuer la lecture",
+    "moreFrom": "Plus de",
+    "readArticle": "LIRE L'ARTICLE"
   },
   "destinationsPage": {
     "breadcrumb": "Destinations",

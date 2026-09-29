@@ -652,7 +652,16 @@
     "closingTitle2": "menciptakan pernikahan yang lebih baik.",
     "closingBody": "Baik Anda masih dalam fase bermimpi maupun sudah aktif merencanakan, kami mengundang Anda menjelajahi karya kami dan menemukan ide, destinasi, serta pengalaman yang sesuai dengan Anda.",
     "ctaBack": "KEMBALI KE JURNAL",
-    "ctaContact": "HUBUNGI KAMI"
+    "ctaContact": "HUBUNGI KAMI",
+    "breadcrumb": "Jurnal",
+    "allArticles": "Semua Artikel",
+    "categoryLabel": "Kategori",
+    "publishedLabel": "Diterbitkan",
+    "ctaPrompt": "Siap mulai merencanakan pernikahan Anda di Bali?",
+    "ctaButton": "MULAI PERCAKAPAN",
+    "continueReading": "Lanjutkan Membaca",
+    "moreFrom": "Lainnya dari",
+    "readArticle": "BACA ARTIKEL"
   },
   "destinationsPage": {
     "breadcrumb": "Destinasi",
