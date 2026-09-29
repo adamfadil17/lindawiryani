@@ -1,10 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Gallery() {
+  const t = useTranslations("gallery");
   const galleryImages = [
     {
       src: "/images/gallery/gallery1.png",
@@ -56,15 +59,14 @@ export default function Gallery() {
           {/* Gallery Title - Left */}
           <motion.div variants={fadeInUp} className="mb-8 md:mb-0">
             <h2 className="text-2xl text-primary tracking-wider italic font-semibold">
-              GALLERY
+              {t("title")}
             </h2>
           </motion.div>
 
           {/* Main Title - Right */}
           <motion.div variants={fadeInUp} className="flex-1 md:text-right">
             <h3 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
-              Bali Wedding Gallery – Real Celebrations, Artful Design, and
-              Timeless Inspiration
+              {t("heading")}
             </h3>
           </motion.div>
         </motion.div>

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { weddingThemeList } from "@/lib/data/wedding-theme-data";
-import { venueList } from "@/lib/data/venue-data";
+import { useWeddingThemeData } from "@/lib/data/wedding-theme-data";
+import { useVenueData } from "@/lib/data/venue-data";
 import ThemeDetailModal from "@/components/shared/theme-detail-modal";
 import type { Venue, WeddingTheme } from "@/types";
 
@@ -37,20 +38,8 @@ const elopementSubtitles: Record<string, string> = {
   "editorial-luxury-elopement": "Curated Editorial Settings in Bali",
 };
 
-// ─── Derived data ─────────────────────────────────────────────────────────────
-
-// Filter tema per kategori dari weddingThemeList
-const elopementThemes = weddingThemeList.filter((t) => t.type === "ELOPEMENT");
-const intimateThemes = weddingThemeList.filter((t) => t.type === "INTIMATE");
-
-// Ambil gambar slideshow dari tema masing-masing kategori (maks 5, deduplicate)
-const elopementCategoryImages = [
-  ...new Set(elopementThemes.map((t) => t.image).filter(Boolean)),
-].slice(0, 5) as string[];
-
-const intimateCategoryImages = [
-  ...new Set(intimateThemes.map((t) => t.image).filter(Boolean)),
-].slice(0, 5) as string[];
+// ─── Derived data (computed per-render inside components below, since
+// the underlying dataset is locale-dependent) ──────────────────────────
 
 // ─── ThemeCategoryCard ────────────────────────────────────────────────────────
 
@@ -127,10 +116,16 @@ interface WeddingThemeCardProps {
 }
 
 function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
+  const t = useTranslations("wedThemes");
+  const tSub = useTranslations("elopementSubtitles");
+  const { venueList } = useVenueData();
   // Lookup nama venue dari venueList menggunakan theme.venue_id (skema baru)
   const venueData = venueList.find((v) => v.id === theme.venue_id);
   const subtitle =
-    venueData?.name ?? elopementSubtitles[theme.id] ?? "Venue To Be Confirmed";
+    venueData?.name ??
+    (elopementSubtitles[theme.id]
+      ? tSub(theme.id as keyof typeof elopementSubtitles)
+      : t("venueTBC"));
 
   return (
     <article
@@ -175,6 +170,15 @@ export default function WeddingThemesSection({
   externalIntimateThemes,
   minimal = false,
 }: WeddingThemesSectionProps) {
+  const { weddingThemeList } = useWeddingThemeData();
+  const elopementThemes = useMemo(
+    () => weddingThemeList.filter((t) => t.type === "ELOPEMENT"),
+    [weddingThemeList],
+  );
+  const intimateThemes = useMemo(
+    () => weddingThemeList.filter((t) => t.type === "INTIMATE"),
+    [weddingThemeList],
+  );
   const resolvedElopementThemes = externalElopementThemes ?? elopementThemes;
   const resolvedIntimateThemes = externalIntimateThemes ?? intimateThemes;
 
@@ -189,6 +193,9 @@ export default function WeddingThemesSection({
   >(defaultCategory);
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const [currentThemeSlide, setCurrentThemeSlide] = useState(0);
+  const t = useTranslations("wedThemes");
+  const tv = useTranslations("venuesSection");
+  const tNav = useTranslations("nav");
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedThemeForModal, setSelectedThemeForModal] =
     useState<WeddingTheme | null>(null);
@@ -199,12 +206,11 @@ export default function WeddingThemesSection({
       : resolvedIntimateThemes;
 
   // Hanya tampilkan tab kategori yang memiliki data
-  const availableCategories = (
-    ["elopement", "intimate"] as const
-  ).filter((cat) =>
-    cat === "elopement"
-      ? resolvedElopementThemes.length > 0
-      : resolvedIntimateThemes.length > 0,
+  const availableCategories = (["elopement", "intimate"] as const).filter(
+    (cat) =>
+      cat === "elopement"
+        ? resolvedElopementThemes.length > 0
+        : resolvedIntimateThemes.length > 0,
   );
 
   // Pagination untuk desktop
@@ -252,20 +258,17 @@ export default function WeddingThemesSection({
           {/* Header */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Concept Layer
+              {t("kicker")}
             </p>
             <div className="grid lg:grid-cols-12 gap-8">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                  Wedding Themes
+                  {t("title")}
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
                 <p className="text-primary leading-relaxed text-justify">
-                  Our wedding themes are not packages or styles. They are
-                  emotional directions — guiding how your celebration feels,
-                  flows, and unfolds. Theme supports decisions around scale,
-                  intimacy, ceremony style, and the overall guest experience.
+                  {t("intro")}
                 </p>
               </div>
             </div>
@@ -274,26 +277,38 @@ export default function WeddingThemesSection({
           {/* Category Cards — disembunyikan di mode minimal */}
           {!minimal && (
             <motion.div
-              className={`grid grid-cols-1 gap-8 mb-16 ${availableCategories.length === 2 ? 'md:grid-cols-2' : ''}`}
+              className={`grid grid-cols-1 gap-8 mb-16 ${availableCategories.length === 2 ? "md:grid-cols-2" : ""}`}
               variants={fadeInUp}
             >
               {resolvedElopementThemes.length > 0 && (
                 <ThemeCategoryCard
-                  title="Elopement Weddings"
-                  description="Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings."
-                  images={[
-                    ...new Set(resolvedElopementThemes.map((t) => t.image).filter(Boolean)),
-                  ].slice(0, 5) as string[]}
+                  title={tNav("weddingExperiencesSubmenu.elopement")}
+                  description={tv("descElopement")}
+                  images={
+                    [
+                      ...new Set(
+                        resolvedElopementThemes
+                          .map((t) => t.image)
+                          .filter(Boolean),
+                      ),
+                    ].slice(0, 5) as string[]
+                  }
                   onClick={() => handleCategoryClick("elopement")}
                 />
               )}
               {resolvedIntimateThemes.length > 0 && (
                 <ThemeCategoryCard
-                  title="Intimate Weddings"
-                  description="Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality."
-                  images={[
-                    ...new Set(resolvedIntimateThemes.map((t) => t.image).filter(Boolean)),
-                  ].slice(0, 5) as string[]}
+                  title={tNav("weddingExperiencesSubmenu.intimate")}
+                  description={tv("descIntimate")}
+                  images={
+                    [
+                      ...new Set(
+                        resolvedIntimateThemes
+                          .map((t) => t.image)
+                          .filter(Boolean),
+                      ),
+                    ].slice(0, 5) as string[]
+                  }
                   onClick={() => handleCategoryClick("intimate")}
                 />
               )}
@@ -311,15 +326,21 @@ export default function WeddingThemesSection({
               <>
                 <div className="flex items-center justify-center gap-4 mb-12">
                   <span className="text-base md:text-lg text-primary tracking-widest uppercase font-semibold">
-                    WEDDING THEMES
+                    {t("title")}
                   </span>
                   {availableCategories.length > 1 ? (
                     <div className="relative">
                       <button
-                        onClick={() => setIsThemeDropdownOpen(!isThemeDropdownOpen)}
+                        onClick={() =>
+                          setIsThemeDropdownOpen(!isThemeDropdownOpen)
+                        }
                         className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium capitalize"
                       >
-                        <span>{selectedThemeCategory}</span>
+                        <span>
+                          {selectedThemeCategory === "elopement"
+                            ? t("elopementLabel")
+                            : t("intimateLabel")}
+                        </span>
                         <ChevronDown
                           className={`w-4 h-4 transition-transform ${
                             isThemeDropdownOpen ? "rotate-180" : ""
@@ -343,7 +364,9 @@ export default function WeddingThemesSection({
                                   : "text-primary hover:bg-stone-100"
                               }`}
                             >
-                              {cat}
+                              {cat === "elopement"
+                                ? t("elopementLabel")
+                                : t("intimateLabel")}
                             </button>
                           ))}
                         </div>
@@ -351,7 +374,9 @@ export default function WeddingThemesSection({
                     </div>
                   ) : (
                     <span className="text-md text-primary font-medium capitalize">
-                      {selectedThemeCategory}
+                      {selectedThemeCategory === "elopement"
+                        ? t("elopementLabel")
+                        : t("intimateLabel")}
                     </span>
                   )}
                 </div>
@@ -368,8 +393,7 @@ export default function WeddingThemesSection({
                         exit="hidden"
                         className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
                       >
-                        Intimate celebrations designed for couples seeking privacy,
-                        meaning, and extraordinary settings.
+                        {tv("descElopement")}
                       </motion.p>
                     ) : (
                       <motion.p
@@ -380,8 +404,7 @@ export default function WeddingThemesSection({
                         exit="hidden"
                         className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
                       >
-                        Thoughtfully scaled celebrations curated for connection,
-                        elegance, and refined hospitality.
+                        {tv("descIntimate")}
                       </motion.p>
                     )}
                   </AnimatePresence>

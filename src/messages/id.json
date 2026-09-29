@@ -1,0 +1,157 @@
+{
+  "nav": {
+    "home": "BERANDA",
+    "ourApproach": "PENDEKATAN KAMI",
+    "services": "LAYANAN",
+    "weddingExperiences": "PENGALAMAN PERNIKAHAN",
+    "weddingExperiencesSubmenu": {
+      "privateVilla": "Pernikahan Vila Pribadi",
+      "intimate": "Pernikahan Intim",
+      "elopement": "Pernikahan Elopement",
+      "luxury": "Pernikahan Mewah",
+      "destination": "Pernikahan Destinasi"
+    },
+    "weddingConcepts": "KONSEP PERNIKAHAN",
+    "destinations": "DESTINASI",
+    "portfolio": "PORTOFOLIO",
+    "journal": "JURNAL",
+    "workingWithUs": "BEKERJA SAMA DENGAN KAMI",
+    "contact": "KONTAK"
+  },
+  "languageSwitcher": {
+    "label": "Bahasa"
+  },
+  "footer": {
+    "tagline": "DESAIN • PERENCANAAN ACARA",
+    "address": "© 2026 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali 80239, Indonesia.",
+    "followUs": "Hubungi dan ikuti kami di"
+  },
+  "common": {
+    "readMore": "Baca Selengkapnya",
+    "learnMore": "Pelajari Lebih Lanjut",
+    "viewAll": "Lihat Semua",
+    "optional": "OPSIONAL",
+    "sendInquiry": "Kirim Pertanyaan",
+    "backTo": "Kembali ke",
+    "closeModal": "Tutup jendela",
+    "failedToLoadImage": "Gagal memuat gambar",
+    "previousImage": "Gambar sebelumnya",
+    "nextImage": "Gambar berikutnya"
+  },
+  "floatingContact": {
+    "label": "Hubungi Kami"
+  },
+  "gallery": {
+    "title": "GALERI",
+    "heading": "Galeri Pernikahan Bali – Perayaan Nyata, Desain Artistik, dan Inspirasi Abadi"
+  },
+  "quote": {
+    "line1": "Karena keanggunan sejati tidak hanya dilihat",
+    "line2": "— ia dirasakan, dijalani, dan dikenang"
+  },
+  "instagram": {
+    "followAlong": "Ikuti Kami",
+    "latest": "Inspirasi Terbaru",
+    "description": "Temukan apa yang sedang mekar — momen pernikahan Bali terbaru kami, rangkaian bunga di balik layar, dan kisah perayaan nyata, dikurasi di Instagram.",
+    "stayConnected": "Tetap Terhubung",
+    "follow": "IKUTI DI INSTAGRAM"
+  },
+  "aboutUs": {
+    "kicker": "Wedding Planner & Desainer Mewah di Bali",
+    "heading": "MERANCANG PERNIKAHAN DENGAN NIAT, EMOSI, DAN SENI",
+    "body": "Di Linda Wiryani Design and Event Planning, setiap pernikahan berawal dari sebuah kisah, dirancang dengan penuh pertimbangan, tidak pernah berdasarkan templat.\n\nBerbasis di Bali, kami adalah studio perencanaan dan desain pernikahan destinasi, dikenal lewat pernikahan yang dikurasi secara artistik dan dibentuk oleh arsitektur, keramahtamahan, dan penceritaan yang halus.\n\nDengan pengalaman hampir dua dekade di dunia perhotelan mewah bintang lima, setiap perayaan dirancang agar terasa mulus, tenang, dan sangat personal, dari sambutan pertama hingga perpisahan terakhir.\n\nKami mengkhususkan diri pada pernikahan intim dan pernikahan di vila pribadi di Bali, merancang perayaan yang dipandu oleh ruang, emosi, dan koneksi antarmanusia, bukan tren.\n\nBerakar pada pendekatan yang mengutamakan desain, memadukan arsitektur, fesyen, dan detail artistik, kami menciptakan pernikahan yang terasa abadi, matang, dan tak terlupakan dengan tenang.",
+    "cta": "TENTANG STUDIO"
+  },
+  "videoPlayer": {
+    "close": "Tutup pemutar video"
+  },
+  "aboutModal": {
+    "kicker": "Tentang Linda Wiryani Design and Event Planning",
+    "title": "Wedding Planner Destinasi Bali & Studio Kreatif",
+    "subtitle": "Merancang Pernikahan dengan Niat, Emosi, dan Seni",
+    "intro1": "Di Linda Wiryani Design & Event Planning, setiap perayaan berawal dari sebuah kisah—kisah Anda.",
+    "intro2": "Kami adalah studio perencanaan dan desain pernikahan berbasis di Bali yang mengkhususkan diri pada pernikahan intim, pernikahan di vila pribadi, dan perayaan destinasi di Bali.",
+    "intro3": "Studio kami dikenal lewat pernikahan yang dirancang secara artistik, dibentuk oleh arsitektur, keramahtamahan, dan penceritaan yang penuh pertimbangan.",
+    "intro4": "Setiap perayaan dijalani sebagai proyek desain yang unik—‘bukan templat’—dipandu oleh kepekaan terhadap ruang, emosi, dan koneksi antarmanusia.",
+    "philosophyTitle": "Filosofi Pernikahan yang Berpusat pada Desain",
+    "philosophy1": "Berakar pada filosofi yang mengutamakan desain, karya kami dipengaruhi oleh keseimbangan arsitektural, materialitas yang halus, dan alur pengalaman.",
+    "philosophy2": "Dengan pengalaman hampir dua dekade di industri perhotelan mewah bintang lima di Bali, setiap pernikahan dikurasi tidak hanya agar tampak indah, tetapi juga terasa mulus, baik bagi pasangan maupun tamu mereka.",
+    "philosophy3": "Dari sambutan pertama hingga perpisahan terakhir, setiap detail dipertimbangkan dengan cermat dan penuh niat.",
+    "villaTitle": "Pernikahan Intim dan di Vila Pribadi di Bali",
+    "villa1": "Alih-alih mengulang konsep, setiap pernikahan dikurasi secara individual.",
+    "villa2": "Setiap perayaan dibentuk oleh ruang yang dipilih, lingkungan alamnya, dan kisah pribadi pasangan, dipandu oleh emosi, bukan tren.",
+    "villa3": "Pendekatan ini memungkinkan kami menciptakan pernikahan intim di vila pribadi di Bali yang terasa personal, tenang, dan abadi—pengalaman yang dikenang lama setelah hari itu berlalu.",
+    "archTitle": "Tempat Arsitektur, Fesyen, dan Desain Artistik Bertemu",
+    "arch1": "Estetika kami mengutamakan kejernihan daripada kemewahan berlebih, kesederhanaan daripada tontonan, dan kehangatan daripada pertunjukan.",
+    "arch2": "Kepekaan arsitektural, tekstur yang halus, dan detail yang subtil berpadu menciptakan perayaan yang terasa intim dan matang.",
+    "arch3": "Sebagai Creative Director label fesyen My Lindway, Linda Wiryani membawa kepekaan artistik dan apresiasi terhadap kriya ke dalam setiap perayaan, mulai dari penataan bespoke hingga penceritaan visual.",
+    "arch4": "Visi ini sering diperkaya melalui kolaborasi kreatif dengan suaminya yang seorang arsitek, menghasilkan pernikahan yang terasa kohesif, penuh niat, dan abadi secara visual.",
+    "arch5": "Desain hadir untuk mendukung emosi, tidak pernah untuk menguasainya.",
+    "couplesTitle": "Bagi Pasangan yang Menghargai Makna di Atas Kemewahan Berlebih",
+    "couples1": "Linda Wiryani Design & Event Planning bekerja dengan pasangan yang menghargai desain yang penuh pertimbangan, kemewahan yang halus, dan pengalaman autentik—pasangan yang mendambakan pernikahan yang personal, tidak dipaksakan, dan terhubung erat dengan kisah mereka.",
+    "couples2": "Pernikahan adalah momen ketika orang berkumpul, terhubung, dan mengenang.",
+    "couples3": "Peran kami adalah merancang momen-momen itu dengan cermat, mengubahnya menjadi pengalaman yang terasa tulus, elegan, dan sangat personal."
+  },
+  "themeModal": {
+    "label": "Tema Pernikahan",
+    "exploreVenue": "Jelajahi Venue",
+    "planYourDream": "RENCANAKAN IMPIAN ANDA",
+    "experience": "Pengalaman"
+  },
+  "venueModal": {
+    "labelVenues": "Venue",
+    "currency": "Mata Uang",
+    "startsFrom": "Mulai dari",
+    "nett": "nett",
+    "pax": "Pax",
+    "planYourDream": "RENCANAKAN IMPIAN ANDA",
+    "expLuxury": "Pernikahan Mewah",
+    "expPrivateVilla": "Pernikahan Vila Pribadi",
+    "expElopement": "Pernikahan Elopement",
+    "expIntimate": "Pernikahan Intim"
+  },
+  "venuesSection": {
+    "kicker": "Venue & Lokasi",
+    "title": "Dikurasi untuk Pengalaman",
+    "intro": "Kami mengkurasi venue bukan berdasarkan popularitas, melainkan kemampuannya menampung emosi, keindahan, dan pengalaman. Setiap ruang dipilih karena karakter arsitekturalnya, lingkungan alaminya, privasinya, dan potensi kreatifnya.",
+    "experienceLabel": "EXPERIENCE",
+    "locationLabel": "LOKASI",
+    "currencyLabel": "MATA UANG",
+    "startsFrom": "Mulai dari",
+    "nett": "nett",
+    "pax": "pax",
+    "noVenuesFound": "Tidak ada venue yang ditemukan untuk lokasi yang dipilih.",
+    "noVenuesHelp": "Saat ini belum ada venue {experience} yang tersedia di {location}. Coba pilih lokasi atau pengalaman yang berbeda.",
+    "viewMore": "LIHAT LEBIH BANYAK ({count} LAGI)",
+    "viewLess": "LIHAT LEBIH SEDIKIT",
+    "descLuxury": "Pilihan venue terkurasi yang dikenal karena arsitektur, lokasi, dan pengalamannya yang khas.",
+    "descPrivateVilla": "Properti pribadi eksklusif yang menawarkan keintiman, fleksibilitas, dan pengalaman perayaan yang sangat personal.",
+    "descElopement": "Lokasi intim yang dirancang untuk pasangan yang menginginkan privasi, makna, dan lingkungan yang luar biasa.",
+    "descIntimate": "Venue yang dikurasi dengan cermat untuk perayaan berskala menengah — koneksi, keanggunan, dan keramahtamahan yang halus."
+  },
+  "wedThemes": {
+    "kicker": "Lapisan Konsep",
+    "title": "Tema Pernikahan",
+    "intro": "Tema pernikahan kami bukan paket atau gaya. Tema adalah arah emosional — memandu bagaimana perayaan Anda terasa, mengalir, dan berlangsung. Tema membantu keputusan seputar skala, keintiman, gaya upacara, dan pengalaman tamu secara keseluruhan.",
+    "venueTBC": "Venue Akan Dikonfirmasi",
+    "elopementLabel": "elopement",
+    "intimateLabel": "intim"
+  },
+  "elopementSubtitles": {
+    "private-villa-elopement": "Lokasi Vila Pribadi Terkurasi di Bali",
+    "cliffside-elopement": "Lokasi Tebing Terkurasi di Bali",
+    "architectural-modern-tropical-elopement": "Venue Arsitektural Terkurasi di Bali",
+    "forest-jungle-elopement": "Pelarian Hutan Terkurasi di Bali",
+    "waterfall-elopement": "Lokasi Air Terjun yang Tenang",
+    "rice-field-elopement": "Lokasi Sawah Terkurasi di Bali",
+    "beachfront-elopement": "Venue Tepi Pantai Terkurasi di Bali",
+    "lake-elopement": "Lokasi Tepi Danau Terkurasi di Bali",
+    "volcano-mountain-elopement": "Lokasi Gunung & Gunung Berapi Terkurasi di Bali",
+    "riverside-elopement": "Lokasi Tepi Sungai Terkurasi di Bali",
+    "eco-sustainable-elopement": "Dirancang dengan Cermat, Pendekatan Berkelanjutan",
+    "sacred-spiritual-elopement": "Dipandu dengan Cermat, Pendekatan Sakral & Penuh Makna",
+    "cultural-heritage-elopement": "Lokasi Budaya & Warisan Terkurasi di Bali",
+    "sunrise-purification-elopement": "Pengalaman Matahari Terbit & Penyucian Terkurasi di Bali",
+    "editorial-luxury-elopement": "Lokasi Editorial Terkurasi di Bali"
+  }
+}

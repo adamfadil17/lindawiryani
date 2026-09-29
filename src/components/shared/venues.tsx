@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import {
   ArrowRight,
   ArrowLeft,
@@ -12,45 +14,33 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { venueList } from "@/lib/data/venue-data";
-import { weddingExperienceList } from "@/lib/data/wedding-experience-data";
-import { weddingThemeList } from "@/lib/data/wedding-theme-data";
+import { useVenueData } from "@/lib/data/venue-data";
+import { useWeddingExperienceData } from "@/lib/data/wedding-experience-data";
+import { useWeddingThemeData } from "@/lib/data/wedding-theme-data";
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import type { Venue, Currency } from "@/types";
 
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
-const elopementThemes = weddingThemeList.filter((t) => t.type === "ELOPEMENT");
-const intimateThemes = weddingThemeList.filter((t) => t.type === "INTIMATE");
-
-// Semua nama destinasi unik dari venueList, diawali "All"
-const locations = [
-  "All",
-  ...Array.from(
-    new Set(
-      venueList.map((v) => v.destination?.name).filter(Boolean) as string[],
-    ),
-  ),
-];
+// (elopementThemes, intimateThemes & locations are derived inside the
+// component because the datasets are locale-dependent)
 
 // Mapping slug experience → label tampilan
-const EXPERIENCE_LABEL_MAP: Record<string, string> = {
-  "private-villa-weddings": "Private Villa Weddings",
-  "intimate-weddings": "Intimate Weddings",
-  "elopement-weddings": "Elopement Weddings",
-  "luxury-weddings": "Luxury Weddings",
+// Mapping slug experience → key nav.weddingExperiencesSubmenu
+const EXPERIENCE_LABEL_KEY_MAP: Record<string, string> = {
+  "private-villa-weddings": "privateVilla",
+  "intimate-weddings": "intimate",
+  "elopement-weddings": "elopement",
+  "luxury-weddings": "luxury",
 };
 
 // Deskripsi per kategori (experience.category sebagai key)
-const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  luxury_weddings:
-    "A curated selection of venues known for distinctive architecture, setting, and experience.",
-  private_villa_weddings:
-    "Exclusive private estates offering intimacy, flexibility, and a deeply personal celebration experience.",
-  elopement_weddings:
-    "Intimate settings designed for couples seeking privacy, meaning, and extraordinary surroundings.",
-  intimate_weddings:
-    "Thoughtfully curated venues for scaled celebrations — connection, elegance, and refined hospitality.",
+// Mapping category → key venuesSection.descXxx
+const CATEGORY_DESCRIPTION_KEY_MAP: Record<string, string> = {
+  luxury_weddings: "descLuxury",
+  private_villa_weddings: "descPrivateVilla",
+  elopement_weddings: "descElopement",
+  intimate_weddings: "descIntimate",
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -83,6 +73,7 @@ function VenueCard({
   exchangeRate,
   onClick,
 }: VenueCardProps) {
+  const tv = useTranslations("venuesSection");
   return (
     <article
       onClick={onClick}
@@ -107,7 +98,7 @@ function VenueCard({
         <div className="flex items-center justify-start mb-4">
           <div className="flex flex-col items-start">
             <span className="text-sm text-white/80 italic mb-0.5">
-              Starts from
+              {tv("startsFrom")}
             </span>
             <div className="flex items-baseline gap-2">
               {venue.starting_price !== 0 && (
@@ -121,7 +112,7 @@ function VenueCard({
                 )}
               </span>
               {venue.starting_price !== 0 && (
-                <span className="text-sm text-white">nett</span>
+                <span className="text-sm text-white">{tv("nett")}</span>
               )}
             </div>
           </div>
@@ -133,7 +124,9 @@ function VenueCard({
           </div>
           <div className="flex items-center gap-1.5">
             <Users className="w-4 h-4" />
-            <span>{venue.capacity} pax</span>
+            <span>
+              {venue.capacity} {tv("pax")}
+            </span>
           </div>
         </div>
       </div>
@@ -150,6 +143,7 @@ function NoVenuesFound({
   selectedLocation: string;
   selectedExperienceLabel: string;
 }) {
+  const tv = useTranslations("venuesSection");
   return (
     <motion.div
       variants={fadeInUp}
@@ -161,13 +155,13 @@ function NoVenuesFound({
         <MapPin className="w-7 h-7 text-primary/80" />
       </div>
       <p className="text-primary text-lg italic font-light mb-2">
-        No venues found for the selected location.
+        {tv("noVenuesFound")}
       </p>
       <p className="text-primary/80 text-sm mb-8 max-w-sm">
-        There are currently no{" "}
-        <span className="font-medium">{selectedExperienceLabel}</span> venues
-        available in <span className="font-medium">{selectedLocation}</span>.
-        Try selecting a different location or experience.
+        {tv("noVenuesHelp", {
+          experience: selectedExperienceLabel,
+          location: selectedLocation,
+        })}
       </p>
     </motion.div>
   );
@@ -192,6 +186,31 @@ export default function VenuesSection({
   externalSelectedVenue,
   onExternalModalClose,
 }: VenuesSectionProps) {
+  const tv = useTranslations("venuesSection");
+  const tNav = useTranslations("nav");
+  const { venueList } = useVenueData();
+  const { weddingExperienceList } = useWeddingExperienceData();
+  const { weddingThemeList } = useWeddingThemeData();
+  const elopementThemes = useMemo(
+    () => weddingThemeList.filter((t) => t.type === "ELOPEMENT"),
+    [weddingThemeList],
+  );
+  const intimateThemes = useMemo(
+    () => weddingThemeList.filter((t) => t.type === "INTIMATE"),
+    [weddingThemeList],
+  );
+  // Semua nama destinasi unik dari venueList, diawali "All"
+  const locations = useMemo(
+    () => [
+      "All",
+      ...Array.from(
+        new Set(
+          venueList.map((v) => v.destination?.name).filter(Boolean) as string[],
+        ),
+      ),
+    ],
+    [venueList],
+  );
   // State filter experience berdasarkan slug dari weddingExperienceList
   const [selectedExperienceSlug, setSelectedExperienceSlug] = useState<string>(
     weddingExperienceList[0]?.slug ?? "",
@@ -225,7 +244,7 @@ export default function VenuesSection({
   // Cari experience yang sedang dipilih
   const selectedExperience = useMemo(
     () => weddingExperienceList.find((e) => e.slug === selectedExperienceSlug),
-    [selectedExperienceSlug],
+    [weddingExperienceList, selectedExperienceSlug],
   );
 
   // Filter venue: cocokkan experience_id, lalu filter destination
@@ -241,7 +260,7 @@ export default function VenuesSection({
     }
 
     return list;
-  }, [selectedExperience, selectedLocation]);
+  }, [venueList, selectedExperience, selectedLocation]);
 
   const visibleVenues = useMemo(
     () => (isMobile ? filteredVenues : filteredVenues.slice(0, visibleCount)),
@@ -264,13 +283,18 @@ export default function VenuesSection({
 
   // Label tampilan untuk experience yang dipilih
   const selectedExperienceLabel =
-    EXPERIENCE_LABEL_MAP[selectedExperienceSlug] ??
+    tNav(
+      `weddingExperiencesSubmenu.${EXPERIENCE_LABEL_KEY_MAP[selectedExperienceSlug]}`,
+    ) ??
     selectedExperience?.name ??
     "";
 
   // Deskripsi kategori berdasarkan experience.category
-  const categoryDescription =
-    CATEGORY_DESCRIPTIONS[selectedExperience?.category ?? ""] ?? "";
+  const categoryDescription = CATEGORY_DESCRIPTION_KEY_MAP[
+    selectedExperience?.category ?? ""
+  ]
+    ? tv(CATEGORY_DESCRIPTION_KEY_MAP[selectedExperience?.category ?? ""])
+    : "";
 
   return (
     <>
@@ -290,18 +314,15 @@ export default function VenuesSection({
           >
             <div className="lg:col-span-5">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Venues & Settings
+                {tv("kicker")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                Curated for Experience
+                {tv("title")}
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
               <p className="text-primary/80 text-justify leading-relaxed">
-                We curate venues not by popularity, but by their ability to hold
-                emotion, beauty, and experience. Each space is selected for its
-                architectural character, natural environment, privacy, and
-                creative potential.
+                {tv("intro")}
               </p>
             </div>
           </motion.div>
@@ -448,7 +469,7 @@ export default function VenuesSection({
               {/* Experience Filter — dari weddingExperienceList */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
-                  EXPERIENCE
+                  {tv("experienceLabel")}
                 </span>
                 <div className="relative">
                   <button
@@ -479,7 +500,9 @@ export default function VenuesSection({
                               : "text-primary hover:bg-stone-100"
                           }`}
                         >
-                          {EXPERIENCE_LABEL_MAP[exp.slug] ?? exp.name}
+                          {tNav(
+                            `weddingExperiencesSubmenu.${EXPERIENCE_LABEL_KEY_MAP[exp.slug]}`,
+                          ) ?? exp.name}
                         </button>
                       ))}
                     </div>
@@ -490,7 +513,7 @@ export default function VenuesSection({
               {/* Location Filter — dari destination venue */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
-                  LOCATION
+                  {tv("locationLabel")}
                 </span>
                 <div className="relative">
                   <button
@@ -532,7 +555,7 @@ export default function VenuesSection({
               {/* Currency Filter */}
               <div className="flex items-center gap-4">
                 <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
-                  CURRENCY
+                  {tv("currencyLabel")}
                 </span>
                 <div className="relative">
                   <button
@@ -682,7 +705,9 @@ export default function VenuesSection({
                       onClick={() => setVisibleCount((prev) => prev + 6)}
                       className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                     >
-                      VIEW MORE ({totalVenuesCount - visibleCount} MORE)
+                      {tv("viewMore", {
+                        count: totalVenuesCount - visibleCount,
+                      })}
                     </button>
                   ) : (
                     totalVenuesCount > 6 && (
@@ -690,7 +715,7 @@ export default function VenuesSection({
                         onClick={() => setVisibleCount(6)}
                         className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                       >
-                        VIEW LESS
+                        {tv("viewLess")}
                       </button>
                     )
                   )}

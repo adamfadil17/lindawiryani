@@ -1,0 +1,157 @@
+{
+  "nav": {
+    "home": "ACCUEIL",
+    "ourApproach": "NOTRE APPROCHE",
+    "services": "SERVICES",
+    "weddingExperiences": "EXPÉRIENCES DE MARIAGE",
+    "weddingExperiencesSubmenu": {
+      "privateVilla": "Mariages en Villa Privée",
+      "intimate": "Mariages Intimes",
+      "elopement": "Mariages en Elopement",
+      "luxury": "Mariages de Luxe",
+      "destination": "Mariages de Destination"
+    },
+    "weddingConcepts": "CONCEPTS DE MARIAGE",
+    "destinations": "DESTINATIONS",
+    "portfolio": "PORTFOLIO",
+    "journal": "JOURNAL",
+    "workingWithUs": "TRAVAILLER AVEC NOUS",
+    "contact": "CONTACT"
+  },
+  "languageSwitcher": {
+    "label": "Langue"
+  },
+  "footer": {
+    "tagline": "DESIGN • ORGANISATION D'ÉVÉNEMENTS",
+    "address": "© 2026 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali 80239, Indonesia.",
+    "followUs": "Contactez-nous et suivez-nous sur"
+  },
+  "common": {
+    "readMore": "Lire la Suite",
+    "learnMore": "En Savoir Plus",
+    "viewAll": "Voir Tout",
+    "optional": "OPTIONNEL",
+    "sendInquiry": "Envoyer une Demande",
+    "backTo": "Retour à",
+    "closeModal": "Fermer la fenêtre",
+    "failedToLoadImage": "Échec du chargement de l'image",
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante"
+  },
+  "floatingContact": {
+    "label": "Nous contacter"
+  },
+  "gallery": {
+    "title": "GALERIE",
+    "heading": "Galerie de mariages à Bali – Célébrations authentiques, design artistique et inspiration intemporelle"
+  },
+  "quote": {
+    "line1": "Parce que la véritable élégance ne se voit pas seulement",
+    "line2": "— elle se ressent, se vit et se souvient"
+  },
+  "instagram": {
+    "followAlong": "Suivez-nous",
+    "latest": "Dernières inspirations",
+    "description": "Découvrez ce qui éclot — nos derniers moments de mariage à Bali, les coulisses florales et de véritables histoires de célébration, sélectionnés sur Instagram.",
+    "stayConnected": "Restons connectés",
+    "follow": "SUIVEZ-NOUS SUR INSTAGRAM"
+  },
+  "aboutUs": {
+    "kicker": "Wedding planner et designer de luxe à Bali",
+    "heading": "CONCEVOIR DES MARIAGES AVEC INTENTION, ÉMOTION ET ART",
+    "body": "Chez Linda Wiryani Design and Event Planning, chaque mariage commence par une histoire, pensée avec soin, jamais standardisée.\n\nBasés à Bali, nous sommes un studio de planification et de design de mariages de destination, reconnu pour des mariages artistiquement composés, façonnés par l'architecture, l'hospitalité et une narration raffinée.\n\nForts de près de deux décennies d'expérience dans l'hôtellerie de luxe cinq étoiles, nous imaginons chaque célébration pour qu'elle soit fluide, sereine et profondément personnelle, du premier accueil à l'ultime au revoir.\n\nNous sommes spécialisés dans les mariages intimes et les mariages en villa privée à Bali, en concevant des célébrations guidées par l'espace, l'émotion et le lien humain plutôt que par les tendances.\n\nAncrés dans une approche axée sur le design, mêlant architecture, mode et détails artistiques, nous créons des mariages intemporels, réfléchis et discrètement inoubliables.",
+    "cta": "À PROPOS DU STUDIO"
+  },
+  "videoPlayer": {
+    "close": "Fermer le lecteur vidéo"
+  },
+  "aboutModal": {
+    "kicker": "À propos de Linda Wiryani Design and Event Planning",
+    "title": "Wedding planner de destination à Bali et studio créatif",
+    "subtitle": "Concevoir des mariages avec intention, émotion et art",
+    "intro1": "Chez Linda Wiryani Design & Event Planning, chaque célébration commence par une histoire — la vôtre.",
+    "intro2": "Nous sommes un studio de planification et de design de mariages basé à Bali, spécialisé dans les mariages intimes, les mariages en villa privée et les célébrations de destination à Bali.",
+    "intro3": "Notre studio est reconnu pour ses mariages artistiquement conçus, façonnés par l'architecture, l'hospitalité et une narration réfléchie.",
+    "intro4": "Chaque célébration est abordée comme un projet de design unique — « jamais un modèle » — guidé par la sensibilité à l'espace, à l'émotion et au lien humain.",
+    "philosophyTitle": "Une philosophie du mariage centrée sur le design",
+    "philosophy1": "Ancré dans une philosophie axée sur le design, notre travail est influencé par l'équilibre architectural, des matériaux raffinés et la fluidité de l'expérience.",
+    "philosophy2": "Forts de près de deux décennies d'expérience dans l'hôtellerie de luxe cinq étoiles à Bali, nous composons chaque mariage pour qu'il soit non seulement beau, mais aussi fluide, pour les mariés comme pour leurs invités.",
+    "philosophy3": "Du premier accueil à l'ultime au revoir, chaque détail est pensé avec soin et intention.",
+    "villaTitle": "Mariages intimes et en villa privée à Bali",
+    "villa1": "Plutôt que de répéter des concepts, chaque mariage est composé individuellement.",
+    "villa2": "Chaque célébration est façonnée par le lieu choisi, son environnement naturel et l'histoire personnelle du couple, guidée par l'émotion plutôt que par les tendances.",
+    "villa3": "Cette approche nous permet de créer des mariages intimes en villa privée à Bali, personnels, sereins et intemporels — des expériences dont on se souvient bien après la fin de la journée.",
+    "archTitle": "Là où l'architecture, la mode et le design artistique se rencontrent",
+    "arch1": "Notre esthétique privilégie la clarté à l'excès, la retenue au spectacle et la chaleur à la performance.",
+    "arch2": "Sensibilité architecturale, textures raffinées et détails subtils s'associent pour créer des célébrations intimes et réfléchies.",
+    "arch3": "En tant que directrice de la création de la marque de mode My Lindway, Linda Wiryani apporte une sensibilité artistique et un goût pour le savoir-faire dans chaque célébration, du stylisme sur mesure à la narration visuelle.",
+    "arch4": "Cette vision s'enrichit souvent d'une collaboration créative avec son mari architecte, donnant des mariages cohérents, intentionnels et visuellement intemporels.",
+    "arch5": "Le design existe pour soutenir l'émotion, jamais pour la dominer.",
+    "couplesTitle": "Pour les couples qui privilégient le sens à l'excès",
+    "couples1": "Linda Wiryani Design & Event Planning travaille avec des couples qui apprécient un design réfléchi, un luxe subtil et des expériences authentiques — des couples qui recherchent des mariages personnels, naturels et profondément liés à leur histoire.",
+    "couples2": "Un mariage est un moment où l'on se réunit, on se retrouve et on se souvient.",
+    "couples3": "Notre rôle est de concevoir ces moments avec soin, en les transformant en expériences sincères, raffinées et profondément personnelles."
+  },
+  "themeModal": {
+    "label": "Thème de mariage",
+    "exploreVenue": "Découvrir le lieu",
+    "planYourDream": "PLANIFIEZ VOTRE RÊVE",
+    "experience": "L'expérience"
+  },
+  "venueModal": {
+    "labelVenues": "Lieux",
+    "currency": "Devise",
+    "startsFrom": "À partir de",
+    "nett": "net",
+    "pax": "Pax",
+    "planYourDream": "PLANIFIEZ VOTRE RÊVE",
+    "expLuxury": "Mariages de luxe",
+    "expPrivateVilla": "Mariages en villa privée",
+    "expElopement": "Mariages en elopement",
+    "expIntimate": "Mariages intimes"
+  },
+  "venuesSection": {
+    "kicker": "Lieux et cadres",
+    "title": "Sélectionnés pour l'expérience",
+    "intro": "Nous sélectionnons les lieux non pas selon leur popularité, mais selon leur capacité à porter l'émotion, la beauté et l'expérience. Chaque espace est choisi pour son caractère architectural, son environnement naturel, son intimité et son potentiel créatif.",
+    "experienceLabel": "EXPÉRIENCE",
+    "locationLabel": "EMPLACEMENT",
+    "currencyLabel": "DEVISE",
+    "startsFrom": "À partir de",
+    "nett": "net",
+    "pax": "pax",
+    "noVenuesFound": "Aucun lieu trouvé pour l'emplacement sélectionné.",
+    "noVenuesHelp": "Il n'y a actuellement aucun lieu {experience} disponible à {location}. Essayez de sélectionner un autre emplacement ou une autre expérience.",
+    "viewMore": "VOIR PLUS ({count} DE PLUS)",
+    "viewLess": "VOIR MOINS",
+    "descLuxury": "Une sélection de lieux réputés pour leur architecture, leur cadre et leur expérience distinctifs.",
+    "descPrivateVilla": "Des propriétés privées exclusives offrant intimité, flexibilité et une expérience de célébration profondément personnelle.",
+    "descElopement": "Des cadres intimes conçus pour les couples en quête de confidentialité, de sens et d'un environnement extraordinaire.",
+    "descIntimate": "Des lieux soigneusement sélectionnés pour des célébrations à taille humaine — connexion, élégance et hospitalité raffinée."
+  },
+  "wedThemes": {
+    "kicker": "Couche conceptuelle",
+    "title": "Thèmes de mariage",
+    "intro": "Nos thèmes de mariage ne sont ni des forfaits ni des styles. Ce sont des orientations émotionnelles qui guident la façon dont votre célébration se ressent, se déroule et prend vie. Le thème influence les décisions liées à l'ampleur, à l'intimité, au style de cérémonie et à l'expérience globale des invités.",
+    "venueTBC": "Lieu à confirmer",
+    "elopementLabel": "elopement",
+    "intimateLabel": "intime"
+  },
+  "elopementSubtitles": {
+    "private-villa-elopement": "Cadre en villa privée sélectionné à Bali",
+    "cliffside-elopement": "Un cadre de falaise sélectionné à Bali",
+    "architectural-modern-tropical-elopement": "Lieux architecturaux sélectionnés à Bali",
+    "forest-jungle-elopement": "Une évasion en forêt tropicale sélectionnée à Bali",
+    "waterfall-elopement": "Cadres de cascades sereins à Bali",
+    "rice-field-elopement": "Un cadre de rizière sélectionné à Bali",
+    "beachfront-elopement": "Lieux en bord de mer sélectionnés à Bali",
+    "lake-elopement": "Un cadre au bord d'un lac sélectionné à Bali",
+    "volcano-mountain-elopement": "Cadres de montagne et de volcan sélectionnés à Bali",
+    "riverside-elopement": "Un cadre en bord de rivière sélectionné à Bali",
+    "eco-sustainable-elopement": "Conçu avec soin, approche durable",
+    "sacred-spiritual-elopement": "Guidé avec soin, approche sacrée et intentionnelle",
+    "cultural-heritage-elopement": "Cadres culturels et patrimoniaux sélectionnés à Bali",
+    "sunrise-purification-elopement": "Une expérience de lever de soleil et de purification sélectionnée à Bali",
+    "editorial-luxury-elopement": "Cadres éditoriaux sélectionnés à Bali"
+  }
+}

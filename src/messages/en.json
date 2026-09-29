@@ -1,0 +1,157 @@
+{
+  "nav": {
+    "home": "HOME",
+    "ourApproach": "OUR APPROACH",
+    "services": "SERVICES",
+    "weddingExperiences": "WEDDING EXPERIENCES",
+    "weddingExperiencesSubmenu": {
+      "privateVilla": "Private Villa Weddings",
+      "intimate": "Intimate Weddings",
+      "elopement": "Elopement Weddings",
+      "luxury": "Luxury Weddings",
+      "destination": "Destination Weddings"
+    },
+    "weddingConcepts": "WEDDING CONCEPTS",
+    "destinations": "DESTINATIONS",
+    "portfolio": "PORTFOLIO",
+    "journal": "JOURNAL",
+    "workingWithUs": "WORKING WITH US",
+    "contact": "CONTACT"
+  },
+  "languageSwitcher": {
+    "label": "Language"
+  },
+  "footer": {
+    "tagline": "DESIGN • EVENT PLANNING",
+    "address": "© 2026 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali 80239, Indonesia.",
+    "followUs": "Reach out and follow us at"
+  },
+  "common": {
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "optional": "OPTIONAL",
+    "sendInquiry": "Send Inquiry",
+    "backTo": "Back to",
+    "closeModal": "Close modal",
+    "failedToLoadImage": "Failed to load image",
+    "previousImage": "Previous image",
+    "nextImage": "Next image"
+  },
+  "floatingContact": {
+    "label": "Contact Us"
+  },
+  "gallery": {
+    "title": "GALLERY",
+    "heading": "Bali Wedding Gallery – Real Celebrations, Artful Design, and Timeless Inspiration"
+  },
+  "quote": {
+    "line1": "Because true elegance is not only seen",
+    "line2": "— it's felt, lived, and remembered"
+  },
+  "instagram": {
+    "followAlong": "Follow Along",
+    "latest": "Latest Inspirations",
+    "description": "Discover what's blooming — our latest Bali wedding moments, behind-the-scenes florals, and real celebration stories, curated on Instagram.",
+    "stayConnected": "Stay Connected",
+    "follow": "FOLLOW ON INSTAGRAM"
+  },
+  "aboutUs": {
+    "kicker": "Luxury Wedding Planner & Designer in Bali",
+    "heading": "DESIGNING WEDDINGS WITH INTENTION, EMOTION, AND ART",
+    "body": "At Linda Wiryani Design and Event Planning, each wedding begins with a story, thoughtfully designed, never templated.\n\nBased in Bali, we are a destination wedding planning and design studio, known for artfully curated weddings shaped by architecture, hospitality, and refined storytelling.\n\nWith nearly two decades of experience in five-star luxury hospitality, every celebration is created to feel seamless, calm, and deeply personal, from the first welcome to the final farewell.\n\nWe specialize in intimate weddings and private villa weddings in Bali, designing celebrations guided by space, emotion, and human connection rather than trends.\n\nRooted in a design-led approach that blends architecture, fashion, and artful detail, we create weddings that feel timeless, considered, and quietly unforgettable.",
+    "cta": "ABOUT THE STUDIO"
+  },
+  "videoPlayer": {
+    "close": "Close video player"
+  },
+  "aboutModal": {
+    "kicker": "About Linda Wiryani Design and Event Planning",
+    "title": "Bali Destination Wedding Planner & Creative Studio",
+    "subtitle": "Designing Weddings with Intention, Emotion, and Art",
+    "intro1": "At Linda Wiryani Design & Event Planning, every celebration begins with a story-yours.",
+    "intro2": "We are a Bali-based wedding planning and design studio specializing in intimate weddings, private villa weddings, and destination celebrations in Bali.",
+    "intro3": "Our studio is known for artfully designed weddings shaped by architecture, hospitality, and thoughtful storytelling.",
+    "intro4": "Each celebration is approached as a unique design project ‘never a template’ guided by sensitivity to space, emotion, and human connection.",
+    "philosophyTitle": "A Design-Led Wedding Philosophy",
+    "philosophy1": "Rooted in a design-led philosophy, our work is influenced by architectural balance, refined materiality, and the flow of experience.",
+    "philosophy2": "With nearly two decades of experience in Bali’s five-star luxury hospitality industry, every wedding is curated not only to look beautiful, but to feel seamless, for both couples and their guests.",
+    "philosophy3": "From the first welcome to the final farewell, each detail is considered with care and intention.",
+    "villaTitle": "Intimate and Private Villa Weddings in Bali",
+    "villa1": "Rather than repeating concepts, each wedding is curated individually.",
+    "villa2": "Every celebration is shaped by the chosen space, its natural surroundings, and the couple’s personal story, guided by emotion rather than trends.",
+    "villa3": "This approach allows us to create intimate private villa weddings in Bali that feel personal, calm, and timeless experiences remembered long after the day has passed.",
+    "archTitle": "Where Architecture, Fashion, and Artful Design Meet",
+    "arch1": "Our aesthetic favors clarity over excess, restraint over spectacle, and warmth over performance.",
+    "arch2": "Architectural sensibility, refined textures, and subtle details come together to create celebrations that feel intimate and considered.",
+    "arch3": "As the Creative Director of fashion brand My Lindway, Linda Wiryani brings an artistic sensibility and appreciation for craftsmanship into each celebration, from bespoke styling to visual storytelling.",
+    "arch4": "This vision is often enriched through creative collaboration with her architect husband, resulting in weddings that feel cohesive, intentional, and visually timeless.",
+    "arch5": "Design exists to support emotion, never to overpower it.",
+    "couplesTitle": "For Couples Who Value Meaning Over Excess",
+    "couples1": "Linda Wiryani Design & Event Planning works with couples who appreciate thoughtful design, subtle luxury, and authentic experiences, couples who seek weddings that feel personal, unforced, and deeply connected to their story.",
+    "couples2": "Weddings are moments where people gather, connect, and remember.",
+    "couples3": "Our role is to design those moments with care, transforming them into experiences that feel honest, refined, and deeply personal."
+  },
+  "themeModal": {
+    "label": "Wedding Theme",
+    "exploreVenue": "Explore Venue",
+    "planYourDream": "PLAN YOUR DREAM",
+    "experience": "The Experience"
+  },
+  "venueModal": {
+    "labelVenues": "Venues",
+    "currency": "Currency",
+    "startsFrom": "Starts from",
+    "nett": "nett",
+    "pax": "Pax",
+    "planYourDream": "PLAN YOUR DREAM",
+    "expLuxury": "Luxury Weddings",
+    "expPrivateVilla": "Private Villa Weddings",
+    "expElopement": "Elopement Weddings",
+    "expIntimate": "Intimate Weddings"
+  },
+  "venuesSection": {
+    "kicker": "Venues & Settings",
+    "title": "Curated for Experience",
+    "intro": "We curate venues not by popularity, but by their ability to hold emotion, beauty, and experience. Each space is selected for its architectural character, natural environment, privacy, and creative potential.",
+    "experienceLabel": "EXPERIENCE",
+    "locationLabel": "LOCATION",
+    "currencyLabel": "CURRENCY",
+    "startsFrom": "Starts from",
+    "nett": "nett",
+    "pax": "pax",
+    "noVenuesFound": "No venues found for the selected location.",
+    "noVenuesHelp": "There are currently no {experience} venues available in {location}. Try selecting a different location or experience.",
+    "viewMore": "VIEW MORE ({count} MORE)",
+    "viewLess": "VIEW LESS",
+    "descLuxury": "A curated selection of venues known for distinctive architecture, setting, and experience.",
+    "descPrivateVilla": "Exclusive private estates offering intimacy, flexibility, and a deeply personal celebration experience.",
+    "descElopement": "Intimate settings designed for couples seeking privacy, meaning, and extraordinary surroundings.",
+    "descIntimate": "Thoughtfully curated venues for scaled celebrations — connection, elegance, and refined hospitality."
+  },
+  "wedThemes": {
+    "kicker": "Concept Layer",
+    "title": "Wedding Themes",
+    "intro": "Our wedding themes are not packages or styles. They are emotional directions — guiding how your celebration feels, flows, and unfolds. Theme supports decisions around scale, intimacy, ceremony style, and the overall guest experience.",
+    "venueTBC": "Venue To Be Confirmed",
+    "elopementLabel": "elopement",
+    "intimateLabel": "intimate"
+  },
+  "elopementSubtitles": {
+    "private-villa-elopement": "Curated Private Villa Setting in Bali",
+    "cliffside-elopement": "A Curated Cliffside Setting in Bali",
+    "architectural-modern-tropical-elopement": "Curated Architectural Venues in Bali",
+    "forest-jungle-elopement": "A Curated Jungle Escape in Bali",
+    "waterfall-elopement": "Serene Waterfall Settings in Bali",
+    "rice-field-elopement": "A Curated Rice Field Setting in Bali",
+    "beachfront-elopement": "Curated Beachfront Venues in Bali",
+    "lake-elopement": "A Curated Lakeside Setting in Bali",
+    "volcano-mountain-elopement": "Curated Mountain & Volcano Settings in Bali",
+    "riverside-elopement": "A Curated Riverside Setting in Bali",
+    "eco-sustainable-elopement": "Thoughtfully Designed with a Sustainable Approach",
+    "sacred-spiritual-elopement": "Thoughtfully Guided with a Sacred & Intentional Approach",
+    "cultural-heritage-elopement": "Curated Cultural & Heritage Settings in Bali",
+    "sunrise-purification-elopement": "A Curated Sunrise & Purification Experience in Bali",
+    "editorial-luxury-elopement": "Curated Editorial Settings in Bali"
+  }
+}

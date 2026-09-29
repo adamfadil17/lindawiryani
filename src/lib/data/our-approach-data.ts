@@ -1,47 +1,12 @@
-export const phases = [
-  {
-    number: "01",
-    title: "Vision & Direction",
-    desc: "We translate your story, values, and aesthetic into a clear creative direction — a guiding intention that shapes every detail of your celebration.",
-  },
-  {
-    number: "02",
-    title: "Design Development",
-    desc: "We build a complete design concept: layout, styling, color harmony, textures, floral direction, and spatial flow — all designed as a unified whole.",
-  },
-  {
-    number: "03",
-    title: "Planning & Production",
-    desc: "We handle venue coordination, vendor management, budgeting guidance, and detailed timeline creation with precision and care.",
-  },
-  {
-    number: "04",
-    title: "On-the-Day Orchestration",
-    desc: "Our team manages all technical execution so you and your guests experience the celebration effortlessly — calm, seamless, and deeply felt.",
-  },
-];
+import { createLocaleData } from "./locale-data";
+import * as en from "./our-approach-data.en";
+import * as id from "./our-approach-data.id";
+import * as zh from "./our-approach-data.zh";
+import * as fr from "./our-approach-data.fr";
 
-export const pillars = [
-  "Artistic direction",
-  "Emotional atmosphere",
-  "Spatial beauty",
-  "Calm professionalism",
-  "Discreet luxury",
-  "High-level guest experience",
-];
+export type OurApproachData = typeof en;
 
-export const specializations = [
-  "Luxury destination weddings in Bali",
-  "Private villa weddings",
-  "Intimate weddings and elopements",
-  "Design-driven celebrations",
-  "Multi-day wedding experiences",
-];
+const { getData: getOurApproachData, useData: useOurApproachData } =
+  createLocaleData<OurApproachData>({ en, id, zh, fr });
 
-export const designQualities = [
-  "Cohesive",
-  "Architectural",
-  "Thoughtful",
-  "Personal",
-  "Timeless",
-];
+export { getOurApproachData, useOurApproachData };

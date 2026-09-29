@@ -4,46 +4,51 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-const navigationItems = [
-  { name: "HOME", href: "/" },
-  { name: "OUR APPROACH", href: "/our-approach" },
-  { name: "SERVICES", href: "/services" },
-  {
-    name: "WEDDING EXPERIENCES",
-    href: "/wedding-experiences",
-    submenu: [
-      {
-        name: "Private Villa Weddings",
-        href: "/wedding-experiences/private-villa-weddings",
-      },
-      {
-        name: "Intimate Weddings",
-        href: "/wedding-experiences/intimate-weddings",
-      },
-      {
-        name: "Elopement Weddings",
-        href: "/wedding-experiences/elopement-weddings",
-      },
-      { name: "Luxury Weddings", href: "/wedding-experiences/luxury-weddings" },
-    ],
-  },
-  { name: "WEDDING CONCEPTS", href: "/wedding-concepts" },
-  { name: "DESTINATIONS", href: "/destinations" },
-  { name: "PORTFOLIO", href: "/portfolio" },
-  { name: "JOURNAL", href: "/journal" },
-  { name: "WORKING WITH US", href: "/working-with-us" },
-];
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import LanguageSwitcher from "@/components/shared/language-switcher";
 
 export default function Header() {
+  const t = useTranslations("nav");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
+
+  const navigationItems = [
+    { name: t("home"), href: "/" },
+    { name: t("ourApproach"), href: "/our-approach" },
+    { name: t("services"), href: "/services" },
+    {
+      name: t("weddingExperiences"),
+      href: "/wedding-experiences",
+      submenu: [
+        {
+          name: t("weddingExperiencesSubmenu.privateVilla"),
+          href: "/wedding-experiences/private-villa-weddings",
+        },
+        {
+          name: t("weddingExperiencesSubmenu.intimate"),
+          href: "/wedding-experiences/intimate-weddings",
+        },
+        {
+          name: t("weddingExperiencesSubmenu.elopement"),
+          href: "/wedding-experiences/elopement-weddings",
+        },
+        {
+          name: t("weddingExperiencesSubmenu.luxury"),
+          href: "/wedding-experiences/luxury-weddings",
+        },
+      ],
+    },
+    { name: t("weddingConcepts"), href: "/wedding-concepts" },
+    { name: t("destinations"), href: "/destinations" },
+    { name: t("portfolio"), href: "/portfolio" },
+    { name: t("journal"), href: "/journal" },
+    { name: t("workingWithUs"), href: "/working-with-us" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -112,6 +117,16 @@ export default function Header() {
             />
           </div>
 
+          {/* Language switcher (mobile/HP, kiri header — dropdown langsung dari tombol) */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 md:hidden">
+            <LanguageSwitcher inverted={inverted} align="left" />
+          </div>
+
+          {/* Language switcher (desktop, top-right) */}
+          <div className="hidden md:block absolute right-0">
+            <LanguageSwitcher inverted={inverted} />
+          </div>
+
           {/* Mobile menu toggle */}
           <div className="absolute right-0 md:hidden">
             <Button
@@ -134,7 +149,7 @@ export default function Header() {
           <ul className="flex justify-center items-center flex-wrap gap-x-6 lg:gap-x-8">
             {navigationItems.map((item) => (
               <li
-                key={item.name}
+                key={item.href}
                 className="relative"
                 onMouseEnter={() => item.submenu && handleMouseEnter(item.name)}
                 onMouseLeave={() => item.submenu && handleMouseLeave()}
@@ -159,7 +174,7 @@ export default function Header() {
                       const subActive = pathname === sub.href;
                       return (
                         <Link
-                          key={sub.name}
+                          key={sub.href}
                           href={sub.href}
                           className={`block px-5 py-2.5 text-[12px] tracking-wide text-primary hover:bg-stone-50 transition-colors ${subActive ? "font-semibold" : "font-light"}`}
                           onClick={() => setActiveDropdown(null)}
@@ -184,7 +199,7 @@ export default function Header() {
               const active = isActive(item);
               return (
                 <li
-                  key={item.name}
+                  key={item.href}
                   className="border-b border-stone-50 last:border-0"
                 >
                   {item.submenu ? (
@@ -208,7 +223,7 @@ export default function Header() {
                           {item.submenu.map((sub) => {
                             const subActive = pathname === sub.href;
                             return (
-                              <li key={sub.name}>
+                              <li key={sub.href}>
                                 <Link
                                   href={sub.href}
                                   className={`block text-[13px] py-1.5 tracking-wide ${subActive ? "text-primary font-semibold" : "text-primary/70 font-light"}`}

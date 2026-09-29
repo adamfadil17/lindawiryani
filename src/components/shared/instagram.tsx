@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Play, Pause, ArrowLeft, ArrowRight } from "lucide-react";
@@ -9,6 +11,7 @@ import { instagramPosts } from "@/lib/image-src";
 import { VideoPlayerModal } from "./video-player-modal";
 
 export default function Instagram() {
+  const t = useTranslations("instagram");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [playingVideoId, setPlayingVideoId] = useState<number | null>(null);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState<string>("");
@@ -17,7 +20,7 @@ export default function Instagram() {
     setCurrentSlide((prev) => (prev + 1) % instagramPosts.length);
   const prevSlide = () =>
     setCurrentSlide(
-      (prev) => (prev - 1 + instagramPosts.length) % instagramPosts.length
+      (prev) => (prev - 1 + instagramPosts.length) % instagramPosts.length,
     );
 
   const handleVideoClick = (index: number, videoUrl: string) => {
@@ -39,25 +42,21 @@ export default function Instagram() {
       viewport={{ once: false, amount: 0.05, margin: "0px 0px -100px 0px" }}
       variants={staggerContainer}
     >
-
-
       <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Header — matches page.tsx section headers */}
         <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
           <p className="text-primary tracking-[0.25em] uppercase mb-3">
-            Follow Along
+            {t("followAlong")}
           </p>
           <div className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-5">
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                Latest Inspirations
+                {t("latest")}
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
               <p className="text-primary/80 leading-relaxed text-justify">
-                Discover what's blooming — our latest Bali wedding moments,
-                behind-the-scenes florals, and real celebration stories,
-                curated on Instagram.
+                {t("description")}
               </p>
             </div>
           </div>
@@ -96,9 +95,15 @@ export default function Instagram() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-14 h-14 flex items-center justify-center group-hover:bg-white/40 group-hover:border-white/40 transition-all duration-300">
                     {playingVideoId === index ? (
-                      <Pause className="w-5 h-5 text-white group-hover:text-white transition-colors" fill="currentColor" />
+                      <Pause
+                        className="w-5 h-5 text-white group-hover:text-white transition-colors"
+                        fill="currentColor"
+                      />
                     ) : (
-                      <Play className="w-5 h-5 text-white group-hover:text-white transition-colors ml-0.5" fill="currentColor" />
+                      <Play
+                        className="w-5 h-5 text-white group-hover:text-white transition-colors ml-0.5"
+                        fill="currentColor"
+                      />
                     )}
                   </div>
                 </div>
@@ -123,7 +128,7 @@ export default function Instagram() {
                   instagramPosts[currentSlide].videoUrl &&
                   handleVideoClick(
                     currentSlide,
-                    instagramPosts[currentSlide].videoUrl!
+                    instagramPosts[currentSlide].videoUrl!,
                   )
                 }
               >
@@ -141,9 +146,15 @@ export default function Instagram() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-14 h-14 bg-white/20 border border-white/40 flex items-center justify-center">
                       {playingVideoId === currentSlide ? (
-                        <Pause className="w-5 h-5 text-white" fill="currentColor" />
+                        <Pause
+                          className="w-5 h-5 text-white"
+                          fill="currentColor"
+                        />
                       ) : (
-                        <Play className="w-5 h-5 text-white ml-0.5" fill="currentColor" />
+                        <Play
+                          className="w-5 h-5 text-white ml-0.5"
+                          fill="currentColor"
+                        />
                       )}
                     </div>
                   </div>
@@ -189,7 +200,7 @@ export default function Instagram() {
         >
           <div>
             <p className="text-primary/80 tracking-[0.25em] uppercase text-sm mb-1">
-              Stay Connected
+              {t("stayConnected")}
             </p>
             <a
               href="https://instagram.com/lindawiryanievents"
@@ -207,7 +218,7 @@ export default function Instagram() {
             rel="noopener noreferrer"
           >
             <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
-              FOLLOW ON INSTAGRAM
+              {t("follow")}
             </button>
           </a>
         </motion.div>

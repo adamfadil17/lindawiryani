@@ -1,10 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { usePathname } from "@/i18n/navigation";
 
 export default function FloatingContactButton() {
+  const t = useTranslations("floatingContact");
   const [visible, setVisible] = useState(false);
   const [pulse, setPulse] = useState(true);
   const pathname = usePathname();
@@ -65,7 +68,7 @@ export default function FloatingContactButton() {
       {visible && (
         <Link
           href="/contact"
-          aria-label="Contact Us"
+          aria-label={t("label")}
           className={`floating-contact ${pulse ? "pulsing" : ""} fixed bottom-8 right-6 z-50 flex items-center bg-primary hover:bg-primary/80 text-white rounded-full shadow-2xl px-4 py-4 transition-colors duration-300 group`}
           style={{ textDecoration: "none" }}
         >
@@ -86,10 +89,8 @@ export default function FloatingContactButton() {
           </span>
 
           {/* Expandable label */}
-          <span
-            className="contact-label text-sm tracking-[0.18em] font-light uppercase"
-          >
-            Contact Us
+          <span className="contact-label text-sm tracking-[0.18em] font-light uppercase">
+            {t("label")}
           </span>
         </Link>
       )}

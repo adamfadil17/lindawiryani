@@ -1,42 +1,49 @@
 import Image from "next/image";
-import Link from "next/link";
-
-const navigationItems = [
-  { name: "HOME", href: "/" },
-  { name: "OUR APPROACH", href: "/our-approach" },
-  { name: "SERVICES", href: "/services" },
-  {
-    name: "WEDDING EXPERIENCES",
-    href: "/wedding-experiences",
-    submenu: [
-      {
-        name: "Private Villa Weddings",
-        href: "/wedding-experiences/private-villa-weddings",
-      },
-      {
-        name: "Intimate Weddings",
-        href: "/wedding-experiences/intimate-weddings",
-      },
-      {
-        name: "Elopement Weddings",
-        href: "/wedding-experiences/elopement-weddings",
-      },
-      { name: "Luxury Weddings", href: "/wedding-experiences/luxury-weddings" },
-      {
-        name: "Destination Weddings",
-        href: "/wedding-experiences/bali-destination-wedding",
-      },
-    ],
-  },
-  { name: "WEDDING CONCEPTS", href: "/wedding-concepts" },
-  { name: "DESTINATIONS", href: "/destinations" },
-  { name: "PORTFOLIO", href: "/portfolio" },
-  { name: "JOURNAL", href: "/journal" },
-  { name: "WORKING WITH US", href: "/working-with-us" },
-  { name: "CONTACT", href: "/contact" },
-];
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function Footer() {
+  const t = useTranslations("nav");
+  const tFooter = useTranslations("footer");
+
+  const navigationItems = [
+    { name: t("home"), href: "/" },
+    { name: t("ourApproach"), href: "/our-approach" },
+    { name: t("services"), href: "/services" },
+    {
+      name: t("weddingExperiences"),
+      href: "/wedding-experiences",
+      submenu: [
+        {
+          name: t("weddingExperiencesSubmenu.privateVilla"),
+          href: "/wedding-experiences/private-villa-weddings",
+        },
+        {
+          name: t("weddingExperiencesSubmenu.intimate"),
+          href: "/wedding-experiences/intimate-weddings",
+        },
+        {
+          name: t("weddingExperiencesSubmenu.elopement"),
+          href: "/wedding-experiences/elopement-weddings",
+        },
+        {
+          name: t("weddingExperiencesSubmenu.luxury"),
+          href: "/wedding-experiences/luxury-weddings",
+        },
+        {
+          name: t("weddingExperiencesSubmenu.destination"),
+          href: "/wedding-experiences/bali-destination-wedding",
+        },
+      ],
+    },
+    { name: t("weddingConcepts"), href: "/wedding-concepts" },
+    { name: t("destinations"), href: "/destinations" },
+    { name: t("portfolio"), href: "/portfolio" },
+    { name: t("journal"), href: "/journal" },
+    { name: t("workingWithUs"), href: "/working-with-us" },
+    { name: t("contact"), href: "/contact" },
+  ];
+
   return (
     <footer className="bg-white/95 backdrop-blur-sm pt-16 lg:pt-20 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-4 lg:py-8 border-primary border-b-12">
@@ -57,13 +64,12 @@ export default function Footer() {
 
             {/* Tagline */}
             <p className="text-primary text-sm tracking-[0.4em] uppercase font-light">
-              DESIGN • EVENT PLANNING
+              {tFooter("tagline")}
             </p>
 
             {/* Address */}
             <p className="text-primary text-md font-light max-w-md mx-auto lg:mx-0">
-              © 2026 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali
-              80239, Indonesia.
+              {tFooter("address")}
             </p>
           </div>
 
@@ -119,7 +125,7 @@ export default function Footer() {
             {/* Social Media Section */}
             <div className="space-y-4">
               <p className="text-primary text-sm font-light">
-                Reach out and follow us at
+                {tFooter("followUs")}
               </p>
 
               {/* Social Media Icons */}

@@ -1,10 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Quote() {
+  const t = useTranslations("quote");
   return (
     <section className="bg-white pb-16 lg:pb-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
@@ -21,8 +24,9 @@ export default function Quote() {
           variants={fadeInUp}
         >
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary leading-relaxed max-w-5xl mx-auto italic">
-            Because true elegance is not only seen
-            <br className="hidden md:block" />— it's felt, lived, and remembered
+            {t("line1")}
+            <br className="hidden md:block" />
+            {t("line2")}
           </h2>
         </motion.div>
 

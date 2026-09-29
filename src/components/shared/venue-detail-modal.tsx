@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import {
@@ -10,14 +12,14 @@ import {
   ChevronRight,
   ChevronDown,
 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { Venue, WeddingTheme, Currency } from "@/types";
 
 type ExperienceFilter =
-  | "Private Villa Weddings"
-  | "Intimate Weddings"
-  | "Elopement Weddings"
-  | "Luxury Weddings";
+  | "expPrivateVilla"
+  | "expIntimate"
+  | "expElopement"
+  | "expLuxury";
 
 const getVenueExperiences = (
   venue: Venue,
@@ -34,16 +36,16 @@ const getVenueExperiences = (
   );
 
   if (venue.experience?.category === "luxury_weddings") {
-    experiences.push("Luxury Weddings");
+    experiences.push("expLuxury");
   }
   if (venue.experience?.category === "private_villa_weddings") {
-    experiences.push("Private Villa Weddings");
+    experiences.push("expPrivateVilla");
   }
   if (elopementVenueIds.has(venue.id)) {
-    experiences.push("Elopement Weddings");
+    experiences.push("expElopement");
   }
   if (intimateVenueIds.has(venue.id)) {
-    experiences.push("Intimate Weddings");
+    experiences.push("expIntimate");
   }
 
   return experiences;
@@ -105,6 +107,8 @@ export default function VenueDetailModal({
   elopementThemes,
   intimateThemes,
 }: VenueDetailModalProps) {
+  const t = useTranslations("venueModal");
+  const tc = useTranslations("common");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCurrency, setSelectedCurrency] =
     useState<Currency>(initialCurrency);
@@ -212,7 +216,7 @@ export default function VenueDetailModal({
         <button
           onClick={onClose}
           className="absolute top-6 right-6 z-20 p-2 hover:cursor-pointer bg-white/80 transition-colors"
-          aria-label="Close modal"
+          aria-label={tc("closeModal")}
         >
           <X className="w-6 h-6 text-primary" />
         </button>
@@ -230,7 +234,9 @@ export default function VenueDetailModal({
                   <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
                     <X className="w-8 h-8 text-stone-500" />
                   </div>
-                  <p className="text-stone-500 text-sm">Failed to load image</p>
+                  <p className="text-stone-500 text-sm">
+                    {tc("failedToLoadImage")}
+                  </p>
                 </div>
               )}
 
@@ -362,15 +368,19 @@ export default function VenueDetailModal({
             {/* Category Label & Venue Type */}
             <div className="flex items-center gap-3 flex-wrap">
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
-                Venues
+                {t("labelVenues")}
               </span>
               <div className="flex gap-2 flex-wrap">
-                {getVenueExperiences(venue, elopementThemes, intimateThemes).map((exp) => (
+                {getVenueExperiences(
+                  venue,
+                  elopementThemes,
+                  intimateThemes,
+                ).map((exp) => (
                   <span
                     key={exp}
                     className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
                   >
-                    {exp}
+                    {t(exp)}
                   </span>
                 ))}
               </div>
@@ -387,7 +397,7 @@ export default function VenueDetailModal({
             {/* Currency Dropdown */}
             <div className="flex items-center gap-2 mt-2">
               <span className="text-sm text-primary tracking-wider uppercase font-semibold">
-                Currency
+                {t("currency")}
               </span>
               <div className="relative">
                 <button
@@ -431,7 +441,7 @@ export default function VenueDetailModal({
             <div className="flex justify-start gap-8 items-start mt-4 mb-6 w-full border-y border-stone-100 py-6">
               <div className="flex flex-col">
                 <span className="text-sm text-primary italic mb-1">
-                  Starts from
+                  {t("startsFrom")}
                 </span>
                 <div className="flex items-baseline gap-2">
                   {venue.starting_price > 0 && (
@@ -447,7 +457,7 @@ export default function VenueDetailModal({
                     )}
                   </span>
                   {venue.starting_price > 0 && (
-                    <span className="text-sm text-primary">nett</span>
+                    <span className="text-sm text-primary">{t("nett")}</span>
                   )}
                 </div>
               </div>
@@ -462,7 +472,7 @@ export default function VenueDetailModal({
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-primary flex-shrink-0" />
                   <span className="text-md text-primary">
-                    {venue.capacity} Pax
+                    {venue.capacity} {t("pax")}
                   </span>
                 </div>
               </div>
@@ -474,7 +484,7 @@ export default function VenueDetailModal({
               className="w-full"
             >
               <button className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-4 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full uppercase">
-                PLAN YOUR DREAM
+                {t("planYourDream")}
               </button>
             </Link>
 

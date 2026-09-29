@@ -1,0 +1,157 @@
+{
+  "nav": {
+    "home": "首页",
+    "ourApproach": "我们的理念",
+    "services": "服务项目",
+    "weddingExperiences": "婚礼体验",
+    "weddingExperiencesSubmenu": {
+      "privateVilla": "私人别墅婚礼",
+      "intimate": "私密婚礼",
+      "elopement": "私奔婚礼",
+      "luxury": "奢华婚礼",
+      "destination": "目的地婚礼"
+    },
+    "weddingConcepts": "婚礼概念",
+    "destinations": "婚礼目的地",
+    "portfolio": "作品集",
+    "journal": "杂志专栏",
+    "workingWithUs": "合作机会",
+    "contact": "联系我们"
+  },
+  "languageSwitcher": {
+    "label": "语言"
+  },
+  "footer": {
+    "tagline": "设计 • 活动策划",
+    "address": "© 2026 Jalan Trengguli IV Gang IVB No. 11 Denpasar Timur, Bali 80239, Indonesia.",
+    "followUs": "欢迎联系并关注我们"
+  },
+  "common": {
+    "readMore": "阅读更多",
+    "learnMore": "了解更多",
+    "viewAll": "查看全部",
+    "optional": "可选",
+    "sendInquiry": "发送咨询",
+    "backTo": "返回",
+    "closeModal": "关闭窗口",
+    "failedToLoadImage": "图片加载失败",
+    "previousImage": "上一张图片",
+    "nextImage": "下一张图片"
+  },
+  "floatingContact": {
+    "label": "联系我们"
+  },
+  "gallery": {
+    "title": "画廊",
+    "heading": "巴厘岛婚礼画廊——真实的庆典、艺术的设计与永恒的灵感"
+  },
+  "quote": {
+    "line1": "因为真正的优雅不只是被看见",
+    "line2": "——更是被感受、被体验、被铭记"
+  },
+  "instagram": {
+    "followAlong": "跟随我们",
+    "latest": "最新灵感",
+    "description": "探索正在绽放的美好——我们最新的巴厘岛婚礼时刻、幕后花艺以及真实的庆典故事，精选呈现于 Instagram。",
+    "stayConnected": "保持联系",
+    "follow": "在 INSTAGRAM 关注我们"
+  },
+  "aboutUs": {
+    "kicker": "巴厘岛奢华婚礼策划师与设计师",
+    "heading": "以用心、情感与艺术设计婚礼",
+    "body": "在 Linda Wiryani Design and Event Planning，每一场婚礼都始于一个故事——用心设计，绝不流于模板。\n\n我们是一家位于巴厘岛的目的地婚礼策划与设计工作室，以融合建筑、待客之道与精致叙事的艺术化定制婚礼而闻名。\n\n凭借近二十年五星级奢华酒店业的经验，我们打造的每一场庆典都力求流畅、从容且极具个人特色，从第一声欢迎到最后的道别。\n\n我们专注于巴厘岛的私密婚礼和私人别墅婚礼，以空间、情感和人与人之间的联结而非潮流为导向来设计庆典。\n\n秉持以设计为先的理念，融合建筑、时尚与艺术细节，我们打造出永恒、考究且悄然难忘的婚礼。",
+    "cta": "关于工作室"
+  },
+  "videoPlayer": {
+    "close": "关闭视频播放器"
+  },
+  "aboutModal": {
+    "kicker": "关于 Linda Wiryani Design and Event Planning",
+    "title": "巴厘岛目的地婚礼策划师与创意工作室",
+    "subtitle": "以用心、情感与艺术设计婚礼",
+    "intro1": "在 Linda Wiryani Design & Event Planning，每一场庆典都始于一个故事——属于您的故事。",
+    "intro2": "我们是一家位于巴厘岛的婚礼策划与设计工作室，专注于巴厘岛的私密婚礼、私人别墅婚礼和目的地庆典。",
+    "intro3": "我们的工作室以融合建筑、待客之道和用心叙事的艺术化婚礼而闻名。",
+    "intro4": "每一场庆典都被视为独一无二的设计项目——“绝非模板”——以对空间、情感和人际联结的敏锐感知为指引。",
+    "philosophyTitle": "以设计为先的婚礼理念",
+    "philosophy1": "秉持以设计为先的理念，我们的作品深受建筑平衡、考究的材质以及体验流动感的影响。",
+    "philosophy2": "凭借近二十年在巴厘岛五星级奢华酒店业的经验，我们精心策划的每一场婚礼不仅外观美丽，更让新人和宾客都感到流畅自如。",
+    "philosophy3": "从第一声欢迎到最后的道别，每一个细节都经过用心而周到的考量。",
+    "villaTitle": "巴厘岛私密婚礼与私人别墅婚礼",
+    "villa1": "我们不重复概念，每一场婚礼都是独立定制的。",
+    "villa2": "每一场庆典都由所选空间、自然环境以及新人的个人故事塑造，以情感而非潮流为指引。",
+    "villa3": "这种方式让我们能够打造出个性、宁静而永恒的巴厘岛私人别墅私密婚礼——在这一天过去很久之后仍被人铭记的体验。",
+    "archTitle": "建筑、时尚与艺术设计的交汇之处",
+    "arch1": "我们的美学崇尚简洁胜过繁复，克制胜过夸张，温暖胜过表演。",
+    "arch2": "建筑感、考究的质感与细腻的细节相融合，营造出亲密而考究的庆典。",
+    "arch3": "作为时尚品牌 My Lindway 的创意总监，Linda Wiryani 将艺术感知与对工艺的欣赏融入每一场庆典，从定制造型到视觉叙事。",
+    "arch4": "这一愿景常常通过与她的建筑师丈夫的创意合作而更加丰富，成就了浑然一体、用心且视觉上历久不衰的婚礼。",
+    "arch5": "设计的存在是为了支撑情感，而非喧宾夺主。",
+    "couplesTitle": "献给注重意义胜过浮华的新人",
+    "couples1": "Linda Wiryani Design & Event Planning 与欣赏用心设计、低调奢华和真实体验的新人合作——他们追求个性、自然且与自己故事紧密相连的婚礼。",
+    "couples2": "婚礼是人们相聚、联结并留下回忆的时刻。",
+    "couples3": "我们的职责是用心设计这些时刻，将其转化为真诚、考究且极具个人色彩的体验。"
+  },
+  "themeModal": {
+    "label": "婚礼主题",
+    "exploreVenue": "探索场地",
+    "planYourDream": "规划您的梦想婚礼",
+    "experience": "体验"
+  },
+  "venueModal": {
+    "labelVenues": "场地",
+    "currency": "货币",
+    "startsFrom": "起价",
+    "nett": "净价",
+    "pax": "位",
+    "planYourDream": "规划您的梦想婚礼",
+    "expLuxury": "奢华婚礼",
+    "expPrivateVilla": "私人别墅婚礼",
+    "expElopement": "私奔婚礼",
+    "expIntimate": "私密婚礼"
+  },
+  "venuesSection": {
+    "kicker": "场地与环境",
+    "title": "为体验精心策划",
+    "intro": "我们挑选场地并非依据人气，而是依据它们承载情感、美感与体验的能力。每个空间都因其建筑特色、自然环境、私密性与创意潜力而入选。",
+    "experienceLabel": "体验",
+    "locationLabel": "地点",
+    "currencyLabel": "货币",
+    "startsFrom": "起价",
+    "nett": "净价",
+    "pax": "位",
+    "noVenuesFound": "未找到符合所选地点的场地。",
+    "noVenuesHelp": "目前在 {location} 暂无 {experience} 类型的场地。请尝试选择其他地点或体验类型。",
+    "viewMore": "查看更多（还有 {count} 个）",
+    "viewLess": "收起",
+    "descLuxury": "精心挑选的场地，以独特的建筑、环境与体验著称。",
+    "descPrivateVilla": "专属私人庄园，提供私密感、灵活性以及极具个人风格的庆典体验。",
+    "descElopement": "为寻求私密感、意义与非凡环境的新人打造的亲密场景。",
+    "descIntimate": "为规模适中的庆典用心策划的场地——联结、优雅与精致的待客之道。"
+  },
+  "wedThemes": {
+    "kicker": "概念层",
+    "title": "婚礼主题",
+    "intro": "我们的婚礼主题并非套餐或风格，而是情感方向——引导您的庆典如何被感受、如何流动、如何展开。主题有助于决定规模、私密程度、仪式风格以及整体宾客体验。",
+    "venueTBC": "场地待确认",
+    "elopementLabel": "私奔婚礼",
+    "intimateLabel": "私密婚礼"
+  },
+  "elopementSubtitles": {
+    "private-villa-elopement": "精选巴厘岛私人别墅场地",
+    "cliffside-elopement": "精选巴厘岛悬崖场地",
+    "architectural-modern-tropical-elopement": "精选巴厘岛建筑场地",
+    "forest-jungle-elopement": "精选巴厘岛丛林秘境",
+    "waterfall-elopement": "宁静的瀑布场地",
+    "rice-field-elopement": "精选巴厘岛稻田场地",
+    "beachfront-elopement": "精选巴厘岛海滨场地",
+    "lake-elopement": "精选巴厘岛湖畔场地",
+    "volcano-mountain-elopement": "精选巴厘岛山脉与火山场地",
+    "riverside-elopement": "精选巴厘岛河畔场地",
+    "eco-sustainable-elopement": "以可持续方式用心设计",
+    "sacred-spiritual-elopement": "以神圣而用心的方式引导",
+    "cultural-heritage-elopement": "精选巴厘岛文化与传统场地",
+    "sunrise-purification-elopement": "精选巴厘岛日出与净化体验",
+    "editorial-luxury-elopement": "精选巴厘岛编辑风格场地"
+  }
+}

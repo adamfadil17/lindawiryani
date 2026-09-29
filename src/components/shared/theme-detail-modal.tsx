@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { Venue, WeddingTheme } from "@/types";
 
 interface ThemeDetailModalProps {
@@ -34,6 +36,8 @@ export default function ThemeDetailModal({
   onClose,
   onExploreVenue,
 }: ThemeDetailModalProps) {
+  const t = useTranslations("themeModal");
+  const tc = useTranslations("common");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -97,7 +101,7 @@ export default function ThemeDetailModal({
         <button
           onClick={onClose}
           className="absolute top-6 right-6 z-30 p-2 hover:cursor-pointer bg-white/80 transition-colors"
-          aria-label="Close modal"
+          aria-label={tc("closeModal")}
         >
           <X className="w-6 h-6 text-primary" />
         </button>
@@ -112,7 +116,9 @@ export default function ThemeDetailModal({
                   <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
                     <X className="w-8 h-8 text-stone-500" />
                   </div>
-                  <p className="text-stone-500 text-sm">Failed to load image</p>
+                  <p className="text-stone-500 text-sm">
+                    {tc("failedToLoadImage")}
+                  </p>
                 </div>
               )}
 
@@ -140,14 +146,14 @@ export default function ThemeDetailModal({
                   <button
                     onClick={prevImage}
                     className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center transition-colors hover:cursor-pointer"
-                    aria-label="Previous image"
+                    aria-label={tc("previousImage")}
                   >
                     <ChevronLeft className="w-5 h-5 text-primary" />
                   </button>
                   <button
                     onClick={nextImage}
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center transition-colors hover:cursor-pointer"
-                    aria-label="Next image"
+                    aria-label={tc("nextImage")}
                   >
                     <ChevronRight className="w-5 h-5 text-primary" />
                   </button>
@@ -162,7 +168,7 @@ export default function ThemeDetailModal({
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-stone-100 pb-8">
                 <div className="flex-1">
                   <span className="text-xs text-primary tracking-widest uppercase font-semibold mb-2 block">
-                    Wedding Theme
+                    {t("label")}
                   </span>
                   <span className="block text-3xl md:text-4xl text-primary font-semibold leading-tight mb-2">
                     {theme.title}
@@ -196,7 +202,7 @@ export default function ThemeDetailModal({
                       }}
                       className="bg-white border border-primary text-primary font-semibold px-6 py-4 text-sm tracking-widest hover:bg-stone-50 transition-colors uppercase hover:cursor-pointer"
                     >
-                      Explore Venue
+                      {t("exploreVenue")}
                     </button>
                   )}
                   <Link
@@ -205,7 +211,7 @@ export default function ThemeDetailModal({
                     className="flex-1"
                   >
                     <button className="bg-primary text-white font-semibold px-10 py-4 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full uppercase hover:cursor-pointer">
-                      PLAN YOUR DREAM
+                      {t("planYourDream")}
                     </button>
                   </Link>
                 </div>
@@ -213,7 +219,7 @@ export default function ThemeDetailModal({
 
               <div className="flex flex-col gap-4">
                 <span className="block text-sm text-primary tracking-widest uppercase font-bold">
-                  The Experience
+                  {t("experience")}
                 </span>
                 <TipTapContent html={theme.description} />
               </div>
