@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useRef, useEffect } from "react";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
@@ -10,12 +12,12 @@ import {
   getDestinationData,
 } from "@/lib/data/destination-data";
 import { Destination } from "@/types";
+import PageClosing from "@/components/shared/page-closing";
+import PageHero from "@/components/shared/page-hero";
+import { WHATSAPP_URL } from "@/lib/constants";
 
 type CategoryId =
-  | "cat-bali"
-  | "cat-themes"
-  | "cat-islands"
-  | "cat-outsite-bali";
+  "cat-bali" | "cat-themes" | "cat-islands" | "cat-outsite-bali";
 
 const CATEGORY_META: Record<
   CategoryId,
@@ -142,8 +144,9 @@ function matchesLocation(
   // Filtering always uses the English location (by id) so it keeps working
   // when `destination.location` is translated for display.
   const dest =
-    getDestinationData("en").destinationList.find((d) => d.id === destination.id)
-      ?.location ?? destination.location;
+    getDestinationData("en").destinationList.find(
+      (d) => d.id === destination.id,
+    )?.location ?? destination.location;
   if (dest === locationValue) return true;
   return dest
     .split(/–/)
@@ -396,6 +399,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
 }
 
 export default function DestinationsPage() {
+  const t = useTranslations("destinationsPage");
   const { destinationList } = useDestinationData();
   const [activeAnchor, setActiveAnchor] = useState<string>("bali");
 
@@ -425,56 +429,18 @@ export default function DestinationsPage() {
 
   return (
     <main className="relative overflow-hidden">
-      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773382245/header-destination_vcrwin.jpg"
-            alt="Indonesia Destinations"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
-        </div>
-
-        <motion.div
-          className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pb-10 md:pb-14 lg:pb-24 text-start lg:text-left"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.div
-            variants={fadeInUp}
-            className="flex items-center gap-2 mb-10 mt-6"
-          >
-            <Link
-              href="/destinations"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
-            >
-              Destinations
-            </Link>
-          </motion.div>
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.3em] mb-5 uppercase"
-          >
-            Indonesia Destination Weddings
-          </motion.p>
-          <motion.h1
-            variants={fadeInUp}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
-          >
-            Curated Destination Wedding Experiences Rooted in Bali
-            <p className="text-white text-sm md:text-base font-light leading-relaxed mt-10 normal-case">
-              While rooted in Bali, we curate select destination weddings across
-              Indonesia for couples seeking rare landscapes, cultural depth, and
-              emotionally meaningful environments.
-            </p>
-          </motion.h1>
-        </motion.div>
-      </section>
+      <PageHero
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773382245/header-destination_vcrwin.jpg"
+        imageAlt="Indonesia Destinations"
+        breadcrumb={t("breadcrumb")}
+        breadcrumbHref="/destinations"
+        kicker={t("heroKicker")}
+        title={t("heroTitle")}
+        subtitle={t("heroSubtitle")}
+        subtitleClassName="text-white text-sm md:text-base font-light leading-relaxed mt-10 max-w-4xl"
+        spacing="compact"
+        overlay="soft"
+      />
 
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
@@ -735,66 +701,20 @@ export default function DestinationsPage() {
       {(Object.keys(CATEGORY_META) as CategoryId[]).map((categoryId) => (
         <CategorySection key={categoryId} categoryId={categoryId} />
       ))}
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773318397/destination-closing_eie0gt.png"
-            alt="Your Bali destination wedding"
-            fill
-            loading="lazy"
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-primary/40" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            Begin Your Journey
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            Ready to Plan Your
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              Destination Wedding?
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            Explore the destinations above or begin a conversation with us to
-            shape a destination wedding experience that reflects your vision.
-          </motion.p>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="https://wa.me/628113980998" target="_blank">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                BEGIN YOUR STORY
-              </button>
-            </Link>
-            <Link href="/portfolio">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                VIEW PORTFOLIO
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773318397/destination-closing_eie0gt.png"
+        imageAlt="Your Bali destination wedding"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{
+          label: t("ctaBegin"),
+          href: WHATSAPP_URL,
+          external: true,
+        }}
+        secondaryCta={{ label: t("ctaPortfolio"), href: "/portfolio" }}
+      />
     </main>
   );
 }

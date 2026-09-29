@@ -13,6 +13,9 @@ import WeddingThemesSection from "@/components/shared/wedding-themes";
 import VenuesSection from "@/components/shared/venues";
 import type { Venue, Currency } from "@/types";
 import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
+import PageClosing from "@/components/shared/page-closing";
+import PageHero from "@/components/shared/page-hero";
+import { WHATSAPP_URL } from "@/lib/constants";
 
 export default function WeddingConceptsPage() {
   const tNav = useTranslations("nav");
@@ -44,58 +47,16 @@ export default function WeddingConceptsPage() {
 
   return (
     <main className="relative overflow-hidden">
-      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317740/header-wedding-concepts_et47hl.jpg"
-            alt="Wedding Concepts — Curated Wedding Celebrations"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/10 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
-        </div>
-
-        <motion.div
-          className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pb-20 lg:pb-28"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.div
-            variants={fadeInUp}
-            className="flex items-center gap-2 mb-12 mt-6"
-          >
-            <Link
-              href="/wedding-concepts"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
-            >
-              {t("breadcrumb")}
-            </Link>
-          </motion.div>
-
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.3em] uppercase mb-5"
-          >
-            {t("heroKicker")}
-          </motion.p>
-          <motion.h1
-            variants={fadeInUp}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
-          >
-            {t("heroTitle")}
-          </motion.h1>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-xl leading-relaxed"
-          >
-            {t("heroSubtitle")}
-          </motion.p>
-        </motion.div>
-      </section>
+      <PageHero
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773317740/header-wedding-concepts_et47hl.jpg"
+        imageAlt="Wedding Concepts — Curated Wedding Celebrations"
+        breadcrumb={t("breadcrumb")}
+        breadcrumbHref="/wedding-concepts"
+        kicker={t("heroKicker")}
+        title={t("heroTitle")}
+        subtitle={t("heroSubtitle")}
+        breadcrumbSpacing="mb-12"
+      />
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
         initial="hidden"
@@ -602,65 +563,20 @@ export default function WeddingConceptsPage() {
         </div>
       </motion.section>
 
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773156606/wedding_concepts_closing_wvmfpu.jpg"
-            alt="Begin Your Wedding Concept Journey"
-            fill
-            loading="lazy"
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-primary/40" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            {t("closingKicker")}
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            {t("closingTitle1")}
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              {t("closingTitle2")}
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            {t("closingBody")}
-          </motion.p>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="https://wa.me/628113980998" target="_blank">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaBegin")}
-              </button>
-            </Link>
-            <Link href="/portfolio">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaViewPortfolio")}
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773156606/wedding_concepts_closing_wvmfpu.jpg"
+        imageAlt="Begin Your Wedding Concept Journey"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{
+          label: t("ctaBegin"),
+          href: WHATSAPP_URL,
+          external: true,
+        }}
+        secondaryCta={{ label: t("ctaViewPortfolio"), href: "/portfolio" }}
+      />
     </main>
   );
 }

@@ -17,6 +17,9 @@ import type {
   VenueSecured,
   HowDidYouFindUs,
 } from "@/types";
+import PageClosing from "@/components/shared/page-closing";
+import PageHero from "@/components/shared/page-hero";
+import { WHATSAPP_URL } from "@/lib/constants";
 
 // ─── Option Lists ────────────────────────────────────────
 
@@ -132,10 +135,7 @@ export default function ContactPage() {
 
   const handleRadioChange = (
     field:
-      | "weddingStyle"
-      | "estimatedBudget"
-      | "venueSecured"
-      | "howDidYouFindUs",
+      "weddingStyle" | "estimatedBudget" | "venueSecured" | "howDidYouFindUs",
     value: string,
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -215,75 +215,26 @@ export default function ContactPage() {
   return (
     <main className="relative overflow-hidden">
       {/* ── Hero ── */}
-      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773709789/singaraja_mt8hqt.png"
-            alt="Contact Linda Wiryani Events"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
-        </div>
-
-        <motion.div
-          className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pb-20 lg:pb-28"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.div
-            variants={fadeInUp}
-            className="flex items-center gap-2 mb-10 mt-6"
-          >
-            <Link
-              href="/contact"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
-            >
-              {t("breadcrumb")}
-            </Link>
-          </motion.div>
-          <div className="grid lg:grid-cols-12 gap-8 items-end">
-            <div className="lg:col-span-7">
-              <motion.p
-                variants={fadeInUp}
-                className="text-white tracking-[0.3em] uppercase mb-5"
-              >
-                {t("heroKicker")}
-              </motion.p>
-              <motion.h1
-                variants={fadeInUp}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
-              >
-                {t("heroTitle1")}
-                <br />
-                <span className="italic font-light normal-case">
-                  {t("heroTitle2")}
-                </span>
-              </motion.h1>
-            </div>
-
-            <div className="lg:col-span-5 lg:pb-2">
-              <motion.p
-                variants={fadeInUp}
-                className="text-white/80 leading-relaxed border-l border-white/80 pl-6"
-              >
-                {t("heroSubtitle")}
-              </motion.p>
-              <motion.div variants={fadeInUp} className="mt-8">
-                <Link href="https://wa.me/628113980998" target="_blank">
-                  <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-primary hover:cursor-pointer transition-colors duration-300">
-                    {t("inquireNow")}
-                  </button>
-                </Link>
-              </motion.div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+      <PageHero
+        image="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1773709789/singaraja_mt8hqt.png"
+        imageAlt="Contact Linda Wiryani Events"
+        breadcrumb={t("breadcrumb")}
+        breadcrumbHref="/contact"
+        kicker={t("heroKicker")}
+        title={t("heroTitle1")}
+        titleSecondLine={t("heroTitle2")}
+        secondLineItalic
+        subtitle={t("heroSubtitle")}
+        layout="split"
+        overlay="soft"
+        actions={
+          <Link href={WHATSAPP_URL} target="_blank">
+            <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-primary hover:cursor-pointer transition-colors duration-300">
+              {t("inquireNow")}
+            </button>
+          </Link>
+        }
+      />
 
       {/* ── Form Section ── */}
       <motion.section
@@ -667,65 +618,21 @@ export default function ContactPage() {
       </motion.section>
 
       {/* ── Closing CTA Section ── */}
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311292/Lake_Buyan_bt7cbw.png"
-            alt="Your Bali destination wedding"
-            fill
-            loading="lazy"
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-primary/72" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            {t("closingKicker")}
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            {t("closingTitle1")}
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              {t("closingTitle2")}
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            {t("closingBody")}
-          </motion.p>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="https://wa.me/628113980998" target="_blank">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaBegin")}
-              </button>
-            </Link>
-            <Link href="/portfolio">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaPortfolio")}
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775311292/Lake_Buyan_bt7cbw.png"
+        imageAlt="Your Bali destination wedding"
+        overlayClassName="bg-primary/72"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{
+          label: t("ctaBegin"),
+          href: WHATSAPP_URL,
+          external: true,
+        }}
+        secondaryCta={{ label: t("ctaPortfolio"), href: "/portfolio" }}
+      />
     </main>
   );
 }

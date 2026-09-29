@@ -9,6 +9,9 @@ import { Link } from "@/i18n/navigation";
 import { ChevronDown } from "lucide-react";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 import { useServicesData, type ServicesData } from "@/lib/data/services-data";
+import PageClosing from "@/components/shared/page-closing";
+import PageHero from "@/components/shared/page-hero";
+import { WHATSAPP_URL } from "@/lib/constants";
 
 function ServiceAccordion({
   service,
@@ -131,53 +134,19 @@ export default function ServicesPage() {
 
   return (
     <main className="relative overflow-hidden">
-      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773311945/header-services_dbqj5l.jpg"
-            alt="Linda Wiryani Design and Event Planning Services"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
-        </div>
-
-        <motion.div
-          className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pb-10 md:pb-14 lg:pb-24 text-start lg:text-left"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.div
-            variants={fadeInUp}
-            className="flex items-center gap-2 mb-12 mt-6"
-          >
-            <Link
-              href="/services"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
-            >
-              Services
-            </Link>
-          </motion.div>
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.3em] mb-4 uppercase"
-          >
-            Emotion. Space. Experience.
-          </motion.p>
-          <motion.h1
-            variants={fadeInUp}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
-          >
-            Where Refined Hospitality
-            <br />
-            <span>Meets Artful Design</span>
-          </motion.h1>
-        </motion.div>
-      </section>
+      <PageHero
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773311945/header-services_dbqj5l.jpg"
+        imageAlt="Linda Wiryani Design and Event Planning Services"
+        breadcrumb={t("breadcrumb")}
+        breadcrumbHref="/services"
+        kicker={t("heroKicker")}
+        title={t("heroTitle1")}
+        titleSecondLine={t("heroTitle2")}
+        spacing="compact"
+        overlay="soft"
+        breadcrumbSpacing="mb-12"
+        kickerSpacing="mb-4"
+      />
 
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-24"
@@ -189,20 +158,15 @@ export default function ServicesPage() {
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-center">
           <motion.div variants={fadeInUp} className="lg:col-span-5">
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-              Seven services.
+              {t("introTitle1")}
               <br />
-              <span>One intention.</span>
+              <span>{t("introTitle2")}</span>
             </h2>
             <div className="mt-10 w-16 h-px bg-primary/70" />
           </motion.div>
           <motion.div variants={fadeInUp} className="lg:col-span-7">
             <p className="text-primary leading-relaxed text-justify ">
-              At Linda Wiryani Design and Event Planning, weddings are
-              approached as thoughtful design projects shaped by emotion, space,
-              and human experience. We work with couples who seek more than
-              coordination — they seek meaning, atmosphere, and a sense of quiet
-              refinement. Each service below can stand alone or be combined into
-              a fully curated experience.
+              {t("introBody")}
             </p>
           </motion.div>
         </div>
@@ -353,67 +317,24 @@ export default function ServicesPage() {
         </div>
       </motion.section>
 
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773312297/closing-services_szst8w.jpg"
-            alt="Begin your wedding journey"
-            fill
-            loading="lazy"
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-primary/40" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            {t("closingKicker")}
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            {t("closingTitle1")}
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              {t("closingTitle2")}
-            </span>
-          </motion.h2>
-
-          <motion.p
-            variants={fadeInUp}
-            className="mt-8 text-white/80  max-w-2xl mx-auto leading-relaxed"
-          >
-            {t("closingBody")}
-          </motion.p>
-
-          <motion.div
-            variants={fadeInUp}
-            className="mt-12 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="https://wa.me/628113980998" target="_blank">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/90 transition-colors duration-300">
-                {t("ctaBegin")}
-              </button>
-            </Link>
-            <Link href="/wedding-experiences">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors duration-300">
-                {t("ctaExperiences")}
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773312297/closing-services_szst8w.jpg"
+        imageAlt="Begin your wedding journey"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{
+          label: t("ctaBegin"),
+          href: WHATSAPP_URL,
+          external: true,
+        }}
+        secondaryCta={{
+          label: t("ctaExperiences"),
+          href: "/wedding-experiences",
+        }}
+        spacing="relaxed"
+      />
     </main>
   );
 }

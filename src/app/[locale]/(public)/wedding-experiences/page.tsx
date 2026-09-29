@@ -11,6 +11,9 @@ import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useWeddingExperienceData } from "@/lib/data/wedding-experience-data";
+import PageClosing from "@/components/shared/page-closing";
+import PageHero from "@/components/shared/page-hero";
+import { WHATSAPP_URL } from "@/lib/constants";
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -45,55 +48,16 @@ export default function WeddingExperiencesPage() {
   } = useWeddingExperienceData();
   return (
     <main className="relative overflow-hidden">
-      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773382875/header-wedding-experiences_r4o2wi.png"
-            alt="Bali Destination Wedding"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/10 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
-        </div>
-
-        <motion.div
-          className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pb-20 lg:pb-28"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.div
-            variants={fadeInUp}
-            className="flex items-center gap-2 mb-12 mt-6"
-          >
-            <Link
-              href="/wedding-experiences"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
-            >
-              {t("breadcrumb")}
-            </Link>
-          </motion.div>
-
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.3em] uppercase mb-5"
-          >
-            {t("heroKicker")}
-          </motion.p>
-          <motion.h1
-            variants={fadeInUp}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
-          >
-            {t("heroTitle1")}
-            <br />
-            <span>{t("heroTitle2")}</span>
-          </motion.h1>
-        </motion.div>
-      </section>
+      <PageHero
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773382875/header-wedding-experiences_r4o2wi.png"
+        imageAlt="Bali Destination Wedding"
+        breadcrumb={t("breadcrumb")}
+        breadcrumbHref="/wedding-experiences"
+        kicker={t("heroKicker")}
+        title={t("heroTitle1")}
+        titleSecondLine={t("heroTitle2")}
+        breadcrumbSpacing="mb-12"
+      />
 
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
@@ -133,9 +97,7 @@ export default function WeddingExperiencesPage() {
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
                 {t("whyChooseLead")}
               </p>
-              <p className="text-primary  mb-5 italic">
-                {t("whyChooseSub")}
-              </p>
+              <p className="text-primary  mb-5 italic">{t("whyChooseSub")}</p>
               <div className="space-y-3">
                 {whyBali.map((item) => (
                   <div key={item} className="flex items-center gap-4">
@@ -237,10 +199,10 @@ export default function WeddingExperiencesPage() {
                 <p className="text-primary text-sm tracking-widest uppercase mb-1">
                   {t("experienceKicker")}
                 </p>
-                <p className="text-primary font-semibold text-2xl">{t("experienceYears")}</p>
-                <p className="text-primary text-sm">
-                  {t("experienceSub")}
+                <p className="text-primary font-semibold text-2xl">
+                  {t("experienceYears")}
                 </p>
+                <p className="text-primary text-sm">{t("experienceSub")}</p>
               </div>
             </motion.div>
 
@@ -289,9 +251,7 @@ export default function WeddingExperiencesPage() {
                 variants={fadeInUp}
                 className="pt-6 border-t border-primary/20"
               >
-                <p className="text-primary  mb-4 italic">
-                  {t("chosenLead")}
-                </p>
+                <p className="text-primary  mb-4 italic">{t("chosenLead")}</p>
                 <div className="space-y-2">
                   {coupleValues.map((v) => (
                     <div key={v} className="flex items-center gap-3">
@@ -407,65 +367,20 @@ export default function WeddingExperiencesPage() {
         </div>
       </motion.section>
 
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773317401/closing-wedding-experiences_voec9s.jpg"
-            alt="Your Bali destination wedding"
-            fill
-            loading="lazy"
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-primary/40" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            {t("closingKicker")}
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            {t("closingTitle1")}
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              {t("closingTitle2")}
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80  max-w-2xl mx-auto leading-relaxed"
-          >
-            {t("closingBody")}
-          </motion.p>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="https://wa.me/628113980998" target="_blank">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaBegin")}
-              </button>
-            </Link>
-            <Link href="/wedding-concepts">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaConcepts")}
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773317401/closing-wedding-experiences_voec9s.jpg"
+        imageAlt="Your Bali destination wedding"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{
+          label: t("ctaBegin"),
+          href: WHATSAPP_URL,
+          external: true,
+        }}
+        secondaryCta={{ label: t("ctaConcepts"), href: "/wedding-concepts" }}
+      />
     </main>
   );
 }

@@ -1,11 +1,14 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import { Article } from "@/types";
+import PageClosing from "@/components/shared/page-closing";
 
 interface ArticleDetailProps {
   article: Article;
@@ -58,6 +61,7 @@ function RelatedCard({ article }: { article: Article }) {
 }
 
 export function ArticleDetail({ article, related }: ArticleDetailProps) {
+  const t = useTranslations("journalDetail");
   const formattedDate = new Date(article.published_at).toLocaleDateString(
     "en-GB",
     { day: "numeric", month: "long", year: "numeric" },
@@ -223,66 +227,16 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
         </motion.section>
       )}
 
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
-            alt="Begin your Bali wedding journey"
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-primary/40" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            Begin Your Wedding Journey
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            Informed couples
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              create better weddings.
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            Whether you are in the early dreaming phase or actively planning, we
-            invite you to explore our work and discover the ideas, destinations,
-            and experiences that resonate with you.
-          </motion.p>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="/journal">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                BACK TO JOURNAL
-              </button>
-            </Link>
-            <Link href="/contact">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                GET IN TOUCH
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
+        imageAlt="Begin your Bali wedding journey"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{ label: t("ctaBack"), href: "/journal" }}
+        secondaryCta={{ label: t("ctaContact"), href: "/contact" }}
+      />
     </main>
   );
 }

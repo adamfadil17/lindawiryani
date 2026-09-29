@@ -601,5 +601,38 @@
     "find_Venue / Hotel Partner": "Mitra Venue / Hotel",
     "find_Referral": "Rekomendasi",
     "find_Other": "Lainnya"
+  },
+  "journalPage": {
+    "breadcrumb": "Jurnal",
+    "heroKicker": "Linda Wiryani Design & Event Planning",
+    "heroTitle1": "Jurnal",
+    "heroTitle2": "Wawasan, Panduan & Kisah",
+    "heroSubtitle": "Ruang terkurasi berisi wawasan, inspirasi, dan panduan praktis bagi pasangan yang merencanakan pernikahan destinasi di Bali dan seluruh Indonesia.",
+    "closingKicker": "Mulai Perjalanan Pernikahan Anda",
+    "closingTitle1": "Pasangan yang berwawasan",
+    "closingTitle2": "menciptakan pernikahan yang lebih baik.",
+    "closingBody": "Baik Anda masih dalam fase bermimpi maupun sudah aktif merencanakan, kami mengundang Anda menjelajahi jurnal kami dan menemukan ide, destinasi, serta pengalaman yang sesuai dengan Anda.",
+    "ctaExperiences": "JELAJAHI PENGALAMAN PERNIKAHAN",
+    "ctaDestinations": "TEMUKAN DESTINASI"
+  },
+  "journalDetail": {
+    "closingKicker": "Mulai Perjalanan Pernikahan Anda",
+    "closingTitle1": "Pasangan yang berwawasan",
+    "closingTitle2": "menciptakan pernikahan yang lebih baik.",
+    "closingBody": "Baik Anda masih dalam fase bermimpi maupun sudah aktif merencanakan, kami mengundang Anda menjelajahi karya kami dan menemukan ide, destinasi, serta pengalaman yang sesuai dengan Anda.",
+    "ctaBack": "KEMBALI KE JURNAL",
+    "ctaContact": "HUBUNGI KAMI"
+  },
+  "destinationsPage": {
+    "breadcrumb": "Destinasi",
+    "heroKicker": "Pernikahan Destinasi di Indonesia",
+    "heroTitle": "Pengalaman Pernikahan Destinasi Terkurasi yang Berakar di Bali",
+    "heroSubtitle": "Meski berakar di Bali, kami mengkurasi pernikahan destinasi pilihan di seluruh Indonesia bagi pasangan yang mencari lanskap langka, kedalaman budaya, dan lingkungan yang bermakna secara emosional.",
+    "closingKicker": "Mulai Perjalanan Anda",
+    "closingTitle1": "Siap Merencanakan",
+    "closingTitle2": "Pernikahan Destinasi Anda?",
+    "closingBody": "Jelajahi destinasi di atas atau mulai percakapan dengan kami untuk membentuk pengalaman pernikahan destinasi yang mencerminkan visi Anda.",
+    "ctaBegin": "MULAI KISAH ANDA",
+    "ctaPortfolio": "LIHAT PORTOFOLIO"
   }
 }

@@ -601,5 +601,38 @@
     "find_Venue / Hotel Partner": "Partenaire lieu / hôtel",
     "find_Referral": "Recommandation",
     "find_Other": "Autre"
+  },
+  "journalPage": {
+    "breadcrumb": "Journal",
+    "heroKicker": "Linda Wiryani Design & Event Planning",
+    "heroTitle1": "Journal",
+    "heroTitle2": "Idées, Guides & Histoires",
+    "heroSubtitle": "Un espace sélectionné d'idées, d'inspiration et de conseils pratiques pour les couples qui préparent un mariage de destination à Bali et à travers l'Indonésie.",
+    "closingKicker": "Commencez votre parcours de mariage",
+    "closingTitle1": "Des couples bien informés",
+    "closingTitle2": "créent de plus beaux mariages.",
+    "closingBody": "Que vous en soyez aux premiers rêves ou déjà en pleine préparation, nous vous invitons à explorer notre journal et à découvrir les idées, destinations et expériences qui vous ressemblent.",
+    "ctaExperiences": "EXPLORER LES EXPÉRIENCES DE MARIAGE",
+    "ctaDestinations": "DÉCOUVRIR LES DESTINATIONS"
+  },
+  "journalDetail": {
+    "closingKicker": "Commencez votre parcours de mariage",
+    "closingTitle1": "Des couples bien informés",
+    "closingTitle2": "créent de plus beaux mariages.",
+    "closingBody": "Que vous en soyez aux premiers rêves ou déjà en pleine préparation, nous vous invitons à explorer nos réalisations et à découvrir les idées, destinations et expériences qui vous ressemblent.",
+    "ctaBack": "RETOUR AU JOURNAL",
+    "ctaContact": "CONTACTEZ-NOUS"
+  },
+  "destinationsPage": {
+    "breadcrumb": "Destinations",
+    "heroKicker": "Mariages de destination en Indonésie",
+    "heroTitle": "Des expériences de mariage de destination sélectionnées, enracinées à Bali",
+    "heroSubtitle": "Tout en étant enracinés à Bali, nous concevons une sélection de mariages de destination à travers l'Indonésie pour les couples en quête de paysages rares, de profondeur culturelle et d'environnements porteurs de sens.",
+    "closingKicker": "Commencez votre voyage",
+    "closingTitle1": "Prêts à planifier votre",
+    "closingTitle2": "mariage de destination ?",
+    "closingBody": "Explorez les destinations ci-dessus ou entamez une conversation avec nous pour façonner une expérience de mariage de destination qui reflète votre vision.",
+    "ctaBegin": "COMMENCEZ VOTRE HISTOIRE",
+    "ctaPortfolio": "VOIR LE PORTFOLIO"
   }
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -8,6 +10,8 @@ import { useState } from "react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import { useArticleData, type ArticleData } from "@/lib/data/article-data";
 import { articleCategories, ArticleCategory } from "@/types";
+import PageClosing from "@/components/shared/page-closing";
+import PageHero from "@/components/shared/page-hero";
 
 const categoryDescriptions: Record<string, string> = {
   Guides: "Step-by-step planning guides for destination couples",
@@ -94,7 +98,11 @@ function ArticleCard({
   );
 }
 
-function FeaturedArticle({ article }: { article: ArticleData["articles"][number] }) {
+function FeaturedArticle({
+  article,
+}: {
+  article: ArticleData["articles"][number];
+}) {
   return (
     <Link href={`/journal/${article.slug}`} className="group block">
       <div className="grid lg:grid-cols-12 gap-0 border border-primary/10 overflow-hidden">
@@ -122,7 +130,9 @@ function FeaturedArticle({ article }: { article: ArticleData["articles"][number]
           <h2 className="text-primary font-semibold text-2xl lg:text-3xl leading-snug group-hover:text-primary/80 transition-colors mb-5">
             {article.title}
           </h2>
-          <p className="text-primary group-hover:text-primary/80 leading-relaxed">{article.excerpt}</p>
+          <p className="text-primary group-hover:text-primary/80 leading-relaxed">
+            {article.excerpt}
+          </p>
           <div className="flex items-center gap-2 mt-8 text-primary text-sm tracking-widest group-hover:text-primary/80 transition-colors">
             <span>READ ARTICLE</span>
             <ArrowRight className="w-4 h-4" />
@@ -134,6 +144,7 @@ function FeaturedArticle({ article }: { article: ArticleData["articles"][number]
 }
 
 export default function JournalPage() {
+  const t = useTranslations("journalPage");
   const { articles } = useArticleData();
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All");
 
@@ -147,61 +158,17 @@ export default function JournalPage() {
 
   return (
     <main className="relative overflow-hidden">
-      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/service/service3.png"
-            alt="Journal — Linda Wiryani Design"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/10 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
-        </div>
-
-        <motion.div
-          className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pb-20 lg:pb-28"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.div
-            variants={fadeInUp}
-            className="flex items-center gap-2 mb-12 mt-6"
-          >
-            <Link
-              href="/journal"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
-            >
-              Journal
-            </Link>
-          </motion.div>
-
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.3em] uppercase mb-5"
-          >
-            Linda Wiryani Design &amp; Event Planning
-          </motion.p>
-          <motion.h1
-            variants={fadeInUp}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
-          >
-            Journal
-            <br />
-            <span>Insights, Guides &amp; Stories</span>
-          </motion.h1>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-xl leading-relaxed"
-          >
-            A curated space of insight, inspiration, and practical guidance for
-            couples planning destination weddings in Bali and across Indonesia.
-          </motion.p>
-        </motion.div>
-      </section>
+      <PageHero
+        image="/images/service/service3.png"
+        imageAlt="Journal — Linda Wiryani Design"
+        breadcrumb={t("breadcrumb")}
+        breadcrumbHref="/journal"
+        kicker={t("heroKicker")}
+        title={t("heroTitle1")}
+        titleSecondLine={t("heroTitle2")}
+        subtitle={t("heroSubtitle")}
+        breadcrumbSpacing="mb-12"
+      />
 
       <motion.section
         className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-20 lg:py-28"
@@ -348,66 +315,20 @@ export default function JournalPage() {
         </div>
       </motion.section>
 
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
-            alt="Begin your Bali wedding journey"
-            fill
-            className="object-cover object-top"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-primary/40" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            Begin Your Wedding Journey
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            Informed couples
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              create better weddings.
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            Whether you are in the early dreaming phase or actively planning, we
-            invite you to explore our journal and discover the ideas,
-            destinations, and experiences that resonate with you.
-          </motion.p>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="/wedding-experiences">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                EXPLORE WEDDING EXPERIENCES
-              </button>
-            </Link>
-            <Link href="/destinations">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                DISCOVER DESTINATIONS
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
+        imageAlt="Begin your Bali wedding journey"
+        imagePosition="top"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{
+          label: t("ctaExperiences"),
+          href: "/wedding-experiences",
+        }}
+        secondaryCta={{ label: t("ctaDestinations"), href: "/destinations" }}
+      />
     </main>
   );
 }

@@ -601,5 +601,38 @@
     "find_Venue / Hotel Partner": "Venue / Hotel Partner",
     "find_Referral": "Referral",
     "find_Other": "Other"
+  },
+  "journalPage": {
+    "breadcrumb": "Journal",
+    "heroKicker": "Linda Wiryani Design & Event Planning",
+    "heroTitle1": "Journal",
+    "heroTitle2": "Insights, Guides & Stories",
+    "heroSubtitle": "A curated space of insight, inspiration, and practical guidance for couples planning destination weddings in Bali and across Indonesia.",
+    "closingKicker": "Begin Your Wedding Journey",
+    "closingTitle1": "Informed couples",
+    "closingTitle2": "create better weddings.",
+    "closingBody": "Whether you are in the early dreaming phase or actively planning, we invite you to explore our journal and discover the ideas, destinations, and experiences that resonate with you.",
+    "ctaExperiences": "EXPLORE WEDDING EXPERIENCES",
+    "ctaDestinations": "DISCOVER DESTINATIONS"
+  },
+  "journalDetail": {
+    "closingKicker": "Begin Your Wedding Journey",
+    "closingTitle1": "Informed couples",
+    "closingTitle2": "create better weddings.",
+    "closingBody": "Whether you are in the early dreaming phase or actively planning, we invite you to explore our work and discover the ideas, destinations, and experiences that resonate with you.",
+    "ctaBack": "BACK TO JOURNAL",
+    "ctaContact": "GET IN TOUCH"
+  },
+  "destinationsPage": {
+    "breadcrumb": "Destinations",
+    "heroKicker": "Indonesia Destination Weddings",
+    "heroTitle": "Curated Destination Wedding Experiences Rooted in Bali",
+    "heroSubtitle": "While rooted in Bali, we curate select destination weddings across Indonesia for couples seeking rare landscapes, cultural depth, and emotionally meaningful environments.",
+    "closingKicker": "Begin Your Journey",
+    "closingTitle1": "Ready to Plan Your",
+    "closingTitle2": "Destination Wedding?",
+    "closingBody": "Explore the destinations above or begin a conversation with us to shape a destination wedding experience that reflects your vision.",
+    "ctaBegin": "BEGIN YOUR STORY",
+    "ctaPortfolio": "VIEW PORTFOLIO"
   }
 }

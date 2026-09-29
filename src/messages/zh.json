@@ -601,5 +601,38 @@
     "find_Venue / Hotel Partner": "场地 / 酒店合作伙伴",
     "find_Referral": "转介推荐",
     "find_Other": "其他"
+  },
+  "journalPage": {
+    "breadcrumb": "杂志专栏",
+    "heroKicker": "Linda Wiryani Design & Event Planning",
+    "heroTitle1": "杂志专栏",
+    "heroTitle2": "见解、指南与故事",
+    "heroSubtitle": "这是一个精心策划的空间，为计划在巴厘岛及印尼各地举办目的地婚礼的新人，提供见解、灵感与实用指南。",
+    "closingKicker": "开启您的婚礼旅程",
+    "closingTitle1": "见多识广的新人，",
+    "closingTitle2": "成就更美好的婚礼。",
+    "closingBody": "无论您尚处于憧憬阶段，还是正在积极筹备，我们诚邀您浏览杂志专栏，发现与您心意相通的灵感、目的地与体验。",
+    "ctaExperiences": "探索婚礼体验",
+    "ctaDestinations": "发现婚礼目的地"
+  },
+  "journalDetail": {
+    "closingKicker": "开启您的婚礼旅程",
+    "closingTitle1": "见多识广的新人，",
+    "closingTitle2": "成就更美好的婚礼。",
+    "closingBody": "无论您尚处于憧憬阶段，还是正在积极筹备，我们诚邀您浏览我们的作品，发现与您心意相通的灵感、目的地与体验。",
+    "ctaBack": "返回杂志专栏",
+    "ctaContact": "联系我们"
+  },
+  "destinationsPage": {
+    "breadcrumb": "婚礼目的地",
+    "heroKicker": "印尼目的地婚礼",
+    "heroTitle": "扎根巴厘岛的精心策划目的地婚礼体验",
+    "heroSubtitle": "我们扎根于巴厘岛，同时为追求稀有风光、文化底蕴与情感共鸣环境的新人，精选策划印尼各地的目的地婚礼。",
+    "closingKicker": "开启您的旅程",
+    "closingTitle1": "准备好策划您的",
+    "closingTitle2": "目的地婚礼了吗？",
+    "closingBody": "欢迎探索以上目的地，或与我们展开对话，共同打造一场展现您愿景的目的地婚礼体验。",
+    "ctaBegin": "开启您的故事",
+    "ctaPortfolio": "查看作品集"
   }
 }
