@@ -613,7 +613,38 @@
     "closingTitle2": "create better weddings.",
     "closingBody": "Whether you are in the early dreaming phase or actively planning, we invite you to explore our journal and discover the ideas, destinations, and experiences that resonate with you.",
     "ctaExperiences": "EXPLORE WEDDING EXPERIENCES",
-    "ctaDestinations": "DISCOVER DESTINATIONS"
+    "ctaDestinations": "DISCOVER DESTINATIONS",
+    "introTitle1": "A journal shaped by",
+    "introTitle2": "experience.",
+    "introBody1": "Our articles are not trend reports. They are drawn from real planning journeys, real locations, and real conversations with couples navigating the decision to celebrate far from home.",
+    "introBody2": "Here we share design perspectives, destination knowledge, and planning guidance shaped by years of working within Bali's diverse environments — from private villas and jungle retreats to coastal estates and luxury resorts.",
+    "featuredReadKicker": "Featured Read",
+    "featuredReadTitle": "Start Here Our Most Essential Article",
+    "featuredLabel": "Featured",
+    "readArticle": "READ ARTICLE",
+    "exploreKicker": "Explore the Journal",
+    "allArticles": "All Articles",
+    "allArticlesSubtitle": "Guides, stories & insights",
+    "filterAll": "All",
+    "articleCount": "{count, plural, one {# Article} other {# Articles}}",
+    "emptyTitle": "No articles in this category yet.",
+    "emptyBody": "Check back soon.",
+    "categories": {
+      "guides": "Guides",
+      "planningAdvice": "Planning Advice",
+      "destinationKnowledge": "Destination Knowledge",
+      "venueLocation": "Venue & Location",
+      "realWeddings": "Real Weddings",
+      "designConcept": "Design & Concept"
+    },
+    "categoryDescriptions": {
+      "guides": "Step-by-step planning guides for destination couples",
+      "planningAdvice": "Practical insight from real planning journeys",
+      "destinationKnowledge": "Location intelligence across Bali and Indonesia",
+      "venueLocation": "Environment features and venue explorations",
+      "realWeddings": "Editorial stories from real celebrations",
+      "designConcept": "Design thinking, atmosphere, and creative direction"
+    }
   },
   "journalDetail": {
     "closingKicker": "Begin Your Wedding Journey",

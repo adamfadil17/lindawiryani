@@ -13,14 +13,25 @@ import { articleCategories, ArticleCategory } from "@/types";
 import PageClosing from "@/components/shared/page-closing";
 import PageHero from "@/components/shared/page-hero";
 
-const categoryDescriptions: Record<string, string> = {
-  Guides: "Step-by-step planning guides for destination couples",
-  "Planning Advice": "Practical insight from real planning journeys",
-  "Destination Knowledge": "Location intelligence across Bali and Indonesia",
-  "Venue & Location": "Environment features and venue explorations",
-  "Real Weddings": "Editorial stories from real celebrations",
-  "Design & Concept": "Design thinking, atmosphere, and creative direction",
+// Article categories are stable English values in the data (used for
+// filtering); these keys map them to the translated labels in messages.
+const categoryKeys: Record<ArticleCategory, string> = {
+  Guides: "guides",
+  "Planning Advice": "planningAdvice",
+  "Destination Knowledge": "destinationKnowledge",
+  "Venue & Location": "venueLocation",
+  "Real Weddings": "realWeddings",
+  "Design & Concept": "designConcept",
 };
+
+function useCategoryText() {
+  const t = useTranslations("journalPage");
+  return {
+    label: (c: ArticleCategory) => t(`categories.${categoryKeys[c]}`),
+    description: (c: ArticleCategory) =>
+      t(`categoryDescriptions.${categoryKeys[c]}`),
+  };
+}
 
 type ActiveCategory = ArticleCategory | "All";
 
@@ -31,6 +42,8 @@ function CategoryFilter({
   active: ActiveCategory;
   onChange: (c: ActiveCategory) => void;
 }) {
+  const t = useTranslations("journalPage");
+  const category = useCategoryText();
   const allCategories: ActiveCategory[] = ["All", ...articleCategories];
   return (
     <div className="flex flex-wrap gap-2 lg:gap-3">
@@ -44,7 +57,7 @@ function CategoryFilter({
               : "bg-transparent text-primary border-primary/30 hover:border-primary/50 hover:bg-primary/5"
           }`}
         >
-          {cat}
+          {cat === "All" ? t("filterAll") : category.label(cat)}
         </button>
       ))}
     </div>
@@ -58,6 +71,8 @@ function ArticleCard({
   article: ArticleData["articles"][number];
   index: number;
 }) {
+  const t = useTranslations("journalPage");
+  const category = useCategoryText();
   return (
     <div>
       <Link href={`/journal/${article.slug}`} className="group block">
@@ -73,7 +88,7 @@ function ArticleCard({
           <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
           <div className="absolute top-4 left-4">
             <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
-              {article.category}
+              {category.label(article.category)}
             </span>
           </div>
           <div className="absolute bottom-4 right-4 w-9 h-9 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
@@ -89,7 +104,7 @@ function ArticleCard({
             {article.excerpt}
           </p>
           <div className="flex items-center gap-2 mt-4 text-primary text-xs tracking-widest group-hover:text-primary/80 transition-colors">
-            <span>READ ARTICLE</span>
+            <span>{t("readArticle")}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </div>
         </div>
@@ -103,6 +118,8 @@ function FeaturedArticle({
 }: {
   article: ArticleData["articles"][number];
 }) {
+  const t = useTranslations("journalPage");
+  const category = useCategoryText();
   return (
     <Link href={`/journal/${article.slug}`} className="group block">
       <div className="grid lg:grid-cols-12 gap-0 border border-primary/10 overflow-hidden">
@@ -118,14 +135,14 @@ function FeaturedArticle({
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary/20" />
           <div className="absolute top-6 left-6">
             <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
-              {article.category}
+              {category.label(article.category)}
             </span>
           </div>
         </div>
 
         <div className="lg:col-span-5 bg-primary/10 flex flex-col justify-center p-10 lg:p-14">
           <p className="text-primary/80 text-xs tracking-widest uppercase mb-4">
-            Featured
+            {t("featuredLabel")}
           </p>
           <h2 className="text-primary font-semibold text-2xl lg:text-3xl leading-snug group-hover:text-primary/80 transition-colors mb-5">
             {article.title}
@@ -134,7 +151,7 @@ function FeaturedArticle({
             {article.excerpt}
           </p>
           <div className="flex items-center gap-2 mt-8 text-primary text-sm tracking-widest group-hover:text-primary/80 transition-colors">
-            <span>READ ARTICLE</span>
+            <span>{t("readArticle")}</span>
             <ArrowRight className="w-4 h-4" />
           </div>
         </div>
@@ -145,6 +162,7 @@ function FeaturedArticle({
 
 export default function JournalPage() {
   const t = useTranslations("journalPage");
+  const category = useCategoryText();
   const { articles } = useArticleData();
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All");
 
@@ -182,9 +200,9 @@ export default function JournalPage() {
             <div className="lg:sticky lg:top-32">
               <div className="w-16 h-px bg-primary/70 mb-6" />
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                A journal shaped by
+                {t("introTitle1")}
                 <br />
-                <span>experience.</span>
+                <span>{t("introTitle2")}</span>
               </h2>
             </div>
           </motion.div>
@@ -194,29 +212,24 @@ export default function JournalPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              Our articles are not trend reports. They are drawn from real
-              planning journeys, real locations, and real conversations with
-              couples navigating the decision to celebrate far from home.
+              {t("introBody1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              Here we share design perspectives, destination knowledge, and
-              planning guidance shaped by years of working within Bali's diverse
-              environments — from private villas and jungle retreats to coastal
-              estates and luxury resorts.
+              {t("introBody2")}
             </motion.p>
 
             <motion.div
               variants={fadeInUp}
               className="grid sm:grid-cols-2 gap-4 pt-4"
             >
-              {Object.entries(categoryDescriptions).map(([cat, desc]) => (
+              {articleCategories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => {
-                    setActiveCategory(cat as ActiveCategory);
+                    setActiveCategory(cat);
                     document
                       .getElementById("journal-grid")
                       ?.scrollIntoView({ behavior: "smooth" });
@@ -226,10 +239,10 @@ export default function JournalPage() {
                   <div className="w-3 h-px bg-primary/70 flex-shrink-0 mt-2.5" />
                   <div>
                     <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-1">
-                      {cat}
+                      {category.label(cat)}
                     </p>
                     <p className="text-primary text-sm leading-relaxed">
-                      {desc}
+                      {category.description(cat)}
                     </p>
                   </div>
                 </button>
@@ -249,10 +262,10 @@ export default function JournalPage() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-10">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Featured Read
+              {t("featuredReadKicker")}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              Start Here Our Most Essential Article
+              {t("featuredReadTitle")}
             </h2>
           </motion.div>
           <motion.div variants={scaleIn}>
@@ -273,20 +286,22 @@ export default function JournalPage() {
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
               <div>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                  Explore the Journal
+                  {t("exploreKicker")}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                  {activeCategory === "All" ? "All Articles" : activeCategory}
+                  {activeCategory === "All"
+                    ? t("allArticles")
+                    : category.label(activeCategory)}
                   <br />
                   <span>
                     {activeCategory === "All"
-                      ? "Guides, stories & insights"
-                      : categoryDescriptions[activeCategory]}
+                      ? t("allArticlesSubtitle")
+                      : category.description(activeCategory)}
                   </span>
                 </h2>
               </div>
               <p className="text-primary/80 text-sm tracking-widest uppercase">
-                {filtered.length} Article{filtered.length !== 1 ? "s" : ""}
+                {t("articleCount", { count: filtered.length })}
               </p>
             </div>
 
@@ -307,9 +322,9 @@ export default function JournalPage() {
               className="text-center py-20 text-primary/80"
             >
               <p className="text-lg text-primary/80 tracking-widest uppercase">
-                No articles in this category yet.
+                {t("emptyTitle")}
               </p>
-              <p className="mt-2 text-primary/80 text-sm">Check back soon.</p>
+              <p className="mt-2 text-primary/80 text-sm">{t("emptyBody")}</p>
             </motion.div>
           )}
         </div>

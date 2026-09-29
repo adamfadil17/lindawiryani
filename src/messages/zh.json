@@ -613,7 +613,38 @@
     "closingTitle2": "成就更美好的婚礼。",
     "closingBody": "无论您尚处于憧憬阶段，还是正在积极筹备，我们诚邀您浏览杂志专栏，发现与您心意相通的灵感、目的地与体验。",
     "ctaExperiences": "探索婚礼体验",
-    "ctaDestinations": "发现婚礼目的地"
+    "ctaDestinations": "发现婚礼目的地",
+    "introTitle1": "由经验",
+    "introTitle2": "塑造的专栏。",
+    "introBody1": "我们的文章并非潮流报告，而是源自真实的筹备历程、真实的地点，以及与那些决定远离家乡举办婚礼的新人之间的真诚交流。",
+    "introBody2": "在这里，我们分享设计视角、目的地知识与筹备指南，它们都来自多年在巴厘岛多样环境中的工作积累——从私人别墅、丛林度假村，到海滨庄园与奢华度假酒店。",
+    "featuredReadKicker": "精选阅读",
+    "featuredReadTitle": "从这里开始：我们最重要的一篇文章",
+    "featuredLabel": "精选",
+    "readArticle": "阅读文章",
+    "exploreKicker": "探索杂志专栏",
+    "allArticles": "全部文章",
+    "allArticlesSubtitle": "指南、故事与见解",
+    "filterAll": "全部",
+    "articleCount": "{count, plural, other {# 篇文章}}",
+    "emptyTitle": "此分类下暂无文章。",
+    "emptyBody": "敬请期待。",
+    "categories": {
+      "guides": "指南",
+      "planningAdvice": "筹备建议",
+      "destinationKnowledge": "目的地知识",
+      "venueLocation": "场地与位置",
+      "realWeddings": "真实婚礼",
+      "designConcept": "设计与概念"
+    },
+    "categoryDescriptions": {
+      "guides": "为目的地婚礼新人准备的分步筹备指南",
+      "planningAdvice": "来自真实筹备历程的实用见解",
+      "destinationKnowledge": "巴厘岛及印尼各地的场地洞察",
+      "venueLocation": "环境特色与场地探访",
+      "realWeddings": "来自真实庆典的专题故事",
+      "designConcept": "设计思维、氛围与创意方向"
+    }
   },
   "journalDetail": {
     "closingKicker": "开启您的婚礼旅程",

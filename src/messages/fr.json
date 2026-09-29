@@ -613,7 +613,38 @@
     "closingTitle2": "créent de plus beaux mariages.",
     "closingBody": "Que vous en soyez aux premiers rêves ou déjà en pleine préparation, nous vous invitons à explorer notre journal et à découvrir les idées, destinations et expériences qui vous ressemblent.",
     "ctaExperiences": "EXPLORER LES EXPÉRIENCES DE MARIAGE",
-    "ctaDestinations": "DÉCOUVRIR LES DESTINATIONS"
+    "ctaDestinations": "DÉCOUVRIR LES DESTINATIONS",
+    "introTitle1": "Un journal façonné par",
+    "introTitle2": "l'expérience.",
+    "introBody1": "Nos articles ne sont pas des rapports de tendances. Ils s'appuient sur de véritables parcours de préparation, de vrais lieux et de vraies conversations avec des couples qui envisagent de célébrer leur mariage loin de chez eux.",
+    "introBody2": "Nous partageons ici des perspectives de design, une connaissance des destinations et des conseils de préparation issus d'années de travail dans les environnements variés de Bali — des villas privées et retraites dans la jungle aux domaines en bord de mer et aux resorts de luxe.",
+    "featuredReadKicker": "Lecture à la une",
+    "featuredReadTitle": "Commencez ici : notre article le plus essentiel",
+    "featuredLabel": "À la une",
+    "readArticle": "LIRE L'ARTICLE",
+    "exploreKicker": "Explorer le journal",
+    "allArticles": "Tous les articles",
+    "allArticlesSubtitle": "Guides, histoires & idées",
+    "filterAll": "Tous",
+    "articleCount": "{count, plural, one {# Article} other {# Articles}}",
+    "emptyTitle": "Aucun article dans cette catégorie pour le moment.",
+    "emptyBody": "Revenez bientôt.",
+    "categories": {
+      "guides": "Guides",
+      "planningAdvice": "Conseils de préparation",
+      "destinationKnowledge": "Connaissance des destinations",
+      "venueLocation": "Lieux & Emplacements",
+      "realWeddings": "Mariages réels",
+      "designConcept": "Design & Concept"
+    },
+    "categoryDescriptions": {
+      "guides": "Guides de préparation pas à pas pour les couples en mariage de destination",
+      "planningAdvice": "Conseils pratiques issus de véritables parcours de préparation",
+      "destinationKnowledge": "Connaissance des lieux à Bali et à travers l'Indonésie",
+      "venueLocation": "Caractéristiques des environnements et exploration des lieux",
+      "realWeddings": "Récits éditoriaux de célébrations réelles",
+      "designConcept": "Réflexion design, atmosphère et direction créative"
+    }
   },
   "journalDetail": {
     "closingKicker": "Commencez votre parcours de mariage",

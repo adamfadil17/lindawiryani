@@ -613,7 +613,38 @@
     "closingTitle2": "menciptakan pernikahan yang lebih baik.",
     "closingBody": "Baik Anda masih dalam fase bermimpi maupun sudah aktif merencanakan, kami mengundang Anda menjelajahi jurnal kami dan menemukan ide, destinasi, serta pengalaman yang sesuai dengan Anda.",
     "ctaExperiences": "JELAJAHI PENGALAMAN PERNIKAHAN",
-    "ctaDestinations": "TEMUKAN DESTINASI"
+    "ctaDestinations": "TEMUKAN DESTINASI",
+    "introTitle1": "Sebuah jurnal yang dibentuk oleh",
+    "introTitle2": "pengalaman.",
+    "introBody1": "Artikel kami bukanlah laporan tren. Semuanya bersumber dari perjalanan perencanaan yang nyata, lokasi yang nyata, dan percakapan langsung dengan pasangan yang sedang mempertimbangkan untuk merayakan pernikahan jauh dari rumah.",
+    "introBody2": "Di sini kami berbagi sudut pandang desain, pengetahuan destinasi, dan panduan perencanaan yang terbentuk dari bertahun-tahun bekerja di berbagai lingkungan di Bali — mulai dari vila pribadi dan retret di tengah hutan hingga estat tepi pantai dan resor mewah.",
+    "featuredReadKicker": "Bacaan Pilihan",
+    "featuredReadTitle": "Mulai dari Sini: Artikel Paling Penting Kami",
+    "featuredLabel": "Pilihan",
+    "readArticle": "BACA ARTIKEL",
+    "exploreKicker": "Jelajahi Jurnal",
+    "allArticles": "Semua Artikel",
+    "allArticlesSubtitle": "Panduan, kisah & wawasan",
+    "filterAll": "Semua",
+    "articleCount": "{count, plural, other {# Artikel}}",
+    "emptyTitle": "Belum ada artikel dalam kategori ini.",
+    "emptyBody": "Silakan cek kembali nanti.",
+    "categories": {
+      "guides": "Panduan",
+      "planningAdvice": "Saran Perencanaan",
+      "destinationKnowledge": "Pengetahuan Destinasi",
+      "venueLocation": "Venue & Lokasi",
+      "realWeddings": "Pernikahan Nyata",
+      "designConcept": "Desain & Konsep"
+    },
+    "categoryDescriptions": {
+      "guides": "Panduan perencanaan langkah demi langkah untuk pasangan pernikahan destinasi",
+      "planningAdvice": "Wawasan praktis dari perjalanan perencanaan yang nyata",
+      "destinationKnowledge": "Pengetahuan lokasi di seluruh Bali dan Indonesia",
+      "venueLocation": "Karakter lingkungan dan eksplorasi venue",
+      "realWeddings": "Kisah editorial dari perayaan yang nyata",
+      "designConcept": "Pemikiran desain, suasana, dan arahan kreatif"
+    }
   },
   "journalDetail": {
     "closingKicker": "Mulai Perjalanan Pernikahan Anda",
