@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -31,6 +33,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function WeddingExperiencesPage() {
+  const t = useTranslations("weddingExperiencesPage");
   const {
     coupleValues,
     designFoundation,
@@ -71,7 +74,7 @@ export default function WeddingExperiencesPage() {
               href="/wedding-experiences"
               className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
-              Wedding Experiences
+              {t("breadcrumb")}
             </Link>
           </motion.div>
 
@@ -79,15 +82,15 @@ export default function WeddingExperiencesPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.3em] uppercase mb-5"
           >
-            Bali Destination Wedding Planner
+            {t("heroKicker")}
           </motion.p>
           <motion.h1
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
           >
-            Luxury Destination
+            {t("heroTitle1")}
             <br />
-            <span>Wedding Planning in Bali</span>
+            <span>{t("heroTitle2")}</span>
           </motion.h1>
         </motion.div>
       </section>
@@ -104,7 +107,7 @@ export default function WeddingExperiencesPage() {
             <div className="lg:sticky lg:top-32">
               <div className="w-16 h-px bg-primary/70 mb-6" />
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                A destination wedding in Bali is more than a beautiful location.
+                {t("introTitle")}
               </h2>
             </div>
           </motion.div>
@@ -114,20 +117,13 @@ export default function WeddingExperiencesPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify "
             >
-              It is an experience shaped by atmosphere, culture, landscape, and
-              emotion. At Linda Wiryani Design and Event Planning, we specialize
-              in luxury destination wedding planning in Bali, designing weddings
-              that are intentional, refined, and deeply personal.
+              {t("introP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify "
             >
-              Our approach blends design artistry, hospitality precision, and
-              local expertise to create weddings that feel effortless, elevated,
-              and meaningful. We work with couples from around the world who are
-              drawn to Bali for its natural beauty, spiritual depth, and
-              intimate sense of escape.
+              {t("introP2")}
             </motion.p>
 
             <motion.div
@@ -135,10 +131,10 @@ export default function WeddingExperiencesPage() {
               className="border-l-2 border-primary/70 pl-8 py-2"
             >
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
-                Why Choose Bali
+                {t("whyChooseLead")}
               </p>
               <p className="text-primary  mb-5 italic">
-                Bali offers a rare diversity of environments within one island:
+                {t("whyChooseSub")}
               </p>
               <div className="space-y-3">
                 {whyBali.map((item) => (
@@ -149,11 +145,7 @@ export default function WeddingExperiencesPage() {
                 ))}
               </div>
               <p className="mt-6 text-primary italic leading-relaxed ">
-                Beyond scenery, Bali carries a sense of calm, ritual, and
-                natural rhythm that makes destination weddings here feel deeply
-                memorable — not just visually beautiful. Our role is to
-                translate this environment into a wedding experience that
-                reflects you
+                {t("whyChooseFooter")}
               </p>
             </motion.div>
           </div>
@@ -184,10 +176,10 @@ export default function WeddingExperiencesPage() {
           <div className="max-w-3xl">
             <motion.div variants={fadeInUp} className="mb-10">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Our Studio
+                {t("studioKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                A Design-Led Destination <br /> Wedding Studio
+                {t("studioTitle1")} <br /> {t("studioTitle2")}
               </h2>
             </motion.div>
 
@@ -195,16 +187,12 @@ export default function WeddingExperiencesPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed mb-10 text-justify "
             >
-              We are not a template-based wedding organizer. Linda Wiryani
-              Design and Event Planning was built as a design-led wedding
-              planning studio. From this foundation, we create a complete
-              concept — spatial design, styling direction, color harmony, floral
-              identity, guest journey, and emotional pacing.
+              {t("studioBody")}
             </motion.p>
 
             <motion.div variants={fadeInUp}>
               <p className="text-primary italic mb-6 ">
-                Every destination wedding begins with:
+                {t("destinationBeginsLead")}
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
                 {designFoundation.map((item, i) => (
@@ -247,11 +235,11 @@ export default function WeddingExperiencesPage() {
               />
               <div className="absolute bottom-6 left-6 bg-white/90 px-6 py-4">
                 <p className="text-primary text-sm tracking-widest uppercase mb-1">
-                  Experience
+                  {t("experienceKicker")}
                 </p>
-                <p className="text-primary font-semibold text-2xl">~20 Years</p>
+                <p className="text-primary font-semibold text-2xl">{t("experienceYears")}</p>
                 <p className="text-primary text-sm">
-                  5-star luxury hospitality
+                  {t("experienceSub")}
                 </p>
               </div>
             </motion.div>
@@ -259,10 +247,10 @@ export default function WeddingExperiencesPage() {
             <div className="lg:col-span-7 space-y-10">
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                  What We Do
+                  {t("whatWeDoKicker")}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  Full Service Destination Wedding Planning
+                  {t("whatWeDoTitle")}
                 </h2>
               </motion.div>
 
@@ -280,7 +268,7 @@ export default function WeddingExperiencesPage() {
 
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-widest uppercase mb-5">
-                  Hospitality-Driven Execution
+                  {t("hospitalityLead")}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   {hospitalityValues.map((v) => (
@@ -293,8 +281,7 @@ export default function WeddingExperiencesPage() {
                   ))}
                 </div>
                 <p className="mt-6 text-primary italic leading-relaxed ">
-                  We treat your wedding not as an event, but as a curated
-                  experience from the first arrival to the final farewell.
+                  {t("hospitalityFooter")}
                 </p>
               </motion.div>
 
@@ -303,7 +290,7 @@ export default function WeddingExperiencesPage() {
                 className="pt-6 border-t border-primary/20"
               >
                 <p className="text-primary  mb-4 italic">
-                  Chosen by couples who value:
+                  {t("chosenLead")}
                 </p>
                 <div className="space-y-2">
                   {coupleValues.map((v) => (
@@ -333,17 +320,15 @@ export default function WeddingExperiencesPage() {
           >
             <div className="lg:col-span-5">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Explore Further
+                {t("exploreFurther")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                Wedding Experiences
+                {t("expListTitle")}
               </h2>
             </div>
             <div className="lg:col-span-7 lg:flex lg:items-end">
               <p className="text-primary text-justify leading-relaxed text-sm sm:text-base">
-                Each experience below is a distinct celebration style, curated
-                for the couples who choose it. Explore the one that resonates
-                most with your vision.
+                {t("expListIntro")}
               </p>
             </div>
           </motion.div>
@@ -383,7 +368,7 @@ export default function WeddingExperiencesPage() {
                       {exp.desc}
                     </p>
                     <div className="flex items-center gap-2 mt-3 sm:mt-4 text-primary text-sm tracking-wider group-hover:text-primary/80 transition-colors">
-                      <span>EXPLORE</span>
+                      <span>{t("explore")}</span>
                       <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>
@@ -405,12 +390,12 @@ export default function WeddingExperiencesPage() {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
             <motion.div variants={fadeInUp} className="lg:col-span-4">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                FAQ
+                {t("faqKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                Bali Destination Wedding Planner
+                {t("faqTitle1")}
                 <br />
-                <span className="italic font-light">Questions</span>
+                <span className="italic font-light">{t("faqTitle2")}</span>
               </h2>
             </motion.div>
             <motion.div variants={fadeIn} className="lg:col-span-8">
@@ -446,26 +431,23 @@ export default function WeddingExperiencesPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.25em] uppercase mb-4"
           >
-            Your Bali Destination Wedding
+            {t("closingKicker")}
           </motion.p>
           <motion.h2
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            A destination wedding
+            {t("closingTitle1")}
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              Should never feel generic.
+              {t("closingTitle2")}
             </span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80  max-w-2xl mx-auto leading-relaxed"
           >
-            It should feel like a moment that could only happen here, and only
-            belong to you. If you are searching for a Bali destination wedding
-            planner who designs with intention, artistry, and emotional depth,
-            we would be honored to create your celebration.
+            {t("closingBody")}
           </motion.p>
           <motion.div
             variants={fadeInUp}
@@ -473,12 +455,12 @@ export default function WeddingExperiencesPage() {
           >
             <Link href="https://wa.me/628113980998" target="_blank">
               <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                BEGIN YOUR STORY
+                {t("ctaBegin")}
               </button>
             </Link>
             <Link href="/wedding-concepts">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                VIEW WEDDING CONCEPTS
+                {t("ctaConcepts")}
               </button>
             </Link>
           </motion.div>

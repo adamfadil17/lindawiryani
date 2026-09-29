@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -15,6 +17,7 @@ import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
 import type { Venue, Currency } from "@/types";
 
 export default function Page() {
+  const t = useTranslations("home");
   const { reviews } = usePortfolioData();
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCurrency] = useState<Currency>("IDR");
@@ -63,21 +66,20 @@ export default function Page() {
             variants={fadeInUp}
             className="text-white tracking-[0.3em] uppercase mb-5"
           >
-            Luxury Wedding Planner & Designer in Bali
+            {t("heroKicker")}
           </motion.p>
           <motion.h1
             variants={fadeInUp}
             className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-5 md:mb-6 leading-tight"
           >
-            Destination & Intimate Weddings <br />
-            <span> in Bali – Designed with Intention</span>
+            {t("heroTitle1")} <br />
+            <span> {t("heroTitle2")}</span>
           </motion.h1>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-xl leading-relaxed"
           >
-            This is where you place emotion, art, storytelling, hospitality,
-            philosophy.
+            {t("heroSubtitle")}
           </motion.p>
           <motion.div
             variants={fadeInUp}
@@ -85,12 +87,12 @@ export default function Page() {
           >
             <Link href="#wedding-themes-section">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                PLAN YOUR BALI WEDDING
+                {t("ctaPlan")}
               </button>
             </Link>
             <Link href="#about">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                EXPLORE OUR APPROACH
+                {t("ctaExplore")}
               </button>
             </Link>
           </motion.div>
@@ -113,7 +115,6 @@ export default function Page() {
         onExternalModalClose={() => setVenueFromTheme(null)}
       />
 
-
       <Instagram />
 
       <motion.section
@@ -126,22 +127,19 @@ export default function Page() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Kind Words
+              {t("reviewsKicker")}
             </p>
             <div className="grid lg:grid-cols-12 gap-8">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                  What our couples
+                  {t("reviewsTitle1")}
                   <br />
-                  <span>share with us</span>
+                  <span>{t("reviewsTitle2")}</span>
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
                 <p className="text-primary leading-relaxed text-justify">
-                  Our couples often speak not only about how their wedding
-                  looked, but how it felt — calm, meaningful, effortless,
-                  personal, and unforgettable are words that appear again and
-                  again in their reflections.
+                  {t("reviewsIntro")}
                 </p>
               </div>
             </div>
@@ -176,7 +174,7 @@ export default function Page() {
                       {review.couple}
                     </p>
                     <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
-                      {`Couple from ${review.origin} `}
+                      {t("coupleFrom", { origin: review.origin })}
                     </p>
                   </div>
                 </div>

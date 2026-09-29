@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -11,10 +13,10 @@ import { usePortfolioData } from "@/lib/data/portfolio-data";
 import { useDestinationData } from "@/lib/data/destination-data";
 
 const weddingExperiences = [
-  { id: "1", label: "Private Villa Weddings", slug: "private-villa-weddings" },
-  { id: "2", label: "Intimate Weddings", slug: "intimate-weddings" },
-  { id: "3", label: "Elopement Weddings", slug: "elopement-weddings" },
-  { id: "4", label: "Luxury Weddings", slug: "luxury-weddings" },
+  { id: "1", labelKey: "privateVilla", slug: "private-villa-weddings" },
+  { id: "2", labelKey: "intimate", slug: "intimate-weddings" },
+  { id: "3", labelKey: "elopement", slug: "elopement-weddings" },
+  { id: "4", labelKey: "luxury", slug: "luxury-weddings" },
 ];
 
 interface FilterDropdownProps {
@@ -36,6 +38,7 @@ function FilterDropdown({
   options,
   align = "left",
 }: FilterDropdownProps) {
+  const t = useTranslations("PortfolioPage");
   const selectedLabel =
     value === "all"
       ? label
@@ -77,7 +80,7 @@ function FilterDropdown({
                     : "text-primary hover:bg-stone-50"
                 }`}
               >
-                All
+                {t("all")}
               </button>
               {options.map((opt) => (
                 <button
@@ -105,6 +108,7 @@ interface PortfolioCardProps {
 }
 
 function PortfolioCard({ item }: PortfolioCardProps) {
+  const t = useTranslations("portfolioPage");
   return (
     <motion.article
       variants={{
@@ -150,7 +154,7 @@ function PortfolioCard({ item }: PortfolioCardProps) {
           </div>
           {item.origin && (
             <p className="text-white/80 text-sm mt-1 tracking-widest uppercase">
-              From {item.origin}
+              {t("fromOrigin", { origin: item.origin })}
             </p>
           )}
         </div>
@@ -160,6 +164,9 @@ function PortfolioCard({ item }: PortfolioCardProps) {
 }
 
 export default function PortfolioPage() {
+  const tHome = useTranslations("home");
+  const t = useTranslations("portfolioPage");
+  const tNav = useTranslations("nav");
   const { portfolioItems, reviews } = usePortfolioData();
   const { destinationList } = useDestinationData();
   const destinations = useMemo(
@@ -197,7 +204,12 @@ export default function PortfolioPage() {
       }
     }
     return list;
-  }, [portfolioItems, destinationList, selectedExperience, selectedDestination]);
+  }, [
+    portfolioItems,
+    destinationList,
+    selectedExperience,
+    selectedDestination,
+  ]);
 
   const visibleItems = filteredItems.slice(0, visibleCount);
   const hasMore = visibleCount < filteredItems.length;
@@ -238,7 +250,7 @@ export default function PortfolioPage() {
               href="/portfolio"
               className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
-              Portfolio
+              {t("breadcrumb")}
             </Link>
           </motion.div>
 
@@ -246,22 +258,21 @@ export default function PortfolioPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.3em] uppercase mb-5"
           >
-            Real Weddings, Curated Experiences
+            {t("heroKicker")}
           </motion.p>
           <motion.h1
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white font-semibold leading-tight max-w-4xl uppercase"
           >
-            Linda Wiryani
+            {t("heroTitle1")}
             <br />
-            <span>Portfolio</span>
+            <span>{t("heroTitle2")}</span>
           </motion.h1>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-xl leading-relaxed"
           >
-            A living collection of real celebrations shaped by place, emotion,
-            and thoughtful design. Each wedding reflects a unique journey.
+            {t("heroSubtitle")}
           </motion.p>
         </motion.div>
       </section>
@@ -278,9 +289,9 @@ export default function PortfolioPage() {
             <div className="lg:sticky lg:top-32">
               <div className="w-16 h-px bg-primary/70 mb-6" />
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                Every wedding
+                {t("introTitle1")}
                 <br />
-                <span>begins with a story.</span>
+                <span>{t("introTitle2")}</span>
               </h2>
             </div>
           </motion.div>
@@ -290,22 +301,13 @@ export default function PortfolioPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              At Linda Wiryani Design and Event Planning, our portfolio is a
-              collection of real celebrations shaped by place, emotion, and
-              thoughtful design. Each wedding reflects a unique journey — guided
-              by the couple's vision, the environment they chose, and the
-              experience they wished to create.
+              {t("introP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              Our weddings are never templated. They are designed through
-              listening — to the couple, to the space, and to the emotional
-              rhythm of the celebration. From intimate elopements and private
-              villa weddings to refined destination celebrations and multi-day
-              luxury experiences, our work is defined not by style, but by
-              intention.
+              {t("introP2")}
             </motion.p>
 
             <motion.div
@@ -313,15 +315,15 @@ export default function PortfolioPage() {
               className="border-l-2 border-primary/50 pl-8 py-2"
             >
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
-                Our Weddings Are
+                {t("ourWeddingsAreLead")}
               </p>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
-                  "Emotionally grounded",
-                  "Spatially considered",
-                  "Thoughtfully paced",
-                  "Visually harmonious",
-                  "Deeply personal",
+                  t("quality1"),
+                  t("quality2"),
+                  t("quality3"),
+                  t("quality4"),
+                  t("quality5"),
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-4">
                     <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
@@ -347,17 +349,15 @@ export default function PortfolioPage() {
             <div className="grid lg:grid-cols-12 gap-8 items-end">
               <div className="lg:col-span-5">
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                  Design Stories
+                  {t("designStoriesKicker")}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                  A Collection of Real Celebrations
+                  {t("designStoriesTitle")}
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
                 <p className="text-primary leading-relaxed text-justify">
-                  Explore our portfolio by the experience you envision or the
-                  destination that inspires you. Each gallery is a real
-                  collaboration, a real place, and a real moment in time.
+                  {t("designStoriesBody")}
                 </p>
               </div>
             </div>
@@ -369,11 +369,11 @@ export default function PortfolioPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <span className="text-primary text-sm tracking-widest uppercase font-semibold mr-2">
-              Filter By:
+              {t("filterBy")}
             </span>
 
             <FilterDropdown
-              label="Experience"
+              label={t("experienceLabel")}
               value={selectedExperience}
               isOpen={isExpDropdownOpen}
               onToggle={() => {
@@ -386,13 +386,13 @@ export default function PortfolioPage() {
                 setVisibleCount(6);
               }}
               options={weddingExperiences.map((e) => ({
-                label: e.label,
+                label: tNav(`weddingExperiencesSubmenu.${e.labelKey}`),
                 value: e.slug,
               }))}
             />
 
             <FilterDropdown
-              label="Destination"
+              label={t("destinationLabel")}
               value={selectedDestination}
               isOpen={isDestDropdownOpen}
               onToggle={() => {
@@ -421,12 +421,13 @@ export default function PortfolioPage() {
                 }}
                 className="text-primary/80 text-sm tracking-widest uppercase hover:text-primary transition-colors hover:cursor-pointer underline underline-offset-4"
               >
-                Clear Filters
+                {t("clearFilters")}
               </button>
             )}
 
             <span className="ml-auto text-primary">
-              {totalCount} {totalCount === 1 ? "story" : "stories"}
+              {totalCount}{" "}
+              {totalCount === 1 ? t("storySingular") : t("storyPlural")}
             </span>
           </motion.div>
 
@@ -440,8 +441,7 @@ export default function PortfolioPage() {
                 className="py-24 text-center"
               >
                 <p className="text-primary/80 text-lg italic">
-                  No weddings found for this combination. Try adjusting your
-                  filters.
+                  {t("noResults")}
                 </p>
               </motion.div>
             ) : (
@@ -466,7 +466,9 @@ export default function PortfolioPage() {
                   onClick={() => setVisibleCount((prev) => prev + 6)}
                   className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300"
                 >
-                  VIEW MORE ({filteredItems.length - visibleCount} MORE)
+                  {t("viewMore", {
+                    count: filteredItems.length - visibleCount,
+                  })}
                 </button>
               ) : (
                 totalCount > 6 && (
@@ -474,7 +476,7 @@ export default function PortfolioPage() {
                     onClick={() => setVisibleCount(6)}
                     className="border border-primary/30 text-primary/80 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/5 hover:cursor-pointer transition-colors duration-300"
                   >
-                    VIEW LESS
+                    {t("viewLess")}
                   </button>
                 )
               )}
@@ -497,17 +499,15 @@ export default function PortfolioPage() {
           >
             <div className="lg:col-span-5">
               <p className="text-white tracking-[0.25em] uppercase mb-3">
-                Explore Our Work
+                {t("exploreWorkKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
-                By Wedding Experience
+                {t("byExperienceTitle")}
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
               <p className="text-white leading-relaxed text-justify">
-                You may wish to explore based on how you envision celebrating.
-                Each experience represents a different approach to design,
-                atmosphere, and guest journey.
+                {t("byExperienceBody")}
               </p>
             </div>
           </motion.div>
@@ -520,7 +520,7 @@ export default function PortfolioPage() {
                   className="group flex items-center justify-between border border-white/20 p-6 hover:border-white/60 hover:bg-white/5 transition-all duration-300"
                 >
                   <span className="text-white font-medium tracking-wide group-hover:text-white/80 transition-colors">
-                    {exp.label}
+                    {exp.labelKey}
                   </span>
                   <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors flex-shrink-0" />
                 </Link>
@@ -544,18 +544,15 @@ export default function PortfolioPage() {
           >
             <div className="lg:col-span-5">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Explore Our Work
+                {t("exploreWorkKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                By Destination
+                {t("byDestinationTitle")}
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
               <p className="text-primary leading-relaxed text-justify">
-                Place plays a central role in every celebration. Our portfolio
-                features weddings across Bali's diverse environments — from
-                ocean cliffs and jungle retreats to rural estates and refined
-                resort spaces.
+                {t("byDestinationBody")}
               </p>
             </div>
           </motion.div>
@@ -587,22 +584,21 @@ export default function PortfolioPage() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Kind Words
+              {tHome("reviewsKicker")}
             </p>
             <div className="grid lg:grid-cols-12 gap-8">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                  What our couples
+                  {tHome("reviewsTitle1")}
                   <br />
-                  <span className="italic font-light">share with us</span>
+                  <span className="italic font-light">
+                    {tHome("reviewsTitle2")}
+                  </span>
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
                 <p className="text-primary leading-relaxed text-justify">
-                  Our couples often speak not only about how their wedding
-                  looked, but how it felt — calm, meaningful, effortless,
-                  personal, and unforgettable are words that appear again and
-                  again in their reflections.
+                  {tHome("reviewsIntro")}
                 </p>
               </div>
             </div>
@@ -637,7 +633,7 @@ export default function PortfolioPage() {
                       {review.couple}
                     </p>
                     <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
-                      {review.origin}
+                      {tHome("coupleFrom", { origin: review.origin })}
                     </p>
                   </div>
                 </div>
@@ -668,7 +664,9 @@ export default function PortfolioPage() {
                     {reviews[reviewSlide].couple}
                   </p>
                   <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
-                    {reviews[reviewSlide].origin}
+                    {tHome("coupleFrom", {
+                      origin: reviews[reviewSlide].origin,
+                    })}
                   </p>
                 </div>
               </motion.div>
@@ -735,26 +733,23 @@ export default function PortfolioPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.25em] uppercase mb-4"
           >
-            Begin Your Wedding Journey
+            {t("closingKicker")}
           </motion.p>
           <motion.h2
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            A portfolio that
+            {t("closingTitle1")}
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              continues to evolve.
+              {t("closingTitle2")}
             </span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            We intentionally accept a limited number of weddings each year so
-            that every celebration receives full creative focus and personal
-            involvement. If you feel aligned with our approach, we would be
-            honored to begin a conversation.
+            {t("closingBody")}
           </motion.p>
           <motion.div
             variants={fadeInUp}
@@ -762,12 +757,12 @@ export default function PortfolioPage() {
           >
             <Link href="https://wa.me/628113980998" target="_blank">
               <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                BEGIN YOUR STORY
+                {t("ctaBegin")}
               </button>
             </Link>
             <Link href="/journal">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                EXPLORE OUR JOURNAL
+                {t("ctaJournal")}
               </button>
             </Link>
           </motion.div>

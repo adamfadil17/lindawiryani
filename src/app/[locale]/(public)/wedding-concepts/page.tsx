@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -13,6 +15,8 @@ import type { Venue, Currency } from "@/types";
 import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
 
 export default function WeddingConceptsPage() {
+  const tNav = useTranslations("nav");
+  const t = useTranslations("weddingConceptsPage");
   const {
     conceptLayers,
     venueCurationConsiderations,
@@ -68,7 +72,7 @@ export default function WeddingConceptsPage() {
               href="/wedding-concepts"
               className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
-              Wedding Concepts
+              {t("breadcrumb")}
             </Link>
           </motion.div>
 
@@ -76,20 +80,19 @@ export default function WeddingConceptsPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.3em] uppercase mb-5"
           >
-            Curated Wedding Celebrations
+            {t("heroKicker")}
           </motion.p>
           <motion.h1
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
           >
-            Wedding Concepts
+            {t("heroTitle")}
           </motion.h1>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-xl leading-relaxed"
           >
-            Thoughtfully designed to help couples explore possibilities, not
-            packages.
+            {t("heroSubtitle")}
           </motion.p>
         </motion.div>
       </section>
@@ -105,7 +108,7 @@ export default function WeddingConceptsPage() {
             <div className="lg:sticky lg:top-32">
               <div className="w-16 h-px bg-primary/70 mb-6" />
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                A creative layer for how weddings are imagined.
+                {t("introTitle")}
               </h2>
             </div>
           </motion.div>
@@ -115,20 +118,13 @@ export default function WeddingConceptsPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              Our wedding concepts are designed to help couples explore
-              possibilities, not packages. Each concept acts as a creative and
-              strategic layer that supports how weddings are imagined, designed,
-              and experienced.
+              {t("introP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              These concepts are not separate steps — they are interconnected.
-              Venue curation shapes theme. Theme informs styling. Styling draws
-              from editorial inspiration. Together, they form a cohesive design
-              language that supports meaningful decision-making and refined
-              execution.
+              {t("introP2")}
             </motion.p>
 
             <motion.div
@@ -136,14 +132,14 @@ export default function WeddingConceptsPage() {
               className="border-l-2 border-primary/30 pl-8 py-2"
             >
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
-                How Concepts Support Your Planning Journey
+                {t("journeyLead")}
               </p>
               <div className="space-y-3">
                 {[
-                  "Meaningful decision-making",
-                  "Efficient planning",
-                  "Refined execution",
-                  "Emotionally resonant celebrations",
+                  t("journey1"),
+                  t("journey2"),
+                  t("journey3"),
+                  t("journey4"),
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-4">
                     <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
@@ -162,7 +158,7 @@ export default function WeddingConceptsPage() {
                 }
                 className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300"
               >
-                EXPLORE VENUE LIST
+                {t("exploreVenueList")}
               </button>
               <button
                 onClick={() =>
@@ -172,7 +168,7 @@ export default function WeddingConceptsPage() {
                 }
                 className="bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300"
               >
-                EXPLORE THEMES
+                {t("exploreThemes")}
               </button>
             </motion.div>
           </div>
@@ -193,17 +189,15 @@ export default function WeddingConceptsPage() {
           >
             <div className="lg:col-span-5">
               <p className="text-white tracking-[0.25em] uppercase mb-3">
-                The Four Layers
+                {t("layersKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-semibold leading-tight">
-                Wedding Concept Layers
+                {t("layersTitle")}
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
               <p className="text-white text-justify leading-relaxed">
-                Each concept layer supports how your celebration is imagined,
-                designed, and experienced. Explore each layer to understand how
-                they shape your wedding journey.
+                {t("layersIntro")}
               </p>
             </div>
           </motion.div>
@@ -262,7 +256,7 @@ export default function WeddingConceptsPage() {
                         {layer.desc}
                       </p>
                       <div className="flex items-center gap-2 mt-4 text-white text-sm tracking-wider group-hover:text-white/80 transition-colors">
-                        <span>EXPLORE</span>
+                        <span>{t("explore")}</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
@@ -298,20 +292,24 @@ export default function WeddingConceptsPage() {
               />
               <div className="absolute bottom-6 left-6 bg-white/90 px-6 py-4">
                 <p className="text-primary text-sm tracking-widest uppercase mb-1">
-                  Our Approach
+                  {t("venueCurationApproach")}
                 </p>
-                <p className="text-primary font-semibold text-2xl">Curated</p>
-                <p className="text-primary text-sm">Not a directory</p>
+                <p className="text-primary font-semibold text-2xl">
+                  {t("venueCurationCurated")}
+                </p>
+                <p className="text-primary text-sm">
+                  {t("venueCurationNotDirectory")}
+                </p>
               </div>
             </motion.div>
 
             <div className="lg:col-span-7 space-y-10">
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                  Concept Layer
+                  {t("conceptLayer")}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  Venue Curation
+                  {t("venueCurationTitle")}
                 </h2>
               </motion.div>
 
@@ -319,16 +317,12 @@ export default function WeddingConceptsPage() {
                 variants={fadeInUp}
                 className="text-primary leading-relaxed text-justify"
               >
-                Venue curation is the foundation of every wedding we design.
-                Rather than presenting an exhaustive directory, we provide a
-                considered selection of spaces that align with the emotional,
-                aesthetic, and logistical requirements of each celebration
-                style.
+                {t("venueCurationP1")}
               </motion.p>
 
               <motion.div variants={fadeInUp}>
                 <p className="text-primary font-semibold tracking-widest uppercase mb-5">
-                  Our Selection Criteria
+                  {t("venueCriteriaLead")}
                 </p>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {venueCurationConsiderations.map((item) => (
@@ -344,8 +338,7 @@ export default function WeddingConceptsPage() {
                 variants={fadeInUp}
                 className="text-primary italic leading-relaxed"
               >
-                We believe the right venue does more than host a wedding — it
-                shapes the entire experience.
+                {t("venueQuote")}
               </motion.p>
 
               <motion.div variants={fadeInUp}>
@@ -357,7 +350,7 @@ export default function WeddingConceptsPage() {
                   }
                   className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300"
                 >
-                  EXPLORE VENUE LIST BY DESTINATION
+                  {t("exploreVenueListByDestination")}
                 </button>
               </motion.div>
             </div>
@@ -393,14 +386,13 @@ export default function WeddingConceptsPage() {
               <div className="lg:sticky lg:top-32">
                 <div className="w-16 h-px bg-primary/70 mb-6" />
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                  Concept Layer
+                  {t("conceptLayer")}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                  Styling Concepts
+                  {t("stylingTitle")}
                 </h2>
                 <p className="mt-6 text-primary leading-relaxed italic">
-                  Styling is never about excess. It is about clarity and
-                  harmony.
+                  {t("stylingSubtitle")}
                 </p>
               </div>
             </motion.div>
@@ -410,16 +402,12 @@ export default function WeddingConceptsPage() {
                 variants={fadeInUp}
                 className="text-primary leading-relaxed text-justify"
               >
-                Styling concepts translate vision into physical form. This is
-                where atmosphere becomes visible — through composition,
-                materiality, texture, and restraint. Our styling concepts are
-                born from a deep understanding of the venue, the couple's story,
-                and the emotional arc of the entire celebration.
+                {t("stylingP1")}
               </motion.p>
 
               <motion.div variants={fadeInUp}>
                 <p className="text-primary font-semibold tracking-widest uppercase mb-6">
-                  Our Styling Concepts Focus On
+                  {t("stylingFocusLead")}
                 </p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {stylingFocusAreas.map((item, i) => (
@@ -441,14 +429,14 @@ export default function WeddingConceptsPage() {
                 className="border-l-2 border-primary/30 pl-8 py-2"
               >
                 <p className="text-primary font-semibold tracking-widest uppercase mb-4">
-                  Styling Supports
+                  {t("stylingSupportsLead")}
                 </p>
                 <div className="space-y-3">
                   {[
-                    "Private Villa Weddings",
-                    "Intimate Weddings",
-                    "Elopement Weddings",
-                    "Luxury Weddings",
+                    tNav("weddingExperiencesSubmenu.privateVilla"),
+                    tNav("weddingExperiencesSubmenu.intimate"),
+                    tNav("weddingExperiencesSubmenu.elopement"),
+                    tNav("weddingExperiencesSubmenu.luxury"),
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-4">
                       <div className="w-3 h-px bg-primary flex-shrink-0" />
@@ -486,10 +474,10 @@ export default function WeddingConceptsPage() {
           <div className="max-w-3xl">
             <motion.div variants={fadeInUp} className="mb-10">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Concept Layer
+                {t("conceptLayer")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                Editorial Inspiration
+                {t("editorialTitle")}
               </h2>
             </motion.div>
 
@@ -497,16 +485,11 @@ export default function WeddingConceptsPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed mb-10 text-justify"
             >
-              Editorial inspiration is where storytelling begins. Rather than
-              copying trends, we draw from a broader world of aesthetic
-              references — bridging imagination and reality, guiding both
-              creative direction and execution.
+              {t("editorialP1")}
             </motion.p>
 
             <motion.div variants={fadeInUp} className="mb-10">
-              <p className="text-primary italic mb-6">
-                We draw inspiration from:
-              </p>
+              <p className="text-primary italic mb-6">{t("weDrawFrom")}</p>
               <div className="grid sm:grid-cols-2 gap-4">
                 {editorialSources.map((item, i) => (
                   <div
@@ -524,14 +507,14 @@ export default function WeddingConceptsPage() {
 
             <motion.div variants={fadeInUp}>
               <p className="text-primary font-semibold tracking-widest uppercase mb-5">
-                Editorial Inspiration Helps Couples
+                {t("editorialHelpsLead")}
               </p>
               <div className="space-y-3">
                 {[
-                  "Visualize mood and pacing",
-                  "Understand scale and restraint",
-                  "See how design interacts with place",
-                  "Align emotionally with their vision",
+                  t("editorialHelp1"),
+                  t("editorialHelp2"),
+                  t("editorialHelp3"),
+                  t("editorialHelp4"),
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
@@ -547,12 +530,12 @@ export default function WeddingConceptsPage() {
             >
               <Link href="/portfolio">
                 <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
-                  VIEW PORTFOLIO
+                  {t("viewPortfolio")}
                 </button>
               </Link>
               <Link href="/journal">
                 <button className="bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
-                  READ THE JOURNAL
+                  {t("readJournal")}
                 </button>
               </Link>
             </motion.div>
@@ -571,17 +554,17 @@ export default function WeddingConceptsPage() {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             <motion.div variants={fadeInUp} className="lg:col-span-5">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                From Concept to Celebration
+                {t("journeyKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                Every celebration
+                {t("journeyTitle1")}
                 <br />
-                begins with
+                {t("journeyTitle2")}
                 <br />
-                <span className="italic font-light">understanding.</span>
+                <span className="italic font-light">{t("journeyTitle3")}</span>
               </h2>
               <p className="mt-6 text-primary leading-relaxed italic">
-                We guide you through each step with calm precision and artistry.
+                {t("journeySubtitle")}
               </p>
             </motion.div>
 
@@ -605,12 +588,12 @@ export default function WeddingConceptsPage() {
               <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
                 <Link href="/approach">
                   <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
-                    EXPLORE OUR APPROACH
+                    {t("exploreApproach")}
                   </button>
                 </Link>
                 <Link href="/wedding-experiences">
                   <button className="bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
-                    VIEW WEDDING EXPERIENCES
+                    {t("viewExperiences")}
                   </button>
                 </Link>
               </motion.div>
@@ -643,25 +626,23 @@ export default function WeddingConceptsPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.25em] uppercase mb-4"
           >
-            Begin Your Wedding Concept Journey
+            {t("closingKicker")}
           </motion.p>
           <motion.h2
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            Your wedding should feel
+            {t("closingTitle1")}
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              aligned — not selected.
+              {t("closingTitle2")}
             </span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            We invite you to explore the concepts and venues above, or begin a
-            conversation with us to shape a celebration that reflects your
-            vision.
+            {t("closingBody")}
           </motion.p>
           <motion.div
             variants={fadeInUp}
@@ -669,12 +650,12 @@ export default function WeddingConceptsPage() {
           >
             <Link href="https://wa.me/628113980998" target="_blank">
               <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                BEGIN YOUR STORY
+                {t("ctaBegin")}
               </button>
             </Link>
             <Link href="/portfolio">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                VIEW OUR PORTFOLIO
+                {t("ctaViewPortfolio")}
               </button>
             </Link>
           </motion.div>

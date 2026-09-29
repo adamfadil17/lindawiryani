@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import type React from "react";
 import { useState, useRef } from "react";
 import { Link } from "@/i18n/navigation";
@@ -11,7 +13,7 @@ import {
   useWorkingWithUsData,
   getWorkingWithUsData,
 } from "@/lib/data/working-with-us";
-import {  ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 type Tab = "vendor" | "career";
 
@@ -39,6 +41,7 @@ interface CareerForm {
 }
 
 export default function WorkingWithUsPage() {
+  const t = useTranslations("workingWithUsPage");
   const { openPositions, vendorCategories, vendorValues } =
     useWorkingWithUsData();
   // Values sent to the backend/admin stay in English regardless of locale.
@@ -105,7 +108,7 @@ export default function WorkingWithUsPage() {
     if (!vendorRecaptcha) {
       setVendorStatus({
         type: "error",
-        message: "Please complete the reCAPTCHA verification.",
+        message: t("recaptchaRequired"),
       });
       return;
     }
@@ -127,8 +130,7 @@ export default function WorkingWithUsPage() {
       if (response.ok) {
         setVendorStatus({
           type: "success",
-          message:
-            "Thank you! We'll review your application and be in touch within 5–7 business days.",
+          message: t("vendorSuccess"),
         });
         setVendorForm({
           companyName: "",
@@ -146,14 +148,13 @@ export default function WorkingWithUsPage() {
       } else {
         setVendorStatus({
           type: "error",
-          message: data.message || "Something went wrong. Please try again.",
+          message: data.message || t("genericError"),
         });
       }
     } catch {
       setVendorStatus({
         type: "error",
-        message:
-          "An error occurred. Please try again or contact us via WhatsApp.",
+        message: t("catchError"),
       });
     } finally {
       setVendorSubmitting(false);
@@ -165,7 +166,7 @@ export default function WorkingWithUsPage() {
     if (!careerRecaptcha) {
       setCareerStatus({
         type: "error",
-        message: "Please complete the reCAPTCHA verification.",
+        message: t("recaptchaRequired"),
       });
       return;
     }
@@ -187,8 +188,7 @@ export default function WorkingWithUsPage() {
       if (response.ok) {
         setCareerStatus({
           type: "success",
-          message:
-            "Application received. We'll review your profile carefully and reach out if there's a fit.",
+          message: t("careerSuccess"),
         });
         setCareerForm({
           fullName: "",
@@ -205,14 +205,13 @@ export default function WorkingWithUsPage() {
       } else {
         setCareerStatus({
           type: "error",
-          message: data.message || "Something went wrong. Please try again.",
+          message: data.message || t("genericError"),
         });
       }
     } catch {
       setCareerStatus({
         type: "error",
-        message:
-          "An error occurred. Please try again or contact us via WhatsApp.",
+        message: t("catchError"),
       });
     } finally {
       setCareerSubmitting(false);
@@ -255,7 +254,7 @@ export default function WorkingWithUsPage() {
               href="/working-with-us"
               className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
-              Working With Us
+              {t("breadcrumb")}
             </Link>
           </motion.div>
 
@@ -265,16 +264,16 @@ export default function WorkingWithUsPage() {
                 variants={fadeInUp}
                 className="text-white tracking-[0.3em] uppercase mb-5"
               >
-                Collaborate & Grow
+                {t("heroKicker")}
               </motion.p>
               <motion.h1
                 variants={fadeInUp}
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase"
               >
-                Build Something
+                {t("heroTitle1")}
                 <br />
                 <span className="italic font-light normal-case">
-                  Beautiful Together
+                  {t("heroTitle2")}
                 </span>
               </motion.h1>
             </div>
@@ -284,9 +283,7 @@ export default function WorkingWithUsPage() {
                 variants={fadeInUp}
                 className="text-white/80 leading-relaxed border-l border-white/80 pl-6"
               >
-                Whether you're a talented vendor seeking a trusted creative
-                partner or a passionate individual looking to join our studio —
-                we'd love to hear from you.
+                {t("heroSubtitle")}
               </motion.p>
               <motion.div
                 variants={fadeInUp}
@@ -296,13 +293,13 @@ export default function WorkingWithUsPage() {
                   onClick={() => setActiveTab("vendor")}
                   className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-primary hover:cursor-pointer transition-colors duration-300"
                 >
-                  VENDOR PARTNERSHIP
+                  {t("vendorPartnershipBtn")}
                 </button>
                 <button
                   onClick={() => setActiveTab("career")}
                   className="border border-white/50 text-white/70 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300"
                 >
-                  JOIN OUR TEAM
+                  {t("joinTeamBtn")}
                 </button>
               </motion.div>
             </div>
@@ -321,23 +318,23 @@ export default function WorkingWithUsPage() {
           <div className="lg:col-span-5 space-y-8">
             <motion.div variants={fadeInUp}>
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Our Studio
+                {t("studioKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                Rooted in Bali
+                {t("studioTitle1")}
                 <br />
-                <span className="italic font-light">Driven by Craft</span>
+                <span className="italic font-light">{t("studioTitle2")}</span>
               </h2>
             </motion.div>
 
             <motion.div variants={fadeInUp} className="space-y-4">
-              <p className="text-primary mb-6">What We Bring:</p>
+              <p className="text-primary mb-6">{t("whatWeBring")}</p>
               {[
-                "A curated network of international couples",
-                "High-profile, luxury destination weddings",
-                "A creative studio that values excellence",
-                "Long-term, meaningful collaborations",
-                "Transparent and professional processes",
+                t("bring1"),
+                t("bring2"),
+                t("bring3"),
+                t("bring4"),
+                t("bring5"),
               ].map((item, i) => (
                 <div
                   key={item}
@@ -357,30 +354,19 @@ export default function WorkingWithUsPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              Linda Wiryani Events is a Bali-based luxury wedding studio
-              creating emotionally meaningful, beautifully designed celebrations
-              for couples from around the world. Our work is rooted in deep
-              creative intention, cultural respect, and an unwavering commitment
-              to quality.
+              {t("studioP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              We believe that the best weddings are built through genuine
-              collaboration — between our studio, the couple, and the vendors
-              and team members who bring each vision to life. Every person who
-              works with us becomes part of something larger than a single
-              event.
+              {t("studioP2")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              We are selective. We are intentional. We are looking for people
-              who share our standards, our values, and our passion for creating
-              experiences that couples will carry with them for the rest of
-              their lives.
+              {t("studioP3")}
             </motion.p>
           </div>
         </div>
@@ -396,12 +382,12 @@ export default function WorkingWithUsPage() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-14">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Our Standards
+              {t("standardsKicker")}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              What We Look For
+              {t("standardsTitle1")}
               <br />
-              <span className="italic font-light">In Every Partner</span>
+              <span className="italic font-light">{t("standardsTitle2")}</span>
             </h2>
           </motion.div>
 
@@ -433,12 +419,14 @@ export default function WorkingWithUsPage() {
       >
         <motion.div variants={fadeInUp} className="mb-14">
           <p className="text-primary tracking-[0.25em] uppercase mb-3">
-            Join The Team
+            {t("joinTeamKicker")}
           </p>
           <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-            Open Positions
+            {t("openPositionsTitle1")}
             <br />
-            <span className="italic font-light">At Our Studio</span>
+            <span className="italic font-light">
+              {t("openPositionsTitle2")}
+            </span>
           </h2>
         </motion.div>
 
@@ -470,7 +458,7 @@ export default function WorkingWithUsPage() {
                 onClick={() => setActiveTab("career")}
                 className="inline-block mt-2 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 hover:border-primary hover:cursor-pointer transition-colors duration-300"
               >
-                Apply Now
+                {t("applyNow")}
               </button>
             </motion.div>
           ))}
@@ -487,7 +475,7 @@ export default function WorkingWithUsPage() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-14">
             <p className="text-primary tracking-[0.25em] uppercase mb-6">
-              Get In Touch
+              {t("getInTouch")}
             </p>
             <div className="flex gap-0 border-b border-primary/20">
               {(["vendor", "career"] as Tab[]).map((tab) => (
@@ -501,8 +489,8 @@ export default function WorkingWithUsPage() {
                   }`}
                 >
                   {tab === "vendor"
-                    ? "Vendor Partnership"
-                    : "Career Application"}
+                    ? t("vendorPartnershipTab")
+                    : t("careerApplicationTab")}
                 </button>
               ))}
             </div>
@@ -522,30 +510,27 @@ export default function WorkingWithUsPage() {
                   <div className="lg:col-span-4 space-y-10">
                     <div>
                       <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                        Vendor Partnership
+                        {t("vendorPartnershipKicker")}
                       </p>
                       <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                        Partner
+                        {t("vendorFormTitle1")}
                         <br />
                         <span className="italic font-light">
-                          With Our Studio
+                          {t("vendorFormTitle2")}
                         </span>
                       </h2>
                     </div>
                     <p className="text-primary leading-relaxed">
-                      We work with a select group of vendors who share our
-                      commitment to quality, creativity, and care. If you
-                      believe your craft aligns with ours, we'd love to learn
-                      more about what you do.
+                      {t("vendorFormIntro")}
                     </p>
                     <div className="space-y-4">
                       {[
-                        "Photography & Videography",
-                        "Floral & Décor",
-                        "Catering & Entertainment",
-                        "Hair, Makeup & Styling",
-                        "Venues & Accommodation",
-                        "And more…",
+                        t("vendorCat1"),
+                        t("vendorCat2"),
+                        t("vendorCat3"),
+                        t("vendorCat4"),
+                        t("vendorCat5"),
+                        t("vendorCat6"),
                       ].map((cat, i) => (
                         <div
                           key={cat}
@@ -564,12 +549,12 @@ export default function WorkingWithUsPage() {
                     <form onSubmit={handleVendorSubmit} className="space-y-6">
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
-                          Company Information
+                          {t("companyInfo")}
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label className={labelClass}>
-                              Company / Studio Name{" "}
+                              {t("companyName")}{" "}
                               <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -584,7 +569,7 @@ export default function WorkingWithUsPage() {
                           </div>
                           <div>
                             <label className={labelClass}>
-                              Contact Person{" "}
+                              {t("contactPerson")}{" "}
                               <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -601,7 +586,7 @@ export default function WorkingWithUsPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                           <div>
                             <label className={labelClass}>
-                              Email Address{" "}
+                              {t("emailAddress")}{" "}
                               <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -616,7 +601,7 @@ export default function WorkingWithUsPage() {
                           </div>
                           <div>
                             <label className={labelClass}>
-                              Phone / WhatsApp
+                              {t("phoneWhatsapp")}
                             </label>
                             <input
                               type="tel"
@@ -629,7 +614,7 @@ export default function WorkingWithUsPage() {
                           </div>
                         </div>
                         <div className="mt-6">
-                          <label className={labelClass}>Website</label>
+                          <label className={labelClass}>{t("website")}</label>
                           <input
                             type="url"
                             name="website"
@@ -644,12 +629,12 @@ export default function WorkingWithUsPage() {
 
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
-                          Service Details
+                          {t("serviceDetails")}
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label className={labelClass}>
-                              Vendor Category{" "}
+                              {t("vendorCategory")}{" "}
                               <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
@@ -661,9 +646,12 @@ export default function WorkingWithUsPage() {
                                 disabled={vendorSubmitting}
                                 className={selectClass}
                               >
-                                <option value="">Select a category</option>
+                                <option value="">{t("selectCategory")}</option>
                                 {vendorCategories.map((cat, idx) => (
-                                  <option key={cat} value={enData.vendorCategories[idx]}>
+                                  <option
+                                    key={cat}
+                                    value={enData.vendorCategories[idx]}
+                                  >
                                     {cat}
                                   </option>
                                 ))}
@@ -675,12 +663,12 @@ export default function WorkingWithUsPage() {
                           </div>
                           <div>
                             <label className={labelClass}>
-                              Years in Business
+                              {t("yearsInBusiness")}
                             </label>
                             <input
                               type="text"
                               name="yearsInBusiness"
-                              placeholder="e.g. 5 years"
+                              placeholder={t("yearsInBusinessPlaceholder")}
                               value={vendorForm.yearsInBusiness}
                               onChange={handleVendorChange}
                               disabled={vendorSubmitting}
@@ -690,7 +678,7 @@ export default function WorkingWithUsPage() {
                         </div>
                         <div className="mt-6">
                           <label className={labelClass}>
-                            Portfolio / Instagram Link
+                            {t("portfolioInstagramLink")}
                           </label>
                           <input
                             type="url"
@@ -706,19 +694,17 @@ export default function WorkingWithUsPage() {
 
                       <div>
                         <p className="text-primary font-semibold tracking-[0.2em] uppercase text-sm mb-6 border-b border-primary/20 pb-3">
-                          Tell Us More
+                          {t("tellUsMore")}
                         </p>
                         <label className={labelClass}>
-                          Introduce Yourself & Your Work
+                          {t("introduceYourself")}
                         </label>
                         <p className="text-primary italic mb-3">
-                          Share what makes your work distinctive, any notable
-                          collaborations, and why you'd like to work with our
-                          studio.
+                          {t("vendorMessageIntro")}
                         </p>
                         <textarea
                           name="message"
-                          placeholder="Write your introduction here..."
+                          placeholder={t("writeIntroPlaceholder")}
                           value={vendorForm.message}
                           onChange={handleVendorChange}
                           rows={6}
@@ -755,7 +741,9 @@ export default function WorkingWithUsPage() {
                         disabled={vendorSubmitting || !vendorRecaptcha}
                         className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer disabled:bg-primary/50 disabled:cursor-not-allowed transition-all"
                       >
-                        {vendorSubmitting ? "SENDING..." : "SUBMIT APPLICATION"}
+                        {vendorSubmitting
+                          ? t("sending")
+                          : t("submitApplication")}
                       </button>
                     </form>
                   </div>
@@ -775,33 +763,28 @@ export default function WorkingWithUsPage() {
                   <div className="lg:col-span-4 space-y-10">
                     <div>
                       <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                        Career
+                        {t("careerKicker")}
                       </p>
                       <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                        Join
+                        {t("careerFormTitle1")}
                         <br />
                         <span className="italic font-light">
-                          Our Creative Team
+                          {t("careerFormTitle2")}
                         </span>
                       </h2>
                     </div>
                     <p className="text-primary leading-relaxed">
-                      We're a small, dedicated team of creative professionals
-                      who care deeply about what we do. If you're passionate
-                      about weddings, design, and human connection — we'd love
-                      to meet you.
+                      {t("careerFormIntro")}
                     </p>
 
                     <div className="space-y-4">
-                      <p className="text-primary mb-4">
-                        What we value in our team:
-                      </p>
+                      <p className="text-primary mb-4">{t("whatWeValue")}</p>
                       {[
-                        "A genuine love for the craft",
-                        "Attention to detail",
-                        "Calm under pressure",
-                        "Proactive communication",
-                        "Adaptability & warmth",
+                        t("val1"),
+                        t("val2"),
+                        t("val3"),
+                        t("val4"),
+                        t("val5"),
                       ].map((val, i) => (
                         <div
                           key={val}
@@ -820,12 +803,13 @@ export default function WorkingWithUsPage() {
                     <form onSubmit={handleCareerSubmit} className="space-y-6">
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
-                          Personal Information
+                          {t("personalInfo")}
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label className={labelClass}>
-                              Full Name <span className="text-red-500">*</span>
+                              {t("fullName")}{" "}
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="text"
@@ -839,7 +823,7 @@ export default function WorkingWithUsPage() {
                           </div>
                           <div>
                             <label className={labelClass}>
-                              Email Address{" "}
+                              {t("emailAddress")}{" "}
                               <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -854,7 +838,9 @@ export default function WorkingWithUsPage() {
                           </div>
                         </div>
                         <div className="mt-6">
-                          <label className={labelClass}>Phone / WhatsApp</label>
+                          <label className={labelClass}>
+                            {t("phoneWhatsapp")}
+                          </label>
                           <input
                             type="tel"
                             name="phone"
@@ -868,11 +854,11 @@ export default function WorkingWithUsPage() {
 
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
-                          Role & Experience
+                          {t("roleExperience")}
                         </p>
                         <div>
                           <label className={labelClass}>
-                            Position Applying For{" "}
+                            {t("positionApplyingFor")}{" "}
                             <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
@@ -884,14 +870,17 @@ export default function WorkingWithUsPage() {
                               disabled={careerSubmitting}
                               className={selectClass}
                             >
-                              <option value="">Select a position</option>
+                              <option value="">{t("selectPosition")}</option>
                               {openPositions.map((p, idx) => (
-                                <option key={p.title} value={enData.openPositions[idx].title}>
+                                <option
+                                  key={p.title}
+                                  value={enData.openPositions[idx].title}
+                                >
                                   {p.title}
                                 </option>
                               ))}
                               <option value="Open Application">
-                                Open Application (not listed above)
+                                {t("openApplication")}
                               </option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
@@ -901,12 +890,12 @@ export default function WorkingWithUsPage() {
                         </div>
                         <div className="mt-6">
                           <label className={labelClass}>
-                            Years of Relevant Experience
+                            {t("yearsRelevantExperience")}
                           </label>
                           <input
                             type="text"
                             name="experience"
-                            placeholder="e.g. 3 years in wedding planning"
+                            placeholder={t("experiencePlaceholder")}
                             value={careerForm.experience}
                             onChange={handleCareerChange}
                             disabled={careerSubmitting}
@@ -916,7 +905,7 @@ export default function WorkingWithUsPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                           <div>
                             <label className={labelClass}>
-                              LinkedIn Profile
+                              {t("linkedinProfile")}
                             </label>
                             <input
                               type="url"
@@ -930,7 +919,7 @@ export default function WorkingWithUsPage() {
                           </div>
                           <div>
                             <label className={labelClass}>
-                              Portfolio / Website
+                              {t("portfolioWebsite")}
                             </label>
                             <input
                               type="url"
@@ -947,19 +936,18 @@ export default function WorkingWithUsPage() {
 
                       <div>
                         <p className="text-primary tracking-[0.2em] uppercase text-xs mb-6 border-b border-primary/20 pb-3">
-                          Your Story
+                          {t("yourStory")}
                         </p>
                         <label className={labelClass}>
-                          Cover Letter / Why You'd Like to Join Us{" "}
+                          {t("coverLetterLabel")}{" "}
                           <span className="text-red-500">*</span>
                         </label>
                         <p className="text-primary/80 text-sm mb-3">
-                          Tell us about yourself, your background, and what
-                          draws you to Linda Wiryani Events specifically.
+                          {t("coverLetterIntro")}
                         </p>
                         <textarea
                           name="coverLetter"
-                          placeholder="Write your cover letter here..."
+                          placeholder={t("writeCoverLetterPlaceholder")}
                           value={careerForm.coverLetter}
                           onChange={handleCareerChange}
                           rows={8}
@@ -998,7 +986,9 @@ export default function WorkingWithUsPage() {
                         disabled={careerSubmitting || !careerRecaptcha}
                         className="bg-primary border border-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer disabled:bg-primary/50 disabled:cursor-not-allowed transition-all"
                       >
-                        {careerSubmitting ? "SENDING..." : "SUBMIT APPLICATION"}
+                        {careerSubmitting
+                          ? t("sending")
+                          : t("submitApplication")}
                       </button>
                     </form>
                   </div>
@@ -1032,24 +1022,23 @@ export default function WorkingWithUsPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.25em] uppercase mb-4"
           >
-            Have Questions?
+            {t("haveQuestions")}
           </motion.p>
           <motion.h2
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            Let's Start
+            {t("closingTitle1")}
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              A Conversation
+              {t("closingTitle2")}
             </span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            Not sure which path is right for you? Reach out directly and let's
-            figure it out together.
+            {t("closingBody")}
           </motion.p>
           <motion.div
             variants={fadeInUp}
@@ -1057,12 +1046,12 @@ export default function WorkingWithUsPage() {
           >
             <Link href="https://wa.me/628113980998" target="_blank">
               <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 transition-colors duration-300">
-                INQUIRE NOW
+                {t("inquireNow")}
               </button>
             </Link>
             <Link href="/contact">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 transition-colors duration-300">
-                VIEW CONTACT
+                {t("viewContact")}
               </button>
             </Link>
           </motion.div>

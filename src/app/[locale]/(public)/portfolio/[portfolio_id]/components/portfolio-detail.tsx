@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -52,6 +54,7 @@ export default function PortfolioDetail({
   destination,
   experience,
 }: PortfolioDetailProps) {
+  const t = useTranslations("portfolioDetail");
   return (
     <main className="relative overflow-hidden">
       <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
@@ -82,7 +85,7 @@ export default function PortfolioDetail({
               href="/portfolio"
               className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
-              Portfolio
+              {t("breadcrumb")}
             </Link>
             <span className="text-white text-sm">/</span>
             <span className="text-white text-sm font-simbold tracking-widest uppercase truncate max-w-[200px]">
@@ -122,7 +125,7 @@ export default function PortfolioDetail({
             {item.origin && (
               <>
                 <span className="text-white/80">·</span>
-                <span>Couple from {item.origin}</span>
+                <span>{t("coupleFrom", { origin: item.origin })}</span>
               </>
             )}
           </motion.div>
@@ -143,20 +146,20 @@ export default function PortfolioDetail({
                 <div>
                   <div className="w-16 h-px bg-primary/70 mb-6" />
                   <p className="text-primary tracking-[0.25em] uppercase mb-3 text-sm">
-                    Wedding Details
+                    {t("weddingDetails")}
                   </p>
                   <h2 className="text-2xl md:text-3xl text-primary font-semibold leading-tight">
                     {item.couple}
                     <br />
                     <span className="italic font-light text-xl">
-                      A Design Story
+                      {t("designStory")}
                     </span>
                   </h2>
                 </div>
 
                 <div className="space-y-3">
                   <p className="text-primary text-xs tracking-widest uppercase font-semibold">
-                    Destination
+                    {t("destination")}
                   </p>
                   <Link
                     href={`/destinations/${destination?.slug ?? ""}`}
@@ -172,7 +175,7 @@ export default function PortfolioDetail({
 
                 <div className="space-y-3">
                   <p className="text-primary text-xs tracking-widest uppercase font-semibold">
-                    Wedding Experiences
+                    {t("weddingExperiences")}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {experience && (
@@ -190,7 +193,7 @@ export default function PortfolioDetail({
                 <div className="pt-4">
                   <Link href="https://wa.me/628113980998" target="_blank">
                     <button className="w-full bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
-                      PLAN YOUR WEDDING
+                      {t("planYourWedding")}
                     </button>
                   </Link>
                 </div>
@@ -248,7 +251,7 @@ export default function PortfolioDetail({
                 className="pt-4 border-t border-primary/20 space-y-1"
               >
                 <p className="text-primary/80 text-sm tracking-widest uppercase">
-                  Designed & Curated by
+                  {t("designedCuratedBy")}
                 </p>
                 <p className="text-primary font-semibold">
                   {item.credit_planner}
@@ -260,7 +263,7 @@ export default function PortfolioDetail({
                   📍 {item.credit_location_detail}
                 </p>
                 <p className="text-primary/80 text-sm">
-                  Couple: {item.credit_couple_origin}
+                  {t("couplePrefix", { origin: item.credit_couple_origin })}
                 </p>
               </motion.div>
             </div>
@@ -278,10 +281,10 @@ export default function PortfolioDetail({
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-12">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Design Gallery
+              {t("designGallery")}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-              Moments from
+              {t("momentsFrom")}
               <br />
               <span className="italic font-light">{item.couple}</span>
             </h2>
@@ -302,12 +305,12 @@ export default function PortfolioDetail({
           <div className="grid lg:grid-cols-2 gap-16">
             <motion.div variants={fadeInUp}>
               <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
-                Explore by Experience
+                {t("exploreByExperience")}
               </p>
               <h3 className="text-2xl md:text-3xl text-white font-semibold mb-8 leading-tight">
-                Weddings with a similar
+                {t("similarFeelingTitle1")}
                 <br />
-                <span className="italic font-light">feeling & approach</span>
+                <span className="italic font-light">{t("similarFeelingTitle2")}</span>
               </h3>
               <div className="space-y-3">
                 {experience && (
@@ -326,10 +329,10 @@ export default function PortfolioDetail({
 
             <motion.div variants={fadeInUp}>
               <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
-                Explore by Destination
+                {t("exploreByDestination")}
               </p>
               <h3 className="text-2xl md:text-3xl text-white font-semibold mb-8 leading-tight">
-                More weddings in
+                {t("moreWeddingsIn")}
                 <br />
                 <span className="italic font-light">
                   {destination?.name ?? "—"}
@@ -342,7 +345,7 @@ export default function PortfolioDetail({
                 <div className="flex items-center gap-3">
                   <MapPin className="w-4 h-4 text-white/60 flex-shrink-0" />
                   <span className="text-white font-medium group-hover:text-white/80 transition-colors">
-                    {destination?.name ?? "—"}, Bali
+                    {t("baliSuffix", { name: destination?.name ?? "—" })}
                   </span>
                 </div>
                 <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors flex-shrink-0" />
@@ -350,12 +353,11 @@ export default function PortfolioDetail({
 
               <div className="pt-4 border-t border-white/10">
                 <p className="text-white/60 text-sm mb-5 leading-relaxed">
-                  Ready to begin your own wedding journey? We would be honored
-                  to start a conversation.
+                  {t("readyToBegin")}
                 </p>
                 <Link href="https://wa.me/628113980998" target="_blank">
                   <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                    PLAN YOUR WEDDING
+                    {t("planYourWedding")}
                   </button>
                 </Link>
               </div>
@@ -378,19 +380,19 @@ export default function PortfolioDetail({
             >
               <div>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                  You May Also Enjoy
+                  {t("youMayAlsoEnjoy")}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                  Related
+                  {t("related")}
                   <br />
-                  <span className="italic font-light">Stories</span>
+                  <span className="italic font-light">{t("stories")}</span>
                 </h2>
               </div>
               <Link
                 href="/portfolio"
                 className="hidden md:flex items-center gap-2 text-primary text-sm tracking-widest uppercase hover:text-primary/80 transition-colors"
               >
-                <span>View All</span>
+                <span>{t("viewAll")}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
@@ -438,7 +440,7 @@ export default function PortfolioDetail({
             <div className="text-center mt-10 md:hidden">
               <Link href="/portfolio">
                 <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
-                  VIEW ALL PORTFOLIO
+                  {t("viewAllPortfolio")}
                 </button>
               </Link>
             </div>

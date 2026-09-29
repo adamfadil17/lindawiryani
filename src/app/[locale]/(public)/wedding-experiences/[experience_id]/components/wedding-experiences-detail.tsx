@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -24,13 +26,14 @@ import type { Venue, WeddingTheme, Currency } from "@/types";
 import WeddingThemesSection from "@/components/shared/wedding-themes";
 
 function Breadcrumb({ label }: { label: string }) {
+  const t = useTranslations("experienceDetail");
   return (
     <div className="flex items-center gap-2">
       <Link
         href="/wedding-experiences"
         className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
       >
-        Wedding Experiences
+        {t("breadcrumbRoot")}
       </Link>
       <span className="text-white text-sm">/</span>
       <span className="text-white text-sm font-simbold tracking-widest uppercase truncate max-w-[240px]">
@@ -61,6 +64,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 function HeroSplit({ data }: { data: ExperienceData }) {
+  const t = useTranslations("experienceDetail");
   return (
     <section className="relative min-h-[80vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
       <div className="absolute inset-0">
@@ -91,7 +95,7 @@ function HeroSplit({ data }: { data: ExperienceData }) {
           variants={fadeInUp}
           className="text-white tracking-[0.3em] uppercase mb-5"
         >
-          {`${data.name} Planner in Bali`}
+          {t("plannerInBali", { name: data.name })}
         </motion.p>
         <motion.h1
           variants={fadeInUp}
@@ -99,7 +103,7 @@ function HeroSplit({ data }: { data: ExperienceData }) {
         >
           {data.name}
           <br />
-          <span>{"in Bali"}</span>
+          <span>{t("inBali")}</span>
         </motion.h1>
         <motion.p
           variants={fadeInUp}
@@ -110,7 +114,7 @@ function HeroSplit({ data }: { data: ExperienceData }) {
         <motion.div variants={fadeInUp} className="mt-10">
           <Link href="https://wa.me/628113980998" target="_blank">
             <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-primary hover:cursor-pointer transition-colors duration-300">
-              INQUIRE NOW
+              {t("inquireNow")}
             </button>
           </Link>
         </motion.div>
@@ -120,6 +124,8 @@ function HeroSplit({ data }: { data: ExperienceData }) {
 }
 
 function HeroBottomSplit({ data }: { data: ExperienceData }) {
+  const t = useTranslations("experienceDetail");
+
   return (
     <section className="relative min-h-[80vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
       <div className="absolute inset-0">
@@ -152,7 +158,7 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
               variants={fadeInUp}
               className="text-white tracking-[0.3em] uppercase mb-5"
             >
-              {`${data.name} Planner in Bali`}
+              {t("plannerInBali", { name: data.name })}
             </motion.p>
             <motion.h1
               variants={fadeInUp}
@@ -160,7 +166,7 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
             >
               {data.name}
               <br />
-              <span>{"in Bali"}</span>
+              <span>{t("inBali")}</span>
             </motion.h1>
           </div>
           <div className="lg:col-span-5 lg:pb-2">
@@ -173,7 +179,7 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
             <motion.div variants={fadeInUp} className="mt-8">
               <Link href="https://wa.me/628113980998" target="_blank">
                 <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-primary hover:cursor-pointer transition-colors duration-300">
-                  INQUIRE NOW
+                  {t("inquireNow")}
                 </button>
               </Link>
             </motion.div>
@@ -185,6 +191,8 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
 }
 
 function HeroCentered({ data }: { data: ExperienceData }) {
+  const t = useTranslations("experienceDetail");
+
   return (
     <section className="relative min-h-[80vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
       <div className="absolute inset-0">
@@ -215,13 +223,13 @@ function HeroCentered({ data }: { data: ExperienceData }) {
           variants={fadeInUp}
           className="text-white tracking-[0.3em] uppercase mb-5"
         >
-          {`${data.name} Planner in Bali`}
+          {t("plannerInBali", { name: data.name })}
         </motion.p>
         <motion.div variants={fadeInUp} className="mb-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase">
             {data.name}
             <br />
-            <span>{"in Bali"}</span>
+            <span>{t("inBali")}</span>
           </h1>
         </motion.div>
         <motion.div
@@ -237,7 +245,7 @@ function HeroCentered({ data }: { data: ExperienceData }) {
         <motion.div variants={fadeInUp}>
           <Link href="https://wa.me/628113980998" target="_blank">
             <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-primary hover:cursor-pointer transition-colors duration-300">
-              INQUIRE NOW
+              {t("inquireNow")}
             </button>
           </Link>
         </motion.div>
@@ -247,6 +255,8 @@ function HeroCentered({ data }: { data: ExperienceData }) {
 }
 
 function HeroEditorial({ data }: { data: ExperienceData }) {
+  const t = useTranslations("experienceDetail");
+
   return (
     <section className="relative min-h-[80vh] md:min-h-[70vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-32 lg:pt-48">
       <div className="absolute inset-0">
@@ -277,13 +287,13 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
           variants={fadeInUp}
           className="text-white tracking-[0.3em] uppercase mb-5"
         >
-          {`${data.name} Planner in Bali`}
+          {t("plannerInBali", { name: data.name })}
         </motion.p>
         <motion.div variants={fadeInUp}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-5xl text-white font-semibold leading-tight max-w-4xl uppercase">
             {data.name}
             <br />
-            <span>{"in Bali"}</span>
+            <span>{t("inBali")}</span>
           </h1>
         </motion.div>
         <motion.div
@@ -300,7 +310,7 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
           <motion.div variants={fadeInUp}>
             <Link href="https://wa.me/628113980998" target="_blank">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white hover:text-primary hover:cursor-pointer transition-colors duration-300">
-                INQUIRE NOW
+                {t("inquireNow")}
               </button>
             </Link>
           </motion.div>
@@ -534,6 +544,7 @@ function SectionServices({ data }: { data: ExperienceData }) {
 }
 
 function SectionClosing({ data }: { data: ExperienceData }) {
+  const t = useTranslations("experienceDetail");
   return (
     <motion.section
       className="relative py-24 lg:py-32 overflow-hidden"
@@ -581,12 +592,12 @@ function SectionClosing({ data }: { data: ExperienceData }) {
               >
                 <Link href="https://wa.me/628113980998" target="_blank">
                   <button className="bg-white text-primary font-semibold px-8 py-3 text-xs tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                    BEGIN YOUR STORY
+                    {t("ctaBegin")}
                   </button>
                 </Link>
                 <Link href="/wedding-concepts">
                   <button className="border border-white text-white font-semibold px-8 py-3 text-xs tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                    VIEW WEDDING CONCEPTS
+                    {t("ctaConcepts")}
                   </button>
                 </Link>
               </motion.div>
@@ -640,12 +651,12 @@ function SectionClosing({ data }: { data: ExperienceData }) {
             >
               <Link href="https://wa.me/628113980998" target="_blank">
                 <button className="bg-white text-primary font-semibold px-8 py-3 text-xs tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                  BEGIN YOUR STORY
+                  {t("ctaBegin")}
                 </button>
               </Link>
               <Link href="/wedding-concepts">
                 <button className="border border-white text-white font-semibold px-8 py-3 text-xs tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                  VIEW WEDDING CONCEPTS
+                  {t("ctaConcepts")}
                 </button>
               </Link>
             </motion.div>
@@ -657,6 +668,7 @@ function SectionClosing({ data }: { data: ExperienceData }) {
 }
 
 function SectionFaq({ data }: { data: ExperienceData }) {
+  const t = useTranslations("experienceDetail");
   return (
     <motion.section
       className="py-20 lg:py-24"
@@ -668,11 +680,13 @@ function SectionFaq({ data }: { data: ExperienceData }) {
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
           <motion.div variants={fadeInUp} className="lg:col-span-4">
-            <p className="text-primary tracking-[0.25em] uppercase mb-3">FAQ</p>
+            <p className="text-primary tracking-[0.25em] uppercase mb-3">
+              {t("faqLabel")}
+            </p>
             <h2 className="text-2xl md:text-3xl text-primary font-semibold">
               {data.name}
               <br />
-              <span>Questions</span>
+              <span>{t("questions")}</span>
             </h2>
           </motion.div>
           <motion.div variants={fadeIn} className="lg:col-span-8">
@@ -749,6 +763,7 @@ function VenueCard({
   exchangeRate,
   onClick,
 }: VenueCardProps) {
+  const tv = useTranslations("venuesSection");
   return (
     <article
       onClick={onClick}
@@ -772,7 +787,7 @@ function VenueCard({
         <div className="flex items-center justify-start mb-4">
           <div className="flex flex-col items-start">
             <span className="text-sm text-white/80 italic mb-0.5">
-              Starts from
+              {tv("startsFrom")}
             </span>
             <div className="flex items-baseline gap-2">
               {venue.starting_price !== 0 && (
@@ -786,7 +801,7 @@ function VenueCard({
                 )}
               </span>
               {venue.starting_price !== 0 && (
-                <span className="text-sm text-white">nett</span>
+                <span className="text-sm text-white">{tv("nett")}</span>
               )}
             </div>
           </div>
@@ -821,7 +836,9 @@ function SectionVenueList({
   intimateThemes,
   locations,
 }: SectionVenueListProps) {
-  const [selectedLocation, setSelectedLocation] = useState("All");
+  const t = useTranslations("experienceDetail");
+  const tv = useTranslations("venuesSection");
+  const [selectedLocation, setSelectedLocation] = useState<string>("All");
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>("IDR");
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
@@ -887,15 +904,11 @@ function SectionVenueList({
       (p) => (p - 1 + filteredVenues.length) % filteredVenues.length,
     );
 
-  const categoryDescriptions: Record<string, string> = {
-    luxury_weddings:
-      "A curated selection of venues known for distinctive architecture, setting, and experience.",
-    private_villa_weddings:
-      "Exclusive private estates offering intimacy, flexibility, and a deeply personal celebration experience.",
-    elopement_weddings:
-      "Intimate settings designed for couples seeking privacy, meaning, and extraordinary surroundings.",
-    intimate_weddings:
-      "Thoughtfully curated venues for scaled celebrations — connection, elegance, and refined hospitality.",
+  const categoryDescriptionKeyMap: Record<string, string> = {
+    luxury_weddings: "descLuxury",
+    private_villa_weddings: "descPrivateVilla",
+    elopement_weddings: "descElopement",
+    intimate_weddings: "descIntimate",
   };
 
   // Jika tidak ada venue maupun tema, render null
@@ -942,18 +955,15 @@ function SectionVenueList({
           >
             <div className="lg:col-span-5">
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Venues & Settings
+                {tv("kicker")}
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-                Curated for Experience
+                {tv("title")}
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
               <p className="text-primary text-justify leading-relaxed">
-                We curate venues not by popularity, but by their ability to hold
-                emotion, beauty, and experience. Each space is selected for its
-                architectural character, natural environment, privacy, and
-                creative potential.
+                {tv("intro")}
               </p>
             </div>
           </motion.div>
@@ -964,7 +974,7 @@ function SectionVenueList({
           >
             <div className="flex items-center gap-4">
               <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
-                LOCATION
+                {tv("locationLabel")}
               </span>
               <div className="relative">
                 <button
@@ -973,7 +983,11 @@ function SectionVenueList({
                   }
                   className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
                 >
-                  <span>{selectedLocation}</span>
+                  <span>
+                    {selectedLocation === "All"
+                      ? t("allLocations")
+                      : selectedLocation}
+                  </span>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       isLocationDropdownOpen ? "rotate-180" : ""
@@ -995,7 +1009,7 @@ function SectionVenueList({
                             : "text-primary hover:bg-stone-100"
                         }`}
                       >
-                        {loc}
+                        {loc === "All" ? t("allLocations") : loc}
                       </button>
                     ))}
                   </div>
@@ -1005,7 +1019,7 @@ function SectionVenueList({
 
             <div className="flex items-center gap-4">
               <span className="text-base md:text-lg text-primary tracking-wider uppercase font-semibold">
-                CURRENCY
+                {tv("currencyLabel")}
               </span>
               <div className="relative">
                 <button
@@ -1050,16 +1064,29 @@ function SectionVenueList({
             className="text-center text-sm text-primary mb-12"
           >
             {selectedLocation === "All"
-              ? `Showing ${visibleVenues.length} of ${totalVenuesCount} venues`
-              : `Showing ${visibleVenues.length} of ${totalVenuesCount} venue${
-                  totalVenuesCount !== 1 ? "s" : ""
-                } in ${selectedLocation}`}
+              ? t("showingAllVenues", {
+                  count: visibleVenues.length,
+                  total: totalVenuesCount,
+                })
+              : totalVenuesCount !== 1
+                ? t("showingFilteredPlural", {
+                    count: visibleVenues.length,
+                    total: totalVenuesCount,
+                    location: selectedLocation,
+                  })
+                : t("showingFilteredSingular", {
+                    count: visibleVenues.length,
+                    total: totalVenuesCount,
+                    location: selectedLocation,
+                  })}
           </motion.p>
 
           <motion.div variants={fadeInUp} className="mb-10">
             <div className="mb-12 text-center">
               <p className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed">
-                {categoryDescriptions[experience.category]}
+                {categoryDescriptionKeyMap[experience.category]
+                  ? tv(categoryDescriptionKeyMap[experience.category])
+                  : ""}
               </p>
             </div>
 
@@ -1138,7 +1165,9 @@ function SectionVenueList({
                           onClick={() => setVisibleCount((prev) => prev + 6)}
                           className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                         >
-                          VIEW MORE ({totalVenuesCount - visibleCount} MORE)
+                          {tv("viewMore", {
+                            count: totalVenuesCount - visibleCount,
+                          })}
                         </button>
                       ) : (
                         totalVenuesCount > 6 && (
@@ -1146,7 +1175,7 @@ function SectionVenueList({
                             onClick={() => setVisibleCount(6)}
                             className="bg-transparent border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-primary hover:text-white transition-colors"
                           >
-                            VIEW LESS
+                            {tv("viewLess")}
                           </button>
                         )
                       )}
@@ -1155,7 +1184,7 @@ function SectionVenueList({
                 ) : (
                   <div className="text-center py-16">
                     <p className="text-primary text-lg italic">
-                      No venues found for the selected location.
+                      {tv("noVenuesFound")}
                     </p>
                   </div>
                 )}
@@ -1198,6 +1227,7 @@ function SectionSubExperiences({
   experienceList: WeddingExperience[];
 }) {
   const filtered = experienceList.filter((exp) => exp.slug !== currentSlug);
+  const t = useTranslations("experienceDetail");
   return (
     <motion.section
       className="bg-primary/15 py-20 lg:py-28"
@@ -1213,19 +1243,17 @@ function SectionSubExperiences({
         >
           <div className="lg:col-span-5">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Explore Further
+              {t("exploreFurther")}
             </p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
-              Other Wedding
+              {t("otherExperiences1")}
               <br />
-              <span>Experiences</span>
+              <span>{t("otherExperiences2")}</span>
             </h2>
           </div>
           <div className="lg:col-span-7 flex items-end">
             <p className="text-primary text-justify leading-relaxed">
-              Each experience below is a distinct celebration style, curated for
-              the couples who choose it. Explore the one that resonates most
-              with your vision.
+              {t("otherExperiencesIntro")}
             </p>
           </div>
         </motion.div>
@@ -1261,7 +1289,7 @@ function SectionSubExperiences({
                     {exp.hero_desc}
                   </p>
                   <div className="flex items-center gap-2 mt-4 text-primary text-sm tracking-wider group-hover:text-primary/80 transition-colors">
-                    <span>EXPLORE</span>
+                    <span>{t("explore")}</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -1290,6 +1318,7 @@ export function WeddingExperiencesDetail({
   locations: string[];
 }) {
   const experience = experienceList.find((e) => e.slug === currentSlug);
+  const t = useTranslations("experienceDetail");
 
   if (!experience) {
     return (
@@ -1299,11 +1328,12 @@ export function WeddingExperiencesDetail({
             404
           </p>
           <h1 className="text-3xl md:text-4xl text-primary font-semibold mb-6">
-            Page <span className="italic font-light">not found</span>
+            {t("notFoundTitle")}{" "}
+            <span className="italic font-light">{t("notFoundSuffix")}</span>
           </h1>
           <Link href="/wedding-experiences">
             <button className="border border-primary text-primary font-semibold px-8 py-3 text-xs tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
-              BACK TO WEDDING EXPERIENCES
+              {t("backToExperiences")}
             </button>
           </Link>
         </div>

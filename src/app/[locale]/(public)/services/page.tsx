@@ -1,15 +1,14 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { ChevronDown } from "lucide-react";
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
-import {
-  useServicesData,
-  type ServicesData,
-} from "@/lib/data/services-data";
+import { useServicesData, type ServicesData } from "@/lib/data/services-data";
 
 function ServiceAccordion({
   service,
@@ -22,6 +21,7 @@ function ServiceAccordion({
   isOpen: boolean;
   onToggle: () => void;
 }) {
+  const t = useTranslations("servicesPage");
   return (
     <div className="border-b border-primary/20 last:border-b-0">
       <button
@@ -36,9 +36,9 @@ function ServiceAccordion({
           <span className="text-primary font-semibold  md:text-xl group-hover:text-primary/80 transition-colors pr-4">
             {service.name}
           </span>
-          {service.tag === "Add-On" && (
+          {service.id === "guest-management" && (
             <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
-              OPTIONAL
+              {t("optional")}
             </span>
           )}
         </div>
@@ -106,7 +106,7 @@ function ServiceAccordion({
                     </div>
                     <Link href="https://wa.me/628113980998" target="_blank">
                       <button className="border border-primary text-primary font-semibold px-6 py-2.5 text-sm tracking-widest hover:bg-primary hover:cursor-pointer hover:text-white transition-colors duration-300">
-                        INQUIRE NOW
+                        {t("inquireNow")}
                       </button>
                     </Link>
                   </div>
@@ -121,8 +121,8 @@ function ServiceAccordion({
 }
 
 export default function ServicesPage() {
-  const { services, whyChooseReasons, serviceDestinations } =
-    useServicesData();
+  const t = useTranslations("servicesPage");
+  const { services, whyChooseReasons, serviceDestinations } = useServicesData();
   const [openServiceId, setOpenServiceId] = useState<string>(services[0].id);
 
   const handleToggle = (id: string) => {
@@ -249,22 +249,21 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Our Studio
+              {t("studioKicker")}
             </p>
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-20">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                  Why Choose
+                  {t("whyChooseTitle1")}
                   <br />
-                  <span className="italic font-light">Linda Wiryani</span>
+                  <span className="italic font-light">
+                    {t("whyChooseTitle2")}
+                  </span>
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
                 <p className="text-primary text-justify leading-relaxed ">
-                  A design-led wedding studio for intentional celebrations in
-                  Bali. With a background rooted in luxury hospitality and
-                  creative direction, our studio offers a calm, structured, and
-                  deeply considered approach to wedding planning and design.
+                  {t("whyChooseBody")}
                 </p>
               </div>
             </div>
@@ -319,10 +318,10 @@ export default function ServicesPage() {
             <div className="lg:col-span-7 space-y-8">
               <motion.div variants={fadeInUp}>
                 <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                  Global Reach
+                  {t("globalKicker")}
                 </p>
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                  Serving Destination Weddings in Bali
+                  {t("globalTitle")}
                 </h2>
               </motion.div>
 
@@ -330,13 +329,11 @@ export default function ServicesPage() {
                 variants={fadeInUp}
                 className="text-primary leading-relaxed text-justify "
               >
-                Linda Wiryani Design and Event Planning proudly serves couples
-                from around the world seeking a Bali wedding planner and
-                designer who offers both creative vision and grounded execution.
+                {t("globalBody")}
               </motion.p>
 
               <motion.div variants={fadeInUp} className="space-y-4">
-                <p className="text-primary">Our studio curates:</p>
+                <p className="text-primary">{t("curatesLead")}</p>
                 {serviceDestinations.map((dest) => (
                   <div key={dest} className="flex items-center gap-4">
                     <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
@@ -349,9 +346,7 @@ export default function ServicesPage() {
                 variants={fadeInUp}
                 className="text-primary leading-relaxed italic border-t border-primary/30  pt-6"
               >
-                From coastal cliffs and jungle hideaways to refined private
-                estates, we design weddings that feel deeply personal,
-                beautifully balanced, and connected to their surroundings.
+                {t("globalFooter")}
               </motion.p>
             </div>
           </div>
@@ -382,17 +377,16 @@ export default function ServicesPage() {
             variants={fadeInUp}
             className="text-white tracking-[0.25em] uppercase mb-4"
           >
-            Begin Your Journey
+            {t("closingKicker")}
           </motion.p>
           <motion.h2
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            Whether you are planning a destination wedding,a private villa
-            celebration, or a quiet elopement.
+            {t("closingTitle1")}
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              Our role is to guide, design, and orchestrate.
+              {t("closingTitle2")}
             </span>
           </motion.h2>
 
@@ -400,8 +394,7 @@ export default function ServicesPage() {
             variants={fadeInUp}
             className="mt-8 text-white/80  max-w-2xl mx-auto leading-relaxed"
           >
-            A wedding that feels intentional from beginning to end — quiet,
-            beautiful, and entirely your own.
+            {t("closingBody")}
           </motion.p>
 
           <motion.div
@@ -410,12 +403,12 @@ export default function ServicesPage() {
           >
             <Link href="https://wa.me/628113980998" target="_blank">
               <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/90 transition-colors duration-300">
-                BEGIN YOUR STORY
+                {t("ctaBegin")}
               </button>
             </Link>
             <Link href="/wedding-experiences">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:cursor-pointer hover:bg-white/10 transition-colors duration-300">
-                VIEW WEDDING EXPERIENCES
+                {t("ctaExperiences")}
               </button>
             </Link>
           </motion.div>
