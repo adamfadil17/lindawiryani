@@ -1,5 +1,3 @@
-// TODO(i18n): placeholder — currently mirrors English (portfolio-data.en.ts).
-// Replace with real translated content when ready; shape must match portfolio-data.en.ts exactly.
 import { Portfolio } from "@/types";
 
 export const portfolioItems: Portfolio[] = [
@@ -9,7 +7,7 @@ export const portfolioItems: Portfolio[] = [
     slug: "anaz-jane-tegalalang",
     couple: "Anaz & Jane",
     subtitle:
-      "A Post-Wedding Journey Through the Rice Terraces of Tegalalang, Bali",
+      "Perjalanan Pasca-Pernikahan di Sawah Terasering Tegalalang, Bali",
     destination_id: "2",
     venue_id: "1",
     experience_id: "3",
@@ -53,48 +51,48 @@ export const portfolioItems: Portfolio[] = [
         portfolio_id: "1",
       },
     ],
-    tags: ["Post-Wedding", "Rice Terraces", "Editorial"],
+    tags: ["Pasca-Pernikahan", "Sawah Terasering", "Editorial"],
     excerpt:
-      "Traveling from Morocco to Bali, Anaz and Jane discovered a quiet continuation of their wedding day amid Tegalalang's emerald rice terraces — a meeting point of Moroccan heritage and Balinese nature.",
-    origin: "Morocco",
+      "Bepergian dari Maroko ke Bali, Anaz dan Jane menemukan kelanjutan yang tenang dari hari pernikahan mereka di tengah sawah terasering Tegalalang yang berwarna zamrud — titik temu antara warisan Maroko dan alam Bali.",
+    origin: "Maroko",
     review: "",
     // ── TipTap HTML ────────────────────────────────────────────────────────────
     // Edit this field from the admin CMS. The `storySections` array below is
     // kept as an empty fallback; `content` always takes rendering priority.
     content: `
-<p>There are moments that do not ask to be staged. They simply ask to be felt.</p>
-<p>For Anaz and Jane, their post-wedding experience in Bali was never meant to replicate a wedding day. It was designed as a quiet continuation of it — a space to breathe, to wander, and to be present together after the celebration had passed.</p>
-<p>Traveling from Morocco to Bali, they were drawn not only to the island's beauty, but to its rhythm. To the way nature unfolds slowly. To the way silence carries meaning. To the way light moves across landscape.</p>
-<p>We curated their post-wedding journey in Tegalalang, where layers of emerald rice fields flow gently across the hills of Ubud, creating one of Bali's most poetic natural environments.</p>
+<p>Ada momen-momen yang tidak meminta untuk dipentaskan. Ia hanya meminta untuk dirasakan.</p>
+<p>Bagi Anaz dan Jane, pengalaman pasca-pernikahan mereka di Bali tidak pernah dimaksudkan untuk meniru hari pernikahan. Pengalaman ini dirancang sebagai kelanjutan yang tenang darinya — ruang untuk bernapas, berkelana, dan hadir bersama setelah perayaan usai.</p>
+<p>Bepergian dari Maroko ke Bali, mereka tertarik bukan hanya pada keindahan pulau ini, tetapi juga pada iramanya. Pada cara alam terbentang perlahan. Pada cara keheningan membawa makna. Pada cara cahaya bergerak melintasi lanskap.</p>
+<p>Kami merancang perjalanan pasca-pernikahan mereka di Tegalalang, tempat lapisan-lapisan sawah zamrud mengalir lembut di perbukitan Ubud, menciptakan salah satu lingkungan alam paling puitis di Bali.</p>
 
-<h2>Where the Landscape Becomes the Story</h2>
-<p>Tegalalang is not simply a location. It is a living composition of water, earth, and light.</p>
-<p>Here, the morning air is cool. The fields breathe. The sound of wind and distant water replaces conversation.</p>
-<p>It was in this atmosphere that Anaz and Jane stepped into their post-wedding session — not as newlyweds posing for photographs, but as two people allowing themselves to be part of the landscape.</p>
-<p>There was no rush. No performance. Only movement, presence, and quiet connection.</p>
-<p>Their walk through the terraces unfolded naturally — bare moments of laughter, gentle pauses, and shared stillness as the light softened across the fields.</p>
+<h2>Ketika Lanskap Menjadi Cerita</h2>
+<p>Tegalalang bukan sekadar lokasi. Ia adalah komposisi hidup dari air, tanah, dan cahaya.</p>
+<p>Di sini, udara pagi terasa sejuk. Ladang-ladang seolah bernapas. Suara angin dan air yang jauh menggantikan percakapan.</p>
+<p>Dalam suasana inilah Anaz dan Jane memasuki sesi pasca-pernikahan mereka — bukan sebagai pengantin baru yang berpose untuk difoto, melainkan sebagai dua insan yang membiarkan diri mereka menjadi bagian dari lanskap.</p>
+<p>Tidak ada ketergesaan. Tidak ada pertunjukan. Hanya gerak, kehadiran, dan kedekatan yang hening.</p>
+<p>Langkah mereka menyusuri teras-teras sawah mengalir dengan alami — tawa yang lepas apa adanya, jeda yang lembut, dan keheningan yang dibagi berdua saat cahaya melembut di atas ladang.</p>
 
-<h2>A Post-Wedding Experience, Not a Photoshoot</h2>
-<p>At Linda Wiryani Design and Event Planning, we design post-wedding experiences as emotional journeys rather than photography sessions.</p>
-<p>For Anaz and Jane, the intention was never about dramatic styling or elaborate setups. It was about creating space for intimacy, allowing their connection to exist within a setting that felt grounded, poetic, and alive.</p>
-<p>The rice terraces became both backdrop and witness. The softness of their wardrobe echoed the natural palette around them. The simplicity of their presence allowed the environment to lead. The camera followed quietly.</p>
+<h2>Pengalaman Pasca-Pernikahan, Bukan Sesi Foto</h2>
+<p>Di Linda Wiryani Design and Event Planning, kami merancang pengalaman pasca-pernikahan sebagai perjalanan emosional, bukan sesi fotografi.</p>
+<p>Bagi Anaz dan Jane, tujuannya tidak pernah soal gaya yang dramatis atau set yang rumit. Tujuannya adalah menciptakan ruang bagi keintiman, membiarkan hubungan mereka hadir dalam suasana yang membumi, puitis, dan hidup.</p>
+<p>Sawah terasering menjadi latar sekaligus saksi. Kelembutan busana mereka menggemakan palet alami di sekeliling. Kesederhanaan kehadiran mereka membiarkan lingkungan yang memimpin. Kamera mengikuti dengan tenang.</p>
 
-<h2>Between Morocco and Bali</h2>
-<p>Coming from Morocco, a land of deep texture, history, and color, Anaz and Jane found an unexpected familiarity in Bali's landscapes.</p>
-<p>Different in form, yet similar in spirit. Both cultures hold a reverence for land. Both understand beauty as something lived, not displayed.</p>
-<p>Their post-wedding journey became a meeting point between worlds — where Moroccan heritage and Balinese nature quietly coexisted within the same frame.</p>
+<h2>Antara Maroko dan Bali</h2>
+<p>Berasal dari Maroko, negeri dengan tekstur, sejarah, dan warna yang dalam, Anaz dan Jane menemukan keakraban yang tak terduga di lanskap Bali.</p>
+<p>Berbeda dalam bentuk, namun serupa dalam jiwa. Kedua budaya menyimpan penghormatan terhadap tanah. Keduanya memahami keindahan sebagai sesuatu yang dijalani, bukan dipamerkan.</p>
+<p>Perjalanan pasca-pernikahan mereka menjadi titik temu antara dua dunia — tempat warisan Maroko dan alam Bali hidup berdampingan dengan tenang dalam satu bingkai.</p>
 
-<h2>A Memory That Lives Beyond the Images</h2>
-<p>What remains from Anaz and Jane's time in Tegalalang is not only the imagery — but the feeling.</p>
-<p>The feeling of walking without destination. Of listening instead of speaking. Of letting a place shape a moment.</p>
-<p>Their post-wedding story is a reminder that the most meaningful experiences often happen not in ceremony, but in the spaces after — when the world softens and something real has room to appear.</p>
+<h2>Kenangan yang Hidup Melampaui Gambar</h2>
+<p>Yang tersisa dari waktu Anaz dan Jane di Tegalalang bukan hanya gambarnya — melainkan perasaannya.</p>
+<p>Perasaan berjalan tanpa tujuan. Mendengarkan alih-alih berbicara. Membiarkan sebuah tempat membentuk sebuah momen.</p>
+<p>Kisah pasca-pernikahan mereka adalah pengingat bahwa pengalaman paling bermakna sering kali terjadi bukan di dalam upacara, melainkan di ruang sesudahnya — saat dunia melembut dan sesuatu yang nyata punya tempat untuk muncul.</p>
     `.trim(),
     // ── Structured fallback (kept empty — content field is used instead) ───────
     story_sections: [],
-    credit_role: "Post-Wedding Experience & Creative Direction",
+    credit_role: "Pengalaman Pasca-Pernikahan & Arahan Kreatif",
     credit_planner: "Linda Wiryani Design and Event Planning",
-    credit_location_detail: "Tegalalang Rice Terraces, Ubud, Bali",
-    credit_couple_origin: "Anaz & Jane — Morocco",
+    credit_location_detail: "Sawah Terasering Tegalalang, Ubud, Bali",
+    credit_couple_origin: "Anaz & Jane — Maroko",
   },
 
   //   // ─── 2. Sofia & James ────────────────────────────────────────────────────────
@@ -261,8 +259,8 @@ export const portfolioItems: Portfolio[] = [
 export const reviews = [
   {
     quote:
-      "Linda and her team made everything feel effortless. From our first conversation to the last dance, every detail was handled with such care and thoughtfulness. We didn't have to worry about a single thing — we just got to be present.",
+      "Linda dan timnya membuat semuanya terasa mudah. Dari percakapan pertama kami hingga dansa terakhir, setiap detail ditangani dengan begitu peduli dan penuh perhatian. Kami tidak perlu mengkhawatirkan satu hal pun — kami hanya bisa hadir sepenuhnya.",
     couple: "Anaz & Jane",
-    origin: "Morocco",
+    origin: "Maroko",
   },
 ];

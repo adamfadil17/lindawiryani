@@ -165,7 +165,7 @@
     "reviewsTitle1": "Ce que nos couples",
     "reviewsTitle2": "partagent avec nous",
     "reviewsIntro": "Nos couples parlent souvent non seulement de l'apparence de leur mariage, mais de ce qu'ils ont ressenti — serein, sincère, naturel, personnel et inoubliable sont des mots qui reviennent sans cesse dans leurs témoignages.",
-    "coupleFrom": "Couple venu de {origin}"
+    "coupleFrom": "Origine du couple : {origin}"
   },
   "ourApproachPage": {
     "breadcrumb": "Notre approche",
@@ -397,11 +397,11 @@
     "closingBody": "Nous acceptons volontairement un nombre limité de mariages chaque année afin que chaque célébration bénéficie d'une attention créative complète et d'un engagement personnel. Si notre approche vous correspond, ce serait un honneur d'entamer une conversation.",
     "ctaBegin": "COMMENCEZ VOTRE HISTOIRE",
     "ctaJournal": "EXPLOREZ NOTRE JOURNAL",
-    "fromOrigin": "De {origin}"
+    "fromOrigin": "Origine : {origin}"
   },
   "portfolioDetail": {
     "breadcrumb": "Portfolio",
-    "coupleFrom": "Couple venu de {origin}",
+    "coupleFrom": "Origine du couple : {origin}",
     "weddingDetails": "Détails du mariage",
     "designStory": "Une histoire de design",
     "destination": "Destination",
