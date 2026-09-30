@@ -1,5 +1,4 @@
-// TODO(i18n): placeholder — currently mirrors English (wedding-experience-data.en.ts).
-// Replace with real translated content when ready; shape must match wedding-experience-data.en.ts exactly.
+// Terjemahan fr — bentuk data harus sama persis dengan wedding-experience-data.en.ts
 // ─── EXPERIENCE LIST ──────────────────────────────────────────────────────────
 
 import { WeddingExperience } from "@/types";
@@ -11,85 +10,90 @@ export const weddingExperienceList: WeddingExperience[] = [
     id: "1",
     slug: "private-villa-weddings",
     category: "private_villa_weddings",
-    name: "Private Villa Weddings",
+    name: "Mariages en Villa Privée",
 
     // Hero
     hero_style: "split",
     hero_image: "/images/venues/banner/private-bg.png",
     hero_desc:
-      "Privacy, freedom of design, and an atmosphere that feels personal rather than commercial — where your wedding becomes an experience that could only be yours.",
+      "Intimité, liberté de conception et atmosphère personnelle plutôt que commerciale — où votre mariage devient une expérience qui ne pourrait être qu'à vous.",
 
     // Intro
-    intro_label: "Why Villa",
-    intro_heading: ["Why Choose", "a Private Villa Wedding in Bali"],
+    intro_label: "Pourquoi une villa",
+    intro_heading: ["Pourquoi choisir", "un mariage en villa privée à Bali"],
     intro_body:
-      "At Linda Wiryani Design and Event Planning, we specialize in private villa weddings in Bali, designing celebrations that feel intimate, architectural, and emotionally immersive. Whether overlooking the ocean, nestled in the jungle, or hidden within a quiet estate, private villas allow weddings to unfold as a multi-layered experience — not a one-hour ceremony.",
-    intro_list_label: "Private villas provide:",
+      "Chez Linda Wiryani Design and Event Planning, nous sommes spécialisés dans les mariages en villa privée à Bali, en concevant des célébrations intimes, architecturales et émotionnellement immersives. Qu'elles dominent l'océan, soient nichées dans la jungle ou cachées au cœur d'un domaine paisible, les villas privées permettent au mariage de se déployer comme une expérience à plusieurs niveaux — et non comme une cérémonie d'une heure.",
+    intro_list_label: "Les villas privées offrent :",
     intro_list: [
-      "Full creative freedom",
-      "Flexible ceremony and reception layouts",
-      "Multi-day celebration potential",
-      "Complete guest privacy",
-      "A home-like emotional environment",
+      "Une liberté créative totale",
+      "Des aménagements flexibles pour la cérémonie et la réception",
+      "La possibilité de célébrer sur plusieurs jours",
+      "Une intimité totale pour vos invités",
+      "Une atmosphère chaleureuse, comme à la maison",
     ],
     intro_footnote:
-      "This makes villa weddings ideal for couples who want their wedding to feel like a private gathering rather than a staged production.",
+      "C'est ce qui rend les mariages en villa idéaux pour les couples qui souhaitent une célébration à l'image d'une réunion privée plutôt que d'une production mise en scène.",
     intro_images: ["", ""],
 
     // Approach
-    approach_label: "Our Approach",
-    approach_heading: ["Design-First", "Villa Wedding Planning"],
-    approach_body:
-      "Designing a villa wedding requires more than decoration. It requires understanding the architecture and space as a whole. We study each villa as a blank canvas and build a design concept that integrates naturally with its surroundings.",
-    approach_list_label: "It requires understanding:",
-    approach_list: [
-      "Architecture and space flow",
-      "Natural light and transitions",
-      "Guest movement and comfort",
-      "Acoustic and technical planning",
-      "Emotional pacing of the day",
+    approach_label: "Notre approche",
+    approach_heading: [
+      "Une planification de mariage en villa",
+      "guidée par le design",
     ],
-    approach_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767280276/Wedding_15_ofe4kx.jpg",
+    approach_body:
+      "Concevoir un mariage en villa demande bien plus que de la décoration. Il faut comprendre l'architecture et l'espace dans leur ensemble. Nous étudions chaque villa comme une toile vierge et construisons un concept de design qui s'intègre naturellement à son environnement.",
+    approach_list_label: "Il faut comprendre :",
+    approach_list: [
+      "L'architecture et la circulation des espaces",
+      "La lumière naturelle et ses transitions",
+      "Les déplacements et le confort des invités",
+      "La planification acoustique et technique",
+      "Le rythme émotionnel de la journée",
+    ],
+    approach_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767280276/Wedding_15_ofe4kx.jpg",
 
     // Services
-    services_label: "What We Offer",
-    services_heading: ["Our Private Villa", "Wedding Services"],
+    services_label: "Ce que nous offrons",
+    services_heading: ["Nos services de mariage", "en villa privée"],
     services_list: [
-      "Curated villa recommendations",
-      "Site analysis and layout design",
-      "Full wedding concept development",
-      "Vendor curation and coordination",
-      "Production planning and logistics",
-      "Styling, floral, and spatial design",
-      "Wedding day execution and management",
+      "Recommandations de villas soigneusement sélectionnées",
+      "Analyse du site et conception de l'aménagement",
+      "Développement complet du concept de mariage",
+      "Sélection et coordination des prestataires",
+      "Planification de la production et de la logistique",
+      "Stylisme, décoration florale et design de l'espace",
+      "Exécution et gestion du jour J",
     ],
     services_footnote:
-      "Every element is designed to feel cohesive, not crowded.",
-    services_dark_label: "The Day Unfolds",
-    services_dark_heading: ["From Ceremony", "to Celebration"],
+      "Chaque élément est pensé pour être cohérent, jamais surchargé.",
+    services_dark_label: "Le déroulé de la journée",
+    services_dark_heading: ["De la cérémonie", "à la célébration"],
     services_dark_body:
-      "Private villa weddings often allow for a full multi-moment celebration. We design the full emotional rhythm so your wedding flows naturally.",
+      "Les mariages en villa privée permettent souvent une célébration riche en moments variés. Nous concevons l'ensemble du rythme émotionnel afin que votre mariage se déroule tout naturellement.",
     services_dark_list: [
-      "Welcome gatherings",
-      "Poolside cocktails",
-      "Sunset ceremonies",
-      "Long-table dinners",
-      "After-party experiences",
+      "Rassemblements d'accueil",
+      "Cocktails au bord de la piscine",
+      "Cérémonies au coucher du soleil",
+      "Dîners à la grande table",
+      "Expériences d'after-party",
     ],
 
     // Closing
-    closing_label: "For You",
-    closing_heading: ["A Private Villa Wedding", "That Feels Like Home"],
+    closing_label: "Pour vous",
+    closing_heading: ["Un mariage en villa privée", "qui a des airs de maison"],
     closing_body:
-      "Your villa wedding should feel warm, intentional, and deeply personal. Each villa wedding is custom-built, never packaged. If you are planning a private villa wedding in Bali and want a design-led team who understands space, emotion, and execution — we would be honored to guide your journey.",
-    closing_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767280288/Wedding_5_rt7stj.jpg",
-    closing_couple_label: "Created for couples who seek:",
+      "Votre mariage en villa doit être chaleureux, intentionnel et profondément personnel. Chaque mariage en villa est conçu sur mesure, jamais en formule toute faite. Si vous préparez un mariage en villa privée à Bali et souhaitez une équipe guidée par le design, qui comprend l'espace, l'émotion et l'exécution, ce sera un honneur de vous accompagner.",
+    closing_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767280288/Wedding_5_rt7stj.jpg",
+    closing_couple_label: "Conçu pour les couples en quête de :",
     closing_couple_values: [
-      "Seclusion and intimacy",
-      "Refined aesthetics",
-      "Architectural beauty",
-      "Calm planning support",
-      "Elevated guest experiences",
+      "Retrait et intimité",
+      "Une esthétique raffinée",
+      "La beauté architecturale",
+      "Un accompagnement serein",
+      "Des expériences d'invités haut de gamme",
     ],
 
     // Relations
@@ -97,41 +101,44 @@ export const weddingExperienceList: WeddingExperience[] = [
       {
         id: "faq-pvw-1",
         experience_id: "1",
-        question: "Why choose a private villa wedding in Bali?",
+        question: "Pourquoi choisir un mariage en villa privée à Bali ?",
         answer:
-          "Private villa weddings offer privacy, creative freedom, flexible layouts, and a more personal atmosphere. They allow couples to design multi-moment experiences such as welcome dinners, poolside gatherings, sunset ceremonies, and intimate receptions.",
+          "Les mariages en villa privée offrent intimité, liberté créative, aménagements flexibles et atmosphère plus personnelle. Ils permettent aux couples de composer des expériences en plusieurs temps : dîners de bienvenue, réunions au bord de la piscine, cérémonies au coucher du soleil et réceptions intimes.",
         sort_order: 0,
       },
       {
         id: "faq-pvw-2",
         experience_id: "1",
-        question: "Are private villas suitable for luxury weddings?",
+        question: "Les villas privées conviennent-elles aux mariages de luxe ?",
         answer:
-          "Yes. Many private villas in Bali are designed to luxury hospitality standards and are ideal for high-end weddings. With proper design, production, and planning, private villas can host refined, elevated wedding celebrations.",
+          "Oui. De nombreuses villas privées à Bali sont conçues selon les standards de l'hospitalité de luxe et conviennent parfaitement aux mariages haut de gamme. Grâce à un design, une production et une planification adaptés, elles peuvent accueillir des célébrations raffinées et élevées.",
         sort_order: 1,
       },
       {
         id: "faq-pvw-3",
         experience_id: "1",
-        question: "How many guests can attend a villa wedding in Bali?",
+        question:
+          "Combien d'invités peuvent assister à un mariage en villa à Bali ?",
         answer:
-          "Guest capacity depends on the villa. Some villas are ideal for intimate weddings of 10–30 guests, while larger estates can host celebrations of 50–150 guests. We assess each property for comfort, flow, and production feasibility.",
+          "La capacité d'accueil dépend de la villa. Certaines conviennent parfaitement aux mariages intimes de 10 à 30 invités, tandis que les domaines plus vastes peuvent accueillir de 50 à 150 invités. Nous évaluons chaque propriété selon le confort, la fluidité et la faisabilité de la production.",
         sort_order: 2,
       },
       {
         id: "faq-pvw-4",
         experience_id: "1",
-        question: "Do villa weddings require special permits?",
+        question:
+          "Les mariages en villa nécessitent-ils des autorisations spéciales ?",
         answer:
-          "Some villa weddings require local permissions, banjar approvals, or event permits depending on location and scale. As your wedding planner, we guide you through all regulatory and logistical requirements.",
+          "Selon le lieu et l'ampleur de l'événement, certains mariages en villa nécessitent des autorisations locales, l'accord du banjar ou des permis d'événement. En tant que wedding planner, nous vous guidons à travers toutes les exigences réglementaires et logistiques.",
         sort_order: 3,
       },
       {
         id: "faq-pvw-5",
         experience_id: "1",
-        question: "Do you provide full planning and design for villa weddings?",
+        question:
+          "Proposez-vous une planification et un design complets pour les mariages en villa ?",
         answer:
-          "Yes. Our private villa wedding service includes venue sourcing, full creative design, vendor management, production planning, and complete on-the-day coordination.",
+          "Oui. Notre service de mariage en villa privée comprend la recherche du lieu, la conception créative complète, la gestion des prestataires, la planification de la production et la coordination intégrale le jour J.",
         sort_order: 4,
       },
     ],
@@ -143,77 +150,83 @@ export const weddingExperienceList: WeddingExperience[] = [
     id: "2",
     slug: "intimate-weddings",
     category: "intimate_weddings",
-    name: "Intimate Weddings",
+    name: "Mariages Intimes",
 
     // Hero
     hero_style: "bottom",
-    hero_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
+    hero_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
     hero_desc:
-      "An intimate wedding allows space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity — and atmosphere over spectacle.",
+      "Un mariage intime laisse place à la connexion, à la présence et à la beauté, sans excès. Conçu pour les couples qui privilégient la qualité à la quantité — et l'atmosphère au spectacle.",
 
     // Intro
-    intro_label: "Why Intimate",
-    intro_heading: ["Why Choose an", "Intimate Wedding in Bali"],
+    intro_label: "Pourquoi l'intime",
+    intro_heading: ["Pourquoi choisir", "un mariage intime à Bali"],
     intro_body:
-      "At Linda Wiryani Design and Event Planning, we specialize in intimate weddings in Bali, crafting celebrations that feel warm, intentional, and deeply personal. These weddings are designed for couples who value quality over quantity and atmosphere over spectacle.",
+      "Chez Linda Wiryani Design and Event Planning, nous sommes spécialisés dans les mariages intimes à Bali, en créant des célébrations chaleureuses, intentionnelles et profondément personnelles. Ces mariages sont conçus pour les couples qui privilégient la qualité à la quantité et l'atmosphère au spectacle.",
     intro_list_label: null,
     intro_list: [
-      "Deeper guest connection",
-      "Greater design flexibility",
-      "More meaningful ceremonies",
-      "Higher guest experience quality",
-      "Natural, relaxed flow",
+      "Une connexion plus profonde avec les invités",
+      "Une plus grande flexibilité de design",
+      "Des cérémonies plus significatives",
+      "Une meilleure qualité d'expérience pour les invités",
+      "Un déroulement naturel et détendu",
     ],
     intro_footnote:
-      "Bali's diverse environments allow intimate weddings to feel cinematic yet grounded.",
+      "La diversité des environnements de Bali permet aux mariages intimes d'être à la fois cinématographiques et authentiques.",
     intro_images: ["", ""],
 
     // Approach
-    approach_label: "How We Design",
-    approach_heading: ["Our Intimate", "Wedding Philosophy"],
+    approach_label: "Notre façon de concevoir",
+    approach_heading: ["Notre philosophie", "du mariage intime"],
     approach_body:
-      "We design intimate weddings around emotional rhythm and spatial harmony. Every detail is chosen to support the overall feeling — not overwhelm it.",
-    approach_list_label: "We design around:",
+      "Nous concevons les mariages intimes autour du rythme émotionnel et de l'harmonie des espaces. Chaque détail est choisi pour soutenir l'émotion d'ensemble — sans jamais l'écraser.",
+    approach_list_label: "Nous concevons autour de :",
     approach_list: [
-      "Emotional rhythm",
-      "Spatial harmony",
-      "Thoughtful guest experience",
-      "Refined aesthetic language",
-      "Calm execution",
+      "Le rythme émotionnel",
+      "L'harmonie des espaces",
+      "Une expérience d'invités attentionnée",
+      "Un langage esthétique raffiné",
+      "Une exécution sereine",
     ],
-    approach_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878580/BAL_1451_dhfxcj.jpg",
+    approach_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878580/BAL_1451_dhfxcj.jpg",
 
     // Services
-    services_label: "What We Offer",
-    services_heading: ["Our Intimate", "Wedding Services"],
+    services_label: "Ce que nous offrons",
+    services_heading: ["Nos services de", "mariage intime"],
     services_list: [
-      "Venue and villa sourcing",
-      "Wedding design development",
-      "Styling and floral direction",
-      "Vendor curation",
-      "Budget and schedule management",
-      "Wedding day coordination",
+      "Recherche de lieux et de villas",
+      "Développement du design du mariage",
+      "Direction du stylisme et de la décoration florale",
+      "Sélection des prestataires",
+      "Gestion du budget et du calendrier",
+      "Coordination du jour J",
     ],
     services_footnote:
-      "Our role is to design the structure so you can release control and remain fully present.",
-    services_dark_label: "The Experience",
-    services_dark_heading: ["Designed for", "Presence"],
+      "Notre rôle est de concevoir la structure afin que vous puissiez lâcher prise et rester pleinement présents.",
+    services_dark_label: "L'expérience",
+    services_dark_heading: ["Conçu pour", "la présence"],
     services_dark_body:
-      "Intimate weddings allow you to truly experience your celebration. With a smaller gathering, every moment becomes vivid — the ceremony, the dinner, the quiet connections between loved ones.",
+      "Un mariage intime vous permet de vivre pleinement votre célébration. Avec un rassemblement plus restreint, chaque instant devient vivant — la cérémonie, le dîner, les liens discrets entre les proches.",
     services_dark_list: [
-      "Deeply personal atmosphere",
-      "Every guest meaningfully present",
-      "Unhurried, emotional ceremony",
-      "Refined dining experience",
-      "Space for true connection",
+      "Une atmosphère profondément personnelle",
+      "Chaque invité pleinement présent",
+      "Une cérémonie sans précipitation, riche en émotion",
+      "Une expérience gastronomique raffinée",
+      "Un espace pour de vraies connexions",
     ],
 
     // Closing
-    closing_label: "An Intimate Wedding That Feels Like You",
-    closing_heading: ["Quality over quantity.", "Atmosphere over spectacle."],
+    closing_label: "Un mariage intime à votre image",
+    closing_heading: [
+      "La qualité plutôt que la quantité.",
+      "L'atmosphère plutôt que le spectacle.",
+    ],
     closing_body:
-      "If you are planning an intimate wedding in Bali and desire a design-led, hospitality-driven team, we would be honored to guide your journey.",
-    closing_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1767878569/BAL_1210_gktw4p.jpg",
+      "Si vous préparez un mariage intime à Bali et souhaitez une équipe guidée par le design et l'hospitalité, ce sera un honneur de vous accompagner.",
+    closing_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1767878569/BAL_1210_gktw4p.jpg",
     closing_couple_label: null,
     closing_couple_values: [],
 
@@ -222,41 +235,42 @@ export const weddingExperienceList: WeddingExperience[] = [
       {
         id: "faq-iw-1",
         experience_id: "2",
-        question: "What is considered an intimate wedding?",
+        question: "Qu'est-ce qu'un mariage intime ?",
         answer:
-          "An intimate wedding typically includes 10–50 guests, allowing for deeper connection, flexible design, and a more relaxed atmosphere focused on meaningful moments.",
+          "Un mariage intime réunit généralement de 10 à 50 invités, ce qui favorise des liens plus profonds, un design flexible et une atmosphère plus détendue, centrée sur les moments qui comptent.",
         sort_order: 0,
       },
       {
         id: "faq-iw-2",
         experience_id: "2",
-        question: "Why choose an intimate wedding in Bali?",
+        question: "Pourquoi choisir un mariage intime à Bali ?",
         answer:
-          "Bali's landscapes, private venues, and natural beauty make it ideal for intimate weddings. Smaller guest counts allow couples to fully experience the location, ceremony, and celebration.",
+          "Les paysages, les lieux privés et la beauté naturelle de Bali en font un cadre idéal pour les mariages intimes. Un nombre d'invités réduit permet aux couples de profiter pleinement du lieu, de la cérémonie et de la fête.",
         sort_order: 1,
       },
       {
         id: "faq-iw-3",
         experience_id: "2",
-        question: "Are intimate weddings less expensive?",
+        question: "Les mariages intimes sont-ils moins chers ?",
         answer:
-          "Not necessarily. Intimate weddings often focus on quality rather than scale. Many couples invest in higher-end venues, refined design, exceptional food, and guest experience.",
+          "Pas forcément. Les mariages intimes privilégient souvent la qualité plutôt que l'ampleur. De nombreux couples investissent dans des lieux haut de gamme, un design raffiné, une cuisine exceptionnelle et l'expérience des invités.",
         sort_order: 2,
       },
       {
         id: "faq-iw-4",
         experience_id: "2",
-        question: "Do you offer full planning for intimate weddings?",
+        question:
+          "Proposez-vous une planification complète pour les mariages intimes ?",
         answer:
-          "Yes. We provide full creative and logistical planning for intimate weddings, including venue selection, design development, vendor coordination, and wedding day management.",
+          "Oui. Nous assurons la planification créative et logistique complète des mariages intimes, y compris le choix du lieu, le développement du design, la coordination des prestataires et la gestion du jour J.",
         sort_order: 3,
       },
       {
         id: "faq-iw-5",
         experience_id: "2",
-        question: "Can intimate weddings still feel luxurious?",
+        question: "Un mariage intime peut-il rester luxueux ?",
         answer:
-          "Yes. Luxury is not about size — it is about care, design, and execution. Intimate weddings often allow for a higher level of detail and personalization.",
+          "Oui. Le luxe n'est pas une question de taille — il tient au soin, au design et à l'exécution. Les mariages intimes permettent souvent un niveau de détail et de personnalisation plus élevé.",
         sort_order: 4,
       },
     ],
@@ -268,75 +282,79 @@ export const weddingExperienceList: WeddingExperience[] = [
     id: "3",
     slug: "elopement-weddings",
     category: "elopement_weddings",
-    name: "Elopement Weddings",
+    name: "Mariages en Elopement",
 
     // Hero
     hero_style: "centered",
-    hero_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Lake_Elopement_hbxm9l.png",
+    hero_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Lake_Elopement_hbxm9l.png",
     hero_desc:
-      "Bali Elopement Weddings — intimate, emotionally rich, and visually poetic — designed as meaningful experiences, not quick ceremonies.",
+      "Les mariages en elopement à Bali — intimes, riches en émotion et d'une poésie visuelle — sont conçus comme des expériences porteuses de sens, et non comme des cérémonies expédiées.",
 
     // Intro
-    intro_label: "The Setting",
-    intro_heading: ["Why Couples", "Choose to Elope in Bali"],
+    intro_label: "Le cadre",
+    intro_heading: ["Pourquoi les couples", "choisissent l'elopement à Bali"],
     intro_body:
-      "Whether on a hidden beach, jungle clearing, private villa, or dramatic cliffside, our elopements are created as meaningful experiences, not quick ceremonies. Elopements here often feel less like events and more like sacred moments.",
-    intro_list_label: "Bali offers the perfect setting:",
+      "Que ce soit sur une plage secrète, dans une clairière de jungle, dans une villa privée ou au sommet d'une falaise spectaculaire, nos elopements sont conçus comme des expériences porteuses de sens, et non comme des cérémonies expédiées. Ici, un elopement ressemble moins à un événement qu'à un moment sacré.",
+    intro_list_label: "Bali offre le cadre parfait :",
     intro_list: [
-      "Natural beauty",
-      "Spiritual atmosphere",
-      "Privacy and seclusion",
-      "Symbolic ceremony environments",
-      "Romantic, cinematic landscapes",
+      "Une beauté naturelle",
+      "Une atmosphère spirituelle",
+      "Intimité et retrait",
+      "Des cadres de cérémonie symboliques",
+      "Des paysages romantiques et cinématographiques",
     ],
     intro_footnote: null,
     intro_images: ["", ""],
 
     // Approach
-    approach_label: "Our Philosophy",
-    approach_heading: ["A Design-Led", "Elopement Experience"],
+    approach_label: "Notre philosophie",
+    approach_heading: ["Une expérience d'elopement", "guidée par le design"],
     approach_body:
-      "Every element is curated to support presence and meaning. Whether just the two of you or a small circle of loved ones, we create space for your moment to unfold naturally.",
-    approach_list_label: "Our elopement planning focuses on:",
+      "Chaque élément est choisi pour servir la présence et le sens. Que vous soyez à deux ou entourés d'un petit cercle de proches, nous créons l'espace nécessaire pour que votre moment se déploie naturellement.",
+    approach_list_label: "Notre planification d'elopement met l'accent sur :",
     approach_list: [
-      "Emotional storytelling",
-      "Natural integration with landscape",
-      "Simple yet refined styling",
-      "Calm, unhurried flow",
-      "Authentic connection",
+      "Une narration émotionnelle",
+      "Une intégration naturelle au paysage",
+      "Un stylisme simple mais raffiné",
+      "Un déroulement calme, sans précipitation",
+      "Une connexion authentique",
     ],
-    approach_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Volcano_mount_batur_y3gtwu.png",
+    approach_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Volcano_mount_batur_y3gtwu.png",
 
     // Services
-    services_label: "What We Provide",
-    services_heading: ["Our Bali", "Elopement Services"],
+    services_label: "Ce que nous proposons",
+    services_heading: ["Nos services d'elopement", "à Bali"],
     services_list: [
-      "Location sourcing and permits",
-      "Ceremony design and concept",
-      "Styling and floral direction",
-      "Vendor coordination",
-      "Timeline and logistics planning",
-      "On-site coordination",
+      "Recherche de lieux et démarches d'autorisation",
+      "Design et concept de la cérémonie",
+      "Direction du stylisme et de la décoration florale",
+      "Coordination des prestataires",
+      "Planification du calendrier et de la logistique",
+      "Coordination sur place",
     ],
-    services_footnote: "For Couples Seeking Depth, Not Display.",
-    services_dark_label: "Our Values",
-    services_dark_heading: ["Emotion over", "Production"],
+    services_footnote:
+      "Pour les couples en quête de profondeur, pas d'apparat.",
+    services_dark_label: "Nos valeurs",
+    services_dark_heading: ["L'émotion avant", "la production"],
     services_dark_body:
-      "We design elopements for couples who value simplicity with meaning. Every detail is considered, nothing is excessive.",
+      "Nous concevons des elopements pour les couples qui aiment la simplicité pleine de sens. Chaque détail est réfléchi, rien n'est excessif.",
     services_dark_list: [
-      "Emotion over production",
-      "Simplicity with meaning",
-      "Design with sensitivity",
-      "Quiet luxury",
-      "Personal ceremony experiences",
+      "L'émotion avant la production",
+      "La simplicité porteuse de sens",
+      "Un design empreint de sensibilité",
+      "Un luxe discret",
+      "Des cérémonies personnalisées",
     ],
 
     // Closing
-    closing_label: "An Elopement That Feels Sacred",
-    closing_heading: ["Timeless. Grounded.", "Emotionally true."],
+    closing_label: "Un elopement empreint de sacré",
+    closing_heading: ["Intemporel. Ancré.", "Émotionnellement vrai."],
     closing_body:
-      "If you are looking for a Bali elopement wedding planner who approaches elopements as artful experiences, we would be honored to create with you.",
-    closing_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1776939441/Waterfall_Wedding_1_kk2634.png",
+      "Si vous cherchez un wedding planner d'elopement à Bali qui considère chaque elopement comme une expérience artistique, ce sera un honneur de créer avec vous.",
+    closing_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1776939441/Waterfall_Wedding_1_kk2634.png",
     closing_couple_label: null,
     closing_couple_values: [],
 
@@ -345,41 +363,43 @@ export const weddingExperienceList: WeddingExperience[] = [
       {
         id: "faq-ew-1",
         experience_id: "3",
-        question: "What is a Bali elopement wedding?",
+        question: "Qu'est-ce qu'un mariage en elopement à Bali ?",
         answer:
-          "A Bali elopement wedding is an intimate ceremony focused on the couple, often with no guests or only a small circle of loved ones. It emphasizes emotion, simplicity, and meaningful experience over large production.",
+          "Un mariage en elopement à Bali est une cérémonie intime centrée sur le couple, souvent sans invités ou avec un tout petit cercle de proches. Il privilégie l'émotion, la simplicité et une expérience porteuse de sens plutôt qu'une grande production.",
         sort_order: 0,
       },
       {
         id: "faq-ew-2",
         experience_id: "3",
-        question: "Where can we elope in Bali?",
+        question: "Où pouvons-nous nous marier en elopement à Bali ?",
         answer:
-          "Popular elopement locations include private villas, hidden beaches, jungle clearings, waterfalls, cliffside venues, and boutique resorts. We help curate locations based on privacy, atmosphere, and comfort.",
+          "Parmi les lieux d'elopement les plus prisés : villas privées, plages secrètes, clairières de jungle, cascades, sites en bord de falaise et resorts de charme. Nous vous aidons à sélectionner les lieux selon l'intimité, l'atmosphère et le confort.",
         sort_order: 1,
       },
       {
         id: "faq-ew-3",
         experience_id: "3",
-        question: "Are elopement weddings legally recognized in Bali?",
+        question:
+          "Les mariages en elopement sont-ils légalement reconnus à Bali ?",
         answer:
-          "Legal requirements vary depending on nationality and personal circumstances. We guide couples on symbolic ceremonies, legal processes, and recommended options.",
+          "Les exigences légales varient selon la nationalité et la situation personnelle. Nous guidons les couples sur les cérémonies symboliques, les démarches juridiques et les options recommandées.",
         sort_order: 2,
       },
       {
         id: "faq-ew-4",
         experience_id: "3",
-        question: "Can elopements still be beautifully designed?",
+        question:
+          "Un elopement peut-il aussi être magnifiquement mis en scène ?",
         answer:
-          "Absolutely. Our elopements are design-led and thoughtfully curated, focusing on refined styling, meaningful ceremony flow, and visual harmony with nature.",
+          "Absolument. Nos elopements sont guidés par le design et soigneusement composés, avec un stylisme raffiné, un déroulé de cérémonie porteur de sens et une harmonie visuelle avec la nature.",
         sort_order: 3,
       },
       {
         id: "faq-ew-5",
         experience_id: "3",
-        question: "Do you plan elopements for just the couple?",
+        question: "Organisez-vous des elopements rien que pour le couple ?",
         answer:
-          "Yes. We design elopements both for two people and for very small guest counts. Each experience is custom-built.",
+          "Oui. Nous concevons des elopements aussi bien pour deux personnes que pour un très petit nombre d'invités. Chaque expérience est réalisée sur mesure.",
         sort_order: 4,
       },
     ],
@@ -391,79 +411,81 @@ export const weddingExperienceList: WeddingExperience[] = [
     id: "4",
     slug: "luxury-weddings",
     category: "luxury_weddings",
-    name: "Luxury Weddings",
+    name: "Mariages de Luxe",
 
     // Hero
     hero_style: "editorial",
     hero_image: "/images/venues/banner/signature-bg.png",
     hero_desc:
-      "Luxury weddings in Bali shaped by architecture, atmosphere, and storytelling — not trends.",
+      "Des mariages de luxe à Bali façonnés par l'architecture, l'atmosphère et la narration — et non par les tendances.",
 
     // Intro
-    intro_label: "Our Definition",
-    intro_heading: ["What Defines Luxury", "at Linda Wiryani"],
+    intro_label: "Notre définition",
+    intro_heading: ["Ce qui définit le luxe", "chez Linda Wiryani"],
     intro_body:
-      "At Linda Wiryani Design and Event Planning, we design luxury weddings in Bali that feel elevated, calm, and emotionally rich. Our weddings are shaped by architecture, atmosphere, and storytelling — not trends.",
+      "Chez Linda Wiryani Design and Event Planning, nous concevons à Bali des mariages de luxe empreints d'élévation, de calme et de richesse émotionnelle. Nos mariages sont façonnés par l'architecture, l'atmosphère et la narration — et non par les tendances.",
     intro_list_label: null,
     intro_list: [
-      "Artistic direction",
-      "Emotional depth",
-      "Spatial beauty",
-      "Seamless execution",
-      "Discreet, thoughtful service",
+      "Direction artistique",
+      "Profondeur émotionnelle",
+      "Beauté des espaces",
+      "Exécution sans faille",
+      "Un service discret et attentionné",
     ],
-    intro_footnote: "True luxury is when everything flows effortlessly.",
+    intro_footnote: "Le vrai luxe, c'est quand tout se déroule avec fluidité.",
     intro_images: ["", ""],
 
     // Approach
-    approach_label: "How We Work",
-    approach_heading: ["Our Luxury Wedding", "Design Approach"],
+    approach_label: "Notre façon de travailler",
+    approach_heading: ["Notre approche du design", "de mariage de luxe"],
     approach_body:
-      "Every luxury wedding begins with a process — not a template. This ensures every celebration feels cohesive and intentional from the first conversation to the final farewell.",
-    approach_list_label: "Every luxury wedding begins with:",
+      "Chaque mariage de luxe commence par une démarche — jamais par un modèle. C'est ce qui garantit que chaque célébration soit cohérente et intentionnelle, de la première conversation aux derniers adieux.",
+    approach_list_label: "Chaque mariage de luxe commence par :",
     approach_list: [
-      "Vision & emotional mapping",
-      "Venue and environment study",
-      "Design narrative development",
-      "Guest experience planning",
-      "Technical and production precision",
+      "Vision et cartographie émotionnelle",
+      "Étude du lieu et de l'environnement",
+      "Élaboration du récit de design",
+      "Planification de l'expérience des invités",
+      "Précision technique et de production",
     ],
-    approach_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1768288826/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_04_plvo4w.jpg",
+    approach_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1768288826/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_04_plvo4w.jpg",
 
     // Services
-    services_label: "What We Offer",
-    services_heading: ["Our Luxury", "Wedding Services"],
+    services_label: "Ce que nous offrons",
+    services_heading: ["Nos services de", "mariage de luxe"],
     services_list: [
-      "Creative direction and design",
-      "Venue and vendor curation",
-      "Budget and production management",
-      "Multi-day event planning",
-      "Styling, floral, and spatial design",
-      "Wedding day orchestration",
+      "Direction créative et design",
+      "Sélection des lieux et des prestataires",
+      "Gestion du budget et de la production",
+      "Planification d'événements sur plusieurs jours",
+      "Stylisme, décoration florale et design de l'espace",
+      "Orchestration du jour J",
     ],
     services_footnote:
-      "We intentionally take a limited number of luxury weddings each year to ensure full creative involvement.",
-    services_dark_label: "For You",
-    services_dark_heading: ["For Couples Who", "Value Artistry"],
+      "Nous acceptons volontairement un nombre limité de mariages de luxe chaque année afin de garantir une implication créative totale.",
+    services_dark_label: "Pour vous",
+    services_dark_heading: ["Pour les couples qui", "valorisent l'art"],
     services_dark_body:
-      "Our studio is chosen by couples who seek aesthetic intelligence, emotional storytelling, and world-class execution.",
+      "Notre studio est choisi par les couples en quête d'intelligence esthétique, de narration émotionnelle et d'une exécution de classe mondiale.",
     services_dark_list: [
-      "Aesthetic intelligence",
-      "Calm professionalism",
-      "Emotional storytelling",
-      "Architectural beauty",
-      "World-class guest experience",
+      "Intelligence esthétique",
+      "Un professionnalisme serein",
+      "Une narration émotionnelle",
+      "La beauté architecturale",
+      "Une expérience d'invités de classe mondiale",
     ],
 
     // Closing
-    closing_label: "A Luxury Wedding That Feels Timeless",
+    closing_label: "Un mariage de luxe intemporel",
     closing_heading: [
-      "Luxury should never feel loud.",
-      "It should feel considered.",
+      "Le luxe ne doit jamais être bruyant.",
+      "Il doit être réfléchi.",
     ],
     closing_body:
-      "If you are searching for a luxury wedding planner in Bali, we would be honored to design a celebration that feels meaningful, refined, and unforgettable.",
-    closing_image: "https://res.cloudinary.com/dzerxindp/image/upload/v1768288832/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_06_rzqgiu.jpg",
+      "Si vous recherchez un wedding planner de luxe à Bali, ce sera un honneur de concevoir pour vous une célébration porteuse de sens, raffinée et inoubliable.",
+    closing_image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1768288832/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_06_rzqgiu.jpg",
     closing_couple_label: null,
     closing_couple_values: [],
 
@@ -472,41 +494,42 @@ export const weddingExperienceList: WeddingExperience[] = [
       {
         id: "faq-lw-1",
         experience_id: "4",
-        question: "What defines a luxury wedding in Bali?",
+        question: "Qu'est-ce qui définit un mariage de luxe à Bali ?",
         answer:
-          "A luxury wedding is defined by thoughtful design, refined aesthetics, seamless execution, emotional storytelling, and exceptional guest experience — not simply budget or scale.",
+          "Un mariage de luxe se définit par un design réfléchi, une esthétique raffinée, une exécution sans faille, une narration émotionnelle et une expérience d'invités exceptionnelle — et pas seulement par le budget ou l'ampleur.",
         sort_order: 0,
       },
       {
         id: "faq-lw-2",
         experience_id: "4",
-        question: "Do you plan multi-day luxury weddings?",
+        question: "Organisez-vous des mariages de luxe sur plusieurs jours ?",
         answer:
-          "Yes. We design and manage multi-day wedding experiences including welcome events, rehearsal gatherings, ceremony days, and farewell celebrations.",
+          "Oui. Nous concevons et gérons des expériences de mariage sur plusieurs jours, y compris les événements de bienvenue, les réunions de répétition, les journées de cérémonie et les célébrations d'adieu.",
         sort_order: 1,
       },
       {
         id: "faq-lw-3",
         experience_id: "4",
-        question: "How much does a luxury wedding in Bali cost?",
+        question: "Combien coûte un mariage de luxe à Bali ?",
         answer:
-          "Budgets vary widely depending on guest count, venues, design scope, and production complexity. Luxury weddings in Bali typically begin where full professional design, planning, and production are required.",
+          "Les budgets varient considérablement selon le nombre d'invités, les lieux, l'ampleur du design et la complexité de la production. À Bali, les mariages de luxe commencent généralement là où un design, une planification et une production professionnels complets sont nécessaires.",
         sort_order: 2,
       },
       {
         id: "faq-lw-4",
         experience_id: "4",
-        question: "How many weddings do you take each year?",
+        question: "Combien de mariages acceptez-vous chaque année ?",
         answer:
-          "We intentionally limit the number of luxury weddings we accept to ensure full creative focus, personal involvement, and execution excellence.",
+          "Nous limitons volontairement le nombre de mariages de luxe que nous acceptons afin de garantir une concentration créative totale, une implication personnelle et une exécution d'excellence.",
         sort_order: 3,
       },
       {
         id: "faq-lw-5",
         experience_id: "4",
-        question: "Do you work with high-end venues and vendors?",
+        question:
+          "Travaillez-vous avec des lieux et des prestataires haut de gamme ?",
         answer:
-          "Yes. We collaborate with trusted luxury venues, artisans, and wedding professionals across Bali who meet our standards for quality, reliability, and refinement.",
+          "Oui. Nous collaborons avec des lieux de luxe, des artisans et des professionnels du mariage de confiance à travers Bali, qui répondent à nos standards de qualité, de fiabilité et de raffinement.",
         sort_order: 4,
       },
     ],
@@ -514,80 +537,80 @@ export const weddingExperienceList: WeddingExperience[] = [
 ];
 
 export const whyBali = [
-  "Dramatic ocean cliffs",
-  "Private luxury villas",
-  "Jungle and riverside settings",
-  "White sand beaches",
-  "Boutique resorts and hidden estates",
+  "Falaises océanes spectaculaires",
+  "Villas de luxe privées",
+  "Cadres de jungle et de bord de rivière",
+  "Plages de sable blanc",
+  "Resorts de charme et domaines secrets",
 ];
 
 export const fullServiceIncludes = [
-  "Venue sourcing and evaluation",
-  "Creative direction and design development",
-  "Vendor curation and management",
-  "Budget planning and cost control",
-  "Production schedules and timelines",
-  "Guest experience planning",
-  "Ceremony and reception orchestration",
-  "On-the-day coordination and execution",
+  "Recherche et évaluation des lieux",
+  "Direction créative et développement du design",
+  "Sélection et gestion des prestataires",
+  "Planification budgétaire et maîtrise des coûts",
+  "Calendriers et plannings de production",
+  "Planification de l'expérience des invités",
+  "Orchestration de la cérémonie et de la réception",
+  "Coordination et exécution le jour J",
 ];
 
 export const hospitalityValues = [
-  "Clarity",
-  "Precision",
-  "Guest comfort",
-  "Emotional flow",
-  "Seamless execution",
+  "Clarté",
+  "Précision",
+  "Confort des invités",
+  "Fluidité émotionnelle",
+  "Exécution sans faille",
 ];
 
 export const coupleValues = [
-  "Artistic storytelling",
-  "Calm, professional planning",
-  "Refined aesthetics",
-  "Emotional atmosphere",
-  "Thoughtful guest experience",
+  "Narration artistique",
+  "Une planification sereine et professionnelle",
+  "Une esthétique raffinée",
+  "Une atmosphère émotionnelle",
+  "Une expérience d'invités attentionnée",
 ];
 
 export const designFoundation = [
-  "Understanding your story",
-  "Defining the emotional atmosphere",
-  "Studying your venue and surroundings",
-  "Designing the flow of the entire celebration",
+  "Comprendre votre histoire",
+  "Définir l'atmosphère émotionnelle",
+  "Étudier votre lieu et son environnement",
+  "Concevoir le déroulé de toute la célébration",
 ];
 
 // Sub-experience cards
 export const subExperiences = [
   {
-    title: "Private Villa Weddings",
-    subtitle: "in Bali",
-    tag: "Private Villa",
-    desc: "Privacy, freedom of design, and an atmosphere that feels personal rather than commercial. Celebrating in spaces that become entirely yours.",
+    title: "Mariages en Villa Privée",
+    subtitle: "à Bali",
+    tag: "Villa privée",
+    desc: "Intimité, liberté de conception et atmosphère personnelle plutôt que commerciale. Célébrer dans des espaces qui deviennent entièrement les vôtres.",
     href: "/wedding-experiences/private-villa-weddings",
     image: "/images/venues/banner/private-bg.png",
   },
   {
-    title: "Intimate Weddings",
-    subtitle: "in Bali",
-    tag: "Intimate",
-    desc: "Space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity.",
+    title: "Mariages Intimes",
+    subtitle: "à Bali",
+    tag: "Intime",
+    desc: "Un espace pour la connexion, la présence et la beauté, sans excès. Conçu pour les couples qui privilégient la qualité à la quantité.",
     href: "/wedding-experiences/intimate-weddings",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
   },
   {
-    title: "Elopement Weddings",
-    subtitle: "in Bali",
+    title: "Mariages en Elopement",
+    subtitle: "à Bali",
     tag: "Elopement",
-    desc: "An elopement is not a smaller wedding — it is a deeper one. Emotionally rich, visually poetic, and entirely yours.",
+    desc: "Un elopement n'est pas un mariage en plus petit — c'est un mariage plus profond. Riche en émotion, d'une poésie visuelle, et entièrement à vous.",
     href: "/wedding-experiences/elopement-weddings",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png",
   },
   {
-    title: "Luxury Weddings",
-    subtitle: "in Bali",
-    tag: "Luxury",
-    desc: "Luxury is not about excess — it is about refinement, care, and experience. Weddings shaped by architecture, atmosphere, and storytelling.",
+    title: "Mariages de Luxe",
+    subtitle: "à Bali",
+    tag: "Luxe",
+    desc: "Le luxe n'est pas une question d'excès — il tient au raffinement, au soin et à l'expérience. Des mariages façonnés par l'architecture, l'atmosphère et la narration.",
     href: "/wedding-experiences/luxury-weddings",
     image: "/images/venues/banner/signature-bg.png",
   },
@@ -595,23 +618,23 @@ export const subExperiences = [
 
 export const faqs = [
   {
-    q: "What does a Bali destination wedding planner do?",
-    a: "A Bali destination wedding planner manages both the creative design and the full planning process for couples marrying in Bali. This includes venue sourcing, design development, vendor coordination, budgeting guidance, logistics, timelines, and on-the-day execution.",
+    q: "Que fait un wedding planner de destination à Bali ?",
+    a: "Un wedding planner de destination à Bali gère à la fois la conception créative et l'ensemble du processus de planification pour les couples qui se marient à Bali. Cela comprend la recherche du lieu, le développement du design, la coordination des prestataires, les conseils budgétaires, la logistique, les calendriers et l'exécution le jour J.",
   },
   {
-    q: "Why should we hire a local Bali wedding planner?",
-    a: "A local Bali wedding planner provides deep knowledge of venues, regulations, cultural considerations, trusted vendors, and on-site production realities — ensuring smoother communication and a higher level of execution than planning remotely.",
+    q: "Pourquoi faire appel à un wedding planner local à Bali ?",
+    a: "Un wedding planner local à Bali possède une connaissance approfondie des lieux, de la réglementation, des considérations culturelles, des prestataires de confiance et des réalités de production sur place — pour une communication plus fluide et une exécution de meilleur niveau qu'une planification à distance.",
   },
   {
-    q: "How far in advance should we plan a destination wedding in Bali?",
-    a: "Most destination weddings in Bali are planned 9–15 months in advance. This allows time for venue availability, design development, vendor booking, guest logistics, and permits. Luxury and private villa weddings often benefit from longer preparation.",
+    q: "Combien de temps à l'avance faut-il planifier un mariage de destination à Bali ?",
+    a: "La plupart des mariages de destination à Bali sont planifiés 9 à 15 mois à l'avance, ce qui laisse le temps de vérifier la disponibilité des lieux, de développer le design, de réserver les prestataires, d'organiser la logistique des invités et d'obtenir les autorisations. Les mariages de luxe et en villa privée gagnent souvent à être préparés encore plus tôt.",
   },
   {
-    q: "Do you work with international couples?",
-    a: "Yes. Linda Wiryani Design and Event Planning specializes in destination weddings for international couples. We guide clients through the full planning journey, including time-zone coordination, online consultations, and detailed planning systems.",
+    q: "Travaillez-vous avec des couples internationaux ?",
+    a: "Oui. Linda Wiryani Design and Event Planning est spécialisé dans les mariages de destination pour les couples internationaux. Nous accompagnons nos clients tout au long de la planification, avec coordination des fuseaux horaires, consultations en ligne et systèmes de planification détaillés.",
   },
   {
-    q: "Can you help us choose the right wedding venue in Bali?",
-    a: "Yes. We curate and recommend wedding venues based on your vision, guest count, design direction, and experience goals — including private villas, resorts, and hidden locations across Bali.",
+    q: "Pouvez-vous nous aider à choisir le bon lieu de mariage à Bali ?",
+    a: "Oui. Nous sélectionnons et recommandons des lieux de mariage selon votre vision, le nombre d'invités, la direction de design et vos objectifs d'expérience — y compris des villas privées, des resorts et des lieux secrets à travers Bali.",
   },
 ];

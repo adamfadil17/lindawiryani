@@ -17,119 +17,72 @@ import PageHero from "@/components/shared/page-hero";
 import { WHATSAPP_URL } from "@/lib/constants";
 
 type CategoryId =
-  "cat-bali" | "cat-themes" | "cat-islands" | "cat-outsite-bali";
+  | "cat-bali"
+  | "cat-themes"
+  | "cat-islands"
+  | "cat-outsite-bali";
 
 const CATEGORY_META: Record<
   CategoryId,
   {
-    label: string;
+    // `key` -> messages: destinationsPage.cat.<key> / <key>Desc
+    key: "bali" | "themes" | "islands" | "outside";
     anchor: string;
-    description: string;
-    locations: { label: string; value: string }[];
+    // `key` -> messages: destinationsPage.loc.<key>; `value` stays English
+    // because filtering matches against the English location data.
+    locations: { key: string; value: string }[];
   }
 > = {
   "cat-bali": {
-    label: "Bali",
+    key: "bali",
     anchor: "bali",
-    description:
-      "From dramatic clifftops to lush jungle valleys, Bali offers an extraordinary range of wedding environments — each distinct in character, atmosphere, and emotional quality.",
     locations: [
-      {
-        label: "South Bali",
-        value: "South Bali",
-      },
-      {
-        label: "Ubud & Gianyar",
-        value: "Ubud & Gianyar",
-      },
-      {
-        label: "East Bali",
-        value: "East Bali",
-      },
-      {
-        label: "North Bali",
-        value: "North Bali",
-      },
-      {
-        label: "West Bali",
-        value: "West Bali",
-      },
-      {
-        label: "Highlands & Mountains",
-        value: "Highlands, Lakes and Mountains",
-      },
+      { key: "southBali", value: "South Bali" },
+      { key: "ubud", value: "Ubud & Gianyar" },
+      { key: "eastBali", value: "East Bali" },
+      { key: "northBali", value: "North Bali" },
+      { key: "westBali", value: "West Bali" },
+      { key: "highlands", value: "Highlands, Lakes and Mountains" },
     ],
   },
   "cat-themes": {
-    label: "Themes",
+    key: "themes",
     anchor: "themes",
-    description:
-      "Beyond geography, we curate weddings by emotional atmosphere and design character — from clifftop sunsets and jungle canopies to sacred rivers and highland gardens.",
     locations: [
-      { label: "Lake Weddings", value: "Highlands, Lakes and Mountains" },
+      { key: "lake", value: "Highlands, Lakes and Mountains" },
       {
-        label: "Waterfall Weddings",
+        key: "waterfall",
         value: "Ubud & Gianyar, North Bali, West Bali",
       },
       {
-        label: "Private Villa",
+        key: "privateVilla",
         value: "South Bali, Ubud & Gianyar, East Bali, North Bali, West Bali",
       },
-      { label: "Mountain Weddings", value: "Highlands, Lakes and Mountains" },
+      { key: "mountain", value: "Highlands, Lakes and Mountains" },
+      { key: "jungle", value: "Ubud & Gianyar, East Bali" },
+      { key: "beachfront", value: "South Bali, East Bali, North Bali" },
+      { key: "royal", value: "Ubud & Gianyar, East Bali" },
+      { key: "ricePaddy", value: "Ubud & Gianyar, East Bali, West Bali" },
+      { key: "riverside", value: "Ubud & Gianyar, East Bali, West Bali" },
       {
-        label: "Jungle / Forest",
-        value: "Ubud & Gianyar, East Bali",
-      },
-      {
-        label: "Beachfront / Oceanfront",
-        value: "South Bali, East Bali, North Bali",
-      },
-      {
-        label: "Royal Balinese",
-        value: "Ubud & Gianyar, East Bali",
-      },
-      {
-        label: "Rice Paddy Field",
-        value: "Ubud & Gianyar, East Bali, West Bali",
-      },
-      {
-        label: "Riverside",
-        value: "Ubud & Gianyar, East Bali, West Bali",
-      },
-      {
-        label: "Garden Weddings",
+        key: "garden",
         value: "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains",
       },
-      {
-        label: "Chapel Weddings",
-        value: "South Bali",
-      },
+      { key: "chapel", value: "South Bali" },
     ],
   },
   "cat-islands": {
-    label: "Islands",
+    key: "islands",
     anchor: "islands",
-    description:
-      "Indonesia's island archipelago offers rare and exclusive settings — from the white sands of the Nusa Islands to the dramatic savannah landscapes of Sumba.",
-    locations: [
-      {
-        label: "Nusa Islands",
-        value: "Nusa Islands",
-      },
-    ],
+    locations: [{ key: "nusa", value: "Nusa Islands" }],
   },
   "cat-outsite-bali": {
-    label: "Outside Bali",
+    key: "outside",
     anchor: "outside-bali",
-    description:
-      "Select destinations beyond Bali for couples seeking cultural depth, volcanic grandeur, or the remote landscapes of Indonesia's most extraordinary regions.",
     locations: [
-      { label: "Lombok", value: "Lombok" },
-      { label: "Sumba", value: "Sumba" },
-      {
-        label: "Java",
-        value: "Java",
-      },
+      { key: "lombok", value: "Lombok" },
+      { key: "sumba", value: "Sumba" },
+      { key: "java", value: "Java" },
     ],
   },
 };
@@ -157,6 +110,7 @@ function matchesLocation(
 }
 
 function DestinationCard({ destination }: { destination: Destination }) {
+  const t = useTranslations("destinationsPage");
   return (
     <Link href={`/destinations/${destination.slug}`} className="group block">
       <div className="relative aspect-[4/3] overflow-hidden mb-4">
@@ -190,20 +144,22 @@ function DestinationCard({ destination }: { destination: Destination }) {
         {destination.description}
       </p>
       <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/30 pb-0.5 group-hover:border-primary transition-colors duration-300">
-        Explore Destination
+        {t("exploreDestination")}
       </span>
     </Link>
   );
 }
 
 function CategorySection({ categoryId }: { categoryId: CategoryId }) {
+  const t = useTranslations("destinationsPage");
   const { destinationList } = useDestinationData();
   const meta = CATEGORY_META[categoryId];
-  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+  const categoryLabel = t(`cat.${meta.key}`);
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
 
   const selectedValue =
-    meta.locations.find((l) => l.label === selectedLabel)?.value ?? null;
+    meta.locations.find((l) => l.key === selectedKey)?.value ?? null;
 
   const allDestinations = destinationList.filter(
     (d) => d.category_id === categoryId && matchesLocation(d, selectedValue),
@@ -211,7 +167,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
 
   useEffect(() => {
     setExpanded(false);
-  }, [selectedLabel]);
+  }, [selectedKey]);
 
   const visibleDestinations = expanded
     ? allDestinations
@@ -232,19 +188,18 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-12 mb-10">
           <motion.div variants={fadeInUp} className="lg:col-span-4">
             <p className="text-primary tracking-[0.25em] uppercase mb-3 text-sm">
-              {meta.label}
+              {categoryLabel}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-              {meta.label}
+              {categoryLabel}
               <br />
               <span className="italic font-light text-2xl md:text-3xl">
-                Destinations
+                {t("destinationsWord")}
               </span>
             </h2>
             <p className="text-xs text-primary tracking-wider uppercase mt-4">
-              {allDestinations.length} destination
-              {allDestinations.length !== 1 ? "s" : ""}
-              {selectedLabel ? ` · ${selectedLabel}` : ""}
+              {t("destinationCount", { count: allDestinations.length })}
+              {selectedKey ? ` · ${t(`loc.${selectedKey}`)}` : ""}
             </p>
           </motion.div>
 
@@ -253,34 +208,32 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
             className="lg:col-span-8 flex flex-col justify-center"
           >
             <p className="text-primary leading-relaxed mb-6 max-w-2xl">
-              {meta.description}
+              {t(`cat.${meta.key}Desc`)}
             </p>
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => setSelectedLabel(null)}
+                onClick={() => setSelectedKey(null)}
                 className={`px-4 py-1.5 text-xs font-medium tracking-wider uppercase transition-colors border hover:cursor-pointer ${
-                  selectedLabel === null
+                  selectedKey === null
                     ? "bg-primary/5 border-primary text-primary"
                     : "border-primary/30 text-primary/80 hover:border-primary/50 hover:text-primary"
                 }`}
               >
-                All
+                {t("all")}
               </button>
               {meta.locations.map((loc) => (
                 <button
-                  key={loc.label}
+                  key={loc.key}
                   onClick={() =>
-                    setSelectedLabel(
-                      selectedLabel === loc.label ? null : loc.label,
-                    )
+                    setSelectedKey(selectedKey === loc.key ? null : loc.key)
                   }
                   className={`px-4 py-1.5 text-xs font-medium tracking-wider uppercase transition-colors border hover:cursor-pointer ${
-                    selectedLabel === loc.label
+                    selectedKey === loc.key
                       ? "bg-primary/5 border-primary text-primary"
                       : "border-primary/30 text-primary/80 hover:border-primary/50 hover:text-primary"
                   }`}
                 >
-                  {loc.label}
+                  {t(`loc.${loc.key}`)}
                 </button>
               ))}
             </div>
@@ -289,7 +242,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${categoryId}-${selectedLabel ?? "all"}-${expanded ? "exp" : "col"}`}
+            key={`${categoryId}-${selectedKey ?? "all"}-${expanded ? "exp" : "col"}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -298,16 +251,17 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
             {allDestinations.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center max-w-xl mx-auto">
                 <p className="text-primary tracking-[0.25em] uppercase mb-4 text-sm">
-                  Coming Soon
+                  {t("comingSoon")}
                 </p>
                 <h3 className="text-2xl text-primary font-semibold leading-tight mb-4">
-                  Curated With Intention
+                  {t("curatedTitle1")}
                   <br />
-                  <span className="italic font-light">Not by Volume</span>
+                  <span className="italic font-light">
+                    {t("curatedTitle2")}
+                  </span>
                 </h3>
                 <p className="text-primary/80 text-sm leading-relaxed">
-                  Destinations are developed intentionally and selectively —
-                  check back as our collection grows.
+                  {t("comingSoonBody")}
                 </p>
               </div>
             ) : (
@@ -329,8 +283,14 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                   >
                     <p className="text-primary text-xs tracking-widest uppercase">
                       {expanded
-                        ? `Showing all ${allDestinations.length} destinations`
-                        : `Showing ${Math.min(INITIAL_SHOW, allDestinations.length)} of ${allDestinations.length}`}
+                        ? t("showingAll", { total: allDestinations.length })
+                        : t("showingPartial", {
+                            count: Math.min(
+                              INITIAL_SHOW,
+                              allDestinations.length,
+                            ),
+                            total: allDestinations.length,
+                          })}
                     </p>
 
                     <div className="w-48 h-px bg-primary/15 relative overflow-hidden">
@@ -351,7 +311,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                     >
                       {expanded ? (
                         <>
-                          <span>Show Less</span>
+                          <span>{t("showLess")}</span>
                           <svg
                             className="w-3 h-3"
                             fill="none"
@@ -369,7 +329,10 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                       ) : (
                         <>
                           <span>
-                            Show {hiddenCount} More {meta.label} Destinations
+                            {t("showMoreCategory", {
+                              count: hiddenCount,
+                              label: categoryLabel,
+                            })}
                           </span>
                           <svg
                             className="w-3 h-3"
@@ -453,35 +416,30 @@ export default function DestinationsPage() {
           <div className="lg:col-span-5 space-y-8">
             <motion.div variants={fadeInUp}>
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Our Approach
+                {t("approachKicker")}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
-                Rooted in Bali
+                {t("approachTitle1")}
                 <br />
-                <span>Curated Across Indonesia</span>
+                <span>{t("approachTitle2")}</span>
               </h2>
             </motion.div>
             <motion.div variants={fadeInUp} className="space-y-4">
-              <p className="text-primary mb-6">Design Philosophy:</p>
+              <p className="text-primary mb-6">{t("philosophyLead")}</p>
               <div className="space-y-4">
-                {[
-                  "Natural integrity",
-                  "Cultural depth",
-                  "Emotional atmosphere",
-                  "Privacy and seclusion",
-                  "Design potential",
-                  "Guest experience quality",
-                ].map((item, i) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-4 pb-4 border-b border-primary/20 last:border-0"
-                  >
-                    <span className="text-primary font-mono w-6 flex-shrink-0">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-primary">{item}</span>
-                  </div>
-                ))}
+                {[1, 2, 3, 4, 5, 6]
+                  .map((n) => t(`philosophy${n}`))
+                  .map((item, i) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-4 pb-4 border-b border-primary/20 last:border-0"
+                    >
+                      <span className="text-primary font-mono w-6 flex-shrink-0">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-primary">{item}</span>
+                    </div>
+                  ))}
               </div>
             </motion.div>
           </div>
@@ -490,20 +448,13 @@ export default function DestinationsPage() {
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify mb-8"
             >
-              Bali remains the creative heart of our studio where our planning
-              systems, creative process, and core wedding experiences are based.
-              From this foundation, we extend our work to select destinations
-              across Indonesia that align with our design philosophy.
+              {t("approachP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
               className="text-primary leading-relaxed text-justify"
             >
-              We do not approach Indonesia as a list of locations. We approach
-              it as a collection of environments, each offering a distinct
-              emotional and experiential quality. Every destination is carefully
-              assessed for accessibility, guest comfort, production feasibility,
-              and environmental responsibility.
+              {t("approachP2")}
             </motion.p>
           </div>
         </div>
@@ -519,64 +470,54 @@ export default function DestinationsPage() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-14">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Destination Choice
+              {t("whyKicker")}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              Why Indonesia
+              {t("whyTitle1")}
               <br />
-              <span>For Destination Weddings</span>
+              <span>{t("whyTitle2")}</span>
             </h2>
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             <motion.div variants={fadeInUp} className="space-y-4">
-              <h3 className="text-primary mb-6">Indonesia Offers:</h3>
-              {[
-                "Extraordinary natural diversity",
-                "Deep cultural heritage",
-                "Spiritually significant landscapes",
-                "Remote and exclusive environments",
-                "Strong sense of place and ritual",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-start gap-4 pb-4 border-b border-primary/20 last:border-0"
-                >
-                  <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
-                  <span className="text-primary">{item}</span>
-                </div>
-              ))}
+              <h3 className="text-primary mb-6">{t("offersLead")}</h3>
+              {[1, 2, 3, 4, 5]
+                .map((n) => t(`offers${n}`))
+                .map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-4 pb-4 border-b border-primary/20 last:border-0"
+                  >
+                    <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
+                    <span className="text-primary">{item}</span>
+                  </div>
+                ))}
             </motion.div>
 
             <motion.div variants={fadeInUp}>
               <div className="bg-primary p-8 lg:p-10 h-full flex flex-col justify-between">
                 <div>
                   <p className="text-white font-semibold tracking-[0.25em] uppercase mb-3">
-                    Celebration Styles
+                    {t("stylesKicker")}
                   </p>
                   <h3 className="text-2xl text-white font-semibold mb-4">
-                    Indonesia Multi-Day Journeys
+                    {t("stylesTitle")}
                   </h3>
                   <p className="text-white leading-relaxed mb-8">
-                    Many Indonesia destination weddings unfold as retreat-style
-                    celebrations, multi-day experiences, culturally inspired
-                    gatherings, nature-integrated ceremonies, and intimate,
-                    emotionally rich journeys.
+                    {t("stylesBody")}
                   </p>
                   <div className="space-y-4">
-                    {[
-                      "Retreat-style celebrations",
-                      "Multi-day experiences",
-                      "Culturally inspired gatherings",
-                      "Nature-integrated ceremonies",
-                    ].map((item, i) => (
-                      <div key={item} className="flex items-center gap-4">
-                        <span className="text-white font-mono w-5 flex-shrink-0">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="text-white">{item}</span>
-                      </div>
-                    ))}
+                    {[1, 2, 3, 4]
+                      .map((n) => t(`styles${n}`))
+                      .map((item, i) => (
+                        <div key={item} className="flex items-center gap-4">
+                          <span className="text-white font-mono w-5 flex-shrink-0">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span className="text-white">{item}</span>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -589,10 +530,10 @@ export default function DestinationsPage() {
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="mb-10">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Explore by Category
+              {t("categoryKicker")}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              Where Would You Like to Celebrate?
+              {t("categoryTitle")}
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -623,7 +564,7 @@ export default function DestinationsPage() {
                         isActive ? "text-white" : "text-primary"
                       }`}
                     >
-                      {meta.label}
+                      {t(`cat.${meta.key}`)}
                     </p>
                     <span
                       className={`text-xs font-mono px-2 py-0.5 flex-shrink-0 ml-2 ${
@@ -641,13 +582,13 @@ export default function DestinationsPage() {
                       isActive ? "text-white" : "text-primary"
                     }`}
                   >
-                    {meta.label}
+                    {t(`cat.${meta.key}`)}
                     <span
                       className={`block text-sm italic font-light mt-0.5 ${
                         isActive ? "text-white/80" : "text-primary/80"
                       }`}
                     >
-                      Destinations
+                      {t("destinationsWord")}
                     </span>
                   </h3>
 
@@ -656,21 +597,21 @@ export default function DestinationsPage() {
                       isActive ? "text-white" : "text-primary"
                     }`}
                   >
-                    {meta.description}
+                    {t(`cat.${meta.key}Desc`)}
                   </p>
 
                   {meta.locations.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-5">
                       {meta.locations.slice(0, 4).map((loc) => (
                         <span
-                          key={loc.label}
+                          key={loc.key}
                           className={`text-xs tracking-wide px-2 py-0.5 border ${
                             isActive
                               ? "border-white/50 text-white"
                               : "border-primary/30 text-primary"
                           }`}
                         >
-                          {loc.label}
+                          {t(`loc.${loc.key}`)}
                         </span>
                       ))}
                       {meta.locations.length > 4 && (
@@ -679,7 +620,7 @@ export default function DestinationsPage() {
                             isActive ? "text-white" : "text-primary"
                           }`}
                         >
-                          +{meta.locations.length - 4} more
+                          {t("moreCount", { count: meta.locations.length - 4 })}
                         </span>
                       )}
                     </div>
@@ -689,7 +630,7 @@ export default function DestinationsPage() {
                       isActive ? "text-white" : "text-primary"
                     }`}
                   >
-                    Explore
+                    {t("explore")}
                   </div>
                 </button>
               );

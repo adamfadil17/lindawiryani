@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DestinationDetail from "./components/destination-detail";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getDestinationData } from "@/lib/data/destination-data";
 import type { Locale } from "@/i18n/routing";
 
@@ -21,6 +21,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
+  const t = await getTranslations({
+    locale: resolvedParams.locale,
+    namespace: "destinationDetail",
+  });
   const { destinationList } = getDestinationData(resolvedParams.locale);
   const destination = destinationList.find(
     (d) => d.slug === resolvedParams.destination_id,
@@ -28,15 +32,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!destination) {
     return {
-      title: "Destination Not Found",
+      title: t("notFound"),
     };
   }
 
   return {
-    title: `${destination.name} Wedding Planning | Destination Weddings`,
+    title: t("metaTitle", { name: destination.name }),
     description: destination.description,
     openGraph: {
-      title: `${destination.name} Destination Weddings`,
+      title: t("metaOgTitle", { name: destination.name }),
       description: destination.long_description,
       images: [
         {
@@ -63,8 +67,7 @@ export default async function DestinationPage({ params }: Props) {
   }
   const otherDestinations = destinationList.filter(
     (d) =>
-      d.slug !== destination.slug &&
-      d.category_id === destination.category_id,
+      d.slug !== destination.slug && d.category_id === destination.category_id,
   );
 
   return (

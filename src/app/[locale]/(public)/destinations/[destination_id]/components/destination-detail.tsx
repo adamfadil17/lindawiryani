@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
@@ -23,6 +24,8 @@ export default function DestinationDetail({
   destination,
   otherDestinations,
 }: DestinationDetailProps) {
+  const t = useTranslations("destinationDetail");
+  const tp = useTranslations("destinationsPage");
   const [isOptionsExpanded, setIsOptionsExpanded] = useState(false);
   const [isOthersExpanded, setIsOthersExpanded] = useState(false);
 
@@ -62,7 +65,7 @@ export default function DestinationDetail({
               href="/destinations"
               className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
-              Destinations
+              {tp("breadcrumb")}
             </Link>
             <span className="text-white text-sm">/</span>
             <span className="text-white text-sm font-simbold tracking-widest uppercase truncate max-w-[200px]">
@@ -74,7 +77,7 @@ export default function DestinationDetail({
             variants={fadeInUp}
             className="text-white tracking-[0.3em] uppercase mb-5"
           >
-            Bali Destination
+            {t("baliDestination")}
           </motion.p>
 
           <motion.h1
@@ -95,7 +98,7 @@ export default function DestinationDetail({
 
           <motion.div variants={fadeInUp} className="mt-12">
             <p className="text-white tracking-[0.25em] uppercase mb-2">
-              Location
+              {t("location")}
             </p>
             <p className="text-white ">{destination.location}</p>
           </motion.div>
@@ -113,10 +116,10 @@ export default function DestinationDetail({
           <motion.div variants={slideInLeft} className="space-y-8">
             <div>
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Atmosphere
+                {t("atmosphere")}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight mb-6">
-                The Spirit of This Place
+                {t("spiritTitle")}
               </h2>
               <p className="text-primary  leading-relaxed">
                 {destination.atmosphere}
@@ -125,7 +128,7 @@ export default function DestinationDetail({
 
             <div className="space-y-4">
               <p className="text-primary font-semibold tracking-[0.25em] uppercase mb-4">
-                Why Couples Choose {destination.name}
+                {t("whyCouplesChoose", { name: destination.name })}
               </p>
               {destination.best_for.map((reason, index) => (
                 <div
@@ -144,7 +147,7 @@ export default function DestinationDetail({
           <motion.div variants={slideInRight} className="space-y-8">
             <div className="bg-primary/10 p-8 lg:p-10">
               <p className="text-primary font-semibold  tracking-[0.25em] uppercase mb-4">
-                Highlights
+                {t("highlights")}
               </p>
               <div className="space-y-4">
                 {destination.highlights.map((highlight) => (
@@ -161,14 +164,13 @@ export default function DestinationDetail({
 
             <div className="bg-primary text-white p-8 lg:p-10">
               <p className="text-white font-semibold tracking-[0.25em] uppercase mb-4">
-                Guest Capacity
+                {t("guestCapacity")}
               </p>
               <p className="text-3xl font-semibold mb-6">
                 {destination.guest_capacity}
               </p>
               <p className="text-white/80  leading-relaxed">
-                Flexible capacity to accommodate intimate gatherings or larger
-                celebrations, depending on the venue selected.
+                {t("capacityNote")}
               </p>
             </div>
           </motion.div>
@@ -185,10 +187,10 @@ export default function DestinationDetail({
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <motion.div variants={fadeInUp} className="mb-14">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
-              Planning Guide
+              {t("planningKicker")}
             </p>
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-              Important Considerations
+              {t("considerationsTitle")}
             </h2>
           </motion.div>
 
@@ -198,7 +200,7 @@ export default function DestinationDetail({
               className="bg-white p-8 flex flex-col"
             >
               <h3 className="font-semibold text-primary mb-4">
-                Accessibility & Transportation
+                {t("accessibilityTitle")}
               </h3>
               <p className="text-primary leading-relaxed">
                 {destination.accessibility_notes}
@@ -211,10 +213,14 @@ export default function DestinationDetail({
               onClick={() => setIsOptionsExpanded((prev) => !prev)}
             >
               <div className="flex items-center justify-between gap-4 mb-4">
-                <h3 className="font-semibold text-primary">Ceremony Options</h3>
+                <h3 className="font-semibold text-primary">
+                  {t("ceremonyOptions")}
+                </h3>
                 {destination.ceremony_options.length > 2 && (
                   <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
-                    {isOptionsExpanded ? "SHOW LESS" : "VIEW MORE OPTIONS"}
+                    {isOptionsExpanded
+                      ? t("showLessCaps")
+                      : t("viewMoreOptions")}
                   </span>
                 )}
               </div>
@@ -249,7 +255,7 @@ export default function DestinationDetail({
               className="bg-white p-8 flex flex-col"
             >
               <h3 className="font-semibold text-primary mb-4">
-                Seasonal Considerations
+                {t("seasonalTitle")}
               </h3>
               <p className="text-primary leading-relaxed">
                 {destination.seasonal_considerations}
@@ -263,11 +269,13 @@ export default function DestinationDetail({
             >
               <div className="flex items-center justify-between gap-4 mb-4">
                 <h3 className="font-semibold text-primary">
-                  Reception Options
+                  {t("receptionOptions")}
                 </h3>
                 {destination.reception_options.length > 2 && (
                   <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
-                    {isOptionsExpanded ? "SHOW LESS" : "VIEW MORE OPTIONS"}
+                    {isOptionsExpanded
+                      ? t("showLessCaps")
+                      : t("viewMoreOptions")}
                   </span>
                 )}
               </div>
@@ -309,17 +317,17 @@ export default function DestinationDetail({
       >
         <motion.div variants={fadeInUp} className="mb-14">
           <p className="text-primary tracking-[0.25em] uppercase mb-3">
-            Complete Experience
+            {t("completeKicker")}
           </p>
           <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-            What We Offer in {destination.name}
+            {t("whatWeOffer", { name: destination.name })}
           </h2>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
           <motion.div variants={fadeInUp} className="space-y-4">
             <p className="text-primary tracking-[0.25em] uppercase font-semibold">
-              Accommodation Nearby
+              {t("accommodation")}
             </p>
             <ul className="space-y-3">
               {destination.accommodation_nearby.map((place) => (
@@ -333,7 +341,7 @@ export default function DestinationDetail({
 
           <motion.div variants={fadeInUp} className="space-y-4">
             <p className="text-primary tracking-[0.25em] uppercase font-semibold">
-              Dining Experiences
+              {t("dining")}
             </p>
             <ul className="space-y-3">
               {destination.dining_experiences.map((dining) => (
@@ -350,7 +358,7 @@ export default function DestinationDetail({
 
           <motion.div variants={fadeInUp} className="space-y-4">
             <p className="text-primary tracking-[0.25em] uppercase font-semibold">
-              Unique Features
+              {t("uniqueFeatures")}
             </p>
             <ul className="space-y-3">
               {destination.unique_features.map((feature) => (
@@ -392,25 +400,23 @@ export default function DestinationDetail({
             variants={fadeInUp}
             className="text-white tracking-[0.25em] uppercase mb-4"
           >
-            Begin Your Journey
+            {t("beginKicker")}
           </motion.p>
           <motion.h2
             variants={fadeInUp}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
           >
-            Ready to Plan
+            {t("readyTo1")}
             <br />
             <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              in {destination.name}?
+              {t("readyTo2", { name: destination.name })}
             </span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
             className="mt-6 text-white/80  max-w-2xl mx-auto leading-relaxed"
           >
-            Our studio is ready to guide you through creating a meaningful,
-            design-led wedding experience that honors this beautiful
-            destination.
+            {t("closingBody")}
           </motion.p>
 
           <motion.div
@@ -419,12 +425,12 @@ export default function DestinationDetail({
           >
             <Link href="https://wa.me/628113980998" target="_blank">
               <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                BEGIN YOUR STORY
+                {t("ctaBegin")}
               </button>
             </Link>
-            <Link href="/destinations">
+            <Link href="/portfolio">
               <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                VIEW PORTFOLIO
+                {t("ctaPortfolio")}
               </button>
             </Link>
           </motion.div>
@@ -444,25 +450,30 @@ export default function DestinationDetail({
           >
             <div>
               <p className="text-primary tracking-[0.25em] uppercase mb-3">
-                Explore More
+                {t("exploreMore")}
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold">
-                More{" "}
+                {t("moreTitle")}{" "}
                 <span className="italic font-light">
-                  {destination.category?.name ?? ""} Destinations
+                  {t("moreSuffix", {
+                    category: destination.category?.name ?? "",
+                  })}
                 </span>
               </h2>
               <p className="text-xs text-primary tracking-wider uppercase mt-4">
                 {isOthersExpanded
-                  ? `Showing all ${otherDestinations.length} destinations`
-                  : `Showing ${Math.min(INITIAL_SHOW, otherDestinations.length)} of ${otherDestinations.length}`}
+                  ? t("showingAll", { total: otherDestinations.length })
+                  : t("showingPartial", {
+                      count: Math.min(INITIAL_SHOW, otherDestinations.length),
+                      total: otherDestinations.length,
+                    })}
               </p>
             </div>
             <Link
               href="/destinations"
               className="text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 hover:border-primary transition-colors duration-300 self-start sm:self-auto whitespace-nowrap"
             >
-              View All Destinations
+              {t("viewAll")}
             </Link>
           </motion.div>
 
@@ -504,7 +515,7 @@ export default function DestinationDetail({
                     {dest.description}
                   </p>
                   <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 group-hover:border-primary transition-colors duration-300">
-                    Explore Destination
+                    {t("exploreDestination")}
                   </span>
                 </Link>
               </div>
@@ -531,7 +542,7 @@ export default function DestinationDetail({
               >
                 {isOthersExpanded ? (
                   <>
-                    <span>Show Less</span>
+                    <span>{t("showLess")}</span>
                     <svg
                       className="w-3 h-3"
                       fill="none"
@@ -548,7 +559,7 @@ export default function DestinationDetail({
                   </>
                 ) : (
                   <>
-                    <span>Show {hiddenOthersCount} More Destinations</span>
+                    <span>{t("showMore", { count: hiddenOthersCount })}</span>
                     <svg
                       className="w-3 h-3"
                       fill="none"
