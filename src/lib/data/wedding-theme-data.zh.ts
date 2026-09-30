@@ -1,5 +1,3 @@
-// TODO(i18n): placeholder — currently mirrors English (wedding-theme-data.en.ts).
-// Replace with real translated content when ready; shape must match wedding-theme-data.en.ts exactly.
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 
 import { WeddingTheme } from "@/types";
@@ -18,79 +16,79 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "private-villa-elopement",
     slug: "private-villa-elopement",
     type: "ELOPEMENT",
-    title: "Private Villa Elopements",
-    description: `<p>Private Villa Elopements are designed for couples who value privacy, calm, and a deeply personal setting. Set within carefully curated private villas, these celebrations are guided by architecture, landscape, and the natural flow of the space, creating an atmosphere that feels intimate, unhurried, and intentionally refined.</p>
+    title: "私人别墅私奔婚礼",
+    description: `<p>私人别墅私奔婚礼专为珍视隐私、宁静与深度个人化氛围的新人而设。婚礼设在精心挑选的私人别墅之中，由建筑、景观与空间的自然流动引领，营造出亲密、从容、并经过用心雕琢的氛围。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a selection of stunning private villas ideal for intimate elopements. Couples may also choose to celebrate at a villa they have independently booked, subject to suitability and venue guidelines.</p>
+<p>Linda Wiryani Design and Event Planning 与多处适合私密私奔婚礼的精美私人别墅合作。新人也可选择在自行预订的别墅中举行婚礼，但须视场地的适用性及相关规定而定。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through clarity, balance, and intention. A quiet exchange of vows. A beautifully considered setting. And a moment that feels deeply personal and timeless.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以清晰、平衡与用心打动人心。一次安静的誓言交换。一处精心考量的场景。以及一个深具个人意义、历久弥新的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Elegant)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致优雅）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the private villa surroundings</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements designed to feel natural and restrained</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere, coordinated with the floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与私人别墅的环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，力求自然而克制</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Ceremony Timing</h3>
-<p>Private Villa Elopements are most beautifully experienced during two natural light windows, when the atmosphere within the villa feels most serene and balanced.</p>
+<h3>仪式时间</h3>
+<p>私人别墅私奔婚礼最适合在两个自然光时段举行，此时别墅内的氛围最为宁静、平衡。</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning ceremonies offer soft, diffused light and a tranquil atmosphere before the day fully unfolds. The air is typically cooler, the environment quieter, and natural light gently enhances architectural lines and surrounding landscapes. This timing feels intimate, fresh, and unhurried.</li>
-  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — Sunset ceremonies create a warm, golden ambiance as light moves through the villa's architecture and surrounding greenery. The gradual transition from daylight to evening adds depth and romance, offering a refined and atmospheric setting.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午的仪式拥有柔和的漫射光线，在一天完全展开之前保持着宁静的氛围。空气通常更凉爽，环境更安静，自然光线温柔地勾勒出建筑线条与周围景观。这个时段亲密、清新、从容不迫。</li>
+  <li><strong>日落（约下午 5:00 – 6:30）</strong> — 日落时分的仪式带来温暖的金色氛围，光线穿过别墅建筑与周围的绿意。从白昼到夜晚的渐变增添了层次与浪漫，营造出精致而富有氛围感的场景。</li>
 </ul>
-<p>Final ceremony timing will be confirmed based on the villa's architectural orientation, natural light direction and shadow movement, seasonal sunset variation, and overall spatial flow and atmosphere. Morning ceremonies often provide greater flexibility and calmer conditions, while sunset offers richer tonal warmth and visual depth. The chosen timing will always be guided by light, spatial harmony, and the overall aesthetic intention of the ceremony.</p>
+<p>最终的仪式时间将根据别墅的建筑朝向、自然光线方向与阴影移动、季节性日落变化，以及整体空间流线与氛围来确定。上午的仪式通常更具灵活性，环境也更为平静，而日落则带来更丰富的色调暖意与视觉层次。所选时间始终以光线、空间和谐及仪式整体的美学意图为指引。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the private villa is selected, taking into consideration natural light, atmosphere, and the villa's layout to ensure the most serene setting possible</li>
-  <li>Villa accommodation rates are not included and will be added upon request</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Private Villa Elopements take place within open-air or semi-outdoor villa environments that remain naturally influenced by Bali's tropical climate. While private villas offer greater structural protection than fully outdoor settings, weather conditions such as rain, humidity, wind, or sudden tropical showers remain beyond our control.</p>
-<p>In the event of rain, there is no fixed outdoor backup plan. The ceremony may pause briefly to allow weather conditions to settle, or be thoughtfully relocated to a covered or indoor area within the villa, depending on timing, spatial layout, and accessibility. Décor placement may be adjusted when time reasonably permits, ensuring harmony with the villa's architectural flow.</p>
-<p>The couple acknowledges that weather conditions are considered part of the natural environment of Bali and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Linda Wiryani Design &amp; Event Planning will always prioritize safety, comfort, and aesthetic integrity while working within the limitations of time, venue, and weather conditions.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance is due no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit payment has been received</li>
-  <li>All payments made are non-refundable, unless otherwise stated in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the initial deposit</li>
-  <li>If the couple chooses to change the ceremony date, location, or key elements after confirmation, any adjustments remain subject to availability and may incur additional fees</li>
-  <li>Villa rental and accommodation fees (if applicable) are separate from this ceremony package and follow the respective villa's own payment and cancellation policies</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定私人别墅后确认，并综合考虑自然光线、氛围以及别墅布局，以营造最为宁静的环境</li>
+  <li>别墅住宿费用不包含在内，可按需另行添加</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or villa stay, transportation, sound system or audio equipment, videography or drone, additional musicians or live entertainment, hair-do and make up, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>私人别墅私奔婚礼在露天或半露天的别墅环境中进行，自然会受到巴厘岛热带气候的影响。虽然私人别墅比完全户外的场地提供更好的结构性保护，但雨水、湿度、风力或突如其来的热带阵雨等天气状况仍在我们的掌控之外。</p>
+<p>如遇下雨，我们没有固定的户外备用方案。仪式可能会短暂暂停，等待天气稳定，或根据时间、空间布局及无障碍条件，妥善转移至别墅内的有顶或室内区域。在时间合理允许的情况下，装饰布置可能会作出调整，以确保与别墅建筑流线协调一致。</p>
+<p>新人确认，天气状况属于巴厘岛自然环境的一部分，除非另有书面约定，否则不构成取消、退款或改期的理由。Linda Wiryani Design &amp; Event Planning 将始终优先考虑安全、舒适与美学完整性，并在时间、场地及天气条件的限制内开展工作。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且初始定金不予退还</li>
+  <li>如新人在确认后选择更改仪式日期、地点或关键元素，任何调整均视档期而定，并可能产生额外费用</li>
+  <li>别墅租赁及住宿费用（如适用）与本仪式套餐分开计算，并遵循各别墅自身的付款及取消政策</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：场地或活动费用（如适用）、住宿或别墅入住、交通、音响系统或音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776940317/Private_Villa_Elopement_Mutiara_6_etnh26.png",
     gallery: [
@@ -117,79 +115,79 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "cliffside-elopement",
     slug: "cliffside-elopement",
     type: "ELOPEMENT",
-    title: "Cliffside Elopements",
-    description: `<p>Cliffside Elopements are designed for couples drawn to open horizons, dramatic elevation, and the quiet power of the sea. Set along Bali's coastal cliffs, these celebrations are shaped by light, wind, and expansive views, creating an atmosphere that feels intimate yet awe-inspiring.</p>
+    title: "悬崖私奔婚礼",
+    description: `<p>悬崖私奔婚礼专为向往开阔天际、壮阔高度与大海静谧力量的新人而设。婚礼设在巴厘岛沿海悬崖之畔，由光线、海风与辽阔视野塑造，营造出既亲密又令人惊叹的氛围。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of stunning cliffside venues and private estates suited for intimate elopements. Venue selection is guided by accessibility, safety, and overall design harmony.</p>
+<p>Linda Wiryani Design and Event Planning 与多处精选的迷人悬崖场地及适合私密私奔婚礼的私人庄园合作。场地的选择以可达性、安全性及整体设计和谐为依据。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through clarity, balance, and intention. A quiet exchange of vows. A horizon without end. And a moment that feels both intimate and expansive.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以清晰、平衡与用心打动人心。一次安静的誓言交换。一片无尽的地平线。以及一个既亲密又辽阔的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Elegant)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致优雅）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the cliffside surroundings</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements designed to feel natural yet structured against the coastal landscape</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与悬崖环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，力求在海岸景观中既自然又富有结构感</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Ceremony Timing</h3>
-<p>Cliffside Elopements are most beautifully experienced during two natural light windows:</p>
+<h3>仪式时间</h3>
+<p>悬崖私奔婚礼最适合在两个自然光时段举行：</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning ceremonies offer softer wind conditions, clearer skies, and gentle natural light. The atmosphere feels calm, intimate, and serene, with fewer visitors and a quieter coastal environment.</li>
-  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — Sunset ceremonies provide dramatic golden light, expansive horizon tones, and a naturally cinematic atmosphere. The sky gradually shifts in color, creating a powerful and emotive backdrop against the ocean and cliffs.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午的仪式风力更柔和，天空更澄澈，自然光线温和。氛围平静、亲密而安宁，游客较少，海岸环境也更为宁静。</li>
+  <li><strong>日落（约下午 5:00 – 6:30）</strong> — 日落时分的仪式带来戏剧性的金色光线、辽阔的地平线色调以及天然的电影感氛围。天空色彩渐次变幻，为海洋与悬崖构成的背景增添力量与情感。</li>
 </ul>
-<p>Final ceremony timing will be confirmed based on seasonal sunset variation, wind conditions, venue accessibility and regulations, and overall safety and comfort. While sunset offers visual drama, it may also involve stronger coastal winds. Morning ceremonies are generally more stable in terms of weather conditions. The selected timing will always be guided by natural light, safety considerations, and the overall aesthetic intention of the ceremony.</p>
+<p>最终的仪式时间将根据季节性日落变化、风力状况、场地可达性与相关规定，以及整体安全与舒适度来确定。日落虽然视觉上更具戏剧性，但也可能伴随更强的海风。上午的仪式在天气方面通常更为稳定。所选时间始终以自然光线、安全考量及仪式整体的美学意图为指引。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the venue is selected, taking into consideration natural light, tide conditions, and overall atmosphere</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Cliffside Elopements take place in naturally exposed coastal environments where wind, sea air, and shifting weather patterns are inherent to the setting. Cliff locations are particularly influenced by strong or sudden wind gusts, heat and direct sun exposure, sudden tropical rain, and changing coastal conditions.</p>
-<p>In the event of rain or strong wind, there is no fixed outdoor backup plan. The ceremony may pause briefly to allow conditions to stabilize. If the venue provides an indoor or covered space, the ceremony may be thoughtfully relocated subject to availability and timing. Floral structures and décor installations may be adjusted, secured, simplified, or repositioned to ensure safety while preserving overall aesthetic integrity.</p>
-<p>Safety remains the highest priority. If conditions are deemed unsafe by the Planner or venue management, necessary adjustments will be made accordingly. The couple acknowledges that weather and coastal wind conditions are natural elements of a cliffside environment and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The date is not secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise stated in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
-  <li>Should the couple request changes to the venue, ceremony date, timing, or key elements after confirmation, all changes are subject to availability and additional costs may apply depending on logistical adjustments, vendor rescheduling, or venue policy</li>
-  <li>Venue rental and accommodation fees (if applicable) follow the individual venue's own payment and cancellation policies and are separate from this package unless explicitly included</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定场地后确认，并综合考虑自然光线、潮汐状况及整体氛围</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair-do and make up, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>悬崖私奔婚礼在天然暴露的海岸环境中进行，风、海风及多变的天气是这一环境的固有特征。悬崖地带尤其容易受到强风或突发阵风、高温与阳光直射、突如其来的热带阵雨以及不断变化的海岸条件的影响。</p>
+<p>如遇下雨或强风，我们没有固定的户外备用方案。仪式可能会短暂暂停，等待条件稳定。如场地提供室内或有顶空间，视档期与时间，仪式可妥善转移至该处。花艺结构与装饰装置可能会被调整、加固、简化或重新布置，以确保安全，同时保持整体美学完整性。</p>
+<p>安全始终是首要考量。如策划师或场地管理方认定条件不安全，将据此作出必要调整。新人确认，天气与海岸风力属于悬崖环境的自然要素，除非另有书面约定，否则不构成取消、退款或改期的理由。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且定金不予退还</li>
+  <li>如新人在确认后要求更改场地、仪式日期、时间或关键元素，所有更改均视档期而定，并可能根据物流调整、供应商改期或场地政策产生额外费用</li>
+  <li>场地租赁及住宿费用（如适用）遵循各场地自身的付款及取消政策，除非明确包含，否则与本套餐分开计算</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：场地或活动费用（如适用）、住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939445/Cliffside_Elopement_1_vof9yx.png",
     gallery: [
@@ -216,80 +214,80 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "architectural-modern-tropical-elopement",
     slug: "architectural-modern-tropical-elopement",
     type: "ELOPEMENT",
-    title: "Architectural & Modern Tropical Elopements",
-    description: `<p>Architectural and Modern Tropical Elopements are designed for couples drawn to clean lines, natural materials, and spaces with strong visual character. Set within thoughtfully designed venues from modern tropical villas to architect-led estates, these celebrations are guided by proportion, light, texture, and spatial flow.</p>
+    title: "建筑与现代热带风情私奔婚礼",
+    description: `<p>建筑与现代热带风情私奔婚礼专为钟情于简洁线条、天然材质和强烈视觉个性空间的新人而设。婚礼设在精心设计的场地中，从现代热带别墅到建筑师主导的庄园，由比例、光线、质感与空间流线引领。</p>
 
-<p>Here, architecture is not simply a setting. It shapes the ceremony's rhythm, framing each moment with clarity and intention.</p>
+<p>在这里，建筑不只是背景。它塑造仪式的节奏，以清晰与用心框定每一个瞬间。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of design-forward venues where structure, materiality, and landscape exist in quiet harmony. Venue selection is guided by architectural integrity, privacy, and aesthetic coherence.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的设计导向场地合作，在这些场地中，结构、材质与景观和谐共处。场地的选择以建筑完整性、私密性及美学一致性为依据。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through structure, restraint, and intention. Clean lines. Natural textures. And a moment framed by thoughtful design.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以结构、克制与用心打动人心。简洁的线条。天然的质感。以及一个由精心设计所框定的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Elegant)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致优雅）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the architectural and modern tropical surroundings</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements designed to complement the venue's structural lines and natural materials</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与建筑及现代热带环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，与场地的结构线条及天然材质相呼应</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Ceremony Timing</h3>
-<p>Architectural &amp; Modern Tropical Elopements are most beautifully experienced during:</p>
+<h3>仪式时间</h3>
+<p>建筑与现代热带风情私奔婚礼最适合在以下时段举行：</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Soft light enhances architectural lines and material textures. The atmosphere feels calm, airy, and spatially balanced.</li>
-  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — Golden light interacts with structural forms, creating depth, shadow play, and a refined cinematic ambiance.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 柔和的光线凸显建筑线条与材质肌理。氛围平静、通透，空间平衡。</li>
+  <li><strong>日落（约下午 5:00 – 6:30）</strong> — 金色光线与建筑形体交相辉映，营造出层次感、光影游戏以及精致的电影质感氛围。</li>
 </ul>
-<p>Final timing will be guided by the building's orientation, light movement, and spatial composition to ensure visual harmony.</p>
+<p>最终时间将根据建筑朝向、光线移动及空间构图来确定，以确保视觉和谐。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the venue is selected, taking into consideration natural light, architectural shadows, and overall spatial composition</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>While these ceremonies take place within architectural environments, most modern tropical spaces in Bali are semi-open, naturally ventilated, or partially exposed to the elements. Weather factors may include sudden tropical rain, humidity and heat, wind movement through open structures, and shifting natural light conditions.</p>
-<p>In the event of rain or strong weather conditions, there is no guaranteed fixed outdoor backup unless provided by the venue. The ceremony may pause briefly to allow conditions to settle, or be relocated to a covered or interior architectural space within the property, subject to layout and availability. Floral structures and decorative elements may be simplified, secured, or repositioned to ensure safety and aesthetic coherence.</p>
-<p>As these settings intentionally embrace tropical architecture, the couple acknowledges that environmental elements are part of the experience and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Safety, structural suitability, and venue regulations will always guide final decisions.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise stated in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
-  <li>Any changes requested after confirmation — including venue, ceremony date, styling elements, or key logistics — are subject to availability and may incur additional fees depending on vendor adjustments or venue policies</li>
-  <li>Venue rental fees, accommodation, and property-specific deposits (if applicable) follow the individual venue's own terms and are separate from this ceremony package unless explicitly included</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定场地后确认，并综合考虑自然光线、建筑阴影及整体空间构图</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair-do and make up, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>虽然这些仪式在建筑环境中举行，但巴厘岛大多数现代热带空间为半开放、自然通风或部分暴露于自然环境之中。天气因素可能包括突如其来的热带阵雨、湿热、穿过开放结构的风，以及不断变化的自然光线。</p>
+<p>如遇下雨或恶劣天气，除非场地另行提供，否则不保证有固定的户外备用方案。仪式可能会短暂暂停，等待条件稳定，或视布局与档期转移至物业内的有顶或室内建筑空间。花艺结构与装饰元素可能会被简化、加固或重新布置，以确保安全及美学协调。</p>
+<p>由于这些场景有意融入热带建筑，新人确认，环境因素属于体验的一部分，除非另有书面约定，否则不构成取消、退款或改期的理由。安全、结构适用性及场地规定将始终指导最终决定。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且定金不予退还</li>
+  <li>确认后要求的任何更改——包括场地、仪式日期、布置元素或关键物流——均视档期而定，并可能根据供应商调整或场地政策产生额外费用</li>
+  <li>场地租赁费用、住宿及物业特定押金（如适用）遵循各场地自身条款，除非明确包含，否则与本仪式套餐分开计算</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：场地或活动费用（如适用）、住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939440/Architectural_Modern_Tropical_Elopements_nlnd5r.jpg",
     gallery: [
@@ -316,81 +314,81 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "forest-jungle-elopement",
     slug: "forest-jungle-elopement",
     type: "ELOPEMENT",
-    title: "Forest & Jungle Elopements",
-    description: `<p>Forest &amp; Jungle Elopements are designed for couples drawn to lush greenery, filtered light, and a deep sense of immersion in nature. Set within tropical forests and jungle landscapes, these celebrations are guided by the rhythm of the land, layered foliage, natural textures, and moments of quiet stillness.</p>
+    title: "森林与丛林私奔婚礼",
+    description: `<p>森林与丛林私奔婚礼专为钟情于郁郁葱葱的绿意、过滤的光线及深度融入自然的新人而设。婚礼设在热带森林与丛林景观之中，由大地的节奏、层叠的枝叶、自然的质感以及宁静的时刻引领。</p>
 
-<p>Here, nature is not styled over or reshaped. It sets the tone, pace, and emotional atmosphere of the ceremony.</p>
+<p>在这里，自然不会被覆盖或重塑。它决定仪式的基调、节奏与情感氛围。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of forest sanctuaries, jungle clearings, and nature-integrated venues where landscape, light, and design exist in natural balance. Venue selection is guided by accessibility, environmental sensitivity, and harmony with the surroundings.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的森林圣地、丛林空地及与自然相融的场地合作，在这些场地中，景观、光线与设计处于自然平衡。场地的选择以可达性、环境敏感度及与周边环境的和谐为依据。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through presence, restraint, and connection to nature. Filtered light. Living textures. And a moment held quietly within the forest.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以在场、克制以及与自然的联结打动人心。过滤的光线。鲜活的质感。以及一个静静守护于森林之中的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Natural)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致自然）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the forest or jungle surroundings</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements guided by organic form and natural movement</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与森林或丛林环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，以有机形态与自然律动为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Forest &amp; Jungle Elopements are most beautifully experienced during natural light windows that complement the canopy environment.</p>
+<h3>最佳时间</h3>
+<p>森林与丛林私奔婚礼最适合在与林冠环境相得益彰的自然光时段举行。</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning offers softer humidity, gentler light filtering through the trees, and a quieter atmosphere before public activity increases. This timing feels serene, fresh, and grounded.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 6:00 PM)</strong> — Late afternoon provides warmer tones and deeper shadows within the forest layers. The light becomes more atmospheric, creating depth and subtle drama beneath the canopy.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午湿度较为柔和，光线温柔地穿过树木，在游客活动增多之前氛围更为宁静。这个时段宁静、清新而踏实。</li>
+  <li><strong>傍晚前（约下午 4:30 – 6:00）</strong> — 傍晚前的色调更温暖，森林层次间的阴影更深。光线更具氛围感，在林冠之下营造出层次与微妙的戏剧性。</li>
 </ul>
-<p>Exact timing will be confirmed based on light penetration through the tree canopy, seasonal weather patterns, accessibility and venue regulations, and overall safety and comfort. Morning ceremonies generally provide more stable weather conditions and softer environmental dynamics.</p>
+<p>确切时间将根据光线穿透林冠的程度、季节性天气模式、可达性与场地规定，以及整体安全与舒适度来确认。上午的仪式通常天气状况更稳定，环境动态也更柔和。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the venue is selected, taking into consideration natural light, forest canopy, and overall environmental conditions</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Jungle environments are naturally dynamic and influenced by tropical climate patterns. Conditions may include sudden rainfall or passing showers, high humidity, uneven or natural terrain, insects and forest wildlife, and shifting light beneath tree canopy.</p>
-<p>As these ceremonies take place in natural outdoor settings, weather conditions are beyond our control. In the event of rain, there is no guaranteed fixed indoor backup venue unless specifically provided by the selected location. The ceremony may pause briefly to allow weather conditions to settle, or where possible, be repositioned within a naturally sheltered area of the venue. Floral elements and décor may be adjusted or simplified to ensure safety and structural stability.</p>
-<p>The couple acknowledges that tropical forest conditions are inherent to this setting and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Safety and environmental respect remain the highest priority at all times.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise stated in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the initial deposit</li>
-  <li>Any requested changes to the venue, ceremony date, or key design elements after confirmation are subject to availability and may incur additional fees depending on logistical or vendor adjustments</li>
-  <li>Venue access fees and any location-specific permits follow the respective venue's own policies where applicable</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定场地后确认，并综合考虑自然光线、森林林冠及整体环境条件</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>丛林环境天然多变，受热带气候模式影响。状况可能包括突如其来的降雨或阵雨、高湿度、不平或天然的地形、昆虫与森林野生动物，以及林冠下不断变化的光线。</p>
+<p>由于这些仪式在自然户外环境中举行，天气状况超出我们的掌控。如遇下雨，除非所选场地特别提供，否则不保证有固定的室内备用场地。仪式可能会短暂暂停，等待天气稳定，或在可能的情况下，转移至场地内天然遮蔽的区域。花艺元素与装饰可能会被调整或简化，以确保安全与结构稳定。</p>
+<p>新人确认，热带森林的状况是这一环境所固有的，除非另有书面约定，否则不构成取消、退款或改期的理由。安全与对环境的尊重始终是首要考量。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且初始定金不予退还</li>
+  <li>确认后要求更改场地、仪式日期或主要设计元素，均视档期而定，并可能根据物流或供应商调整产生额外费用</li>
+  <li>场地入场费用及任何特定地点的许可，如适用，遵循各场地自身的政策</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：场地或活动费用（如适用）、住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939441/Forest_Jungle_Elopements_wgemwg.png",
     gallery: [
@@ -411,81 +409,81 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "waterfall-elopement",
     slug: "waterfall-elopement",
     type: "ELOPEMENT",
-    title: "Waterfall Elopements",
-    description: `<p>Waterfall Elopements are designed for couples drawn to raw movement, natural sound, and the grounding presence of flowing water. Set before cascading falls and surrounded by lush greenery, these celebrations are shaped by mist, light, and the elemental rhythm of nature.</p>
+    title: "瀑布私奔婚礼",
+    description: `<p>瀑布私奔婚礼专为钟情于原始律动、自然声响及流水沉稳力量的新人而设。婚礼设在飞流直下的瀑布前，四周绿意盎然，由水雾、光线与自然的元素节奏塑造。</p>
 
-<p>Here, water is not merely a scenic feature. It becomes part of the ceremony's atmosphere, guiding its pace, tone, and emotional depth.</p>
+<p>在这里，水不仅仅是风景。它成为仪式氛围的一部分，引领着仪式的节奏、基调与情感深度。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of waterfall sanctuaries and nature-integrated locations, where landscape, accessibility, and environmental respect are carefully considered. Venue selection prioritizes safety, privacy, and harmony with the surroundings.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的瀑布圣地及与自然相融的场地合作，在这些场地中，景观、可达性及对环境的尊重均经过审慎考量。场地的选择以安全、私密性及与周边环境的和谐为先。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through movement, grounding, and elemental presence. Falling water. Soft mist. And a moment carried gently by nature itself.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以律动、扎根与元素之力打动人心。流泻的水。轻柔的薄雾。以及一个被自然本身温柔托起的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Natural)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致自然）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the waterfall surroundings</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements guided by organic form and environmental sensitivity</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与瀑布环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，以有机形态与对环境的敏感为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music <em>(Note: live music volume may be adjusted in response to the natural sound of the waterfall.)</em></li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐 <em>（注：现场音乐音量可能会根据瀑布的自然声响进行调整。）</em></li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Waterfall Elopements are most beautifully experienced during times when natural light and visitor activity are most favorable.</p>
+<h3>最佳时间</h3>
+<p>瀑布私奔婚礼最适合在自然光线与游客活动最为有利的时段举行。</p>
 <ul>
-  <li><strong>Early Morning (Approximately 6:00 – 8:00 AM)</strong> — Morning ceremonies offer softer light, reduced visitor presence, calmer atmosphere, and more stable water conditions. The environment feels fresh, intimate, and serene.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 5:30 PM)</strong> — Late afternoon may provide warmer tones and softer shadows; however, visitor traffic and humidity levels may vary depending on the location.</li>
+  <li><strong>清晨（约 6:00 – 8:00）</strong> — 上午的仪式光线更柔和，游客较少，氛围更平静，水流状况也更稳定。环境清新、亲密而安宁。</li>
+  <li><strong>傍晚前（约下午 4:30 – 5:30）</strong> — 傍晚前可能带来更温暖的色调与更柔和的阴影；不过，游客数量与湿度水平可能因地点而异。</li>
 </ul>
-<p>Morning timing is generally recommended for greater privacy, safer terrain conditions, more consistent lighting, and reduced public activity. Final timing will be confirmed based on seasonal weather patterns, accessibility, and overall safety considerations.</p>
+<p>通常推荐上午的时间，以获得更高的私密性、更安全的地形条件、更稳定的光线以及更少的公众活动。最终时间将根据季节性天气模式、可达性及整体安全考量来确认。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the location is selected, taking into consideration natural light, water flow, and environmental conditions</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Waterfall environments are naturally dynamic and influenced by seasonal rainfall, water flow levels, terrain conditions, and tropical weather patterns. Conditions may include sudden rain or passing showers, increased water volume after rainfall, slippery or uneven natural terrain, humidity and mist, natural ambient sound from flowing water, and limited accessibility depending on the location.</p>
-<p>As these ceremonies take place within active natural environments, conditions are beyond our control. In the event of rain or strong water flow, the ceremony may pause temporarily to allow conditions to stabilize. If water levels or terrain are deemed unsafe, the ceremony may be repositioned to a safer nearby area within the venue where possible. Floral installations and décor may be adjusted, simplified, or secured to ensure structural safety. Safety decisions made by the Planner or venue management are final.</p>
-<p>This package does not include a guaranteed indoor backup venue unless specifically stated. The couple acknowledges that waterfall conditions are inherent to the setting and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Safety and environmental respect remain the highest priority.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise agreed in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
-  <li>Any requested changes to the ceremony date, location, or key elements after confirmation are subject to availability and may incur additional fees depending on vendor rescheduling or permit adjustments</li>
-  <li>Venue permits and entrance fees (if applicable) follow the specific waterfall location's own policies</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定地点后确认，并综合考虑自然光线、水流及环境条件</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>瀑布环境天然多变，受季节性降雨、水流量、地形状况及热带天气模式影响。状况可能包括突如其来的降雨或阵雨、雨后水量增加、湿滑或不平的天然地形、湿气与水雾、流水的自然环境音，以及视地点而定的有限可达性。</p>
+<p>由于这些仪式在活跃的自然环境中举行，各种状况超出我们的掌控。如遇下雨或水流湍急，仪式可能会暂时暂停，等待条件稳定。如水位或地形被认定为不安全，仪式在可能的情况下可转移至场地内附近更安全的区域。花艺装置与装饰可能会被调整、简化或加固，以确保结构安全。策划师或场地管理方作出的安全决定为最终决定。</p>
+<p>除非特别说明，本套餐不包含有保障的室内备用场地。新人确认，瀑布的状况是这一环境所固有的，除非另有书面约定，否则不构成取消、退款或改期的理由。安全与对环境的尊重始终是首要考量。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面约定</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且定金不予退还</li>
+  <li>确认后要求更改仪式日期、地点或关键元素，均视档期而定，并可能根据供应商改期或许可调整产生额外费用</li>
+  <li>场地许可及入场费用（如适用）遵循具体瀑布地点自身的政策</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：场地或活动费用（如适用）、住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939441/Waterfall_Wedding_1_kk2634.png",
     gallery: [
@@ -506,81 +504,81 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "rice-field-elopement",
     slug: "rice-field-elopement",
     type: "ELOPEMENT",
-    title: "Rice Field Elopements",
-    description: `<p>Rice Field Elopements are designed for couples drawn to open horizons, soft breezes, and the quiet poetry of rural landscapes. Set amidst Bali's lush rice terraces and agrarian fields, these celebrations unfold within wide skies, gentle light, and the rhythmic calm of nature.</p>
+    title: "稻田私奔婚礼",
+    description: `<p>稻田私奔婚礼专为钟情于开阔地平线、轻柔微风及乡野景观宁静诗意的新人而设。婚礼设在巴厘岛郁郁葱葱的梯田与农田之间，在辽阔的天空、柔和的光线以及大自然富有韵律的宁静中展开。</p>
 
-<p>Here, the landscape is not merely scenic. It shapes the ceremony's atmosphere, offering stillness, openness, and a sense of grounded simplicity.</p>
+<p>在这里，景观不仅仅是风景。它塑造仪式的氛围，带来宁静、开阔以及踏实质朴的感觉。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of rice field venues and countryside settings, where accessibility, privacy, and harmony with local surroundings are thoughtfully considered. Venue selection respects both the natural terrain and the surrounding community.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的稻田场地及乡村环境合作，在这些场地中，可达性、私密性及与当地环境的和谐均经过用心考量。场地的选择既尊重自然地形，也尊重周边社区。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through openness, balance, and quiet connection. Open sky. Gentle light. And a moment held softly within the fields.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以开阔、平衡与安静的联结打动人心。辽阔的天空。柔和的光线。以及一个被轻轻托起于田野之间的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Natural)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致自然）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the rice field landscape</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements guided by organic form and natural simplicity</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与稻田景观相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，以有机形态与自然质朴为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Rice Field Elopements are most beautifully experienced during times when light is soft and temperatures are comfortable.</p>
+<h3>最佳时间</h3>
+<p>稻田私奔婚礼最适合在光线柔和、气温宜人的时段举行。</p>
 <ul>
-  <li><strong>Early Morning (Approximately 6:00 – 8:00 AM)</strong> — Morning offers cooler air, softer natural light, and a quieter rural atmosphere before farming activities increase. The light feels fresh and gentle across the terraces.</li>
-  <li><strong>Late Afternoon / Sunset (Approximately 5:00 – 6:30 PM)</strong> — Sunset ceremonies provide warm golden tones across the fields, creating depth and glow within the landscape. The atmosphere feels expansive and romantic.</li>
+  <li><strong>清晨（约 6:00 – 8:00）</strong> — 清晨空气更凉爽，自然光线更柔和，在农事活动增多之前乡村氛围更为宁静。光线清新，温柔地洒落在梯田之上。</li>
+  <li><strong>傍晚前 / 日落（约下午 5:00 – 6:30）</strong> — 日落时分的仪式为田野披上温暖的金色调，营造出景观中的层次与光辉。氛围辽阔而浪漫。</li>
 </ul>
-<p>Morning timing is generally recommended for cooler temperatures, more stable weather conditions, greater privacy, and softer lighting. Final timing will be confirmed based on seasonal light patterns, agricultural cycles, and overall environmental comfort.</p>
+<p>通常推荐上午的时间，气温更凉爽，天气状况更稳定，私密性更高，光线也更柔和。最终时间将根据季节性光线模式、农事周期及整体环境舒适度来确认。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the location is selected, taking into consideration natural light, field conditions, and overall atmosphere</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Rice field environments are naturally open and fully exposed to tropical climate conditions. Factors may include direct sunlight and heat exposure, wind across open fields, sudden tropical rain, seasonal mud or soft ground conditions, insects common to rural landscapes, and agricultural activity depending on planting cycles.</p>
-<p>As these ceremonies take place in active rural settings, weather and field conditions are beyond our control. In the event of rain or strong wind, the ceremony may pause temporarily to allow conditions to settle, or if available, be repositioned to a nearby sheltered area. Floral elements and décor installations may be adjusted, secured, or simplified to ensure safety and visual harmony. Terrain conditions may limit certain styling elements for safety reasons.</p>
-<p>The couple acknowledges that rice field settings are living agricultural landscapes and that environmental factors are inherent to the location. Weather conditions are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Safety, respect for local farming activity, and environmental harmony remain priorities at all times.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise agreed in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
-  <li>Any requested changes to venue, ceremony timing, or key elements after confirmation are subject to availability and may incur additional fees depending on logistical or vendor adjustments</li>
-  <li>Venue access fees and community permissions (where applicable) follow local policies and may vary depending on the specific rice field location</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定地点后确认，并综合考虑自然光线、田地状况及整体氛围</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>稻田环境天然开阔，完全暴露于热带气候之中。相关因素可能包括阳光直射与高温、开阔田野上的风、突如其来的热带阵雨、随季节出现的泥泞或松软地面、乡村景观中常见的昆虫，以及视种植周期而定的农事活动。</p>
+<p>由于这些仪式在活跃的乡村环境中举行，天气与田地状况超出我们的掌控。如遇下雨或强风，仪式可能会暂时暂停，等待条件稳定，或在有条件时转移至附近的遮蔽区域。花艺元素与装饰装置可能会被调整、加固或简化，以确保安全与视觉和谐。出于安全考虑，地形状况可能会限制某些造型元素。</p>
+<p>新人确认，稻田是有生命的农业景观，环境因素是这一地点所固有的。除非另有书面约定，天气状况不构成取消、退款或改期的理由。安全、对当地农事活动的尊重以及与环境的和谐始终是首要考量。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面约定</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且定金不予退还</li>
+  <li>确认后要求更改场地、仪式时间或关键元素，均视档期而定，并可能根据物流或供应商调整产生额外费用</li>
+  <li>场地入场费用及社区许可（如适用）遵循当地政策，并可能因具体稻田地点而异</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：场地或活动费用（如适用）、住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939441/Rice_Field_Elopements_z7rkqm.jpg",
     gallery: [
@@ -601,81 +599,81 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "beachfront-elopement",
     slug: "beachfront-elopement",
     type: "ELOPEMENT",
-    title: "Beachfront Elopements",
-    description: `<p>Beachfront Elopements are designed for couples drawn to horizon lines, ocean breeze, and the elemental rhythm of the sea. Set along Bali's coastline where waves meet open sky, these ceremonies unfold within salt-kissed air, shifting light, and the grounding presence of water.</p>
+    title: "海滨私奔婚礼",
+    description: `<p>海滨私奔婚礼专为钟情于海平线、海风以及大海元素韵律的新人而设。婚礼设在巴厘岛海岸线上，海浪与辽阔天空相接之处，在带着咸味的空气、变幻的光线及海水带来的踏实感中展开。</p>
 
-<p>Here, the ocean is not merely scenic. It shapes the ceremony's atmosphere, offering movement, clarity, and a sense of expansive calm.</p>
+<p>在这里，海洋不仅仅是风景。它塑造仪式的氛围，带来律动、清澈以及辽阔的平静。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of beachfront venues and coastal settings, where privacy, accessibility, tidal conditions, and environmental respect are thoughtfully considered. Venue selection honors both the natural shoreline and local regulations.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的海滨场地及沿海环境合作，在这些场地中，私密性、可达性、潮汐状况及对环境的尊重均经过用心考量。场地的选择既尊重自然海岸线，也遵守当地规定。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through openness, balance, and quiet connection. Endless horizon. Salt air. And a vow carried gently by the sea.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以开阔、平衡与安静的联结打动人心。无尽的地平线。咸咸的海风。以及一句被大海轻轻托起的誓言。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included (where applicable within agreed beachfront location)</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用（适用于约定的海滨地点，如适用）</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Coastal-Inspired)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致且富海岸风情）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the ocean setting</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements guided by organic flow and coastal simplicity</li>
-  <li>Bridal bouquet using locally sourced flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与海洋环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，以有机流动感与海岸的质朴为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Beachfront Elopements are most beautifully experienced during natural light windows that complement the coastal atmosphere.</p>
+<h3>最佳时间</h3>
+<p>海滨私奔婚礼最适合在与海岸氛围相得益彰的自然光时段举行。</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning ceremonies offer softer winds, cooler temperatures, fewer visitors, and gentle natural light. The atmosphere feels calm, intimate, and serene.</li>
-  <li><strong>Sunset (Approximately 5:00 – 6:30 PM)</strong> — Sunset provides dramatic golden tones across the ocean horizon. The light gradually softens into warm hues, creating a cinematic and romantic ambiance.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午的仪式风力更柔和，气温更凉爽，游客较少，自然光线温和。氛围平静、亲密而安宁。</li>
+  <li><strong>日落（约下午 5:00 – 6:30）</strong> — 日落时分，海平线上洒满戏剧性的金色调。光线逐渐柔和为温暖的色泽，营造出电影感而浪漫的氛围。</li>
 </ul>
-<p>Morning ceremonies are generally recommended for greater privacy, more stable wind conditions, softer lighting, and increased comfort. Final ceremony timing will be confirmed based on seasonal sunset variations, tide schedules, wind forecasts, and venue accessibility.</p>
+<p>通常推荐上午的仪式，以获得更高的私密性、更稳定的风况、更柔和的光线及更舒适的体验。最终仪式时间将根据季节性日落变化、潮汐时间表、风力预报及场地可达性来确认。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the location is selected, taking into consideration tides, natural light, wind conditions, and overall atmosphere</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Beach environments are naturally dynamic and fully exposed to coastal climate conditions. Factors may include strong or shifting winds, sudden tropical rain, high heat and direct sun exposure, tide variations, sand movement and uneven terrain, and public access depending on location.</p>
-<p>As these ceremonies take place in open coastal settings, weather and tidal conditions are beyond our control. In the event of rain, strong wind, or unsafe tide conditions, the ceremony may pause briefly to allow conditions to stabilize. If the venue provides a sheltered or indoor area, the ceremony may be relocated where possible. Floral installations and décor structures may be adjusted, secured, simplified, or repositioned to ensure safety. Styling elements may be modified due to wind intensity or sand conditions. Safety decisions made by the Planner or venue management are final.</p>
-<p>The couple acknowledges that beachfront environments are subject to natural coastal forces and that weather or tidal changes are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise agreed in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
-  <li>Any requested changes to venue, ceremony date, or key elements after confirmation are subject to availability and may incur additional fees depending on vendor adjustments or venue policies</li>
-  <li>Venue rental fees, permits, and access regulations (if applicable) follow the specific beachfront location's own policies and are separate unless explicitly included</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定地点后确认，并综合考虑潮汐、自然光线、风况及整体氛围</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>海滩环境天然多变，完全暴露于海岸气候之中。相关因素可能包括强风或风向变化、突如其来的热带阵雨、高温与阳光直射、潮汐变化、沙地移动与不平的地形，以及视地点而定的公众通行情况。</p>
+<p>由于这些仪式在开阔的海岸环境中举行，天气与潮汐状况超出我们的掌控。如遇下雨、强风或潮汐状况不安全，仪式可能会短暂暂停，等待条件稳定。如场地提供遮蔽或室内区域，在可能的情况下仪式可转移至该处。花艺装置与装饰结构可能会被调整、加固、简化或重新布置，以确保安全。造型元素可能因风力强度或沙地状况而有所调整。策划师或场地管理方作出的安全决定为最终决定。</p>
+<p>新人确认，海滨环境受自然海岸力量影响，天气或潮汐变化不构成取消、退款或改期的理由，除非另有书面约定。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面约定</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且定金不予退还</li>
+  <li>确认后要求更改场地、仪式日期或关键元素，均视档期而定，并可能根据供应商调整或场地政策产生额外费用</li>
+  <li>场地租赁费用、许可及通行规定（如适用）遵循具体海滨地点自身的政策，除非明确包含，否则另行计算</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939442/Beachfront_Elopement_Wedding_eo6b6g.jpg",
     gallery: [
@@ -696,81 +694,81 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "lake-elopement",
     slug: "lake-elopement",
     type: "ELOPEMENT",
-    title: "Lake Elopements",
-    description: `<p>Lake Elopements are designed for couples drawn to still waters, mountain air, and the quiet depth of reflection. Set beside Bali's serene lakes, where mist rises gently from the surface and distant hills frame the horizon, these ceremonies unfold within cool air, softened light, and a sense of grounded tranquility.</p>
+    title: "湖畔私奔婚礼",
+    description: `<p>湖畔私奔婚礼专为钟情于静水、山间空气以及静谧沉思之深度的新人而设。婚礼设在巴厘岛宁静的湖畔，薄雾从水面缓缓升起，远山勾勒出地平线，仪式在清凉的空气、柔和的光线与踏实的宁静中展开。</p>
 
-<p>Here, the lake is not merely scenic. It shapes the ceremony's atmosphere, offering stillness, clarity, and a profound sense of presence.</p>
+<p>在这里，湖泊不仅仅是风景。它塑造仪式的氛围，带来静谧、清澈以及深刻的在场感。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of lakeside venues and highland settings, where accessibility, privacy, climate conditions, and environmental harmony are thoughtfully considered. Venue selection honors both the natural landscape and surrounding community traditions.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的湖畔场地及高地环境合作，在这些场地中，可达性、私密性、气候条件及与环境的和谐均经过用心考量。场地的选择既尊重自然景观，也尊重周边社区的传统。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through stillness, balance, and quiet connection. Soft mist. Calm water. And a vow reflected gently upon the lake.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以静谧、平衡与安静的联结打动人心。轻柔的薄雾。平静的湖水。以及一句倒映在湖面上的誓言。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included (where applicable within agreed lakeside location)</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用（适用于约定的湖畔地点，如适用）</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Nature-Inspired)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致且受自然启发）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the lakeside surroundings</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements guided by organic form and natural simplicity</li>
-  <li>Bridal bouquet using locally sourced flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与湖畔环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，以有机形态与自然质朴为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Lake Elopements are most beautifully experienced during times when light and atmosphere feel most balanced.</p>
+<h3>最佳时间</h3>
+<p>湖畔私奔婚礼最适合在光线与氛围最为平衡的时段举行。</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning ceremonies often offer calm water surfaces, soft diffused light, and a serene atmosphere before visitor activity increases. Mist may add a poetic and ethereal quality to the setting.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 6:00 PM)</strong> — Late afternoon provides warmer tones across the water and surrounding hills, creating depth and subtle golden reflections.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午的仪式往往湖面平静，光线柔和而漫射，在游客活动增多之前氛围宁静。薄雾可为场景增添诗意与空灵的气质。</li>
+  <li><strong>傍晚前（约下午 4:30 – 6:00）</strong> — 傍晚前，湖面与周围山丘呈现更温暖的色调，营造出层次感与微妙的金色倒影。</li>
 </ul>
-<p>Morning timing is generally recommended for more stable wind conditions, calmer water surface, greater privacy, and softer lighting. Final ceremony timing will be confirmed based on seasonal weather patterns, visibility conditions, wind movement, and venue accessibility.</p>
+<p>通常推荐上午的时间，风况更稳定，湖面更平静，私密性更高，光线也更柔和。最终仪式时间将根据季节性天气模式、能见度、风的移动及场地可达性来确认。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the location is selected, taking into consideration mountain light, mist conditions, wind patterns, and overall atmosphere</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Lake environments are influenced by highland and mountain climate conditions. Weather can shift more quickly than in coastal areas. Factors may include morning mist or fog, sudden rainfall, cooler temperatures, wind across open water, humidity fluctuations, and seasonal water level changes.</p>
-<p>As these ceremonies take place in natural outdoor settings, weather and environmental conditions are beyond our control. In the event of rain, strong wind, or dense fog, the ceremony may pause briefly to allow conditions to settle. If the venue provides a covered or indoor area, the ceremony may be relocated where possible. Floral installations and décor structures may be secured, simplified, or repositioned to ensure safety and aesthetic balance. Visibility limitations caused by mist or fog are considered natural conditions of the setting. Safety decisions made by the Planner or venue management are final.</p>
-<p>The couple acknowledges that lake and mountain environments are subject to natural weather variations and that such conditions are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise agreed in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the initial deposit</li>
-  <li>Any requested changes to venue, ceremony date, or key elements after confirmation are subject to availability and may incur additional fees depending on vendor adjustments or venue policies</li>
-  <li>Venue access fees and local permits (if applicable) follow the respective location's policies and are separate unless explicitly included</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定地点后确认，并综合考虑山间光线、薄雾状况、风的规律及整体氛围</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>湖畔环境受高地与山地气候条件影响。天气变化可能比沿海地区更快。相关因素可能包括晨雾或浓雾、突然降雨、较低的气温、开阔水面上的风、湿度波动，以及随季节变化的水位。</p>
+<p>由于这些仪式在自然户外环境中举行，天气与环境条件超出我们的掌控。如遇下雨、强风或浓雾，仪式可能会短暂暂停，等待条件平稳。如场地提供有顶或室内区域，在可能的情况下仪式可转移至该处。花艺装置与装饰结构可能会被加固、简化或重新布置，以确保安全与美学平衡。由薄雾或浓雾造成的能见度限制被视为该环境的自然状况。策划师或场地管理方作出的安全决定为最终决定。</p>
+<p>新人确认，湖泊与山地环境会有自然的天气变化，此类状况不构成取消、退款或改期的理由，除非另有书面约定。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面约定</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且初始定金不予退还</li>
+  <li>确认后要求更改场地、仪式日期或关键元素，均视档期而定，并可能根据供应商调整或场地政策产生额外费用</li>
+  <li>场地入场费用及当地许可（如适用）遵循各地点的政策，除非明确包含，否则另行计算</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Lake_Elopement_hbxm9l.png",
     gallery: [
@@ -791,81 +789,81 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "volcano-mountain-elopement",
     slug: "volcano-mountain-elopement",
     type: "ELOPEMENT",
-    title: "Volcano & Mountain Elopements",
-    description: `<p>Volcano and Mountain Elopements are designed for couples drawn to elevation, vast horizons, and the quiet strength of the earth. Set against Bali's majestic volcanic landscapes and highland ridgelines, where clouds drift across peaks and morning light unfolds slowly over the terrain, these ceremonies take place within crisp air, expansive views, and a profound sense of grounding.</p>
+    title: "火山与山地私奔婚礼",
+    description: `<p>火山与山地私奔婚礼专为钟情于高度、辽阔地平线以及大地沉静力量的新人而设。婚礼设在巴厘岛雄伟的火山景观与高地山脊之间，云朵飘过山峰，晨光缓缓铺展于大地，仪式在清冽的空气、广阔的视野与深沉的踏实感中进行。</p>
 
-<p>Here, the mountain is not merely scenic. It shapes the ceremony's atmosphere, offering perspective, resilience, and a powerful stillness that feels both intimate and infinite.</p>
+<p>在这里，山不仅仅是风景。它塑造仪式的氛围，带来视野、坚韧以及强大的静谧，既亲密又无限。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of mountain viewpoints and volcanic landscapes, where accessibility, safety conditions, terrain, and environmental respect are carefully considered. Venue selection honors the natural topography as well as local cultural sensitivities connected to sacred mountain areas.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的山地观景点及火山景观合作，在这些场地中，可达性、安全条件、地形及对环境的尊重均经过审慎考量。场地的选择既尊重自然地貌，也尊重与神圣山区相关的当地文化敏感性。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through altitude, presence, and quiet power. Crisp air. Vast horizon. And a moment held firmly at the edge of the earth.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以海拔、在场与安静的力量打动人心。清冽的空气。辽阔的地平线。以及一个稳稳立于大地边缘的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included (where applicable within agreed mountain or volcano location)</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用（适用于约定的山地或火山地点，如适用）</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Organic)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致且有机）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the volcanic or mountain landscape</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements guided by organic form and natural restraint</li>
-  <li>Bridal bouquet using locally sourced flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与火山或山地景观相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，以有机形态与自然克制为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Volcano &amp; Mountain Elopements are most beautifully experienced when light and visibility align with the landscape's natural rhythm.</p>
+<h3>最佳时间</h3>
+<p>火山与山地私奔婚礼最适合在光线与能见度与景观自然节奏相契合的时段举行。</p>
 <ul>
-  <li><strong>Early Morning (Approximately 6:30 – 8:30 AM)</strong> — Morning is generally the most recommended timing. Skies tend to be clearer, wind conditions calmer, and visibility stronger before clouds gather. The atmosphere feels fresh, expansive, and quietly powerful.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 6:00 PM)</strong> — Late afternoon may offer warm golden tones across the terrain; however, visibility can vary depending on cloud movement and elevation.</li>
+  <li><strong>清晨（约 6:30 – 8:30）</strong> — 上午通常是最推荐的时间。云层聚集之前，天空往往更澄澈，风更平静，能见度更佳。氛围清新、辽阔，蕴含安静的力量。</li>
+  <li><strong>傍晚前（约下午 4:30 – 6:00）</strong> — 傍晚前可能为大地披上温暖的金色调；不过，能见度可能因云层移动与海拔而有所不同。</li>
 </ul>
-<p>Morning ceremonies are strongly recommended for clearer mountain views, more stable wind conditions, better visibility, and greater comfort and safety. Final timing will be confirmed based on seasonal weather patterns, cloud formation tendencies, wind forecasts, and accessibility conditions.</p>
+<p>强烈推荐上午的仪式，以获得更清晰的山景、更稳定的风况、更好的能见度以及更高的舒适度与安全性。最终时间将根据季节性天气模式、云层形成趋势、风力预报及可达性状况来确认。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the location is selected, taking into consideration sunrise or sunset light, cloud movement, wind conditions, and overall atmosphere</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Mountain and volcanic environments are naturally dynamic and influenced by elevation and seasonal climate patterns. Conditions may include rapid weather changes, strong or sudden wind exposure, cooler temperatures, morning mist or cloud movement, occasional limited visibility, uneven or natural terrain, and restricted access in certain sacred or protected areas.</p>
-<p>As these ceremonies take place in elevated outdoor settings, weather and terrain conditions are beyond our control. In the event of rain, strong wind, heavy mist, or reduced visibility, the ceremony may pause temporarily to allow conditions to stabilize. Where possible, the ceremony may be repositioned to a safer nearby area within the venue. Floral structures and décor elements may be secured, simplified, or adjusted to ensure safety and structural integrity. Safety decisions made by the Planner or venue management are final.</p>
-<p>Mountain environments may experience stronger wind conditions than coastal or lowland areas. The couple acknowledges that such environmental factors are inherent to elevated landscapes and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Safety, terrain awareness, and respect for local cultural sensitivities surrounding sacred mountains remain priorities at all times.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise agreed in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the deposit</li>
-  <li>Any requested changes to venue, ceremony date, timing, or key elements after confirmation are subject to availability and may incur additional fees depending on logistical complexity, permit requirements, or vendor rescheduling</li>
-  <li>Access permits and local regulations (if applicable) follow the specific mountain or volcano location's policies</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定地点后确认，并综合考虑日出或日落光线、云层移动、风况及整体氛围</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: accommodation or stay, transportation (mountain access may require specific vehicles), sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>山地与火山环境天然多变，受海拔与季节性气候模式影响。状况可能包括天气快速变化、强风或突发风力、较低的气温、晨雾或云层移动、偶尔出现的有限能见度、不平的天然地形，以及某些神圣或保护区域内受限的通行。</p>
+<p>由于这些仪式在高海拔的户外环境中举行，天气与地形状况超出我们的掌控。如遇下雨、强风、浓雾或能见度降低，仪式可能会暂时暂停，等待条件稳定。在可能的情况下，仪式可转移至场地内附近更安全的区域。花艺结构与装饰元素可能会被加固、简化或调整，以确保安全与结构完整。策划师或场地管理方作出的安全决定为最终决定。</p>
+<p>山地环境的风力可能比沿海或低地地区更强。新人确认，此类环境因素是高地景观所固有的，除非另有书面约定，否则不构成取消、退款或改期的理由。安全、对地形的警觉，以及对神圣山岳所涉当地文化敏感性的尊重始终是首要考量。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面约定</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且定金不予退还</li>
+  <li>确认后要求更改场地、仪式日期、时间或关键元素，均视档期而定，并可能根据物流复杂程度、许可要求或供应商改期产生额外费用</li>
+  <li>通行许可及当地规定（如适用）遵循具体山地或火山地点的政策</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：住宿或入住、交通（山地通行可能需要特定车辆）、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939447/Volcano_mount_batur_y3gtwu.png",
     gallery: [
@@ -886,81 +884,81 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "riverside-elopement",
     slug: "riverside-elopement",
     type: "ELOPEMENT",
-    title: "Riverside Elopements",
-    description: `<p>Riverside Elopements are designed for couples drawn to flowing water, natural contours, and the quiet rhythm of the land shaped by the river's edge. Set alongside Bali's rivers, these ceremonies unfold within layered greenery, gentle movement, and a sense of calm that feels both grounded and alive.</p>
+    title: "河畔私奔婚礼",
+    description: `<p>河畔私奔婚礼专为钟情于流水、自然轮廓以及河岸所塑造的大地静谧节奏的新人而设。婚礼设在巴厘岛的河流沿岸，仪式在层叠的绿意、轻柔的律动以及既踏实又鲜活的平静中展开。</p>
 
-<p>Here, nature is not styled over or reshaped. It sets the tone, pace, and emotional atmosphere of the ceremony.</p>
+<p>在这里，自然不会被覆盖或重塑。它决定仪式的基调、节奏与情感氛围。</p>
 
-<p>Linda Wiryani Design and Event Planning works with a curated selection of riverside locations, jungle riverbanks, and nature-integrated venues where water, landscape, and design exist in quiet harmony. Venue selection is guided by accessibility, safety, and sensitivity to the natural surroundings.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的河畔地点、丛林河岸及与自然相融的场地合作，在这些场地中，水、景观与设计处于安静的和谐之中。场地的选择以可达性、安全性及对自然环境的敏感为依据。</p>
 
-<blockquote><p>This ceremony is not designed to impress through excess, but to resonate through movement, balance, and connection to nature. Flowing water. Soft currents. And a moment carried gently along the river.</p></blockquote>
+<blockquote><p>这场仪式无意以奢华取胜，而是以律动、平衡与和自然的联结打动人心。流动的水。轻柔的水流。以及一个沿着河流被温柔带走的时刻。</p></blockquote>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Natural)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致自然）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, thoughtfully composed to complement the riverside surroundings</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Floral aisle arrangements guided by organic form and natural movement</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，精心布置，与河畔环境相得益彰</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>过道花艺布置，以有机形态与自然律动为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Riverside Elopements are most beautifully experienced during natural light windows that complement the movement of water and surrounding landscape.</p>
+<h3>最佳时间</h3>
+<p>河畔私奔婚礼最适合在与水的律动及周边景观相得益彰的自然光时段举行。</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning offers cooler air, softer light, and calmer environmental conditions. The atmosphere feels fresh, quiet, and grounded, with reduced public activity.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 6:00 PM)</strong> — Late afternoon provides warmer tones and gentle reflections along the river surface. Light becomes softer and more atmospheric, creating depth within the landscape.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午空气更凉爽，光线更柔和，环境状况更平静。氛围清新、安静而踏实，公众活动较少。</li>
+  <li><strong>傍晚前（约下午 4:30 – 6:00）</strong> — 傍晚前的色调更温暖，河面上泛着轻柔的倒影。光线变得更柔和、更具氛围感，在景观中营造出层次。</li>
 </ul>
-<p>Exact timing will be confirmed based on natural light direction, river flow and safety conditions, seasonal weather patterns, accessibility and venue regulations, and overall comfort and safety. Morning ceremonies generally provide more stable conditions and a more serene atmosphere.</p>
+<p>确切时间将根据自然光线方向、河水流量与安全状况、季节性天气模式、可达性与场地规定，以及整体舒适度与安全来确认。上午的仪式通常条件更稳定，氛围更宁静。</p>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>This package is designed for a couple only</li>
-  <li>Ceremony timing will be confirmed once the venue is selected, taking into consideration natural light, river flow, and overall environmental conditions</li>
-  <li>Package rates start from <strong>IDR 30,000,000</strong></li>
-</ul>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Riverside environments are naturally dynamic and influenced by tropical weather patterns and water flow conditions. Conditions may include sudden rainfall or passing showers, changes in river water levels or flow intensity, humidity and natural mist, uneven or natural terrain near the riverbank, insects and surrounding vegetation, and ambient sound from flowing water.</p>
-<p>As these ceremonies take place in natural outdoor settings, weather and environmental conditions are beyond our control. In the event of rain or increased water flow, there is no guaranteed fixed indoor backup venue unless specifically provided by the selected location. The ceremony may pause briefly to allow conditions to stabilize, or where possible, be repositioned within a naturally sheltered or safer area. Floral elements and décor may be adjusted, secured, or simplified to ensure safety and structural stability.</p>
-<p>The couple acknowledges that riverside environments are living natural systems and that such conditions are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing. Safety and environmental respect remain the highest priority at all times.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
-<ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise stated in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the initial deposit</li>
-  <li>Any requested changes to the venue, ceremony date, or key design elements after confirmation are subject to availability and may incur additional fees depending on logistical or vendor adjustments</li>
-  <li>Venue access fees and any location-specific permits follow the respective venue's own policies where applicable</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>本套餐仅适用于一对新人</li>
+  <li>仪式时间将在选定场地后确认，并综合考虑自然光线、河水流量及整体环境条件</li>
+  <li>套餐价格起价为 <strong>IDR 30,000,000</strong></li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: venue or event fees (if applicable), accommodation or stay, transportation, sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>`,
+<h3>天气与自然条件</h3>
+<p>河畔环境天然多变，受热带天气模式及水流状况影响。状况可能包括突如其来的降雨或阵雨、河水水位或水流强度的变化、湿气与自然水雾、河岸附近不平的天然地形、昆虫与周边植被，以及流水的环境音。</p>
+<p>由于这些仪式在自然户外环境中举行，天气与环境条件超出我们的掌控。如遇下雨或水流增大，除非所选场地特别提供，否则不保证有固定的室内备用场地。仪式可能会短暂暂停，等待条件稳定，或在可能的情况下，转移至天然遮蔽或更安全的区域。花艺元素与装饰可能会被调整、加固或简化，以确保安全与结构稳定。</p>
+<p>新人确认，河畔环境是有生命的自然系统，此类状况不构成取消、退款或改期的理由，除非另有书面约定。安全与对环境的尊重始终是首要考量。</p>
+
+<h3>付款与预订条款</h3>
+<ul>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且初始定金不予退还</li>
+  <li>确认后要求更改场地、仪式日期或主要设计元素，均视档期而定，并可能根据物流或供应商调整产生额外费用</li>
+  <li>场地入场费用及任何特定地点的许可，如适用，遵循各场地自身的政策</li>
+</ul>
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：场地或活动费用（如适用）、住宿或入住、交通、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939444/Riverside_Elopement_ccm8dy.png",
     gallery: [
@@ -981,82 +979,82 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "eco-sustainable-elopement",
     slug: "eco-sustainable-elopement",
     type: "ELOPEMENT",
-    title: "Eco & Sustainable Weddings",
-    description: `<p>Eco &amp; Sustainable Weddings are designed for couples who value mindful celebration, environmental responsibility, and a deeper connection to place. These ceremonies are guided not by excess, but by intention — where each element is considered for its impact, origin, and purpose.</p>
+    title: "生态与可持续婚礼",
+    description: `<p>生态与可持续婚礼专为珍视用心庆典、环境责任以及与场地更深联结的新人而设。这些仪式不以奢华为导向，而以用心为指引——每个元素都会考量其影响、来源与目的。</p>
 
-<p>Set within natural or thoughtfully selected venues, these celebrations embrace simplicity, local materials, and conscious design, allowing beauty to emerge through restraint and awareness.</p>
+<p>婚礼设在自然或精心挑选的场地之中，崇尚简约、本地材料与有意识的设计，让美在克制与觉知中自然浮现。</p>
 
-<blockquote><p>Here, sustainability is not an aesthetic. It is a philosophy that shapes every decision — from materials and florals to scale, sourcing, and experience. Conscious choices. Natural materials. And a moment held with care for both people and place.</p></blockquote>
+<blockquote><p>在这里，可持续并非一种美学，而是一种塑造每个决定的理念——从材料与花艺，到规模、采购与体验。有意识的选择。天然的材料。以及一个对人与场地都怀有关爱的时刻。</p></blockquote>
 
-<p>Linda Wiryani Design and Event Planning works with a curated network of eco-conscious venues, local artisans, and responsible suppliers, ensuring each celebration aligns with both environmental sensitivity and refined design standards.</p>
+<p>Linda Wiryani Design and Event Planning 与精选的生态友好场地、本地工匠及负责任的供应商网络合作，确保每场庆典既契合环境敏感度，又保持精致的设计水准。</p>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included (where applicable)</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用（如适用）</li>
 </ul>
 
-<h4>Floral Styling <em>(Local &amp; Conscious Design)</em></h4>
+<h4>花艺造型 <em>（本地与有意识的设计）</em></h4>
 <ul>
-  <li>Ceremony backdrop styled using a thoughtful blend of locally sourced fresh flowers, natural greenery, and select reusable or artificial elements to minimise waste</li>
-  <li>Flower petals along the ceremony walkway (where environmentally appropriate)</li>
-  <li>Floral aisle arrangements guided by natural simplicity and low-impact design</li>
-  <li>Bridal bouquet using locally sourced flowers</li>
-  <li>Groom's boutonniere coordinated with the overall floral palette</li>
+  <li>仪式背景以本地新鲜花材、天然绿植及少量精选可重复使用或仿真元素周到搭配而成，以尽量减少浪费</li>
+  <li>仪式通道沿途撒放花瓣（在环境允许的情况下）</li>
+  <li>过道花艺布置，以自然质朴及低影响设计为指引</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体花艺色调相协调</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist providing understated, atmospheric ceremony music</li>
+  <li>吉他手或小提琴手独奏，演绎低调而富有氛围感的仪式音乐</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This package is intentionally curated to remain simple, elegant, and environmentally conscious</li>
-  <li>Only items listed above are included</li>
-  <li>Design and material selections will prioritize sustainability, local sourcing, and minimal environmental impact</li>
-  <li>Ceremony timing and setup will be adapted to the selected venue and environmental conditions</li>
-  <li>Package rates start from <strong>IDR 25,000,000</strong></li>
-  <li>This package is designed for a couple only</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅并兼顾环保</li>
+  <li>仅包含上述所列项目</li>
+  <li>设计与材料的选择将优先考虑可持续性、本地采购及最小的环境影响</li>
+  <li>仪式时间与布置将根据所选场地及环境条件进行调整</li>
+  <li>套餐价格起价为 <strong>IDR 25,000,000</strong></li>
+  <li>本套餐仅适用于一对新人</li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: accommodation or stay, transportation (eco-conscious options available upon request), sound system or additional audio equipment, videography or drone, additional musicians or live entertainment, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：住宿或入住、交通（可按需提供环保出行选项）、音响系统或额外音频设备、摄像或无人机拍摄、额外乐手或现场娱乐、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>
 
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Eco &amp; Sustainable Weddings often take place in natural or semi-outdoor environments and are therefore influenced by surrounding climate and environmental conditions. Conditions may include sudden tropical rain, wind and natural airflow, heat and humidity, and terrain variations depending on location.</p>
-<p>As these ceremonies prioritize harmony with nature, environmental conditions are embraced rather than controlled. In the event of unfavorable weather, the ceremony may proceed as scheduled where safely possible, pause briefly or be repositioned within a sheltered area if available, or have design elements adjusted or simplified to maintain safety while minimizing environmental impact. No excessive structural installations or environmentally disruptive solutions will be introduced as backup measures.</p>
-<p>The couple acknowledges that eco-conscious celebrations are designed in alignment with nature, and that weather conditions are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
+<h3>天气与自然条件</h3>
+<p>生态与可持续婚礼通常在自然或半户外环境中举行，因此会受到周边气候及环境条件的影响。状况可能包括突如其来的热带阵雨、风与自然气流、湿热，以及视地点而定的地形差异。</p>
+<p>由于这些仪式以与自然和谐相处为先，环境条件是被接纳而非被控制的。如遇不利天气，仪式可在安全允许的情况下按计划进行，短暂暂停或在有遮蔽区域时转移至该处，或调整、简化设计元素，以在保障安全的同时尽量减少对环境的影响。我们不会引入过度的结构性装置或破坏环境的解决方案作为备用措施。</p>
+<p>新人确认，生态友好的庆典是顺应自然而设计的，天气状况不构成取消、退款或改期的理由，除非另有书面约定。</p>
 
-<h3>Payment &amp; Booking Conditions</h3>
+<h3>付款与预订条款</h3>
 <ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise stated in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the initial deposit</li>
-  <li>Any requested changes to venue, ceremony date, or design elements after confirmation are subject to availability and may incur additional fees depending on adjustments required</li>
-  <li>Venue policies, permits, and sustainability guidelines will follow the respective location's regulations</li>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且初始定金不予退还</li>
+  <li>确认后要求更改场地、仪式日期或设计元素，均视档期而定，并可能根据所需调整产生额外费用</li>
+  <li>场地政策、许可及可持续性指引将遵循各地点的规定</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Eco &amp; Sustainable Weddings are best experienced during natural light windows that reduce environmental impact and enhance comfort.</p>
+<h3>最佳时间</h3>
+<p>生态与可持续婚礼最适合在能减少环境影响并提升舒适度的自然光时段进行。</p>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning offers cooler temperatures, softer light, and reduced energy usage. The atmosphere feels calm, fresh, and aligned with natural rhythms.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 6:00 PM)</strong> — Late afternoon provides warm, natural light and a relaxed atmosphere while minimizing the need for artificial lighting.</li>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午气温更凉爽，光线更柔和，能耗更低。氛围平静、清新，与自然节奏相契合。</li>
+  <li><strong>傍晚前（约下午 4:30 – 6:00）</strong> — 傍晚前提供温暖的自然光与轻松的氛围，同时尽量减少对人工照明的需求。</li>
 </ul>
-<p>Morning ceremonies are generally preferred for lower environmental impact and more stable conditions. Final timing will be confirmed based on natural light conditions, environmental considerations, venue guidelines, and overall comfort and sustainability approach.</p>`,
+<p>上午的仪式通常更受青睐，因其环境影响更小、条件更稳定。最终时间将根据自然光线状况、环境因素、场地指引，以及整体舒适度与可持续性理念来确认。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939444/Eco_and_Sustainable_Weddings_twb9v2.png",
     gallery: [
@@ -1077,92 +1075,92 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "sacred-spiritual-elopement",
     slug: "sacred-spiritual-elopement",
     type: "ELOPEMENT",
-    title: "Sacred or Spiritual Elopements",
-    description: `<p>Sacred or Spiritual Elopements are designed for couples drawn to stillness, intention, and moments of quiet reflection. These ceremonies are emotion-centered rather than culture-centered, guided by personal belief, shared meaning, and inner clarity rather than formal tradition.</p>
+    title: "神圣或灵性私奔婚礼",
+    description: `<p>神圣或灵性私奔婚礼专为向往静谧、用心与安静沉思时刻的新人而设。这些仪式以情感为中心而非以文化为中心，由个人信念、共同的意义与内心的清明引领，而非正式的传统。</p>
 
-<p>Set within serene natural surroundings or intimate architectural spaces, the celebration unfolds with simplicity and depth. It may include private vows, intention-setting, silent blessings, or symbolic gestures such as candle lighting, a gentle water ritual, or a shared moment of meditation.</p>
+<p>婚礼设在宁静的自然环境或私密的建筑空间中，以简约与深度展开。仪式可能包括私人誓言、意愿设定、无声祝福，或象征性的举动，如点燃蜡烛、温柔的水仪式，或共同的冥想时刻。</p>
 
-<blockquote><p>Here, spirituality is not performative. It is personal, inward, and quietly profound. A moment of stillness. A shared intention. And a vow held gently within silence.</p></blockquote>
+<blockquote><p>在这里，灵性不是表演。它是个人的、向内的，安静而深邃。一刻静谧。一份共同的意愿。以及一句在寂静中被轻轻守护的誓言。</p></blockquote>
 
-<p>Linda Wiryani Design and Event Planning works closely with each couple to shape a ceremony that reflects their values and emotional journey. The structure is flexible and does not require adherence to a specific religious or cultural framework. Every detail is curated with sensitivity, respect, and authenticity.</p>
+<p>Linda Wiryani Design and Event Planning 与每对新人紧密合作，打造反映其价值观与情感旅程的仪式。结构灵活，无需遵循特定的宗教或文化框架。每个细节都以敏感、尊重与真诚精心策划。</p>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking celebrant or facilitator</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included (where applicable within selected location)</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>英语证婚人或主持引导者</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用（适用于所选地点，如适用）</li>
 </ul>
 
-<h4>Ceremony Structure</h4>
+<h4>仪式结构</h4>
 <ul>
-  <li>Personal vow guidance and ceremony flow design</li>
-  <li>Optional symbolic elements (candle lighting, intention-setting, or a simple water ritual)</li>
-  <li>Thoughtfully curated ceremony script aligned with the couple's beliefs</li>
+  <li>个人誓言指导及仪式流程设计</li>
+  <li>可选的象征性元素（点燃蜡烛、意愿设定或简单的水仪式）</li>
+  <li>根据新人信念精心撰写的仪式文本</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Subtle)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致且含蓄）</em></h4>
 <ul>
-  <li>Ceremony styling using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements, composed with restraint and quiet balance</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall palette</li>
+  <li>仪式造型以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成，以克制与安静的平衡感构成</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体色调相协调</li>
 </ul>
 
-<h4>Music <em>(Meditative &amp; Minimal)</em></h4>
+<h4>音乐 <em>（冥想与极简）</em></h4>
 <ul>
-  <li>Sound healing (e.g., Tibetan or crystal bowls), or</li>
-  <li>Soft bamboo flute (suling), or</li>
-  <li>Rindik, traditional Balinese musical instrument made primarily of bamboo, or</li>
-  <li>Natural silence, allowing the surrounding environment to become the soundscape</li>
+  <li>声音疗愈（如藏式颂钵或水晶钵），或</li>
+  <li>轻柔的竹笛（suling），或</li>
+  <li>Rindik，一种主要以竹子制成的巴厘岛传统乐器，或</li>
+  <li>自然的寂静，让周围环境成为声音的景观</li>
 </ul>
-<p><em>Music is intentionally understated, allowing the ceremony to remain calm, present, and inward.</em></p>
+<p><em>音乐有意保持低调，让仪式保持平静、专注并向内。</em></p>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
-</ul>
-
-<h3>Important Notes</h3>
-<ul>
-  <li>This package is intentionally curated to remain simple, elegant, and centered on emotional presence</li>
-  <li>Only items listed above are included</li>
-  <li>Ceremony timing will be confirmed based on the selected venue and preferred atmosphere</li>
-  <li>Early morning or soft daylight hours are often recommended to support calm, clarity, and focus</li>
-  <li>Sacred &amp; Spiritual Elopements are personal and universal in nature, and are not tied to any specific religion or cultural framework</li>
-  <li>Package rates start from <strong>IDR 30,000,000</strong></li>
-  <li>This package is designed for a couple only</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: accommodation or stay, transportation, sound system or additional audio equipment (if required beyond the minimal approach), videography or drone, additional musicians or ceremonial facilitators, hair and makeup, wedding gown, suits, or accessories, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Sacred &amp; Spiritual Elopements may take place in both outdoor and semi-outdoor environments, and are therefore influenced by natural conditions. Conditions may include sudden rain or shifting weather, wind or natural environmental movement, and light and temperature variations depending on location.</p>
-<p>As these ceremonies are designed to remain flexible and responsive, environmental conditions are embraced as part of the experience. In the event of unfavorable weather, the ceremony may proceed as scheduled where safely possible, pause briefly to allow conditions to settle, be repositioned within a sheltered or indoor area where available, or have elements of the ceremony simplified to preserve calm and continuity.</p>
-<p>The couple acknowledges that natural conditions are inherent to the setting and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>A 50% non-refundable deposit is required upon confirmation of booking</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise stated in writing</li>
-  <li>Failure to complete the final balance payment by the agreed deadline may result in cancellation of services without refund of the initial deposit</li>
-  <li>Any requested changes to the ceremony date, location, or structure after confirmation are subject to availability and may incur additional fees depending on adjustments required</li>
-  <li>Venue access fees and any applicable permits follow the respective location's policies</li>
+  <li>本套餐经过刻意设计，力求简洁、优雅，并以情感的在场为核心</li>
+  <li>仅包含上述所列项目</li>
+  <li>仪式时间将根据所选场地及期望的氛围来确认</li>
+  <li>通常推荐清晨或柔和的日间时段，以帮助保持平静、清明与专注</li>
+  <li>神圣与灵性私奔婚礼具有个人性与普遍性，不与任何特定宗教或文化框架挂钩</li>
+  <li>套餐价格起价为 <strong>IDR 30,000,000</strong></li>
+  <li>本套餐仅适用于一对新人</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Sacred &amp; Spiritual Elopements are most beautifully experienced during times that support calm, focus, and emotional presence.</p>
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：住宿或入住、交通、音响系统或额外音频设备（如超出极简方式所需）、摄像或无人机拍摄、额外乐手或仪式主持引导者、发型与化妆、婚纱、西装或配饰、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>
+
+<h3>天气与自然条件</h3>
+<p>神圣与灵性私奔婚礼可在户外及半户外环境中举行，因此会受到自然条件的影响。状况可能包括突然降雨或天气变化、风或自然环境的流动，以及视地点而定的光线与温度变化。</p>
+<p>由于这些仪式的设计保持灵活与应变，环境条件被视为体验的一部分而予以接纳。如遇不利天气，仪式可在安全允许的情况下按计划进行，短暂暂停以等待条件平稳，在有遮蔽或室内区域时转移至该处，或简化仪式的部分元素，以保持平静与连贯。</p>
+<p>新人确认，自然条件是这一环境所固有的，除非另有书面约定，否则不构成取消、退款或改期的理由。</p>
+
+<h3>付款与预订条款</h3>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Morning offers stillness, clarity, and a quiet environment. The atmosphere feels fresh, grounded, and uninterrupted — ideal for inward reflection and intentional moments.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 6:00 PM)</strong> — Late afternoon provides softer light and a gentle transition into evening, creating a warm and reflective atmosphere.</li>
+  <li>确认预订时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内付清尾款，可能导致服务被取消，且初始定金不予退还</li>
+  <li>确认后要求更改仪式日期、地点或结构，均视档期而定，并可能根据所需调整产生额外费用</li>
+  <li>场地入场费用及任何适用的许可遵循各地点的政策</li>
 </ul>
-<p>Morning ceremonies are generally recommended for deeper stillness and minimal external distraction. Final timing will be guided by the desired emotional tone of the ceremony, natural light conditions, environmental quietness, and venue setting and accessibility.</p>`,
+
+<h3>最佳时间</h3>
+<p>神圣与灵性私奔婚礼最适合在有助于平静、专注与情感在场的时段举行。</p>
+<ul>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 上午带来宁静、清明与安静的环境。氛围清新、踏实且不受打扰——非常适合内在沉思与用心的时刻。</li>
+  <li><strong>傍晚前（约下午 4:30 – 6:00）</strong> — 傍晚前光线更柔和，并温柔地过渡到夜晚，营造出温暖而沉思的氛围。</li>
+</ul>
+<p>通常推荐上午的仪式，以获得更深的静谧和最少的外界干扰。最终时间将根据仪式期望的情感基调、自然光线状况、环境的安静程度，以及场地布置与可达性来确认。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939444/Sacred_or_Spiritual_Elopement_eelmde.png",
     gallery: [
@@ -1183,77 +1181,77 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "cultural-heritage-elopement",
     slug: "cultural-heritage-elopement",
     type: "ELOPEMENT",
-    title: "Cultural & Heritage-Inspired Ceremonies",
-    description: `<p>Cultural &amp; Heritage-Inspired Ceremonies are designed for couples who wish to honor tradition in a way that feels refined, meaningful, and personally relevant. These ceremonies are not defined by rigid formality, but by thoughtful interpretation — where cultural elements are carefully selected, respectfully adapted, and seamlessly integrated into a contemporary celebration.</p>
+    title: "文化与传统风情仪式",
+    description: `<p>文化与传统风情仪式专为希望以精致、有意义且与个人相关的方式致敬传统的新人而设。这些仪式并不以刻板的形式为特征，而是以用心的诠释为特征——文化元素经过审慎挑选、恭敬改编，并无缝融入现代的庆典之中。</p>
 
-<p>Set within curated venues, from private villas to heritage-inspired spaces, the ceremony unfolds with intention, symbolism, and a sense of quiet reverence.</p>
+<p>婚礼设在精选的场地中，从私人别墅到传统风格的空间，仪式怀着用心、象征意义与安静的敬意展开。</p>
 
-<blockquote><p>Here, tradition is not performed in its entirety. It is distilled, refined, and expressed with clarity and respect. A gesture of meaning. A sense of heritage. And a moment that bridges past and present.</p></blockquote>
+<blockquote><p>在这里，传统不是被完整地演绎，而是被提炼、精修，并以清晰与尊重表达出来。一个有意义的举动。一份传承的感觉。以及一个连接过去与现在的时刻。</p></blockquote>
 
-<p>Linda Wiryani Design and Event Planning approaches each cultural ceremony with sensitivity and care, ensuring that every element is both authentic and appropriately contextualized. Cultural references may be Balinese, Indonesian, or inspired by the couple's own heritage.</p>
+<p>Linda Wiryani Design and Event Planning 以敏感与关怀对待每一场文化仪式，确保每个元素既真实可信，又有恰当的语境。文化参照可以来自巴厘岛、印度尼西亚，或受新人自身传统的启发。</p>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking celebrant or cultural facilitator (where applicable)</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included (where applicable)</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>英语证婚人或文化主持引导者（如适用）</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用（如适用）</li>
 </ul>
 
-<h4>Cultural Ceremony Elements <em>(Curated &amp; Refined)</em></h4>
+<h4>文化仪式元素 <em>（精选与精致）</em></h4>
 <ul>
-  <li>Guidance on selecting meaningful cultural or symbolic elements</li>
-  <li>Simplified and thoughtfully curated ceremonial flow</li>
-  <li>Optional inclusion of traditional gestures (adapted respectfully), such as blessing rituals, offering elements, and symbolic exchanges</li>
-  <li>Coordination with local cultural practitioners where appropriate</li>
+  <li>协助挑选有意义的文化或象征性元素</li>
+  <li>简化并精心策划的仪式流程</li>
+  <li>可选择加入传统举动（恭敬改编），如祝福仪式、供奉元素及象征性交换</li>
+  <li>在适当情况下，与当地文化从业者协调</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Refined &amp; Contextual)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 精致且贴合语境）</em></h4>
 <ul>
-  <li>Ceremony styling using a harmonious blend of locally sourced fresh flowers, natural greenery, and select artificial elements</li>
-  <li>Design adapted to reflect cultural tone while maintaining Linda Wiryani Design and Event Planning's refined aesthetic</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall palette</li>
+  <li>仪式造型以本地新鲜花材、天然绿植及少量精选仿真元素和谐搭配而成</li>
+  <li>设计经过调整以体现文化基调，同时保持 Linda Wiryani Design and Event Planning 精致的美学风格</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体色调相协调</li>
 </ul>
 
-<h4>Music <em>(Subtle &amp; Contextual)</em></h4>
+<h4>音乐 <em>（含蓄且贴合语境）</em></h4>
 <ul>
-  <li>Soft traditional or instrumental music where appropriate, or minimal modern accompaniment aligned with the ceremony tone</li>
+  <li>在适当情况下，演奏轻柔的传统或器乐音乐，或采用与仪式基调相符的极简现代伴奏</li>
 </ul>
-<p><em>Music is curated to support the atmosphere without overpowering the ceremony.</em></p>
+<p><em>音乐经过精心挑选，以烘托氛围而不喧宾夺主。</em></p>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
-</ul>
-
-<h3>Important Notes</h3>
-<ul>
-  <li>This package is intentionally curated to remain refined, respectful, and not overly ceremonial</li>
-  <li>Only selected cultural elements will be incorporated, rather than full traditional rituals</li>
-  <li>The ceremony is adapted to suit the couple's comfort, belief system, and level of cultural engagement</li>
-  <li>Cultural sensitivity and appropriateness are prioritized at all times</li>
-  <li>Package rates start from <strong>IDR 35,000,000</strong></li>
-  <li>This package is designed for a couple only</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: full traditional or religious ceremonies, extensive ceremonial rituals requiring multiple practitioners, hair and makeup, traditional attire (kebaya, kain and/or sarong, accessories), additional cultural performers, accommodation or stay, transportation, videography or drone, and any items not explicitly listed under What's Included.</p>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Cultural &amp; Heritage-Inspired Ceremonies may take place in outdoor or semi-outdoor environments and are therefore subject to natural conditions. Weather, light, and environmental factors remain beyond the control of the Planner. In the event of unfavorable weather, the ceremony may proceed as scheduled where safely possible, pause briefly or be repositioned within a covered or indoor space if available, or have certain ceremonial elements simplified or adapted. Weather conditions are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
-
-<h3>Perfect Timing</h3>
-<p>Cultural ceremonies are best experienced during moments of natural calm and balance.</p>
+<h3>重要说明</h3>
 <ul>
-  <li><strong>Morning (Approximately 7:00 – 9:00 AM)</strong> — Soft light and quiet atmosphere support a respectful and grounded ceremony.</li>
-  <li><strong>Late Afternoon (Approximately 4:30 – 6:00 PM)</strong> — Warm tones create a more atmospheric and visually rich setting.</li>
+  <li>本套餐经过刻意设计，力求精致、恭敬，且不过度仪式化</li>
+  <li>仅融入精选的文化元素，而非完整的传统仪式</li>
+  <li>仪式将根据新人的舒适度、信仰体系及文化参与程度进行调整</li>
+  <li>始终优先考虑文化敏感性与恰当性</li>
+  <li>套餐价格起价为 <strong>IDR 35,000,000</strong></li>
+  <li>本套餐仅适用于一对新人</li>
 </ul>
-<p>Final timing will be guided by the cultural flow of the ceremony, light conditions, venue setting, and overall atmosphere.</p>`,
+
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：完整的传统或宗教仪式、需要多位主持者的大型仪式、发型与化妆、传统服饰（kebaya、kain 和/或 sarong、配饰）、额外的文化表演者、住宿或入住、交通、摄像或无人机拍摄，以及「包含内容」中未明确列出的任何项目。</p>
+
+<h3>天气与自然条件</h3>
+<p>文化与传统风情仪式可在户外或半户外环境中举行，因此受自然条件影响。天气、光线及环境因素超出策划师的掌控。如遇不利天气，仪式可在安全允许的情况下按计划进行，短暂暂停或在有遮蔽或室内空间时转移至该处，或对某些仪式元素进行简化或调整。除非另有书面约定，天气状况不构成取消、退款或改期的理由。</p>
+
+<h3>最佳时间</h3>
+<p>文化仪式最适合在自然平静与平衡的时刻进行。</p>
+<ul>
+  <li><strong>上午（约 7:00 – 9:00）</strong> — 柔和的光线与安静的氛围有助于营造恭敬而踏实的仪式。</li>
+  <li><strong>傍晚前（约下午 4:30 – 6:00）</strong> — 温暖的色调营造出更具氛围感、视觉更丰富的场景。</li>
+</ul>
+<p>最终时间将根据仪式的文化流程、光线状况、场地布置及整体氛围来确定。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939445/Cultural_Heritage-Inspired_Ceremonies_muscyz.png",
     gallery: [
@@ -1274,93 +1272,93 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "sunrise-purification-elopement",
     slug: "sunrise-purification-elopement",
     type: "ELOPEMENT",
-    title: "Sunrise or Purification-Led Moments",
-    description: `<p>Sunrise or Purification-Led Moments are designed for couples drawn to renewal, clarity, and quiet beginnings. These ceremonies are shaped by the gentle transition of light or the symbolic act of cleansing, marking a meaningful threshold into a new chapter.</p>
+    title: "日出或净化时刻",
+    description: `<p>日出或净化时刻专为向往新生、清明与安静开端的新人而设。这些仪式由光线的温柔过渡或象征性的净化举动塑造，标志着迈入新篇章的重要门槛。</p>
 
-<p>Set during the early hours of the day or within serene water-based settings, these experiences unfold with calm intention, softened light, and a sense of emotional reset.</p>
+<p>婚礼设在一天的清晨或宁静的水畔环境中，体验在安静的用心、柔和的光线以及情感重启的感受中展开。</p>
 
-<blockquote><p>Here, the moment is not defined by scale. It is defined by presence, stillness, and quiet transformation. First light. Still water. And a beginning held gently in calm.</p></blockquote>
+<blockquote><p>在这里，时刻不以规模来定义，而以在场、静谧与安静的蜕变来定义。第一缕光。静止的水。以及一个被轻轻守护于平静之中的开始。</p></blockquote>
 
-<p>Linda Wiryani Design and Event Planning approaches these ceremonies with sensitivity and restraint — allowing space for reflection, grounding, and symbolic gestures that feel personal and unforced.</p>
+<p>Linda Wiryani Design and Event Planning 以敏感与克制对待这些仪式——为沉思、扎根以及个人化且不做作的象征性举动留出空间。</p>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination by Linda Wiryani Design &amp; Event Planning (1 pax)</li>
-  <li>English-speaking celebrant or facilitator</li>
-  <li>Custom-designed commemorative wedding certificate as a keepsake</li>
-  <li>Venue access fees included (where applicable within selected location)</li>
+  <li>由 Linda Wiryani Design &amp; Event Planning 负责婚礼仪式策划及当天统筹（1人）</li>
+  <li>英语证婚人或主持引导者</li>
+  <li>定制设计的婚礼纪念证书，作为珍藏留念</li>
+  <li>包含场地入场费用（适用于所选地点，如适用）</li>
 </ul>
 
-<h4>Ceremony Structure <em>(Renewal &amp; Intention)</em></h4>
+<h4>仪式结构 <em>（新生与意愿）</em></h4>
 <ul>
-  <li>Guided ceremony flow focused on beginnings, reflection, and intention-setting</li>
-  <li>Optional symbolic elements such as gentle water purification or cleansing ritual, silent reflection or meditation, and personal vow exchange or intention-setting</li>
-  <li>Thoughtfully curated ceremony script aligned with the couple's emotional journey</li>
+  <li>以开始、沉思与意愿设定为重点的引导式仪式流程</li>
+  <li>可选的象征性元素，如温柔的水净化或洁净仪式、静默沉思或冥想，以及个人誓言交换或意愿设定</li>
+  <li>根据新人情感旅程精心撰写的仪式文本</li>
 </ul>
 
-<h4>Floral Styling <em>(Local Flowers | Light &amp; Minimal)</em></h4>
+<h4>花艺造型 <em>（本地花材 | 轻盈与极简）</em></h4>
 <ul>
-  <li>Ceremony styling using a refined blend of locally sourced fresh flowers, natural greenery, and select artificial elements</li>
-  <li>Designed with lightness and restraint to complement the softness of morning or water-based settings</li>
-  <li>Bridal bouquet using local flowers</li>
-  <li>Groom's boutonniere coordinated with the overall palette</li>
+  <li>仪式造型以本地新鲜花材、天然绿植及少量精选仿真元素精致搭配而成</li>
+  <li>以轻盈与克制的设计，与清晨或水畔环境的柔和感相呼应</li>
+  <li>使用本地花材制作的新娘捧花</li>
+  <li>新郎胸花，与整体色调相协调</li>
 </ul>
 
-<h4>Music <em>(Soft &amp; Reflective)</em></h4>
+<h4>音乐 <em>（轻柔与沉思）</em></h4>
 <ul>
-  <li>Sound healing (e.g., Tibetan or crystal bowls), or</li>
-  <li>Soft bamboo flute (suling), or</li>
-  <li>Rindik, traditional Balinese musical instrument made primarily of bamboo, or</li>
-  <li>Natural silence, allowing the environment to shape the soundscape</li>
+  <li>声音疗愈（如藏式颂钵或水晶钵），或</li>
+  <li>轻柔的竹笛（suling），或</li>
+  <li>Rindik，一种主要以竹子制成的巴厘岛传统乐器，或</li>
+  <li>自然的寂静，让环境塑造声音的景观</li>
 </ul>
-<p><em>Music remains minimal and unobtrusive.</em></p>
+<p><em>音乐保持极简且不喧宾夺主。</em></p>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer for 1,5 hours (1 pax)</li>
-  <li>Carefully curated and edited best-selected images</li>
-  <li>Final images delivered within 1 week via private Google Drive link</li>
-</ul>
-
-<h3>Important Notes</h3>
-<ul>
-  <li>This package is intentionally curated to remain calm, minimal, and emotionally centered</li>
-  <li>Only items listed above are included</li>
-  <li>Ceremony timing is essential to the experience and will be carefully planned around sunrise or quiet daylight moments</li>
-  <li>Purification elements are symbolic and adapted respectfully, without requiring full religious ceremony unless requested</li>
-  <li>The experience is designed to feel personal, grounded, and unhurried</li>
-  <li>Package rates start from <strong>IDR 35,000,000</strong></li>
-  <li>This package is designed for a couple only</li>
+  <li>专业摄影师服务 1.5 小时（1人）</li>
+  <li>精心挑选并修饰的精华照片</li>
+  <li>成片将在 1 周内通过私人 Google Drive 链接交付</li>
 </ul>
 
-<h3>Not Included</h3>
-<p>The following can be arranged separately upon request: accommodation or stay, transportation (early morning arrangements may be required), sound system or additional audio equipment, videography or drone, additional facilitators or ceremonial practitioners, hair and makeup, wedding attire or styling, rehearsals involving all vendors, and any items not explicitly listed under What's Included.</p>
-
-<h3>Weather &amp; Nature Conditions</h3>
-<p>Sunrise or purification-led ceremonies often take place in outdoor or water-based environments and are subject to natural conditions. Conditions may include early morning mist or low visibility, sudden weather changes, cooler temperatures, water conditions depending on location, and natural terrain and accessibility.</p>
-<p>As these ceremonies are guided by natural timing and environment, conditions are beyond our control. In the event of unfavorable weather, the ceremony may proceed where safely possible, pause briefly to allow conditions to improve, be repositioned to a nearby sheltered area where available, or have symbolic elements simplified or adjusted.</p>
-<p>The couple acknowledges that natural conditions are inherent to the experience and are not grounds for cancellation, refund, or rescheduling unless otherwise agreed in writing.</p>
-
-<h3>Payment &amp; Booking Conditions</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>A 50% non-refundable deposit is required upon confirmation</li>
-  <li>The remaining 50% balance must be paid no later than 30 days prior to the event date</li>
-  <li>The event date is not considered secured until the deposit has been received</li>
-  <li>All payments made are non-refundable unless otherwise stated in writing</li>
-  <li>Failure to complete payment by the agreed deadline may result in cancellation of services without refund</li>
-  <li>Any requested changes to ceremony timing, location, or structure after confirmation are subject to availability and may incur additional fees depending on adjustments required</li>
-  <li>Venue access and permits (if applicable) follow the respective location's policies</li>
+  <li>本套餐经过刻意设计，力求平静、极简，并以情感为核心</li>
+  <li>仅包含上述所列项目</li>
+  <li>仪式时间对体验至关重要，将围绕日出或安静的日间时刻精心规划</li>
+  <li>净化元素为象征性质并恭敬改编，除非另有要求，否则无需完整的宗教仪式</li>
+  <li>整个体验旨在让人感到个人化、踏实且从容不迫</li>
+  <li>套餐价格起价为 <strong>IDR 35,000,000</strong></li>
+  <li>本套餐仅适用于一对新人</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Timing is central to this experience.</p>
+<h3>不包含项目</h3>
+<p>以下项目可按需另行安排：住宿或入住、交通（可能需要清晨的安排）、音响系统或额外音频设备、摄像或无人机拍摄、额外主持引导者或仪式从业者、发型与化妆、婚礼服饰或造型、涉及所有供应商的彩排，以及「包含内容」中未明确列出的任何项目。</p>
+
+<h3>天气与自然条件</h3>
+<p>日出或净化仪式常在户外或水畔环境中举行，并受自然条件影响。状况可能包括清晨的薄雾或低能见度、突发的天气变化、较低的气温、视地点而定的水域状况，以及自然地形与可达性。</p>
+<p>由于这些仪式以自然的时间与环境为指引，各种条件超出我们的掌控。如遇不利天气，仪式可在安全允许的情况下进行，短暂暂停以等待条件改善，在有遮蔽区域时转移至附近，或对象征性元素进行简化或调整。</p>
+<p>新人确认，自然条件是这一体验所固有的，除非另有书面约定，否则不构成取消、退款或改期的理由。</p>
+
+<h3>付款与预订条款</h3>
 <ul>
-  <li><strong>Sunrise (Approximately 6:00 – 7:30 AM)</strong> — The most recommended timing. Light is soft, the atmosphere is still, and the environment feels quiet and undisturbed. This creates the most aligned setting for reflection and renewal.</li>
-  <li><strong>Early Morning (Up to 9:00 AM)</strong> — Still suitable for calm ceremonies, though light becomes brighter and activity may gradually increase.</li>
+  <li>确认时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动日期前至少 30 天付清</li>
+  <li>在收到定金之前，活动日期不视为已锁定</li>
+  <li>所有已付款项均不可退还，除非另有书面说明</li>
+  <li>未能在约定期限内完成付款，可能导致服务被取消且不予退款</li>
+  <li>确认后要求更改仪式时间、地点或结构，均视档期而定，并可能根据所需调整产生额外费用</li>
+  <li>场地通行及许可（如适用）遵循各地点的政策</li>
 </ul>
-<p>Sunrise timing is strongly recommended for maximum stillness and privacy, soft diffused natural light, strong emotional atmosphere, and alignment with the symbolic theme of renewal. Final timing will be guided by sunrise timing variation, location accessibility, environmental conditions, and desired emotional tone.</p>`,
+
+<h3>最佳时间</h3>
+<p>时间是这一体验的核心。</p>
+<ul>
+  <li><strong>日出（约 6:00 – 7:30）</strong> — 最推荐的时间。光线柔和，氛围静谧，环境安静而不受打扰。这为沉思与新生营造出最契合的场景。</li>
+  <li><strong>清晨（至 9:00）</strong> — 仍适合平静的仪式，不过光线会变得更明亮，活动也可能逐渐增多。</li>
+</ul>
+<p>强烈推荐在日出时段举行，以获得最大的静谧与私密、柔和漫射的自然光线、浓厚的情感氛围，并契合新生这一象征性主题。最终时间将根据日出时间的变化、地点的可达性、环境条件及期望的情感基调来确定。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939445/Sunrise_or_Purification_vfhluk.png",
     gallery: [
@@ -1381,82 +1379,82 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "editorial-luxury-elopement",
     slug: "editorial-luxury-elopement",
     type: "ELOPEMENT",
-    title: "Editorial yet Human Storytelling",
-    description: `<p>At Linda Wiryani Design and Event Planning, we create luxury elopements in Bali that feel like a beautifully curated editorial — yet remain deeply personal and emotionally real. As a Bali elopement planner and designer, our work is rooted in fashion, design, and five-star hospitality. Each celebration is thoughtfully art-directed, balancing refined aesthetics with genuine human connection.</p>
+    title: "兼具编辑质感与人情味的故事叙述",
+    description: `<p>在 Linda Wiryani Design and Event Planning，我们在巴厘岛打造奢华私奔婚礼，如同一本精心策划的编辑风格画册——却依然深具个人色彩与真实情感。作为巴厘岛私奔婚礼的策划师与设计师，我们的工作植根于时尚、设计与五星级待客之道。每场庆典都经过用心的艺术指导，在精致美学与真挚的人际联结之间取得平衡。</p>
 
-<blockquote><p>Every detail is intentional. Every moment is carefully composed. Yet nothing feels staged or distant. Our approach to Bali elopement weddings is to create an atmosphere that feels effortless and lived-in — elegant, yet warm; visually refined, yet emotionally honest.</p></blockquote>
+<blockquote><p>每个细节都是刻意的。每个瞬间都经过精心构图。然而没有任何东西显得刻意摆拍或疏离。我们对巴厘岛私奔婚礼的理念，是营造一种自然而带有生活气息的氛围——优雅而温暖；视觉精致而情感真诚。</p></blockquote>
 
-<p>Each Linda Wiryani Design and Event Planning elopement in Bali is never defined by trends, but by place, emotion, and intention. From private villas in Uluwatu, serene landscapes in Ubud, to hidden coastal settings across Bali — every wedding is thoughtfully curated to feel timeless rather than temporary. Beautiful, composed and always emotionally true.</p>
+<p>Linda Wiryani Design and Event Planning 在巴厘岛的每一场私奔婚礼从不由潮流定义，而由地点、情感与用心定义。从乌鲁瓦图的私人别墅、乌布宁静的景观，到巴厘岛各处隐秘的海岸场景——每场婚礼都经过精心策划，让人感到永恒而非短暂。美丽、从容，并始终情感真挚。</p>
 
-<h3>Our Elopement Experiences Include</h3>
+<h3>我们的私奔婚礼体验包括</h3>
 <ul>
-  <li><strong>Editorial or Fashion-Forward Elopements in Bali</strong> — Couture-led elopements designed with a strong visual direction, ideal for couples seeking a refined, editorial-style wedding in Bali.</li>
-  <li><strong>Home-Style Intimate Elopements</strong> — Warm and personal gatherings designed around closeness, comfort, and natural flow.</li>
-  <li><strong>Quiet Luxury Elopements in Bali</strong> — Understated and sophisticated celebrations where beauty is expressed through tone, texture, and emotion — a signature of modern luxury weddings in Bali.</li>
+  <li><strong>巴厘岛编辑风格或时尚前卫私奔婚礼</strong> — 以高级定制为导向、视觉方向鲜明的私奔婚礼，非常适合追求在巴厘岛举办精致编辑风格婚礼的新人。</li>
+  <li><strong>家庭式私密私奔婚礼</strong> — 围绕亲近、舒适与自然流动而设计的温馨而个人化的聚会。</li>
+  <li><strong>巴厘岛低调奢华私奔婚礼</strong> — 低调而精致的庆典，美通过色调、质感与情感来表达——这是巴厘岛现代奢华婚礼的标志。</li>
 </ul>
 
-<h3>What's Included</h3>
+<h3>包含内容</h3>
 
-<h4>Ceremony Design &amp; Coordination</h4>
+<h4>仪式设计与统筹</h4>
 <ul>
-  <li>Wedding ceremony planning and on-the-day coordination (1 pax)</li>
-  <li>English-speaking local celebrant</li>
-  <li>Custom-designed commemorative wedding certificate</li>
-  <li>Venue access coordination (basic access only)</li>
+  <li>婚礼仪式策划及当天统筹（1人）</li>
+  <li>当地英语证婚人</li>
+  <li>定制设计的婚礼纪念证书</li>
+  <li>场地入场协调（仅限基础入场）</li>
 </ul>
 
-<h4>Floral Styling <em>(Refined &amp; Natural Composition)</em></h4>
+<h4>花艺造型 <em>（精致与自然的构图）</em></h4>
 <ul>
-  <li>Ceremony backdrop using locally sourced flowers, greenery, and selected artificial elements</li>
-  <li>Floral aisle arrangements with organic, natural movement</li>
-  <li>Flower petals along the ceremony walkway</li>
-  <li>Bridal bouquet and groom's boutonniere</li>
+  <li>使用本地花材、绿植及少量精选仿真元素的仪式背景</li>
+  <li>带有有机、自然律动的过道花艺布置</li>
+  <li>仪式通道沿途撒放花瓣</li>
+  <li>新娘捧花与新郎胸花</li>
 </ul>
 
-<h4>Music</h4>
+<h4>音乐</h4>
 <ul>
-  <li>Solo guitarist or solo violinist for an intimate, atmospheric ceremony</li>
+  <li>吉他手或小提琴手独奏，为私密而富有氛围感的仪式增色</li>
 </ul>
 
-<h4>Photography</h4>
+<h4>摄影</h4>
 <ul>
-  <li>Professional photographer (2 hours, 1 pax)</li>
-  <li>Edited, best-selected images</li>
-  <li>Delivery within 7 days via private online gallery</li>
+  <li>专业摄影师（2 小时，1人）</li>
+  <li>修饰后的精选照片</li>
+  <li>7 天内通过私人在线相册交付</li>
 </ul>
 
-<h3>Important Notes</h3>
+<h3>重要说明</h3>
 <ul>
-  <li>This experience is intentionally curated to remain simple, refined, and focused on the ceremony moment itself</li>
-  <li>Only items listed above are included</li>
-  <li>All additional elements can be arranged upon request</li>
-  <li>Ceremony timing will be confirmed based on natural light, location conditions, and overall environmental flow</li>
-  <li>Package rates start from <strong>IDR 35,000,000</strong></li>
-  <li>This package is designed for a couple only</li>
+  <li>本体验经过刻意设计，力求简洁、精致，专注于仪式本身的时刻</li>
+  <li>仅包含上述所列项目</li>
+  <li>所有额外元素均可按需安排</li>
+  <li>仪式时间将根据自然光线、地点状况及整体环境流线来确认</li>
+  <li>套餐价格起价为 <strong>IDR 35,000,000</strong></li>
+  <li>本套餐仅适用于一对新人</li>
 </ul>
 
-<h3>Not Included</h3>
-<p>Available upon request with additional cost: venue or location fees (if required), accommodation, transportation, sound system or additional audio setup, videography or drone, additional musicians or entertainment, hair and makeup, wedding attire and accessories, and rehearsals with full vendor team.</p>
+<h3>不包含项目</h3>
+<p>可按需提供，需额外付费：场地或地点费用（如需要）、住宿、交通、音响系统或额外音频设置、摄像或无人机拍摄、额外乐手或娱乐、发型与化妆、婚礼服饰与配饰，以及与完整供应商团队的彩排。</p>
 
-<h3>Weather &amp; Natural Conditions</h3>
-<p>Outdoor and riverside elopements in Bali are influenced by natural elements such as weather, humidity, water flow, and terrain. In the event of rain or changing conditions, the ceremony may pause briefly, adjustments may be made to positioning or setup, and styling may be refined to ensure safety and cohesion. No fixed indoor backup is guaranteed unless provided by the venue. These natural conditions are part of the experience and are not considered grounds for cancellation or refund.</p>
+<h3>天气与自然条件</h3>
+<p>巴厘岛的户外及河畔私奔婚礼受天气、湿度、水流与地形等自然因素影响。如遇下雨或条件变化，仪式可能会短暂暂停，位置或布置可能会作出调整，造型也可能会作精修，以确保安全与整体协调。除非场地另行提供，否则不保证有固定的室内备用方案。这些自然条件属于体验的一部分，不被视为取消或退款的理由。</p>
 
-<h3>Payment &amp; Booking</h3>
+<h3>付款与预订</h3>
 <ul>
-  <li>A 50% non-refundable deposit is required upon confirmation</li>
-  <li>The remaining 50% balance is due 30 days prior to the event</li>
-  <li>The date is only secured once the deposit is received</li>
-  <li>All payments are non-refundable unless otherwise agreed in writing</li>
-  <li>Changes to date, venue, or design after confirmation are subject to availability and may incur additional costs</li>
+  <li>确认时须支付 50% 的不可退还定金</li>
+  <li>剩余 50% 尾款须在活动前 30 天付清</li>
+  <li>仅在收到定金后，日期才会被锁定</li>
+  <li>所有款项均不可退还，除非另有书面约定</li>
+  <li>确认后更改日期、场地或设计，均视档期而定，并可能产生额外费用</li>
 </ul>
 
-<h3>Perfect Timing</h3>
-<p>Elopements are designed around natural light and environmental harmony.</p>
+<h3>最佳时间</h3>
+<p>私奔婚礼围绕自然光线与环境和谐而设计。</p>
 <ul>
-  <li><strong>Morning (7:00 – 9:00 AM)</strong> — Soft light, cooler temperature, and a calm, quiet atmosphere.</li>
-  <li><strong>Late Afternoon (4:30 – 6:00 PM)</strong> — Warm tones, softer shadows, and a more atmospheric setting.</li>
+  <li><strong>上午（7:00 – 9:00）</strong> — 柔和的光线、较凉爽的气温，以及平静安宁的氛围。</li>
+  <li><strong>傍晚前（下午 4:30 – 6:00）</strong> — 温暖的色调、更柔和的阴影，以及更具氛围感的场景。</li>
 </ul>
-<p>Final timing will be guided by light direction, weather patterns, location conditions, and overall comfort and safety.</p>`,
+<p>最终时间将根据光线方向、天气模式、地点状况，以及整体舒适度与安全来确定。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1776939444/Editorial_yet_human_storytelling_xnjqzv.png",
     gallery: [
@@ -1479,10 +1477,10 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "private-villa-estate",
     slug: "private-villa-estate",
     type: "INTIMATE",
-    title: "Private Villa Estate Weddings",
-    description: `<p>Host your closest loved ones in an exclusive villa estate featuring stunning architecture and manicured gardens. Private Villa Estate Weddings are crafted for couples who desire a refined, unhurried celebration entirely their own — where every detail of the space works in harmony with the ceremony.</p>
+    title: "私人别墅庄园婚礼",
+    description: `<p>在拥有惊艳建筑与精心修剪花园的专属别墅庄园中款待您最亲近的亲友。私人别墅庄园婚礼专为渴望精致、从容、完全属于自己的庆典的新人而设——空间的每个细节都与仪式和谐共鸣。</p>
 
-<p>These settings offer complete privacy, bespoke styling possibilities, and an atmosphere shaped by the architecture and landscape of the estate itself. Whether nestled within tropical gardens or set against sweeping views, each villa becomes a living backdrop for your most important day.</p>`,
+<p>这些场地提供完全的私密性、量身定制的造型可能性，以及由庄园自身建筑与景观塑造的氛围。无论是掩映在热带花园之中，还是背靠开阔的景致，每座别墅都将成为您人生最重要一天的生动背景。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1768446142/Wedding_1_fyzchu.jpg",
     gallery: [
@@ -1526,10 +1524,10 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "luxury-resort-intimate",
     slug: "luxury-resort-intimate",
     type: "INTIMATE",
-    title: "Luxury Resort Intimate Weddings",
-    description: `<p>Experience world-class hospitality and breathtaking venues within prestigious resort properties. Luxury Resort Intimate Weddings are designed for couples who want the ease and refinement of a world-class setting — without the scale of a large event.</p>
+    title: "豪华度假村私密婚礼",
+    description: `<p>在著名的度假村物业中，体验世界级的待客之道与令人惊叹的场地。豪华度假村私密婚礼专为希望获得世界级场地的从容与精致、却无需大型活动规模的新人而设。</p>
 
-<p>These celebrations are held within carefully selected resort properties that offer dedicated wedding facilities, professional event staff, and elevated catering. From beachfront pavilions to clifftop terraces, each venue brings its own distinct character to your celebration.</p>`,
+<p>这些庆典在精心挑选的度假村物业中举行，这些物业提供专属的婚礼设施、专业的活动团队与高端餐饮。从海滨凉亭到悬崖露台，每个场地都为您的庆典带来其独特的个性。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
     gallery: [
@@ -1579,10 +1577,10 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "garden-riverside",
     slug: "garden-riverside",
     type: "INTIMATE",
-    title: "Garden & Riverside Weddings",
-    description: `<p>Celebrate amidst blooming florals and flowing waters in serene natural garden settings. Garden &amp; Riverside Weddings embrace the gentle rhythms of the natural world — where the sound of water, the softness of greenery, and open sky come together to hold your ceremony in quiet, organic beauty.</p>
+    title: "花园与河畔婚礼",
+    description: `<p>在宁静的自然花园中，于盛开的繁花与流动的水声间庆祝。花园与河畔婚礼拥抱自然世界的温柔节奏——水声、绿意的柔软与开阔的天空交织，在安静而有机的美中守护您的仪式。</p>
 
-<p>These celebrations are shaped by the landscape itself. Lush riverside lawns, flowering garden terraces, and open-air pavilions provide a setting that feels both effortlessly romantic and grounded in nature.</p>`,
+<p>这些庆典由景观本身塑造。郁郁葱葱的河畔草坪、鲜花盛开的花园露台以及露天凉亭，营造出既自然浪漫又扎根于自然的场景。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1769608324/Wedding_3_demaoq.png",
     gallery: [
@@ -1620,10 +1618,10 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "cultural-architectural",
     slug: "cultural-architectural",
     type: "INTIMATE",
-    title: "Cultural & Architectural Settings",
-    description: `<p>Honor tradition in venues that showcase Bali's rich cultural heritage and stunning architecture. Cultural &amp; Architectural Settings are designed for couples who feel drawn to the depth of place — celebrations held within temple courtyards, heritage estates, and venues where Balinese artistry and spatial design carry their own quiet ceremony.</p>
+    title: "文化与建筑场地",
+    description: `<p>在展现巴厘岛丰富文化遗产与惊艳建筑的场地中致敬传统。文化与建筑场地专为被场所深度所吸引的新人而设——在寺庙庭院、传统庄园，以及巴厘岛艺术与空间设计自带安静仪式感的场地中举行的庆典。</p>
 
-<p>These weddings are shaped as much by the venue's character as by the couple's own vision. Ceremonial elements are woven carefully into the setting, creating a celebration that feels rooted, meaningful, and visually extraordinary.</p>`,
+<p>这些婚礼既由场地的个性塑造，也由新人自己的愿景塑造。仪式元素被细致地编织进场景之中，成就一场扎根、有意义且视觉非凡的庆典。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1769236708/Wedding_5_ucfdpj.jpg",
     gallery: [
@@ -1679,10 +1677,10 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "destination-intimate",
     slug: "destination-intimate",
     type: "INTIMATE",
-    title: "Destination Intimate Celebrations",
-    description: `<p>Create unforgettable memories in unique destination venues that perfectly frame your love story. Destination Intimate Celebrations are designed for couples who choose to travel — to celebrate in a place that holds meaning, beauty, and a sense of arrival.</p>
+    title: "目的地私密庆典",
+    description: `<p>在独特的目的地场地中创造难忘的回忆，为您的爱情故事完美取景。目的地私密庆典专为选择远行的新人而设——在一个蕴含意义、美丽以及抵达之感的地方庆祝。</p>
 
-<p>These weddings are held in venues selected for their panoramic setting, distinctive character, and the feeling they create upon arrival. Whether perched above the ocean, nestled within terraced rice fields, or overlooking a volcanic crater, each location becomes an essential part of the story.</p>`,
+<p>这些婚礼在因其全景视野、独特个性以及抵达时所带来的感受而被选中的场地中举行。无论是坐落于海洋之上、掩映在梯田稻田之中，还是俯瞰火山口，每个地点都成为您故事中不可或缺的一部分。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767511823/Wedding_2_byu1us.jpg",
     gallery: [
@@ -1738,10 +1736,10 @@ export const weddingThemeList: WeddingTheme[] = [
     id: "forest-jungle-intimate",
     slug: "forest-jungle-intimate",
     type: "INTIMATE",
-    title: "Intimate Jungle or Forest Weddings",
-    description: `<p>Celebrate your union beneath ancient trees in an enchanting natural cathedral of green. Intimate Jungle or Forest Weddings are held within Bali's lush interior landscapes — where towering canopies, filtered light, and the quiet presence of nature form a setting unlike any other.</p>
+    title: "丛林或森林私密婚礼",
+    description: `<p>在古老树木之下，于迷人的绿色天然大教堂中庆祝您的结合。丛林或森林私密婚礼在巴厘岛郁郁葱葱的内陆景观中举行——高耸的林冠、过滤的光线以及自然安静的存在，构成一处别无二致的场景。</p>
 
-<p>These ceremonies embrace the untamed beauty of the forest environment. The rustling of leaves, dappled sunlight through the canopy, and the surrounding greenery create an atmosphere that feels primal, poetic, and profoundly alive.</p>`,
+<p>这些仪式拥抱森林环境未经驯化的美。树叶的沙沙声、穿过林冠洒落的斑驳阳光以及周围的绿意，营造出既原始、诗意，又充满生命力的氛围。</p>`,
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1769609440/Cover_1_py4g8y.jpg",
     gallery: [
