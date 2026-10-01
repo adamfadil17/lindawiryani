@@ -3,8 +3,9 @@ import { Cormorant_Garamond } from "next/font/google";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
-import { routing } from "@/i18n/routing";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { routing, type Locale } from "@/i18n/routing";
+import { DEFAULT_OG_IMAGE, OG_LOCALE, SITE_URL, absoluteUrl } from "@/lib/seo";
 import "../globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -22,47 +23,53 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://www.lindawiryani.com"),
-  title: {
-    default: "Linda Wiryani | Luxury Wedding Planner & Designer in Bali",
-    template: "%s | Linda Wiryani",
-  },
-  description:
-    "Linda Wiryani Design & Event Planning creates intimate elopements and private villa weddings in Bali through refined design and storytelling.",
-  keywords: [
-    "Luxury Wedding Planner Bali",
-    "Elopement Weddings Bali",
-    "Intimate Weddings Bali",
-    "Signature Wedding Venues Bali",
-    "Private Villa Weddings Bali",
-    "Bespoke Wedding Design",
-  ],
-  authors: [{ name: "Linda Wiryani" }],
-  icons: {
-    icon: "/images/logo-lindawiryani.png",
-    shortcut: "/images/logo-lindawiryani.png",
-    apple: "/apple-touch-icon.png.png",
-  },
-  openGraph: {
-    title:
-      "Luxury Wedding Planner in Bali | Linda Wiryani Design & Event Planning",
-    description:
-      "Linda Wiryani Design and Event Planning is a luxury wedding planner and designer in Bali, specializing in destination weddings, private villa weddings, intimate celebrations, and refined elopements for international couples.",
-    url: "https://www.lindawiryani.com",
-    siteName: "Linda Wiryani Design & Event Planning",
-    locale: "en_US",
-    type: "website",
-    images: [
-      {
-        url: "/images/logo-lindawiryani.png",
-        width: 1200,
-        height: 630,
-        alt: "Linda Wiryani Luxury Wedding Planning Bali",
-      },
-    ],
-  },
-};
+/**
+ * Site-wide defaults, localized from messages `seo.site`.
+ * Intentionally NO `alternates` / `openGraph.url` here: a page-level value
+ * replaces the parent's, and a root canonical would point every page that
+ * forgets its own at the homepage. Each page sets its own (see lib/seo.ts).
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+  const t = await getTranslations({ locale, namespace: "seo.site" });
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: t("title"),
+      template: "%s | Linda Wiryani",
+    },
+    description: t("description"),
+    keywords: t.raw("keywords") as string[],
+    authors: [{ name: "Linda Wiryani" }],
+    icons: {
+      icon: "/images/logo-lindawiryani.png",
+      shortcut: "/images/logo-lindawiryani.png",
+      apple: "/apple-touch-icon.png.png",
+    },
+    openGraph: {
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      url: absoluteUrl(locale as Locale),
+      siteName: t("siteName"),
+      locale: OG_LOCALE[locale as Locale],
+      type: "website",
+      images: [
+        {
+          url: DEFAULT_OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: t("ogAlt"),
+        },
+      ],
+    },
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -80,6 +87,8 @@ export default async function LocaleLayout({
   // Enables static rendering for this locale in child server components
   setRequestLocale(locale);
 
+  const tLd = await getTranslations({ locale, namespace: "seo.jsonLd" });
+
   // Structured Data (JSON-LD) updated with your specific service descriptions
   const jsonLd = {
     "@context": "https://schema.org",
@@ -87,8 +96,8 @@ export default async function LocaleLayout({
     name: "Linda Wiryani Design and Event Planning",
     url: "https://www.lindawiryani.com",
     image: "https://www.lindawiryani.com/images/logo-lindawiryani.png",
-    description:
-      "Linda Wiryani Design and Event Planning is a luxury wedding planner and designer in Bali, specializing in destination weddings, private villa weddings, intimate celebrations, and refined elopements for international couples.",
+    description: tLd("description"),
+    inLanguage: locale,
     telephone: "+628113980998",
     address: {
       "@type": "PostalAddress",
@@ -116,42 +125,38 @@ export default async function LocaleLayout({
     },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Wedding Services",
+      name: tLd("catalogName"),
       itemListElement: [
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "Elopement Weddings",
-            description:
-              "Intimate celebrations designed for couples seeking privacy, meaning, and extraordinary settings.",
+            name: tLd("offers.elopement.name"),
+            description: tLd("offers.elopement.description"),
           },
         },
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "Intimate Weddings",
-            description:
-              "Thoughtfully scaled celebrations curated for connection, elegance, and refined hospitality.",
+            name: tLd("offers.intimate.name"),
+            description: tLd("offers.intimate.description"),
           },
         },
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "Signature Venue Selection",
-            description:
-              "A curated selection of venues known for distinctive architecture, setting, and experience.",
+            name: tLd("offers.venues.name"),
+            description: tLd("offers.venues.description"),
           },
         },
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "Private Villa Weddings",
-            description:
-              "Exclusive private estates offering intimacy, flexibility, and a deeply personal celebration experience.",
+            name: tLd("offers.villa.name"),
+            description: tLd("offers.villa.description"),
           },
         },
       ],

@@ -789,8 +789,96 @@
     "showingPartial": "Affichage de {count} sur {total}",
     "showLess": "Voir moins",
     "showMore": "Voir {count} destinations de plus",
-    "metaTitle": "Organisation de mariage à {name} | Mariages de destination",
+    "metaTitle": "Wedding Planner à {name}",
     "metaOgTitle": "Mariages de destination à {name}",
     "notFound": "Destination introuvable"
+  },
+  "seo": {
+    "site": {
+      "title": "Linda Wiryani | Wedding Planner & Designer de Luxe à Bali",
+      "description": "Linda Wiryani Design & Event Planning crée des mariages intimes, des elopements et des mariages en villa privée à Bali, dans un esprit de design raffiné.",
+      "ogTitle": "Wedding Planner de Luxe à Bali | Linda Wiryani Design & Event Planning",
+      "ogDescription": "Wedding planner et designer de luxe à Bali, spécialisée dans les mariages de destination, en villa privée, les célébrations intimes et les elopements raffinés.",
+      "ogAlt": "Linda Wiryani, wedding planner de luxe à Bali",
+      "siteName": "Linda Wiryani Design & Event Planning",
+      "keywords": [
+        "Wedding Planner de Luxe à Bali",
+        "Elopement à Bali",
+        "Mariage intime à Bali",
+        "Lieux de mariage d'exception à Bali",
+        "Mariage en villa privée à Bali",
+        "Design de mariage sur mesure"
+      ]
+    },
+    "pages": {
+      "home": {
+        "title": "Linda Wiryani | Wedding Planner & Designer de Luxe à Bali",
+        "description": "Mariages de destination et mariages intimes de luxe à Bali, conçus avec intention. Elopements, villas privées et célébrations raffinées par Linda Wiryani."
+      },
+      "services": {
+        "title": "Organisation & Design de Mariage à Bali",
+        "description": "Organisation, design et stylisme de mariage à Bali, façonnés par l'émotion, l'espace et l'expérience, des elopements intimes aux fêtes de plusieurs jours."
+      },
+      "ourApproach": {
+        "title": "Notre Approche du Mariage à Bali",
+        "description": "Un studio de mariage orienté design à Bali. Hospitalité cinq étoiles, architecture et récit façonnent chaque célébration, sans modèle ni effet de mode."
+      },
+      "contact": {
+        "title": "Contactez Votre Wedding Planner à Bali",
+        "description": "Partagez votre vision avec Linda Wiryani Design & Event Planning. Tout beau mariage commence par une conversation : envoyez-nous votre demande."
+      },
+      "workingWithUs": {
+        "title": "Travailler avec Nous : Partenaires & Emplois",
+        "description": "Rejoignez notre studio de mariage à Bali comme prestataire créatif ou membre de l'équipe. Candidatez pour collaborer avec Linda Wiryani Design & Event Planning."
+      },
+      "weddingConcepts": {
+        "title": "Concepts, Thèmes & Lieux de Mariage à Bali",
+        "description": "Explorez des concepts, thèmes et lieux de mariage sélectionnés à Bali. Des possibilités, non des forfaits, pour composer un langage de design cohérent."
+      },
+      "destinations": {
+        "title": "Mariages de Destination à Bali & Indonésie",
+        "description": "Mariages de destination sélectionnés, ancrés à Bali et dans toute l'Indonésie, des falaises d'Uluwatu aux rizières d'Ubud, à Lombok et à Sumba."
+      },
+      "portfolio": {
+        "title": "Portfolio de Mariages Réels à Bali",
+        "description": "Une collection de vrais mariages façonnés par le lieu, l'émotion et un design réfléchi : elopements, villas privées et célébrations de destination à Bali."
+      },
+      "journal": {
+        "title": "Journal : Guides & Récits de Mariage à Bali",
+        "description": "Conseils, guides et récits pour les couples qui préparent un mariage de destination à Bali et en Indonésie, issus de véritables parcours d'organisation."
+      },
+      "weddingExperiences": {
+        "title": "Expériences de Mariage de Destination à Bali",
+        "description": "Organisation de mariage de destination de luxe à Bali : mariages en villa privée, mariages intimes, elopements et célébrations de luxe conçus avec intention."
+      }
+    },
+    "detail": {
+      "experienceTitle": "{name} à Bali",
+      "experienceAlt": "{name} à Bali",
+      "portfolioTitle": "{couple} — {subtitle} | Portfolio",
+      "portfolioAlt": "Mariage de {couple} à Bali"
+    },
+    "jsonLd": {
+      "description": "Linda Wiryani Design and Event Planning est une wedding planner et designer de luxe à Bali, spécialisée dans les mariages de destination, les mariages en villa privée, les célébrations intimes et les elopements raffinés pour des couples du monde entier.",
+      "catalogName": "Services de mariage",
+      "offers": {
+        "elopement": {
+          "name": "Mariages en elopement",
+          "description": "Des célébrations intimes conçues pour les couples en quête d'intimité, de sens et de lieux extraordinaires."
+        },
+        "intimate": {
+          "name": "Mariages intimes",
+          "description": "Des célébrations à taille humaine, pensées pour la complicité, l'élégance et une hospitalité raffinée."
+        },
+        "venues": {
+          "name": "Sélection de lieux d'exception",
+          "description": "Une sélection de lieux reconnus pour leur architecture, leur cadre et leur expérience singuliers."
+        },
+        "villa": {
+          "name": "Mariages en villa privée",
+          "description": "Des domaines privés exclusifs offrant intimité, souplesse et une célébration profondément personnelle."
+        }
+      }
+    }
   }
 }

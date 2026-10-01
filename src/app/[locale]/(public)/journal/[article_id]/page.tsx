@@ -3,6 +3,8 @@ import { ArticleDetail } from "./components/article-detail";
 import { getArticleData } from "@/lib/data/article-data";
 import { Metadata } from "next";
 import type { Locale } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
+import { buildPageMetadata, getPageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const { articles } = getArticleData("en");
@@ -20,20 +22,18 @@ export async function generateMetadata({
   const { articles } = getArticleData(locale);
   const article = articles.find((a) => a.slug === article_id);
   if (!article) {
-    return {
-      title: "Article | Linda Wiryani Design and Event Planning",
-    };
+    return getPageMetadata(locale, "journal", "/journal");
   }
 
-  return {
-    title: `${article.title} — Linda Wiryani Journal`,
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  return buildPageMetadata({
+    locale,
+    path: `/journal/${article.slug}`,
+    title: article.title,
     description: article.excerpt,
-    openGraph: {
-      title: article.title,
-      description: article.excerpt,
-      images: [article.image],
-    },
-  };
+    siteName: tSeo("site.siteName"),
+    image: { url: article.image, alt: article.title },
+  });
 }
 
 export default async function ArticlePage({

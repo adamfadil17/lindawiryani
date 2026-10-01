@@ -789,8 +789,96 @@
     "showingPartial": "Menampilkan {count} dari {total}",
     "showLess": "Lihat Lebih Sedikit",
     "showMore": "Tampilkan {count} Destinasi Lainnya",
-    "metaTitle": "Perencanaan Pernikahan di {name} | Pernikahan Destinasi",
+    "metaTitle": "Perencana Pernikahan di {name}",
     "metaOgTitle": "Pernikahan Destinasi di {name}",
     "notFound": "Destinasi Tidak Ditemukan"
+  },
+  "seo": {
+    "site": {
+      "title": "Linda Wiryani | Wedding Planner & Desainer Mewah di Bali",
+      "description": "Linda Wiryani Design & Event Planning merancang pernikahan intim, elopement, dan pernikahan di vila pribadi di Bali dengan desain yang anggun dan penuh cerita.",
+      "ogTitle": "Wedding Planner Mewah di Bali | Linda Wiryani Design & Event Planning",
+      "ogDescription": "Wedding planner dan desainer mewah di Bali untuk pernikahan destinasi, vila pribadi, perayaan intim, dan elopement yang anggun bagi pasangan internasional.",
+      "ogAlt": "Linda Wiryani, wedding planner mewah di Bali",
+      "siteName": "Linda Wiryani Design & Event Planning",
+      "keywords": [
+        "Wedding Planner Mewah Bali",
+        "Elopement Bali",
+        "Pernikahan Intim Bali",
+        "Venue Pernikahan Eksklusif Bali",
+        "Pernikahan Vila Pribadi Bali",
+        "Desain Pernikahan Bespoke"
+      ]
+    },
+    "pages": {
+      "home": {
+        "title": "Linda Wiryani | Wedding Planner & Desainer Mewah di Bali",
+        "description": "Pernikahan destinasi dan pernikahan intim mewah di Bali yang dirancang dengan penuh makna. Elopement, vila pribadi, dan perayaan anggun oleh Linda Wiryani."
+      },
+      "services": {
+        "title": "Layanan Perencanaan Pernikahan di Bali",
+        "description": "Perencanaan, desain, dan penataan pernikahan lengkap di Bali yang dibentuk oleh emosi, ruang, dan pengalaman, dari elopement intim hingga acara berhari-hari."
+      },
+      "ourApproach": {
+        "title": "Pendekatan Kami Merancang Pernikahan di Bali",
+        "description": "Studio pernikahan berbasis desain di Bali. Keramahan bintang lima, arsitektur, dan cerita membentuk setiap perayaan, tanpa templat dan tanpa tren sesaat."
+      },
+      "contact": {
+        "title": "Hubungi Wedding Planner Anda di Bali",
+        "description": "Ceritakan impian Anda kepada Linda Wiryani Design & Event Planning. Pernikahan terbaik dimulai dari percakapan, jadi kirim pertanyaan Anda hari ini."
+      },
+      "workingWithUs": {
+        "title": "Bekerja Sama: Vendor & Karier",
+        "description": "Bergabunglah dengan studio pernikahan kami di Bali sebagai mitra vendor kreatif atau anggota tim. Ajukan kolaborasi sekarang."
+      },
+      "weddingConcepts": {
+        "title": "Konsep, Tema & Venue Pernikahan di Bali",
+        "description": "Jelajahi konsep, tema, dan venue pernikahan pilihan di Bali. Kami menawarkan kemungkinan, bukan paket, untuk membentuk bahasa desain yang utuh bagi hari Anda."
+      },
+      "destinations": {
+        "title": "Pernikahan Destinasi di Bali & Indonesia",
+        "description": "Pernikahan destinasi pilihan yang berakar di Bali dan tersebar di Indonesia, dari tebing Uluwatu dan sawah Ubud hingga Lombok dan Sumba."
+      },
+      "portfolio": {
+        "title": "Portofolio Pernikahan Nyata di Bali",
+        "description": "Kumpulan pernikahan nyata yang dibentuk oleh tempat, emosi, dan desain yang matang: elopement, vila pribadi, dan perayaan destinasi di Bali."
+      },
+      "journal": {
+        "title": "Jurnal: Panduan & Cerita Pernikahan Bali",
+        "description": "Wawasan, panduan, dan cerita bagi pasangan yang merencanakan pernikahan destinasi di Bali dan seluruh Indonesia, berdasarkan pengalaman perencanaan nyata."
+      },
+      "weddingExperiences": {
+        "title": "Pengalaman Pernikahan Destinasi di Bali",
+        "description": "Perencanaan pernikahan destinasi mewah di Bali: pernikahan vila pribadi, pernikahan intim, elopement, dan perayaan mewah yang dirancang dengan penuh makna."
+      }
+    },
+    "detail": {
+      "experienceTitle": "{name} di Bali",
+      "experienceAlt": "{name} di Bali",
+      "portfolioTitle": "{couple} — {subtitle} | Portofolio",
+      "portfolioAlt": "Pernikahan {couple} di Bali"
+    },
+    "jsonLd": {
+      "description": "Linda Wiryani Design and Event Planning adalah wedding planner dan desainer mewah di Bali yang berfokus pada pernikahan destinasi, pernikahan vila pribadi, perayaan intim, dan elopement yang anggun bagi pasangan internasional.",
+      "catalogName": "Layanan Pernikahan",
+      "offers": {
+        "elopement": {
+          "name": "Pernikahan Elopement",
+          "description": "Perayaan intim yang dirancang bagi pasangan yang mendambakan privasi, makna, dan lokasi yang luar biasa."
+        },
+        "intimate": {
+          "name": "Pernikahan Intim",
+          "description": "Perayaan berskala tepat yang dirancang untuk kedekatan, keanggunan, dan keramahan yang halus."
+        },
+        "venues": {
+          "name": "Seleksi Venue Pilihan",
+          "description": "Pilihan venue yang dikurasi dan dikenal karena arsitektur, suasana, dan pengalamannya yang khas."
+        },
+        "villa": {
+          "name": "Pernikahan di Vila Pribadi",
+          "description": "Properti pribadi eksklusif yang menawarkan keintiman, fleksibilitas, dan pengalaman perayaan yang sangat personal."
+        }
+      }
+    }
   }
 }

@@ -789,8 +789,96 @@
     "showingPartial": "显示 {total} 个中的 {count} 个",
     "showLess": "收起",
     "showMore": "再显示 {count} 个目的地",
-    "metaTitle": "{name}婚礼策划 | 目的地婚礼",
+    "metaTitle": "{name}婚礼策划",
     "metaOgTitle": "{name}目的地婚礼",
     "notFound": "未找到该目的地"
+  },
+  "seo": {
+    "site": {
+      "title": "Linda Wiryani | Bali奢华婚礼策划与设计",
+      "description": "Linda Wiryani Design & Event Planning 以精致设计与故事感，在Bali打造私密的私奔婚礼与私人别墅婚礼。",
+      "ogTitle": "Bali奢华婚礼策划 | Linda Wiryani Design & Event Planning",
+      "ogDescription": "Bali奢华婚礼策划与设计师，专注于目的地婚礼、私人别墅婚礼、私密庆典与精致的私奔婚礼。",
+      "ogAlt": "Linda Wiryani Bali奢华婚礼策划",
+      "siteName": "Linda Wiryani Design & Event Planning",
+      "keywords": [
+        "Bali奢华婚礼策划",
+        "Bali私奔婚礼",
+        "Bali私密婚礼",
+        "Bali特色婚礼场地",
+        "Bali私人别墅婚礼",
+        "定制婚礼设计"
+      ]
+    },
+    "pages": {
+      "home": {
+        "title": "Linda Wiryani | Bali奢华婚礼策划与设计",
+        "description": "用心设计的Bali奢华目的地婚礼与私密婚礼，包括私奔婚礼、私人别墅婚礼与精致庆典。"
+      },
+      "services": {
+        "title": "Bali婚礼策划与设计服务",
+        "description": "在Bali提供完整的婚礼策划、设计与布置，以情感、空间与体验为核心，从私密私奔婚礼到多日庆典。"
+      },
+      "ourApproach": {
+        "title": "我们在Bali设计婚礼的理念",
+        "description": "Bali以设计为导向的婚礼工作室。五星级待客、建筑与叙事塑造每场庆典，不走模板，不追潮流。"
+      },
+      "contact": {
+        "title": "联系您的Bali婚礼策划师",
+        "description": "向Linda Wiryani Design & Event Planning 分享您的构想。每场精彩的婚礼都始于一次交流，欢迎立即咨询。"
+      },
+      "workingWithUs": {
+        "title": "合作机会：供应商与职位",
+        "description": "以创意供应商伙伴或团队成员的身份加入我们在Bali的婚礼工作室，欢迎申请合作。"
+      },
+      "weddingConcepts": {
+        "title": "Bali婚礼概念、主题与场地",
+        "description": "探索Bali精选的婚礼概念、主题与场地。提供灵感而非套餐，为您的婚礼构建统一的设计语言。"
+      },
+      "destinations": {
+        "title": "Bali与印尼目的地婚礼",
+        "description": "以Bali为根基、遍及印尼的精选目的地婚礼，从Uluwatu的悬崖到Ubud的梯田，以及Lombok与Sumba。"
+      },
+      "portfolio": {
+        "title": "Bali真实婚礼作品集",
+        "description": "由地点、情感与用心设计塑造的真实婚礼合集，包括私奔婚礼、私人别墅与Bali目的地庆典。"
+      },
+      "journal": {
+        "title": "杂志专栏：Bali婚礼指南与故事",
+        "description": "为计划在Bali及印尼举办目的地婚礼的新人提供见解、指南与故事，均来自真实的筹备经历。"
+      },
+      "weddingExperiences": {
+        "title": "Bali目的地婚礼体验",
+        "description": "Bali奢华目的地婚礼策划：私人别墅婚礼、私密婚礼、私奔婚礼与奢华庆典，用心设计。"
+      }
+    },
+    "detail": {
+      "experienceTitle": "Bali{name}",
+      "experienceAlt": "Bali{name}",
+      "portfolioTitle": "{couple} — {subtitle} | 作品集",
+      "portfolioAlt": "{couple}的Bali婚礼"
+    },
+    "jsonLd": {
+      "description": "Linda Wiryani Design and Event Planning 是Bali的奢华婚礼策划与设计师，专注于面向国际新人的目的地婚礼、私人别墅婚礼、私密庆典与精致的私奔婚礼。",
+      "catalogName": "婚礼服务",
+      "offers": {
+        "elopement": {
+          "name": "私奔婚礼",
+          "description": "为追求私密、意义与非凡场景的新人量身打造的私密庆典。"
+        },
+        "intimate": {
+          "name": "私密婚礼",
+          "description": "规模恰到好处，注重情感联结、优雅与精致待客的婚礼。"
+        },
+        "venues": {
+          "name": "精选场地服务",
+          "description": "精心甄选以独特建筑、环境与体验著称的婚礼场地。"
+        },
+        "villa": {
+          "name": "私人别墅婚礼",
+          "description": "专属私人庄园，带来私密感、灵活性与深度个性化的庆典体验。"
+        }
+      }
+    }
   }
 }

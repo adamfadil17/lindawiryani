@@ -4,6 +4,7 @@ import DestinationDetail from "./components/destination-detail";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getDestinationData } from "@/lib/data/destination-data";
 import type { Locale } from "@/i18n/routing";
+import { buildPageMetadata, fitTitle } from "@/lib/seo";
 
 interface Props {
   params: Promise<{
@@ -21,37 +22,37 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-  const t = await getTranslations({
-    locale: resolvedParams.locale,
-    namespace: "destinationDetail",
-  });
-  const { destinationList } = getDestinationData(resolvedParams.locale);
+  const { locale } = resolvedParams;
+  const t = await getTranslations({ locale, namespace: "destinationDetail" });
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const { destinationList } = getDestinationData(locale);
   const destination = destinationList.find(
     (d) => d.slug === resolvedParams.destination_id,
   );
 
   if (!destination) {
-    return {
-      title: t("notFound"),
-    };
+    return { title: t("notFound") };
   }
 
-  return {
-    title: t("metaTitle", { name: destination.name }),
+  return buildPageMetadata({
+    locale,
+    path: `/destinations/${destination.slug}`,
+    title: fitTitle(
+      locale,
+      t("metaTitle", { name: destination.name }),
+      destination.name,
+    ),
+    ogTitle: t("metaOgTitle", { name: destination.name }),
     description: destination.description,
-    openGraph: {
-      title: t("metaOgTitle", { name: destination.name }),
-      description: destination.long_description,
-      images: [
-        {
-          url: destination.image,
-          width: 1200,
-          height: 630,
-          alt: destination.name,
-        },
-      ],
+    ogDescription: destination.long_description,
+    siteName: tSeo("site.siteName"),
+    image: {
+      url: destination.image,
+      width: 1200,
+      height: 630,
+      alt: destination.name,
     },
-  };
+  });
 }
 
 export default async function DestinationPage({ params }: Props) {

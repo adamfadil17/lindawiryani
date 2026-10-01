@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import PortfolioDetail from "./components/portfolio-detail";
 import { getPortfolioData } from "@/lib/data/portfolio-data";
 import { getDestinationData } from "@/lib/data/destination-data";
 import { getWeddingExperienceData } from "@/lib/data/wedding-experience-data";
 import type { Locale } from "@/i18n/routing";
+import { buildPageMetadata, getPageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const { portfolioItems } = getPortfolioData("en");
@@ -24,20 +25,25 @@ export async function generateMetadata({
   const item = portfolioItems.find((p) => p.slug === portfolio_id);
 
   if (!item) {
-    return {
-      title: "Portfolio | Linda Wiryani Design and Event Planning",
-    };
+    return getPageMetadata(locale, "portfolio", "/portfolio");
   }
 
-  return {
-    title: `${item.couple} — ${item.subtitle} | Portfolio | Linda Wiryani Design`,
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  return buildPageMetadata({
+    locale,
+    path: `/portfolio/${item.slug}`,
+    title: tSeo("detail.portfolioTitle", {
+      couple: item.couple,
+      subtitle: item.subtitle,
+    }),
+    ogTitle: `${item.couple} — ${item.subtitle}`,
     description: item.excerpt,
-    openGraph: {
-      title: `${item.couple} — ${item.subtitle}`,
-      description: item.excerpt,
-      images: [{ url: item.image, alt: `${item.couple} wedding in Bali` }],
+    siteName: tSeo("site.siteName"),
+    image: {
+      url: item.image,
+      alt: tSeo("detail.portfolioAlt", { couple: item.couple }),
     },
-  };
+  });
 }
 
 export default async function PortfolioDetailPage({
