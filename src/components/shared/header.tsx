@@ -118,12 +118,12 @@ export default function Header() {
           </div>
 
           {/* Language switcher (mobile/HP, kiri header — dropdown langsung dari tombol) */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 md:hidden">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 md:hidden z-20">
             <LanguageSwitcher inverted={inverted} align="left" />
           </div>
 
           {/* Language switcher (desktop, top-right) */}
-          <div className="hidden md:block absolute right-0">
+          <div className="hidden md:block absolute right-0 z-20">
             <LanguageSwitcher inverted={inverted} />
           </div>
 
