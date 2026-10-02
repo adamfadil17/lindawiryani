@@ -1,11 +1,18 @@
 import type { Destination } from "@/types";
+import { stage2 } from "./destination-text-2.ja";
+import { stage3 } from "./destination-text-3.ja";
+import { stage4 } from "./destination-text-4.ja";
+import { stage5 } from "./destination-text-5.ja";
 
-// 日本語訳（段階的に追加していきます）。
-// 英語版の destinationList を土台に、slug ごとに文章を上書きします。
+// 日本語訳。英語版の destinationList を土台に、slug ごとに文章を上書きします。
 // 配列のフィールド（highlights など）は、英語版と同じ順序・同じ件数で記述してください。
 //
-// 第 1 段階：カテゴリー名・destination 名・種類（type）・ロケーション・短い説明（description）
-// 第 2 段階以降：atmosphere / highlights / best_for / long_description / ceremony_options など
+// 第 1 段階（このファイル）：カテゴリー名・destination 名・種類（type）・ロケーション・短い説明（description）
+// 第 2 段階 destination-text-2.ja.ts：atmosphere / highlights / best_for
+// 第 3 段階 destination-text-3.ja.ts：long_description
+// 第 4 段階 destination-text-4.ja.ts：ceremony_options / reception_options / accommodation_nearby /
+//                                     dining_experiences / unique_features
+// 第 5 段階 destination-text-5.ja.ts：accessibility_notes / seasonal_considerations
 
 export type DestinationText = Partial<
   Pick<
@@ -395,4 +402,4 @@ const merge = (...stages: Record<string, DestinationText>[]) => {
   return out;
 };
 
-export const destinationText = merge(stage1);
+export const destinationText = merge(stage1, stage2, stage3, stage4, stage5);

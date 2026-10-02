@@ -5,7 +5,7 @@ import {
   categoryNames,
   destinationText,
   locationNames,
-} from "@/lib/data/translate/ja/destination-text.ja";
+} from "./destination-text.ja";
 
 // 翻訳の入口は 2 つあります。
 //  1) ./destination-text.ja.ts … slug ごとの上書き（配列も位置で対応）。主にこちらを使います。
