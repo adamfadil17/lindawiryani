@@ -3,14 +3,15 @@ import type { Locale } from "@/i18n/routing";
 import { routing } from "@/i18n/routing";
 import type { Venue, WeddingTheme } from "@/types";
 
-import * as en from "./venue-data.en";
-import * as id from "./venue-data.id";
-import * as zh from "./venue-data.zh";
-import * as fr from "./venue-data.fr";
+import * as en from "./translate/en/venue-data.en";
+import * as id from "./translate/id/venue-data.id";
+import * as zh from "./translate/zh/venue-data.zh";
+import * as fr from "./translate/fr/venue-data.fr";
+import * as ja from "./translate/ja/venue-data.ja";
 
 export type VenueData = typeof en;
 
-const byLocale: Record<Locale, VenueData> = { en, id, zh, fr };
+const byLocale: Record<Locale, VenueData> = { en, id, zh, fr, ja };
 
 function resolve(locale: Locale): VenueData {
   return byLocale[locale] ?? byLocale[routing.defaultLocale];

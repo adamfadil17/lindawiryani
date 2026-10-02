@@ -17,6 +17,7 @@ const DATE_LOCALES: Record<string, string> = {
   id: "id-ID",
   zh: "zh-CN",
   fr: "fr-FR",
+  ja: "ja-JP",
 };
 
 interface ArticleDetailProps {

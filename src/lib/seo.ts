@@ -16,6 +16,7 @@ export const OG_LOCALE: Record<Locale, string> = {
   id: "id_ID",
   zh: "zh_CN",
   fr: "fr_FR",
+  ja: "ja_JP",
 };
 
 /** hreflang codes per site locale. */
@@ -24,6 +25,7 @@ export const HREFLANG: Record<Locale, string> = {
   id: "id",
   zh: "zh",
   fr: "fr",
+  ja: "ja",
 };
 
 /** Keys under `seo.pages` in messages/*.json. */
@@ -68,7 +70,7 @@ export function buildAlternates(
 
 /**
  * Clips text for meta descriptions at a natural boundary.
- * Works for space-separated languages and for Chinese (no spaces).
+ * Works for space-separated languages and for Chinese/Japanese (no spaces).
  */
 export function clip(text: string, max = 155): string {
   const clean = text.replace(/\s+/g, " ").trim();
@@ -88,8 +90,9 @@ export function clip(text: string, max = 155): string {
 /** Brand suffix appended by the root title template (`%s | Linda Wiryani`). */
 export const TITLE_SUFFIX = " | Linda Wiryani";
 
-/** Max <title> length (incl. brand suffix) per locale; Chinese is denser. */
-export const titleLimit = (locale: Locale) => (locale === "zh" ? 35 : 60);
+/** Max <title> length (incl. brand suffix) per locale; Chinese/Japanese are denser. */
+export const titleLimit = (locale: Locale) =>
+  locale === "zh" ? 35 : locale === "ja" ? 45 : 60;
 
 /**
  * Returns `preferred` if it still fits the title limit once the brand
@@ -107,8 +110,9 @@ export function fitTitle(
     : fallback;
 }
 
-/** Max meta-description length per locale (Chinese is denser). */
-export const descLimit = (locale: Locale) => (locale === "zh" ? 75 : 155);
+/** Max meta-description length per locale (Chinese/Japanese are denser). */
+export const descLimit = (locale: Locale) =>
+  locale === "zh" ? 75 : locale === "ja" ? 110 : 155;
 
 interface PageMetaInput {
   locale: Locale;

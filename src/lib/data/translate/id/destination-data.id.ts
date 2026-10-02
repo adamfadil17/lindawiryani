@@ -1,6 +1,6 @@
-import { translateDeep } from "./translate-deep";
-import * as en from "./destination-data.en";
-import dict from "./dictionaries/destination.id.json";
+import { translateDeep } from "@/lib/data/translate-deep";
+import * as en from "@/lib/data/translate/en/destination-data.en";
+import dict from "@/lib/data/translate/dictionaries/destination.id.json";
 
 // Translations live in ./dictionaries/destination.id.json (English source
 // string -> translation). Anything missing there falls back to English.

@@ -9,11 +9,11 @@ import { defineRouting } from "next-intl/routing";
  * it stays single-language for now, per project scope.
  */
 export const routing = defineRouting({
-  locales: ["en", "id", "zh", "fr"],
+  locales: ["en", "id", "zh", "fr", "ja"],
   defaultLocale: "en",
 
   // "as-needed" => default locale (en) has no /en prefix, others do
-  // (/id/services, /zh/services, /fr/services). Switch to "always"
+  // (/id/services, /zh/services, /fr/services, /ja/services). Switch to "always"
   // later if you want /en/... explicit too.
   localePrefix: "as-needed",
 });
@@ -25,6 +25,7 @@ export const localeLabels: Record<Locale, string> = {
   id: "Bahasa Indonesia",
   zh: "中文",
   fr: "Français",
+  ja: "日本語",
 };
 
 export const localeShortLabels: Record<Locale, string> = {
@@ -32,4 +33,5 @@ export const localeShortLabels: Record<Locale, string> = {
   id: "ID",
   zh: "中文",
   fr: "FR",
+  ja: "日本語",
 };
