@@ -11,6 +11,8 @@ import { content as id } from "./translate/id/our-approach-text.id";
 import { content as zh } from "./translate/zh/our-approach-text.zh";
 import { content as fr } from "./translate/fr/our-approach-text.fr";
 import { content as ja } from "./translate/ja/our-approach-text.ja";
+import { content as de } from "./translate/de/our-approach-text.de";
+
 
 /**
  * Our approach = urutan fase (base) + teks per bahasa.
@@ -27,6 +29,7 @@ const contentByLocale: Record<Locale, OurApproachContent> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export interface OurApproachData {

@@ -13,6 +13,8 @@ import { content as id } from "./translate/id/services-text.id";
 import { content as zh } from "./translate/zh/services-text.zh";
 import { content as fr } from "./translate/fr/services-text.fr";
 import { content as ja } from "./translate/ja/services-text.ja";
+import { content as de } from "./translate/de/services-text.de";
+
 
 /**
  * Services = base (id, gambar) + teks per bahasa.
@@ -29,6 +31,7 @@ const contentByLocale: Record<Locale, ServicesContent> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export interface Service extends ServiceText {

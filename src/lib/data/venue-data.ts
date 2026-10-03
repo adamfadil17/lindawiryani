@@ -13,6 +13,8 @@ import { venueText as id } from "./translate/id/venue-text.id";
 import { venueText as zh } from "./translate/zh/venue-text.zh";
 import { venueText as fr } from "./translate/fr/venue-text.fr";
 import { venueText as ja } from "./translate/ja/venue-text.ja";
+import { venueText as de } from "./translate/de/venue-text.de";
+
 
 /**
  * Venue = base (bahasa-netral) + media (gambar/galeri) + teks per bahasa.
@@ -31,6 +33,7 @@ const textByLocale: Record<Locale, Record<string, VenueText>> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export type VenueData = { venueList: Venue[] };

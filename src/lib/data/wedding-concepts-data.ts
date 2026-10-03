@@ -12,6 +12,8 @@ import { content as id } from "./translate/id/wedding-concepts-text.id";
 import { content as zh } from "./translate/zh/wedding-concepts-text.zh";
 import { content as fr } from "./translate/fr/wedding-concepts-text.fr";
 import { content as ja } from "./translate/ja/wedding-concepts-text.ja";
+import { content as de } from "./translate/de/wedding-concepts-text.de";
+
 
 /**
  * Wedding concepts = base (nomor, href, gambar) + teks per bahasa.
@@ -28,6 +30,7 @@ const contentByLocale: Record<Locale, WeddingConceptsContent> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export interface ConceptLayer extends ConceptLayerText {

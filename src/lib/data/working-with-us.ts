@@ -13,6 +13,8 @@ import { content as id } from "./translate/id/working-with-us-text.id";
 import { content as zh } from "./translate/zh/working-with-us-text.zh";
 import { content as fr } from "./translate/fr/working-with-us-text.fr";
 import { content as ja } from "./translate/ja/working-with-us-text.ja";
+import { content as de } from "./translate/de/working-with-us-text.de";
+
 
 /**
  * Working with us = urutan/key (base) + teks per bahasa.
@@ -29,6 +31,7 @@ const contentByLocale: Record<Locale, WorkingWithUsContent> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export interface WorkingWithUsData {

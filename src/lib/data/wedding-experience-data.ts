@@ -17,6 +17,8 @@ import { content as id } from "./translate/id/wedding-experience-text.id";
 import { content as zh } from "./translate/zh/wedding-experience-text.zh";
 import { content as fr } from "./translate/fr/wedding-experience-text.fr";
 import { content as ja } from "./translate/ja/wedding-experience-text.ja";
+import { content as de } from "./translate/de/wedding-experience-text.de";
+
 
 /**
  * WeddingExperience = base (bahasa-netral) + media (gambar) + teks per bahasa.
@@ -36,6 +38,7 @@ const contentByLocale: Record<Locale, WeddingExperienceContent> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export interface SubExperience {

@@ -17,6 +17,7 @@ export const OG_LOCALE: Record<Locale, string> = {
   zh: "zh_CN",
   fr: "fr_FR",
   ja: "ja_JP",
+  de: "de_DE",
 };
 
 /** hreflang codes per site locale. */
@@ -26,6 +27,7 @@ export const HREFLANG: Record<Locale, string> = {
   zh: "zh",
   fr: "fr",
   ja: "ja",
+  de: "de",
 };
 
 /** Keys under `seo.pages` in messages/*.json. */

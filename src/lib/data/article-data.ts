@@ -10,6 +10,7 @@ import { articleText as id } from "./translate/id/article-text.id";
 import { articleText as zh } from "./translate/zh/article-text.zh";
 import { articleText as fr } from "./translate/fr/article-text.fr";
 import { articleText as ja } from "./translate/ja/article-text.ja";
+import { articleText as de } from "./translate/de/article-text.de";
 
 /**
  * Article = base (bahasa-netral) + teks per bahasa.
@@ -26,6 +27,7 @@ const textByLocale: Record<Locale, Record<string, ArticleText>> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export type ArticleData = { articles: Article[] };

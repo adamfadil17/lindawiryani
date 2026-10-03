@@ -16,6 +16,8 @@ import { weddingThemeText as id } from "./translate/id/wedding-theme-text.id";
 import { weddingThemeText as zh } from "./translate/zh/wedding-theme-text.zh";
 import { weddingThemeText as fr } from "./translate/fr/wedding-theme-text.fr";
 import { weddingThemeText as ja } from "./translate/ja/wedding-theme-text.ja";
+import { weddingThemeText as de } from "./translate/de/wedding-theme-text.de";
+
 
 /**
  * WeddingTheme = base (bahasa-netral) + media (gambar/galeri) + teks per bahasa.
@@ -33,6 +35,7 @@ const textByLocale: Record<Locale, Record<string, WeddingThemeText>> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export type WeddingThemeData = { weddingThemeList: WeddingTheme[] };

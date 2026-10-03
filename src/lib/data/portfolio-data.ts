@@ -11,6 +11,8 @@ import { content as id } from "./translate/id/portfolio-text.id";
 import { content as zh } from "./translate/zh/portfolio-text.zh";
 import { content as fr } from "./translate/fr/portfolio-text.fr";
 import { content as ja } from "./translate/ja/portfolio-text.ja";
+import { content as de } from "./translate/de/portfolio-text.de";
+
 
 /**
  * Portfolio = base (bahasa-netral) + media (gambar/galeri) + teks per bahasa.
@@ -28,6 +30,7 @@ const contentByLocale: Record<Locale, PortfolioContent> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export interface PortfolioData {

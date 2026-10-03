@@ -13,6 +13,8 @@ import { content as id } from "./translate/id/destination-text.id";
 import { content as zh } from "./translate/zh/destination-text.zh";
 import { content as fr } from "./translate/fr/destination-text.fr";
 import { content as ja } from "./translate/ja/destination-text.ja";
+import { content as de } from "./translate/de/destination-text.de";
+
 
 /**
  * Destination = base (bahasa-netral) + teks per bahasa.
@@ -30,6 +32,7 @@ const contentByLocale: Record<Locale, DestinationContent> = {
   zh,
   fr,
   ja,
+  de
 };
 
 export interface DestinationData {
