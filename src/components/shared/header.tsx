@@ -122,11 +122,6 @@ export default function Header() {
             <LanguageSwitcher inverted={inverted} align="left" />
           </div>
 
-          {/* Language switcher (desktop, top-right) */}
-          <div className="hidden md:block absolute right-0 z-20">
-            <LanguageSwitcher inverted={inverted} />
-          </div>
-
           {/* Mobile menu toggle */}
           <div className="absolute right-0 md:hidden">
             <Button
@@ -141,12 +136,33 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Language switcher (desktop, top-right, belum scrolled).
+          Anak langsung header (fixed, selebar layar) dengan right-6 — sama dengan
+          FloatingContactButton dan switcher di baris nav saat scrolled. */}
+      {!isScrolled && (
+        <div className="hidden md:block absolute right-6 top-5 z-20">
+          <LanguageSwitcher inverted={inverted} />
+        </div>
+      )}
+
       {/* Desktop Nav */}
       <nav
         className={`hidden md:block border-t transition-colors ${inverted ? "border-primary/15" : "border-white/20"}`}
       >
         <div className="container mx-auto px-4">
-          <ul className="flex justify-center items-center flex-wrap gap-x-6 lg:gap-x-8">
+          {/* Language switcher (desktop, saat scrolled — baris logo disembunyikan).
+              Diposisikan terhadap header (fixed, selebar layar) dengan right-6,
+              sama dengan jarak FloatingContactButton ke tepi kanan layar. */}
+          {isScrolled && (
+            <div className="absolute right-6 top-1/2 -translate-y-1/2 z-20">
+              <LanguageSwitcher inverted={inverted} />
+            </div>
+          )}
+          <ul
+            className={`flex justify-center items-center flex-wrap gap-x-6 lg:gap-x-8 ${
+              isScrolled ? "px-24" : ""
+            }`}
+          >
             {navigationItems.map((item) => (
               <li
                 key={item.href}
