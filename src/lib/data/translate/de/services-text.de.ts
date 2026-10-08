@@ -130,6 +130,29 @@ export const content: ServicesContent = {
         desc: "Internationale Paare, die Gäste aus dem Ausland mitbringen und ein rundum betreutes Bali-Erlebnis benötigen.",
       },
     },
+    "multi-day-celebrations": {
+      name: "Mehrtägige Feiern & Retreats",
+      tag: "Feiern · Verbinden · Auftanken",
+      intro: "Liebevoll kuratierte mehrtägige Zusammenkünfte auf Bali, die Feiern, Wohlbefinden und bedeutungsvolle gemeinsame Zeit verbinden. Von Junggesellinnen-Wochenenden und privaten Gruppenreisen bis hin zu Wellness-Retreats gestalten wir das Erlebnis rund um Unterkunft, Kulinarik, Styling, Wellness, Unterhaltung und Logistik auf der Insel – für eine Reise, die von der Ankunft bis zum Abschied durchdacht ist.",
+      includes: {
+        title: "Das umfasst diese Leistung",
+        items: [
+          "Junggesellinnenabschiede & Feier-Wochenenden",
+          "Wellness-Retreats & Erlebnisse",
+          "Planung des mehrtägigen Programms",
+          "Auswahl von Location & Unterkunft",
+          "Kulinarik & Tischstyling",
+          "Wellness-Experten & Aktivitäten",
+          "Unterhaltung & Erlebnisse",
+          "Transport & Gästelogistik",
+          "Koordination vor Ort",
+        ],
+      },
+      bestFor: {
+        title: "Ideal für",
+        desc: "Junggesellinnen-Wochenenden, Bridal Retreats, Wellness-Auszeiten, Meilenstein-Feiern und private Gruppen, die ein liebevoll kuratiertes mehrtägiges Erlebnis auf Bali suchen.",
+      },
+    },
   },
   whyChooseReasons: {
     "01": {

@@ -6,7 +6,8 @@ export const content: ServicesContent = {
     "full-wedding-planning": {
       name: "Planification & Coordination Complète du Mariage",
       tag: "De Bout en Bout",
-      intro: "Services de planification de mariage de bout en bout pour les mariages de destination, villas privées et célébrations raffinées à Bali. Nous gérons votre parcours nuptial du concept à la réalisation avec une précision sereine et des standards d'hospitalité cinq étoiles.",
+      intro:
+        "Services de planification de mariage de bout en bout pour les mariages de destination, villas privées et célébrations raffinées à Bali. Nous gérons votre parcours nuptial du concept à la réalisation avec une précision sereine et des standards d'hospitalité cinq étoiles.",
       includes: {
         title: "Ce Que Ce Service Comprend",
         items: [
@@ -25,7 +26,8 @@ export const content: ServicesContent = {
     "wedding-styling": {
       name: "Style de Mariage & Direction Créative",
       tag: "Axé Design",
-      intro: "Style de mariage axé sur le design à Bali, centré sur l'atmosphère, la beauté spatiale et la narration émotionnelle.",
+      intro:
+        "Style de mariage axé sur le design à Bali, centré sur l'atmosphère, la beauté spatiale et la narration émotionnelle.",
       includes: {
         title: "Notre Approche du Style",
         items: [
@@ -43,7 +45,8 @@ export const content: ServicesContent = {
     "private-villa-weddings": {
       name: "Spécialiste des Mariages en Villa Privée à Bali",
       tag: "Villa & Domaine",
-      intro: "Nous sommes spécialisés dans la transformation de villas et domaines privés en lieux de mariage magnifiquement structurés à travers Bali.",
+      intro:
+        "Nous sommes spécialisés dans la transformation de villas et domaines privés en lieux de mariage magnifiquement structurés à travers Bali.",
       includes: {
         title: "Services de Mariage en Villa",
         items: [
@@ -61,7 +64,8 @@ export const content: ServicesContent = {
     "intimate-elopements": {
       name: "Mariages Intimes & Elopements à Bali",
       tag: "Intime",
-      intro: "Des mariages paisibles et significatifs conçus autour de la connexion, de la nature et de la simplicité intentionnelle.",
+      intro:
+        "Des mariages paisibles et significatifs conçus autour de la connexion, de la nature et de la simplicité intentionnelle.",
       includes: {
         title: "Services Intimes & Elopement",
         items: [
@@ -79,7 +83,8 @@ export const content: ServicesContent = {
     "concept-consultation": {
       name: "Consultation Concept & Design de Mariage",
       tag: "Consultation",
-      intro: "Un service ciblé pour les couples recherchant des conseils professionnels avant de s'engager dans une planification complète.",
+      intro:
+        "Un service ciblé pour les couples recherchant des conseils professionnels avant de s'engager dans une planification complète.",
       includes: {
         title: "La Consultation Couvre",
         items: [
@@ -97,7 +102,8 @@ export const content: ServicesContent = {
     "event-table-styling": {
       name: "Style d'Événement & de Table à Bali",
       tag: "Style",
-      intro: "Des espaces de cérémonie sélectionnés et des tablescapes raffinées qui rehaussent l'expérience des invités.",
+      intro:
+        "Des espaces de cérémonie sélectionnés et des tablescapes raffinées qui rehaussent l'expérience des invités.",
       includes: {
         title: "Portée du Style",
         items: [
@@ -115,7 +121,8 @@ export const content: ServicesContent = {
     "guest-management": {
       name: "Gestion des Invités de Destination",
       tag: "Complément",
-      intro: "Un accompagnement de mariage de destination garantissant une expérience fluide pour vous et vos invités à Bali.",
+      intro:
+        "Un accompagnement de mariage de destination garantissant une expérience fluide pour vous et vos invités à Bali.",
       includes: {
         title: "Les Services aux Invités Peuvent Inclure",
         items: [
@@ -128,6 +135,30 @@ export const content: ServicesContent = {
       bestFor: {
         title: "Idéal Pour",
         desc: "Les couples internationaux accueillant des invités venus de l'étranger qui ont besoin d'une expérience balinaise entièrement accompagnée.",
+      },
+    },
+    "multi-day-celebrations": {
+      name: "Célébrations & Retraites de Plusieurs Jours",
+      tag: "Célébrer · Se Retrouver · Se Ressourcer",
+      intro:
+        "Des rassemblements de plusieurs jours soigneusement orchestrés à Bali, réunissant célébration, bien-être et moments précieux partagés. Des week-ends d'enterrement de vie de jeune fille et escapades privées entre amis aux retraites bien-être, nous composons l'expérience à travers l'hébergement, la gastronomie, le style, le bien-être, les animations et la logistique sur l'île, pour un voyage pensé avec soin de l'arrivée jusqu'au départ.",
+      includes: {
+        title: "Ce Que Ce Service Comprend",
+        items: [
+          "Enterrements de vie de jeune fille & week-ends de célébration",
+          "Retraites & expériences bien-être",
+          "Planification du programme sur plusieurs jours",
+          "Sélection de lieux & d'hébergements",
+          "Gastronomie & art de la table",
+          "Praticiens & activités bien-être",
+          "Animations & expériences",
+          "Transport & logistique des invités",
+          "Coordination sur site",
+        ],
+      },
+      bestFor: {
+        title: "Idéal Pour",
+        desc: "Les week-ends d'enterrement de vie de jeune fille, retraites de future mariée, escapades bien-être, célébrations d'étapes marquantes et groupes privés en quête d'une expérience de plusieurs jours soigneusement orchestrée à Bali.",
       },
     },
   },

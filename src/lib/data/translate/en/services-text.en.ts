@@ -6,7 +6,8 @@ export const content: ServicesContent = {
     "full-wedding-planning": {
       name: "Full Wedding Planning & Coordination",
       tag: "End-to-End",
-      intro: "End-to-end wedding planning services for destination weddings, private villas, and refined celebrations in Bali. We manage your wedding journey from concept to completion with calm precision and five-star hospitality standards.",
+      intro:
+        "End-to-end wedding planning services for destination weddings, private villas, and refined celebrations in Bali. We manage your wedding journey from concept to completion with calm precision and five-star hospitality standards.",
       includes: {
         title: "What This Service Includes",
         items: [
@@ -25,7 +26,8 @@ export const content: ServicesContent = {
     "wedding-styling": {
       name: "Wedding Styling & Creative Direction",
       tag: "Design-Led",
-      intro: "Design-led wedding styling in Bali focused on atmosphere, spatial beauty, and emotional storytelling.",
+      intro:
+        "Design-led wedding styling in Bali focused on atmosphere, spatial beauty, and emotional storytelling.",
       includes: {
         title: "Our Styling Approach",
         items: [
@@ -43,7 +45,8 @@ export const content: ServicesContent = {
     "private-villa-weddings": {
       name: "Private Villa Wedding Specialist in Bali",
       tag: "Villa & Estate",
-      intro: "We specialize in transforming private villas and estates into beautifully structured wedding venues across Bali.",
+      intro:
+        "We specialize in transforming private villas and estates into beautifully structured wedding venues across Bali.",
       includes: {
         title: "Villa Wedding Services",
         items: [
@@ -61,7 +64,8 @@ export const content: ServicesContent = {
     "intimate-elopements": {
       name: "Intimate Weddings & Elopements in Bali",
       tag: "Intimate",
-      intro: "Quiet, meaningful weddings designed around connection, nature, and intentional simplicity.",
+      intro:
+        "Quiet, meaningful weddings designed around connection, nature, and intentional simplicity.",
       includes: {
         title: "Intimate & Elopement Services",
         items: [
@@ -79,7 +83,8 @@ export const content: ServicesContent = {
     "concept-consultation": {
       name: "Wedding Concept & Design Consultation",
       tag: "Consultation",
-      intro: "A focused service for couples seeking professional guidance before committing to full planning.",
+      intro:
+        "A focused service for couples seeking professional guidance before committing to full planning.",
       includes: {
         title: "Consultation Covers",
         items: [
@@ -97,7 +102,8 @@ export const content: ServicesContent = {
     "event-table-styling": {
       name: "Event & Table Styling in Bali",
       tag: "Styling",
-      intro: "Curated ceremony spaces and refined tablescapes that elevate the guest experience.",
+      intro:
+        "Curated ceremony spaces and refined tablescapes that elevate the guest experience.",
       includes: {
         title: "Styling Scope",
         items: [
@@ -115,7 +121,8 @@ export const content: ServicesContent = {
     "guest-management": {
       name: "Destination Guest Management",
       tag: "Add-On",
-      intro: "Destination wedding support ensuring a seamless experience for you and your guests in Bali.",
+      intro:
+        "Destination wedding support ensuring a seamless experience for you and your guests in Bali.",
       includes: {
         title: "Guest Services May Include",
         items: [
@@ -128,6 +135,30 @@ export const content: ServicesContent = {
       bestFor: {
         title: "Best For",
         desc: "International couples bringing guests from abroad who need a fully supported Bali experience.",
+      },
+    },
+    "multi-day-celebrations": {
+      name: "Multi-Day Celebrations & Retreats",
+      tag: "Celebrate · Connect · Reset",
+      intro:
+        "Thoughtfully curated multi-day gatherings in Bali, bringing together celebration, wellbeing and meaningful time together. From hens weekends and private group escapes to wellness retreats, we curate the experience across accommodation, dining, styling, wellness, entertainment and island logistics, creating a journey that feels considered from arrival to farewell.",
+      includes: {
+        title: "What This Service Includes",
+        items: [
+          "Hens parties & celebration weekends",
+          "Wellness retreats & experiences",
+          "Multi-day programme planning",
+          "Venue & accommodation curation",
+          "Dining & table styling",
+          "Wellness practitioners & activities",
+          "Entertainment & experiences",
+          "Transportation & guest logistics",
+          "On-site coordination",
+        ],
+      },
+      bestFor: {
+        title: "Best For",
+        desc: "Hens weekends, bridal retreats, wellness escapes, milestone celebrations and private groups seeking a thoughtfully curated multi-day experience in Bali.",
       },
     },
   },

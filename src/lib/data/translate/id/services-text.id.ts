@@ -130,6 +130,29 @@ export const content: ServicesContent = {
         desc: "Pasangan internasional yang membawa tamu dari luar negeri dan membutuhkan pengalaman Bali yang didukung penuh.",
       },
     },
+    "multi-day-celebrations": {
+      name: "Perayaan & Retreat Multi-Hari",
+      tag: "Rayakan · Terhubung · Pulihkan",
+      intro: "Pertemuan multi-hari yang dikurasi dengan penuh pertimbangan di Bali, memadukan perayaan, kesejahteraan, dan kebersamaan yang bermakna. Mulai dari akhir pekan hens party dan liburan privat bersama kelompok hingga retreat wellness, kami mengkurasi pengalaman mulai dari akomodasi, kuliner, styling, wellness, hiburan, hingga logistik di pulau, menciptakan perjalanan yang terasa matang dari kedatangan hingga perpisahan.",
+      includes: {
+        title: "Yang Termasuk dalam Layanan Ini",
+        items: [
+          "Hens party & akhir pekan perayaan",
+          "Retreat & pengalaman wellness",
+          "Perencanaan program multi-hari",
+          "Kurasi venue & akomodasi",
+          "Kuliner & styling meja",
+          "Praktisi & aktivitas wellness",
+          "Hiburan & pengalaman",
+          "Transportasi & logistik tamu",
+          "Koordinasi di lokasi",
+        ],
+      },
+      bestFor: {
+        title: "Paling Cocok Untuk",
+        desc: "Akhir pekan hens party, retreat pengantin, liburan wellness, perayaan momen penting, dan kelompok privat yang menginginkan pengalaman multi-hari yang dikurasi dengan cermat di Bali.",
+      },
+    },
   },
   whyChooseReasons: {
     "01": {

@@ -59,7 +59,12 @@ export const serviceBase: ServiceBase[] = [
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1773156589/destination_guest_management_vf4ir2.jpg",
   },
+  {
+    id: "multi-day-celebrations",
+    image:
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1791432948/multi-day-celebrations_szfbmf.jpg",
+  },
 ];
 
 /** Urutan kartu "Why choose us"; teksnya dikunci per nomor. */
-export const whyChooseNumbers: string[] = ["01","02","03","04","05"];
+export const whyChooseNumbers: string[] = ["01", "02", "03", "04", "05"];
