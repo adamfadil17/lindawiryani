@@ -246,7 +246,7 @@ export default function PortfolioPage() {
   return (
     <main className="relative overflow-hidden" onClick={closeDropdowns}>
       <PageHero
-        image="/images/service/service2.png"
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1792801558/edited_hhhrh4.jpg"
         imageAlt="Portfolio — Real Weddings in Bali"
         breadcrumb={t("breadcrumb")}
         breadcrumbHref="/portfolio"

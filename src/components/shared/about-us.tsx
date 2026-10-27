@@ -83,7 +83,7 @@ export default function AboutUs() {
             <motion.div variants={slideInRight} className="col-span-1">
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us/about-us1.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086111/about-us1_gb1w14.png"
                   alt="Linda Wiryani Assets"
                   fill
                   loading="lazy"
@@ -99,7 +99,7 @@ export default function AboutUs() {
             >
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us/about-us2.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086109/about-us2_yxodke.png"
                   alt="Linda Wiryani Assets"
                   fill
                   loading="lazy"
@@ -112,7 +112,7 @@ export default function AboutUs() {
             <motion.div variants={slideInRight} className="col-span-1">
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us/about-us3.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086110/about-us3_fyyc2m.png"
                   alt="Linda Wiryani Assets"
                   fill
                   loading="lazy"

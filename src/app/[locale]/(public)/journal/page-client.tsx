@@ -177,7 +177,7 @@ export default function JournalPage() {
   return (
     <main className="relative overflow-hidden">
       <PageHero
-        image="/images/service/service3.png"
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1793086289/service3_uszz7a.png"
         imageAlt="Journal — Linda Wiryani Design"
         breadcrumb={t("breadcrumb")}
         breadcrumbHref="/journal"

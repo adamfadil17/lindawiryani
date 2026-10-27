@@ -11,7 +11,7 @@ export interface WeddingExperienceMedia {
 export const weddingExperienceMedia: Record<string, WeddingExperienceMedia> = {
   "1": {
     hero_image:
-      "/images/venues/banner/private-bg.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png",
     intro_images: ["", ""],
     approach_image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1767280276/Wedding_15_ofe4kx.jpg",
@@ -38,7 +38,7 @@ export const weddingExperienceMedia: Record<string, WeddingExperienceMedia> = {
   },
   "4": {
     hero_image:
-      "/images/venues/banner/signature-bg.png",
+      "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png",
     intro_images: ["", ""],
     approach_image:
       "https://res.cloudinary.com/dzerxindp/image/upload/v1768288826/Amankila_-_Manggis_-_Bali_-_Indonesia_-_Private_Event_04_plvo4w.jpg",
@@ -50,11 +50,11 @@ export const weddingExperienceMedia: Record<string, WeddingExperienceMedia> = {
 /** Gambar kartu sub-experience, per slug. */
 export const subExperienceImages: Record<string, string> = {
   "private-villa-weddings":
-    "/images/venues/banner/private-bg.png",
+    "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png",
   "intimate-weddings":
     "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg",
   "elopement-weddings":
     "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png",
   "luxury-weddings":
-    "/images/venues/banner/signature-bg.png",
+    "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png",
 };

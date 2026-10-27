@@ -50,7 +50,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quote/quote1.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086253/quote1_mxrddc.png"
                 alt="Couple embracing in field with flowing veil"
                 fill
                 loading="lazy"
@@ -65,7 +65,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden transform translate-y-12"
             >
               <Image
-                src="/images/quote/quote2.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086255/quote2_gru6kk.png"
                 alt="Wedding ceremony with guests throwing petals"
                 fill
                 loading="lazy"
@@ -80,7 +80,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quote/quote3.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086257/quote3_pogjpa.png"
                 alt="Couple dancing with flowing wedding dress"
                 fill
                 loading="lazy"
@@ -110,7 +110,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden"
               >
                 <Image
-                  src="/images/quote/quote1.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086253/quote1_mxrddc.png"
                   alt="Couple embracing in field with flowing veil"
                   fill
                   loading="lazy"
@@ -125,7 +125,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden"
               >
                 <Image
-                  src="/images/quote/quote2.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086255/quote2_gru6kk.png"
                   alt="Couple dancing with flowing wedding dress"
                   fill
                   loading="lazy"
@@ -142,7 +142,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden w-1/2"
               >
                 <Image
-                  src="/images/quote/quote3.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086257/quote3_pogjpa.png"
                   alt="Wedding ceremony with guests throwing petals"
                   fill
                   loading="lazy"

@@ -344,7 +344,7 @@ export default function OurApproachPage() {
               className="lg:col-span-5 relative h-[50vh] lg:h-[480px] overflow-hidden"
             >
               <Image
-                src="/images/service/service4.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086274/service4_omjxwb.png"
                 alt="Luxury Bali wedding specialization"
                 fill
                 loading="lazy"

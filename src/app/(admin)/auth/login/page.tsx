@@ -61,7 +61,10 @@ export default function LoginPage() {
       } else {
         // Error message ada di data.error (envelope ApiResponse) atau data.message
         toast.error("Sign in failed", {
-          description: data.error ?? data.message ?? "Invalid credentials. Please try again.",
+          description:
+            data.error ??
+            data.message ??
+            "Invalid credentials. Please try again.",
         });
       }
     } catch {
@@ -83,7 +86,7 @@ export default function LoginPage() {
       {/* ── Left Panel — Visual ─────────────────────────────────────────── */}
       <div className="hidden lg:block lg:w-1/2 xl:w-3/5 relative">
         <Image
-          src="/images/venues/banner/signature-bg.png"
+          src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png"
           alt="Login visual"
           fill
           priority

@@ -10,32 +10,32 @@ export default function Gallery() {
   const t = useTranslations("gallery");
   const galleryImages = [
     {
-      src: "/images/gallery/gallery1.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086217/gallery1_as3lq5.png",
       alt: "Wedding ceremony with guests throwing confetti",
       orientation: "landscape",
     },
     {
-      src: "/images/gallery/gallery2.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086218/gallery2_pxyxhx.png",
       alt: "Beautiful bridal bouquet with peach roses",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery3.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086214/gallery3_jtlrvt.png",
       alt: "Elegant couple portrait",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery4.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086214/gallery4_cp54gp.png",
       alt: "Elegant outdoor wedding table setting",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery5.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086217/gallery5_cafhdz.png",
       alt: "Romantic couple portrait on the beach",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery6.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086226/gallery6_xopieu.png",
       alt: "Outdoor wedding ceremony celebration",
       orientation: "landscape",
     },

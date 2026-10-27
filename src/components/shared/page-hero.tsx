@@ -97,8 +97,8 @@ export default function PageHero({
   const subtitleClasses =
     subtitleClassName ??
     (isSplit
-      ? "text-white/80 leading-relaxed border-l border-white/80 pl-6"
-      : "mt-6 text-white/80 max-w-xl leading-relaxed");
+      ? "text-white leading-relaxed border-l border-white/80 pl-6"
+      : "mt-6 text-white max-w-xl leading-relaxed");
 
   const heading = (
     <>

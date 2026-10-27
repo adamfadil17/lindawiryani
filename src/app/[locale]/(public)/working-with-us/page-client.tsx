@@ -229,7 +229,7 @@ export default function WorkingWithUsPage() {
   return (
     <main className="relative overflow-hidden">
       <PageHero
-        image="/images/service/service1.png"
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1793086284/service1_n7qm2j.png"
         imageAlt="Working With Us"
         breadcrumb={t("breadcrumb")}
         breadcrumbHref="/working-with-us"
