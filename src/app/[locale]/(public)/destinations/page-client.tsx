@@ -125,14 +125,14 @@ function DestinationCard({ destination }: { destination: Destination }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
         <div className="absolute top-4 left-4">
-          <span className="bg-white/90 text-primary text-xs tracking-widest uppercase px-2 py-1">
+          <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
             {destination.location.length > 30
               ? destination.location.slice(0, 30) + "…"
               : destination.location}
           </span>
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-6">
-          <p className="text-white/80 text-xs tracking-widest uppercase mb-1">
+          <p className="text-white/90 text-xs tracking-widest uppercase mb-1">
             {destination.type}
           </p>
           <h3 className="text-white font-semibold text-xl uppercase">
@@ -140,7 +140,7 @@ function DestinationCard({ destination }: { destination: Destination }) {
           </h3>
         </div>
       </div>
-      <p className="text-primary text-sm leading-relaxed line-clamp-2">
+      <p className="text-foreground text-sm leading-relaxed line-clamp-2">
         {destination.description}
       </p>
       <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/30 pb-0.5 group-hover:border-primary transition-colors duration-300">
@@ -193,7 +193,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
               {categoryLabel}
               <br />
-              <span className="italic font-light text-2xl md:text-3xl">
+              <span className="italic font-normal text-2xl md:text-3xl">
                 {t("destinationsWord")}
               </span>
             </h2>
@@ -207,16 +207,16 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
             variants={fadeInUp}
             className="lg:col-span-8 flex flex-col justify-center"
           >
-            <p className="text-primary leading-relaxed mb-6 max-w-2xl">
+            <p className="text-foreground leading-relaxed mb-6 max-w-2xl">
               {t(`cat.${meta.key}Desc`)}
             </p>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedKey(null)}
-                className={`px-4 py-1.5 text-xs font-medium tracking-wider uppercase transition-colors border hover:cursor-pointer ${
+                className={`px-4 py-1.5 text-sm font-medium tracking-wider transition-colors border hover:cursor-pointer ${
                   selectedKey === null
-                    ? "bg-primary/5 border-primary text-primary"
-                    : "border-primary/30 text-primary/80 hover:border-primary/50 hover:text-primary"
+                    ? "bg-primary text-white"
+                    : "border-primary/30 text-primary/90 hover:border-primary/50 hover:text-primary"
                 }`}
               >
                 {t("all")}
@@ -227,10 +227,10 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                   onClick={() =>
                     setSelectedKey(selectedKey === loc.key ? null : loc.key)
                   }
-                  className={`px-4 py-1.5 text-xs font-medium tracking-wider uppercase transition-colors border hover:cursor-pointer ${
+                  className={`px-4 py-1.5 text-sm font-medium tracking-wider transition-colors border hover:cursor-pointer ${
                     selectedKey === loc.key
-                      ? "bg-primary/5 border-primary text-primary"
-                      : "border-primary/30 text-primary/80 hover:border-primary/50 hover:text-primary"
+                      ? "bg-primary text-white"
+                      : "border-primary/30 text-primary/90 hover:border-primary/50 hover:text-primary"
                   }`}
                 >
                   {t(`loc.${loc.key}`)}
@@ -256,11 +256,11 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
                 <h3 className="text-2xl text-primary font-semibold leading-tight mb-4">
                   {t("curatedTitle1")}
                   <br />
-                  <span className="italic font-light">
+                  <span className="italic font-medium">
                     {t("curatedTitle2")}
                   </span>
                 </h3>
-                <p className="text-primary/80 text-sm leading-relaxed">
+                <p className="text-foreground/80 text-sm leading-relaxed">
                   {t("comingSoonBody")}
                 </p>
               </div>
@@ -364,24 +364,6 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
 export default function DestinationsPage() {
   const t = useTranslations("destinationsPage");
   const { destinationList } = useDestinationData();
-  const [activeAnchor, setActiveAnchor] = useState<string>("bali");
-
-  useEffect(() => {
-    const anchors = Object.values(CATEGORY_META).map((m) => m.anchor);
-    const handleScroll = () => {
-      for (const anchor of [...anchors].reverse()) {
-        const el = document.getElementById(anchor);
-        if (!el) continue;
-        if (el.getBoundingClientRect().top <= 80) {
-          setActiveAnchor(anchor);
-          return;
-        }
-      }
-      setActiveAnchor(anchors[0]);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const scrollToSection = (anchor: string) => {
     const el = document.getElementById(anchor);
@@ -400,7 +382,7 @@ export default function DestinationsPage() {
         kicker={t("heroKicker")}
         title={t("heroTitle")}
         subtitle={t("heroSubtitle")}
-        subtitleClassName="text-white text-sm md:text-base font-light leading-relaxed mt-10 max-w-4xl"
+        subtitleClassName="text-white text-sm md:text-base font-medium leading-relaxed mt-10 max-w-4xl"
         spacing="compact"
         overlay="soft"
       />
@@ -425,7 +407,7 @@ export default function DestinationsPage() {
               </h2>
             </motion.div>
             <motion.div variants={fadeInUp} className="space-y-4">
-              <p className="text-primary mb-6">{t("philosophyLead")}</p>
+              <p className="text-foreground mb-6">{t("philosophyLead")}</p>
               <div className="space-y-4">
                 {[1, 2, 3, 4, 5, 6]
                   .map((n) => t(`philosophy${n}`))
@@ -446,13 +428,13 @@ export default function DestinationsPage() {
           <div className="lg:col-span-6 space-y-8">
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify mb-8"
+              className="text-foreground leading-relaxed text-justify mb-8"
             >
               {t("approachP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("approachP2")}
             </motion.p>
@@ -461,7 +443,7 @@ export default function DestinationsPage() {
       </motion.section>
 
       <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
+        className="bg-accent/60 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -526,7 +508,7 @@ export default function DestinationsPage() {
         </div>
       </motion.section>
 
-      <section className="bg-primary/5 border-y border-primary/10 py-16 lg:py-20">
+      <section className="border-y border-primary/10 py-16 lg:py-20">
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="mb-10">
             <p className="text-primary tracking-[0.25em] uppercase mb-3">
@@ -546,57 +528,30 @@ export default function DestinationsPage() {
               const count = destinationList.filter(
                 (d) => d.category_id === id,
               ).length;
-              const isActive = activeAnchor === meta.anchor;
               return (
                 <button
                   key={id}
                   onClick={() => scrollToSection(meta.anchor)}
-                  className={`group text-left p-6 border transition-all duration-300 hover:cursor-pointer ${
-                    isActive
-                      ? "bg-primary border-primary text-white"
-                      : "bg-white border-primary/30 hover:border-primary/50 hover:bg-primary/5"
-                  }`}
+                  className="group flex h-full flex-col items-stretch justify-start text-left p-6 border border-primary bg-primary text-white transition-colors duration-300 hover:bg-primary/90 hover:cursor-pointer"
                 >
                   {/* Top row: label + count */}
                   <div className="flex items-start justify-between mb-4">
-                    <p
-                      className={`text-xs font-semibold tracking-[0.2em] uppercase ${
-                        isActive ? "text-white" : "text-primary"
-                      }`}
-                    >
+                    <p className="text-xs font-semibold tracking-[0.2em] uppercase text-white">
                       {t(`cat.${meta.key}`)}
                     </p>
-                    <span
-                      className={`text-xs font-mono px-2 py-0.5 flex-shrink-0 ml-2 ${
-                        isActive
-                          ? "bg-white/20 text-white"
-                          : "bg-primary/10 text-primary/80"
-                      }`}
-                    >
+                    <span className="text-xs font-mono px-2 py-0.5 flex-shrink-0 ml-2 bg-white/20 text-white">
                       {count}
                     </span>
                   </div>
 
-                  <h3
-                    className={`text-xl font-semibold leading-tight mb-3 ${
-                      isActive ? "text-white" : "text-primary"
-                    }`}
-                  >
+                  <h3 className="text-xl font-semibold leading-tight mb-3 text-white">
                     {t(`cat.${meta.key}`)}
-                    <span
-                      className={`block text-sm italic font-light mt-0.5 ${
-                        isActive ? "text-white/80" : "text-primary/80"
-                      }`}
-                    >
+                    <span className="block text-sm italic font-medium mt-0.5 text-white/90">
                       {t("destinationsWord")}
                     </span>
                   </h3>
 
-                  <p
-                    className={`text-xs leading-relaxed line-clamp-3 mb-5 ${
-                      isActive ? "text-white" : "text-primary"
-                    }`}
-                  >
+                  <p className="text-xs leading-relaxed line-clamp-3 mb-5 text-white">
                     {t(`cat.${meta.key}Desc`)}
                   </p>
 
@@ -605,31 +560,20 @@ export default function DestinationsPage() {
                       {meta.locations.slice(0, 4).map((loc) => (
                         <span
                           key={loc.key}
-                          className={`text-xs tracking-wide px-2 py-0.5 border ${
-                            isActive
-                              ? "border-white/50 text-white"
-                              : "border-primary/30 text-primary"
-                          }`}
+                          className="text-xs tracking-wide px-2 py-0.5 border border-white/50 text-white"
                         >
                           {t(`loc.${loc.key}`)}
                         </span>
                       ))}
                       {meta.locations.length > 4 && (
-                        <span
-                          className={`text-xs tracking-wide px-2 py-0.5 ${
-                            isActive ? "text-white" : "text-primary"
-                          }`}
-                        >
+                        <span className="text-xs tracking-wide px-2 py-0.5 text-white">
                           {t("moreCount", { count: meta.locations.length - 4 })}
                         </span>
                       )}
                     </div>
                   )}
-                  <div
-                    className={`flex items-center gap-2 text-xs font-semibold tracking-widest uppercase transition-transform duration-300 group-hover:translate-x-1 ${
-                      isActive ? "text-white" : "text-primary"
-                    }`}
-                  >
+
+                  <div className="mt-auto flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-white transition-transform duration-300 group-hover:translate-x-1">
                     {t("explore")}
                   </div>
                 </button>

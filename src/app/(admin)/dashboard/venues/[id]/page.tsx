@@ -122,7 +122,7 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
               <button
                 type="button"
                 onClick={() => handleRemove(img)}
-                className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                className="absolute top-1 right-1 w-6 h-6 bg-red-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
                 title="Remove image"
               >
                 <X className="w-3 h-3" />
@@ -560,7 +560,7 @@ export default function VenueDetailPage() {
               type="button"
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -660,7 +660,7 @@ export default function VenueDetailPage() {
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
                 {formErrors.destination_id && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.destination_id.message)}
                   </p>
                 )}
@@ -707,7 +707,7 @@ export default function VenueDetailPage() {
                 <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
               </div>
               {formErrors.experience_id && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="text-red-700 text-xs mt-1">
                   {String(formErrors.experience_id.message)}
                 </p>
               )}
@@ -733,7 +733,7 @@ export default function VenueDetailPage() {
                   />
                 </div>
                 {formErrors.capacity && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.capacity.message)}
                   </p>
                 )}
@@ -755,7 +755,7 @@ export default function VenueDetailPage() {
                   />
                 </div>
                 {formErrors.starting_price && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.starting_price.message)}
                   </p>
                 )}
@@ -797,7 +797,7 @@ export default function VenueDetailPage() {
               />
             </FormField>
             {formErrors.image && (
-              <p className="text-red-500 text-xs mt-2">
+              <p className="text-red-700 text-xs mt-2">
                 {String(formErrors.image.message)}
               </p>
             )}

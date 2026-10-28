@@ -42,7 +42,7 @@ export default function Gallery() {
   ];
 
   return (
-    <section id="gallery" className="bg-white py-16 lg:py-24 relative">
+    <section id="gallery" className="bg-background py-16 lg:py-24 relative">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Header Section */}
         <motion.div

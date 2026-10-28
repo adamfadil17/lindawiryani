@@ -71,7 +71,7 @@ function FilterDropdown({
     <div className="relative">
       <button
         onClick={onToggle}
-        className="flex items-center gap-2 border border-primary/50 text-primary px-5 py-2.5 text-sm tracking-widest uppercase hover:border-primary hover:bg-primary/5 transition-colors hover:cursor-pointer"
+        className="flex items-center gap-2 border border-primary/30 text-primary px-5 py-2.5 text-sm tracking-widest hover:border-primary/50 hover:bg-primary/5 transition-colors hover:cursor-pointer"
       >
         <span className="font-medium">{selectedLabel}</span>
         <ChevronDown
@@ -86,7 +86,7 @@ function FilterDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className={`absolute top-full mt-2 bg-white border border-stone-200 shadow-xl z-20 min-w-[220px] ${align === "right" ? "right-0" : "left-0"}`}
+            className={`absolute top-full mt-2 bg-white border border-border shadow-xl z-20 min-w-[220px] ${align === "right" ? "right-0" : "left-0"}`}
           >
             <div
               className={
@@ -100,7 +100,7 @@ function FilterDropdown({
                 className={`block w-full text-left px-5 py-3 text-sm transition-colors hover:cursor-pointer ${
                   value === "all"
                     ? "bg-primary text-white"
-                    : "text-primary hover:bg-stone-50"
+                    : "text-primary hover:bg-secondary/50"
                 }`}
               >
                 {t("all")}
@@ -112,7 +112,7 @@ function FilterDropdown({
                   className={`block w-full text-left px-5 py-3 text-sm transition-colors hover:cursor-pointer ${
                     value === opt.value
                       ? "bg-primary text-white"
-                      : "text-primary hover:bg-stone-50"
+                      : "text-primary hover:bg-secondary/50"
                   }`}
                 >
                   {opt.label}
@@ -157,7 +157,7 @@ function PortfolioCard({ item }: PortfolioCardProps) {
               key={tag}
               className="bg-primary/80 text-white text-xs tracking-widest px-3 py-1"
             >
-              {tag.toUpperCase()}
+              {tag}
             </span>
           ))}
         </div>
@@ -170,13 +170,13 @@ function PortfolioCard({ item }: PortfolioCardProps) {
           <h3 className="text-xl md:text-2xl font-semibold leading-tight mb-1">
             {item.couple}
           </h3>
-          <p className="text-white/80 italic text-sm mb-3">{item.subtitle}</p>
-          <div className="flex items-center gap-1.5 text-white/80 text-sm">
+          <p className="text-white/90 italic text-sm mb-3">{item.subtitle}</p>
+          <div className="flex items-center gap-1.5 text-white/90 text-sm">
             <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
             <span>{item.credit_location_detail}</span>
           </div>
           {item.origin && (
-            <p className="text-white/80 text-sm mt-1 tracking-widest uppercase">
+            <p className="text-white/90 text-sm mt-1 tracking-widest">
               {t("fromOrigin", { origin: item.origin })}
             </p>
           )}
@@ -280,13 +280,13 @@ export default function PortfolioPage() {
           <div className="lg:col-span-8 space-y-8">
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("introP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("introP2")}
             </motion.p>
@@ -319,7 +319,7 @@ export default function PortfolioPage() {
 
       <motion.section
         id="portfolio-grid"
-        className="py-16 lg:py-20 bg-primary/15"
+        className="py-16 lg:py-20 bg-accent"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -337,7 +337,7 @@ export default function PortfolioPage() {
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
-                <p className="text-primary leading-relaxed text-justify">
+                <p className="text-foreground leading-relaxed text-justify">
                   {t("designStoriesBody")}
                 </p>
               </div>
@@ -400,7 +400,7 @@ export default function PortfolioPage() {
                   setSelectedDestination("all");
                   setVisibleCount(6);
                 }}
-                className="text-primary/80 text-sm tracking-widest uppercase hover:text-primary transition-colors hover:cursor-pointer underline underline-offset-4"
+                className="text-primary/90 text-sm tracking-widest uppercase hover:text-primary transition-colors hover:cursor-pointer underline underline-offset-4"
               >
                 {t("clearFilters")}
               </button>
@@ -421,7 +421,7 @@ export default function PortfolioPage() {
                 exit={{ opacity: 0 }}
                 className="py-24 text-center"
               >
-                <p className="text-primary/80 text-lg italic">
+                <p className="text-foreground/80 text-lg italic">
                   {t("noResults")}
                 </p>
               </motion.div>
@@ -455,7 +455,7 @@ export default function PortfolioPage() {
                 totalCount > 6 && (
                   <button
                     onClick={() => setVisibleCount(6)}
-                    className="border border-primary/30 text-primary/80 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/5 hover:cursor-pointer transition-colors duration-300"
+                    className="border border-primary/30 text-primary/90 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/5 hover:cursor-pointer transition-colors duration-300"
                   >
                     {t("viewLess")}
                   </button>
@@ -532,7 +532,7 @@ export default function PortfolioPage() {
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
-              <p className="text-primary leading-relaxed text-justify">
+              <p className="text-foreground leading-relaxed text-justify">
                 {t("byDestinationBody")}
               </p>
             </div>
@@ -540,23 +540,23 @@ export default function PortfolioPage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {destinations.map((dest, i) => (
-              <motion.div key={dest.slug} variants={fadeInUp} custom={i}>
+              <div key={dest.slug}>
                 <Link
                   href={`/destinations/${dest.slug}`}
-                  className="group block text-center border border-primary/30 p-5 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300"
+                  className="group block text-center border border-primary/30 p-5 hover:border-primary/50 hover:bg-primary/5 hover:text-white transition-all duration-300"
                 >
-                  <span className="text-primary text-sm font-medium tracking-widest uppercase group-hover:text-white transition-colors">
+                  <span className="text-primary text-sm font-medium tracking-widest group-hover:text-primary transition-colors">
                     {dest.label}
                   </span>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </motion.section>
 
       <motion.section
-        className="py-20 lg:py-28 bg-primary/10"
+        className="py-20 lg:py-28 bg-accent/60"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -572,13 +572,13 @@ export default function PortfolioPage() {
                 <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
                   {tHome("reviewsTitle1")}
                   <br />
-                  <span className="italic font-light">
+                  <span className="italic font-medium">
                     {tHome("reviewsTitle2")}
                   </span>
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
-                <p className="text-primary leading-relaxed text-justify">
+                <p className="text-foreground leading-relaxed text-justify">
                   {tHome("reviewsIntro")}
                 </p>
               </div>
@@ -599,21 +599,21 @@ export default function PortfolioPage() {
               {reviews.map((review, index) => (
                 <div
                   key={index}
-                  className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
+                  className="min-w-[calc(33.333%-11px)] bg-primary border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
                 >
                   <div>
-                    <span className="text-5xl text-primary/80 font-serif leading-none select-none">
+                    <span className="text-5xl text-white/90 font-serif leading-none select-none">
                       "
                     </span>
-                    <p className="text-primary leading-relaxed italic mt-2 text-justify">
+                    <p className="text-white leading-relaxed italic mt-2 text-justify">
                       {review.quote}
                     </p>
                   </div>
-                  <div className="mt-8 pt-6 border-t border-primary/10">
-                    <p className="text-primary font-semibold text-sm tracking-wide">
+                  <div className="mt-8 pt-6 border-t border-white/10">
+                    <p className="text-white font-semibold text-sm tracking-wide">
                       {review.couple}
                     </p>
-                    <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
+                    <p className="text-white/90 text-xs tracking-widest uppercase mt-1">
                       {tHome("coupleFrom", { origin: review.origin })}
                     </p>
                   </div>
@@ -630,21 +630,21 @@ export default function PortfolioPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
                 transition={{ duration: 0.35 }}
-                className="bg-white border border-primary/10 p-8 flex flex-col justify-between"
+                className="bg-primary border border-primary/10 p-8 flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-5xl text-primary/80 font-serif leading-none select-none">
+                  <span className="text-5xl text-white/90 font-serif leading-none select-none">
                     "
                   </span>
-                  <p className="text-primary leading-relaxed italic mt-2 text-justify">
+                  <p className="text-white leading-relaxed italic mt-2 text-justify">
                     {reviews[reviewSlide].quote}
                   </p>
                 </div>
-                <div className="mt-8 pt-6 border-t border-primary/10">
-                  <p className="text-primary font-semibold text-sm tracking-wide">
+                <div className="mt-8 pt-6 border-t border-white/10">
+                  <p className="text-white font-semibold text-sm tracking-wide">
                     {reviews[reviewSlide].couple}
                   </p>
-                  <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
+                  <p className="text-white/90 text-xs tracking-widest uppercase mt-1">
                     {tHome("coupleFrom", {
                       origin: reviews[reviewSlide].origin,
                     })}

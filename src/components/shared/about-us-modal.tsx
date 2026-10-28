@@ -39,7 +39,7 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
         <div className="overflow-y-auto p-4 md:p-8">
           <article className="flex flex-col gap-8">
             {/* Main Header */}
-            <div className="flex flex-col gap-4 border-b border-stone-100 pb-8">
+            <div className="flex flex-col gap-4 border-b border-border pb-8">
               <span className="text-xs text-primary tracking-widest uppercase font-semibold">
                 {t("kicker")}
               </span>
@@ -55,16 +55,16 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
             <div className="flex flex-col gap-10">
               {/* Introduction */}
               <div className="flex flex-col gap-4">
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("intro1")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("intro2")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("intro3")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("intro4")}
                 </p>
               </div>
@@ -73,29 +73,29 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
                 <p className="text-lg md:text-xl text-primary font-bold leading-tight">
                   {t("philosophyTitle")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("philosophy1")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("philosophy2")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("philosophy3")}
                 </p>
               </div>
 
               {/* Intimate Villa Weddings Section */}
-              <div className="bg-stone-50 p-6 md:p-8">
+              <div className="bg-secondary/50 p-6 md:p-8">
                 <p className="text-lg md:text-xl text-primary font-bold mb-4 leading-tight">
                   {t("villaTitle")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("villa1")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("villa2")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("villa3")}
                 </p>
               </div>
@@ -105,35 +105,35 @@ export default function AboutUsModal({ onClose }: AboutUsModalProps) {
                 <p className="text-lg md:text-xl text-primary font-bold leading-tight">
                   {t("archTitle")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("arch1")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("arch2")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("arch3")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("arch4")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed italic">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed italic">
                   {t("arch5")}
                 </p>
               </div>
 
               {/* For Couples Section */}
-              <div className="bg-stone-50 p-6 md:p-8">
+              <div className="bg-secondary/50 p-6 md:p-8">
                 <p className="text-base md:text-lg text-primary font-bold mb-4 leading-tight">
                   {t("couplesTitle")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed mb-4">
                   {t("couples1")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-4">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed mb-4">
                   {t("couples2")}
                 </p>
-                <p className="text-sm md:text-base text-primary text-justify leading-relaxed">
+                <p className="text-sm md:text-base text-foreground text-justify leading-relaxed">
                   {t("couples3")}
                 </p>
               </div>

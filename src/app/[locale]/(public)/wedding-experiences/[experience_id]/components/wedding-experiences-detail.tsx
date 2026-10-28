@@ -31,7 +31,7 @@ function Breadcrumb({ label }: { label: string }) {
     <div className="flex items-center gap-2">
       <Link
         href="/wedding-experiences"
-        className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
+        className="text-white/90 text-sm tracking-widest uppercase hover:text-white transition-colors"
       >
         {t("breadcrumbRoot")}
       </Link>
@@ -51,14 +51,14 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between py-5 text-left hover:cursor-pointer group"
       >
-        <span className="text-primary font-semibold text-sm md:text-base pr-6 group-hover:text-primary/80 transition-colors">
+        <span className="text-primary font-semibold text-sm md:text-base pr-6 group-hover:text-foreground transition-colors">
           {q}
         </span>
         <ChevronDown
           className={`w-5 h-5 text-primary flex-shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
         />
       </button>
-      {open && <p className="text-primary/80 leading-relaxed pb-5">{a}</p>}
+      {open && <p className="text-foreground/80 leading-relaxed pb-5">{a}</p>}
     </div>
   );
 }
@@ -76,7 +76,7 @@ function HeroSplit({ data }: { data: ExperienceData }) {
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/38 via-black/18 to-black/28" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
       </div>
       <motion.div
@@ -107,7 +107,7 @@ function HeroSplit({ data }: { data: ExperienceData }) {
         </motion.h1>
         <motion.p
           variants={fadeInUp}
-          className="text-white/80 max-w-3xl leading-relaxed mt-6"
+          className="text-white/90 max-w-3xl leading-relaxed mt-6"
         >
           {data.hero_desc}
         </motion.p>
@@ -137,7 +137,7 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/38 via-black/18 to-black/28" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
       </div>
       <motion.div
@@ -172,7 +172,7 @@ function HeroBottomSplit({ data }: { data: ExperienceData }) {
           <div className="lg:col-span-5 lg:pb-2">
             <motion.p
               variants={fadeInUp}
-              className="text-white/80 leading-relaxed border-l border-white/80 pl-6"
+              className="text-white/90 leading-relaxed border-l border-white/80 pl-6"
             >
               {data.hero_desc}
             </motion.p>
@@ -204,7 +204,7 @@ function HeroCentered({ data }: { data: ExperienceData }) {
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/38 via-black/18 to-black/28" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
       </div>
       <motion.div
@@ -238,7 +238,7 @@ function HeroCentered({ data }: { data: ExperienceData }) {
         />
         <motion.p
           variants={fadeInUp}
-          className="text-white/80 max-w-3xl leading-relaxed mb-10"
+          className="text-white/90 max-w-3xl leading-relaxed mb-10"
         >
           {data.hero_desc}
         </motion.p>
@@ -268,7 +268,7 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
           className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/38 via-black/18 to-black/28" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
       </div>
       <motion.div
@@ -303,7 +303,7 @@ function HeroEditorial({ data }: { data: ExperienceData }) {
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
           <motion.p
             variants={fadeInUp}
-            className="text-white/80 max-w-sm leading-relaxed"
+            className="text-white/90 max-w-sm leading-relaxed"
           >
             {data.hero_desc}
           </motion.p>
@@ -343,7 +343,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
           </motion.div>
           <motion.div variants={fadeInUp} className="space-y-0">
             {data.intro_list_label && (
-              <p className="text-primary italic mb-4">
+              <p className="text-foreground italic mb-4">
                 {data.intro_list_label}
               </p>
             )}
@@ -362,7 +362,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
           {data.intro_footnote && (
             <motion.p
               variants={fadeInUp}
-              className="text-primary italic leading-relaxed border-t border-primary/20 pt-5"
+              className="text-foreground italic leading-relaxed border-t border-primary/20 pt-5"
             >
               {data.intro_footnote}
             </motion.p>
@@ -371,7 +371,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
         <div className="lg:col-span-7 space-y-8">
           <motion.p
             variants={fadeInUp}
-            className="text-primary leading-relaxed text-justify"
+            className="text-foreground leading-relaxed text-justify"
           >
             {data.intro_body}
           </motion.p>
@@ -406,7 +406,7 @@ function SectionIntro({ data }: { data: ExperienceData }) {
 function SectionApproach({ data }: { data: ExperienceData }) {
   return (
     <motion.section
-      className="bg-primary/15 py-20 lg:py-28"
+      className="bg-accent py-20 lg:py-28"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -440,13 +440,13 @@ function SectionApproach({ data }: { data: ExperienceData }) {
             </motion.div>
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {data.approach_body}
             </motion.p>
             <motion.div variants={fadeInUp} className="space-y-0">
               {data.approach_list_label && (
-                <p className="text-primary italic mb-4">
+                <p className="text-foreground italic mb-4">
                   {data.approach_list_label}
                 </p>
               )}
@@ -505,7 +505,7 @@ function SectionServices({ data }: { data: ExperienceData }) {
               ))}
             </div>
             {data.services_footnote && (
-              <p className="text-primary italic leading-relaxed border-t border-primary/20 pt-5">
+              <p className="text-foreground italic leading-relaxed border-t border-primary/20 pt-5">
                 {data.services_footnote}
               </p>
             )}
@@ -522,7 +522,7 @@ function SectionServices({ data }: { data: ExperienceData }) {
               <br />
               <span>{data.services_dark_heading[1]}</span>
             </h3>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-white/90 leading-relaxed">
               {data.services_dark_body}
             </p>
             <div className="space-y-0 pt-2">
@@ -575,14 +575,14 @@ function SectionClosing({ data }: { data: ExperienceData }) {
                 <h2 className="text-3xl md:text-4xl text-white uppercase font-semibold">
                   {data.closing_heading[0]}
                   <br />
-                  <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
+                  <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-normal normal-case">
                     {data.closing_heading[1]}
                   </span>
                 </h2>
               </motion.div>
               <motion.p
                 variants={fadeInUp}
-                className="text-white/80 leading-relaxed"
+                className="text-white/90 leading-relaxed"
               >
                 {data.closing_body}
               </motion.p>
@@ -635,13 +635,13 @@ function SectionClosing({ data }: { data: ExperienceData }) {
             >
               {data.closing_heading[0]}
               <br />
-              <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
+              <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-normal normal-case">
                 {data.closing_heading[1]}
               </span>
             </motion.h2>
             <motion.p
               variants={fadeInUp}
-              className="mt-6 text-white/80 max-w-xl mx-auto leading-relaxed"
+              className="mt-6 text-white/90 max-w-xl mx-auto leading-relaxed"
             >
               {data.closing_body}
             </motion.p>
@@ -781,12 +781,12 @@ function VenueCard({
         <h3 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[200px]">
           {venue.name}
         </h3>
-        <p className="text-md font-light italic mb-4 text-white max-w-[280px]">
+        <p className="text-md font-medium italic mb-4 text-white max-w-[280px]">
           {venue.slogan}
         </p>
         <div className="flex items-center justify-start mb-4">
           <div className="flex flex-col items-start">
-            <span className="text-sm text-white/80 italic mb-0.5">
+            <span className="text-sm text-white/90 italic mb-0.5">
               {tv("startsFrom")}
             </span>
             <div className="flex items-baseline gap-2">
@@ -942,7 +942,7 @@ function SectionVenueList({
   return (
     <>
       <motion.section
-        className="bg-primary/15 py-20 lg:py-28"
+        className="bg-accent py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -962,7 +962,7 @@ function SectionVenueList({
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
-              <p className="text-primary text-justify leading-relaxed">
+              <p className="text-foreground text-justify leading-relaxed">
                 {tv("intro")}
               </p>
             </div>
@@ -981,7 +981,7 @@ function SectionVenueList({
                   onClick={() =>
                     setIsLocationDropdownOpen(!isLocationDropdownOpen)
                   }
-                  className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
+                  className="flex items-center gap-2 text-md text-primary hover:text-foreground transition-colors font-medium hover:cursor-pointer"
                 >
                   <span>
                     {selectedLocation === "All"
@@ -995,7 +995,7 @@ function SectionVenueList({
                   />
                 </button>
                 {isLocationDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px] max-h-[240px] overflow-y-auto">
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[120px] max-h-[240px] overflow-y-auto">
                     {locations.map((loc) => (
                       <button
                         key={loc}
@@ -1006,7 +1006,7 @@ function SectionVenueList({
                         className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
                           selectedLocation === loc
                             ? "bg-primary text-white"
-                            : "text-primary hover:bg-stone-100"
+                            : "text-primary hover:bg-secondary"
                         }`}
                       >
                         {loc === "All" ? t("allLocations") : loc}
@@ -1026,7 +1026,7 @@ function SectionVenueList({
                   onClick={() =>
                     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                   }
-                  className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
+                  className="flex items-center gap-2 text-md text-primary hover:text-foreground transition-colors font-medium hover:cursor-pointer"
                 >
                   <span>{selectedCurrency}</span>
                   <ChevronDown
@@ -1036,7 +1036,7 @@ function SectionVenueList({
                   />
                 </button>
                 {isCurrencyDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[100px]">
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[100px]">
                     {(["IDR", "USD"] as Currency[]).map((currency) => (
                       <button
                         key={currency}
@@ -1047,7 +1047,7 @@ function SectionVenueList({
                         className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
                           selectedCurrency === currency
                             ? "bg-primary text-white"
-                            : "text-primary hover:bg-stone-100"
+                            : "text-primary hover:bg-secondary"
                         }`}
                       >
                         {currency}
@@ -1061,7 +1061,7 @@ function SectionVenueList({
 
           <motion.p
             variants={fadeInUp}
-            className="text-center text-sm text-primary mb-12"
+            className="text-center text-sm text-foreground mb-12"
           >
             {selectedLocation === "All"
               ? t("showingAllVenues", {
@@ -1083,7 +1083,7 @@ function SectionVenueList({
 
           <motion.div variants={fadeInUp} className="mb-10">
             <div className="mb-12 text-center">
-              <p className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base md:text-lg text-foreground max-w-3xl mx-auto leading-relaxed">
                 {categoryDescriptionKeyMap[experience.category]
                   ? tv(categoryDescriptionKeyMap[experience.category])
                   : ""}
@@ -1136,7 +1136,7 @@ function SectionVenueList({
                           className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
                             currentVenueSlide === index
                               ? "bg-primary w-8"
-                              : "bg-stone-300"
+                              : "bg-border"
                           }`}
                         />
                       ))}
@@ -1183,7 +1183,7 @@ function SectionVenueList({
                   </>
                 ) : (
                   <div className="text-center py-16">
-                    <p className="text-primary text-lg italic">
+                    <p className="text-foreground text-lg italic">
                       {tv("noVenuesFound")}
                     </p>
                   </div>
@@ -1230,7 +1230,7 @@ function SectionSubExperiences({
   const t = useTranslations("experienceDetail");
   return (
     <motion.section
-      className="bg-primary/15 py-20 lg:py-28"
+      className="bg-accent py-20 lg:py-28"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -1252,7 +1252,7 @@ function SectionSubExperiences({
             </h2>
           </div>
           <div className="lg:col-span-7 flex items-end">
-            <p className="text-primary text-justify leading-relaxed">
+            <p className="text-foreground text-justify leading-relaxed">
               {t("otherExperiencesIntro")}
             </p>
           </div>
@@ -1273,8 +1273,8 @@ function SectionSubExperiences({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
                   <div className="absolute top-5 left-5">
-                    <span className="bg-white/90 text-primary text-sm tracking-widest px-3 py-1.5">
-                      {exp.name.toUpperCase()}
+                    <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
+                      {exp.name}
                     </span>
                   </div>
                   <div className="absolute bottom-5 right-5 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
@@ -1282,13 +1282,13 @@ function SectionSubExperiences({
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-primary font-semibold text-xl group-hover:text-primary/80 transition-colors">
+                  <h3 className="text-primary font-semibold text-xl group-hover:text-foreground transition-colors">
                     {exp.name}
                   </h3>
-                  <p className="text-primary mt-2 leading-relaxed">
+                  <p className="text-foreground mt-2 leading-relaxed">
                     {exp.hero_desc}
                   </p>
-                  <div className="flex items-center gap-2 mt-4 text-primary text-sm tracking-wider group-hover:text-primary/80 transition-colors">
+                  <div className="flex items-center gap-2 mt-4 text-primary text-sm tracking-wider group-hover:text-foreground transition-colors">
                     <span>{t("explore")}</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>
@@ -1324,12 +1324,12 @@ export function WeddingExperiencesDetail({
     return (
       <main className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center">
-          <p className="text-primary/50 tracking-[0.25em] text-xs uppercase mb-4">
+          <p className="text-muted-foreground tracking-[0.25em] text-xs uppercase mb-4">
             404
           </p>
           <h1 className="text-3xl md:text-4xl text-primary font-semibold mb-6">
             {t("notFoundTitle")}{" "}
-            <span className="italic font-light">{t("notFoundSuffix")}</span>
+            <span className="italic font-medium">{t("notFoundSuffix")}</span>
           </h1>
           <Link href="/wedding-experiences">
             <button className="border border-primary text-primary font-semibold px-8 py-3 text-xs tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">

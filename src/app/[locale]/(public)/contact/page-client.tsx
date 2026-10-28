@@ -195,7 +195,7 @@ export default function ContactPage() {
   // ── Style Helpers ─────────────────────────────────────
 
   const inputClass =
-    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/50";
+    "w-full px-4 py-3 border border-field bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors disabled:bg-primary/5 text-foreground placeholder:text-muted-foreground";
 
   const labelClass =
     "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
@@ -208,7 +208,7 @@ export default function ContactPage() {
   const checkboxInputClass = "w-4 h-4 accent-primary cursor-pointer shrink-0";
 
   const checkboxLabelClass =
-    "text-primary/80 text-sm group-hover:text-primary transition-colors cursor-pointer";
+    "text-primary/90 text-sm group-hover:text-primary transition-colors cursor-pointer";
 
   // ── Render ────────────────────────────────────────────
 
@@ -238,7 +238,7 @@ export default function ContactPage() {
 
       {/* ── Form Section ── */}
       <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
+        className="bg-accent/60 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -255,7 +255,7 @@ export default function ContactPage() {
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                   {t("reachUsTitle1")}
                   <br />
-                  <span className="italic font-light">
+                  <span className="italic font-medium">
                     {t("reachUsTitle2")}
                   </span>
                 </h2>
@@ -264,25 +264,25 @@ export default function ContactPage() {
               <motion.div variants={fadeInUp} className="space-y-4">
                 {[
                   {
-                    icon: "/images/email-brown.svg",
+                    icon: "/images/email-mauve.svg",
                     alt: "Email",
                     label: "hello@lindawiryani.com",
                     href: "mailto:hello@lindawiryani.com",
                   },
                   {
-                    icon: "/images/whatsapp-brown.svg",
+                    icon: "/images/whatsapp-mauve.svg",
                     alt: "WhatsApp",
                     label: "+62 811 3980 998",
                     href: "https://wa.me/628113980998",
                   },
                   {
-                    icon: "/images/instagram-brown.svg",
+                    icon: "/images/instagram-mauve.svg",
                     alt: "Instagram",
                     label: "@lindawiryanievents",
                     href: "https://instagram.com/lindawiryanievents",
                   },
                   {
-                    icon: "/images/pinterest-line-brown.svg",
+                    icon: "/images/pinterest-line-mauve.svg",
                     alt: "Pinterest",
                     label: "lindawiryanievents",
                     href: "https://pinterest.com/lindawiryanievents",
@@ -327,7 +327,7 @@ export default function ContactPage() {
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold">
                   {t("formTitle1")}
                   <br />
-                  <span className="italic font-light">{t("formTitle2")}</span>
+                  <span className="italic font-medium">{t("formTitle2")}</span>
                 </h2>
               </div>
 
@@ -342,7 +342,7 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className={labelClass}>
-                        {t("fullName")} <span className="text-red-500">*</span>
+                        {t("fullName")} <span className="text-red-700">*</span>
                       </label>
                       <input
                         type="text"
@@ -357,7 +357,7 @@ export default function ContactPage() {
                     <div>
                       <label className={labelClass}>
                         {t("emailWhatsapp")}{" "}
-                        <span className="text-red-500">*</span>
+                        <span className="text-red-700">*</span>
                       </label>
                       <input
                         type="text"
@@ -411,7 +411,7 @@ export default function ContactPage() {
                 <div className="mb-8">
                   <p className={sectionTitleClass}>
                     {t("weddingLocationInterest")}
-                    <span className="text-primary/50 font-normal normal-case tracking-normal ml-2 text-xs">
+                    <span className="text-muted-foreground font-normal normal-case tracking-normal ml-2 text-xs">
                       {t("selectAllApply")}
                     </span>
                   </p>
@@ -492,7 +492,7 @@ export default function ContactPage() {
                 <div className="mb-8">
                   <p className={sectionTitleClass}>
                     {t("servicesNeeded")}
-                    <span className="text-primary/50 font-normal normal-case tracking-normal ml-2 text-xs">
+                    <span className="text-muted-foreground font-normal normal-case tracking-normal ml-2 text-xs">
                       {t("selectAllApply")}
                     </span>
                   </p>

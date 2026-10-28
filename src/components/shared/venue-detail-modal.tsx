@@ -93,7 +93,7 @@ const VenueNameSlogan = ({ venue }: { venue: Venue }) => (
     >
       {venue.name}
     </span>
-    <span className="block text-lg md:text-xl text-primary font-light italic leading-snug -mt-1">
+    <span className="block text-lg md:text-xl text-primary font-normal italic leading-snug -mt-1">
       {venue.slogan}
     </span>
   </div>
@@ -224,17 +224,17 @@ export default function VenueDetailModal({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4 md:p-8 overflow-y-auto">
           {/* Left Side - Image Carousel */}
           <div className="flex flex-col gap-4">
-            <div className="relative aspect-[4/5] overflow-hidden bg-stone-100">
+            <div className="relative aspect-[4/5] overflow-hidden bg-secondary">
               {/* Loading Skeleton */}
               {!mainImageLoaded && !mainImageError && <ImageLoadingSkeleton />}
 
               {/* Error State */}
               {mainImageError && (
                 <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
-                  <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
-                    <X className="w-8 h-8 text-stone-500" />
+                  <div className="w-16 h-16 bg-border rounded-full flex items-center justify-center">
+                    <X className="w-8 h-8 text-muted-foreground" />
                   </div>
-                  <p className="text-stone-500 text-sm">
+                  <p className="text-muted-foreground text-sm">
                     {tc("failedToLoadImage")}
                   </p>
                 </div>
@@ -378,7 +378,7 @@ export default function VenueDetailModal({
                 ).map((exp) => (
                   <span
                     key={exp}
-                    className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
+                    className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
                   >
                     {t(exp)}
                   </span>
@@ -404,7 +404,7 @@ export default function VenueDetailModal({
                   onClick={() =>
                     setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                   }
-                  className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors hover:cursor-pointer"
+                  className="flex items-center gap-1 text-sm text-primary hover:text-foreground transition-colors hover:cursor-pointer"
                 >
                   {selectedCurrency}
                   <ChevronDown
@@ -415,7 +415,7 @@ export default function VenueDetailModal({
                 </button>
 
                 {isCurrencyDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[80px]">
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[80px]">
                     {(["IDR", "USD"] as Currency[]).map((currency) => (
                       <button
                         key={currency}
@@ -426,7 +426,7 @@ export default function VenueDetailModal({
                         className={`block w-full text-left px-3 py-2 text-sm transition-colors hover:cursor-pointer ${
                           selectedCurrency === currency
                             ? "bg-primary text-white"
-                            : "text-primary hover:bg-stone-100"
+                            : "text-primary hover:bg-secondary"
                         }`}
                       >
                         {currency}
@@ -438,7 +438,7 @@ export default function VenueDetailModal({
             </div>
 
             {/* Venue Info Section */}
-            <div className="flex justify-start gap-8 items-start mt-4 mb-6 w-full border-y border-stone-100 py-6">
+            <div className="flex justify-start gap-8 items-start mt-4 mb-6 w-full border-y border-border py-6">
               <div className="flex flex-col">
                 <span className="text-sm text-primary italic mb-1">
                   {t("startsFrom")}
@@ -488,7 +488,7 @@ export default function VenueDetailModal({
               </button>
             </Link>
 
-            <p className="text-sm md:text-base text-primary text-justify leading-relaxed mb-6">
+            <p className="text-sm md:text-base text-foreground text-justify leading-relaxed mb-6">
               {venue.description}
             </p>
           </article>

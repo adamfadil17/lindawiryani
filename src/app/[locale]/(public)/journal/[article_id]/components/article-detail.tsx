@@ -51,7 +51,7 @@ function RelatedCard({ article }: { article: Article }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
         <div className="absolute top-4 left-4">
-          <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
+          <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
             {category.label(article.category)}
           </span>
         </div>
@@ -59,13 +59,13 @@ function RelatedCard({ article }: { article: Article }) {
           <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
         </div>
       </div>
-      <h3 className="text-primary font-semibold text-base leading-snug group-hover:text-primary/80 transition-colors mb-2">
+      <h3 className="text-primary font-semibold text-base leading-snug group-hover:text-foreground transition-colors mb-2">
         {article.title}
       </h3>
-      <p className="text-primary text-sm leading-relaxed line-clamp-2">
+      <p className="text-foreground text-sm leading-relaxed line-clamp-2">
         {article.excerpt}
       </p>
-      <div className="flex items-center gap-2 mt-3 text-primary text-xs tracking-widest group-hover:text-primary/80 transition-colors">
+      <div className="flex items-center gap-2 mt-3 text-primary text-xs tracking-widest group-hover:text-foreground transition-colors">
         <span>{t("readArticle")}</span>
         <ArrowRight className="w-3.5 h-3.5" />
       </div>
@@ -111,7 +111,7 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
           >
             <Link
               href="/journal"
-              className="flex items-center gap-2 text-white/80 text-sm tracking-widest uppercase hover:text-white hover:cursor-pointer transition-colors"
+              className="flex items-center gap-2 text-white/90 text-sm tracking-widest uppercase hover:text-white hover:cursor-pointer transition-colors"
             >
               <span>{t("breadcrumb")}</span>
             </Link>
@@ -122,7 +122,7 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
           </motion.div>
 
           <motion.div variants={fadeInUp} className="mb-5">
-            <span className="bg-white/90 text-primary text-sm tracking-widest px-3 py-1">
+            <span className="bg-white/15 border border-1 border-white/10 text-white text-sm tracking-widest px-3 py-1">
               {categoryLabel}
             </span>
           </motion.div>
@@ -158,7 +158,7 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
               <div className="lg:sticky lg:top-32 space-y-10">
                 <Link
                   href="/journal"
-                  className="group flex items-center gap-3 text-primary/80 hover:text-primary transition-colors tracking-widest uppercase"
+                  className="group flex items-center gap-3 text-primary/90 hover:text-primary transition-colors tracking-widest uppercase"
                 >
                   <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
                   <span>{t("allArticles")}</span>
@@ -168,23 +168,23 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
 
                 <div className="space-y-5">
                   <div>
-                    <p className="text-primary/80 text-sm tracking-[0.2em] uppercase mb-1">
+                    <p className="text-primary/90 text-sm tracking-[0.2em] uppercase mb-1">
                       {t("categoryLabel")}
                     </p>
-                    <p className="text-primary font-medium">{categoryLabel}</p>
+                    <p className="text-foreground font-medium">{categoryLabel}</p>
                   </div>
                   <div>
-                    <p className="text-primary/80 text-sm tracking-[0.2em] uppercase mb-1">
+                    <p className="text-primary/90 text-sm tracking-[0.2em] uppercase mb-1">
                       {t("publishedLabel")}
                     </p>
-                    <p className="text-primary">{formattedDate}</p>
+                    <p className="text-foreground">{formattedDate}</p>
                   </div>
                 </div>
 
                 <div className="w-12 h-px bg-primary/50" />
 
                 <div className="space-y-4">
-                  <p className="text-primary leading-relaxed">
+                  <p className="text-foreground leading-relaxed">
                     {t("ctaPrompt")}
                   </p>
                   <Link href="/contact">
@@ -200,7 +200,7 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
               variants={fadeIn}
               className="lg:col-span-9 order-1 lg:order-2"
             >
-              <p className="text-primary text-lg md:text-xl leading-relaxed font-light border-l-2 border-primary pl-6 mb-12 text-justify">
+              <p className="text-foreground text-lg md:text-xl leading-relaxed font-normal border-l-2 border-primary pl-6 mb-12 text-justify">
                 {article.excerpt}
               </p>
 
@@ -212,7 +212,7 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
 
       {related.length > 0 && (
         <motion.section
-          className="bg-primary/10 py-20 lg:py-28"
+          className="bg-accent/60 py-20 lg:py-28"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.1, margin: "0px 0px -80px 0px" }}
@@ -226,7 +226,7 @@ export function ArticleDetail({ article, related }: ArticleDetailProps) {
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                 {t("moreFrom")}
                 <br />
-                <span className="italic font-light">{categoryLabel}</span>
+                <span className="italic font-medium">{categoryLabel}</span>
               </h2>
             </motion.div>
 

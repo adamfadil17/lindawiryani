@@ -221,7 +221,7 @@ export default function WorkingWithUsPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary transition-colors disabled:bg-primary/5 text-primary placeholder:text-primary/50";
+    "w-full px-4 py-3 border border-field bg-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors disabled:bg-primary/5 text-foreground placeholder:text-muted-foreground";
   const labelClass =
     "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
   const selectClass = `${inputClass} appearance-none cursor-pointer`;
@@ -251,7 +251,7 @@ export default function WorkingWithUsPage() {
             </button>
             <button
               onClick={() => setActiveTab("career")}
-              className="border border-white/50 text-white/70 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300"
+              className="border border-white/50 text-white/85 font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300"
             >
               {t("joinTeamBtn")}
             </button>
@@ -275,12 +275,12 @@ export default function WorkingWithUsPage() {
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                 {t("studioTitle1")}
                 <br />
-                <span className="italic font-light">{t("studioTitle2")}</span>
+                <span className="italic font-medium">{t("studioTitle2")}</span>
               </h2>
             </motion.div>
 
             <motion.div variants={fadeInUp} className="space-y-4">
-              <p className="text-primary mb-6">{t("whatWeBring")}</p>
+              <p className="text-foreground mb-6">{t("whatWeBring")}</p>
               {[
                 t("bring1"),
                 t("bring2"),
@@ -304,19 +304,19 @@ export default function WorkingWithUsPage() {
           <div className="lg:col-span-7 space-y-8">
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("studioP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("studioP2")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("studioP3")}
             </motion.p>
@@ -325,7 +325,7 @@ export default function WorkingWithUsPage() {
       </motion.section>
 
       <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
+        className="bg-accent/60 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -339,7 +339,7 @@ export default function WorkingWithUsPage() {
             <h2 className="text-3xl md:text-4xl text-primary font-semibold">
               {t("standardsTitle1")}
               <br />
-              <span className="italic font-light">{t("standardsTitle2")}</span>
+              <span className="italic font-medium">{t("standardsTitle2")}</span>
             </h2>
           </motion.div>
 
@@ -348,15 +348,15 @@ export default function WorkingWithUsPage() {
               <motion.div
                 key={v.no}
                 variants={fadeInUp}
-                className="flex flex-col gap-6 bg-white/60 p-8"
+                className="flex flex-col gap-6 bg-primary p-8"
               >
-                <span className="text-primary font-semibold text-3xl tracking-widest">
+                <span className="text-white font-semibold text-3xl tracking-widest">
                   {v.no}
                 </span>
-                <h3 className="text-primary font-semibold text-lg">
+                <h3 className="text-white font-semibold text-lg">
                   {v.title}
                 </h3>
-                <p className="text-primary leading-relaxed">{v.desc}</p>
+                <p className="text-white leading-relaxed">{v.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -376,7 +376,7 @@ export default function WorkingWithUsPage() {
           <h2 className="text-3xl md:text-4xl text-primary font-semibold">
             {t("openPositionsTitle1")}
             <br />
-            <span className="italic font-light">
+            <span className="italic font-medium">
               {t("openPositionsTitle2")}
             </span>
           </h2>
@@ -387,28 +387,28 @@ export default function WorkingWithUsPage() {
             <motion.div
               key={pos.title}
               variants={fadeInUp}
-              className="border border-primary/20 p-8 space-y-4 group hover:border-primary/60 transition-colors duration-300"
+              className="p-8 space-y-4 group bg-primary hover:bg-primary/90 transition-colors duration-300"
             >
               <div className="flex items-start justify-between gap-4">
-                <span className="text-primary text-lg font-mono">
+                <span className="text-white text-lg font-mono">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="flex gap-2 flex-wrap justify-end">
-                  <span className="text-sm tracking-widest uppercase text-primary border border-primary/50 px-3 py-1">
+                  <span className="text-sm tracking-widest uppercase text-white border border-white/50 px-3 py-1">
                     {pos.type}
                   </span>
-                  <span className="text-sm tracking-widest uppercase text-primary border border-primary/50 px-3 py-1">
+                  <span className="text-sm tracking-widest uppercase text-white border border-white/50 px-3 py-1">
                     {pos.level}
                   </span>
                 </div>
               </div>
-              <h3 className="text-primary font-semibold text-xl">
+              <h3 className="text-white font-semibold text-xl">
                 {pos.title}
               </h3>
-              <p className="text-primary text-sm leading-relaxed">{pos.desc}</p>
+              <p className="text-white text-sm leading-relaxed">{pos.desc}</p>
               <button
                 onClick={() => setActiveTab("career")}
-                className="inline-block mt-2 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 hover:border-primary hover:cursor-pointer transition-colors duration-300"
+                className="inline-block mt-2 text-xs tracking-widest uppercase text-white border-b border-white/40 pb-0.5 hover:border-white hover:cursor-pointer transition-colors duration-300"
               >
                 {t("applyNow")}
               </button>
@@ -418,7 +418,7 @@ export default function WorkingWithUsPage() {
       </motion.section>
       <motion.section
         id="apply"
-        className="bg-primary/5 py-20 lg:py-28"
+        className="bg-accent/30 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -100px 0px" }}
@@ -437,7 +437,7 @@ export default function WorkingWithUsPage() {
                   className={`px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-colors hover:cursor-pointer duration-300 border-b-2 -mb-px ${
                     activeTab === tab
                       ? "border-primary text-primary"
-                      : "border-transparent text-primary/80 hover:text-primary"
+                      : "border-transparent text-primary/90 hover:text-primary"
                   }`}
                 >
                   {tab === "vendor"
@@ -467,12 +467,12 @@ export default function WorkingWithUsPage() {
                       <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                         {t("vendorFormTitle1")}
                         <br />
-                        <span className="italic font-light">
+                        <span className="italic font-medium">
                           {t("vendorFormTitle2")}
                         </span>
                       </h2>
                     </div>
-                    <p className="text-primary leading-relaxed">
+                    <p className="text-foreground leading-relaxed">
                       {t("vendorFormIntro")}
                     </p>
                     <div className="space-y-4">
@@ -507,7 +507,7 @@ export default function WorkingWithUsPage() {
                           <div>
                             <label className={labelClass}>
                               {t("companyName")}{" "}
-                              <span className="text-red-500">*</span>
+                              <span className="text-red-700">*</span>
                             </label>
                             <input
                               type="text"
@@ -522,7 +522,7 @@ export default function WorkingWithUsPage() {
                           <div>
                             <label className={labelClass}>
                               {t("contactPerson")}{" "}
-                              <span className="text-red-500">*</span>
+                              <span className="text-red-700">*</span>
                             </label>
                             <input
                               type="text"
@@ -539,7 +539,7 @@ export default function WorkingWithUsPage() {
                           <div>
                             <label className={labelClass}>
                               {t("emailAddress")}{" "}
-                              <span className="text-red-500">*</span>
+                              <span className="text-red-700">*</span>
                             </label>
                             <input
                               type="email"
@@ -587,7 +587,7 @@ export default function WorkingWithUsPage() {
                           <div>
                             <label className={labelClass}>
                               {t("vendorCategory")}{" "}
-                              <span className="text-red-500">*</span>
+                              <span className="text-red-700">*</span>
                             </label>
                             <div className="relative">
                               <select
@@ -609,7 +609,7 @@ export default function WorkingWithUsPage() {
                                 ))}
                               </select>
                               <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                                <ChevronDown className="w-4 h-4 text-primary/80" />
+                                <ChevronDown className="w-4 h-4 text-primary/90" />
                               </div>
                             </div>
                           </div>
@@ -651,7 +651,7 @@ export default function WorkingWithUsPage() {
                         <label className={labelClass}>
                           {t("introduceYourself")}
                         </label>
-                        <p className="text-primary italic mb-3">
+                        <p className="text-foreground italic mb-3">
                           {t("vendorMessageIntro")}
                         </p>
                         <textarea
@@ -720,17 +720,17 @@ export default function WorkingWithUsPage() {
                       <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                         {t("careerFormTitle1")}
                         <br />
-                        <span className="italic font-light">
+                        <span className="italic font-medium">
                           {t("careerFormTitle2")}
                         </span>
                       </h2>
                     </div>
-                    <p className="text-primary leading-relaxed">
+                    <p className="text-foreground leading-relaxed">
                       {t("careerFormIntro")}
                     </p>
 
                     <div className="space-y-4">
-                      <p className="text-primary mb-4">{t("whatWeValue")}</p>
+                      <p className="text-foreground mb-4">{t("whatWeValue")}</p>
                       {[
                         t("val1"),
                         t("val2"),
@@ -761,7 +761,7 @@ export default function WorkingWithUsPage() {
                           <div>
                             <label className={labelClass}>
                               {t("fullName")}{" "}
-                              <span className="text-red-500">*</span>
+                              <span className="text-red-700">*</span>
                             </label>
                             <input
                               type="text"
@@ -776,7 +776,7 @@ export default function WorkingWithUsPage() {
                           <div>
                             <label className={labelClass}>
                               {t("emailAddress")}{" "}
-                              <span className="text-red-500">*</span>
+                              <span className="text-red-700">*</span>
                             </label>
                             <input
                               type="email"
@@ -811,7 +811,7 @@ export default function WorkingWithUsPage() {
                         <div>
                           <label className={labelClass}>
                             {t("positionApplyingFor")}{" "}
-                            <span className="text-red-500">*</span>
+                            <span className="text-red-700">*</span>
                           </label>
                           <div className="relative">
                             <select
@@ -836,7 +836,7 @@ export default function WorkingWithUsPage() {
                               </option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                              <ChevronDown className="w-4 h-4 text-primary/80" />
+                              <ChevronDown className="w-4 h-4 text-primary/90" />
                             </div>
                           </div>
                         </div>
@@ -892,9 +892,9 @@ export default function WorkingWithUsPage() {
                         </p>
                         <label className={labelClass}>
                           {t("coverLetterLabel")}{" "}
-                          <span className="text-red-500">*</span>
+                          <span className="text-red-700">*</span>
                         </label>
-                        <p className="text-primary/80 text-sm mb-3">
+                        <p className="text-foreground/80 text-sm mb-3">
                           {t("coverLetterIntro")}
                         </p>
                         <textarea

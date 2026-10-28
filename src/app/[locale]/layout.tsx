@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
+import PalettePreview from "@/components/shared/palette-preview";
 import { DEFAULT_OG_IMAGE, OG_LOCALE, SITE_URL, absoluteUrl } from "@/lib/seo";
 import "../globals.css";
 
@@ -18,7 +19,7 @@ export function generateStaticParams() {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#F7F1E8",
   width: "device-width",
   initialScale: 1,
 };
@@ -164,13 +165,19 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={locale} className={cormorant.className}>
+    <html
+      lang={locale}
+      data-area="public"
+      className={cormorant.className}
+      suppressHydrationWarning
+    >
       <body>
         <Script
           id="schema-markup"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {process.env.NEXT_PUBLIC_PALETTE_PREVIEW === "1" && <PalettePreview />}
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>

@@ -40,10 +40,10 @@ export default function TagsInput({
             }
           }}
           placeholder={placeholder || "Type and press Enter"}
-          className={`flex-1 px-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-white border focus:outline-none transition-colors ${
+          className={`flex-1 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground bg-white border focus:outline-none transition-colors ${
             error
-              ? "border-red-500 focus:border-red-500"
-              : "border-primary/30 focus:border-primary/50"
+              ? "border-red-700 focus:border-red-700 focus:ring-1 focus:ring-red-700"
+              : "border-field focus:border-primary focus:ring-1 focus:ring-primary"
           }`}
         />
         <button
@@ -65,7 +65,7 @@ export default function TagsInput({
               <button
                 type="button"
                 onClick={() => remove(i)}
-                className="text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
+                className="text-muted-foreground hover:text-foreground hover:cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -73,7 +73,7 @@ export default function TagsInput({
           ))}
         </div>
       )}
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+      {error && <p className="text-red-700 text-xs mt-1">{error}</p>}
     </div>
   );
 }

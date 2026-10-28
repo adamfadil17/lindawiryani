@@ -18,13 +18,13 @@ export default function TextareaInput({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
-        className={`w-full px-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-white border focus:outline-none transition-colors resize-none ${
+        className={`w-full px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground bg-white border focus:outline-none transition-colors resize-none ${
           error
-            ? "border-red-500 focus:border-red-500"
-            : "border-primary/30 focus:border-primary/50"
+            ? "border-red-700 focus:border-red-700 focus:ring-1 focus:ring-red-700"
+            : "border-field focus:border-primary focus:ring-1 focus:ring-primary"
         }`}
       />
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      {error && <p className="text-red-700 text-sm mt-1">{error}</p>}
     </div>
   );
 }

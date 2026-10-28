@@ -253,7 +253,7 @@ export default function WeddingThemesSection({
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -100px 0px" }}
         variants={staggerContainer}
       >
-        <div className="absolute inset-0 bg-primary/10" />
+        <div className="absolute inset-0" />
         <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           {/* Header */}
           <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
@@ -267,7 +267,7 @@ export default function WeddingThemesSection({
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
-                <p className="text-primary leading-relaxed text-justify">
+                <p className="text-foreground leading-relaxed text-justify">
                   {t("intro")}
                 </p>
               </div>
@@ -334,7 +334,7 @@ export default function WeddingThemesSection({
                         onClick={() =>
                           setIsThemeDropdownOpen(!isThemeDropdownOpen)
                         }
-                        className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors hover:cursor-pointer font-medium capitalize"
+                        className="flex items-center gap-2 text-md text-primary hover:text-foreground transition-colors hover:cursor-pointer font-medium capitalize"
                       >
                         <span>
                           {selectedThemeCategory === "elopement"
@@ -348,7 +348,7 @@ export default function WeddingThemesSection({
                         />
                       </button>
                       {isThemeDropdownOpen && (
-                        <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[150px]">
+                        <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[150px]">
                           {availableCategories.map((cat) => (
                             <button
                               key={cat}
@@ -361,7 +361,7 @@ export default function WeddingThemesSection({
                               className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer capitalize ${
                                 selectedThemeCategory === cat
                                   ? "bg-primary text-white"
-                                  : "text-primary hover:bg-stone-100"
+                                  : "text-primary hover:bg-secondary"
                               }`}
                             >
                               {cat === "elopement"
@@ -391,7 +391,7 @@ export default function WeddingThemesSection({
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
+                        className="text-base md:text-lg text-foreground max-w-3xl mx-auto leading-relaxed"
                       >
                         {tv("descElopement")}
                       </motion.p>
@@ -402,7 +402,7 @@ export default function WeddingThemesSection({
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
+                        className="text-base md:text-lg text-foreground max-w-3xl mx-auto leading-relaxed"
                       >
                         {tv("descIntimate")}
                       </motion.p>
@@ -455,7 +455,7 @@ export default function WeddingThemesSection({
                           className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
                             currentThemeSlide === index
                               ? "bg-primary w-8"
-                              : "bg-stone-300"
+                              : "bg-border"
                           }`}
                         />
                       ))}
@@ -491,7 +491,7 @@ export default function WeddingThemesSection({
                     <button
                       onClick={prevPage}
                       disabled={currentPage === 0}
-                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
+                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:cursor-pointer hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
                     >
                       <ArrowLeft className="w-4 h-4" />
                     </button>
@@ -504,7 +504,7 @@ export default function WeddingThemesSection({
                           className={`w-2.5 h-2.5 rounded-full transition-all hover:cursor-pointer ${
                             currentPage === index
                               ? "bg-primary w-8 rounded-full"
-                              : "bg-stone-300 hover:bg-primary/50"
+                              : "bg-border hover:bg-primary/50"
                           }`}
                         />
                       ))}
@@ -513,7 +513,7 @@ export default function WeddingThemesSection({
                     <button
                       onClick={nextPage}
                       disabled={currentPage === totalPages - 1}
-                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
+                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:cursor-pointer hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
                     >
                       <ArrowRight className="w-4 h-4" />
                     </button>

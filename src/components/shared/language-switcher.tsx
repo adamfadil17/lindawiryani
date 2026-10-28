@@ -64,7 +64,7 @@ export default function LanguageSwitcher({
         aria-haspopup="listbox"
         onClick={() => setIsOpen((v) => !v)}
         disabled={isPending}
-        className={`flex items-center gap-1 text-[11px] lg:text-[12px] tracking-[0.15em] font-light py-3 md:py-4 cursor-pointer transition-colors hover:opacity-80 ${
+        className={`flex items-center gap-1 text-[14px] tracking-[0.1em] font-medium py-3 md:py-4 cursor-pointer transition-colors hover:opacity-80 ${
           inverted ? "text-primary" : "text-white"
         } ${isPending ? "opacity-50" : ""}`}
       >
@@ -78,7 +78,7 @@ export default function LanguageSwitcher({
 
       <div
         role="listbox"
-        className={`absolute top-full ${align === "left" ? "left-0" : "right-0"} w-44 bg-white shadow-xl border border-stone-100 py-2 transition-all duration-200 ${
+        className={`absolute top-full ${align === "left" ? "left-0" : "right-0"} w-44 bg-white shadow-xl border border-border py-2 transition-all duration-200 ${
           isOpen
             ? "opacity-100 visible translate-y-0"
             : "opacity-0 invisible -translate-y-1"
@@ -91,10 +91,10 @@ export default function LanguageSwitcher({
             role="option"
             aria-selected={l === locale}
             onClick={() => handleSelect(l)}
-            className={`block w-full text-left px-4 py-3 md:py-2 text-[13px] tracking-wide transition-colors hover:bg-stone-50 ${
+            className={`block w-full text-left px-4 py-3 md:py-2 text-[14px] tracking-wide transition-colors hover:bg-secondary/50 ${
               l === locale
                 ? "font-semibold text-primary"
-                : "font-light text-primary/80"
+                : "font-medium text-primary/90"
             }`}
           >
             {localeLabels[l]}

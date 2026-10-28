@@ -193,7 +193,7 @@ function PortfolioCard({
 
               <button
                 onClick={() => onDelete(portfolio)}
-                className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-500 hover:bg-red-50 transition-colors"
+                className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
                 title="Delete Portfolio"
               >
                 <Trash2 className="w-4 h-4" />

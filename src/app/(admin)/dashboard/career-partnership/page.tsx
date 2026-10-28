@@ -389,7 +389,7 @@ function PositionCard({ position, onDelete }: { position: OpenPosition; onDelete
           </Link>
           <button
             onClick={() => onDelete(position)}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
             title="Delete Position"
           >
             <Trash2 className="w-4 h-4" />
@@ -483,7 +483,7 @@ function SubmissionCard({ submission, onDelete }: { submission: Submission; onDe
           </Link>
           <button
             onClick={() => onDelete(submission)}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
             title="Delete Submission"
           >
             <Trash2 className="w-4 h-4" />

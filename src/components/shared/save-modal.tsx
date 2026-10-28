@@ -45,7 +45,7 @@ export default function SaveModal({
         <button
           onClick={onCancel}
           disabled={isLoading}
-          className="absolute top-4 right-4 text-primary/50 hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <X className="w-4 h-4" />
         </button>
@@ -58,13 +58,13 @@ export default function SaveModal({
           )}
         </div>
 
-        <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-2">
+        <p className="text-primary/90 tracking-[0.2em] uppercase text-xs mb-2">
           {subtitle ?? "Confirm Action"}
         </p>
         <h2 className="text-primary text-xl font-semibold mb-3">
           {title}
         </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
+        <p className="text-foreground/75 text-sm leading-relaxed mb-8">
           {description ?? defaultDescription}
         </p>
 

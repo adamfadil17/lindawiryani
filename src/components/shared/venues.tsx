@@ -58,6 +58,121 @@ const formatPrice = (
   return finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+// ─── ExperienceCard ───────────────────────────────────────────────────────────
+
+type ExperienceItem = ReturnType<
+  typeof useWeddingExperienceData
+>["weddingExperienceList"][number];
+
+type ExperienceCardVariant = "grid" | "wide" | "stacked";
+
+/**
+ * Pengaturan per varian: rasio kartu, padding, ukuran teks, line-clamp, dan
+ * tinggi area fade gradasi primary.
+ *
+ * Gradasi dipasang LANGSUNG pada blok teks (bukan overlay setinggi kartu),
+ * sehingga tingginya = tinggi teks + `fade`, berapa pun lebar layarnya. Foto di
+ * atas blok teks tetap bersih; hanya bagian bawah yang diberi warna primary.
+ * Padding memakai px/pb (bukan p-) supaya tidak menimpa `fade` (pt-*).
+ *
+ * Mobile (stacked): kartu portrait 4/5 supaya ada ruang untuk judul 24px dan
+ * deskripsi 3 baris; di ≥ sm kartu jadi landscape 2/1 dengan deskripsi 2 baris.
+ */
+const EXPERIENCE_CARD_VARIANTS: Record<
+  ExperienceCardVariant,
+  {
+    frame: string;
+    pad: string;
+    fade: string;
+    title: string;
+    desc: string;
+    sizes: string;
+  }
+> = {
+  grid: {
+    frame: "aspect-[4/5]",
+    pad: "px-5 pb-5 xl:px-6 xl:pb-6",
+    fade: "pt-24",
+    title: "text-2xl",
+    desc: "line-clamp-2",
+    sizes: "33vw",
+  },
+  wide: {
+    frame: "aspect-[21/9]",
+    pad: "px-8 pb-8",
+    fade: "pt-24",
+    title: "text-3xl",
+    desc: "line-clamp-3 max-w-xl",
+    sizes: "100vw",
+  },
+  stacked: {
+    frame: "aspect-[4/5] sm:aspect-[2/1]",
+    pad: "px-5 pb-5 sm:px-6 sm:pb-6 md:px-8 md:pb-8",
+    fade: "pt-20 sm:pt-24",
+    title: "text-2xl md:text-3xl",
+    desc: "line-clamp-3 sm:line-clamp-2 md:line-clamp-3 max-w-lg",
+    sizes: "100vw",
+  },
+};
+
+function ExperienceCard({
+  exp,
+  index,
+  variant,
+}: {
+  exp: ExperienceItem;
+  index: number;
+  variant: ExperienceCardVariant;
+}) {
+  const s = EXPERIENCE_CARD_VARIANTS[variant];
+  const words = exp.name.split(" ");
+  const head = words.slice(0, -1).join(" ");
+  const tail = words[words.length - 1];
+
+  return (
+    <Link
+      href={`/wedding-experiences/${exp.slug}`}
+      className="group relative block overflow-hidden bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+    >
+      <div className={`relative overflow-hidden ${s.frame}`}>
+        <Image
+          src={exp.hero_image}
+          alt={`${exp.name} in Bali`}
+          fill
+          loading="lazy"
+          className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+          sizes={s.sizes}
+        />
+
+        <span className="absolute top-4 left-4 sm:top-5 sm:left-5 text-white/90 font-mono text-xs sm:text-sm tracking-[0.3em] drop-shadow">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
+        {/* Blok teks + gradasi primary: pekat di bawah, memudar ke atas */}
+        <div
+          className={`absolute inset-x-0 bottom-0 text-white bg-gradient-to-t from-primary/95 via-primary/75 via-65% to-transparent ${s.pad} ${s.fade}`}
+        >
+          <h3
+            className={`${s.title} font-semibold leading-tight mb-2 sm:mb-3 line-clamp-2`}
+          >
+            {head}
+            {head && <br />}
+            <span className="italic font-medium">{tail}</span>
+          </h3>
+          <p
+            className={`text-sm leading-snug sm:leading-relaxed text-white/90 mb-3 sm:mb-4 ${s.desc}`}
+          >
+            {exp.hero_desc}
+          </p>
+          <span className="inline-flex items-center gap-2 text-xs sm:text-sm tracking-[0.2em] sm:tracking-widest text-white border-b border-white/40 pb-0.5 transition-colors group-hover:border-white">
+            EXPLORE <ArrowRight className="w-3 h-3" />
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 // ─── VenueCard ────────────────────────────────────────────────────────────────
 
 interface VenueCardProps {
@@ -92,12 +207,12 @@ function VenueCard({
         <h3 className="text-xl md:text-2xl font-semibold mb-1 leading-tight max-w-[200px]">
           {venue.name}
         </h3>
-        <p className="text-md font-light italic mb-4 text-white max-w-[280px]">
+        <p className="text-md font-medium italic mb-4 text-white max-w-[280px]">
           {venue.slogan}
         </p>
         <div className="flex items-center justify-start mb-4">
           <div className="flex flex-col items-start">
-            <span className="text-sm text-white/80 italic mb-0.5">
+            <span className="text-sm text-white/90 italic mb-0.5">
               {tv("startsFrom")}
             </span>
             <div className="flex items-baseline gap-2">
@@ -152,12 +267,12 @@ function NoVenuesFound({
       className="flex flex-col items-center justify-center py-24 text-center"
     >
       <div className="mb-6 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-        <MapPin className="w-7 h-7 text-primary/80" />
+        <MapPin className="w-7 h-7 text-primary/90" />
       </div>
-      <p className="text-primary text-lg italic font-light mb-2">
+      <p className="text-foreground text-lg italic font-medium mb-2">
         {tv("noVenuesFound")}
       </p>
-      <p className="text-primary/80 text-sm mb-8 max-w-sm">
+      <p className="text-foreground/80 text-sm mb-8 max-w-sm">
         {tv("noVenuesHelp", {
           experience: selectedExperienceLabel,
           location: selectedLocation,
@@ -300,7 +415,7 @@ export default function VenuesSection({
     <>
       <motion.section
         id="venue-list-section"
-        className="bg-primary/15 py-20 lg:py-28"
+        className="bg-accent py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -321,7 +436,7 @@ export default function VenuesSection({
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
-              <p className="text-primary/80 text-justify leading-relaxed">
+              <p className="text-foreground/80 text-justify leading-relaxed">
                 {tv("intro")}
               </p>
             </div>
@@ -329,135 +444,38 @@ export default function VenuesSection({
 
           {/* Wedding Experiences — card grid dari weddingExperienceList */}
           <motion.div className="mb-16" variants={fadeInUp}>
-            {/* Desktop: 3 kartu pertama di atas, 1 kartu penuh di bawah */}
+            {/* Desktop: 3 kartu pertama di atas */}
             <div className="hidden lg:grid grid-cols-3 gap-px mb-px bg-white/10">
               {weddingExperienceList.slice(0, 3).map((exp, i) => (
-                <Link
+                <ExperienceCard
                   key={exp.slug}
-                  href={`/wedding-experiences/${exp.slug}`}
-                  className="group relative bg-primary overflow-hidden"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={exp.hero_image}
-                      alt={`${exp.name} in Bali`}
-                      fill
-                      loading="lazy"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                      sizes="33vw"
-                    />
-                    <div className="absolute top-5 left-5">
-                      <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                        {exp.name.split(" ").slice(0, -1).join(" ")}
-                        <br />
-                        <span className="italic font-light">
-                          {exp.name.split(" ").slice(-1)[0]}
-                        </span>
-                      </h3>
-                      <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-2">
-                        {exp.hero_desc}
-                      </p>
-                      <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                        EXPLORE <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                  exp={exp}
+                  index={i}
+                  variant="grid"
+                />
               ))}
             </div>
 
             {/* Desktop: kartu ke-4 (jika ada) — full width */}
             {weddingExperienceList[3] && (
               <div className="hidden lg:block mb-14">
-                <Link
-                  href={`/wedding-experiences/${weddingExperienceList[3].slug}`}
-                  className="group relative bg-primary overflow-hidden block"
-                >
-                  <div className="relative aspect-[21/9] overflow-hidden">
-                    <Image
-                      src={weddingExperienceList[3].hero_image}
-                      alt={`${weddingExperienceList[3].name} in Bali`}
-                      fill
-                      loading="lazy"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                      sizes="100vw"
-                    />
-                    <div className="absolute top-5 left-5">
-                      <span className="text-white/40 font-mono text-sm tracking-[0.3em]">
-                        04
-                      </span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                      <h3 className="text-white text-xl md:text-2xl lg:text-3xl font-semibold leading-tight mb-3">
-                        {weddingExperienceList[3].name
-                          .split(" ")
-                          .slice(0, -1)
-                          .join(" ")}
-                        <br />
-                        <span className="italic font-light">
-                          {
-                            weddingExperienceList[3].name
-                              .split(" ")
-                              .slice(-1)[0]
-                          }
-                        </span>
-                      </h3>
-                      <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
-                        {weddingExperienceList[3].hero_desc}
-                      </p>
-                      <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                        EXPLORE <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                <ExperienceCard
+                  exp={weddingExperienceList[3]}
+                  index={3}
+                  variant="wide"
+                />
               </div>
             )}
 
             {/* Mobile & Tablet: semua kartu full-width stacked */}
             <div className="flex flex-col gap-px lg:hidden mb-8 sm:mb-10 md:mb-12">
               {weddingExperienceList.map((exp, i) => (
-                <Link
+                <ExperienceCard
                   key={exp.slug}
-                  href={`/wedding-experiences/${exp.slug}`}
-                  className="group relative bg-primary overflow-hidden block"
-                >
-                  <div className="relative aspect-[4/3] sm:aspect-[21/9] overflow-hidden">
-                    <Image
-                      src={exp.hero_image}
-                      alt={`${exp.name} in Bali`}
-                      fill
-                      loading="lazy"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-75"
-                      sizes="100vw"
-                    />
-                    <div className="absolute top-5 left-5">
-                      <span className="text-white/80 font-mono text-sm tracking-[0.3em]">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                      <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-3">
-                        {exp.name.split(" ").slice(0, -1).join(" ")}
-                        <br />
-                        <span className="italic font-light">
-                          {exp.name.split(" ").slice(-1)[0]}
-                        </span>
-                      </h3>
-                      <p className="text-white/80 text-sm leading-relaxed mb-4 max-w-md">
-                        {exp.hero_desc}
-                      </p>
-                      <span className="inline-flex items-center gap-2 text-white text-sm tracking-widest border-b border-white/40 pb-0.5 group-hover:border-white transition-colors">
-                        EXPLORE <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                  exp={exp}
+                  index={i}
+                  variant="stacked"
+                />
               ))}
             </div>
 
@@ -476,7 +494,7 @@ export default function VenuesSection({
                     onClick={() =>
                       setIsExperienceDropdownOpen(!isExperienceDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-foreground transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedExperienceLabel}</span>
                     <ChevronDown
@@ -486,7 +504,7 @@ export default function VenuesSection({
                     />
                   </button>
                   {isExperienceDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[200px]">
+                    <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[200px]">
                       {weddingExperienceList.map((exp) => (
                         <button
                           key={exp.slug}
@@ -497,7 +515,7 @@ export default function VenuesSection({
                           className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
                             selectedExperienceSlug === exp.slug
                               ? "bg-primary text-white"
-                              : "text-primary hover:bg-stone-100"
+                              : "text-primary hover:bg-secondary"
                           }`}
                         >
                           {tNav(
@@ -520,7 +538,7 @@ export default function VenuesSection({
                     onClick={() =>
                       setIsLocationDropdownOpen(!isLocationDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-foreground transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedLocation}</span>
                     <ChevronDown
@@ -530,7 +548,7 @@ export default function VenuesSection({
                     />
                   </button>
                   {isLocationDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[120px] max-h-[240px] overflow-y-auto">
+                    <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[120px] max-h-[240px] overflow-y-auto">
                       {locations.map((loc) => (
                         <button
                           key={loc}
@@ -541,7 +559,7 @@ export default function VenuesSection({
                           className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
                             selectedLocation === loc
                               ? "bg-primary text-white"
-                              : "text-primary hover:bg-stone-100"
+                              : "text-primary hover:bg-secondary"
                           }`}
                         >
                           {loc}
@@ -562,7 +580,7 @@ export default function VenuesSection({
                     onClick={() =>
                       setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)
                     }
-                    className="flex items-center gap-2 text-md text-primary hover:text-primary/80 transition-colors font-medium hover:cursor-pointer"
+                    className="flex items-center gap-2 text-md text-primary hover:text-foreground transition-colors font-medium hover:cursor-pointer"
                   >
                     <span>{selectedCurrencyLocal}</span>
                     <ChevronDown
@@ -572,7 +590,7 @@ export default function VenuesSection({
                     />
                   </button>
                   {isCurrencyDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 bg-white border border-stone-200 shadow-lg z-10 min-w-[100px]">
+                    <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[100px]">
                       {(["IDR", "USD"] as Currency[]).map((currency) => (
                         <button
                           key={currency}
@@ -583,7 +601,7 @@ export default function VenuesSection({
                           className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer ${
                             selectedCurrencyLocal === currency
                               ? "bg-primary text-white"
-                              : "text-primary hover:bg-stone-100"
+                              : "text-primary hover:bg-secondary"
                           }`}
                         >
                           {currency}
@@ -597,7 +615,7 @@ export default function VenuesSection({
 
             <motion.p
               variants={fadeInUp}
-              className="text-center text-sm text-primary mb-12"
+              className="text-center text-sm text-foreground mb-12"
             >
               {selectedLocation === "All"
                 ? `Showing ${visibleVenues.length} of ${totalVenuesCount} venues`
@@ -617,7 +635,7 @@ export default function VenuesSection({
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="text-base md:text-lg text-primary max-w-3xl mx-auto leading-relaxed"
+                  className="text-base md:text-lg text-foreground max-w-3xl mx-auto leading-relaxed"
                 >
                   {categoryDescription}
                 </motion.p>
@@ -674,7 +692,7 @@ export default function VenuesSection({
                           className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
                             currentVenueSlide === index
                               ? "bg-primary w-8"
-                              : "bg-stone-300"
+                              : "bg-border"
                           }`}
                         />
                       ))}

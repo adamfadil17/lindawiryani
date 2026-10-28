@@ -36,7 +36,7 @@ export default function Instagram() {
   return (
     <motion.section
       id="instagram"
-      className="relative py-20 lg:py-28 overflow-hidden bg-white"
+      className="relative py-20 lg:py-28 overflow-hidden"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.05, margin: "0px 0px -100px 0px" }}
@@ -55,7 +55,7 @@ export default function Instagram() {
               </h2>
             </div>
             <div className="lg:col-span-7 flex items-end">
-              <p className="text-primary/80 leading-relaxed text-justify">
+              <p className="text-foreground/80 leading-relaxed text-justify">
                 {t("description")}
               </p>
             </div>
@@ -199,14 +199,14 @@ export default function Instagram() {
           className="flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-primary/20 pt-12"
         >
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-sm mb-1">
+            <p className="text-primary/90 tracking-[0.25em] uppercase text-sm mb-1">
               {t("stayConnected")}
             </p>
             <a
               href="https://instagram.com/lindawiryanievents"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xl md:text-2xl text-primary font-light italic hover:text-primary/70 transition-colors"
+              className="text-xl md:text-2xl text-primary font-normal italic hover:text-foreground transition-colors"
             >
               @lindawiryanievents
             </a>
@@ -217,7 +217,7 @@ export default function Instagram() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
+            <button className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-4 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full uppercase">
               {t("follow")}
             </button>
           </a>

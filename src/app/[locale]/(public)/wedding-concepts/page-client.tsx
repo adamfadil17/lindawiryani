@@ -77,13 +77,13 @@ export default function WeddingConceptsPage() {
           <div className="lg:col-span-8 space-y-10">
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("introP1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("introP2")}
             </motion.p>
@@ -193,21 +193,21 @@ export default function WeddingConceptsPage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
                       <div className="absolute top-5 left-5">
-                        <span className="text-white/60 font-mono text-sm tracking-widest">
+                        <span className="text-white/90 font-mono text-sm tracking-widest">
                           {layer.number}
                         </span>
                       </div>
                       <div className="absolute top-5 right-5">
-                        <span className="bg-white/90 text-primary text-sm tracking-widest px-3 py-1.5">
-                          {layer.tag.toUpperCase()}
+                        <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
+                          {layer.tag}
                         </span>
                       </div>
-                      <div className="absolute bottom-5 right-5 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
-                        <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
+                      <div className="absolute bottom-5 right-5 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-primary group-hover:border-white">
+                        <ArrowRight className="w-4 h-4 text-white group-hover:text-white transition-colors" />
                       </div>
                     </div>
                     <div>
-                      <p className="text-white/60 text-sm tracking-[0.2em] uppercase mb-1">
+                      <p className="text-white/90 text-sm tracking-[0.2em] uppercase mb-1">
                         {layer.subtitle}
                       </p>
                       <h3 className="text-white font-semibold text-xl group-hover:text-white/80 transition-colors">
@@ -258,7 +258,7 @@ export default function WeddingConceptsPage() {
                 <p className="text-primary font-semibold text-2xl">
                   {t("venueCurationCurated")}
                 </p>
-                <p className="text-primary text-sm">
+                <p className="text-foreground text-sm">
                   {t("venueCurationNotDirectory")}
                 </p>
               </div>
@@ -276,7 +276,7 @@ export default function WeddingConceptsPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify"
+                className="text-foreground leading-relaxed text-justify"
               >
                 {t("venueCurationP1")}
               </motion.p>
@@ -297,7 +297,7 @@ export default function WeddingConceptsPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary italic leading-relaxed"
+                className="text-foreground italic leading-relaxed"
               >
                 {t("venueQuote")}
               </motion.p>
@@ -309,7 +309,7 @@ export default function WeddingConceptsPage() {
                       .getElementById("venue-list-section")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300"
+                  className="bg-primary text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300"
                 >
                   {t("exploreVenueListByDestination")}
                 </button>
@@ -352,7 +352,7 @@ export default function WeddingConceptsPage() {
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                   {t("stylingTitle")}
                 </h2>
-                <p className="mt-6 text-primary leading-relaxed italic">
+                <p className="mt-6 text-foreground leading-relaxed italic">
                   {t("stylingSubtitle")}
                 </p>
               </div>
@@ -361,7 +361,7 @@ export default function WeddingConceptsPage() {
             <div className="lg:col-span-8 space-y-10">
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify"
+                className="text-foreground leading-relaxed text-justify"
               >
                 {t("stylingP1")}
               </motion.p>
@@ -374,12 +374,12 @@ export default function WeddingConceptsPage() {
                   {stylingFocusAreas.map((item, i) => (
                     <div
                       key={item}
-                      className="flex items-center gap-4 p-4 border border-primary/30 bg-white/40"
+                      className="flex items-center gap-4 p-4 bg-primary hover:bg-primary/90 transition-colors"
                     >
-                      <span className="text-primary font-mono mt-0.5 flex-shrink-0">
+                      <span className="text-white font-mono mt-0.5 flex-shrink-0">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="text-primary">{item}</span>
+                      <span className="text-white">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -418,7 +418,7 @@ export default function WeddingConceptsPage() {
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
         variants={staggerContainer}
       >
-        <div className="absolute inset-0 bg-primary/10" />
+        <div className="absolute inset-0 bg-accent" />
         <div className="absolute top-0 right-0 w-1/3 h-full hidden lg:block">
           <Image
             src="https://res.cloudinary.com/dzerxindp/image/upload/v1773156603/editorial_inspiration_j5twsn.jpg"
@@ -444,23 +444,23 @@ export default function WeddingConceptsPage() {
 
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed mb-10 text-justify"
+              className="text-foreground leading-relaxed mb-10 text-justify"
             >
               {t("editorialP1")}
             </motion.p>
 
             <motion.div variants={fadeInUp} className="mb-10">
-              <p className="text-primary italic mb-6">{t("weDrawFrom")}</p>
+              <p className="text-foreground italic mb-6">{t("weDrawFrom")}</p>
               <div className="grid sm:grid-cols-2 gap-4">
                 {editorialSources.map((item, i) => (
                   <div
                     key={item}
-                    className="flex items-center gap-4 p-4 border border-primary/30 bg-white/40"
+                    className="flex items-center gap-4 p-4 bg-primary hover:bg-primary/90 transition-colors"
                   >
-                    <span className="text-primary font-mono mt-0.5 flex-shrink-0">
+                    <span className="text-white font-mono mt-0.5 flex-shrink-0">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-primary">{item}</span>
+                    <span className="text-white">{item}</span>
                   </div>
                 ))}
               </div>
@@ -522,9 +522,9 @@ export default function WeddingConceptsPage() {
                 <br />
                 {t("journeyTitle2")}
                 <br />
-                <span className="italic font-light">{t("journeyTitle3")}</span>
+                <span className="italic font-medium">{t("journeyTitle3")}</span>
               </h2>
-              <p className="mt-6 text-primary leading-relaxed italic">
+              <p className="mt-6 text-foreground leading-relaxed italic">
                 {t("journeySubtitle")}
               </p>
             </motion.div>
@@ -535,12 +535,12 @@ export default function WeddingConceptsPage() {
                   {planningJourney.map((item, i) => (
                     <div
                       key={item}
-                      className="flex items-center gap-6 p-5 border border-primary/30 bg-white/40"
+                      className="flex items-center gap-6 p-5 bg-primary hover:bg-primary/90 transition-colors"
                     >
-                      <span className="text-primary font-mono flex-shrink-0">
+                      <span className="text-white font-mono flex-shrink-0">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="text-primary">{item}</span>
+                      <span className="text-white">{item}</span>
                     </div>
                   ))}
                 </div>

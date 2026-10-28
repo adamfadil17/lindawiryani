@@ -65,7 +65,7 @@ function ToolbarBtn({
       className={`p-1.5 rounded transition-colors hover:cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
         active
           ? "bg-primary text-white"
-          : "text-primary/60 hover:bg-primary/10 hover:text-primary"
+          : "text-muted-foreground hover:bg-primary/10 hover:text-primary"
       }`}
     >
       {children}
@@ -94,7 +94,7 @@ function LinkModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
       <div className="relative bg-white w-full max-w-sm mx-4 p-6 shadow-2xl">
-        <p className="text-xs tracking-[0.2em] uppercase text-primary/60 mb-3">
+        <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">
           Insert Link
         </p>
         <input
@@ -146,7 +146,7 @@ function ImageModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
       <div className="relative bg-white w-full max-w-sm mx-4 p-6 shadow-2xl">
-        <p className="text-xs tracking-[0.2em] uppercase text-primary/60 mb-3">
+        <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">
           Insert Image
         </p>
         <div className="space-y-3 mb-4">
@@ -228,7 +228,7 @@ export default function TipTapEditor({
       Placeholder.configure({
         placeholder,
         emptyEditorClass:
-          "before:content-[attr(data-placeholder)] before:text-primary/30 before:pointer-events-none before:absolute before:top-5 before:left-5",
+          "before:content-[attr(data-placeholder)] before:text-muted-foreground before:pointer-events-none before:absolute before:top-5 before:left-5",
       }),
       CharacterCount,
     ],
@@ -589,7 +589,7 @@ export default function TipTapEditor({
               className={`p-1.5 transition-colors hover:cursor-pointer ${
                 btn.active
                   ? "bg-white/20 text-white"
-                  : "text-white/70 hover:text-white"
+                  : "text-white/85 hover:text-white"
               }`}
             >
               {btn.icon}
@@ -644,7 +644,7 @@ export default function TipTapEditor({
               key={item.label}
               type="button"
               onClick={item.action}
-              className="px-2 py-0.5 text-[10px] tracking-wider uppercase text-primary/60 hover:text-primary hover:cursor-pointer hover:bg-primary/5 transition-colors"
+              className="px-2 py-0.5 text-xs tracking-wider uppercase text-muted-foreground hover:text-primary hover:cursor-pointer hover:bg-primary/5 transition-colors"
             >
               {item.label}
             </button>
@@ -658,17 +658,17 @@ export default function TipTapEditor({
 
         {/* ── Footer ── */}
         <div className="flex items-center justify-between px-4 py-2 border-t border-primary/20 bg-primary/[0.02]">
-          <span className="text-xs tracking-widest uppercase text-primary/80">
+          <span className="text-xs tracking-widest uppercase text-primary/90">
             Linda Wiryani Weddings Planner
           </span>
-          <span className="text-xs text-primary/80">
+          <span className="text-xs text-primary/90">
             {wordCountFromEditor.toLocaleString()} words ·{" "}
             {charCount.toLocaleString()} chars
           </span>
         </div>
       </div>
 
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+      {error && <p className="text-red-700 text-xs mt-1">{error}</p>}
 
       {/* ── Modals ── */}
       {showLinkModal && (

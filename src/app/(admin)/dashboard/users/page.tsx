@@ -153,7 +153,7 @@ function UserRow({
           </Link>
           <button
             onClick={() => onDelete(user)}
-            className="w-8 h-8 flex items-center justify-center text-primary/40 hover:text-red-500 hover:bg-red-50 transition-colors hover:cursor-pointer"
+            className="w-8 h-8 flex items-center justify-center text-primary/40 hover:text-red-700 hover:bg-red-50 transition-colors hover:cursor-pointer"
             title="Delete User"
           >
             <Trash2 className="w-3.5 h-3.5" />

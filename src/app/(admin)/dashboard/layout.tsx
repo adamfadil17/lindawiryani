@@ -229,7 +229,7 @@ function Sidebar({
         {!collapsed && (
           <Link href="/dashboard" className="flex-1 flex justify-center">
             <Image
-              src="/images/logo-gray.png"
+              src="/images/logo-mauve.png"
               alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
               className="h-10 w-auto"
               width={120}
@@ -337,7 +337,7 @@ function Sidebar({
           )}
         </Link>
         <button
-          className={`w-full flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:cursor-pointer hover:text-red-500 hover:bg-red-50 transition-colors ${
+          className={`w-full flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors ${
             collapsed ? "justify-center" : ""
           }`}
           title={collapsed ? "Sign Out" : undefined}
@@ -387,7 +387,7 @@ function MobileSidebar({
         {/* Logo */}
         <div className="flex items-center justify-between px-6 h-[72px] border-b border-primary/20">
           <Image
-            src="/images/logo-gray.png"
+            src="/images/logo-mauve.png"
             alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
             className="h-9 w-auto"
             width={120}
@@ -467,7 +467,7 @@ function MobileSidebar({
             <span className="text-xs tracking-[0.1em] uppercase">Users</span>
           </Link>
           <button
-            className="w-full flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:cursor-pointer hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
             onClick={logout}
           >
             <LogOut className="w-4 h-4" />

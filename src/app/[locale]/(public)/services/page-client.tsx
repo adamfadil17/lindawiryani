@@ -36,7 +36,7 @@ function ServiceAccordion({
           <span className="text-primary  font-mono w-6 flex-shrink-0">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <span className="text-primary font-semibold  md:text-xl group-hover:text-primary/80 transition-colors pr-4">
+          <span className="text-primary font-semibold  md:text-xl group-hover:text-foreground transition-colors pr-4">
             {service.name}
           </span>
           {service.id === "guest-management" && (
@@ -74,13 +74,13 @@ function ServiceAccordion({
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
-                    {service.tag.toUpperCase()}
+                    {service.tag}
                   </span>
                 </div>
               </div>
 
               <div className="lg:col-span-7 flex flex-col gap-6 justify-center">
-                <p className="text-primary text-justify leading-relaxed ">
+                <p className="text-foreground text-justify leading-relaxed ">
                   {service.intro}
                 </p>
 
@@ -103,12 +103,12 @@ function ServiceAccordion({
                       <h4 className="text-primary font-semibold tracking-widest uppercase mb-4 pb-2 border-b border-primary/20">
                         {service.bestFor.title}
                       </h4>
-                      <p className="text-primary leading-relaxed italic">
+                      <p className="text-foreground leading-relaxed italic">
                         {service.bestFor.desc}
                       </p>
                     </div>
                     <Link href="https://wa.me/628113980998" target="_blank">
-                      <button className="border border-primary text-primary font-semibold px-6 py-2.5 text-sm tracking-widest hover:bg-primary hover:cursor-pointer hover:text-white transition-colors duration-300">
+                      <button className="bg-primary text-white font-semibold px-6 py-2.5 text-sm tracking-widest hover:bg-primary/90 hover:cursor-pointer transition-colors duration-300">
                         {t("inquireNow")}
                       </button>
                     </Link>
@@ -165,7 +165,7 @@ export default function ServicesPage() {
             <div className="mt-10 w-16 h-px bg-primary/70" />
           </motion.div>
           <motion.div variants={fadeInUp} className="lg:col-span-7">
-            <p className="text-primary leading-relaxed text-justify ">
+            <p className="text-foreground leading-relaxed text-justify ">
               {t("introBody")}
             </p>
           </motion.div>
@@ -173,7 +173,7 @@ export default function ServicesPage() {
       </motion.section>
 
       <motion.section
-        className="bg-primary/15 py-16 lg:py-20"
+        className="bg-accent py-16 lg:py-20"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -220,13 +220,13 @@ export default function ServicesPage() {
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                   {t("whyChooseTitle1")}
                   <br />
-                  <span className="italic font-light">
+                  <span className="italic font-medium">
                     {t("whyChooseTitle2")}
                   </span>
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
-                <p className="text-primary text-justify leading-relaxed ">
+                <p className="text-foreground text-justify leading-relaxed ">
                   {t("whyChooseBody")}
                 </p>
               </div>
@@ -248,7 +248,7 @@ export default function ServicesPage() {
                 </span>
                 <div className="w-10 h-px bg-primary/40" />
                 <h3 className="text-primary font-semibold">{reason.title}</h3>
-                <p className="text-primary text-sm leading-relaxed">
+                <p className="text-foreground text-sm leading-relaxed">
                   {reason.desc}
                 </p>
               </motion.div>
@@ -257,7 +257,7 @@ export default function ServicesPage() {
         </div>
       </motion.section>
       <motion.section
-        className="bg-primary/15 py-20 lg:py-28"
+        className="bg-accent py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -291,13 +291,13 @@ export default function ServicesPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify "
+                className="text-foreground leading-relaxed text-justify "
               >
                 {t("globalBody")}
               </motion.p>
 
               <motion.div variants={fadeInUp} className="space-y-4">
-                <p className="text-primary">{t("curatesLead")}</p>
+                <p className="text-foreground">{t("curatesLead")}</p>
                 {serviceDestinations.map((dest) => (
                   <div key={dest} className="flex items-center gap-4">
                     <div className="w-3 h-px bg-primary/70 flex-shrink-0" />
@@ -308,7 +308,7 @@ export default function ServicesPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed italic border-t border-primary/30  pt-6"
+                className="text-foreground leading-relaxed italic border-t border-primary/30  pt-6"
               >
                 {t("globalFooter")}
               </motion.p>

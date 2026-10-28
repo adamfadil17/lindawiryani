@@ -28,7 +28,7 @@ export function CreateModal({
         <button
           onClick={onCancel}
           disabled={isLoading}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary active:text-primary transition-colors w-8 h-8 flex items-center justify-center disabled:opacity-30"
+          className="absolute top-4 right-4 text-muted-foreground hover:cursor-pointer hover:text-primary active:text-primary transition-colors w-8 h-8 flex items-center justify-center disabled:opacity-30"
         >
           <X className="w-4 h-4" />
         </button>
@@ -39,13 +39,13 @@ export function CreateModal({
             <Plus className="w-5 h-5 text-primary" />
           )}
         </div>
-        <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-2">
+        <p className="text-muted-foreground tracking-[0.2em] uppercase text-xs mb-2">
           Add New
         </p>
         <h2 className="text-primary text-xl font-semibold mb-3">
           Create Category
         </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-6 sm:mb-8">
+        <p className="text-foreground/75 text-sm leading-relaxed mb-6 sm:mb-8">
           Enter a name for the new destination category.
         </p>
 
@@ -57,7 +57,7 @@ export function CreateModal({
           className="space-y-4"
         >
           <div>
-            <label htmlFor="name" className="block text-xs tracking-widest uppercase text-primary/40 mb-2">
+            <label htmlFor="name" className="block text-xs tracking-widest uppercase text-muted-foreground mb-2">
               Category Name
             </label>
             <input
@@ -69,7 +69,7 @@ export function CreateModal({
               disabled={isLoading}
             />
             {errors.name && (
-              <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+              <p className="text-red-700 text-xs mt-1">{errors.name.message}</p>
             )}
           </div>
 

@@ -79,8 +79,8 @@ export default function Header() {
   const navLinkClass = (item: (typeof navigationItems)[number]) => {
     const active = isActive(item);
     const color = inverted ? "text-primary" : "text-white";
-    const weight = active ? "font-semibold" : "font-light";
-    return `flex items-center gap-0.5 text-[11px] lg:text-[12px] tracking-[0.15em] ${weight} py-4 cursor-pointer transition-colors hover:opacity-80 ${color}`;
+    const weight = active ? "font-semibold" : "font-medium";
+    return `flex items-center gap-0.5 text-[14px] tracking-[0.1em] ${weight} py-4 cursor-pointer transition-colors hover:opacity-80 ${color}`;
   };
 
   return (
@@ -108,7 +108,7 @@ export default function Header() {
               height={56}
             />
             <Image
-              src="/images/logo-gray.png"
+              src="/images/logo-mauve.png"
               alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
               className={`h-14 w-auto mx-auto absolute top-0 left-1/2 -translate-x-1/2 transition-opacity ${inverted ? "opacity-100" : "opacity-0"}`}
               priority
@@ -128,7 +128,7 @@ export default function Header() {
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={inverted ? "text-primary" : "text-white"}
+              className={inverted ? "text-primary hover:cursor-pointer" : "text-white hover:cursor-pointer"}
             >
               {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </Button>
@@ -180,7 +180,7 @@ export default function Header() {
                 {/* Dropdown */}
                 {item.submenu && (
                   <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 w-56 bg-white shadow-xl border border-stone-100 py-3 transition-all duration-200 ${
+                    className={`absolute top-full left-1/2 -translate-x-1/2 w-56 bg-white shadow-xl border border-border py-3 transition-all duration-200 ${
                       activeDropdown === item.name
                         ? "opacity-100 visible translate-y-0"
                         : "opacity-0 invisible -translate-y-1"
@@ -192,7 +192,7 @@ export default function Header() {
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className={`block px-5 py-2.5 text-[12px] tracking-wide text-primary hover:bg-stone-50 transition-colors ${subActive ? "font-semibold" : "font-light"}`}
+                          className={`block px-5 py-2.5 text-[14px] tracking-wide text-primary hover:bg-secondary/50 transition-colors ${subActive ? "font-semibold" : "font-medium"}`}
                           onClick={() => setActiveDropdown(null)}
                         >
                           {sub.name}
@@ -209,19 +209,19 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-stone-100 max-h-[80vh] overflow-y-auto">
+        <div className="md:hidden bg-white border-t border-border max-h-[80vh] overflow-y-auto">
           <ul className="px-6 py-4 space-y-1">
             {navigationItems.map((item) => {
               const active = isActive(item);
               return (
                 <li
                   key={item.href}
-                  className="border-b border-stone-50 last:border-0"
+                  className=""
                 >
                   {item.submenu ? (
                     <>
                       <button
-                        className={`flex items-center justify-between w-full py-3 text-sm tracking-widest text-primary ${active ? "font-semibold" : "font-light"}`}
+                        className={`flex items-center justify-between w-full py-3 text-sm hover: cursor-pointer tracking-widest text-primary ${active ? "font-semibold" : "font-medium"}`}
                         onClick={() =>
                           setMobileExpanded(
                             mobileExpanded === item.name ? null : item.name,
@@ -242,7 +242,7 @@ export default function Header() {
                               <li key={sub.href}>
                                 <Link
                                   href={sub.href}
-                                  className={`block text-[13px] py-1.5 tracking-wide ${subActive ? "text-primary font-semibold" : "text-primary/70 font-light"}`}
+                                  className={`block text-sm py-1.5 tracking-wide ${subActive ? "text-primary font-semibold" : "text-muted-foreground font-medium"}`}
                                   onClick={() => setIsMenuOpen(false)}
                                 >
                                   {sub.name}
@@ -256,7 +256,7 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.href}
-                      className={`block py-3 text-sm tracking-widest text-primary ${active ? "font-semibold" : "font-light"}`}
+                      className={`block py-3 text-sm tracking-widest text-primary ${active ? "font-semibold" : "font-medium"}`}
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.name}

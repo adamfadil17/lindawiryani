@@ -334,7 +334,7 @@ export default function DestinationCategoryDetailPage() {
                     className="w-full px-3 py-2.5 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors"
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-xs">{errors.name.message}</p>
+                    <p className="text-red-700 text-xs">{errors.name.message}</p>
                   )}
                   <div className="flex gap-2">
                     <button
@@ -394,7 +394,7 @@ export default function DestinationCategoryDetailPage() {
 
           {/* Danger Zone */}
           <div className="bg-white border border-red-100 p-4 sm:p-6">
-            <p className="text-xs tracking-widest uppercase text-red-400 mb-3">
+            <p className="text-xs tracking-widest uppercase text-red-600 mb-3">
               Danger Zone
             </p>
             <p className="text-primary/60 text-xs leading-relaxed mb-4">
@@ -403,7 +403,7 @@ export default function DestinationCategoryDetailPage() {
             </p>
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-3 sm:py-2.5 hover:bg-red-50 active:bg-red-50 transition-colors hover:cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-3 sm:py-2.5 hover:bg-red-50 active:bg-red-50 transition-colors hover:cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               Delete Category

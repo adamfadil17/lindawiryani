@@ -46,7 +46,7 @@ export default function FloatingContactButton() {
                      gentlePulse 2s ease-in-out 1s infinite;
         }
         .floating-contact:hover .contact-label {
-          max-width: 120px;
+          max-width: 160px;
           opacity: 1;
           margin-left: 10px;
         }
@@ -89,7 +89,7 @@ export default function FloatingContactButton() {
           </span>
 
           {/* Expandable label */}
-          <span className="contact-label text-sm tracking-[0.18em] font-light uppercase">
+          <span className="contact-label text-sm tracking-[0.18em] font-medium uppercase">
             {t("label")}
           </span>
         </Link>

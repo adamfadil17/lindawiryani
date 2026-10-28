@@ -21,26 +21,26 @@ export default function DeleteModal({
         <button
           onClick={onCancel}
           disabled={isLoading}
-          className="absolute top-4 right-4 text-primary/50 hover:cursor-pointer hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="absolute top-4 right-4 text-muted-foreground hover:cursor-pointer hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <X className="w-4 h-4" />
         </button>
 
         <div className="w-12 h-12 bg-red-50 flex items-center justify-center mb-6">
           {isLoading ? (
-            <Loader2 className="w-5 h-5 text-red-500 animate-spin" />
+            <Loader2 className="w-5 h-5 text-red-700 animate-spin" />
           ) : (
-            <Trash2 className="w-5 h-5 text-red-500" />
+            <Trash2 className="w-5 h-5 text-red-700" />
           )}
         </div>
 
-        <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-2">
+        <p className="text-primary/90 tracking-[0.2em] uppercase text-xs mb-2">
           Confirm Delete
         </p>
         <h2 className="text-primary text-xl font-semibold mb-3">
           Delete Destination
         </h2>
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
+        <p className="text-foreground/75 text-sm leading-relaxed mb-8">
           Are you sure you want to delete{" "}
           <span className="font-semibold text-primary">
             &ldquo;{name}&rdquo;
@@ -60,7 +60,7 @@ export default function DeleteModal({
           <button
             onClick={onConfirm}
             disabled={isLoading}
-            className="flex-1 bg-red-500 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 bg-red-600 text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-red-600 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isLoading ? (
               <>

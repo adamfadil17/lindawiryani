@@ -53,7 +53,7 @@ export default function Footer() {
             {/* Logo */}
             <div className="flex justify-center lg:justify-start">
               <Image
-                src="/images/logo-gray.png"
+                src="/images/logo-mauve.png"
                 alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
                 width={200}
                 height={80}
@@ -63,12 +63,12 @@ export default function Footer() {
             </div>
 
             {/* Tagline */}
-            <p className="text-primary text-sm tracking-[0.4em] uppercase font-light">
+            <p className="text-primary text-sm tracking-[0.4em] uppercase font-medium">
               {tFooter("tagline")}
             </p>
 
             {/* Address */}
-            <p className="text-primary text-md font-light max-w-md mx-auto lg:mx-0">
+            <p className="text-foreground text-md font-medium max-w-md mx-auto lg:mx-0">
               {tFooter("address")}
             </p>
           </div>
@@ -85,7 +85,7 @@ export default function Footer() {
                     <li key={item.href}>
                       <Link
                         href={item.href}
-                        className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
+                        className="text-primary hover:text-foreground transition-colors text-sm tracking-wider font-medium"
                       >
                         {item.name}
                       </Link>
@@ -101,7 +101,7 @@ export default function Footer() {
                     <div key={item.href}>
                       <Link
                         href={item.href}
-                        className="text-primary hover:text-primary/80 transition-colors text-sm tracking-wider font-light"
+                        className="text-primary hover:text-foreground transition-colors text-sm tracking-wider font-medium"
                       >
                         {item.name}
                       </Link>
@@ -110,7 +110,7 @@ export default function Footer() {
                           <li key={sub.href}>
                             <Link
                               href={sub.href}
-                              className="text-primary/80 hover:text-primary transition-colors text-sm tracking-wider font-light"
+                              className="text-primary/90 hover:text-primary transition-colors text-sm tracking-wider font-medium"
                             >
                               {sub.name}
                             </Link>
@@ -124,7 +124,7 @@ export default function Footer() {
 
             {/* Social Media Section */}
             <div className="space-y-4">
-              <p className="text-primary text-sm font-light">
+              <p className="text-foreground text-sm font-medium">
                 {tFooter("followUs")}
               </p>
 
@@ -134,11 +134,11 @@ export default function Footer() {
                   href="https://wa.me/628113980998"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-stone-400 hover:text-primary/80 transition-colors"
+                  className="hover:opacity-70 transition-opacity"
                   aria-label="WhatsApp"
                 >
                   <Image
-                    src="/images/whatsapp-brown.svg"
+                    src="/images/whatsapp-mauve.svg"
                     alt="WhatsApp"
                     width={24}
                     height={24}
@@ -147,11 +147,11 @@ export default function Footer() {
 
                 <a
                   href="mailto:lindawiryanievents@gmail.com"
-                  className="text-stone-400 hover:text-primary/80 transition-colors"
+                  className="hover:opacity-70 transition-opacity"
                   aria-label="Email"
                 >
                   <Image
-                    src="/images/email-brown.svg"
+                    src="/images/email-mauve.svg"
                     alt="Email"
                     width={24}
                     height={24}
@@ -162,11 +162,11 @@ export default function Footer() {
                   href="https://instagram.com/lindawiryanievents"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-stone-400 hover:text-primary/80 transition-colors"
+                  className="hover:opacity-70 transition-opacity"
                   aria-label="Instagram"
                 >
                   <Image
-                    src="/images/instagram-brown.svg"
+                    src="/images/instagram-mauve.svg"
                     alt="Instagram"
                     width={24}
                     height={24}
@@ -177,11 +177,11 @@ export default function Footer() {
                   href="https://pinterest.com/lindawiryanievents"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-stone-400 hover:text-primary/80 transition-colors"
+                  className="hover:opacity-70 transition-opacity"
                   aria-label="Pinterest"
                 >
                   <Image
-                    src="/images/pinterest-line-brown.svg"
+                    src="/images/pinterest-line-mauve.svg"
                     alt="Pinterest"
                     width={24}
                     height={24}

@@ -51,7 +51,7 @@ function CategoryFilter({
         <button
           key={cat}
           onClick={() => onChange(cat)}
-          className={`text-xs sm:text-sm tracking-[0.15em] uppercase px-4 py-2 border transition-all duration-200 hover:cursor-pointer ${
+          className={`text-xs sm:text-sm tracking-[0.15em] px-4 py-2 border transition-all duration-200 hover:cursor-pointer ${
             active === cat
               ? "bg-primary text-white border-primary"
               : "bg-transparent text-primary border-primary/30 hover:border-primary/50 hover:bg-primary/5"
@@ -87,7 +87,7 @@ function ArticleCard({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
           <div className="absolute top-4 left-4">
-            <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
+            <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
               {category.label(article.category)}
             </span>
           </div>
@@ -97,13 +97,13 @@ function ArticleCard({
         </div>
 
         <div>
-          <h3 className="text-primary font-semibold text-lg leading-snug group-hover:text-primary/80 transition-colors mb-2">
+          <h3 className="text-primary font-semibold text-lg leading-snug group-hover:text-foreground transition-colors mb-2">
             {article.title}
           </h3>
-          <p className="text-primary group-hover:text-primary/80 leading-relaxed text-sm">
+          <p className="text-foreground group-hover:text-foreground/80 leading-relaxed text-sm">
             {article.excerpt}
           </p>
-          <div className="flex items-center gap-2 mt-4 text-primary text-xs tracking-widest group-hover:text-primary/80 transition-colors">
+          <div className="flex items-center gap-2 mt-4 text-primary text-xs tracking-widest group-hover:text-foreground transition-colors">
             <span>{t("readArticle")}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </div>
@@ -122,7 +122,7 @@ function FeaturedArticle({
   const category = useCategoryText();
   return (
     <Link href={`/journal/${article.slug}`} className="group block">
-      <div className="grid lg:grid-cols-12 gap-0 border border-primary/10 overflow-hidden">
+      <div className="grid lg:grid-cols-12 gap-0 bg-primary overflow-hidden">
         <div className="relative h-[320px] lg:h-auto lg:col-span-7 overflow-hidden">
           <Image
             src={article.image}
@@ -134,23 +134,23 @@ function FeaturedArticle({
           />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary/20" />
           <div className="absolute top-6 left-6">
-            <span className="bg-white/90 text-primary text-xs tracking-widest px-3 py-1.5 uppercase">
+            <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
               {category.label(article.category)}
             </span>
           </div>
         </div>
 
         <div className="lg:col-span-5 bg-primary/10 flex flex-col justify-center p-10 lg:p-14">
-          <p className="text-primary/80 text-xs tracking-widest uppercase mb-4">
+          <p className="text-white text-xs tracking-widest uppercase mb-4">
             {t("featuredLabel")}
           </p>
-          <h2 className="text-primary font-semibold text-2xl lg:text-3xl leading-snug group-hover:text-primary/80 transition-colors mb-5">
+          <h2 className="text-white font-semibold text-2xl lg:text-3xl leading-snug group-hover:text-white/90 transition-colors mb-5">
             {article.title}
           </h2>
-          <p className="text-primary group-hover:text-primary/80 leading-relaxed">
+          <p className="text-white group-hover:text-white/90 leading-relaxed">
             {article.excerpt}
           </p>
-          <div className="flex items-center gap-2 mt-8 text-primary text-sm tracking-widest group-hover:text-primary/80 transition-colors">
+          <div className="flex items-center gap-2 mt-8 text-white text-sm tracking-widest group-hover:text-white/90 transition-colors">
             <span>{t("readArticle")}</span>
             <ArrowRight className="w-4 h-4" />
           </div>
@@ -210,13 +210,13 @@ export default function JournalPage() {
           <div className="lg:col-span-8 space-y-8">
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("introBody1")}
             </motion.p>
             <motion.p
               variants={fadeInUp}
-              className="text-primary leading-relaxed text-justify"
+              className="text-foreground leading-relaxed text-justify"
             >
               {t("introBody2")}
             </motion.p>
@@ -234,14 +234,14 @@ export default function JournalPage() {
                       .getElementById("journal-grid")
                       ?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="group flex items-start gap-4 p-4 border border-primary/30 hover:border-primary/50 bg-transparent hover:bg-primary/5 transition-all duration-200 text-left hover:cursor-pointer"
+                  className="group flex items-start gap-4 p-4 bg-primary hover:bg-primary/90 transition-all duration-300 text-left hover:cursor-pointer"
                 >
-                  <div className="w-3 h-px bg-primary/70 flex-shrink-0 mt-2.5" />
+                  <div className="w-3 h-px bg-white/70 flex-shrink-0 mt-2.5" />
                   <div>
-                    <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-1">
+                    <p className="text-white font-semibold text-sm tracking-wider uppercase mb-1">
                       {category.label(cat)}
                     </p>
-                    <p className="text-primary text-sm leading-relaxed">
+                    <p className="text-white text-sm leading-relaxed">
                       {category.description(cat)}
                     </p>
                   </div>
@@ -253,7 +253,7 @@ export default function JournalPage() {
       </motion.section>
 
       <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
+        className="bg-accent/60 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -80px 0px" }}
@@ -300,7 +300,7 @@ export default function JournalPage() {
                   </span>
                 </h2>
               </div>
-              <p className="text-primary/80 text-sm tracking-widest uppercase">
+              <p className="text-primary/90 text-sm tracking-widest uppercase">
                 {t("articleCount", { count: filtered.length })}
               </p>
             </div>
@@ -319,12 +319,12 @@ export default function JournalPage() {
           {filtered.length === 0 && (
             <motion.div
               variants={fadeIn}
-              className="text-center py-20 text-primary/80"
+              className="text-center py-20 text-primary/90"
             >
-              <p className="text-lg text-primary/80 tracking-widest uppercase">
+              <p className="text-lg text-primary/90 tracking-widest uppercase">
                 {t("emptyTitle")}
               </p>
-              <p className="mt-2 text-primary/80 text-sm">{t("emptyBody")}</p>
+              <p className="mt-2 text-foreground/80 text-sm">{t("emptyBody")}</p>
             </motion.div>
           )}
         </div>

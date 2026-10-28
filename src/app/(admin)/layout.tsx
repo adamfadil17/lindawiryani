@@ -28,7 +28,7 @@ export default function AdminRootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cormorant.className}>
+    <html lang="en" data-area="admin" className={cormorant.className}>
       <body>
         {children}
         <Toaster />

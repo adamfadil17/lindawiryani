@@ -282,7 +282,7 @@ function CategoryRow({
           </Link>
           <button
             onClick={() => onDeleteClick(category)}
-            className="w-9 h-9 flex items-center justify-center text-primary/40 hover:text-red-500 active:text-red-500 active:bg-red-50 transition-colors hover:cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center text-primary/40 hover:text-red-700 active:text-red-700 active:bg-red-50 transition-colors hover:cursor-pointer"
             title="Delete Category"
           >
             <Trash2 className="w-4 h-4" />
@@ -328,7 +328,7 @@ function CategoryRow({
           </Link>
           <button
             onClick={() => onDeleteClick(category)}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:text-red-500 hover:bg-red-50 transition-colors hover:cursor-pointer"
+            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:text-red-700 hover:bg-red-50 transition-colors hover:cursor-pointer"
             title="Delete Category"
           >
             <Trash2 className="w-4 h-4" />

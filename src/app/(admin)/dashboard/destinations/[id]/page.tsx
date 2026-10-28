@@ -391,7 +391,7 @@ export default function DestinationDetailPage() {
             <button
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -480,7 +480,7 @@ export default function DestinationDetailPage() {
                     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                   </div>
                   {formErrors.category_id && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.category_id.message)}
                     </p>
                   )}
@@ -596,7 +596,7 @@ export default function DestinationDetailPage() {
                   placeholder="Add ceremony option..."
                 />
                 {formErrors.ceremony_options && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.ceremony_options.message)}
                   </p>
                 )}
@@ -610,7 +610,7 @@ export default function DestinationDetailPage() {
                   placeholder="Add reception option..."
                 />
                 {formErrors.reception_options && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.reception_options.message)}
                   </p>
                 )}
@@ -624,7 +624,7 @@ export default function DestinationDetailPage() {
                   placeholder="Add dining experience..."
                 />
                 {formErrors.dining_experiences && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.dining_experiences.message)}
                   </p>
                 )}
@@ -676,7 +676,7 @@ export default function DestinationDetailPage() {
                   placeholder="Add a highlight..."
                 />
                 {formErrors.highlights && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.highlights.message)}
                   </p>
                 )}
@@ -690,7 +690,7 @@ export default function DestinationDetailPage() {
                   placeholder="Add a wedding type..."
                 />
                 {formErrors.best_for && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.best_for.message)}
                   </p>
                 )}
@@ -704,7 +704,7 @@ export default function DestinationDetailPage() {
                   placeholder="Add accommodation option..."
                 />
                 {formErrors.accommodation_nearby && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.accommodation_nearby.message)}
                   </p>
                 )}
@@ -718,7 +718,7 @@ export default function DestinationDetailPage() {
                   placeholder="Add a unique feature..."
                 />
                 {formErrors.unique_features && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.unique_features.message)}
                   </p>
                 )}
@@ -750,7 +750,7 @@ export default function DestinationDetailPage() {
               onChange={(v) => setField("image", v)}
             />
             {formErrors.image && (
-              <p className="text-red-500 text-xs mt-2">
+              <p className="text-red-700 text-xs mt-2">
                 {String(formErrors.image.message)}
               </p>
             )}

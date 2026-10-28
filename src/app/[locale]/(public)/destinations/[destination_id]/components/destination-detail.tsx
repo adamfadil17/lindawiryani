@@ -47,7 +47,7 @@ export default function DestinationDetail({
             priority
             unoptimized={destination.image.includes("placehold")}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/28 via-black/10 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/38 via-black/18 to-black/28" />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
         </div>
 
@@ -63,7 +63,7 @@ export default function DestinationDetail({
           >
             <Link
               href="/destinations"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
+              className="text-white/90 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
               {tp("breadcrumb")}
             </Link>
@@ -91,7 +91,7 @@ export default function DestinationDetail({
 
           <motion.p
             variants={fadeInUp}
-            className="text-white/80  max-w-3xl leading-relaxed mt-6"
+            className="text-white/90  max-w-3xl leading-relaxed mt-6"
           >
             {destination.description}
           </motion.p>
@@ -121,7 +121,7 @@ export default function DestinationDetail({
               <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight mb-6">
                 {t("spiritTitle")}
               </h2>
-              <p className="text-primary  leading-relaxed">
+              <p className="text-foreground  leading-relaxed">
                 {destination.atmosphere}
               </p>
             </div>
@@ -145,18 +145,18 @@ export default function DestinationDetail({
           </motion.div>
 
           <motion.div variants={slideInRight} className="space-y-8">
-            <div className="bg-primary/10 p-8 lg:p-10">
-              <p className="text-primary font-semibold  tracking-[0.25em] uppercase mb-4">
+            <div className="bg-primary p-8 lg:p-10">
+              <p className="text-white font-semibold  tracking-[0.25em] uppercase mb-4">
                 {t("highlights")}
               </p>
               <div className="space-y-4">
                 {destination.highlights.map((highlight) => (
                   <div
                     key={highlight}
-                    className="flex items-start gap-3 pb-4 border-b border-primary/20 last:border-0"
+                    className="flex items-start gap-3 pb-4 border-b border-white/20 last:border-0"
                   >
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary/80 flex-shrink-0 mt-2.5" />
-                    <span className="text-primary">{highlight}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/80 flex-shrink-0 mt-2.5" />
+                    <span className="text-white">{highlight}</span>
                   </div>
                 ))}
               </div>
@@ -169,7 +169,7 @@ export default function DestinationDetail({
               <p className="text-3xl font-semibold mb-6">
                 {destination.guest_capacity}
               </p>
-              <p className="text-white/80  leading-relaxed">
+              <p className="text-white/90  leading-relaxed">
                 {t("capacityNote")}
               </p>
             </div>
@@ -178,7 +178,7 @@ export default function DestinationDetail({
       </motion.section>
 
       <motion.section
-        className="bg-primary/10 py-20 lg:py-28"
+        className="bg-accent/60 py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -197,27 +197,27 @@ export default function DestinationDetail({
           <div className="grid md:grid-cols-2 md:grid-rows-2 gap-8 md:items-stretch">
             <motion.div
               variants={fadeInUp}
-              className="bg-white p-8 flex flex-col"
+              className="bg-primary p-8 flex flex-col"
             >
-              <h3 className="font-semibold text-primary mb-4">
+              <h3 className="font-semibold text-white mb-4">
                 {t("accessibilityTitle")}
               </h3>
-              <p className="text-primary leading-relaxed">
+              <p className="text-white leading-relaxed">
                 {destination.accessibility_notes}
               </p>
             </motion.div>
 
             <motion.div
               variants={fadeInUp}
-              className="bg-white p-8 cursor-pointer flex flex-col"
+              className="bg-primary p-8 cursor-pointer flex flex-col"
               onClick={() => setIsOptionsExpanded((prev) => !prev)}
             >
               <div className="flex items-center justify-between gap-4 mb-4">
-                <h3 className="font-semibold text-primary">
+                <h3 className="font-semibold text-white">
                   {t("ceremonyOptions")}
                 </h3>
                 {destination.ceremony_options.length > 2 && (
-                  <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
+                  <span className="hidden sm:inline text-sm border border-white/30 text-white px-2 py-0.5 tracking-wider flex-shrink-0">
                     {isOptionsExpanded
                       ? t("showLessCaps")
                       : t("viewMoreOptions")}
@@ -228,22 +228,22 @@ export default function DestinationDetail({
                 {destination.ceremony_options.slice(0, 2).map((option) => (
                   <li
                     key={option}
-                    className="text-primary flex items-start gap-4"
+                    className="text-white flex items-start gap-4"
                   >
-                    <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
-                    <span className="text-primary">{option}</span>
+                    <div className="w-3 h-px bg-white/50 flex-shrink-0 mt-2.5" />
+                    <span className="text-white">{option}</span>
                   </li>
                 ))}
               </ul>
               {isOptionsExpanded && (
-                <ul className="space-y-2 mt-3 pt-3 border-t border-primary/20">
+                <ul className="space-y-2 mt-3 pt-3 border-t border-white/20">
                   {destination.ceremony_options.slice(2).map((option) => (
                     <li
                       key={option}
-                      className="text-primary flex items-start gap-4"
+                      className="text-white flex items-start gap-4"
                     >
-                      <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
-                      <span className="text-primary">{option}</span>
+                      <div className="w-3 h-px bg-white/50 flex-shrink-0 mt-2.5" />
+                      <span className="text-white">{option}</span>
                     </li>
                   ))}
                 </ul>
@@ -252,27 +252,27 @@ export default function DestinationDetail({
 
             <motion.div
               variants={fadeInUp}
-              className="bg-white p-8 flex flex-col"
+              className="bg-primary p-8 flex flex-col"
             >
-              <h3 className="font-semibold text-primary mb-4">
+              <h3 className="font-semibold text-white mb-4">
                 {t("seasonalTitle")}
               </h3>
-              <p className="text-primary leading-relaxed">
+              <p className="text-white leading-relaxed">
                 {destination.seasonal_considerations}
               </p>
             </motion.div>
 
             <motion.div
               variants={fadeInUp}
-              className="bg-white p-8 cursor-pointer flex flex-col"
+              className="bg-primary p-8 cursor-pointer flex flex-col"
               onClick={() => setIsOptionsExpanded((prev) => !prev)}
             >
               <div className="flex items-center justify-between gap-4 mb-4">
-                <h3 className="font-semibold text-primary">
+                <h3 className="font-semibold text-white">
                   {t("receptionOptions")}
                 </h3>
                 {destination.reception_options.length > 2 && (
-                  <span className="hidden sm:inline text-sm border border-primary/30 text-primary px-2 py-0.5 tracking-wider flex-shrink-0">
+                  <span className="hidden sm:inline text-sm border border-white/30 text-white px-2 py-0.5 tracking-wider flex-shrink-0">
                     {isOptionsExpanded
                       ? t("showLessCaps")
                       : t("viewMoreOptions")}
@@ -283,22 +283,22 @@ export default function DestinationDetail({
                 {destination.reception_options.slice(0, 2).map((option) => (
                   <li
                     key={option}
-                    className="text-primary flex items-start gap-4"
+                    className="text-white flex items-start gap-4"
                   >
-                    <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
-                    <span className="text-primary">{option}</span>
+                    <div className="w-3 h-px bg-white/50 flex-shrink-0 mt-2.5" />
+                    <span className="text-white">{option}</span>
                   </li>
                 ))}
               </ul>
               {isOptionsExpanded && (
-                <ul className="space-y-2 mt-3 pt-3 border-t border-primary/20">
+                <ul className="space-y-2 mt-3 pt-3 border-t border-white/20">
                   {destination.reception_options.slice(2).map((option) => (
                     <li
                       key={option}
-                      className="text-primary flex items-start gap-4"
+                      className="text-white flex items-start gap-4"
                     >
-                      <div className="w-3 h-px bg-primary/50 flex-shrink-0 mt-2.5" />
-                      <span className="text-primary">{option}</span>
+                      <div className="w-3 h-px bg-white/50 flex-shrink-0 mt-2.5" />
+                      <span className="text-white">{option}</span>
                     </li>
                   ))}
                 </ul>
@@ -331,7 +331,7 @@ export default function DestinationDetail({
             </p>
             <ul className="space-y-3">
               {destination.accommodation_nearby.map((place) => (
-                <li key={place} className="text-primary flex items-start gap-3">
+                <li key={place} className="text-foreground flex items-start gap-3">
                   <span className="text-primary  flex-shrink-0">◆</span>
                   {place}
                 </li>
@@ -347,7 +347,7 @@ export default function DestinationDetail({
               {destination.dining_experiences.map((dining) => (
                 <li
                   key={dining}
-                  className="text-primary flex items-start gap-3"
+                  className="text-foreground flex items-start gap-3"
                 >
                   <span className="text-primary  flex-shrink-0">◆</span>
                   {dining}
@@ -364,75 +364,13 @@ export default function DestinationDetail({
               {destination.unique_features.map((feature) => (
                 <li
                   key={feature}
-                  className="text-primary flex items-start gap-3"
+                  className="text-foreground flex items-start gap-3"
                 >
                   <span className="text-primary  flex-shrink-0">◆</span>
                   {feature}
                 </li>
               ))}
             </ul>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      <motion.section
-        className="relative py-24 lg:py-36 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.3, margin: "0px 0px -100px 0px" }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src={destination.image}
-            alt={destination.name}
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-            priority
-            unoptimized={destination.image.includes("placehold")}
-          />
-          <div className="absolute inset-0 bg-primary/72" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
-          <motion.p
-            variants={fadeInUp}
-            className="text-white tracking-[0.25em] uppercase mb-4"
-          >
-            {t("beginKicker")}
-          </motion.p>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
-          >
-            {t("readyTo1")}
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
-              {t("readyTo2", { name: destination.name })}
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mt-6 text-white/80  max-w-2xl mx-auto leading-relaxed"
-          >
-            {t("closingBody")}
-          </motion.p>
-
-          <motion.div
-            variants={fadeInUp}
-            className="mt-10 flex flex-wrap gap-4 justify-center"
-          >
-            <Link href="https://wa.me/628113980998" target="_blank">
-              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaBegin")}
-              </button>
-            </Link>
-            <Link href="/portfolio">
-              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
-                {t("ctaPortfolio")}
-              </button>
-            </Link>
           </motion.div>
         </div>
       </motion.section>
@@ -454,7 +392,7 @@ export default function DestinationDetail({
               </p>
               <h2 className="text-3xl md:text-4xl text-primary font-semibold">
                 {t("moreTitle")}{" "}
-                <span className="italic font-light">
+                <span className="italic font-medium">
                   {t("moreSuffix", {
                     category: destination.category?.name ?? "",
                   })}
@@ -496,14 +434,14 @@ export default function DestinationDetail({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
                     <div className="absolute top-4 left-4">
-                      <span className="bg-white/90 text-primary text-[10px] tracking-widest uppercase px-2 py-1">
+                      <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
                         {dest.location.length > 30
                           ? dest.location.slice(0, 30) + "…"
                           : dest.location}
                       </span>
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <p className="text-white/80 text-xs tracking-widest uppercase mb-1">
+                      <p className="text-white/90 text-xs tracking-widest uppercase mb-1">
                         {dest.type}
                       </p>
                       <h3 className="text-white font-semibold text-xl uppercase">
@@ -511,7 +449,7 @@ export default function DestinationDetail({
                       </h3>
                     </div>
                   </div>
-                  <p className="text-primary text-sm leading-relaxed line-clamp-2">
+                  <p className="text-foreground text-sm leading-relaxed line-clamp-2">
                     {dest.description}
                   </p>
                   <span className="inline-block mt-3 text-xs tracking-widest uppercase text-primary border-b border-primary/40 pb-0.5 group-hover:border-primary transition-colors duration-300">
@@ -580,6 +518,67 @@ export default function DestinationDetail({
           )}
         </motion.section>
       )}
+      <motion.section
+        className="relative py-24 lg:py-36 overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.3, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="absolute inset-0">
+          <Image
+            src={destination.image}
+            alt={destination.name}
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            priority
+            unoptimized={destination.image.includes("placehold")}
+          />
+          <div className="absolute inset-0 bg-primary/72" />
+        </div>
+
+        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 text-center">
+          <motion.p
+            variants={fadeInUp}
+            className="text-white tracking-[0.25em] uppercase mb-4"
+          >
+            {t("beginKicker")}
+          </motion.p>
+          <motion.h2
+            variants={fadeInUp}
+            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl mx-auto uppercase"
+          >
+            {t("readyTo1")}
+            <br />
+            <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-normal normal-case">
+              {t("readyTo2", { name: destination.name })}
+            </span>
+          </motion.h2>
+          <motion.p
+            variants={fadeInUp}
+            className="mt-6 text-white/90  max-w-2xl mx-auto leading-relaxed"
+          >
+            {t("closingBody")}
+          </motion.p>
+
+          <motion.div
+            variants={fadeInUp}
+            className="mt-10 flex flex-wrap gap-4 justify-center"
+          >
+            <Link href="https://wa.me/628113980998" target="_blank">
+              <button className="bg-white text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/90 hover:cursor-pointer transition-colors duration-300">
+                {t("ctaBegin")}
+              </button>
+            </Link>
+            <Link href="/portfolio">
+              <button className="border border-white text-white font-semibold px-8 py-3 text-sm tracking-widest hover:bg-white/10 hover:cursor-pointer transition-colors duration-300">
+                {t("ctaPortfolio")}
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.section>
     </main>
   );
 }

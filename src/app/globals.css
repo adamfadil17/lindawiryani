@@ -46,75 +46,123 @@ html {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-field: var(--field);
+  --color-gold: var(--gold);
+}
+
+/*
+ * Type scale — Cormorant Garamond has a small x-height and thin strokes, so
+ * Tailwind's default sizes read ~2px smaller than they are. The public site
+ * uses this larger scale (body >= 16px, smallest label 14px). The admin area
+ * keeps the original compact scale (see html[data-area="admin"] below).
+ */
+@theme {
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.5rem;
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.75rem;
+}
+
+html[data-area="admin"] {
+  --text-xs: 0.75rem;
+  --text-xs--line-height: calc(1 / 0.75);
+  --text-sm: 0.875rem;
+  --text-sm--line-height: calc(1.25 / 0.875);
+  --text-base: 1rem;
+  --text-base--line-height: calc(1.5 / 1);
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.13 0.028 261.692);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.13 0.028 261.692);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.13 0.028 261.692);
-  --primary: #B9998E;
-  --primary-foreground: oklch(0.985 0.002 247.839);
-  --secondary: oklch(0.967 0.003 264.542);
-  --secondary-foreground: oklch(0.21 0.034 264.665);
-  --muted: oklch(0.967 0.003 264.542);
-  --muted-foreground: oklch(0.551 0.027 264.364);
-  --accent: oklch(0.967 0.003 264.542);
-  --accent-foreground: oklch(0.21 0.034 264.665);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.928 0.006 264.531);
-  --input: oklch(0.928 0.006 264.531);
-  --ring: oklch(0.707 0.022 261.325);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0.002 247.839);
-  --sidebar-foreground: oklch(0.13 0.028 261.692);
-  --sidebar-primary: oklch(0.21 0.034 264.665);
-  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-accent: oklch(0.967 0.003 264.542);
-  --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
-  --sidebar-border: oklch(0.928 0.006 264.531);
-  --sidebar-ring: oklch(0.707 0.022 261.325);
+  /* Brand palette: Warm Ivory / Rosewood Mauve / Warm Charcoal */
+  --background: #F7F1E8;            /* Warm Ivory — dominant page colour */
+  --foreground: #342B2F;            /* Warm Charcoal — body text (12.2:1 on ivory) */
+  --card: #FFFFFF;
+  --card-foreground: #342B2F;
+  --popover: #FFFFFF;
+  --popover-foreground: #342B2F;
+  --primary: #67505A;               /* Rosewood Mauve — headings, nav, links, CTA (6.5:1) */
+  --primary-foreground: #F7F1E8;
+  --secondary: #EFE6DA;
+  --secondary-foreground: #342B2F;
+  --muted: #EFE6DA;
+  --muted-foreground: #62555A;      /* 6.4:1 on ivory */
+  --accent: #EEDFD7;                /* soft section panels (Dusty Rose tint; text stays >= 4.5:1) */
+  --accent-foreground: #342B2F;
+  --destructive: #B91C1C;           /* 5.8:1 on ivory */
+  --border: #DDD0C6;                /* decorative hairlines only */
+  --input: #DDD0C6;
+  --field: #8C7880;                 /* form-field outline (>= 3:1 on white and ivory) */
+  --ring: #67505A;
+  --gold: #B99460;                  /* Champagne — DECORATION ONLY (2.5:1, never for text/icons) */
+  --dusty-rose: #D8B6AC;            /* decoration only */
+  --chart-1: #67505A;
+  --chart-2: #B99460;
+  --chart-3: #D8B6AC;
+  --chart-4: #342B2F;
+  --chart-5: #8C7880;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #342B2F;
+  --sidebar-primary: #67505A;
+  --sidebar-primary-foreground: #F7F1E8;
+  --sidebar-accent: #EFE6DA;
+  --sidebar-accent-foreground: #342B2F;
+  --sidebar-border: #DDD0C6;
+  --sidebar-ring: #67505A;
+}
+
+/*
+ * Palette mockups — same layout, same photos, only the primary colour changes.
+ * Preview with ?palette=rosewood-mauve | deep-plum | cocoa-taupe
+ * (needs NEXT_PUBLIC_PALETTE_PREVIEW=1, see components/shared/palette-preview.tsx).
+ * Rosewood Mauve is the default above, so it needs no override.
+ */
+html[data-palette="deep-plum"] {
+  --primary: #4A3545;               /* 9.9:1 on ivory */
+  --ring: #4A3545;
+  --chart-1: #4A3545;
+  --sidebar-primary: #4A3545;
+  --sidebar-ring: #4A3545;
+}
+html[data-palette="cocoa-taupe"] {
+  --primary: #6B5A52;               /* 5.8:1 on ivory */
+  --ring: #6B5A52;
+  --chart-1: #6B5A52;
+  --sidebar-primary: #6B5A52;
+  --sidebar-ring: #6B5A52;
 }
 
 .dark {
-  --background: oklch(0.13 0.028 261.692);
-  --foreground: oklch(0.985 0.002 247.839);
-  --card: oklch(0.21 0.034 264.665);
-  --card-foreground: oklch(0.985 0.002 247.839);
-  --popover: oklch(0.21 0.034 264.665);
-  --popover-foreground: oklch(0.985 0.002 247.839);
-  --primary: oklch(0.928 0.006 264.531);
-  --primary-foreground: oklch(0.21 0.034 264.665);
-  --secondary: oklch(0.278 0.033 256.848);
-  --secondary-foreground: oklch(0.985 0.002 247.839);
-  --muted: oklch(0.278 0.033 256.848);
-  --muted-foreground: oklch(0.707 0.022 261.325);
-  --accent: oklch(0.278 0.033 256.848);
-  --accent-foreground: oklch(0.985 0.002 247.839);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --background: #1F1A1D;
+  --foreground: #F7F1E8;
+  --card: #2A2327;
+  --card-foreground: #F7F1E8;
+  --popover: #2A2327;
+  --popover-foreground: #F7F1E8;
+  --primary: #D8B6AC;
+  --primary-foreground: #342B2F;
+  --secondary: #382F34;
+  --secondary-foreground: #F7F1E8;
+  --muted: #382F34;
+  --muted-foreground: #BFAFB4;
+  --accent: #382F34;
+  --accent-foreground: #F7F1E8;
+  --destructive: #F28B82;
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.034 264.665);
-  --sidebar-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-accent: oklch(0.278 0.033 256.848);
-  --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --field: #A8949B;
+  --ring: #D8B6AC;
+  --gold: #B99460;
+  --sidebar: #2A2327;
+  --sidebar-foreground: #F7F1E8;
+  --sidebar-primary: #D8B6AC;
+  --sidebar-primary-foreground: #342B2F;
+  --sidebar-accent: #382F34;
+  --sidebar-accent-foreground: #F7F1E8;
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #D8B6AC;
 }
 
 @layer base {
@@ -123,6 +171,8 @@ html {
   }
   body {
     @apply bg-background text-foreground;
+    /* Cormorant Garamond is very thin at 300/400; 500 is the lightest comfortable body weight */
+    font-weight: 500;
   }
 }
 
@@ -172,7 +222,7 @@ html {
 /* ── Paragraf ─────────────────────────────────────────────────────────────── */
  
 .tiptap-content p {
-  color: var(--color-primary);
+  color: var(--color-foreground);
   line-height: 1.75;       /* leading-relaxed */
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
@@ -195,20 +245,20 @@ html {
  
 .tiptap-content strong {
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-foreground);
 }
  
 .tiptap-content em {
-  color: color-mix(in srgb, var(--color-primary) 80%, transparent);
+  color: color-mix(in srgb, var(--color-foreground) 85%, transparent);
 }
  
 /* ── Blockquote ───────────────────────────────────────────────────────────── */
  
 .tiptap-content blockquote {
-  border-left: 4px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-left: 4px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
   padding-left: 1rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+  color: color-mix(in srgb, var(--color-foreground) 80%, transparent);
   margin-top: 1rem;
   margin-bottom: 1rem;
   /* hapus quotes otomatis dari prose */
@@ -246,7 +296,7 @@ html {
  
 .tiptap-content pre {
   background-color: color-mix(in srgb, var(--color-primary) 6%, transparent);
-  color: var(--color-primary);
+  color: var(--color-foreground);
   border-radius: 2px;
   padding: 1rem;
   overflow-x: auto;
@@ -272,7 +322,7 @@ html {
 .tiptap-content ul {
   list-style-type: disc;
   padding-left: 1.5rem;
-  color: var(--color-primary);
+  color: var(--color-foreground);
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
 }
@@ -280,7 +330,7 @@ html {
 .tiptap-content ol {
   list-style-type: decimal;
   padding-left: 1.5rem;
-  color: var(--color-primary);
+  color: var(--color-foreground);
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
 }
@@ -321,7 +371,7 @@ html {
  
 .tiptap-content mark {
   background-color: #fef9c3; /* yellow-100 */
-  color: var(--color-primary);
+  color: var(--color-foreground);
   padding: 0 0.125rem;
   border-radius: 2px;
 }
@@ -331,7 +381,7 @@ html {
  
 .tiptap-content.is-editor-empty::before {
   content: attr(data-placeholder);
-  color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  color: color-mix(in srgb, var(--color-foreground) 70%, transparent);
   pointer-events: none;
   position: absolute;
   top: 1.25rem;  /* sesuai py-5 */

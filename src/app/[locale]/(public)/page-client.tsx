@@ -52,7 +52,7 @@ export default function Page() {
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/10 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/42 via-black/18 to-black/28" />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/20 to-transparent" />
         </div>
 
@@ -77,7 +77,7 @@ export default function Page() {
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="mt-6 text-white/80 max-w-xl leading-relaxed"
+            className="mt-6 text-white/90 max-w-xl leading-relaxed"
           >
             {t("heroSubtitle")}
           </motion.p>
@@ -118,7 +118,7 @@ export default function Page() {
       <Instagram />
 
       <motion.section
-        className="py-20 lg:py-28 bg-primary/15"
+        className="py-20 lg:py-28 bg-accent"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -138,7 +138,7 @@ export default function Page() {
                 </h2>
               </div>
               <div className="lg:col-span-7 flex items-end">
-                <p className="text-primary leading-relaxed text-justify">
+                <p className="text-foreground leading-relaxed text-justify">
                   {t("reviewsIntro")}
                 </p>
               </div>
@@ -159,21 +159,21 @@ export default function Page() {
               {reviews.map((review, index) => (
                 <div
                   key={index}
-                  className="min-w-[calc(33.333%-11px)] bg-white border border-primary/10 p-8 flex flex-col justify-between hover:border-primary/30 transition-colors duration-300"
+                  className="min-w-[calc(33.333%-11px)] bg-primary p-8 flex flex-col justify-between"
                 >
                   <div>
-                    <span className="text-5xl text-primary/80 font-serif leading-none select-none">
+                    <span className="text-5xl text-white/90 font-serif leading-none select-none">
                       "
                     </span>
-                    <p className="text-primary leading-relaxed italic mt-2 text-justify">
+                    <p className="text-white leading-relaxed italic mt-2 text-justify">
                       {review.quote}
                     </p>
                   </div>
-                  <div className="mt-8 pt-6 border-t border-primary/10">
-                    <p className="text-primary font-semibold text-sm tracking-wide">
+                  <div className="mt-8 pt-6 border-t border-white/10">
+                    <p className="text-white font-semibold text-sm tracking-wide">
                       {review.couple}
                     </p>
-                    <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
+                    <p className="text-white/90 text-xs tracking-widest uppercase mt-1">
                       {t("coupleFrom", { origin: review.origin })}
                     </p>
                   </div>
@@ -190,21 +190,21 @@ export default function Page() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
                 transition={{ duration: 0.35 }}
-                className="bg-white border border-primary/10 p-8 flex flex-col justify-between"
+                className="bg-primary p-8 flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-5xl text-primary/80 font-serif leading-none select-none">
+                  <span className="text-5xl text-white/90 font-serif leading-none select-none">
                     "
                   </span>
-                  <p className="text-primary leading-relaxed italic mt-2 text-justify">
+                  <p className="text-white leading-relaxed italic mt-2 text-justify">
                     {reviews[reviewSlide].quote}
                   </p>
                 </div>
-                <div className="mt-8 pt-6 border-t border-primary/10">
-                  <p className="text-primary font-semibold text-sm tracking-wide">
+                <div className="mt-8 pt-6 border-t border-white/10">
+                  <p className="text-white font-semibold text-sm tracking-wide">
                     {reviews[reviewSlide].couple}
                   </p>
-                  <p className="text-primary/80 text-xs tracking-widest uppercase mt-1">
+                  <p className="text-white/90 text-xs tracking-widest uppercase mt-1">
                     {reviews[reviewSlide].origin}
                   </p>
                 </div>

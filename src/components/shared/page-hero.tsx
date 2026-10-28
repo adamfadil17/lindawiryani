@@ -19,8 +19,8 @@ import { fadeInUp, staggerContainer } from "@/lib/motion";
  */
 
 const OVERLAY = {
-  soft: "bg-gradient-to-b from-black/28 via-black/10 to-black/20",
-  medium: "bg-gradient-to-b from-black/34 via-black/10 to-black/20",
+  soft: "bg-gradient-to-b from-black/38 via-black/18 to-black/28",
+  medium: "bg-gradient-to-b from-black/42 via-black/18 to-black/28",
 } as const;
 
 const SPACING = {
@@ -118,7 +118,7 @@ export default function PageHero({
             <br />
             <span
               className={
-                secondLineItalic ? "italic font-light normal-case" : undefined
+                secondLineItalic ? "italic font-normal normal-case" : undefined
               }
             >
               {titleSecondLine}
@@ -168,7 +168,7 @@ export default function PageHero({
         >
           <Link
             href={breadcrumbHref}
-            className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
+            className="text-white/90 text-sm tracking-widest uppercase hover:text-white transition-colors"
           >
             {breadcrumb}
           </Link>

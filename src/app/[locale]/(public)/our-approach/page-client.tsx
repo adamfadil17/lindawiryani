@@ -43,7 +43,7 @@ export default function OurApproachPage() {
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
               {t("introTitle")}
             </h2>
-            <p className="mt-6 text-primary  leading-relaxed">
+            <p className="mt-6 text-foreground  leading-relaxed">
               {t("introBody")}
             </p>
             <div className="mt-10 w-16 h-px bg-primary/70" />
@@ -51,12 +51,12 @@ export default function OurApproachPage() {
 
           <motion.div
             variants={fadeInUp}
-            className="lg:col-span-7 space-y-6 text-primary text-justify leading-relaxed"
+            className="lg:col-span-7 space-y-6 text-foreground text-justify leading-relaxed"
           >
-            <p className="text-primary leading-relaxed text-justify ">
+            <p className="text-foreground leading-relaxed text-justify ">
               {t("introP1")}
             </p>
-            <p className="text-primary leading-relaxed text-justify ">
+            <p className="text-foreground leading-relaxed text-justify ">
               {t("introP2")}
             </p>
           </motion.div>
@@ -64,7 +64,7 @@ export default function OurApproachPage() {
       </motion.section>
 
       <motion.section
-        className="bg-primary/15 py-20 lg:py-28"
+        className="bg-accent py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
@@ -84,33 +84,33 @@ export default function OurApproachPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify "
+                className="text-foreground leading-relaxed text-justify "
               >
                 {t("studioP1")}
               </motion.p>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify "
+                className="text-foreground leading-relaxed text-justify "
               >
                 {t("studioP2")}
               </motion.p>
 
               <motion.div variants={fadeInUp}>
-                <p className="text-primary  mb-4 italic">
+                <p className="text-foreground  mb-4 italic">
                   {t("qualitiesLead")}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   {designQualities.map((q) => (
                     <span
                       key={q}
-                      className="border border-primary/50 text-primary text-sm tracking-widest hover:bg-primary transition-colors hover:text-white px-4 py-2"
+                      className="bg-primary text-white px-4 py-2 text-sm tracking-widest hover:bg-primary/90 transition-colors"
                     >
                       {q}
                     </span>
                   ))}
                 </div>
-                <p className="mt-4 text-primary  italic">
+                <p className="mt-4 text-foreground  italic">
                   {t("qualitiesFooter")}
                 </p>
               </motion.div>
@@ -168,14 +168,14 @@ export default function OurApproachPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify "
+                className="text-foreground leading-relaxed text-justify "
               >
                 {t("rootsP1")}
               </motion.p>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify "
+                className="text-foreground leading-relaxed text-justify "
               >
                 {t("rootsP2")}
               </motion.p>
@@ -196,7 +196,7 @@ export default function OurApproachPage() {
 
       <motion.section
         ref={planningRef}
-        className="bg-primary/15 py-20 lg:py-28"
+        className="bg-accent py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.1, margin: "0px 0px -100px 0px" }}
@@ -213,7 +213,7 @@ export default function OurApproachPage() {
             <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold">
               {t("phasesTitle")}
             </h2>
-            <p className="mt-6 text-primary  max-w-xl mx-auto text-center leading-relaxed">
+            <p className="mt-6 text-foreground  max-w-xl mx-auto text-center leading-relaxed">
               {t("phasesIntro")}
             </p>
           </motion.div>
@@ -224,13 +224,13 @@ export default function OurApproachPage() {
                 key={phase.number}
                 variants={fadeInUp}
                 custom={i}
-                className="border border-primary/30 p-8 flex flex-col gap-6 hover:border-primary/80 transition-colors duration-300"
+                className="bg-primary p-8 flex flex-col gap-6 hover:bg-primary/90 transition-colors duration-300"
               >
-                <span className="text-5xl font-semibold text-primary leading-none">
+                <span className="text-5xl font-semibold text-white leading-none">
                   {phase.number}
                 </span>
-                <h3 className="text-primary font-semibold ">{phase.title}</h3>
-                <p className="text-primary leading-relaxed flex-1">
+                <h3 className="text-white font-semibold ">{phase.title}</h3>
+                <p className="text-white/90 leading-relaxed flex-1">
                   {phase.desc}
                 </p>
               </motion.div>
@@ -261,7 +261,7 @@ export default function OurApproachPage() {
                 variants={fadeInUp}
                 className="bg-primary/15 p-8 border-l-2 border-primary"
               >
-                <p className="text-primary  italic leading-relaxed">
+                <p className="text-foreground  italic leading-relaxed">
                   {t("differenceQuote1")}
                   <br />
                   {t("differenceQuote2")}
@@ -270,7 +270,7 @@ export default function OurApproachPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary  text-justify leading-relaxed"
+                className="text-foreground  text-justify leading-relaxed"
               >
                 {t("differenceBody")}
               </motion.p>
@@ -278,7 +278,7 @@ export default function OurApproachPage() {
 
             <div className="lg:col-span-6 space-y-8">
               <motion.div variants={fadeInUp}>
-                <p className="text-primary mb-6">{t("pillarsLead")}</p>
+                <p className="text-foreground mb-6">{t("pillarsLead")}</p>
                 <div className="space-y-4">
                   {pillars.map((pillar, i) => (
                     <motion.div
@@ -300,7 +300,7 @@ export default function OurApproachPage() {
         </div>
       </motion.section>
       <motion.section
-        className="bg-primary/15 py-20 lg:py-28"
+        className="bg-accent py-20 lg:py-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.2, margin: "0px 0px -100px 0px" }}
@@ -318,7 +318,7 @@ export default function OurApproachPage() {
                 </h2>
               </motion.div>
 
-              <motion.p variants={fadeInUp} className="text-primary">
+              <motion.p variants={fadeInUp} className="text-foreground">
                 {t("specIntro")}
               </motion.p>
 
@@ -333,7 +333,7 @@ export default function OurApproachPage() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary italic border-t border-primary/20 pt-6"
+                className="text-foreground italic border-t border-primary/20 pt-6"
               >
                 {t("specFooter")}
               </motion.p>

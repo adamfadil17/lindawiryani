@@ -39,7 +39,7 @@ export default function AboutUs() {
           <div className="space-y-6 relative pr-0 lg:pr-8">
             <motion.div variants={scaleIn} className="w-24 h-24 mb-8">
               <Image
-                src="/images/floral1.png"
+                src="/images/floral1-gold.png"
                 alt="Floral Element"
                 width={120}
                 height={120}
@@ -63,7 +63,7 @@ export default function AboutUs() {
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary text-justify leading-relaxed text-base md:text-base whitespace-pre-line"
+                className="text-foreground text-justify leading-relaxed text-base md:text-base whitespace-pre-line"
               >
                 {t("body")}
               </motion.p>

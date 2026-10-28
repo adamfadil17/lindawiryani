@@ -315,7 +315,7 @@ export default function SubmissionDetailPage() {
           <button
             onClick={() => setDeleteStatus("confirm")}
             disabled={deleteStatus === "deleting"}
-            className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+            className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
           >
             <Trash2 className="w-4 h-4" />
             Delete

@@ -213,7 +213,7 @@ export default function UserDetailPage() {
         {/* Name */}
         <div>
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
-            Full Name <span className="text-red-400">*</span>
+            Full Name <span className="text-red-600">*</span>
           </label>
           <input
             {...register("name")}
@@ -223,14 +223,14 @@ export default function UserDetailPage() {
             }`}
           />
           {errors.name && (
-            <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+            <p className="text-red-700 text-xs mt-1">{errors.name.message}</p>
           )}
         </div>
 
         {/* Email */}
         <div>
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
-            Email <span className="text-red-400">*</span>
+            Email <span className="text-red-600">*</span>
           </label>
           <input
             {...register("email")}
@@ -241,7 +241,7 @@ export default function UserDetailPage() {
             }`}
           />
           {errors.email && (
-            <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+            <p className="text-red-700 text-xs mt-1">{errors.email.message}</p>
           )}
         </div>
 
@@ -250,7 +250,7 @@ export default function UserDetailPage() {
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
             Password{" "}
             {isNew ? (
-              <span className="text-red-400">*</span>
+              <span className="text-red-600">*</span>
             ) : (
               <span className="normal-case tracking-normal text-primary/30">
                 (leave blank to keep current)
@@ -279,14 +279,14 @@ export default function UserDetailPage() {
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+            <p className="text-red-700 text-xs mt-1">{errors.password.message}</p>
           )}
         </div>
 
         {/* Role */}
         <div>
           <label className="block text-xs tracking-widest uppercase text-primary/60 mb-2">
-            Role <span className="text-red-400">*</span>
+            Role <span className="text-red-600">*</span>
           </label>
           <div className="grid grid-cols-3 gap-2">
             {ROLE_OPTIONS.map(({ value, label, icon, desc }) => {
@@ -322,7 +322,7 @@ export default function UserDetailPage() {
             })}
           </div>
           {errors.role && (
-            <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>
+            <p className="text-red-700 text-xs mt-1">{errors.role.message}</p>
           )}
         </div>
 

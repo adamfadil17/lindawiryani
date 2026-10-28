@@ -83,7 +83,7 @@ export default function PortfolioDetail({
           >
             <Link
               href="/portfolio"
-              className="text-white/80 text-sm tracking-widest uppercase hover:text-white transition-colors"
+              className="text-white/90 text-sm tracking-widest uppercase hover:text-white transition-colors"
             >
               {t("breadcrumb")}
             </Link>
@@ -99,7 +99,7 @@ export default function PortfolioDetail({
                 key={tag}
                 className="bg-white/15 border border-1 border-white/10 text-white text-sm tracking-widest px-3 py-1"
               >
-                {tag.toUpperCase()}
+                {tag}
               </span>
             ))}
           </motion.div>
@@ -112,19 +112,19 @@ export default function PortfolioDetail({
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="text-white/80 italic text-lg md:text-xl max-w-2xl mb-6"
+            className="text-white/90 italic text-lg md:text-xl max-w-2xl mb-6"
           >
             {item.subtitle}
           </motion.p>
           <motion.div
             variants={fadeInUp}
-            className="flex items-center gap-2 text-white/80 text-sm"
+            className="flex items-center gap-2 text-white/90 text-sm"
           >
             <MapPin className="w-4 h-4 flex-shrink-0" />
             <span>{item.credit_location_detail}</span>
             {item.origin && (
               <>
-                <span className="text-white/80">·</span>
+                <span className="text-white/90">·</span>
                 <span>{t("coupleFrom", { origin: item.origin })}</span>
               </>
             )}
@@ -151,7 +151,7 @@ export default function PortfolioDetail({
                   <h2 className="text-2xl md:text-3xl text-primary font-semibold leading-tight">
                     {item.couple}
                     <br />
-                    <span className="italic font-light text-xl">
+                    <span className="italic font-normal text-xl">
                       {t("designStory")}
                     </span>
                   </h2>
@@ -203,7 +203,7 @@ export default function PortfolioDetail({
             <div className="lg:col-span-8 space-y-10">
               <motion.p
                 variants={fadeInUp}
-                className="text-primary leading-relaxed text-justify text-lg italic"
+                className="text-foreground leading-relaxed text-justify text-lg italic"
               >
                 {item.excerpt}
               </motion.p>
@@ -223,7 +223,7 @@ export default function PortfolioDetail({
                     {section.body.map((paragraph, j) => (
                       <p
                         key={j}
-                        className="text-primary leading-relaxed text-justify"
+                        className="text-foreground leading-relaxed text-justify"
                       >
                         {paragraph}
                       </p>
@@ -237,10 +237,10 @@ export default function PortfolioDetail({
                   variants={fadeInUp}
                   className="border-l-2 border-primary pl-8 py-2"
                 >
-                  <p className="text-primary italic leading-relaxed text-lg">
+                  <p className="text-foreground italic leading-relaxed text-lg">
                     "{item.review}"
                   </p>
-                  <footer className="mt-4 text-primary/80 text-sm tracking-widest uppercase">
+                  <footer className="mt-4 text-primary/90 text-sm tracking-widest uppercase">
                     — {item.credit_couple_origin}
                   </footer>
                 </motion.div>
@@ -250,19 +250,19 @@ export default function PortfolioDetail({
                 variants={fadeInUp}
                 className="pt-4 border-t border-primary/20 space-y-1"
               >
-                <p className="text-primary/80 text-sm tracking-widest uppercase">
+                <p className="text-primary/90 text-sm tracking-widest uppercase">
                   {t("designedCuratedBy")}
                 </p>
                 <p className="text-primary font-semibold">
                   {item.credit_planner}
                 </p>
-                <p className="text-primary/80 text-sm italic">
+                <p className="text-foreground/80 text-sm italic">
                   {item.credit_role}
                 </p>
-                <p className="text-primary/80 text-sm">
+                <p className="text-foreground/80 text-sm">
                   📍 {item.credit_location_detail}
                 </p>
-                <p className="text-primary/80 text-sm">
+                <p className="text-foreground/80 text-sm">
                   {t("couplePrefix", { origin: item.credit_couple_origin })}
                 </p>
               </motion.div>
@@ -272,7 +272,7 @@ export default function PortfolioDetail({
       </motion.section>
 
       <motion.section
-        className="py-16 lg:py-20 bg-primary/10"
+        className="py-16 lg:py-20 bg-accent/60"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
@@ -286,7 +286,7 @@ export default function PortfolioDetail({
             <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
               {t("momentsFrom")}
               <br />
-              <span className="italic font-light">{item.couple}</span>
+              <span className="italic font-medium">{item.couple}</span>
             </h2>
           </motion.div>
 
@@ -304,13 +304,13 @@ export default function PortfolioDetail({
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
           <div className="grid lg:grid-cols-2 gap-16">
             <motion.div variants={fadeInUp}>
-              <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
+              <p className="text-white/90 tracking-[0.25em] uppercase mb-4 text-sm">
                 {t("exploreByExperience")}
               </p>
               <h3 className="text-2xl md:text-3xl text-white font-semibold mb-8 leading-tight">
                 {t("similarFeelingTitle1")}
                 <br />
-                <span className="italic font-light">{t("similarFeelingTitle2")}</span>
+                <span className="italic font-medium">{t("similarFeelingTitle2")}</span>
               </h3>
               <div className="space-y-3">
                 {experience && (
@@ -328,13 +328,13 @@ export default function PortfolioDetail({
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <p className="text-white/60 tracking-[0.25em] uppercase mb-4 text-sm">
+              <p className="text-white/90 tracking-[0.25em] uppercase mb-4 text-sm">
                 {t("exploreByDestination")}
               </p>
               <h3 className="text-2xl md:text-3xl text-white font-semibold mb-8 leading-tight">
                 {t("moreWeddingsIn")}
                 <br />
-                <span className="italic font-light">
+                <span className="italic font-medium">
                   {destination?.name ?? "—"}
                 </span>
               </h3>
@@ -343,7 +343,7 @@ export default function PortfolioDetail({
                 className="group flex items-center justify-between border border-white/20 p-5 hover:border-white/60 hover:bg-white/5 transition-all duration-300 mb-8"
               >
                 <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-white/60 flex-shrink-0" />
+                  <MapPin className="w-4 h-4 text-white/90 flex-shrink-0" />
                   <span className="text-white font-medium group-hover:text-white/80 transition-colors">
                     {t("baliSuffix", { name: destination?.name ?? "—" })}
                   </span>
@@ -352,7 +352,7 @@ export default function PortfolioDetail({
               </Link>
 
               <div className="pt-4 border-t border-white/10">
-                <p className="text-white/60 text-sm mb-5 leading-relaxed">
+                <p className="text-white/90 text-sm mb-5 leading-relaxed">
                   {t("readyToBegin")}
                 </p>
                 <Link href="https://wa.me/628113980998" target="_blank">
@@ -385,12 +385,12 @@ export default function PortfolioDetail({
                 <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
                   {t("related")}
                   <br />
-                  <span className="italic font-light">{t("stories")}</span>
+                  <span className="italic font-medium">{t("stories")}</span>
                 </h2>
               </div>
               <Link
                 href="/portfolio"
-                className="hidden md:flex items-center gap-2 text-primary text-sm tracking-widest uppercase hover:text-primary/80 transition-colors"
+                className="hidden md:flex items-center gap-2 text-primary text-sm tracking-widest uppercase hover:text-foreground transition-colors"
               >
                 <span>{t("viewAll")}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -424,10 +424,10 @@ export default function PortfolioDetail({
                       <h3 className="text-xl font-semibold leading-tight mb-1">
                         {related.couple}
                       </h3>
-                      <p className="text-white/70 italic text-sm mb-2">
+                      <p className="text-white/85 italic text-sm mb-2">
                         {related.subtitle}
                       </p>
-                      <div className="flex items-center gap-1.5 text-white/60 text-xs">
+                      <div className="flex items-center gap-1.5 text-white/90 text-xs">
                         <MapPin className="w-3 h-3 flex-shrink-0" />
                         <span>{related.credit_location_detail}</span>
                       </div>

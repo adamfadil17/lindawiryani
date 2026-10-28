@@ -111,13 +111,13 @@ export default function PageClosing({
         >
           {titleLine1}
           <br />
-          <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-light normal-case">
+          <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl italic font-normal normal-case">
             {titleLine2}
           </span>
         </motion.h2>
         <motion.p
           variants={fadeInUp}
-          className={`${gap.body} text-white/80 max-w-2xl mx-auto leading-relaxed`}
+          className={`${gap.body} text-white/90 max-w-2xl mx-auto leading-relaxed`}
         >
           {body}
         </motion.p>

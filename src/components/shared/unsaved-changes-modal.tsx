@@ -23,7 +23,7 @@ export default function UnsavedChangesModal({
         {/* Close button */}
         <button
           onClick={onCancel}
-          className="absolute top-4 right-4 text-primary/50 hover:text-primary transition-colors"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-primary transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -34,7 +34,7 @@ export default function UnsavedChangesModal({
         </div>
 
         {/* Label */}
-        <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-2">
+        <p className="text-primary/90 tracking-[0.2em] uppercase text-xs mb-2">
           Unsaved Changes
         </p>
 
@@ -44,7 +44,7 @@ export default function UnsavedChangesModal({
         </h2>
 
         {/* Description */}
-        <p className="text-primary/70 text-sm leading-relaxed mb-8">
+        <p className="text-foreground/75 text-sm leading-relaxed mb-8">
           {isNew
             ? "You have unsaved changes on this new venue. If you leave now, all your input will be lost."
             : "You have unsaved changes on this venue. If you leave now, your edits will be discarded."}

@@ -356,7 +356,7 @@ export default function PositionDetailPage() {
             <button
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -426,7 +426,7 @@ export default function PositionDetailPage() {
                     <Clock className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                   </div>
                   {formErrors.type && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.type.message)}
                     </p>
                   )}
@@ -452,7 +452,7 @@ export default function PositionDetailPage() {
                     <Layers className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                   </div>
                   {formErrors.level && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.level.message)}
                     </p>
                   )}

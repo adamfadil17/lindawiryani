@@ -131,7 +131,7 @@ export default function LoginPage() {
             <div className="inline-flex flex-col items-center gap-4">
               <div className="relative h-14 w-[120px]">
                 <Image
-                  src="/images/logo-gray.png"
+                  src="/images/logo-mauve.png"
                   alt="Linda Wiryani | Luxury Wedding Planner & Designer in Bali"
                   className="h-14 w-auto mx-auto"
                   width={120}
@@ -158,7 +158,7 @@ export default function LoginPage() {
             {/* Email */}
             <div>
               <label className={labelClass} htmlFor="email">
-                Email Address <span className="text-red-400">*</span>
+                Email Address <span className="text-red-600">*</span>
               </label>
               <input
                 id="email"
@@ -181,7 +181,7 @@ export default function LoginPage() {
                   className={labelClass.replace("mb-2", "")}
                   htmlFor="password"
                 >
-                  Password <span className="text-red-400">*</span>
+                  Password <span className="text-red-600">*</span>
                 </label>
               </div>
               <div className="relative">

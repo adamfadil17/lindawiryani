@@ -108,15 +108,15 @@ export default function ThemeDetailModal({
 
         <div className="overflow-y-auto p-4 md:p-8">
           <div className="flex flex-col gap-8">
-            <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100">
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-secondary">
               {!imageLoaded && !imageError && <ImageLoadingSkeleton />}
 
               {imageError && (
                 <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
-                  <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
-                    <X className="w-8 h-8 text-stone-500" />
+                  <div className="w-16 h-16 bg-border rounded-full flex items-center justify-center">
+                    <X className="w-8 h-8 text-muted-foreground" />
                   </div>
-                  <p className="text-stone-500 text-sm">
+                  <p className="text-muted-foreground text-sm">
                     {tc("failedToLoadImage")}
                   </p>
                 </div>
@@ -165,7 +165,7 @@ export default function ThemeDetailModal({
             </div>
 
             <article className="flex flex-col gap-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-stone-100 pb-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-border pb-8">
                 <div className="flex-1">
                   <span className="text-xs text-primary tracking-widest uppercase font-semibold mb-2 block">
                     {t("label")}
@@ -180,13 +180,13 @@ export default function ThemeDetailModal({
                         onExploreVenue(relatedVenue);
                         onClose();
                       }}
-                      className="flex items-center gap-2 text-primary italic hover:text-primary/80 hover:cursor-pointer group"
+                      className="flex items-center gap-2 text-primary italic hover:text-foreground hover:cursor-pointer group"
                     >
                       <MapPin className="w-4 h-4 flex-shrink-0" />
                       <span className="text-md">{venueName}</span>
                     </button>
                   ) : (
-                    <div className="flex items-center gap-2 text-primary/60 italic">
+                    <div className="flex items-center gap-2 text-muted-foreground italic">
                       <MapPin className="w-4 h-4 flex-shrink-0" />
                       <span className="text-md">{venueName}</span>
                     </div>
@@ -200,7 +200,7 @@ export default function ThemeDetailModal({
                         onExploreVenue(relatedVenue);
                         onClose();
                       }}
-                      className="bg-white border border-primary text-primary font-semibold px-6 py-4 text-sm tracking-widest hover:bg-stone-50 transition-colors uppercase hover:cursor-pointer"
+                      className="bg-white border border-primary text-primary font-semibold px-6 py-4 text-sm tracking-widest hover:bg-secondary/50 transition-colors uppercase hover:cursor-pointer"
                     >
                       {t("exploreVenue")}
                     </button>

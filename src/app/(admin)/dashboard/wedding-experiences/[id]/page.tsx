@@ -146,7 +146,7 @@ function HeadingEditor({
         placeholder="Line 2"
         className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
       />
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+      {error && <p className="text-red-700 text-xs mt-1">{error}</p>}
     </div>
   );
 }
@@ -266,7 +266,7 @@ function FAQEditor({
           <button
             onClick={() => deleteFaqById(i)}
             disabled={deletingIdx === i}
-            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-400 hover:bg-red-50 transition-colors disabled:opacity-50"
+            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
           >
             {deletingIdx === i ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -317,7 +317,7 @@ function FAQEditor({
           </span>
           <button
             onClick={() => removeDraft(i)}
-            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-400 hover:bg-red-50 transition-colors"
+            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-600 hover:bg-red-50 transition-colors"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -723,7 +723,7 @@ export default function ExperiencesDetailPage() {
             <button
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -799,7 +799,7 @@ export default function ExperiencesDetailPage() {
                     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                   </div>
                   {formErrors.category && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.category.message)}
                     </p>
                   )}
@@ -879,7 +879,7 @@ export default function ExperiencesDetailPage() {
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
                 {formErrors.hero_style && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.hero_style.message)}
                   </p>
                 )}
@@ -911,7 +911,7 @@ export default function ExperiencesDetailPage() {
                     inputId="hero-image-upload"
                   />
                   {formErrors.hero_image && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.hero_image.message)}
                     </p>
                   )}
@@ -1078,7 +1078,7 @@ export default function ExperiencesDetailPage() {
                   ))}
                 </div>
                 {formErrors.intro_images && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(
                       (formErrors.intro_images as any)?.message ??
                         (formErrors.intro_images as any)?.root?.message ??
@@ -1185,7 +1185,7 @@ export default function ExperiencesDetailPage() {
                     inputId="approach-image-upload"
                   />
                   {formErrors.approach_image && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.approach_image.message)}
                     </p>
                   )}
@@ -1238,7 +1238,7 @@ export default function ExperiencesDetailPage() {
                   placeholder="e.g. Venue sourcing and design"
                 />
                 {formErrors.services_list && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(
                       formErrors.services_list.message ??
                         (formErrors.services_list as any)?.root?.message ??
@@ -1326,7 +1326,7 @@ export default function ExperiencesDetailPage() {
                     onChange={(v) => setField("services_dark_list", v)}
                   />
                   {formErrors.services_dark_list && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(
                         formErrors.services_dark_list.message ??
                           (formErrors.services_dark_list as any)?.root
@@ -1413,7 +1413,7 @@ export default function ExperiencesDetailPage() {
                     inputId="closing-image-upload"
                   />
                   {formErrors.closing_image && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.closing_image.message)}
                     </p>
                   )}

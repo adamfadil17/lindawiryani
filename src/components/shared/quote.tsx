@@ -9,7 +9,7 @@ import Image from "next/image";
 export default function Quote() {
   const t = useTranslations("quote");
   return (
-    <section className="bg-white pb-16 lg:pb-24">
+    <section className="bg-background pb-16 lg:pb-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Quote Text */}
         <motion.div

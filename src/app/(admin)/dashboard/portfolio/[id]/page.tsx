@@ -147,7 +147,7 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
               <button
                 type="button"
                 onClick={() => handleRemove(img)}
-                className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:cursor-pointer"
+                className="absolute top-1 right-1 w-6 h-6 bg-red-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:cursor-pointer"
                 title="Remove image"
               >
                 <X className="w-3 h-3" />
@@ -274,7 +274,7 @@ function StorySectionsEditor({
             <button
               type="button"
               onClick={() => removeSection(sIdx)}
-              className="w-6 h-6 flex items-center justify-center text-primary/40 hover:text-red-500 hover:cursor-pointer transition-colors"
+              className="w-6 h-6 flex items-center justify-center text-primary/40 hover:text-red-700 hover:cursor-pointer transition-colors"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -312,7 +312,7 @@ function StorySectionsEditor({
                   <button
                     type="button"
                     onClick={() => removeBodyParagraph(sIdx, bIdx)}
-                    className="w-8 shrink-0 flex items-center justify-center text-primary/30 hover:text-red-500 hover:cursor-pointer transition-colors"
+                    className="w-8 shrink-0 flex items-center justify-center text-primary/30 hover:text-red-700 hover:cursor-pointer transition-colors"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -842,7 +842,7 @@ export default function PortfolioDetailPage() {
               type="button"
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -977,7 +977,7 @@ export default function PortfolioDetailPage() {
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
                 {formErrors.destination_id && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.destination_id.message)}
                   </p>
                 )}
@@ -1013,7 +1013,7 @@ export default function PortfolioDetailPage() {
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
                 {formErrors.venue_id && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.venue_id.message)}
                   </p>
                 )}
@@ -1049,7 +1049,7 @@ export default function PortfolioDetailPage() {
                   <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
                 </div>
                 {formErrors.experience_id && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.experience_id.message)}
                   </p>
                 )}
@@ -1152,7 +1152,7 @@ export default function PortfolioDetailPage() {
               placeholder="Type a tag and press Enter…"
             />
             {formErrors.tags && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-red-700 text-xs mt-1">
                 {String(formErrors.tags.message)}
               </p>
             )}
@@ -1194,7 +1194,7 @@ export default function PortfolioDetailPage() {
                 />
               </FormField>
               {formErrors.image && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="text-red-700 text-xs mt-1">
                   {String(formErrors.image.message)}
                 </p>
               )}
