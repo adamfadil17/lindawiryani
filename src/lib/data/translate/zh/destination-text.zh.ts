@@ -38,7 +38,7 @@ const locationNames: DestinationContent["locationNames"] = {
     "乌布与吉安雅尔、巴厘岛东部、巴厘岛西部",
   "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains":
     "巴厘岛南部、乌布与吉安雅尔、高地、湖泊与山区",
-  "Ubud, South Bali": "乌布、巴厘岛南部",
+  "Ubud, Central Bali": "乌布、巴厘岛中部",
 };
 
 const destinationText: DestinationContent["destinationText"] = {

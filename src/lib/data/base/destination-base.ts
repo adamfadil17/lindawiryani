@@ -519,7 +519,7 @@ export const destinationBase: DestinationBase[] = [
     id: "t11",
     slug: "chapel-weddings",
     category_id: "cat-themes",
-    location: "Ubud, South Bali",
+    location: "Ubud, Central Bali",
     image:
       "https://res.cloudinary.com/dzerxindp/image/upload/f_auto,q_auto:good/v1775361533/chapel-wedding_ejqsqz.png",
     guest_capacity: "10 - 150",

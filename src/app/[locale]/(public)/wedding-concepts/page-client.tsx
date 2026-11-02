@@ -547,7 +547,7 @@ export default function WeddingConceptsPage() {
               </motion.div>
 
               <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
-                <Link href="/approach">
+                <Link href="/our-approach">
                   <button className="border border-primary text-primary font-semibold px-8 py-3 text-sm tracking-widest hover:bg-primary hover:text-white hover:cursor-pointer transition-colors duration-300">
                     {t("exploreApproach")}
                   </button>

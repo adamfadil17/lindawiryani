@@ -35,7 +35,7 @@ const locationNames: DestinationContent["locationNames"] = {
   "Ubud & Gianyar, East Bali, West Bali": "Ubud & Gianyar, Ost-Bali, West-Bali",
   "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains":
     "Süd-Bali, Ubud & Gianyar, Hochland, Seen und Berge",
-  "Ubud, South Bali": "Ubud, Süd-Bali",
+  "Ubud, Central Bali": "Ubud, Zentral-Bali",
 };
 
 const destinationText: DestinationContent["destinationText"] = {

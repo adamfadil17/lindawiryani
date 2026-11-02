@@ -32,7 +32,7 @@ const locationNames: DestinationContent["locationNames"] = {
   "Ubud & Gianyar, East Bali": "ウブド＆ギャニャール、バリ島東部",
   "Ubud & Gianyar, East Bali, West Bali": "ウブド＆ギャニャール、バリ島東部、バリ島西部",
   "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains": "バリ島南部、ウブド＆ギャニャール、高原・湖・山岳",
-  "Ubud, South Bali": "ウブド、バリ島南部",
+  "Ubud, Central Bali": "ウブド、バリ島中部",
 };
 
 const destinationText: DestinationContent["destinationText"] = {

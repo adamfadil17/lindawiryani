@@ -30,7 +30,10 @@ const CATEGORY_META: Record<
     anchor: string;
     // `key` -> messages: destinationsPage.loc.<key>; `value` stays English
     // because filtering matches against the English location data.
-    locations: { key: string; value: string }[];
+    // `slug` (opsional): jika diisi, chip memfilter tepat satu destination
+    // berdasarkan slug (dipakai di cat-themes, karena banyak tema punya
+    // string lokasi yang sama sehingga tidak bisa dibedakan lewat lokasi).
+    locations: { key: string; value: string; slug?: string }[];
   }
 > = {
   "cat-bali": {
@@ -49,26 +52,17 @@ const CATEGORY_META: Record<
     key: "themes",
     anchor: "themes",
     locations: [
-      { key: "lake", value: "Highlands, Lakes and Mountains" },
-      {
-        key: "waterfall",
-        value: "Ubud & Gianyar, North Bali, West Bali",
-      },
-      {
-        key: "privateVilla",
-        value: "South Bali, Ubud & Gianyar, East Bali, North Bali, West Bali",
-      },
-      { key: "mountain", value: "Highlands, Lakes and Mountains" },
-      { key: "jungle", value: "Ubud & Gianyar, East Bali" },
-      { key: "beachfront", value: "South Bali, East Bali, North Bali" },
-      { key: "royal", value: "Ubud & Gianyar, East Bali" },
-      { key: "ricePaddy", value: "Ubud & Gianyar, East Bali, West Bali" },
-      { key: "riverside", value: "Ubud & Gianyar, East Bali, West Bali" },
-      {
-        key: "garden",
-        value: "South Bali, Ubud & Gianyar, Highlands, Lakes and Mountains",
-      },
-      { key: "chapel", value: "South Bali" },
+      { key: "lake", value: "", slug: "lake-weddings" },
+      { key: "waterfall", value: "", slug: "waterfall-weddings" },
+      { key: "privateVilla", value: "", slug: "private-villa-weddings" },
+      { key: "mountain", value: "", slug: "mountain-weddings" },
+      { key: "jungle", value: "", slug: "jungle-forest-weddings" },
+      { key: "beachfront", value: "", slug: "beachfront-oceanfront-weddings" },
+      { key: "royal", value: "", slug: "royal-balinese-weddings" },
+      { key: "ricePaddy", value: "", slug: "rice-paddy-field-weddings" },
+      { key: "riverside", value: "", slug: "riverside-weddings" },
+      { key: "garden", value: "", slug: "garden-weddings" },
+      { key: "chapel", value: "", slug: "chapel-weddings" },
     ],
   },
   "cat-islands": {
@@ -158,12 +152,15 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
 
-  const selectedValue =
-    meta.locations.find((l) => l.key === selectedKey)?.value ?? null;
+  const selected = meta.locations.find((l) => l.key === selectedKey);
+  const selectedValue = selected?.value || null;
 
-  const allDestinations = destinationList.filter(
-    (d) => d.category_id === categoryId && matchesLocation(d, selectedValue),
-  );
+  const allDestinations = destinationList.filter((d) => {
+    if (d.category_id !== categoryId) return false;
+    // Chip dengan slug (themes) -> cocokkan tepat satu destination.
+    if (selected?.slug) return d.slug === selected.slug;
+    return matchesLocation(d, selectedValue);
+  });
 
   useEffect(() => {
     setExpanded(false);
