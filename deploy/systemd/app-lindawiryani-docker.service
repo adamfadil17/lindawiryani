@@ -1,5 +1,5 @@
-# Install at /etc/systemd/system/app-lindawiryani.service, then:
-#   systemctl daemon-reload && systemctl enable --now app-lindawiryani
+# Install at /etc/systemd/system/app-lindawiryani-docker.service, then:
+#   systemctl daemon-reload && systemctl enable --now app-lindawiryani-docker
 # Do this after the first successful deploy, because the unit never builds.
 [Unit]
 Description=Lindawiryani main (lindawiryani.com, port 18190)

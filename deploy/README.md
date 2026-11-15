@@ -24,13 +24,13 @@ or the health check (`/api/health`) fails, the previous release is restored.
    - `DEPLOY_HOST`: `root@SERVER_IP`
    - `DEPLOY_SSH_KEY`: contents of the private key `lw_deploy`
    - `DEPLOY_KNOWN_HOSTS`: output of `ssh-keyscan -t ed25519 SERVER_IP`
-5. nginx: copy `config-sites.conf` to `/etc/nginx/sites-available/lindawiryani`, 
-   get the certificate (`certbot certonly --nginx -d lindawiryani.com -d www.lindawiryani.com -d beta.lindawiryani.com`),
+5. nginx: copy `config-sites.conf` to `/etc/nginx/sites-available/lindawiryani-app`, 
+   get the certificate (`mkdir -p /var/www/certbot && certbot certonly --webroot -w /var/www/certbot -d beta.lindawiryani.com`),
    create the beta password (`htpasswd -c /etc/nginx/.htpasswd-lindawiryani-beta team`), then
    `nginx -t && systemctl reload nginx`.
 6. First deploy: set `SEED_ON_START=true` and `SEED_ADMIN_PASSWORD` in `app.env`, push to `main`,
    then remove both lines and run `/opt/lindawiryani/bin/apply-env.sh main`. Deploy beta after main.
-7. Optional: install `systemd/*.service` (start on boot), `bin/backup-db.sh` as
+7. Optional: install `systemd/*.service` (named `-docker` because an older `app-lindawiryani` unit already runs the temp site) (start on boot), `bin/backup-db.sh` as
    `/etc/cron.daily/lindawiryani-db-backup`, and `bin/cron-cleanup.sh` in cron for the weekly
    orphaned-upload cleanup.
 
