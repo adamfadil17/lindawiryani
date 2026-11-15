@@ -30,7 +30,7 @@ or the health check (`/api/health`) fails, the previous release is restored.
    `nginx -t && systemctl reload nginx`.
 6. First deploy: set `SEED_ON_START=true` and `SEED_ADMIN_PASSWORD` in `app.env`, push to `main`,
    then remove both lines and run `/opt/lindawiryani/bin/apply-env.sh main`. Deploy beta after main.
-7. Optional: install `systemd/*.service` (named `-docker` because an older `app-lindawiryani` unit already runs the temp site) (start on boot), `bin/backup-db.sh` as
+7. Optional: install `systemd/*.service` (named `-main` and `-beta` because an older `app-lindawiryani` unit already runs the temp dashboard site) (start on boot), `bin/backup-db.sh` as
    `/etc/cron.daily/lindawiryani-db-backup`, and `bin/cron-cleanup.sh` in cron for the weekly
    orphaned-upload cleanup.
 

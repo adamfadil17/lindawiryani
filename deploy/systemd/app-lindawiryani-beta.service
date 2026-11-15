@@ -1,11 +1,11 @@
-# Install at /etc/systemd/system/app-lindawiryani-docker-beta.service, then:
-#   systemctl daemon-reload && systemctl enable --now app-lindawiryani-docker-beta
+# Install at /etc/systemd/system/app-lindawiryani-beta.service, then:
+#   systemctl daemon-reload && systemctl enable --now app-lindawiryani-beta
 # Do this after the first successful beta deploy, because the unit never builds.
 [Unit]
 Description=Lindawiryani beta (beta.lindawiryani.com, port 18191)
 # Beta reaches the shared database through the main stack's network.
-Requires=docker.service app-lindawiryani-docker.service
-After=docker.service app-lindawiryani-docker.service network-online.target
+Requires=docker.service app-lindawiryani-main.service
+After=docker.service app-lindawiryani-main.service network-online.target
 Wants=network-online.target
 
 [Service]
