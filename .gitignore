@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 /generated/prisma
+
+# user uploads (kept out of git; folder is created on first upload)
+/public/uploads/*
+!/public/uploads/.gitkeep

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { imageUrlSchema } from "./image-url";
 
 const uuidSchema = z.string().uuid();
 
@@ -82,7 +83,7 @@ export const createDestinationSchema = z.object({
   atmosphere: z.string().min(1),
   accessibility_notes: z.string().min(1),
   seasonal_considerations: z.string().min(1),
-  image: z.string().url(),
+  image: imageUrlSchema(),
   guest_capacity: z.string().min(1),
   highlights: z.array(z.string()).min(1),
   best_for: z.array(z.string()).min(1),
@@ -123,7 +124,7 @@ export const createWeddingExperienceSchema = z.object({
 
   // Hero
   hero_style: weddingExperienceHeroStyleEnum,
-  hero_image: z.string().url(),
+  hero_image: imageUrlSchema(),
   hero_desc: z.string().min(1),
 
   // Intro
@@ -133,7 +134,7 @@ export const createWeddingExperienceSchema = z.object({
   intro_list_label: z.string().optional(),
   intro_list: z.array(z.string()),
   intro_footnote: z.string().optional(),
-  intro_images: z.array(z.string().url()).max(2),
+  intro_images: z.array(imageUrlSchema()).max(2),
 
   // Approach
   approach_label: z.string().min(1),
@@ -141,7 +142,7 @@ export const createWeddingExperienceSchema = z.object({
   approach_body: z.string().min(1),
   approach_list_label: z.string().optional(),
   approach_list: z.array(z.string()),
-  approach_image: z.string().url(),
+  approach_image: imageUrlSchema(),
 
   // Services
   services_label: z.string().min(1),
@@ -157,7 +158,7 @@ export const createWeddingExperienceSchema = z.object({
   closing_label: z.string().min(1),
   closing_heading: z.tuple([z.string(), z.string()]),
   closing_body: z.string().min(1),
-  closing_image: z.string().url(),
+  closing_image: imageUrlSchema(),
   closing_couple_label: z.string().optional(),
   closing_couple_values: z.array(z.string()),
 });
@@ -192,7 +193,7 @@ export const createVenueSchema = z.object({
   name: z.string().min(2).max(255),
   slogan: z.string().min(2),
   description: z.string().min(1),
-  image: z.string().url(),
+  image: imageUrlSchema(),
   capacity: z.number().int().positive(),
   starting_price: z.number().positive(),
   destination_id: uuidSchema,
@@ -210,7 +211,7 @@ export type UpdateVenueDto = z.infer<typeof updateVenueSchema>;
 
 export const createVenueImageSchema = z.object({
   venue_id: uuidSchema,
-  url: z.string().url(),
+  url: imageUrlSchema(),
   sort_order: z.number().int().min(0).default(0),
 });
 
@@ -229,7 +230,7 @@ export const createWeddingThemeSchema = z.object({
   slug: slugSchema,
   title: z.string().min(2).max(255),
   description: z.string().min(1),
-  image: z.string().url(),
+  image: imageUrlSchema(),
   inclusions: z.array(z.string()).min(1),
   venue_id: z
       .union([uuidSchema, z.literal(""), z.undefined()])
@@ -248,7 +249,7 @@ export type UpdateWeddingThemeDto = z.infer<typeof updateWeddingThemeSchema>;
 
 export const createWeddingThemeImageSchema = z.object({
   theme_id: uuidSchema,
-  url: z.string().url(),
+  url: imageUrlSchema(),
   sort_order: z.number().int().min(0).default(0),
 });
 
@@ -276,7 +277,7 @@ export const createArticleSchema = z.object({
   title: z.string().min(2).max(255),
   excerpt: z.string().min(1),
   published_at: z.string().datetime(),
-  image: z.string().url(),
+  image: imageUrlSchema(),
   content: z.string().min(1),
 });
 
@@ -307,7 +308,7 @@ export const createPortfolioSchema = z.object({
   experience_id: z
     .union([uuidSchema, z.literal(""), z.undefined()])
     .transform((v) => v || undefined),
-  image: z.string().url(),
+  image: imageUrlSchema(),
   tags: z.array(z.string()).min(1),
   excerpt: z.string().min(1),
   origin: z.string().optional(),
@@ -331,7 +332,7 @@ export type UpdatePortfolioDto = z.infer<typeof updatePortfolioSchema>;
 
 export const createPortfolioImageSchema = z.object({
   portfolio_id: uuidSchema,
-  url: z.string().url(),
+  url: imageUrlSchema(),
   sort_order: z.number().int().min(0).default(0),
 });
 
