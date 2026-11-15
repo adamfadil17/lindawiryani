@@ -75,5 +75,7 @@ jobs:
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
+          # A bare IP in the secret would make ssh use the runner user; default to root.
+          case "$DEPLOY_HOST" in *@*) ;; *) DEPLOY_HOST="root@$DEPLOY_HOST" ;; esac
           git ls-files -z -- . | tar --null -czf - -T - \
             | ssh -o BatchMode=yes "$DEPLOY_HOST" deploy "$APP"
