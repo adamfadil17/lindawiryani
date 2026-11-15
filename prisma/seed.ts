@@ -4,14 +4,14 @@ import bcrypt from "bcryptjs";
 async function main() {
   console.log("🌱 Seeding users...");
 
-  const hashedPassword = await bcrypt.hash("Admin@123", 12);
+  const hashedPassword = await bcrypt.hash(process.env.SEED_ADMIN_PASSWORD || "Admin@123", 12);
 
   const adminUser = await prisma.user.upsert({
-    where: { email: "admin@lindawiryani.com" },
+    where: { email: process.env.SEED_ADMIN_EMAIL || "admin@lindawiryani.com" },
     update: {},
     create: {
       name: "Admin",
-      email: "admin@lindawiryani.com",
+      email: process.env.SEED_ADMIN_EMAIL || "admin@lindawiryani.com",
       password: hashedPassword,
       role: "admin",
     },

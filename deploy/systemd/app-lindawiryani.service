@@ -1,0 +1,22 @@
+# Install at /etc/systemd/system/app-lindawiryani.service, then:
+#   systemctl daemon-reload && systemctl enable --now app-lindawiryani
+# Do this after the first successful deploy, because the unit never builds.
+[Unit]
+Description=Lindawiryani main (lindawiryani.com, port 18190)
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/lindawiryani/main/current
+Environment=APP_PORT=18190
+ExecStart=/usr/bin/docker compose -p lindawiryani -f docker-compose.yml up --no-build --no-color
+ExecStop=/usr/bin/docker compose -p lindawiryani -f docker-compose.yml stop
+Restart=always
+RestartSec=10
+TimeoutStartSec=0
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

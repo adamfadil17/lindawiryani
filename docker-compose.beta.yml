@@ -1,0 +1,39 @@
+# Beta stack (beta.lindawiryani.com): the app only. It shares the production database by joining the
+# network of the main stack (project `lindawiryani`), where the database answers to `db`, so main
+# must be running first. Same .env, same uploads volume.
+services:
+  app:
+    container_name: lindawiryani-beta-app
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY:-}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-lindawiryani}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-lindawiryani}
+      UPLOADS_PATH: /data/uploads
+      PORT: "3001"
+      # The database is shared with production, so beta never changes its schema or seeds it.
+      SKIP_MIGRATE: "true"
+      SEED_ON_START: ""
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001/api/health >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      start_period: 60s
+      retries: 5
+    ports:
+      - "127.0.0.1:${APP_PORT:-18191}:3001"
+    volumes:
+      - uploads:/data/uploads
+
+networks:
+  default:
+    name: lindawiryani_default
+    external: true
+
+volumes:
+  uploads:
+    name: lindawiryani_uploads
+    external: true

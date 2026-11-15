@@ -1,0 +1,45 @@
+# Production stack: the app plus its PostgreSQL. Secrets come from `.env` on the server
+# (never committed); see .env.example.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: lindawiryani-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-lindawiryani}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-lindawiryani}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lindawiryani} -d ${POSTGRES_DB:-lindawiryani}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    container_name: lindawiryani-app
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY:-}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      # Overrides any DATABASE_URL in .env: inside the network the host is `db`.
+      DATABASE_URL: postgresql://${POSTGRES_USER:-lindawiryani}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-lindawiryani}
+      UPLOADS_PATH: /data/uploads
+      SEED_ON_START: ${SEED_ON_START:-}
+    ports:
+      - "127.0.0.1:${APP_PORT:-18190}:3000"
+    volumes:
+      # Named volume, so deploys (which swap the source folder) never touch uploaded images.
+      # Beta mounts this same volume by its full name, `lindawiryani_uploads`.
+      - uploads:/data/uploads
+
+volumes:
+  pgdata:
+  uploads:

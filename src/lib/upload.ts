@@ -2,8 +2,13 @@ import path from "path";
 
 export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
-/** Absolute directory uploaded files are written to (UPLOAD_DIR is relative to the project root). */
+/**
+ * Absolute directory uploaded files are written to.
+ * UPLOADS_PATH (absolute, e.g. a docker volume at /data/uploads) wins; otherwise UPLOAD_DIR is
+ * relative to the project root (default /public/uploads).
+ */
 export function getUploadDir(): string {
+  if (process.env.UPLOADS_PATH) return path.resolve(/*turbopackIgnore: true*/ process.env.UPLOADS_PATH);
   const configured = process.env.UPLOAD_DIR || "/public/uploads";
   return path.join(/*turbopackIgnore: true*/ process.cwd(), configured.replace(/^[/\\]+/, ""));
 }

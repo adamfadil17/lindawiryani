@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.github
+deploy
+.vscode
+generated
+logs
+public/uploads/*
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+Dockerfile
+docker-compose*.yml

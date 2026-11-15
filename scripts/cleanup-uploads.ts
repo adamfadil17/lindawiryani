@@ -58,7 +58,9 @@ async function main() {
   if (!Number.isFinite(minAgeHours) || minAgeHours < 0) throw new Error("Invalid --min-age-hours");
 
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
-  const dir = path.join(process.cwd(), (process.env.UPLOAD_DIR || "/public/uploads").replace(/^[/\\]+/, ""));
+  const dir = process.env.UPLOADS_PATH
+    ? path.resolve(process.env.UPLOADS_PATH)
+    : path.join(process.cwd(), (process.env.UPLOAD_DIR || "/public/uploads").replace(/^[/\\]+/, ""));
 
   let names: string[];
   try {

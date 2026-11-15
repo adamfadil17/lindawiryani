@@ -1,0 +1,79 @@
+# Ships two sites to the VPS: branch main -> production, branch beta-lindawiryani -> beta.
+# The build runs on the server (docker compose), so this job only packs the source and hands it to
+# the server (authorized_keys forces deploy-gate.sh, which runs /opt/lindawiryani/bin/deploy.sh
+# <main|beta>), which rebuilds with `docker compose up -d --build` and rolls back on a failed
+# build or health check.
+#
+# Secrets: DEPLOY_HOST (user@ip of the VPS, e.g. root@1.2.3.4),
+#          DEPLOY_SSH_KEY (private key authorised on the server),
+#          DEPLOY_KNOWN_HOSTS (output of ssh-keyscan for the VPS).
+name: Deploy
+
+on:
+  push:
+    branches: [main, beta-lindawiryani]
+  workflow_dispatch:
+
+# One queue per site, so a push to one branch never drops a queued deploy of the other.
+concurrency:
+  group: deploy-${{ github.ref_name == 'main' && 'main' || 'beta' }}
+  cancel-in-progress: false
+
+env:
+  # The branch decides the site; a manual run uses whichever branch it was started from.
+  APP: ${{ github.ref_name == 'main' && 'main' || 'beta' }}
+
+jobs:
+  # Nothing reaches the server unless it typechecks, lints and builds first.
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      - run: npx tsc --noEmit
+      - run: npm run lint
+      - run: npm run build
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+          JWT_SECRET: ci-only
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          if [ -z "$DEPLOY_SSH_KEY" ] || [ -z "$DEPLOY_KNOWN_HOSTS" ] || [ -z "$DEPLOY_HOST" ]; then
+            echo "::error::Secret DEPLOY_HOST / DEPLOY_SSH_KEY / DEPLOY_KNOWN_HOSTS is empty or not readable by this repo"
+            exit 1
+          fi
+          install -m 700 -d ~/.ssh
+          # Strip CRs: keys pasted from Windows otherwise fail with "invalid format".
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" | tr -d '\r' > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519
+          if ! ssh-keygen -y -f ~/.ssh/id_ed25519 > /dev/null; then
+            echo "::error::DEPLOY_SSH_KEY is not a valid private key (include the BEGIN/END lines)"
+            exit 1
+          fi
+
+      - name: Deploy
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          git ls-files -z -- . | tar --null -czf - -T - \
+            | ssh -o BatchMode=yes "$DEPLOY_HOST" deploy "$APP"
