@@ -1,6 +1,6 @@
 # Deploying to a Linux server
 
-Branch `main` goes to production and branch `beta-lindawiryani` goes to beta. Each push triggers
+Branch `main` goes to production and branch `lindawiryani-beta` goes to beta. Each push triggers
 `.github/workflows/deploy.yml`. It runs tsc, lint and build on GitHub. If those pass, it sends the
 source over SSH to the server, where `deploy.sh` runs `docker compose up -d --build`. If the build
 or the health check (`/api/health`) fails, the previous release is restored.

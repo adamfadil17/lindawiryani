@@ -1,4 +1,4 @@
-# Ships two sites to the VPS: branch main -> production, branch beta-lindawiryani -> beta.
+# Ships two sites to the VPS: branch main -> production, branch lindawiryani-beta -> beta.
 # The build runs on the server (docker compose), so this job only packs the source and hands it to
 # the server (authorized_keys forces deploy-gate.sh, which runs /opt/lindawiryani/bin/deploy.sh
 # <main|beta>), which rebuilds with `docker compose up -d --build` and rolls back on a failed
@@ -11,7 +11,7 @@ name: Deploy
 
 on:
   push:
-    branches: [main, beta-lindawiryani]
+    branches: [main, lindawiryani-beta]
   workflow_dispatch:
 
 # One queue per site, so a push to one branch never drops a queued deploy of the other.
