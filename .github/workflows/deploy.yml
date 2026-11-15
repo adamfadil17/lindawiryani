@@ -70,6 +70,9 @@ jobs:
             echo "::error::DEPLOY_SSH_KEY is not a valid private key (include the BEGIN/END lines)"
             exit 1
           fi
+          # The public fingerprint is safe to log; compare it with `ssh-keygen -lf` of the key
+          # you authorised on the server when debugging "Permission denied (publickey)".
+          echo "Key fingerprint: $(ssh-keygen -lf ~/.ssh/id_ed25519)"
 
       - name: Deploy
         env:
