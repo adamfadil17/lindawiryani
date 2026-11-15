@@ -1,45 +1,48 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { fadeIn, fadeInUp, staggerContainer } from "@/lib/motion";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Gallery() {
+  const t = useTranslations("gallery");
   const galleryImages = [
     {
-      src: "/images/gallery/gallery1.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086217/gallery1_as3lq5.png",
       alt: "Wedding ceremony with guests throwing confetti",
       orientation: "landscape",
     },
     {
-      src: "/images/gallery/gallery2.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086218/gallery2_pxyxhx.png",
       alt: "Beautiful bridal bouquet with peach roses",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery3.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086214/gallery3_jtlrvt.png",
       alt: "Elegant couple portrait",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery4.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086214/gallery4_cp54gp.png",
       alt: "Elegant outdoor wedding table setting",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery5.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086217/gallery5_cafhdz.png",
       alt: "Romantic couple portrait on the beach",
       orientation: "portrait",
     },
     {
-      src: "/images/gallery/gallery6.png",
+      src: "https://res.cloudinary.com/dzerxindp/image/upload/v1793086226/gallery6_xopieu.png",
       alt: "Outdoor wedding ceremony celebration",
       orientation: "landscape",
     },
   ];
 
   return (
-    <section id="gallery" className="bg-white py-16 lg:py-24 relative">
+    <section id="gallery" className="bg-background py-16 lg:py-24 relative">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Header Section */}
         <motion.div
@@ -56,15 +59,14 @@ export default function Gallery() {
           {/* Gallery Title - Left */}
           <motion.div variants={fadeInUp} className="mb-8 md:mb-0">
             <h2 className="text-2xl text-primary tracking-wider italic font-semibold">
-              GALLERY
+              {t("title")}
             </h2>
           </motion.div>
 
           {/* Main Title - Right */}
           <motion.div variants={fadeInUp} className="flex-1 md:text-right">
             <h3 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-primary leading-tight">
-              Bali Wedding Gallery – Real Celebrations, Artful Design, and
-              Timeless Inspiration
+              {t("heading")}
             </h3>
           </motion.div>
         </motion.div>

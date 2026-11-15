@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useEffect } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,6 +17,7 @@ export function VideoPlayerModal({
   onClose,
   videoUrl,
 }: VideoPlayerModalProps) {
+  const t = useTranslations("videoPlayer");
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -59,7 +62,7 @@ export function VideoPlayerModal({
             <button
               onClick={onClose}
               className="absolute top-4 right-4 z-10 bg-white/20 hover:cursor-pointer hover:bg-white/40 rounded-full p-2 transition-colors"
-              aria-label="Close video player"
+              aria-label={t("close")}
             >
               <X className="w-6 h-6 text-white" />
             </button>

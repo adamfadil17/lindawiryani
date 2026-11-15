@@ -1,16 +1,12 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  X,
-  ChevronLeft,
-  ChevronRight,
-  MapPin,
-  Check,
-} from "lucide-react";
-import Link from "next/link";
-import { WeddingTheme, venues, Venue } from "@/lib/wedding-concepts-data";
+import { X, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import type { Venue, WeddingTheme } from "@/types";
 
 interface ThemeDetailModalProps {
   theme: WeddingTheme;
@@ -18,7 +14,15 @@ interface ThemeDetailModalProps {
   onExploreVenue: (venue: Venue) => void;
 }
 
-// Komponen Loading Skeleton
+function TipTapContent({ html }: { html: string }) {
+  return (
+    <div
+      className="tiptap-content text-primary"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
 const ImageLoadingSkeleton = () => (
   <div className="absolute inset-0 bg-stone-200 animate-pulse">
     <div className="w-full h-full flex items-center justify-center">
@@ -32,13 +36,17 @@ export default function ThemeDetailModal({
   onClose,
   onExploreVenue,
 }: ThemeDetailModalProps) {
+  const t = useTranslations("themeModal");
+  const tc = useTranslations("common");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  
-  const totalImages = theme.gallery?.length || 0;
-  const relatedVenue = venues.find((v) => v.id === theme.venueId);
-  const venueName = relatedVenue ? relatedVenue.name : "Venue To Be Confirmed";
+
+  const galleryImages = theme.gallery ?? [];
+  const totalImages = galleryImages.length;
+
+  const relatedVenue = theme.venue as Venue | undefined | null;
+  const venueName = relatedVenue?.name ?? "Venue To Be Confirmed";
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -49,49 +57,40 @@ export default function ThemeDetailModal({
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
+      if (e.key === "Escape") onClose();
     };
-
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
-  // Reset index dan loading state saat theme berubah
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset gallery state when the theme changes
     setCurrentImageIndex(0);
     setImageLoaded(false);
     setImageError(false);
   }, [theme.id]);
 
-  // Reset loading state ketika image berubah
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset image load flags when the image changes
     setImageLoaded(false);
     setImageError(false);
   }, [currentImageIndex]);
 
   const nextImage = () => {
-    if (totalImages > 1) {
+    if (totalImages > 1)
       setCurrentImageIndex((prev) => (prev + 1) % totalImages);
-    }
   };
 
   const prevImage = () => {
-    if (totalImages > 1) {
+    if (totalImages > 1)
       setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
-    }
   };
 
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageError(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoaded(true);
-    setImageError(true);
-  };
+  const currentImageUrl =
+    totalImages > 0
+      ? (galleryImages[currentImageIndex].url ??
+        "https://placehold.net/default.svg")
+      : (theme.image ?? "https://placehold.net/default.svg");
 
   return (
     <div
@@ -104,33 +103,29 @@ export default function ThemeDetailModal({
         <button
           onClick={onClose}
           className="absolute top-6 right-6 z-30 p-2 hover:cursor-pointer bg-white/80 transition-colors"
-          aria-label="Close modal"
+          aria-label={tc("closeModal")}
         >
           <X className="w-6 h-6 text-primary" />
         </button>
 
         <div className="overflow-y-auto p-4 md:p-8">
           <div className="flex flex-col gap-8">
-            <div className="relative aspect-[16/9] w-full overflow-hidden bg-stone-100">
-              {/* Loading Skeleton */}
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-secondary">
               {!imageLoaded && !imageError && <ImageLoadingSkeleton />}
 
-              {/* Error State */}
               {imageError && (
                 <div className="absolute inset-0 bg-stone-200 flex flex-col items-center justify-center gap-3">
-                  <div className="w-16 h-16 bg-stone-300 rounded-full flex items-center justify-center">
-                    <X className="w-8 h-8 text-stone-500" />
+                  <div className="w-16 h-16 bg-border rounded-full flex items-center justify-center">
+                    <X className="w-8 h-8 text-muted-foreground" />
                   </div>
-                  <p className="text-stone-500 text-sm">Failed to load image</p>
+                  <p className="text-muted-foreground text-sm">
+                    {tc("failedToLoadImage")}
+                  </p>
                 </div>
               )}
 
-              {/* Main Image */}
               <Image
-                src={
-                  theme.gallery[currentImageIndex] ||
-                  "https://placehold.net/default.svg"
-                }
+                src={currentImageUrl}
                 alt={`${theme.title} - Image ${currentImageIndex + 1}`}
                 fill
                 className={`object-cover transition-opacity duration-300 ${
@@ -138,29 +133,32 @@ export default function ThemeDetailModal({
                 }`}
                 priority
                 sizes="(max-width: 1024px) 100vw, 80vw"
-                onLoad={handleImageLoad}
-                onError={handleImageError}
+                onLoad={() => {
+                  setImageLoaded(true);
+                  setImageError(false);
+                }}
+                onError={() => {
+                  setImageLoaded(true);
+                  setImageError(true);
+                }}
               />
 
-              {/* Navigasi hanya muncul jika gambar lebih dari satu */}
               {totalImages > 1 && (
                 <>
                   <button
                     onClick={prevImage}
                     className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center transition-colors hover:cursor-pointer"
-                    aria-label="Previous image"
+                    aria-label={tc("previousImage")}
                   >
                     <ChevronLeft className="w-5 h-5 text-primary" />
                   </button>
                   <button
                     onClick={nextImage}
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex items-center justify-center transition-colors hover:cursor-pointer"
-                    aria-label="Next image"
+                    aria-label={tc("nextImage")}
                   >
                     <ChevronRight className="w-5 h-5 text-primary" />
                   </button>
-
-                  {/* Indicator jumlah gambar */}
                   <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 text-xs">
                     {currentImageIndex + 1} / {totalImages}
                   </div>
@@ -169,26 +167,28 @@ export default function ThemeDetailModal({
             </div>
 
             <article className="flex flex-col gap-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-stone-100 pb-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-border pb-8">
                 <div className="flex-1">
                   <span className="text-xs text-primary tracking-widest uppercase font-semibold mb-2 block">
-                    Wedding Theme
+                    {t("label")}
                   </span>
                   <span className="block text-3xl md:text-4xl text-primary font-semibold leading-tight mb-2">
                     {theme.title}
                   </span>
 
-                  {/* Show venue name and only make it clickable if venue exists */}
                   {relatedVenue ? (
                     <button
-                      onClick={() => onExploreVenue(relatedVenue)}
-                      className="flex items-center gap-2 text-primary italic hover:text-primary/80 hover:cursor-pointer group"
+                      onClick={() => {
+                        onExploreVenue(relatedVenue);
+                        onClose();
+                      }}
+                      className="flex items-center gap-2 text-primary italic hover:text-foreground hover:cursor-pointer group"
                     >
                       <MapPin className="w-4 h-4 flex-shrink-0" />
                       <span className="text-md">{venueName}</span>
                     </button>
                   ) : (
-                    <div className="flex items-center gap-2 text-primary/60 italic">
+                    <div className="flex items-center gap-2 text-muted-foreground italic">
                       <MapPin className="w-4 h-4 flex-shrink-0" />
                       <span className="text-md">{venueName}</span>
                     </div>
@@ -196,54 +196,34 @@ export default function ThemeDetailModal({
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                  {/* Secondary CTA: Explore Venue */}
                   {relatedVenue && (
                     <button
-                      onClick={() => onExploreVenue(relatedVenue)}
-                      className="bg-white border border-primary text-primary font-semibold px-6 py-4 text-sm tracking-widest hover:bg-stone-50 transition-colors uppercase hover:cursor-pointer"
+                      onClick={() => {
+                        onExploreVenue(relatedVenue);
+                        onClose();
+                      }}
+                      className="bg-white border border-primary text-primary font-semibold px-6 py-4 text-sm tracking-widest hover:bg-secondary/50 transition-colors uppercase hover:cursor-pointer"
                     >
-                      Explore Venue
+                      {t("exploreVenue")}
                     </button>
                   )}
-
                   <Link
                     href="https://wa.me/628113980998"
                     target="_blank"
                     className="flex-1"
                   >
                     <button className="bg-primary text-white font-semibold px-10 py-4 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full uppercase hover:cursor-pointer">
-                      PLAN YOUR DREAM
+                      {t("planYourDream")}
                     </button>
                   </Link>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
-                <div className="flex flex-col gap-4">
-                  <span className="block text-sm text-primary tracking-widest uppercase font-bold">
-                    The Experience
-                  </span>
-                  <p className="text-sm md:text-base text-primary text-justify leading-relaxed italic">
-                    "{theme.description}"
-                  </p>
-                </div>
-
-                <div className="bg-stone-50 p-6 md:p-8">
-                  <span className="block text-sm text-primary tracking-widest uppercase font-bold mb-6">
-                    Curated Wedding Inclusions
-                  </span>
-                  <ul className="grid grid-cols-1 gap-4">
-                    {theme.inclusions?.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-3 text-sm text-primary/80 leading-snug"
-                      >
-                        <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="flex flex-col gap-4">
+                <span className="block text-sm text-primary tracking-widest uppercase font-bold">
+                  {t("experience")}
+                </span>
+                <TipTapContent html={theme.description} />
               </div>
             </article>
           </div>

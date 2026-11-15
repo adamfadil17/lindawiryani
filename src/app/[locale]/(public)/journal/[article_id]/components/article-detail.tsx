@@ -1,0 +1,256 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Link } from "@/i18n/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
+import { Article } from "@/types";
+import PageClosing from "@/components/shared/page-closing";
+import { useCategoryText } from "@/lib/article-categories";
+
+// BCP-47 tags used to format the published date per site locale
+const DATE_LOCALES: Record<string, string> = {
+  en: "en-GB",
+  id: "id-ID",
+  zh: "zh-CN",
+  fr: "fr-FR",
+  ja: "ja-JP",
+  de: "de-DE",
+};
+
+interface ArticleDetailProps {
+  article: Article;
+  related: Article[];
+}
+
+function TipTapContent({ html }: { html: string }) {
+  return (
+    <div
+      className="tiptap-content text-primary"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
+function RelatedCard({ article }: { article: Article }) {
+  const t = useTranslations("journalDetail");
+  const category = useCategoryText();
+  return (
+    <Link href={`/journal/${article.slug}`} className="group block">
+      <div className="relative h-[220px] overflow-hidden mb-4">
+        <Image
+          src={article.image}
+          alt={article.title}
+          fill
+          loading="lazy"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
+        <div className="absolute top-4 left-4">
+          <span className="bg-primary/80 text-white text-sm tracking-widest px-3 py-1.5">
+            {category.label(article.category)}
+          </span>
+        </div>
+        <div className="absolute bottom-4 right-4 w-9 h-9 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white">
+          <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
+        </div>
+      </div>
+      <h3 className="text-primary font-semibold text-base leading-snug group-hover:text-foreground transition-colors mb-2">
+        {article.title}
+      </h3>
+      <p className="text-foreground text-sm leading-relaxed line-clamp-2">
+        {article.excerpt}
+      </p>
+      <div className="flex items-center gap-2 mt-3 text-primary text-xs tracking-widest group-hover:text-foreground transition-colors">
+        <span>{t("readArticle")}</span>
+        <ArrowRight className="w-3.5 h-3.5" />
+      </div>
+    </Link>
+  );
+}
+
+export function ArticleDetail({ article, related }: ArticleDetailProps) {
+  const t = useTranslations("journalDetail");
+  const locale = useLocale();
+  const category = useCategoryText();
+  const categoryLabel = category.label(article.category);
+  const formattedDate = new Date(article.published_at).toLocaleDateString(
+    DATE_LOCALES[locale] ?? "en-GB",
+    { day: "numeric", month: "long", year: "numeric" },
+  );
+
+  return (
+    <main className="relative overflow-hidden">
+      <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-screen flex items-end overflow-hidden pt-20 sm:pt-24 md:pt-32">
+        <div className="absolute inset-0">
+          <Image
+            src={article.image}
+            alt={article.title}
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent" />
+        </div>
+
+        <motion.div
+          className="relative z-10 w-full container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pb-16 lg:pb-24"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <motion.div
+            variants={fadeInUp}
+            className="flex items-center gap-2 mb-8"
+          >
+            <Link
+              href="/journal"
+              className="flex items-center gap-2 text-white/90 text-sm tracking-widest uppercase hover:text-white hover:cursor-pointer transition-colors"
+            >
+              <span>{t("breadcrumb")}</span>
+            </Link>
+            <span className="text-white text-sm">/</span>
+            <span className="text-white text-sm font-simbold tracking-widest uppercase truncate max-w-[200px]">
+              {categoryLabel}
+            </span>
+          </motion.div>
+
+          <motion.div variants={fadeInUp} className="mb-5">
+            <span className="bg-white/15 border border-1 border-white/10 text-white text-sm tracking-widest px-3 py-1">
+              {categoryLabel}
+            </span>
+          </motion.div>
+          <motion.h1
+            variants={fadeInUp}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl text-white font-semibold leading-tight max-w-4xl"
+          >
+            {article.title}
+          </motion.h1>
+
+          <motion.div
+            variants={fadeInUp}
+            className="flex flex-wrap items-center gap-4 mt-6 text-white text-sm tracking-widest uppercase"
+          >
+            <span>{formattedDate}</span>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      <motion.section
+        className="py-20 lg:py-28"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.05, margin: "0px 0px -80px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+            <motion.aside
+              variants={fadeInUp}
+              className="lg:col-span-3 order-2 lg:order-1"
+            >
+              <div className="lg:sticky lg:top-32 space-y-10">
+                <Link
+                  href="/journal"
+                  className="group flex items-center gap-3 text-primary/90 hover:text-primary transition-colors tracking-widest uppercase"
+                >
+                  <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                  <span>{t("allArticles")}</span>
+                </Link>
+
+                <div className="w-12 h-px bg-primary/50" />
+
+                <div className="space-y-5">
+                  <div>
+                    <p className="text-primary/90 text-sm tracking-[0.2em] uppercase mb-1">
+                      {t("categoryLabel")}
+                    </p>
+                    <p className="text-foreground font-medium">{categoryLabel}</p>
+                  </div>
+                  <div>
+                    <p className="text-primary/90 text-sm tracking-[0.2em] uppercase mb-1">
+                      {t("publishedLabel")}
+                    </p>
+                    <p className="text-foreground">{formattedDate}</p>
+                  </div>
+                </div>
+
+                <div className="w-12 h-px bg-primary/50" />
+
+                <div className="space-y-4">
+                  <p className="text-foreground leading-relaxed">
+                    {t("ctaPrompt")}
+                  </p>
+                  <Link href="/contact">
+                    <button className="w-full bg-primary text-white text-sm tracking-widest uppercase px-5 py-3 hover:bg-primary/85 hover:cursor-pointer transition-colors duration-300">
+                      {t("ctaButton")}
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </motion.aside>
+
+            <motion.div
+              variants={fadeIn}
+              className="lg:col-span-9 order-1 lg:order-2"
+            >
+              <p className="text-foreground text-lg md:text-xl leading-relaxed font-normal border-l-2 border-primary pl-6 mb-12 text-justify">
+                {article.excerpt}
+              </p>
+
+              <TipTapContent html={article.content} />
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {related.length > 0 && (
+        <motion.section
+          className="bg-accent/60 py-20 lg:py-28"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.1, margin: "0px 0px -80px 0px" }}
+          variants={staggerContainer}
+        >
+          <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+            <motion.div variants={fadeInUp} className="mb-12">
+              <p className="text-primary tracking-[0.25em] uppercase mb-3">
+                {t("continueReading")}
+              </p>
+              <h2 className="text-3xl md:text-4xl text-primary font-semibold leading-tight">
+                {t("moreFrom")}
+                <br />
+                <span className="italic font-medium">{categoryLabel}</span>
+              </h2>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
+              {related.map((rel) => (
+                <motion.div key={rel.slug} variants={scaleIn}>
+                  <RelatedCard article={rel} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+      )}
+
+      <PageClosing
+        image="https://res.cloudinary.com/dzerxindp/image/upload/v1773383174/closing-journal2_pcdihh.jpg"
+        imageAlt="Begin your Bali wedding journey"
+        kicker={t("closingKicker")}
+        titleLine1={t("closingTitle1")}
+        titleLine2={t("closingTitle2")}
+        body={t("closingBody")}
+        primaryCta={{ label: t("ctaBack"), href: "/journal" }}
+        secondaryCta={{ label: t("ctaContact"), href: "/contact" }}
+      />
+    </main>
+  );
+}

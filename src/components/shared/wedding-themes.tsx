@@ -1,0 +1,538 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
+import { fadeInUp, staggerContainer } from "@/lib/motion";
+import { useWeddingThemeData } from "@/lib/data/wedding-theme-data";
+import { useVenueData } from "@/lib/data/venue-data";
+import ThemeDetailModal from "@/components/shared/theme-detail-modal";
+import type { Venue, WeddingTheme } from "@/types";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const CARDS_PER_PAGE = 6;
+
+// Subtitle untuk elopement themes yang belum memiliki venue tetap
+const elopementSubtitles: Record<string, string> = {
+  "private-villa-elopement": "Curated Private Villa Setting in Bali",
+  "cliffside-elopement": "A Curated Cliffside Setting in Bali",
+  "architectural-modern-tropical-elopement":
+    "Curated Architectural Venues in Bali",
+  "forest-jungle-elopement": "A Curated Jungle Escape in Bali",
+  "waterfall-elopement": "Serene Waterfall Settings in Bali",
+  "rice-field-elopement": "A Curated Rice Field Setting in Bali",
+  "beachfront-elopement": "Curated Beachfront Venues in Bali",
+  "lake-elopement": "A Curated Lakeside Setting in Bali",
+  "volcano-mountain-elopement": "Curated Mountain & Volcano Settings in Bali",
+  "riverside-elopement": "A Curated Riverside Setting in Bali",
+  "eco-sustainable-elopement":
+    "Thoughtfully Designed with a Sustainable Approach",
+  "sacred-spiritual-elopement":
+    "Thoughtfully Guided with a Sacred & Intentional Approach",
+  "cultural-heritage-elopement": "Curated Cultural & Heritage Settings in Bali",
+  "sunrise-purification-elopement":
+    "A Curated Sunrise & Purification Experience in Bali",
+  "editorial-luxury-elopement": "Curated Editorial Settings in Bali",
+};
+
+// ─── Derived data (computed per-render inside components below, since
+// the underlying dataset is locale-dependent) ──────────────────────────
+
+// ─── ThemeCategoryCard ────────────────────────────────────────────────────────
+
+interface ThemeCategoryCardProps {
+  title: string;
+  description: string;
+  images: string[];
+  onClick: () => void;
+}
+
+function ThemeCategoryCard({
+  title,
+  description,
+  images,
+  onClick,
+}: ThemeCategoryCardProps) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  return (
+    <motion.article
+      onClick={onClick}
+      variants={fadeInUp}
+      className="relative overflow-hidden cursor-pointer group aspect-[3/4] transition-all"
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentImageIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+          className="absolute inset-0"
+        >
+          <Image
+            src={
+              images[currentImageIndex] || "https://placehold.net/default.svg"
+            }
+            alt={title}
+            fill
+            loading="lazy"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="50vw"
+          />
+        </motion.div>
+      </AnimatePresence>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+        <div className="min-h-[120px] flex flex-col justify-start">
+          <h3 className="text-2xl text-center md:text-3xl font-semibold mb-3">
+            {title}
+          </h3>
+          <p className="text-md text-center text-white/90 leading-relaxed">
+            {description}
+          </p>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+// ─── WeddingThemeCard ─────────────────────────────────────────────────────────
+
+interface WeddingThemeCardProps {
+  theme: WeddingTheme;
+  onClick: () => void;
+}
+
+function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
+  const t = useTranslations("wedThemes");
+  const tSub = useTranslations("elopementSubtitles");
+  const { venueList } = useVenueData();
+  // Lookup nama venue dari venueList menggunakan theme.venue_id (skema baru)
+  const venueData = venueList.find((v) => v.id === theme.venue_id);
+  const subtitle =
+    venueData?.name ??
+    (elopementSubtitles[theme.id]
+      ? tSub(theme.id as keyof typeof elopementSubtitles)
+      : t("venueTBC"));
+
+  return (
+    <article
+      className="relative overflow-hidden cursor-pointer group aspect-[16/9]"
+      onClick={onClick}
+    >
+      <Image
+        src={theme.image || "https://placehold.net/default.svg"}
+        alt={theme.title}
+        fill
+        loading="lazy"
+        className="object-cover transition-transform duration-300 group-hover:scale-105"
+        sizes="33vw"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+        <h3 className="text-xl md:text-2xl font-semibold leading-tight mb-2">
+          {theme.title}
+        </h3>
+        <p className="text-md text-white/90">{subtitle}</p>
+      </div>
+    </article>
+  );
+}
+
+// ─── WeddingThemesSection ─────────────────────────────────────────────────────
+
+interface WeddingThemesSectionProps {
+  isMobile: boolean;
+  onExploreVenue: (venue: Venue) => void;
+  externalElopementThemes?: WeddingTheme[];
+  externalIntimateThemes?: WeddingTheme[];
+  // Jika true: hanya tampilkan grid theme cards + header sederhana,
+  // tanpa ThemeCategoryCard slideshow dan tanpa dropdown category selector.
+  minimal?: boolean;
+}
+
+export default function WeddingThemesSection({
+  isMobile,
+  onExploreVenue,
+  externalElopementThemes,
+  externalIntimateThemes,
+  minimal = false,
+}: WeddingThemesSectionProps) {
+  const { weddingThemeList } = useWeddingThemeData();
+  const elopementThemes = useMemo(
+    () => weddingThemeList.filter((t) => t.type === "ELOPEMENT"),
+    [weddingThemeList],
+  );
+  const intimateThemes = useMemo(
+    () => weddingThemeList.filter((t) => t.type === "INTIMATE"),
+    [weddingThemeList],
+  );
+  const resolvedElopementThemes = externalElopementThemes ?? elopementThemes;
+  const resolvedIntimateThemes = externalIntimateThemes ?? intimateThemes;
+
+  // Tentukan tab default: jika elopement kosong tapi intimate ada, default ke intimate
+  const defaultCategory: "elopement" | "intimate" =
+    resolvedElopementThemes.length === 0 && resolvedIntimateThemes.length > 0
+      ? "intimate"
+      : "elopement";
+
+  const [selectedThemeCategory, setSelectedThemeCategory] = useState<
+    "elopement" | "intimate"
+  >(defaultCategory);
+  const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
+  const [currentThemeSlide, setCurrentThemeSlide] = useState(0);
+  const t = useTranslations("wedThemes");
+  const tv = useTranslations("venuesSection");
+  const tNav = useTranslations("nav");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [selectedThemeForModal, setSelectedThemeForModal] =
+    useState<WeddingTheme | null>(null);
+
+  const currentThemes =
+    selectedThemeCategory === "elopement"
+      ? resolvedElopementThemes
+      : resolvedIntimateThemes;
+
+  // Hanya tampilkan tab kategori yang memiliki data
+  const availableCategories = (["elopement", "intimate"] as const).filter(
+    (cat) =>
+      cat === "elopement"
+        ? resolvedElopementThemes.length > 0
+        : resolvedIntimateThemes.length > 0,
+  );
+
+  // Pagination untuk desktop
+  const totalPages = Math.ceil(currentThemes.length / CARDS_PER_PAGE);
+  const paginatedThemes = currentThemes.slice(
+    currentPage * CARDS_PER_PAGE,
+    currentPage * CARDS_PER_PAGE + CARDS_PER_PAGE,
+  );
+
+  const handleCategoryClick = (category: "elopement" | "intimate") => {
+    setSelectedThemeCategory(category);
+    setCurrentThemeSlide(0);
+    setCurrentPage(0);
+    setTimeout(() => {
+      document
+        .getElementById("wedding-themes-selector")
+        ?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }, 100);
+  };
+
+  // Mobile slider navigation
+  const nextThemeSlide = () =>
+    setCurrentThemeSlide((p) => (p + 1) % currentThemes.length);
+  const prevThemeSlide = () =>
+    setCurrentThemeSlide(
+      (p) => (p - 1 + currentThemes.length) % currentThemes.length,
+    );
+
+  // Desktop page navigation
+  const nextPage = () => setCurrentPage((p) => Math.min(p + 1, totalPages - 1));
+  const prevPage = () => setCurrentPage((p) => Math.max(p - 1, 0));
+
+  return (
+    <>
+      <motion.section
+        id="wedding-themes-section"
+        className="relative py-20 lg:py-28 overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.05, margin: "0px 0px -100px 0px" }}
+        variants={staggerContainer}
+      >
+        <div className="absolute inset-0" />
+        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+          {/* Header */}
+          <motion.div variants={fadeInUp} className="mb-14 lg:mb-20">
+            <p className="text-primary tracking-[0.25em] uppercase mb-3">
+              {t("kicker")}
+            </p>
+            <div className="grid lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-5">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary font-semibold leading-tight">
+                  {t("title")}
+                </h2>
+              </div>
+              <div className="lg:col-span-7 flex items-end">
+                <p className="text-foreground leading-relaxed text-justify">
+                  {t("intro")}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Category Cards — disembunyikan di mode minimal */}
+          {!minimal && (
+            <motion.div
+              className={`grid grid-cols-1 gap-8 mb-16 ${availableCategories.length === 2 ? "md:grid-cols-2" : ""}`}
+              variants={fadeInUp}
+            >
+              {resolvedElopementThemes.length > 0 && (
+                <ThemeCategoryCard
+                  title={tNav("weddingExperiencesSubmenu.elopement")}
+                  description={tv("descElopement")}
+                  images={
+                    [
+                      ...new Set(
+                        resolvedElopementThemes
+                          .map((t) => t.image)
+                          .filter(Boolean),
+                      ),
+                    ].slice(0, 5) as string[]
+                  }
+                  onClick={() => handleCategoryClick("elopement")}
+                />
+              )}
+              {resolvedIntimateThemes.length > 0 && (
+                <ThemeCategoryCard
+                  title={tNav("weddingExperiencesSubmenu.intimate")}
+                  description={tv("descIntimate")}
+                  images={
+                    [
+                      ...new Set(
+                        resolvedIntimateThemes
+                          .map((t) => t.image)
+                          .filter(Boolean),
+                      ),
+                    ].slice(0, 5) as string[]
+                  }
+                  onClick={() => handleCategoryClick("intimate")}
+                />
+              )}
+            </motion.div>
+          )}
+
+          {/* Theme Selector + Cards */}
+          <motion.div
+            id="wedding-themes-selector"
+            variants={fadeInUp}
+            className="mb-8"
+          >
+            {/* Filter dropdown + deskripsi — disembunyikan di mode minimal */}
+            {!minimal && (
+              <>
+                <div className="flex items-center justify-center gap-4 mb-12">
+                  <span className="text-base md:text-lg text-primary tracking-widest uppercase font-semibold">
+                    {t("title")}
+                  </span>
+                  {availableCategories.length > 1 ? (
+                    <div className="relative">
+                      <button
+                        onClick={() =>
+                          setIsThemeDropdownOpen(!isThemeDropdownOpen)
+                        }
+                        className="flex items-center gap-2 text-md text-primary hover:text-foreground transition-colors hover:cursor-pointer font-medium capitalize"
+                      >
+                        <span>
+                          {selectedThemeCategory === "elopement"
+                            ? t("elopementLabel")
+                            : t("intimateLabel")}
+                        </span>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${
+                            isThemeDropdownOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {isThemeDropdownOpen && (
+                        <div className="absolute top-full right-0 mt-2 bg-white border border-border shadow-lg z-10 min-w-[150px]">
+                          {availableCategories.map((cat) => (
+                            <button
+                              key={cat}
+                              onClick={() => {
+                                setSelectedThemeCategory(cat);
+                                setIsThemeDropdownOpen(false);
+                                setCurrentThemeSlide(0);
+                                setCurrentPage(0);
+                              }}
+                              className={`block w-full text-left px-4 py-2 transition-colors hover:cursor-pointer capitalize ${
+                                selectedThemeCategory === cat
+                                  ? "bg-primary text-white"
+                                  : "text-primary hover:bg-secondary"
+                              }`}
+                            >
+                              {cat === "elopement"
+                                ? t("elopementLabel")
+                                : t("intimateLabel")}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-md text-primary font-medium capitalize">
+                      {selectedThemeCategory === "elopement"
+                        ? t("elopementLabel")
+                        : t("intimateLabel")}
+                    </span>
+                  )}
+                </div>
+
+                {/* Deskripsi kategori aktif */}
+                <div className="mb-12 text-center">
+                  <AnimatePresence mode="wait">
+                    {selectedThemeCategory === "elopement" ? (
+                      <motion.p
+                        key="elopement-desc"
+                        variants={fadeInUp}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        className="text-base md:text-lg text-foreground max-w-3xl mx-auto leading-relaxed"
+                      >
+                        {tv("descElopement")}
+                      </motion.p>
+                    ) : (
+                      <motion.p
+                        key="intimate-desc"
+                        variants={fadeInUp}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        className="text-base md:text-lg text-foreground max-w-3xl mx-auto leading-relaxed"
+                      >
+                        {tv("descIntimate")}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </>
+            )}
+
+            {/* Theme Cards — Mobile slider / Desktop grid with pagination */}
+            {isMobile ? (
+              <div className="relative">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${selectedThemeCategory}-${currentThemeSlide}`}
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <WeddingThemeCard
+                      theme={currentThemes[currentThemeSlide]}
+                      onClick={() =>
+                        setSelectedThemeForModal(
+                          currentThemes[currentThemeSlide],
+                        )
+                      }
+                    />
+                  </motion.div>
+                </AnimatePresence>
+                {currentThemes.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevThemeSlide}
+                      className="absolute left-4 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
+                    >
+                      <ArrowLeft className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
+                    </button>
+                    <button
+                      onClick={nextThemeSlide}
+                      className="absolute right-4 top-1/3 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 border border-white/40 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:border-white"
+                    >
+                      <ArrowRight className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
+                    </button>
+                    <div className="flex justify-center gap-2 mt-4">
+                      {currentThemes.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentThemeSlide(index)}
+                          className={`w-2 h-2 rounded-full transition-all hover:cursor-pointer ${
+                            currentThemeSlide === index
+                              ? "bg-primary w-8"
+                              : "bg-border"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <div>
+                {/* Grid 6 cards */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${selectedThemeCategory}-page-${currentPage}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {paginatedThemes.map((theme) => (
+                      <WeddingThemeCard
+                        key={theme.id}
+                        theme={theme}
+                        onClick={() => setSelectedThemeForModal(theme)}
+                      />
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Pagination controls */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-6 mt-10">
+                    <button
+                      onClick={prevPage}
+                      disabled={currentPage === 0}
+                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:cursor-pointer hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      {Array.from({ length: totalPages }).map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentPage(index)}
+                          className={`w-2.5 h-2.5 rounded-full transition-all hover:cursor-pointer ${
+                            currentPage === index
+                              ? "bg-primary w-8 rounded-full"
+                              : "bg-border hover:bg-primary/50"
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={nextPage}
+                      disabled={currentPage === totalPages - 1}
+                      className="w-10 h-10 border border-primary flex items-center justify-center transition-all duration-300 hover:cursor-pointer hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-primary"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Modal — onExploreVenue meneruskan Venue (tipe baru dari @/types) ke parent */}
+      {selectedThemeForModal && (
+        <ThemeDetailModal
+          theme={selectedThemeForModal}
+          onClose={() => setSelectedThemeForModal(null)}
+          onExploreVenue={onExploreVenue}
+        />
+      )}
+    </>
+  );
+}

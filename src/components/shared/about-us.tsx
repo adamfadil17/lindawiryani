@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   fadeInUp,
   scaleIn,
@@ -12,6 +14,7 @@ import { useState } from "react";
 import AboutUsModal from "./about-us-modal";
 
 export default function AboutUs() {
+  const t = useTranslations("aboutUs");
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -36,7 +39,7 @@ export default function AboutUs() {
           <div className="space-y-6 relative pr-0 lg:pr-8">
             <motion.div variants={scaleIn} className="w-24 h-24 mb-8">
               <Image
-                src="/images/floral1.png"
+                src="/images/floral1-gold.png"
                 alt="Floral Element"
                 width={120}
                 height={120}
@@ -48,36 +51,28 @@ export default function AboutUs() {
                 variants={fadeInUp}
                 className="text-2xl text-primary tracking-wider italic font-semibold"
               >
-                Luxury Wedding Planner & Designer in Bali
+                {t("kicker")}
               </motion.h2>
 
               <motion.h3
                 variants={fadeInUp}
                 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-primary leading-tight"
               >
-                DESIGNING WEDDINGS WITH INTENTION, EMOTION, AND ART
+                {t("heading")}
               </motion.h3>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-primary text-justify leading-relaxed text-base md:text-base whitespace-pre-line"
+                className="text-foreground text-justify leading-relaxed text-base md:text-base whitespace-pre-line"
               >
-                {`At Linda Wiryani Design and Event Planning, each wedding begins with a story, thoughtfully designed, never templated.
-                
-                Based in Bali, we are a destination wedding planning and design studio, known for artfully curated weddings shaped by architecture, hospitality, and refined storytelling.
-
-                With nearly two decades of experience in five-star luxury hospitality, every celebration is created to feel seamless, calm, and deeply personal, from the first welcome to the final farewell.
-
-                We specialize in intimate weddings and private villa weddings in Bali, designing celebrations guided by space, emotion, and human connection rather than trends.
-
-                Rooted in a design-led approach that blends architecture, fashion, and artful detail, we create weddings that feel timeless, considered, and quietly unforgettable.`}
+                {t("body")}
               </motion.p>
               <motion.div variants={fadeInUp}>
                 <button
                   onClick={() => setShowModal(true)}
                   className="bg-primary hover:cursor-pointer text-white font-semibold px-8 py-4 text-sm tracking-widest hover:bg-primary/90 transition-colors w-full uppercase"
                 >
-                  ABOUT THE STUDIO
+                  {t("cta")}
                 </button>
               </motion.div>
             </div>
@@ -88,7 +83,7 @@ export default function AboutUs() {
             <motion.div variants={slideInRight} className="col-span-1">
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us/about-us1.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086111/about-us1_gb1w14.png"
                   alt="Linda Wiryani Assets"
                   fill
                   loading="lazy"
@@ -104,7 +99,7 @@ export default function AboutUs() {
             >
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us/about-us2.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086109/about-us2_yxodke.png"
                   alt="Linda Wiryani Assets"
                   fill
                   loading="lazy"
@@ -117,7 +112,7 @@ export default function AboutUs() {
             <motion.div variants={slideInRight} className="col-span-1">
               <div className="relative h-full overflow-hidden">
                 <Image
-                  src="/images/about-us/about-us3.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086110/about-us3_fyyc2m.png"
                   alt="Linda Wiryani Assets"
                   fill
                   loading="lazy"

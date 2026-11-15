@@ -10,7 +10,7 @@ export const fadeInUp: Variants = {
     y: 0,
     transition: {
       duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
     },
   },
   exit: {
@@ -18,7 +18,7 @@ export const fadeInUp: Variants = {
     y: 20,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
       delay: 0.2,
     },
   },
@@ -32,14 +32,14 @@ export const fadeIn: Variants = {
     opacity: 1,
     transition: {
       duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
     },
   },
   exit: {
     opacity: 0,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
       delay: 0.2,
     },
   },
@@ -55,7 +55,7 @@ export const scaleIn: Variants = {
     scale: 1,
     transition: {
       duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
     },
   },
   exit: {
@@ -63,7 +63,31 @@ export const scaleIn: Variants = {
     scale: 0.95,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
+      delay: 0.2,
+    },
+  },
+};
+
+export const slideInLeft: Variants = {
+  hidden: {
+    opacity: 0,
+    x: -80,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
+    },
+  },
+  exit: {
+    opacity: 0,
+    x: -40,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
       delay: 0.2,
     },
   },
@@ -79,7 +103,7 @@ export const slideInRight: Variants = {
     x: 0,
     transition: {
       duration: 1.2,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
     },
   },
   exit: {
@@ -87,7 +111,7 @@ export const slideInRight: Variants = {
     x: 40,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1] as any,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
       delay: 0.2,
     },
   },

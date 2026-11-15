@@ -1,12 +1,15 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Quote() {
+  const t = useTranslations("quote");
   return (
-    <section className="bg-white pb-16 lg:pb-24">
+    <section className="bg-background pb-16 lg:pb-24">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Quote Text */}
         <motion.div
@@ -21,8 +24,9 @@ export default function Quote() {
           variants={fadeInUp}
         >
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary leading-relaxed max-w-5xl mx-auto italic">
-            Because true elegance is not only seen
-            <br className="hidden md:block" />— it's felt, lived, and remembered
+            {t("line1")}
+            <br className="hidden md:block" />
+            {t("line2")}
           </h2>
         </motion.div>
 
@@ -46,7 +50,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quote/quote1.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086253/quote1_mxrddc.png"
                 alt="Couple embracing in field with flowing veil"
                 fill
                 loading="lazy"
@@ -61,7 +65,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden transform translate-y-12"
             >
               <Image
-                src="/images/quote/quote2.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086255/quote2_gru6kk.png"
                 alt="Wedding ceremony with guests throwing petals"
                 fill
                 loading="lazy"
@@ -76,7 +80,7 @@ export default function Quote() {
               className="relative aspect-[3/4] overflow-hidden"
             >
               <Image
-                src="/images/quote/quote3.png"
+                src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086257/quote3_pogjpa.png"
                 alt="Couple dancing with flowing wedding dress"
                 fill
                 loading="lazy"
@@ -106,7 +110,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden"
               >
                 <Image
-                  src="/images/quote/quote1.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086253/quote1_mxrddc.png"
                   alt="Couple embracing in field with flowing veil"
                   fill
                   loading="lazy"
@@ -121,7 +125,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden"
               >
                 <Image
-                  src="/images/quote/quote2.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086255/quote2_gru6kk.png"
                   alt="Couple dancing with flowing wedding dress"
                   fill
                   loading="lazy"
@@ -138,7 +142,7 @@ export default function Quote() {
                 className="relative aspect-[3/4] overflow-hidden w-1/2"
               >
                 <Image
-                  src="/images/quote/quote3.png"
+                  src="https://res.cloudinary.com/dzerxindp/image/upload/v1793086257/quote3_pogjpa.png"
                   alt="Wedding ceremony with guests throwing petals"
                   fill
                   loading="lazy"
