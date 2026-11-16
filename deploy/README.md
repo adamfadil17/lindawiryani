@@ -7,7 +7,7 @@ or the health check (`/api/health`) fails, the previous release is restored.
 
 ## One-time server setup (Ubuntu/Debian, as root)
 
-1. Install Docker (with the compose plugin), nginx, certbot and apache2-utils.
+1. Install Docker (with the compose plugin), nginx and certbot.
 2. Create the folders and copy the scripts:
    ```
    mkdir -p /opt/lindawiryani/{bin,env,backups}
@@ -26,9 +26,10 @@ or the health check (`/api/health`) fails, the previous release is restored.
    - `DEPLOY_KNOWN_HOSTS`: output of `ssh-keyscan -t ed25519 SERVER_IP`
 5. nginx: copy `config-sites.conf` to `/etc/nginx/sites-available/lindawiryani-app`, 
    get the certificate (`mkdir -p /var/www/certbot && certbot certonly --webroot -w /var/www/certbot -d beta.lindawiryani.com`),
-   create the beta password (`htpasswd -c /etc/nginx/.htpasswd-lindawiryani-beta team`), then
-   `nginx -t && systemctl reload nginx`.
-6. First deploy: set `SEED_ON_START=true` and `SEED_ADMIN_PASSWORD` in `app.env`, push to `main`,
+   then `nginx -t && systemctl reload nginx`. Beta's password is the app's own team gate:
+   set `TEAM_ACCESS_USERNAME` and `TEAM_ACCESS_PASSWORD` in `app.env` (beta stays shut with a 503 until
+   both are set).
+6. First deploy: set `SEED_ON_START=true` and `SEED_ADMIN_PASSWORD` in `app.env` (`SEED_SCOPE=essentials` creates only the admin), push to `main`,
    then remove both lines and run `/opt/lindawiryani/bin/apply-env.sh main`. Deploy beta after main.
 7. Optional: install `systemd/*.service` (named `-main` and `-beta` because an older `app-lindawiryani` unit already runs the temp dashboard site) (start on boot), `bin/backup-db.sh` as
    `/etc/cron.daily/lindawiryani-db-backup`, and `bin/cron-cleanup.sh` in cron for the weekly
