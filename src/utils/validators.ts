@@ -131,16 +131,16 @@ export const createWeddingExperienceSchema = z.object({
   intro_label: z.string().min(1),
   intro_heading: z.tuple([z.string(), z.string()]),
   intro_body: z.string().min(1),
-  intro_list_label: z.string().optional(),
+  intro_list_label: z.string().nullish(),
   intro_list: z.array(z.string()),
-  intro_footnote: z.string().optional(),
+  intro_footnote: z.string().nullish(),
   intro_images: z.array(imageUrlSchema()).max(2),
 
   // Approach
   approach_label: z.string().min(1),
   approach_heading: z.tuple([z.string(), z.string()]),
   approach_body: z.string().min(1),
-  approach_list_label: z.string().optional(),
+  approach_list_label: z.string().nullish(),
   approach_list: z.array(z.string()),
   approach_image: imageUrlSchema(),
 
@@ -159,7 +159,7 @@ export const createWeddingExperienceSchema = z.object({
   closing_heading: z.tuple([z.string(), z.string()]),
   closing_body: z.string().min(1),
   closing_image: imageUrlSchema(),
-  closing_couple_label: z.string().optional(),
+  closing_couple_label: z.string().nullish(),
   closing_couple_values: z.array(z.string()),
 });
 
@@ -300,20 +300,23 @@ export const createPortfolioSchema = z.object({
   couple: z.string().min(2).max(255),
   subtitle: z.string().min(1),
   destination_id: z
-    .union([uuidSchema, z.literal(""), z.undefined()])
-    .transform((v) => v || undefined),
+    .union([uuidSchema, z.literal(""), z.null(), z.undefined()])
+    // "" means not chosen (leave as is); null clears the field
+    .transform((v) => (v === "" ? undefined : v)),
   venue_id: z
-    .union([uuidSchema, z.literal(""), z.undefined()])
-    .transform((v) => v || undefined),
+    .union([uuidSchema, z.literal(""), z.null(), z.undefined()])
+    // "" means not chosen (leave as is); null clears the field
+    .transform((v) => (v === "" ? undefined : v)),
   experience_id: z
-    .union([uuidSchema, z.literal(""), z.undefined()])
-    .transform((v) => v || undefined),
+    .union([uuidSchema, z.literal(""), z.null(), z.undefined()])
+    // "" means not chosen (leave as is); null clears the field
+    .transform((v) => (v === "" ? undefined : v)),
   image: imageUrlSchema(),
   tags: z.array(z.string()).min(1),
   excerpt: z.string().min(1),
-  origin: z.string().optional(),
-  review: z.string().optional(),
-  content: z.string().optional(),
+  origin: z.string().nullish(),
+  review: z.string().nullish(),
+  content: z.string().nullish(),
   story_sections: z.array(storySectionSchema),
   credit_role: z.string().min(1),
   credit_planner: z.string().min(1),

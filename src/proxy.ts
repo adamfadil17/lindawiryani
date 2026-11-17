@@ -63,6 +63,12 @@ const gate = (req: NextRequest): NextResponse | boolean => {
   // gated release could never pass its own deploy. It only reports that the app is up.
   if (req.method === "GET" && req.nextUrl.pathname === "/api/health") return false;
 
+  // next/image fetches local files through an internal request that carries none of the visitor's
+  // cookies, so the gate would answer it with 401 and every /images and /uploads photo on the
+  // site would break. These folders only hold the site's own pictures (uploads have random UUID
+  // names), so they are served without the password. Pages and the API stay behind the gate.
+  if ((req.method === "GET" || req.method === "HEAD") && /^\/(images|uploads)\//.test(req.nextUrl.pathname)) return false;
+
   // Shut, not open, when the credentials are missing.
   if (!isConfigured()) return deny(503, "Team access is not configured.");
 
