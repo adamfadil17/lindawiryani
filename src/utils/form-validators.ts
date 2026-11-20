@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { ARTICLE_CATEGORY_VALUES } from "@/lib/article-category";
+
 // ─────────────────────────────────────────────
 // SHARED BASE SCHEMAS
 // (mirrors backend: uuidSchema, slugSchema)
@@ -268,14 +270,7 @@ export type WeddingThemeImageFormData = z.infer<
 // ─────────────────────────────────────────────
 
 // backend: enum menggunakan underscore dan "and"
-export const articleCategoryEnum = z.enum([
-  "Guides",
-  "Planning_Advice",
-  "Destination_Knowledge",
-  "Venue_and_Location",
-  "Real_Weddings",
-  "Design_and_Concept",
-]);
+export const articleCategoryEnum = z.enum([...ARTICLE_CATEGORY_VALUES]);
 
 export const articleFormSchema = z.object({
   slug: slugSchema,

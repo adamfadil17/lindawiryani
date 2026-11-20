@@ -15,8 +15,6 @@ import {
   AlertCircle,
   CheckCircle2,
   Briefcase,
-  Clock,
-  Layers,
   Loader2,
   ToggleLeft,
   ToggleRight,
@@ -28,12 +26,14 @@ import TextareaInput from "@/components/shared/text-area-input";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import { SelectInput } from "@/components/shared/select-input";
 import TranslationsEditor, {
   ContentStatusField,
 } from "@/components/shared/translations-editor";
 import { useContentEditor } from "@/hook/useContentEditor";
 import { openPositionFormSchema, OpenPositionFormData } from "@/utils/form-validators";
 import { OpenPosition } from "@/types";
+import { toSlug } from "@/utils";
 
 // z.input<>  → type yang resolver terima: is_active?: boolean | undefined (sebelum .default())
 // z.infer<>  → type output setelah .default() diaplikasikan: is_active: boolean
@@ -201,7 +201,11 @@ export default function PositionDetailPage() {
   const confirmSave = async () => {
     setSaveStatus("saving");
     try {
-      const payload = { ...formData, ...editor.payload() };
+      const payload = {
+        ...formData,
+        slug: toSlug(formData.title),
+        ...editor.payload(),
+      };
 
       if (isNew) {
         await axios.post("/api/open-positions", payload, {
@@ -426,23 +430,18 @@ export default function PositionDetailPage() {
               <div className="grid sm:grid-cols-2 gap-5">
                 {/* type — required (min 1) */}
                 <FormField label="Employment Type" required>
-                  <div className="relative">
-                    <select
-                      value={formData.type}
-                      onChange={(e) => setField("type", e.target.value)}
-                      className={`w-full appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
-                        formErrors.type ? "border-red-300" : "border-primary/20"
-                      }`}
-                    >
-                      <option value="">Select type...</option>
-                      {employmentTypes.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
-                    <Clock className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                  </div>
+                  <SelectInput
+                    value={formData.type}
+                    onChange={(e) => setField("type", e.target.value)}
+                    invalid={Boolean(formErrors.type)}
+                  >
+                    <option value="">Select type...</option>
+                    {employmentTypes.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </SelectInput>
                   {formErrors.type && (
                     <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.type.message)}
@@ -452,23 +451,18 @@ export default function PositionDetailPage() {
 
                 {/* level — required (min 1) */}
                 <FormField label="Level" required>
-                  <div className="relative">
-                    <select
-                      value={formData.level}
-                      onChange={(e) => setField("level", e.target.value)}
-                      className={`w-full appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
-                        formErrors.level ? "border-red-300" : "border-primary/20"
-                      }`}
-                    >
-                      <option value="">Select level...</option>
-                      {levelOptions.map((l) => (
-                        <option key={l} value={l}>
-                          {l}
-                        </option>
-                      ))}
-                    </select>
-                    <Layers className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                  </div>
+                  <SelectInput
+                    value={formData.level}
+                    onChange={(e) => setField("level", e.target.value)}
+                    invalid={Boolean(formErrors.level)}
+                  >
+                    <option value="">Select level...</option>
+                    {levelOptions.map((l) => (
+                      <option key={l} value={l}>
+                        {l}
+                      </option>
+                    ))}
+                  </SelectInput>
                   {formErrors.level && (
                     <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.level.message)}

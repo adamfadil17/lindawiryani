@@ -90,6 +90,16 @@ html[data-area="admin"] .font-display {
   letter-spacing: 0.01em;
 }
 
+/*
+ * Native select popups are rendered by the OS and ignore most utility classes.
+ * Force readable option colours so an active (solid primary) filter does not
+ * produce white-on-white menu items, and inactive selects never look faded.
+ */
+html[data-area="admin"] select option {
+  background-color: #ffffff;
+  color: var(--color-primary);
+}
+
 :root {
   --radius: 0.625rem;
   /* Brand palette: Warm Ivory / Rosewood Mauve / Warm Charcoal */

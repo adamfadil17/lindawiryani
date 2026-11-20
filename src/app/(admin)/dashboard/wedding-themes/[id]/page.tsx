@@ -18,7 +18,6 @@ import {
   CheckCircle2,
   Loader2,
   AlertCircle,
-  ChevronDown,
 } from "lucide-react";
 import FormField from "@/components/shared/from-field";
 import Section from "@/components/shared/section-form";
@@ -26,6 +25,7 @@ import TextInput from "@/components/shared/text-input";
 import TextareaInput from "@/components/shared/text-area-input";
 import TagsInput from "@/components/shared/tags-input";
 import ImageUpload from "@/components/shared/image-upload";
+import { SelectInput } from "@/components/shared/select-input";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
@@ -420,7 +420,7 @@ export default function WeddingThemeDetailPage() {
           description: "Your wedding theme has been updated.",
         });
         // Re-sync RHF baseline so isDirty becomes false
-        reset({ ...formData, slug: toSlug(formData.title) });
+        reset({ ...formData, slug: slugValue });
         editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -660,30 +660,25 @@ export default function WeddingThemeDetailPage() {
             <div className="grid sm:grid-cols-2 gap-5">
               {/* venue_id — optional, uuid */}
               <FormField label="Venue" hint="Optional — You can set the venue later">
-                <div className="relative">
-                  <select
-                    value={formData.venue_id ?? ""}
-                    onChange={(e) =>
-                      setField("venue_id", e.target.value || undefined)
-                    }
-                    disabled={isVenuesLoading}
-                    className="w-full pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isVenuesLoading ? (
-                      <option value="" disabled>Loading venues…</option>
-                    ) : (
-                      <>
-                        <option value="">— To Be Confirmed —</option>
-                        {allVenues.map((venue) => (
-                          <option key={venue.id} value={venue.id}>
-                            {venue.name}
-                          </option>
-                        ))}
-                      </>
-                    )}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                </div>
+                <SelectInput
+                  value={formData.venue_id ?? ""}
+                  onChange={(e) => setField("venue_id", e.target.value || undefined)}
+                  disabled={isVenuesLoading}
+                  invalid={Boolean(formErrors.venue_id)}
+                >
+                  {isVenuesLoading ? (
+                    <option value="" disabled>Loading venues…</option>
+                  ) : (
+                    <>
+                      <option value="">— To Be Confirmed —</option>
+                      {allVenues.map((venue) => (
+                        <option key={venue.id} value={venue.id}>
+                          {venue.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </SelectInput>
                 {formErrors.venue_id && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.venue_id.message)}
@@ -693,28 +688,25 @@ export default function WeddingThemeDetailPage() {
 
               {/* experience_id — required, uuid */}
               <FormField label="Wedding Experience" required>
-                <div className="relative">
-                  <select
-                    value={formData.experience_id}
-                    onChange={(e) => setField("experience_id", e.target.value)}
-                    disabled={isExperiencesLoading}
-                    className="w-full pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isExperiencesLoading ? (
-                      <option value="" disabled>Loading experiences…</option>
-                    ) : (
-                      <>
-                        <option value="">— Select an experience —</option>
-                        {allExperiences.map((exp) => (
-                          <option key={exp.id} value={exp.id}>
-                            {exp.name}
-                          </option>
-                        ))}
-                      </>
-                    )}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                </div>
+                <SelectInput
+                  value={formData.experience_id}
+                  onChange={(e) => setField("experience_id", e.target.value)}
+                  disabled={isExperiencesLoading}
+                  invalid={Boolean(formErrors.experience_id)}
+                >
+                  {isExperiencesLoading ? (
+                    <option value="" disabled>Loading experiences…</option>
+                  ) : (
+                    <>
+                      <option value="">— Select an experience —</option>
+                      {allExperiences.map((exp) => (
+                        <option key={exp.id} value={exp.id}>
+                          {exp.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </SelectInput>
                 {formErrors.experience_id && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.experience_id.message)}

@@ -13,11 +13,11 @@ import {
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
   UserCircle2,
 } from "lucide-react";
 import { User, Role } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
+import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 
@@ -174,35 +174,8 @@ function FilterDropdown({
   onChange: (v: string) => void;
   options: { id: string; label: string }[];
 }) {
-  const isActive = value !== "all";
-
   return (
-    <div className="relative">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`appearance-none h-full pl-3 pr-8 py-3 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer ${
-          isActive
-            ? "bg-primary text-white border-primary"
-            : "bg-white text-muted-foreground border-primary/20 hover:border-primary/40 hover:text-primary"
-        }`}
-      >
-        {options.map((opt) => (
-          <option
-            key={opt.id}
-            value={opt.id}
-            className="bg-white text-primary normal-case font-normal tracking-normal"
-          >
-            {opt.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
-          isActive ? "text-white/70" : "text-muted-foreground"
-        }`}
-      />
-    </div>
+    <FilterSelect value={value} onChange={onChange} options={options} />
   );
 }
 
@@ -410,36 +383,28 @@ export default function DashboardUsersPage() {
     };
   }, [searchTerm]);
 
-  // ── Fetch role counts sekali saat mount untuk stat cards ──
-  useEffect(() => {
-    const fetchCounts = async () => {
-      const roles: Role[] = ["admin", "editor", "user"];
-      try {
-        const results = await Promise.allSettled(
-          roles.map((role) =>
-            axios
-              .get<{ meta: PaginationMeta }>("/api/users", {
-                params: { page: 1, limit: 1, role },
-              })
-              .then((res) => ({ role, total: res.data.meta?.total ?? 0 }))
-          )
-        );
+  // ── Fetch role counts for stat cards ──
+  const fetchCounts = useCallback(async () => {
+    try {
+      const response = await axios.get<{
+        data: { total: number; roles: Record<Role, number> };
+      }>("/api/users/filters");
 
-        const counts: Partial<Record<RoleFilter, number>> = {};
-        for (const result of results) {
-          if (result.status === "fulfilled") {
-            counts[result.value.role] = result.value.total;
-          }
-        }
-        dispatch({ type: "SET_ROLE_COUNTS", counts });
-      } catch (err) {
-        console.error("Failed to load role counts:", err);
-      } finally {
-        dispatch({ type: "COUNTS_LOADED" });
-      }
-    };
-    fetchCounts();
+      const data = response.data.data;
+      dispatch({
+        type: "SET_ROLE_COUNTS",
+        counts: { all: data.total, ...data.roles },
+      });
+    } catch (err) {
+      console.error("Failed to load role counts:", err);
+    } finally {
+      dispatch({ type: "COUNTS_LOADED" });
+    }
   }, []);
+
+  useEffect(() => {
+    fetchCounts();
+  }, [fetchCounts]);
 
   // ── Fetch users ──
   const getUsers = useCallback(async () => {
@@ -497,6 +462,7 @@ export default function DashboardUsersPage() {
       });
       const isLastOnPage = users.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
+      fetchCounts();
       toast.success(`${deleteTarget.name} has been removed.`);
       if (isLastOnPage) {
         dispatch({ type: "SET_PAGE", page: currentPage - 1 });
@@ -508,10 +474,12 @@ export default function DashboardUsersPage() {
       toast.error("Failed to delete user.");
       dispatch({ type: "DELETE_ERROR" });
     }
-  }, [deleteTarget, users.length, currentPage, getUsers]);
+  }, [deleteTarget, users.length, currentPage, getUsers, fetchCounts]);
 
   // ── useMemo: derived values ──
   const totalCount = useMemo(() => paginationMeta?.total ?? 0, [paginationMeta]);
+
+  const allUsersCount = roleCounts.all ?? totalCount;
 
   const hasActiveFilters = useMemo(
     () => !!debouncedSearch || roleFilter !== "all",
@@ -551,10 +519,10 @@ export default function DashboardUsersPage() {
             Users
           </h1>
           <p className="text-primary text-sm mt-1">
-            {isLoading ? (
+            {isCountsLoading && !roleCounts.all ? (
               <span className="inline-block w-24 h-3 bg-primary/10 animate-pulse rounded" />
             ) : (
-              `${totalCount} registered users`
+              `${allUsersCount} registered user${allUsersCount !== 1 ? "s" : ""}`
             )}
           </p>
         </div>
@@ -579,8 +547,7 @@ export default function DashboardUsersPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {statCards.map((stat) => {
             const isActive = roleFilter === stat.id;
-            const displayValue =
-              stat.id === "all" ? totalCount : (roleCounts[stat.id] ?? "—");
+            const displayValue = roleCounts[stat.id] ?? 0;
 
             return (
               <button
@@ -636,7 +603,7 @@ export default function DashboardUsersPage() {
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
         {/* Role filter */}
-        <div className="flex gap-2 items-stretch h-[42px]">
+        <div className="flex gap-2 items-stretch">
           <FilterDropdown
             value={roleFilter}
             onChange={handleRoleChange}

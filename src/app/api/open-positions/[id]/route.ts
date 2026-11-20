@@ -2,8 +2,7 @@ import { NextRequest } from "next/server";
 
 import {
   prisma,
-  handleError,
-  conflict,
+  handleError,
   requireAuth,
   requireRole,
   notFound,
@@ -59,20 +58,15 @@ export async function PATCH(
 
     const current = await prisma.openPosition.findUnique({
       where: { id },
-      select: { slug: true, status: true },
+      select: { slug: true, status: true, first_published_at: true },
     });
     if (!current) return notFound("Open position");
-
-    // D2: the slug follows the input and is immutable once published.
-    if (dto.slug && dto.slug !== current.slug && current.status === "published") {
-      return conflict("Slug cannot be changed after publish");
-    }
 
     const position = await prisma.openPosition.update({
       where: { id },
       data: {
         ...base,
-        ...publicationFields(status),
+        ...publicationFields(status, current.first_published_at),
         ...(translations !== undefined
           ? { translations: translationsReplace("position", translations) }
           : {}),

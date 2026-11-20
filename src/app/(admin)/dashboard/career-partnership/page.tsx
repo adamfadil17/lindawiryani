@@ -6,7 +6,6 @@ import axios from "@/lib/api";
 import {
   Search,
   X,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Eye,
@@ -32,6 +31,7 @@ import {
   OpenPosition,
 } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
+import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 
@@ -903,34 +903,34 @@ export default function CareerPartnershipPage() {
           </div>
 
           {/* Type filter */}
-          <div className="relative shrink-0">
-            <select
-              value={typeFilter}
-              onChange={(e) => handleTypeChange(e.target.value as TypeFilter)}
-              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
-            >
-              <option value="All">All Types</option>
-              <option value="vendor">Vendor</option>
-              <option value="career">Career</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-          </div>
+          <FilterSelect
+            value={typeFilter}
+            onChange={(value) => handleTypeChange(value as TypeFilter)}
+            options={[
+              { id: "All", label: "All Types" },
+              { id: "vendor", label: "Vendor" },
+              { id: "career", label: "Career" },
+            ]}
+            defaultValue="All"
+            className="w-full sm:w-40"
+            aria-label="Filter by submission type"
+          />
 
           {/* Status filter */}
-          <div className="relative shrink-0">
-            <select
-              value={statusFilter}
-              onChange={(e) => handleStatusChange(e.target.value as StatusFilter)}
-              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
-            >
-              <option value="All">All Statuses</option>
-              <option value="new">New</option>
-              <option value="reviewed">Reviewed</option>
-              <option value="contacted">Contacted</option>
-              <option value="archived">Archived</option>
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-          </div>
+          <FilterSelect
+            value={statusFilter}
+            onChange={(value) => handleStatusChange(value as StatusFilter)}
+            options={[
+              { id: "All", label: "All Statuses" },
+              { id: "new", label: "New" },
+              { id: "reviewed", label: "Reviewed" },
+              { id: "contacted", label: "Contacted" },
+              { id: "archived", label: "Archived" },
+            ]}
+            defaultValue="All"
+            className="w-full sm:w-40"
+            aria-label="Filter by submission status"
+          />
 
           {/* Clear all filters */}
           {hasActiveSubmissionFilters && (

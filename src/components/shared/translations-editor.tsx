@@ -4,6 +4,7 @@ import { useState } from "react";
 import LocaleTabs from "@/components/shared/locale-tabs";
 import TagsInput from "@/components/shared/tags-input";
 import TipTapEditor from "@/components/shared/tiptap-editor";
+import { SelectInput } from "@/components/shared/select-input";
 import { localeLabels } from "@/i18n/routing";
 import {
   TRANSLATION_FIELDS,
@@ -208,17 +209,18 @@ export function ContentStatusField({
         <label className={labelClass} htmlFor="content-status">
           Publish status
         </label>
-        <select
+        <SelectInput
           id="content-status"
           value={value}
           onChange={(e) =>
             onChange(e.target.value === "published" ? "published" : "draft")
           }
-          className="px-3 py-2 min-h-[38px] text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50"
+          wrapperClassName="w-fit"
+          className="w-auto min-w-[260px]"
         >
           <option value="draft">Draft — hidden from the public site</option>
           <option value="published">Published — visible on the public site</option>
-        </select>
+        </SelectInput>
       </div>
       {value === "published" && previewHref ? (
         <a

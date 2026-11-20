@@ -16,7 +16,6 @@ import {
   X,
   ImageIcon,
   Building2,
-  ChevronDown,
   MapPin,
   Users,
   DollarSign,
@@ -25,6 +24,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import FormField from "@/components/shared/from-field";
+import { SelectInput } from "@/components/shared/select-input";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
 import TextareaInput from "@/components/shared/text-area-input";
@@ -425,7 +425,7 @@ export default function VenueDetailPage() {
           description: "Your venue has been updated.",
         });
         // Re-sync RHF baseline so isDirty becomes false
-        reset({ ...formData, slug: toSlug(formData.name) });
+        reset({ ...formData, slug: slugValue });
         editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -644,28 +644,25 @@ export default function VenueDetailPage() {
             <div className="grid sm:grid-cols-2 gap-5">
               {/* destination_id — required, uuid */}
               <FormField label="Destination" required>
-                <div className="relative">
-                  <select
-                    value={formData.destination_id}
-                    onChange={(e) => setField("destination_id", e.target.value)}
-                    disabled={isDestinationsLoading}
-                    className="w-full pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isDestinationsLoading ? (
-                      <option value="" disabled>Loading destinations…</option>
-                    ) : (
-                      <>
-                        <option value="" disabled>— Select a destination —</option>
-                        {allDestinations.map((dest) => (
-                          <option key={dest.id} value={dest.id}>
-                            {dest.name}
-                          </option>
-                        ))}
-                      </>
-                    )}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                </div>
+                <SelectInput
+                  value={formData.destination_id}
+                  onChange={(e) => setField("destination_id", e.target.value)}
+                  disabled={isDestinationsLoading}
+                  invalid={Boolean(formErrors.destination_id)}
+                >
+                  {isDestinationsLoading ? (
+                    <option value="" disabled>Loading destinations…</option>
+                  ) : (
+                    <>
+                      <option value="" disabled>— Select a destination —</option>
+                      {allDestinations.map((dest) => (
+                        <option key={dest.id} value={dest.id}>
+                          {dest.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </SelectInput>
                 {formErrors.destination_id && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.destination_id.message)}
@@ -691,28 +688,25 @@ export default function VenueDetailPage() {
           >
             {/* experience_id — required, uuid */}
             <FormField label="Experience" required>
-              <div className="relative">
-                <select
-                  value={formData.experience_id}
-                  onChange={(e) => setField("experience_id", e.target.value)}
-                  disabled={isExperiencesLoading}
-                  className="w-full pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isExperiencesLoading ? (
-                    <option value="" disabled>Loading experiences…</option>
-                  ) : (
-                    <>
-                      <option value="" disabled>— Select an experience —</option>
-                      {allExperiences.map((exp) => (
-                        <option key={exp.id} value={exp.id}>
-                          {exp.name}
-                        </option>
-                      ))}
-                    </>
-                  )}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-              </div>
+              <SelectInput
+                value={formData.experience_id}
+                onChange={(e) => setField("experience_id", e.target.value)}
+                disabled={isExperiencesLoading}
+                invalid={Boolean(formErrors.experience_id)}
+              >
+                {isExperiencesLoading ? (
+                  <option value="" disabled>Loading experiences…</option>
+                ) : (
+                  <>
+                    <option value="" disabled>— Select an experience —</option>
+                    {allExperiences.map((exp) => (
+                      <option key={exp.id} value={exp.id}>
+                        {exp.name}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </SelectInput>
               {formErrors.experience_id && (
                 <p className="text-red-700 text-xs mt-1">
                   {String(formErrors.experience_id.message)}

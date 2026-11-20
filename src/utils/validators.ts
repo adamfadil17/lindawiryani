@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { ARTICLE_CATEGORY_VALUES } from "@/lib/article-category";
+
 const uuidSchema = z.string().uuid();
 
 const slugSchema = z
@@ -140,6 +142,8 @@ export function parsePagination(searchParams: URLSearchParams): PaginationQuery 
 // USER
 // ─────────────────────────────────────────────
 
+export const userRoleEnum = z.enum(["admin", "editor", "user"]);
+
 export const createUserSchema = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email("Invalid email address"),
@@ -148,7 +152,7 @@ export const createUserSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[0-9]/, "Password must contain at least one number"),
-  role: z.enum(["admin", "editor", "user"]).default("user"),
+  role: userRoleEnum.default("user"),
 });
 
 export const updateUserSchema = createUserSchema.omit({ password: true }).partial();
@@ -243,16 +247,16 @@ export const createWeddingExperienceSchema = z.object({
   intro_label: z.string().min(1),
   intro_heading: z.tuple([z.string(), z.string()]),
   intro_body: z.string().min(1),
-  intro_list_label: z.string().optional(),
+  intro_list_label: z.string().nullable().optional(),
   intro_list: z.array(z.string()),
-  intro_footnote: z.string().optional(),
+  intro_footnote: z.string().nullable().optional(),
   intro_images: z.array(z.string().url()).max(2),
 
   // Approach
   approach_label: z.string().min(1),
   approach_heading: z.tuple([z.string(), z.string()]),
   approach_body: z.string().min(1),
-  approach_list_label: z.string().optional(),
+  approach_list_label: z.string().nullable().optional(),
   approach_list: z.array(z.string()),
   approach_image: z.string().url(),
 
@@ -271,7 +275,7 @@ export const createWeddingExperienceSchema = z.object({
   closing_heading: z.tuple([z.string(), z.string()]),
   closing_body: z.string().min(1),
   closing_image: z.string().url(),
-  closing_couple_label: z.string().optional(),
+  closing_couple_label: z.string().nullable().optional(),
   closing_couple_values: z.array(z.string()),
   status: contentStatusSchema.optional(),
   translations: translationsSchema(experienceTranslationSchema),
@@ -382,14 +386,7 @@ export type UpdateWeddingThemeImageDto = z.infer<typeof updateWeddingThemeImageS
 // ARTICLE
 // ─────────────────────────────────────────────
 
-export const articleCategoryEnum = z.enum([
-  "Guides",
-  "Planning_Advice",
-  "Destination_Knowledge",
-  "Venue_and_Location",
-  "Real_Weddings",
-  "Design_and_Concept",
-]);
+export const articleCategoryEnum = z.enum([...ARTICLE_CATEGORY_VALUES]);
 
 export const createArticleSchema = z.object({
   slug: slugSchema,
@@ -417,25 +414,29 @@ const storySectionSchema = z.object({
   body: z.array(z.string()).min(1),
 });
 
+/**
+ * Optional relation ids accept:
+ * - a UUID      → keep/set the relation
+ * - "" / null   → clear the relation (Prisma receives null)
+ * - undefined   → omitted (no change on PATCH)
+ */
+const optionalRelationId = z
+  .union([uuidSchema, z.literal(""), z.null()])
+  .optional();
+
 export const createPortfolioSchema = z.object({
   slug: slugSchema,
   couple: z.string().min(2).max(255),
   subtitle: z.string().min(1),
-  destination_id: z
-    .union([uuidSchema, z.literal(""), z.undefined()])
-    .transform((v) => v || undefined),
-  venue_id: z
-    .union([uuidSchema, z.literal(""), z.undefined()])
-    .transform((v) => v || undefined),
-  experience_id: z
-    .union([uuidSchema, z.literal(""), z.undefined()])
-    .transform((v) => v || undefined),
+  destination_id: optionalRelationId,
+  venue_id: optionalRelationId,
+  experience_id: optionalRelationId,
   image: z.string().url(),
   tags: z.array(z.string()).min(1),
   excerpt: z.string().min(1),
-  origin: z.string().optional(),
-  review: z.string().optional(),
-  content: z.string().optional(),
+  origin: z.string().nullable().optional(),
+  review: z.string().nullable().optional(),
+  content: z.string().nullable().optional(),
   story_sections: z.array(storySectionSchema),
   credit_role: z.string().min(1),
   credit_planner: z.string().min(1),

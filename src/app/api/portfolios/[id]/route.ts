@@ -2,8 +2,7 @@ import { NextRequest } from "next/server";
 
 import {
   prisma,
-  handleError,
-  conflict,
+  handleError,
   requireAuth,
   requireRole,
   notFound,
@@ -64,25 +63,35 @@ export async function PATCH(
     const dto = updatePortfolioSchema.parse(body);
     const { translations, status, ...base } = dto;
 
+    // Optional relations: "" and null clear the relation, a UUID sets it.
+    // A missing key must stay missing so Prisma does not overwrite it.
+    const data = {
+      ...base,
+      ...(base.destination_id !== undefined
+        ? { destination_id: base.destination_id || null }
+        : {}),
+      ...(base.venue_id !== undefined
+        ? { venue_id: base.venue_id || null }
+        : {}),
+      ...(base.experience_id !== undefined
+        ? { experience_id: base.experience_id || null }
+        : {}),
+    };
+
     const current = await prisma.portfolio.findUnique({
       where: { id },
-      select: { slug: true, status: true },
+      select: { slug: true, status: true, first_published_at: true },
     });
     if (!current) return notFound("Portfolio");
-
-    // D2: the slug follows the input and is immutable once published.
-    if (dto.slug && dto.slug !== current.slug && current.status === "published") {
-      return conflict("Slug cannot be changed after publish");
-    }
 
     const portfolio = await prisma.portfolio.update({
       where: { id },
       data: {
-        ...base,
-        ...(typeof base.content === "string"
-          ? { content: sanitizeRichText(base.content) }
+        ...data,
+        ...(typeof data.content === "string"
+          ? { content: sanitizeRichText(data.content) }
           : {}),
-        ...publicationFields(status),
+        ...publicationFields(status, current.first_published_at),
         ...(translations !== undefined
           ? { translations: translationsReplace("portfolio", translations) }
           : {}),

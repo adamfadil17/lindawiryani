@@ -91,9 +91,21 @@ export function translationsReplace(
 }
 
 /** Publish/draft fields for create and update payloads. */
-export function publicationFields(status?: "draft" | "published") {
+/**
+ * `firstPublishedAt` is the permanent publish watermark. Pass the current
+ * record's value on UPDATE so it is only set once; omit it on CREATE.
+ */
+export function publicationFields(
+  status?: "draft" | "published",
+  firstPublishedAt?: Date | null,
+) {
   if (status === "published") {
-    return { status: "published" as const, published_at: new Date() };
+    const now = new Date();
+    return {
+      status: "published" as const,
+      published_at: now,
+      ...(firstPublishedAt == null ? { first_published_at: now } : {}),
+    };
   }
   if (status === "draft") {
     return { status: "draft" as const };

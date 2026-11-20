@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Destination, DestinationCategory } from "@/types";
 import { destinationCategoryFormSchema, type DestinationCategoryFormData } from "@/utils/form-validators";
+import { toSlug } from "@/utils";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
@@ -188,7 +189,7 @@ export default function DestinationCategoryDetailPage() {
     try {
       const response = await axios.patch(
         `/api/destination-categories/${id}`,
-        { name: nameValue.trim() }
+        { name: nameValue.trim(), slug: toSlug(nameValue.trim()) }
       );
       setCategory(response.data.data);
       reset({ name: response.data.data.name });

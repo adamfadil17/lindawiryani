@@ -2,8 +2,7 @@ import { NextRequest } from "next/server";
 
 import {
   prisma,
-  handleError,
-  conflict,
+  handleError,
   requireAuth,
   requireRole,
   notFound,
@@ -65,14 +64,9 @@ export async function PATCH(
 
     const current = await prisma.weddingTheme.findUnique({
       where: { id },
-      select: { slug: true, status: true },
+      select: { slug: true, status: true, first_published_at: true },
     });
     if (!current) return notFound("Wedding theme");
-
-    // D2: the slug follows the input and is immutable once published.
-    if (dto.slug && dto.slug !== current.slug && current.status === "published") {
-      return conflict("Slug cannot be changed after publish");
-    }
 
     const theme = await prisma.weddingTheme.update({
       where: { id },
@@ -81,7 +75,7 @@ export async function PATCH(
         ...(typeof base.description === "string"
           ? { description: sanitizeRichText(base.description) }
           : {}),
-        ...publicationFields(status),
+        ...publicationFields(status, current.first_published_at),
         ...(translations !== undefined
           ? { translations: translationsReplace("theme", translations) }
           : {}),

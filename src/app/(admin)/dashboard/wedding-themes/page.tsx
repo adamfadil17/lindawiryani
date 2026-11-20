@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { WeddingTheme } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
+import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 
@@ -689,21 +690,14 @@ export default function DashboardWeddingThemesPage() {
           )}
         </div>
 
-        <div className="relative shrink-0">
-          <select
-            value={experienceFilter}
-            onChange={(e) => handleExperienceChange(e.target.value)}
-            disabled={isFiltersLoading}
-            className="w-full sm:w-52 appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {experienceOptions.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          <ChevronRight className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground rotate-90" />
-        </div>
+        <FilterSelect
+          value={experienceFilter}
+          onChange={handleExperienceChange}
+          options={experienceOptions}
+          disabled={isFiltersLoading}
+          className="w-full sm:w-52"
+          aria-label="Filter by experience"
+        />
 
         {/* Clear all */}
         {hasActiveFilters && (

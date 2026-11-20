@@ -15,12 +15,12 @@ import {
   MapPin,
   Users,
   Tag,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { Portfolio } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
+import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 
@@ -220,39 +220,14 @@ function FilterDropdown({
   placeholder: string;
   disabled?: boolean;
 }) {
-  const isActive = value !== "";
-
   return (
-    <div className="relative shrink-0 h-[42px]">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-        className={`appearance-none h-full pl-3 pr-8 py-3 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-          isActive
-            ? "bg-primary text-white border-primary"
-            : "bg-white text-muted-foreground border-primary/20 hover:border-primary/40 hover:text-primary"
-        }`}
-      >
-        <option value="" className="bg-white text-primary normal-case font-normal tracking-normal">
-          {placeholder}
-        </option>
-        {options.map((opt) => (
-          <option
-            key={opt.id}
-            value={opt.id}
-            className="bg-white text-primary normal-case font-normal tracking-normal"
-          >
-            {opt.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
-          isActive ? "text-white/70" : "text-muted-foreground"
-        }`}
-      />
-    </div>
+    <FilterSelect
+      value={value}
+      onChange={onChange}
+      options={[{ id: "", label: placeholder }, ...options]}
+      defaultValue=""
+      disabled={disabled}
+    />
   );
 }
 
@@ -811,7 +786,7 @@ export default function DashboardPortfolioPage() {
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
         {/* Filter Dropdowns */}
-        <div className="flex gap-2 items-stretch h-[42px]">
+        <div className="flex gap-2 items-stretch">
           <FilterDropdown
             value={filterDestination}
             onChange={handleDestinationChange}

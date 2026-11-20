@@ -14,7 +14,6 @@ import {
   Trash2,
   ImageIcon,
   BookOpen,
-  ChevronDown,
   CalendarDays,
   Loader2,
   CheckCircle2,
@@ -23,6 +22,8 @@ import {
 import FormField from "@/components/shared/from-field";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
+import { SelectInput } from "@/components/shared/select-input";
+import { articleCategoryLabel } from "@/lib/article-category";
 import TextareaInput from "@/components/shared/text-area-input";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
@@ -47,9 +48,7 @@ import {
 // Dengan ini daftar di UI otomatis sinkron dengan schema — tidak perlu maintain array terpisah.
 const ARTICLE_CATEGORIES = articleCategoryEnum.options;
 
-// Helper: format label kategori untuk tampilan (ganti underscore dengan spasi)
-// "Planning_Advice" → "Planning Advice"
-const formatCategoryLabel = (cat: string) => cat.replace(/_/g, " ");
+// Helper: format label kategori untuk tampilan (underscore → spasi, `and` → `&`)
 
 // ─── Helper konversi date string ───────────────────────────────────────────────
 // published_at di articleFormSchema divalidasi dengan z.string().datetime()
@@ -228,7 +227,7 @@ export default function JournalArticleDetailPage() {
   const confirmSave = async () => {
     setSaveStatus("saving");
     try {
-      // Regenerasi slug dari title sebelum kirim — konsisten dengan ensureUniqueSlug di route.ts
+      // Regenerasi slug dari title sebelum kirim
       const slugValue = toSlug(formData.title);
 
       // Payload sesuai ArticleFormData:
@@ -257,7 +256,7 @@ export default function JournalArticleDetailPage() {
           description: "Your article has been updated.",
         });
         // Re-sync RHF baseline so isDirty becomes false
-        reset({ ...formData, slug: toSlug(formData.title) });
+        reset({ ...formData, slug: slugValue });
         editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
@@ -473,23 +472,20 @@ export default function JournalArticleDetailPage() {
 
               {/* Category — dari articleCategoryEnum.options */}
               <FormField label="Category" required>
-                <div className="relative">
-                  <select
-                    value={formData.category}
-                    onChange={(e) =>
-                      setField("category", e.target.value as ArticleFormData["category"])
-                    }
-                    className="w-full px-3 py-3 pr-10 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
-                  >
-                    {ARTICLE_CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {/* Tampilkan label rapi; value tetap raw enum ("Planning_Advice") */}
-                        {formatCategoryLabel(cat)}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="w-4 h-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
+                <SelectInput
+                  value={formData.category}
+                  onChange={(e) =>
+                    setField("category", e.target.value as ArticleFormData["category"])
+                  }
+                  invalid={Boolean(formErrors.category)}
+                >
+                  {ARTICLE_CATEGORIES.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {/* Tampilkan label rapi; value tetap raw enum ("Planning_Advice") */}
+                      {articleCategoryLabel(cat)}
+                    </option>
+                  ))}
+                </SelectInput>
                 {formErrors.category && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.category.message)}
@@ -618,7 +614,7 @@ export default function JournalArticleDetailPage() {
                 {
                   label: "Category",
                   // Tampilkan label rapi, bukan raw enum value
-                  value: formData.category ? formatCategoryLabel(formData.category) : "—",
+                  value: formData.category ? articleCategoryLabel(formData.category) : "-",
                 },
                 {
                   label: "Excerpt",

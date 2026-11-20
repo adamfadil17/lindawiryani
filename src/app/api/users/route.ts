@@ -7,6 +7,7 @@ import {
   requireAuth,
   requireRole,
   created,
+  badRequest,
 } from "@/lib";
 
 import {
@@ -14,6 +15,7 @@ import {
   parsePagination,
   paginateQuery,
   hashPassword,
+  userRoleEnum,
 } from "@/utils";
 
 const SELECT_PUBLIC = {
@@ -31,14 +33,24 @@ export async function GET(req: NextRequest) {
 
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
 
-    const where = search
-      ? {
-          OR: [
-            { name: { contains: search, mode: "insensitive" as const } },
-            { email: { contains: search, mode: "insensitive" as const } },
-          ],
-        }
-      : {};
+    const roleParam = req.nextUrl.searchParams.get("role") ?? undefined;
+    const roleCheck = userRoleEnum.safeParse(roleParam);
+    if (roleParam && !roleCheck.success) {
+      return badRequest("Invalid role");
+    }
+    const role = roleCheck.success ? roleCheck.data : undefined;
+
+    const where = {
+      ...(search
+        ? {
+            OR: [
+              { name: { contains: search, mode: "insensitive" as const } },
+              { email: { contains: search, mode: "insensitive" as const } },
+            ],
+          }
+        : {}),
+      ...(role ? { role } : {}),
+    };
 
     const { data, meta } = await paginateQuery(
       () => prisma.user.count({ where }),

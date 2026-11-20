@@ -15,7 +15,6 @@ import {
   Plus,
   X,
   Sparkles,
-  ChevronDown,
   ImageIcon,
   Loader2,
   AlertCircle,
@@ -25,6 +24,7 @@ import FormField from "@/components/shared/from-field";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
 import TextareaInput from "@/components/shared/text-area-input";
+import { SelectInput } from "@/components/shared/select-input";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
@@ -628,10 +628,13 @@ export default function ExperiencesDetailPage() {
   const confirmSave = async () => {
     setSaveStatus("saving");
     try {
-      const dto = { ...formToDto(formData), ...editor.payload() };
+      const dto = {
+        ...formToDto(formData),
+        slug: toSlug(formData.name),
+        ...editor.payload(),
+      };
 
       if (isNew) {
-        dto.slug = toSlug(formData.name);
         const response = await axios.post("/api/wedding-experiences", dto, {
         });
         const data: WeddingExperience = response.data.data ?? response.data;
@@ -870,26 +873,22 @@ export default function ExperiencesDetailPage() {
 
                 {/* category — required (enum) */}
                 <FormField label="Category" required>
-                  <div className="relative">
-                    <select
-                      value={formData.category}
-                      onChange={(e) =>
-                        setField(
-                          "category",
-                          e.target
-                            .value as WeddingExperienceFormData["category"],
-                        )
-                      }
-                      className="w-full px-4 py-3 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
-                    >
-                      {categoryOptions.map((o) => (
-                        <option key={o.id} value={o.id}>
-                          {o.label}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                  </div>
+                  <SelectInput
+                    value={formData.category}
+                    onChange={(e) =>
+                      setField(
+                        "category",
+                        e.target.value as WeddingExperienceFormData["category"],
+                      )
+                    }
+                    invalid={Boolean(formErrors.category)}
+                  >
+                    {categoryOptions.map((o) => (
+                      <option key={o.id} value={o.id}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </SelectInput>
                   {formErrors.category && (
                     <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.category.message)}
@@ -950,26 +949,22 @@ export default function ExperiencesDetailPage() {
             <div className="space-y-5">
               {/* hero_style — required (enum) */}
               <FormField label="Hero Style" required>
-                <div className="relative">
-                  <select
-                    value={formData.hero_style}
-                    onChange={(e) =>
-                      setField(
-                        "hero_style",
-                        e.target
-                          .value as WeddingExperienceFormData["hero_style"],
-                      )
-                    }
-                    className="w-full px-4 py-3 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
-                  >
-                    {heroStyleOptions.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                </div>
+                <SelectInput
+                  value={formData.hero_style}
+                  onChange={(e) =>
+                    setField(
+                      "hero_style",
+                      e.target.value as WeddingExperienceFormData["hero_style"],
+                    )
+                  }
+                  invalid={Boolean(formErrors.hero_style)}
+                >
+                  {heroStyleOptions.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </SelectInput>
                 {formErrors.hero_style && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.hero_style.message)}

@@ -353,6 +353,13 @@ Each step should be visually reviewed before moving to the next.
   42px buttons, `tracking-[0.08em]`, fixed unsaved-modal hover class.
 - `translations-editor.tsx`: 13px semibold labels, 15px/42px inputs,
   38px locale selects (tabs stay compact by design).
+- `select-input.tsx` (added later): one shared native-select style for every
+  admin dropdown — 15px primary text, 42px+ height, consistent border/chevron/
+  focus ring, readable option colours, and an inverted pill for active filters.
+  Replaces the per-page copies (venues, destinations, journal, portfolio,
+  themes, users, career/partnership, and all detail forms) that mixed
+  `text-muted-foreground`, `tracking-widest` and 38–42px heights. This fixes the
+  faded “All Experiences” filter on the Venues page.
 - `create-modal.tsx`, `tiptap-editor.tsx`: `py-3` controls.
 
 **Shell / navigation / login**

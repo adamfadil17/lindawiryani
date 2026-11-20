@@ -15,12 +15,12 @@ import {
   AlertCircle,
   CheckCircle2,
   Loader2,
-  ChevronDown,
 } from "lucide-react";
 import FormField from "@/components/shared/from-field";
 import TagsInput from "@/components/shared/tags-input";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
+import { SelectInput } from "@/components/shared/select-input";
 import TextareaInput from "@/components/shared/text-area-input";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
@@ -263,7 +263,7 @@ export default function DestinationDetailPage() {
           description: "Your destination has been updated.",
         });
         // Re-sync RHF baseline so isDirty becomes false
-        reset({ ...formData, slug: toSlug(formData.name) });
+        reset({ ...formData, slug: slugPreview });
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
     } catch (err) {
@@ -473,27 +473,24 @@ export default function DestinationDetailPage() {
               <div className="grid sm:grid-cols-2 gap-5">
                 {/* category_id — required */}
                 <FormField label="Category" required>
-                  <div className="relative">
-                    <select
-                      value={categoryId}
-                      onChange={(e) => setField("category_id", e.target.value)}
-                      disabled={isCategoriesLoading}
-                      className="w-full pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isCategoriesLoading ? (
-                        <option value="" disabled>
-                          Loading categories…
+                  <SelectInput
+                    value={categoryId}
+                    onChange={(e) => setField("category_id", e.target.value)}
+                    disabled={isCategoriesLoading}
+                    invalid={Boolean(formErrors.category_id)}
+                  >
+                    {isCategoriesLoading ? (
+                      <option value="" disabled>
+                        Loading categories…
+                      </option>
+                    ) : (
+                      allCategories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
                         </option>
-                      ) : (
-                        allCategories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </option>
-                        ))
-                      )}
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                  </div>
+                      ))
+                    )}
+                  </SelectInput>
                   {formErrors.category_id && (
                     <p className="text-red-700 text-xs mt-1">
                       {String(formErrors.category_id.message)}

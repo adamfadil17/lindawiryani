@@ -16,7 +16,6 @@ import {
   ImageIcon,
   Plus,
   GripVertical,
-  ChevronDown,
   Loader2,
   CheckCircle2,
   AlertCircle,
@@ -25,6 +24,7 @@ import {
 import FormField from "@/components/shared/from-field";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
+import { SelectInput } from "@/components/shared/select-input";
 import TextareaInput from "@/components/shared/text-area-input";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
@@ -653,17 +653,26 @@ export default function PortfolioDetailPage() {
           description: "Your portfolio has been updated.",
         });
         // Re-sync RHF baseline so isDirty becomes false
-        reset({ ...formData, slug: toSlug(formData.couple) });
+        reset({ ...formData, slug: slugValue });
         editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
     } catch (err) {
+      const responseData = axios.isAxiosError(err)
+        ? (err.response?.data as
+            | { error?: string; message?: string; errors?: Record<string, string[]> }
+            | undefined)
+        : undefined;
+      const fieldErrors = responseData?.errors
+        ? Object.entries(responseData.errors)
+            .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+            .join(" · ")
+        : "";
       const errorMsg =
-        axios.isAxiosError(err) && err.response?.data?.message
-          ? err.response.data.message
-          : err instanceof Error
-            ? err.message
-            : "Unknown error";
+        fieldErrors ||
+        responseData?.error ||
+        responseData?.message ||
+        (err instanceof Error ? err.message : "Unknown error");
       toast.error("Failed to save", { description: errorMsg });
       setSaveStatus("confirm"); // Biarkan modal terbuka agar user bisa coba lagi
     }
@@ -962,33 +971,30 @@ export default function PortfolioDetailPage() {
             <div className="space-y-4">
               {/* Destination — dari GET /api/destinations */}
               <FormField label="Destination">
-                <div className="relative">
-                  <select
-                    value={formData.destination_id ?? ""}
-                    onChange={(e) =>
-                      setField(
-                        "destination_id",
-                        (e.target.value as PortfolioFormData["destination_id"]) || undefined,
-                      )
-                    }
-                    disabled={isDestinationsLoading}
-                    className="w-full appearance-none px-3 py-3 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isDestinationsLoading ? (
-                      <option value="" disabled>Loading destinations…</option>
-                    ) : (
-                      <>
-                        <option value="">Select a destination…</option>
-                        {destinationOptions.map((d) => (
-                          <option key={d.id} value={d.id}>
-                            {d.name}
-                          </option>
-                        ))}
-                      </>
-                    )}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                </div>
+                <SelectInput
+                  value={formData.destination_id ?? ""}
+                  onChange={(e) =>
+                    setField(
+                      "destination_id",
+                      (e.target.value as PortfolioFormData["destination_id"]) || undefined,
+                    )
+                  }
+                  disabled={isDestinationsLoading}
+                  invalid={Boolean(formErrors.destination_id)}
+                >
+                  {isDestinationsLoading ? (
+                    <option value="" disabled>Loading destinations…</option>
+                  ) : (
+                    <>
+                      <option value="">Select a destination…</option>
+                      {destinationOptions.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </SelectInput>
                 {formErrors.destination_id && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.destination_id.message)}
@@ -998,33 +1004,30 @@ export default function PortfolioDetailPage() {
 
               {/* Venue — dari GET /api/venues */}
               <FormField label="Venue">
-                <div className="relative">
-                  <select
-                    value={formData.venue_id ?? ""}
-                    onChange={(e) =>
-                      setField(
-                        "venue_id",
-                        (e.target.value as PortfolioFormData["venue_id"]) || undefined,
-                      )
-                    }
-                    disabled={isVenuesLoading}
-                    className="w-full appearance-none px-3 py-3 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isVenuesLoading ? (
-                      <option value="" disabled>Loading venues…</option>
-                    ) : (
-                      <>
-                        <option value="">Select a venue…</option>
-                        {venueOptions.map((v) => (
-                          <option key={v.id} value={v.id}>
-                            {v.name}
-                          </option>
-                        ))}
-                      </>
-                    )}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                </div>
+                <SelectInput
+                  value={formData.venue_id ?? ""}
+                  onChange={(e) =>
+                    setField(
+                      "venue_id",
+                      (e.target.value as PortfolioFormData["venue_id"]) || undefined,
+                    )
+                  }
+                  disabled={isVenuesLoading}
+                  invalid={Boolean(formErrors.venue_id)}
+                >
+                  {isVenuesLoading ? (
+                    <option value="" disabled>Loading venues…</option>
+                  ) : (
+                    <>
+                      <option value="">Select a venue…</option>
+                      {venueOptions.map((v) => (
+                        <option key={v.id} value={v.id}>
+                          {v.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </SelectInput>
                 {formErrors.venue_id && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.venue_id.message)}
@@ -1034,33 +1037,30 @@ export default function PortfolioDetailPage() {
 
               {/* Experience — dari GET /api/wedding-experiences */}
               <FormField label="Experience">
-                <div className="relative">
-                  <select
-                    value={formData.experience_id ?? ""}
-                    onChange={(e) =>
-                      setField(
-                        "experience_id",
-                        (e.target.value as PortfolioFormData["experience_id"]) || undefined,
-                      )
-                    }
-                    disabled={isExperiencesLoading}
-                    className="w-full appearance-none px-3 py-3 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isExperiencesLoading ? (
-                      <option value="" disabled>Loading experiences…</option>
-                    ) : (
-                      <>
-                        <option value="">Select an experience…</option>
-                        {experienceOptions.map((ex) => (
-                          <option key={ex.id} value={ex.id}>
-                            {ex.name}
-                          </option>
-                        ))}
-                      </>
-                    )}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                </div>
+                <SelectInput
+                  value={formData.experience_id ?? ""}
+                  onChange={(e) =>
+                    setField(
+                      "experience_id",
+                      (e.target.value as PortfolioFormData["experience_id"]) || undefined,
+                    )
+                  }
+                  disabled={isExperiencesLoading}
+                  invalid={Boolean(formErrors.experience_id)}
+                >
+                  {isExperiencesLoading ? (
+                    <option value="" disabled>Loading experiences…</option>
+                  ) : (
+                    <>
+                      <option value="">Select an experience…</option>
+                      {experienceOptions.map((ex) => (
+                        <option key={ex.id} value={ex.id}>
+                          {ex.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </SelectInput>
                 {formErrors.experience_id && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(formErrors.experience_id.message)}

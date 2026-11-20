@@ -88,6 +88,7 @@ model DestinationCategory {
   name         String
   status       ContentStatus @default(draft)
   published_at DateTime?
+  first_published_at DateTime?
   sort_order   Int           @default(0)
   updated_at   DateTime      @updatedAt
 
@@ -131,6 +132,7 @@ model Destination {
 
   status       ContentStatus @default(draft)
   published_at DateTime?
+  first_published_at DateTime?
   sort_order   Int           @default(0)
   updated_at   DateTime      @updatedAt
 
@@ -233,6 +235,7 @@ model WeddingExperience {
 
   status       ContentStatus @default(draft)
   published_at DateTime?
+  first_published_at DateTime?
   sort_order   Int           @default(0)
 
   created_at DateTime @default(now())
@@ -340,6 +343,7 @@ model Venue {
 
   status       ContentStatus @default(draft)
   published_at DateTime?
+  first_published_at DateTime?
   sort_order   Int           @default(0)
   updated_at   DateTime      @updatedAt
 
@@ -403,6 +407,7 @@ model WeddingTheme {
 
   status       ContentStatus @default(draft)
   published_at DateTime?
+  first_published_at DateTime?
   sort_order   Int           @default(0)
   updated_at   DateTime      @updatedAt
 
@@ -459,6 +464,7 @@ model Article {
   title        String
   excerpt      String
   published_at DateTime
+  first_published_at DateTime?
   image        String
   content      String          // TipTap-serialised HTML
   status       ContentStatus   @default(draft)
@@ -517,6 +523,7 @@ model Portfolio {
 
   status       ContentStatus @default(draft)
   published_at DateTime?
+  first_published_at DateTime?
   sort_order   Int           @default(0)
 
   created_at DateTime @default(now())
@@ -656,6 +663,7 @@ model OpenPosition {
 
   status       ContentStatus @default(draft)
   published_at DateTime?
+  first_published_at DateTime?
   sort_order   Int           @default(0)
 
   created_at DateTime @default(now())

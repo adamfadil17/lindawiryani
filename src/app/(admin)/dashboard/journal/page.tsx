@@ -13,12 +13,17 @@ import {
   X,
   BookOpen,
   CalendarDays,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { Article, ArticleCategory, articleCategories } from "@/types";
+import { Article } from "@/types";
+import {
+  ARTICLE_CATEGORY_VALUES,
+  articleCategoryLabel,
+  type ArticleCategoryValue,
+} from "@/lib/article-category";
 import DeleteModal from "@/components/shared/delete-modal";
+import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 
@@ -26,8 +31,8 @@ import { toast } from "sonner";
 
 const LIMIT = 6;
 
-// Single source of truth — diambil langsung dari articleCategories di @/types
-const ARTICLE_CATEGORIES = [...articleCategories] as ArticleCategory[];
+// Single source of truth — enum values accepted by /api/articles.
+const ARTICLE_CATEGORIES = [...ARTICLE_CATEGORY_VALUES];
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,7 +44,9 @@ interface PageState {
   // filters
   searchTerm: string;
   debouncedSearch: string;
-  categoryFilter: "all" | ArticleCategory;
+  categoryFilter: "all" | ArticleCategoryValue;
+  categoryCounts: Partial<Record<string, number>>;
+  isCountsLoading: boolean;
   currentPage: number;
   // delete state machine: idle → confirm → deleting → idle
   deleteStatus: "idle" | "confirm" | "deleting";
@@ -52,7 +59,12 @@ type PageAction =
   | { type: "FETCH_ERROR" }
   | { type: "SET_SEARCH"; value: string }
   | { type: "SET_DEBOUNCED_SEARCH"; value: string }
-  | { type: "SET_CATEGORY"; category: "all" | ArticleCategory }
+  | { type: "SET_CATEGORY"; category: "all" | ArticleCategoryValue }
+  | {
+      type: "SET_CATEGORY_COUNTS";
+      counts: Partial<Record<string, number>>;
+    }
+  | { type: "COUNTS_LOADED" }
   | { type: "SET_PAGE"; page: number }
   | { type: "CLEAR_FILTERS" }
   | { type: "OPEN_DELETE"; article: Article }
@@ -68,6 +80,8 @@ const initialState: PageState = {
   searchTerm: "",
   debouncedSearch: "",
   categoryFilter: "all",
+  categoryCounts: {},
+  isCountsLoading: true,
   currentPage: 1,
   deleteStatus: "idle",
   deleteTarget: null,
@@ -95,6 +109,10 @@ function pageReducer(state: PageState, action: PageAction): PageState {
 
     case "SET_CATEGORY":
       return { ...state, categoryFilter: action.category, currentPage: 1 };
+    case "SET_CATEGORY_COUNTS":
+      return { ...state, categoryCounts: action.counts };
+    case "COUNTS_LOADED":
+      return { ...state, isCountsLoading: false };
     case "SET_PAGE":
       return { ...state, currentPage: action.page };
     case "CLEAR_FILTERS":
@@ -183,7 +201,7 @@ function ArticleCard({
         {/* Category badge */}
         <div className="absolute top-3 left-3">
           <span className="inline-flex items-center gap-1.5 text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary text-white">
-            {article.category}
+            {articleCategoryLabel(article.category)}
           </span>
         </div>
       </div>
@@ -347,6 +365,8 @@ export default function DashboardJournalPage() {
     searchTerm,
     debouncedSearch,
     categoryFilter,
+    categoryCounts,
+    isCountsLoading,
     currentPage,
     deleteStatus,
     deleteTarget,
@@ -368,6 +388,29 @@ export default function DashboardJournalPage() {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, [searchTerm]);
+
+  // ── Fetch article counts per category (stat cards) ──
+  const fetchCategoryCounts = useCallback(async () => {
+    try {
+      const response = await axios.get<{
+        data: { categories: { category: string; count: number }[] };
+      }>("/api/articles/filters");
+
+      const counts: Record<string, number> = {};
+      for (const row of response.data.data.categories ?? []) {
+        counts[row.category] = row.count;
+      }
+      dispatch({ type: "SET_CATEGORY_COUNTS", counts });
+    } catch (err) {
+      console.error("Failed to load article category counts:", err);
+    } finally {
+      dispatch({ type: "COUNTS_LOADED" });
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategoryCounts();
+  }, [fetchCategoryCounts]);
 
   // ── Fetch articles ──
   const getArticles = useCallback(async () => {
@@ -415,7 +458,8 @@ export default function DashboardJournalPage() {
 
   // ── Filter change helpers — stable reference dengan useCallback ──
   const handleCategoryChange = useCallback(
-    (cat: "all" | ArticleCategory) => dispatch({ type: "SET_CATEGORY", category: cat }),
+    (cat: "all" | ArticleCategoryValue) =>
+      dispatch({ type: "SET_CATEGORY", category: cat }),
     [],
   );
 
@@ -445,6 +489,7 @@ export default function DashboardJournalPage() {
       // mundur satu halaman agar tidak stuck di halaman kosong
       const isLastOnPage = articles.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
+      fetchCategoryCounts();
       if (isLastOnPage) {
         dispatch({ type: "SET_PAGE", page: currentPage - 1 });
       } else {
@@ -455,7 +500,7 @@ export default function DashboardJournalPage() {
       toast.error("Failed to delete article");
       dispatch({ type: "DELETE_ERROR" });
     }
-  }, [deleteTarget, articles.length, currentPage, getArticles]);
+  }, [deleteTarget, articles.length, currentPage, getArticles, fetchCategoryCounts]);
 
   // ── useMemo: derived values — hanya dihitung ulang saat deps berubah ──
   const totalCount = useMemo(
@@ -472,9 +517,21 @@ export default function DashboardJournalPage() {
   const statCards = useMemo(
     () => [
       { id: "all", label: "Total" },
-      ...ARTICLE_CATEGORIES.map((c) => ({ id: c, label: c })),
+      ...ARTICLE_CATEGORIES.map((c) => ({
+        id: c,
+        label: articleCategoryLabel(c),
+      })),
     ],
-    [], // ARTICLE_CATEGORIES adalah modul-level constant, tidak pernah berubah
+    [],
+  );
+
+  const totalFromCounts = useMemo(
+    () =>
+      Object.values(categoryCounts).reduce<number>(
+        (sum, count) => sum + (count ?? 0),
+        0,
+      ),
+    [categoryCounts],
   );
 
   return (
@@ -507,7 +564,7 @@ export default function DashboardJournalPage() {
       </div>
 
       {/* ── Stats Row ── */}
-      {isLoading && articles.length === 0 ? (
+      {isCountsLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-7 gap-3 mb-8">
           {Array.from({ length: 7 }).map((_, i) => (
             <SkeletonStatCard key={i} />
@@ -519,16 +576,14 @@ export default function DashboardJournalPage() {
             const isActive = categoryFilter === stat.id;
             const displayValue =
               stat.id === "all"
-                ? totalCount
-                : isActive && !isLoading
-                  ? (paginationMeta?.total ?? "—")
-                  : "—";
+                ? totalFromCounts
+                : (categoryCounts[stat.id] ?? 0);
 
             return (
               <button
                 key={stat.id}
                 onClick={() =>
-                  handleCategoryChange(stat.id as "all" | ArticleCategory)
+                  handleCategoryChange(stat.id as "all" | ArticleCategoryValue)
                 }
                 className={`p-4 border text-left transition-all duration-200 hover:cursor-pointer ${
                   isActive
@@ -537,7 +592,8 @@ export default function DashboardJournalPage() {
                 }`}
               >
                 <p
-                  className={`text-xs tracking-[0.15em] uppercase mb-1.5 leading-tight truncate ${
+                  title={stat.label}
+                  className={`text-xs tracking-[0.08em] uppercase mb-1.5 leading-tight line-clamp-2 min-h-[2.1rem] ${
                     isActive ? "text-white/80" : "text-primary"
                   }`}
                 >
@@ -582,40 +638,20 @@ export default function DashboardJournalPage() {
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
         {/* Category dropdown */}
-        <div className="relative shrink-0 h-[42px]">
-          <select
-            value={categoryFilter}
-            onChange={(e) =>
-              handleCategoryChange(e.target.value as "all" | ArticleCategory)
-            }
-            className={`appearance-none h-full pl-3 pr-8 py-3 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer ${
-              categoryFilter !== "all"
-                ? "bg-primary text-white border-primary"
-                : "bg-white text-muted-foreground border-primary/20 hover:border-primary/40 hover:text-primary"
-            }`}
-          >
-            <option
-              value="all"
-              className="bg-white text-primary normal-case font-normal tracking-normal"
-            >
-              All Categories
-            </option>
-            {ARTICLE_CATEGORIES.map((cat) => (
-              <option
-                key={cat}
-                value={cat}
-                className="bg-white text-primary normal-case font-normal tracking-normal"
-              >
-                {cat}
-              </option>
-            ))}
-          </select>
-          <ChevronDown
-            className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
-              categoryFilter !== "all" ? "text-white/70" : "text-muted-foreground"
-            }`}
-          />
-        </div>
+        <FilterSelect
+          value={categoryFilter}
+          onChange={(value) =>
+            handleCategoryChange(value as "all" | ArticleCategoryValue)
+          }
+          options={[
+            { id: "all", label: "All Categories" },
+            ...ARTICLE_CATEGORIES.map((category) => ({
+              id: category,
+              label: articleCategoryLabel(category),
+            })),
+          ]}
+          aria-label="Filter by category"
+        />
 
         {/* Clear all */}
         {hasActiveFilters && (
@@ -637,7 +673,8 @@ export default function DashboardJournalPage() {
         <p className="text-primary text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} article
           {paginationMeta.total !== 1 ? "s" : ""}
-          {categoryFilter !== "all" && ` in ${categoryFilter}`}
+          {categoryFilter !== "all" &&
+            ` in ${articleCategoryLabel(categoryFilter)}`}
           {debouncedSearch && ` for "${debouncedSearch}"`}
         </p>
       )}

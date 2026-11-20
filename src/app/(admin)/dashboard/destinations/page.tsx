@@ -11,13 +11,13 @@ import {
   Pencil,
   Trash2,
   Eye,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   X,
 } from "lucide-react";
 import { Destination } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
+import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
 
@@ -623,33 +623,16 @@ export default function DashboardDestinationsPage() {
         <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
 
         {/* Category dropdown */}
-        <div className="relative shrink-0 h-[42px]">
-          <select
-            value={categoryFilter}
-            onChange={(e) => handleCategoryChange(e.target.value)}
-            disabled={isFiltersLoading}
-            className={`appearance-none h-full pl-3 pr-8 py-3 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-              categoryFilter !== "all"
-                ? "bg-primary text-white border-primary"
-                : "bg-white text-muted-foreground border-primary/20 hover:border-primary/40 hover:text-primary"
-            }`}
-          >
-            {categoryOptions.map((opt) => (
-              <option
-                key={opt.id}
-                value={opt.id}
-                className="bg-white text-primary normal-case font-normal tracking-normal"
-              >
-                {opt.name}
-              </option>
-            ))}
-          </select>
-          <ChevronDown
-            className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
-              categoryFilter !== "all" ? "text-white/70" : "text-muted-foreground"
-            }`}
-          />
-        </div>
+        <FilterSelect
+          value={categoryFilter}
+          onChange={handleCategoryChange}
+          options={categoryOptions.map((option) => ({
+            id: option.id,
+            label: option.name,
+          }))}
+          disabled={isFiltersLoading}
+          aria-label="Filter by category"
+        />
 
         {/* Clear all */}
         {hasActiveFilters && (

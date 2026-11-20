@@ -19,12 +19,11 @@ import {
   MessageSquare,
   Globe,
   Linkedin,
-  ChevronDown,
   Trash2,
   AlertCircle,
-  Loader2,
 } from "lucide-react";
 import DeleteModal from "@/components/shared/delete-modal";
+import { SelectInput } from "@/components/shared/select-input";
 import {
   SubmissionStatus,
   VendorSubmission,
@@ -468,25 +467,18 @@ export default function SubmissionDetailPage() {
               </span>
             </div>
 
-            <div className="relative">
-              <select
-                value={submission.status}
-                onChange={(e) => handleStatusChange(e.target.value as SubmissionStatus)}
-                disabled={statusUpdateStatus === "saving"}
-                className="w-full appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {status_options.map((s) => (
-                  <option key={s} value={s}>
-                    {submissionStatusConfig[s].label}
-                  </option>
-                ))}
-              </select>
-              {statusUpdateStatus === "saving" ? (
-                <Loader2 className="animate-spin absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-              ) : (
-                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-              )}
-            </div>
+            <SelectInput
+              value={submission.status}
+              onChange={(e) => handleStatusChange(e.target.value as SubmissionStatus)}
+              loading={statusUpdateStatus === "saving"}
+              aria-label="Submission status"
+            >
+              {status_options.map((s) => (
+                <option key={s} value={s}>
+                  {submissionStatusConfig[s].label}
+                </option>
+              ))}
+            </SelectInput>
 
             <p className="text-muted-foreground text-xs mt-3">
               Update status to track your outreach progress.
