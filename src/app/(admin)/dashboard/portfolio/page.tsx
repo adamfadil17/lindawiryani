@@ -3,7 +3,7 @@
 import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/lib/api";
 import {
   Plus,
   Search,
@@ -23,7 +23,6 @@ import { Portfolio } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
 import type { PaginationMeta } from "@/lib/api-response";
 import { toast } from "sonner";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -99,7 +98,7 @@ function PortfolioCard({
         />
         {/* Gallery count badge */}
         <div className="absolute top-3 right-3">
-          <span className="inline-flex items-center gap-1 text-[10px] tracking-widest uppercase px-2.5 py-1 font-medium bg-black/60 text-white backdrop-blur-sm">
+          <span className="inline-flex items-center gap-1 text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-black/60 text-white backdrop-blur-sm">
             <Images className="w-3 h-3" />
             {portfolio.gallery?.length ?? 0}
           </span>
@@ -110,13 +109,13 @@ function PortfolioCard({
             {portfolio.tags.slice(0, 2).map((tag) => (
               <span
                 key={tag}
-                className="text-[9px] tracking-widest uppercase px-2 py-0.5 font-medium bg-primary text-white"
+                className="text-xs tracking-widest uppercase px-2 py-0.5 font-medium bg-primary text-white"
               >
                 {tag}
               </span>
             ))}
             {portfolio.tags.length > 2 && (
-              <span className="text-[9px] tracking-widest uppercase px-2 py-0.5 font-medium bg-primary/80 text-white">
+              <span className="text-xs tracking-widest uppercase px-2 py-0.5 font-medium bg-primary text-white">
                 +{portfolio.tags.length - 2}
               </span>
             )}
@@ -131,7 +130,7 @@ function PortfolioCard({
             {portfolio.couple}
           </h3>
           {portfolio.subtitle && (
-            <p className="text-primary/60 text-xs mt-0.5 tracking-wide">
+            <p className="text-muted-foreground text-xs mt-0.5 tracking-wide">
               {portfolio.subtitle}
             </p>
           )}
@@ -140,19 +139,19 @@ function PortfolioCard({
         {/* Meta info */}
         <div className="space-y-1.5 mb-4">
           {portfolio.destination?.name && (
-            <div className="flex items-center gap-1.5 text-primary/60 text-xs">
+            <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
               <MapPin className="w-3 h-3 shrink-0" />
               <span className="truncate">{portfolio.destination.name}</span>
             </div>
           )}
           {portfolio.venue?.name && (
-            <div className="flex items-center gap-1.5 text-primary/60 text-xs">
+            <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
               <Users className="w-3 h-3 shrink-0" />
               <span className="truncate">{portfolio.venue.name}</span>
             </div>
           )}
           {portfolio.origin && (
-            <div className="flex items-center gap-1.5 text-primary/60 text-xs">
+            <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
               <Tag className="w-3 h-3 shrink-0" />
               <span className="truncate">{portfolio.origin}</span>
             </div>
@@ -161,7 +160,7 @@ function PortfolioCard({
 
         {/* Excerpt */}
         {portfolio.excerpt && (
-          <p className="text-primary/70 text-sm leading-relaxed line-clamp-2 mb-4">
+          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-4">
             {portfolio.excerpt}
           </p>
         )}
@@ -169,7 +168,7 @@ function PortfolioCard({
         {/* Divider + Actions */}
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-primary/80 font-semibold tracking-wider truncate max-w-[140px]">
+            <span className="text-xs text-primary font-semibold tracking-wider truncate max-w-[140px]">
               /{portfolio.slug}
             </span>
 
@@ -177,7 +176,7 @@ function PortfolioCard({
               <Link
                 href={`/portfolio/${portfolio.slug}`}
                 target="_blank"
-                className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
+                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
                 title="View Public Portfolio"
               >
                 <Eye className="w-4 h-4" />
@@ -185,7 +184,7 @@ function PortfolioCard({
 
               <Link
                 href={`/dashboard/portfolio/${portfolio.id}`}
-                className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
+                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
                 title="Edit Portfolio"
               >
                 <Pencil className="w-4 h-4" />
@@ -193,7 +192,7 @@ function PortfolioCard({
 
               <button
                 onClick={() => onDelete(portfolio)}
-                className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
+                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
                 title="Delete Portfolio"
               >
                 <Trash2 className="w-4 h-4" />
@@ -229,10 +228,10 @@ function FilterDropdown({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        className={`appearance-none h-full pl-3 pr-8 py-2.5 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+        className={`appearance-none h-full pl-3 pr-8 py-3 text-sm tracking-widest border focus:outline-none focus:border-primary/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
           isActive
             ? "bg-primary text-white border-primary"
-            : "bg-white text-primary/60 border-primary/20 hover:border-primary/40 hover:text-primary/80"
+            : "bg-white text-muted-foreground border-primary/20 hover:border-primary/40 hover:text-primary"
         }`}
       >
         <option value="" className="bg-white text-primary normal-case font-normal tracking-normal">
@@ -250,7 +249,7 @@ function FilterDropdown({
       </select>
       <ChevronDown
         className={`w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
-          isActive ? "text-white/70" : "text-primary/40"
+          isActive ? "text-white/70" : "text-muted-foreground"
         }`}
       />
     </div>
@@ -293,7 +292,7 @@ function Pagination({
 
   return (
     <div className="flex items-center justify-between mt-8 pt-6 border-t border-primary/20">
-      <p className="text-primary/60 text-xs tracking-wider">
+      <p className="text-muted-foreground text-xs tracking-wider">
         Showing{" "}
         <span className="text-primary font-medium">
           {(meta.page - 1) * meta.limit + 1}–
@@ -307,7 +306,7 @@ function Pagination({
         <button
           onClick={() => onPageChange(meta.page - 1)}
           disabled={!meta.hasPrev}
-          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-muted-foreground hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -316,7 +315,7 @@ function Pagination({
           p === "..." ? (
             <span
               key={`ellipsis-${i}`}
-              className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground text-sm"
             >
               …
             </span>
@@ -327,7 +326,7 @@ function Pagination({
               className={`w-8 h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
                 meta.page === p
                   ? "bg-primary text-white border border-primary"
-                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+                  : "border border-primary/20 text-muted-foreground hover:border-primary/40 hover:text-primary"
               }`}
             >
               {p}
@@ -338,7 +337,7 @@ function Pagination({
         <button
           onClick={() => onPageChange(meta.page + 1)}
           disabled={!meta.hasNext}
-          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-muted-foreground hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -649,7 +648,6 @@ export default function DashboardPortfolioPage() {
     dispatch({ type: "DELETE_START" });
     try {
       await axios.delete(`/api/portfolios/${deleteTarget.id}`, {
-        headers: getAuthHeaders(),
       });
       const isLastOnPage = portfolios.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
@@ -712,13 +710,13 @@ export default function DashboardPortfolioPage() {
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
-          <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+          <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
             Content Management
           </p>
-          <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+          <h1 className="font-display text-primary text-2xl md:text-3xl font-semibold tracking-wide">
             Portfolio
           </h1>
-          <p className="text-primary/80 text-sm mt-1">
+          <p className="text-primary text-sm mt-1">
             {isLoading ? (
               <span className="inline-block w-28 h-3 bg-primary/10 animate-pulse rounded" />
             ) : (
@@ -769,8 +767,8 @@ export default function DashboardPortfolioPage() {
                   }`}
                 >
                   <p
-                    className={`text-sm tracking-[0.2em] uppercase mb-1.5 truncate ${
-                      isActive ? "text-white/80" : "text-primary/80"
+                    className={`text-sm tracking-[0.08em] uppercase mb-1.5 truncate ${
+                      isActive ? "text-white/80" : "text-primary"
                     }`}
                   >
                     {stat.label}
@@ -791,18 +789,18 @@ export default function DashboardPortfolioPage() {
       <div className="bg-white border border-primary/20 p-3 mb-6 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center flex-wrap">
         {/* Search */}
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search by couple, venue, destination, or tag…"
             value={searchTerm}
             onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
-            className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+            className="w-full pl-9 pr-8 py-3 text-sm text-primary placeholder:text-muted-foreground bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (
             <button
               onClick={() => dispatch({ type: "SET_SEARCH", value: "" })}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/30 hover:text-primary/60 transition-colors hover:cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground transition-colors hover:cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -843,7 +841,7 @@ export default function DashboardPortfolioPage() {
             <div className="hidden sm:block w-px h-8 bg-primary/20 self-center" />
             <button
               onClick={clearAllFilters}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-primary/50 hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
               Clear
@@ -854,7 +852,7 @@ export default function DashboardPortfolioPage() {
 
       {/* ── Results Info ── */}
       {hasActiveFilters && !isLoading && paginationMeta && (
-        <p className="text-primary/80 text-sm tracking-wider mb-4">
+        <p className="text-primary text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} portfolio
           {paginationMeta.total !== 1 ? "s" : ""}
           {filterDestination &&
@@ -877,10 +875,10 @@ export default function DashboardPortfolioPage() {
       ) : portfolios.length === 0 ? (
         <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
           <Images className="w-8 h-8 text-primary/20 mb-4" />
-          <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
+          <p className="text-primary text-xs tracking-widest uppercase mb-2">
             No Results
           </p>
-          <p className="text-primary/80 text-sm">
+          <p className="text-primary text-sm">
             {debouncedSearch
               ? `No portfolios match "${debouncedSearch}"`
               : hasActiveFilters

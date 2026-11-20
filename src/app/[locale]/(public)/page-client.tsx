@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTranslations } from "next-intl";
 
@@ -10,15 +10,26 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import AboutUs from "@/components/shared/about-us";
 import Instagram from "@/components/shared/instagram";
-import { usePortfolioData } from "@/lib/data/portfolio-data";
 import WeddingThemesSection from "@/components/shared/wedding-themes";
 import VenuesSection from "@/components/shared/venues";
 import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
-import type { Venue, Currency } from "@/types";
+import type { PortfolioReview } from "@/lib/data/static";
+import type { Venue, Currency, WeddingExperience, WeddingTheme } from "@/types";
 
-export default function Page() {
+interface HomePageProps {
+  reviews: PortfolioReview[];
+  venueList: Venue[];
+  weddingExperienceList: WeddingExperience[];
+  weddingThemeList: WeddingTheme[];
+}
+
+export default function Page({
+  reviews,
+  venueList,
+  weddingExperienceList,
+  weddingThemeList,
+}: HomePageProps) {
   const t = useTranslations("home");
-  const { reviews } = usePortfolioData();
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCurrency] = useState<Currency>("IDR");
   const [reviewSlide, setReviewSlide] = useState(0);
@@ -102,11 +113,16 @@ export default function Page() {
       <AboutUs />
 
       <WeddingThemesSection
+        weddingThemeList={weddingThemeList}
+        venueList={venueList}
         isMobile={isMobile}
         onExploreVenue={handleExploreVenueFromTheme}
       />
 
       <VenuesSection
+        venueList={venueList}
+        weddingExperienceList={weddingExperienceList}
+        weddingThemeList={weddingThemeList}
         isMobile={isMobile}
         selectedCurrency={selectedCurrency}
         exchangeRate={exchangeRate}
@@ -163,7 +179,7 @@ export default function Page() {
                 >
                   <div>
                     <span className="text-5xl text-white/90 font-serif leading-none select-none">
-                      "
+                      &ldquo;
                     </span>
                     <p className="text-white leading-relaxed italic mt-2 text-justify">
                       {review.quote}
@@ -194,7 +210,7 @@ export default function Page() {
               >
                 <div>
                   <span className="text-5xl text-white/90 font-serif leading-none select-none">
-                    "
+                    &ldquo;
                   </span>
                   <p className="text-white leading-relaxed italic mt-2 text-justify">
                     {reviews[reviewSlide].quote}

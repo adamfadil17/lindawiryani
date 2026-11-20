@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -26,13 +26,16 @@ import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import TranslationsEditor, {
+  ContentStatusField,
+} from "@/components/shared/translations-editor";
+import { useContentEditor } from "@/hook/useContentEditor";
 import { toSlug } from "@/utils";
 import { DestinationCategory } from "@/types";
 import {
   destinationFormSchema,
   DestinationFormData,
 } from "@/utils/form-validators";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -77,7 +80,7 @@ export default function DestinationDetailPage() {
 
   // ── setField helper: always triggers validation + touch so errors show ──
   const setField = (key: keyof DestinationFormData, value: unknown) =>
-    setValue(key as any, value as any, {
+    setValue(key as never, value as never, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -85,6 +88,7 @@ export default function DestinationDetailPage() {
 
   const formData = watch();
   const categoryId = watch("category_id");
+  const editor = useContentEditor("destination");
 
   // ── Categories ──
   const [allCategories, setAllCategories] = useState<DestinationCategory[]>([]);
@@ -118,7 +122,7 @@ export default function DestinationDetailPage() {
         (formData.highlights && formData.highlights.length > 0) ||
         (formData.ceremony_options && formData.ceremony_options.length > 0)
       )
-    : isDirty;
+    : isDirty || editor.dirty;
 
   // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
@@ -205,6 +209,7 @@ export default function DestinationDetailPage() {
             ? data.unique_features
             : [],
         });
+        editor.load(data);
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
           setNotFound(true);
@@ -238,11 +243,10 @@ export default function DestinationDetailPage() {
     setSaveStatus("saving");
     try {
       const slugPreview = formData.name ? toSlug(formData.name) : "";
-      const payload = { ...formData, slug: slugPreview };
+      const payload = { ...formData, slug: slugPreview, ...editor.payload() };
 
       if (isNew) {
         await axios.post("/api/destinations", payload, {
-          headers: getAuthHeaders(true),
         });
         setSaveStatus("idle");
         toast.success("Destination created!", {
@@ -252,9 +256,9 @@ export default function DestinationDetailPage() {
         router.push("/dashboard/destinations");
       } else {
         await axios.patch(`/api/destinations/${id}`, payload, {
-          headers: getAuthHeaders(true),
         });
         setSaveStatus("saved");
+        editor.markSaved();
         toast.success("Changes saved!", {
           description: "Your destination has been updated.",
         });
@@ -279,7 +283,6 @@ export default function DestinationDetailPage() {
     setDeleteStatus("deleting");
     try {
       await axios.delete(`/api/destinations/${id}`, {
-        headers: getAuthHeaders(),
       });
       setDeleteStatus("idle");
       toast.success("Destination deleted!", {
@@ -303,10 +306,10 @@ export default function DestinationDetailPage() {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-2">
           Not Found
         </p>
-        <p className="text-primary/80 text-sm mb-6">
+        <p className="text-primary text-sm mb-6">
           This destination does not exist.
         </p>
         <Link
@@ -365,15 +368,15 @@ export default function DestinationDetailPage() {
           <button
             type="button"
             onClick={() => guardedNavigate("/dashboard/destinations")}
-            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+            <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
               {isNew ? "Create New" : "Edit"}
             </p>
-            <h1 className="text-primary text-2xl font-semibold tracking-wide">
+            <h1 className="font-display text-primary text-2xl font-semibold tracking-wide">
               {isNew ? "New Destination" : formData.name || "Destination"}
             </h1>
           </div>
@@ -391,7 +394,7 @@ export default function DestinationDetailPage() {
             <button
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -401,7 +404,7 @@ export default function DestinationDetailPage() {
           <button
             onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
             disabled={saveStatus === "saving"}
-            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-2.5 hover:bg-primary/80 transition-colors disabled:opacity-60"
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-3 hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
             {saveStatus === "saving" ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -411,6 +414,18 @@ export default function DestinationDetailPage() {
             {isNew ? "Create" : "Save Changes"}
           </button>
         </div>
+      </div>
+
+      <div className="mb-6">
+        <ContentStatusField
+          value={editor.status}
+          onChange={editor.setStatus}
+          previewHref={
+            editor.status === "published" && slugPreview
+              ? `/destinations/${slugPreview}`
+              : null
+          }
+        />
       </div>
 
       <form
@@ -463,7 +478,7 @@ export default function DestinationDetailPage() {
                       value={categoryId}
                       onChange={(e) => setField("category_id", e.target.value)}
                       disabled={isCategoriesLoading}
-                      className="w-full pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isCategoriesLoading ? (
                         <option value="" disabled>
@@ -477,7 +492,7 @@ export default function DestinationDetailPage() {
                         ))
                       )}
                     </select>
-                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                   {formErrors.category_id && (
                     <p className="text-red-700 text-xs mt-1">
@@ -760,7 +775,7 @@ export default function DestinationDetailPage() {
           <Section title="URL & SEO">
             <div className="space-y-2">
               <div>
-                <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
+                <p className="text-primary text-xs tracking-widest uppercase mb-1">
                   URL Slug
                 </p>
                 <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
@@ -769,6 +784,14 @@ export default function DestinationDetailPage() {
               </div>
             </div>
           </Section>
+        </div>
+
+        <div className="lg:col-span-3 space-y-6">
+          <TranslationsEditor
+            entity="destination"
+            value={editor.translations}
+            onChange={editor.setTranslations}
+          />
         </div>
       </form>
 

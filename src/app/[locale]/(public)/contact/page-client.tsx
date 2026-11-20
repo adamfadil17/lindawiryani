@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import type React from "react";
 import { useState, useRef } from "react";
@@ -99,6 +99,7 @@ const initialFormData = {
 
 export default function ContactPage() {
   const t = useTranslations("contactPage");
+  const locale = useLocale();
   const tOpt = useTranslations("contactOptions");
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [formData, setFormData] = useState(initialFormData);
@@ -163,7 +164,7 @@ export default function ContactPage() {
       const response = await fetch("/api/send-email/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, recaptchaToken }),
+        body: JSON.stringify({ ...formData, recaptchaToken, locale }),
       });
 
       const data = await response.json();

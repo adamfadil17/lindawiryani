@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, ok } from "@/lib";
+import { prisma, handleError, ok, requireAuth, requireRole } from "@/lib";
 
 export interface DashboardSummary {
   /** Aggregate counts shown in the 6 stat cards */
@@ -98,6 +98,10 @@ function last8MonthsWindow(): { gte: Date; lte: Date; months: string[] } {
 
 export async function GET(req: NextRequest) {
   try {
+    // S2: dashboard aggregates inquiries, submissions and content counts.
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
+
     const { gte, lte, months } = last8MonthsWindow();
 
     // ── Fire all queries in parallel ──────────────────────────────────────────

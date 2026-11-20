@@ -58,7 +58,7 @@ export default function SaveModal({
           )}
         </div>
 
-        <p className="text-primary/90 tracking-[0.2em] uppercase text-xs mb-2">
+        <p className="text-primary/90 tracking-[0.08em] uppercase text-xs mb-2">
           {subtitle ?? "Confirm Action"}
         </p>
         <h2 className="text-primary text-xl font-semibold mb-3">
@@ -72,14 +72,14 @@ export default function SaveModal({
           <button
             onClick={onCancel}
             disabled={isLoading}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 min-h-[42px] hover:cursor-pointer hover:bg-primary/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
             disabled={isLoading}
-            className="flex-1 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 min-h-[42px] hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isLoading ? (
               <>

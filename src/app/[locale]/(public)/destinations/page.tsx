@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getPageMetadata } from "@/lib/seo";
+import { getDestinations } from "@/lib/content";
 import DestinationsPageClient from "./page-client";
 
 interface Props {
@@ -16,5 +17,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <DestinationsPageClient />;
+
+  const [localized, english] = await Promise.all([
+    getDestinations(locale),
+    getDestinations("en"),
+  ]);
+
+  const locationBySlug = Object.fromEntries(
+    english.destinationList.map((destination) => [
+      destination.slug,
+      destination.location,
+    ]),
+  );
+
+  return (
+    <DestinationsPageClient
+      destinationList={localized.destinationList}
+      locationBySlug={locationBySlug}
+    />
+  );
 }

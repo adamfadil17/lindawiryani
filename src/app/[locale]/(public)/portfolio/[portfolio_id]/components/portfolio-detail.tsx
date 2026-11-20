@@ -238,7 +238,7 @@ export default function PortfolioDetail({
                   className="border-l-2 border-primary pl-8 py-2"
                 >
                   <p className="text-foreground italic leading-relaxed text-lg">
-                    "{item.review}"
+                    &ldquo;{item.review}&rdquo;
                   </p>
                   <footer className="mt-4 text-primary/90 text-sm tracking-widest uppercase">
                     — {item.credit_couple_origin}

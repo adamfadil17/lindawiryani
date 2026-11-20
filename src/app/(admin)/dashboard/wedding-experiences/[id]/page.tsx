@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -29,9 +29,13 @@ import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import TranslationsEditor, {
+  ContentStatusField,
+} from "@/components/shared/translations-editor";
+import { useContentEditor } from "@/hook/useContentEditor";
+import { translationStateToPayload } from "@/lib/content/translation-fields";
 import TagsInput from "@/components/shared/tags-input";
 import { WeddingExperience, ExperienceFaq } from "@/types";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import {
   weddingExperienceFormSchema,
   WeddingExperienceFormData,
@@ -39,6 +43,12 @@ import {
 import { toSlug } from "@/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
+
+type FieldError = {
+  message?: string;
+  root?: { message?: string };
+  [index: number]: { message?: string };
+};
 
 type FAQ = ExperienceFaq;
 type ExperienceFormData = WeddingExperienceFormData;
@@ -138,13 +148,13 @@ function HeadingEditor({
         value={value[0]}
         onChange={(e) => onChange([e.target.value, value[1]])}
         placeholder="Line 1"
-        className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
+        className="w-full px-4 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
       />
       <input
         value={value[1]}
         onChange={(e) => onChange([value[0], e.target.value])}
         placeholder="Line 2"
-        className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
+        className="w-full px-4 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
       />
       {error && <p className="text-red-700 text-xs mt-1">{error}</p>}
     </div>
@@ -152,6 +162,72 @@ function HeadingEditor({
 }
 
 // ─── FAQ Editor ───────────────────────────────────────────────────────────────
+
+function FaqTranslationEditor({ faq }: { faq: FAQ }) {
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const editor = useContentEditor("faq");
+
+  const handleOpen = () => {
+    if (!open) {
+      editor.load(
+        faq as unknown as {
+          status?: string;
+          translations?: { locale: string; [key: string]: unknown }[];
+        },
+      );
+    }
+    setOpen((value) => !value);
+  };
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await axios.patch(
+        `/api/wedding-experiences/${faq.experience_id}/faqs/${faq.id}`,
+        { translations: translationStateToPayload(editor.translations) },
+      );
+      editor.markSaved();
+      toast.success("FAQ translations saved");
+    } catch {
+      toast.error("Failed to save FAQ translations");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="border-t border-primary/10 pt-3">
+      <button
+        type="button"
+        onClick={handleOpen}
+        className="text-xs tracking-widest uppercase text-muted-foreground hover:text-primary"
+      >
+        {open ? "Hide translations" : "Translations"}
+      </button>
+      {open && (
+        <div className="mt-3 space-y-3">
+          <TranslationsEditor
+            entity="faq"
+            value={editor.translations}
+            onChange={editor.setTranslations}
+          />
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={save}
+              disabled={saving || !editor.dirty}
+              className="bg-primary text-white text-xs tracking-widest uppercase px-4 py-2 disabled:opacity-40"
+            >
+              {saving ? "Saving..." : "Save FAQ translations"}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function FAQEditor({
   experienceId,
@@ -186,7 +262,6 @@ function FAQEditor({
       await axios.patch(
         `${baseUrl}/${faq.id}`,
         { question: faq.question, answer: faq.answer },
-        { headers: getAuthHeaders(true) },
       );
     } catch (err) {
       const errorMsg =
@@ -203,7 +278,7 @@ function FAQEditor({
     const faq = faqs[idx];
     setDeletingIdx(idx);
     try {
-      await axios.delete(`${baseUrl}/${faq.id}`, { headers: getAuthHeaders() });
+      await axios.delete(`${baseUrl}/${faq.id}`);
       onFaqsChange(faqs.filter((_, i) => i !== idx));
     } catch (err) {
       const errorMsg =
@@ -236,7 +311,6 @@ function FAQEditor({
           answer: draft.answer,
           sort_order: faqs.length + i,
         },
-        { headers: getAuthHeaders(true) },
       );
       const data: FAQ = response.data.data ?? response.data;
       onFaqsChange([...faqs, data]);
@@ -260,13 +334,13 @@ function FAQEditor({
           key={faq.id}
           className="border border-primary/20 p-4 space-y-3 relative"
         >
-          <span className="absolute top-3 left-3 text-[10px] text-primary/30 tracking-widest uppercase">
+          <span className="absolute top-3 left-3 text-xs text-muted-foreground tracking-widest uppercase">
             #{i + 1}
           </span>
           <button
             onClick={() => deleteFaqById(i)}
             disabled={deletingIdx === i}
-            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
           >
             {deletingIdx === i ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -275,7 +349,7 @@ function FAQEditor({
             )}
           </button>
           <div className="pt-4">
-            <label className="text-[10px] tracking-widest uppercase text-primary/50 mb-1 block">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground mb-1 block">
               Question
             </label>
             <input
@@ -283,11 +357,11 @@ function FAQEditor({
               onChange={(e) => updateFaq(i, "question", e.target.value)}
               onBlur={() => saveFaqUpdate(i)}
               placeholder="e.g. What is included in..."
-              className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
+              className="w-full px-4 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
             />
           </div>
           <div>
-            <label className="text-[10px] tracking-widest uppercase text-primary/50 mb-1 block">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground mb-1 block">
               Answer
             </label>
             <textarea
@@ -296,14 +370,15 @@ function FAQEditor({
               onBlur={() => saveFaqUpdate(i)}
               placeholder="Answer..."
               rows={3}
-              className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+              className="w-full px-4 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors resize-none"
             />
           </div>
           {savingIdx === i && (
-            <p className="text-[10px] text-primary/40 flex items-center gap-1">
+            <p className="text-xs text-muted-foreground flex items-center gap-1">
               <Loader2 className="w-3 h-3 animate-spin" /> Saving...
             </p>
           )}
+          <FaqTranslationEditor faq={faq} />
         </div>
       ))}
 
@@ -312,28 +387,28 @@ function FAQEditor({
           key={`draft-${i}`}
           className="border border-dashed border-primary/30 p-4 space-y-3 relative"
         >
-          <span className="absolute top-3 left-3 text-[10px] text-primary/30 tracking-widest uppercase">
+          <span className="absolute top-3 left-3 text-xs text-muted-foreground tracking-widest uppercase">
             #{faqs.length + i + 1} — unsaved
           </span>
           <button
             onClick={() => removeDraft(i)}
-            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-primary/30 hover:text-red-600 hover:bg-red-50 transition-colors"
+            className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors"
           >
             <X className="w-3.5 h-3.5" />
           </button>
           <div className="pt-4">
-            <label className="text-[10px] tracking-widest uppercase text-primary/50 mb-1 block">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground mb-1 block">
               Question
             </label>
             <input
               value={draft.question}
               onChange={(e) => updateDraft(i, "question", e.target.value)}
               placeholder="e.g. What is included in..."
-              className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
+              className="w-full px-4 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors"
             />
           </div>
           <div>
-            <label className="text-[10px] tracking-widest uppercase text-primary/50 mb-1 block">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground mb-1 block">
               Answer
             </label>
             <textarea
@@ -341,13 +416,13 @@ function FAQEditor({
               onChange={(e) => updateDraft(i, "answer", e.target.value)}
               placeholder="Answer..."
               rows={3}
-              className="w-full px-4 py-2.5 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+              className="w-full px-4 py-3 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors resize-none"
             />
           </div>
           <button
             onClick={() => createFaq(i)}
             disabled={!draft.question.trim() || savingIdx === -(i + 1)}
-            className="flex items-center gap-1.5 text-xs text-primary/60 border border-primary/20 px-3 py-1.5 hover:bg-primary/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 text-xs text-muted-foreground border border-primary/20 px-3 py-1.5 hover:bg-primary/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {savingIdx === -(i + 1) ? (
               <Loader2 className="w-3 h-3 animate-spin" />
@@ -360,14 +435,14 @@ function FAQEditor({
       ))}
 
       {faqs.length === 0 && drafts.length === 0 && (
-        <p className="text-xs text-primary/30 italic">
+        <p className="text-xs text-muted-foreground italic">
           No FAQs yet. Click &ldquo;Add FAQ&rdquo; to begin.
         </p>
       )}
 
       <button
         onClick={addDraft}
-        className="flex items-center gap-1.5 text-xs text-primary/50 hover:text-primary transition-colors hover:cursor-pointer"
+        className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors hover:cursor-pointer"
       >
         <Plus className="w-3.5 h-3.5" />
         Add FAQ
@@ -433,7 +508,7 @@ export default function ExperiencesDetailPage() {
 
   // ── setField helper: always triggers validation so errors show immediately ──
   const setField = (key: keyof ExperienceFormData, value: unknown) =>
-    setValue(key as any, value as any, {
+    setValue(key as never, value as never, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -446,6 +521,7 @@ export default function ExperiencesDetailPage() {
 
   // ── Page state ──
   const [isLoading, setIsLoading] = useState(!isNew);
+  const editor = useContentEditor("experience");
   const [notFound, setNotFound] = useState(false);
   const [experienceId, setExperienceId] = useState<string | null>(
     isNew ? null : id,
@@ -478,7 +554,7 @@ export default function ExperiencesDetailPage() {
         (formData.intro_list && formData.intro_list.some(Boolean)) ||
         (formData.services_list && formData.services_list.some(Boolean))
       )
-    : isDirty;
+    : isDirty || editor.dirty;
 
   // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
@@ -515,6 +591,12 @@ export default function ExperiencesDetailPage() {
         reset(expToForm(data));
         setFaqs(data.faqs ?? []);
         setExperienceId(data.id);
+        editor.load(
+          data as unknown as {
+            status?: string;
+            translations?: { locale: string; [key: string]: unknown }[];
+          },
+        );
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
           setNotFound(true);
@@ -546,12 +628,11 @@ export default function ExperiencesDetailPage() {
   const confirmSave = async () => {
     setSaveStatus("saving");
     try {
-      const dto = formToDto(formData);
+      const dto = { ...formToDto(formData), ...editor.payload() };
 
       if (isNew) {
         dto.slug = toSlug(formData.name);
         const response = await axios.post("/api/wedding-experiences", dto, {
-          headers: getAuthHeaders(true),
         });
         const data: WeddingExperience = response.data.data ?? response.data;
         setExperienceId(data.id);
@@ -563,7 +644,6 @@ export default function ExperiencesDetailPage() {
         router.push("/dashboard/wedding-experiences");
       } else {
         await axios.patch(`/api/wedding-experiences/${id}`, dto, {
-          headers: getAuthHeaders(true),
         });
         setSaveStatus("saved");
         toast.success("Changes saved!", {
@@ -571,6 +651,7 @@ export default function ExperiencesDetailPage() {
         });
         // Re-sync RHF baseline so isDirty becomes false
         reset(formData);
+        editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
     } catch (err) {
@@ -590,7 +671,6 @@ export default function ExperiencesDetailPage() {
     setDeleteStatus("deleting");
     try {
       await axios.delete(`/api/wedding-experiences/${id}`, {
-        headers: getAuthHeaders(),
       });
       setDeleteStatus("idle");
       toast.success("Experience deleted!", {
@@ -614,10 +694,10 @@ export default function ExperiencesDetailPage() {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-2">
           Not Found
         </p>
-        <p className="text-primary/80 text-sm mb-6">
+        <p className="text-primary text-sm mb-6">
           This experience does not exist.
         </p>
         <Link
@@ -697,15 +777,15 @@ export default function ExperiencesDetailPage() {
           <button
             type="button"
             onClick={() => guardedNavigate("/dashboard/wedding-experiences")}
-            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+            <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
               {isNew ? "Create New" : "Edit"}
             </p>
-            <h1 className="text-primary text-2xl font-semibold tracking-wide">
+            <h1 className="font-display text-primary text-2xl font-semibold tracking-wide">
               {isNew ? "New Experience" : formData.name || "Experience"}
             </h1>
           </div>
@@ -723,7 +803,7 @@ export default function ExperiencesDetailPage() {
             <button
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -733,7 +813,7 @@ export default function ExperiencesDetailPage() {
           <button
             onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
             disabled={saveStatus === "saving"}
-            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-2.5 hover:bg-primary/80 transition-colors disabled:opacity-60"
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest hover:cursor-pointer uppercase px-5 py-3 hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
             {saveStatus === "saving" ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -746,6 +826,18 @@ export default function ExperiencesDetailPage() {
       </div>
 
       {/* ── Two-column layout ── */}
+      <div className="mb-6">
+        <ContentStatusField
+          value={editor.status}
+          onChange={editor.setStatus}
+          previewHref={
+            editor.status === "published" && formData.name
+              ? `/wedding-experiences/${toSlug(formData.name)}`
+              : null
+          }
+        />
+      </div>
+
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
@@ -788,7 +880,7 @@ export default function ExperiencesDetailPage() {
                             .value as WeddingExperienceFormData["category"],
                         )
                       }
-                      className="w-full px-4 py-2.5 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
+                      className="w-full px-4 py-3 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
                     >
                       {categoryOptions.map((o) => (
                         <option key={o.id} value={o.id}>
@@ -796,7 +888,7 @@ export default function ExperiencesDetailPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                   {formErrors.category && (
                     <p className="text-red-700 text-xs mt-1">
@@ -808,42 +900,42 @@ export default function ExperiencesDetailPage() {
 
               {/* Auto-derived meta preview */}
               <div className="bg-primary/5 border border-primary/20 p-4 space-y-2.5">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40 font-semibold mb-3">
+                <p className="text-xs tracking-[0.08em] uppercase text-muted-foreground font-semibold mb-3">
                   Auto-generated Meta
                 </p>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">
+                  <span className="text-xs tracking-[0.08em] uppercase text-muted-foreground w-24 shrink-0">
                     Slug
                   </span>
-                  <span className="text-sm text-primary/70 flex-1 truncate font-mono">
+                  <span className="text-sm text-muted-foreground flex-1 truncate font-mono">
                     {formData.slug || toSlug(formData.name) || (
-                      <span className="text-primary/30 italic not-italic">
+                      <span className="text-muted-foreground italic not-italic">
                         Waiting for Name...
                       </span>
                     )}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">
+                  <span className="text-xs tracking-[0.08em] uppercase text-muted-foreground w-24 shrink-0">
                     Breadcrumb
                   </span>
-                  <span className="text-sm text-primary/70 flex-1 truncate">
+                  <span className="text-sm text-muted-foreground flex-1 truncate">
                     {formData.name || (
-                      <span className="text-primary/30 italic">
+                      <span className="text-muted-foreground italic">
                         Waiting for Display Name...
                       </span>
                     )}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-20 shrink-0">
+                  <span className="text-xs tracking-[0.08em] uppercase text-muted-foreground w-24 shrink-0">
                     Eyebrow
                   </span>
-                  <span className="text-sm text-primary/70 flex-1 truncate">
+                  <span className="text-sm text-muted-foreground flex-1 truncate">
                     {formData.name ? (
                       `${formData.name} Wedding Planner in Bali`
                     ) : (
-                      <span className="text-primary/30 italic">
+                      <span className="text-muted-foreground italic">
                         Waiting for Display Name...
                       </span>
                     )}
@@ -868,7 +960,7 @@ export default function ExperiencesDetailPage() {
                           .value as WeddingExperienceFormData["hero_style"],
                       )
                     }
-                    className="w-full px-4 py-2.5 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
+                    className="w-full px-4 py-3 pr-10 text-sm text-primary bg-white border border-primary/30 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
                   >
                     {heroStyleOptions.map((s) => (
                       <option key={s} value={s}>
@@ -876,7 +968,7 @@ export default function ExperiencesDetailPage() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                 </div>
                 {formErrors.hero_style && (
                   <p className="text-red-700 text-xs mt-1">
@@ -899,7 +991,7 @@ export default function ExperiencesDetailPage() {
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                         <ImageIcon className="w-7 h-7 text-primary/20" />
-                        <p className="text-primary/30 text-xs tracking-wider">
+                        <p className="text-muted-foreground text-xs tracking-wider">
                           No image set
                         </p>
                       </div>
@@ -920,34 +1012,34 @@ export default function ExperiencesDetailPage() {
 
               {/* Auto-derived hero text */}
               <div className="bg-primary/5 border border-primary/20 p-4 space-y-2.5">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40 font-semibold mb-3">
+                <p className="text-xs tracking-[0.08em] uppercase text-muted-foreground font-semibold mb-3">
                   Auto-generated Hero Text
                 </p>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">
+                  <span className="text-xs tracking-[0.08em] uppercase text-muted-foreground w-24 shrink-0">
                     Title
                   </span>
-                  <span className="text-sm text-primary/70 flex-1 truncate">
+                  <span className="text-sm text-muted-foreground flex-1 truncate">
                     {formData.name || (
-                      <span className="text-primary/30 italic">
+                      <span className="text-muted-foreground italic">
                         Waiting for Display Name...
                       </span>
                     )}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">
+                  <span className="text-xs tracking-[0.08em] uppercase text-muted-foreground w-24 shrink-0">
                     Subtitle
                   </span>
-                  <span className="text-sm text-primary/70">
+                  <span className="text-sm text-muted-foreground">
                     Weddings in Bali
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] tracking-widest uppercase text-primary/40 w-16 shrink-0">
+                  <span className="text-xs tracking-[0.08em] uppercase text-muted-foreground w-24 shrink-0">
                     CTA
                   </span>
-                  <span className="text-sm text-primary/70">INQUIRE NOW</span>
+                  <span className="text-sm text-muted-foreground">INQUIRE NOW</span>
                 </div>
               </div>
 
@@ -1001,10 +1093,10 @@ export default function ExperiencesDetailPage() {
                   value={formData.intro_heading as [string, string]}
                   onChange={(v) => setField("intro_heading", v)}
                   error={
-                    (formErrors.intro_heading as any)?.[0]?.message
-                      ? String((formErrors.intro_heading as any)[0].message)
-                      : (formErrors.intro_heading as any)?.[1]?.message
-                        ? String((formErrors.intro_heading as any)[1].message)
+                    (formErrors.intro_heading as FieldError)?.[0]?.message
+                      ? String((formErrors.intro_heading as FieldError)[0].message)
+                      : (formErrors.intro_heading as FieldError)?.[1]?.message
+                        ? String((formErrors.intro_heading as FieldError)[1].message)
                         : undefined
                   }
                 />
@@ -1059,7 +1151,7 @@ export default function ExperiencesDetailPage() {
                         ) : (
                           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                             <ImageIcon className="w-6 h-6 text-primary/20" />
-                            <p className="text-primary/30 text-xs tracking-wider">
+                            <p className="text-muted-foreground text-xs tracking-wider">
                               Image {idx + 1}
                             </p>
                           </div>
@@ -1080,10 +1172,10 @@ export default function ExperiencesDetailPage() {
                 {formErrors.intro_images && (
                   <p className="text-red-700 text-xs mt-1">
                     {String(
-                      (formErrors.intro_images as any)?.message ??
-                        (formErrors.intro_images as any)?.root?.message ??
-                        (formErrors.intro_images as any)?.[0]?.message ??
-                        (formErrors.intro_images as any)?.[1]?.message ??
+                      (formErrors.intro_images as FieldError)?.message ??
+                        (formErrors.intro_images as FieldError)?.root?.message ??
+                        (formErrors.intro_images as FieldError)?.[0]?.message ??
+                        (formErrors.intro_images as FieldError)?.[1]?.message ??
                         "",
                     )}
                   </p>
@@ -1125,11 +1217,11 @@ export default function ExperiencesDetailPage() {
                   value={formData.approach_heading as [string, string]}
                   onChange={(v) => setField("approach_heading", v)}
                   error={
-                    (formErrors.approach_heading as any)?.[0]?.message
-                      ? String((formErrors.approach_heading as any)[0].message)
-                      : (formErrors.approach_heading as any)?.[1]?.message
+                    (formErrors.approach_heading as FieldError)?.[0]?.message
+                      ? String((formErrors.approach_heading as FieldError)[0].message)
+                      : (formErrors.approach_heading as FieldError)?.[1]?.message
                         ? String(
-                            (formErrors.approach_heading as any)[1].message,
+                            (formErrors.approach_heading as FieldError)[1].message,
                           )
                         : undefined
                   }
@@ -1173,7 +1265,7 @@ export default function ExperiencesDetailPage() {
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                         <ImageIcon className="w-7 h-7 text-primary/20" />
-                        <p className="text-primary/30 text-xs tracking-wider">
+                        <p className="text-muted-foreground text-xs tracking-wider">
                           No image set
                         </p>
                       </div>
@@ -1219,11 +1311,11 @@ export default function ExperiencesDetailPage() {
                   value={formData.services_heading as [string, string]}
                   onChange={(v) => setField("services_heading", v)}
                   error={
-                    (formErrors.services_heading as any)?.[0]?.message
-                      ? String((formErrors.services_heading as any)[0].message)
-                      : (formErrors.services_heading as any)?.[1]?.message
+                    (formErrors.services_heading as FieldError)?.[0]?.message
+                      ? String((formErrors.services_heading as FieldError)[0].message)
+                      : (formErrors.services_heading as FieldError)?.[1]?.message
                         ? String(
-                            (formErrors.services_heading as any)[1].message,
+                            (formErrors.services_heading as FieldError)[1].message,
                           )
                         : undefined
                   }
@@ -1241,7 +1333,7 @@ export default function ExperiencesDetailPage() {
                   <p className="text-red-700 text-xs mt-1">
                     {String(
                       formErrors.services_list.message ??
-                        (formErrors.services_list as any)?.root?.message ??
+                        (formErrors.services_list as FieldError)?.root?.message ??
                         "At least one service is required",
                     )}
                   </p>
@@ -1264,7 +1356,7 @@ export default function ExperiencesDetailPage() {
 
               {/* Dark panel */}
               <div className="border border-primary/20 bg-primary/5 p-4 space-y-5 mt-2">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-primary/60 font-semibold">
+                <p className="text-xs tracking-[0.08em] uppercase text-muted-foreground font-semibold">
                   Dark Panel
                 </p>
 
@@ -1288,15 +1380,15 @@ export default function ExperiencesDetailPage() {
                     value={formData.services_dark_heading as [string, string]}
                     onChange={(v) => setField("services_dark_heading", v)}
                     error={
-                      (formErrors.services_dark_heading as any)?.[0]?.message
+                      (formErrors.services_dark_heading as FieldError)?.[0]?.message
                         ? String(
-                            (formErrors.services_dark_heading as any)[0]
+                            (formErrors.services_dark_heading as FieldError)[0]
                               .message,
                           )
-                        : (formErrors.services_dark_heading as any)?.[1]
+                        : (formErrors.services_dark_heading as FieldError)?.[1]
                               ?.message
                           ? String(
-                              (formErrors.services_dark_heading as any)[1]
+                              (formErrors.services_dark_heading as FieldError)[1]
                                 .message,
                             )
                           : undefined
@@ -1329,7 +1421,7 @@ export default function ExperiencesDetailPage() {
                     <p className="text-red-700 text-xs mt-1">
                       {String(
                         formErrors.services_dark_list.message ??
-                          (formErrors.services_dark_list as any)?.root
+                          (formErrors.services_dark_list as FieldError)?.root
                             ?.message ??
                           "At least one list item is required",
                       )}
@@ -1363,10 +1455,10 @@ export default function ExperiencesDetailPage() {
                   value={formData.closing_heading as [string, string]}
                   onChange={(v) => setField("closing_heading", v)}
                   error={
-                    (formErrors.closing_heading as any)?.[0]?.message
-                      ? String((formErrors.closing_heading as any)[0].message)
-                      : (formErrors.closing_heading as any)?.[1]?.message
-                        ? String((formErrors.closing_heading as any)[1].message)
+                    (formErrors.closing_heading as FieldError)?.[0]?.message
+                      ? String((formErrors.closing_heading as FieldError)[0].message)
+                      : (formErrors.closing_heading as FieldError)?.[1]?.message
+                        ? String((formErrors.closing_heading as FieldError)[1].message)
                         : undefined
                   }
                 />
@@ -1401,7 +1493,7 @@ export default function ExperiencesDetailPage() {
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                         <ImageIcon className="w-7 h-7 text-primary/20" />
-                        <p className="text-primary/30 text-xs tracking-wider">
+                        <p className="text-muted-foreground text-xs tracking-wider">
                           No image set
                         </p>
                       </div>
@@ -1452,7 +1544,7 @@ export default function ExperiencesDetailPage() {
             }
           >
             {isNew || !experienceId ? (
-              <p className="text-xs text-primary/40 italic">
+              <p className="text-xs text-muted-foreground italic">
                 FAQs can be added after the experience is created and saved.
               </p>
             ) : (
@@ -1469,7 +1561,7 @@ export default function ExperiencesDetailPage() {
         <div className="space-y-6">
           {/* Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
+            <p className="text-xs tracking-[0.08em] uppercase text-primary mb-4">
               Summary
             </p>
             <div className="space-y-3">
@@ -1478,7 +1570,7 @@ export default function ExperiencesDetailPage() {
                   key={item.label}
                   className="flex items-center justify-between"
                 >
-                  <span className="text-primary/80 font-semibold text-xs">
+                  <span className="text-primary font-semibold text-xs">
                     {item.label}
                   </span>
                   <span className="text-xs font-medium bg-primary text-white px-2 py-0.5 font-mono">
@@ -1491,7 +1583,7 @@ export default function ExperiencesDetailPage() {
 
           {/* Sections checklist */}
           <div className="bg-white border border-primary/20 p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
+            <p className="text-xs tracking-[0.08em] uppercase text-primary mb-4">
               Sections
             </p>
             <div className="space-y-2">
@@ -1518,7 +1610,7 @@ export default function ExperiencesDetailPage() {
                   key={s.label}
                   className="flex items-center justify-between"
                 >
-                  <span className="text-xs text-primary/70">{s.label}</span>
+                  <span className="text-xs text-muted-foreground">{s.label}</span>
                   <span
                     className={`w-2 h-2 rounded-full ${s.filled ? "bg-green-400" : "bg-primary/20"}`}
                   />
@@ -1526,6 +1618,14 @@ export default function ExperiencesDetailPage() {
               ))}
             </div>
           </div>
+        </div>
+
+        <div className="lg:col-span-3 space-y-6">
+          <TranslationsEditor
+            entity="experience"
+            value={editor.translations}
+            onChange={editor.setTranslations}
+          />
         </div>
       </form>
 

@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +28,7 @@ import { useCurrentUser } from "@/hook/useCurrentUser";
 import { useLogout } from "@/hook/useLogout";
 import { useInquiryBadge } from "@/hook/useInquiryBadge";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface NavItem {
   label: string;
@@ -92,14 +92,14 @@ const navGroups: NavGroup[] = [
       },
       {
         label: "Inquiry",
-        href: "/dashboard/inquiry",
+        href: "/dashboard/inquiries",
         icon: <MailOpen className="w-4 h-4" />,
       },
     ],
   },
 ];
 
-// ─── Destinations Nav Item (with dropdown) ───────────────────────────────────
+// â”€â”€â”€ Destinations Nav Item (with dropdown) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function DestinationsNavItem({
   collapsed,
@@ -121,10 +121,10 @@ function DestinationsNavItem({
       <Link
         href="/dashboard/destinations"
         title="Destinations"
-        className={`flex items-center justify-center px-3 py-2.5 transition-all duration-200 ${
+        className={`flex items-center justify-center px-3 py-3 transition-all duration-200 ${
           isActive
             ? "bg-primary text-white"
-            : "text-primary/60 hover:text-primary hover:bg-primary/20"
+            : "text-muted-foreground hover:text-primary hover:bg-primary/20"
         }`}
       >
         <MapPin className="w-4 h-4 flex-shrink-0" />
@@ -137,12 +137,12 @@ function DestinationsNavItem({
       {/* Parent button */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`w-full flex items-center gap-3 px-3 py-2.5 transition-all duration-200 hover:cursor-pointer ${
+        className={`w-full flex items-center gap-3 px-3 py-3 transition-all duration-200 hover:cursor-pointer ${
           isActive && !open
             ? "bg-primary text-white"
             : isActive
               ? "text-primary bg-primary/10"
-              : "text-primary/60 hover:text-primary hover:bg-primary/20"
+              : "text-muted-foreground hover:text-primary hover:bg-primary/20"
         }`}
       >
         <MapPin className="w-4 h-4 flex-shrink-0" />
@@ -166,7 +166,7 @@ function DestinationsNavItem({
               className={`flex items-center gap-2.5 px-3 py-2 transition-all duration-200 ${
                 pathname.startsWith("/dashboard/destination-categories")
                   ? "bg-primary text-white"
-                  : "text-primary/50 hover:text-primary hover:bg-primary/10"
+                  : "text-muted-foreground hover:text-primary hover:bg-primary/10"
               }`}
             >
               <FolderOpen className="w-3.5 h-3.5 flex-shrink-0" />
@@ -184,7 +184,7 @@ function DestinationsNavItem({
                 (pathname.startsWith("/dashboard/destinations/") &&
                   !pathname.startsWith("/dashboard/destination-categories"))
                   ? "bg-primary text-white"
-                  : "text-primary/50 hover:text-primary hover:bg-primary/10"
+                  : "text-muted-foreground hover:text-primary hover:bg-primary/10"
               }`}
             >
               <List className="w-3.5 h-3.5 flex-shrink-0" />
@@ -199,7 +199,7 @@ function DestinationsNavItem({
   );
 }
 
-// ─── Sidebar Component ────────────────────────────────────────────────────────
+// â”€â”€â”€ Sidebar Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function Sidebar({
   collapsed,
@@ -248,7 +248,7 @@ function Sidebar({
         )}
         <button
           onClick={onToggle}
-          className="text-primary/40 hover:text-primary transition-colors flex-shrink-0"
+          className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0"
           aria-label="Toggle sidebar"
         >
           <ChevronRight
@@ -264,7 +264,7 @@ function Sidebar({
         {navGroups.map((group) => (
           <div key={group.group}>
             {!collapsed && (
-              <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-3 px-3">
+              <p className="text-primary tracking-[0.12em] uppercase text-xs font-semibold mb-3 px-3">
                 {group.group}
               </p>
             )}
@@ -287,12 +287,12 @@ function Sidebar({
                       href={item.href}
                       title={collapsed ? item.label : undefined}
                       className={`
-                        flex items-center gap-3 px-3 py-2.5 transition-all duration-200 group relative
+                        flex items-center gap-3 px-3 py-3 transition-all duration-200 group relative
                         ${collapsed ? "justify-center" : ""}
                         ${
                           isActive
                             ? "bg-primary text-white"
-                            : "text-primary/60 hover:text-primary hover:bg-primary/20"
+                            : "text-muted-foreground hover:text-primary hover:bg-primary/20"
                         }
                       `}
                     >
@@ -303,7 +303,7 @@ function Sidebar({
                             {item.label}
                           </span>
                           {item.href === "/dashboard/inquiry" && inquiryBadgeCount > 0 && (
-                            <span className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${isActive ? "bg-white/20 text-white" : "bg-primary/20 text-primary"}`}>
+                            <span className={`text-xs px-1.5 py-0.5 min-w-[18px] text-center ${isActive ? "bg-white/20 text-white" : "bg-primary/20 text-primary"}`}>
                               {inquiryBadgeCount}
                             </span>
                           )}
@@ -326,7 +326,7 @@ function Sidebar({
       <div className="border-t border-primary/20 p-3 space-y-1">
         <Link
           href="/dashboard/users"
-          className={`flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:text-primary hover:bg-primary/5 transition-colors ${
+          className={`flex items-center gap-3 px-3 py-3 text-primary hover:text-primary hover:bg-primary/5 transition-colors ${
             collapsed ? "justify-center" : ""
           }`}
           title={collapsed ? "Users" : undefined}
@@ -337,7 +337,7 @@ function Sidebar({
           )}
         </Link>
         <button
-          className={`w-full flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors ${
+          className={`w-full flex items-center gap-3 px-3 py-3 text-primary hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors ${
             collapsed ? "justify-center" : ""
           }`}
           title={collapsed ? "Sign Out" : undefined}
@@ -353,7 +353,7 @@ function Sidebar({
   );
 }
 
-// ─── Mobile Sidebar ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Mobile Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function MobileSidebar({
   open,
@@ -395,7 +395,7 @@ function MobileSidebar({
           />
           <button
             onClick={onClose}
-            className="text-primary/40 hover:text-primary transition-colors"
+            className="text-muted-foreground hover:text-primary transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -405,7 +405,7 @@ function MobileSidebar({
         <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-6">
           {navGroups.map((group) => (
             <div key={group.group}>
-              <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px] mb-3 px-2">
+              <p className="text-primary tracking-[0.12em] uppercase text-xs font-semibold mb-3 px-2">
                 {group.group}
               </p>
               <ul className="space-y-1">
@@ -426,10 +426,10 @@ function MobileSidebar({
                       <Link
                         href={item.href}
                         onClick={onClose}
-                        className={`flex items-center gap-3 px-3 py-2.5 transition-all duration-200 ${
+                        className={`flex items-center gap-3 px-3 py-3 transition-all duration-200 ${
                           isActive
                             ? "bg-primary text-white"
-                            : "text-primary/60 hover:text-primary hover:bg-primary/5"
+                            : "text-muted-foreground hover:text-primary hover:bg-primary/5"
                         }`}
                       >
                         <span className="flex-shrink-0">{item.icon}</span>
@@ -438,7 +438,7 @@ function MobileSidebar({
                         </span>
                         {item.href === "/dashboard/inquiry" && inquiryBadgeCount > 0 && (
                           <span
-                            className={`text-[10px] px-1.5 py-0.5 min-w-[18px] text-center ${
+                            className={`text-xs px-1.5 py-0.5 min-w-[18px] text-center ${
                               isActive
                                 ? "bg-white/20 text-white"
                                 : "bg-primary/20 text-primary"
@@ -461,13 +461,13 @@ function MobileSidebar({
           <Link
             href="/dashboard/users"
             onClick={onClose}
-            className="flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:text-primary hover:bg-primary/5 transition-colors"
+            className="flex items-center gap-3 px-3 py-3 text-primary hover:text-primary hover:bg-primary/5 transition-colors"
           >
             <Users className="w-4 h-4" />
             <span className="text-xs tracking-[0.1em] uppercase">Users</span>
           </Link>
           <button
-            className="w-full flex items-center gap-3 px-3 py-2.5 text-primary/80 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-3 text-primary hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
             onClick={logout}
           >
             <LogOut className="w-4 h-4" />
@@ -479,7 +479,7 @@ function MobileSidebar({
   );
 }
 
-// ─── Helper: get initials from name ──────────────────────────────────────────
+// â”€â”€â”€ Helper: get initials from name â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function getInitials(name: string): string {
   return name
@@ -490,15 +490,30 @@ function getInitials(name: string): string {
     .join("");
 }
 
-// ─── Header Component ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Header Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
   const pathname = usePathname();
   const { user, loading } = useCurrentUser();
 
-  // Derive page title from pathname
+  // Revoked/deleted sessions still carry a valid signature, so /me is the
+  // authoritative probe: send them back to login immediately.
+  useEffect(() => {
+    if (!loading && !user) {
+      window.location.href = "/auth/login";
+    }
+  }, [loading, user]);
+
+  // Derive page title from pathname. Detail routes end in an id, so fall back
+  // to the section segment instead of printing a UUID in the header.
   const pageTitle = (() => {
-    const segment = pathname.split("/").filter(Boolean).at(-1) ?? "dashboard";
+    const isId = (segment: string) =>
+      /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(segment) || /^\d+$/.test(segment);
+    const segment =
+      pathname
+        .split("/")
+        .filter((part) => part && part !== "dashboard" && !isId(part))
+        .at(-1) ?? "dashboard";
     return segment
       .split("-")
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -507,7 +522,7 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
 
   const displayName = loading ? "..." : (user?.name ?? "Admin");
   const displayRole = loading ? "..." : (user?.role ?? "Administrator");
-  const initials = loading ? "•" : user ? getInitials(user.name) : "A";
+  const initials = loading ? "â€¢" : user ? getInitials(user.name) : "A";
 
   return (
     <header className="h-[72px] border-b border-primary/20 bg-white flex items-center justify-between px-6 sticky top-0 z-30">
@@ -515,16 +530,16 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
       <div className="flex items-center gap-4">
         <button
           onClick={onMobileMenuOpen}
-          className="lg:hidden text-primary/80 hover:text-primary transition-colors"
+          className="lg:hidden text-primary hover:text-primary transition-colors"
           aria-label="Open menu"
         >
           <Menu className="w-5 h-5" />
         </button>
         <div>
-          <p className="text-primary/80 tracking-[0.2em] uppercase text-[10px]">
+          <p className="text-primary tracking-[0.12em] uppercase text-xs font-semibold">
             Studio Portal
           </p>
-          <h1 className="text-primary font-semibold text-sm tracking-wide">
+          <h1 className="font-display text-primary font-semibold text-xl tracking-wide">
             {pageTitle}
           </h1>
         </div>
@@ -538,7 +553,7 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
             <p className="text-primary text-sm font-medium tracking-wide">
               {displayName}
             </p>
-            <p className="text-primary/80 text-xs tracking-wider uppercase">
+            <p className="text-muted-foreground text-xs tracking-wider uppercase">
               {displayRole}
             </p>
           </div>
@@ -555,7 +570,7 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
   );
 }
 
-// ─── Layout ───────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function DashboardLayout({
   children,

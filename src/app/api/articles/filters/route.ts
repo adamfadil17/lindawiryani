@@ -1,9 +1,12 @@
 import { NextRequest } from "next/server";
-import { prisma, handleError, ok } from "@/lib";
+import { prisma, handleError, ok, requireAuth, requireRole } from "@/lib";
 import { ArticleCategory } from "@/../generated/prisma";
 
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
+
     const grouped = await prisma.article.groupBy({
       by: ["category"],
       _count: { category: true },

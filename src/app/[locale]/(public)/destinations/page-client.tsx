@@ -7,10 +7,6 @@ import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import {
-  useDestinationData,
-  getDestinationData,
-} from "@/lib/data/destination-data";
 import { Destination } from "@/types";
 import PageClosing from "@/components/shared/page-closing";
 import PageHero from "@/components/shared/page-hero";
@@ -86,14 +82,12 @@ const INITIAL_SHOW = 6;
 function matchesLocation(
   destination: Destination,
   locationValue: string | null,
+  locationBySlug: Record<string, string>,
 ) {
   if (!locationValue) return true;
-  // Filtering always uses the English location (by id) so it keeps working
-  // when `destination.location` is translated for display.
-  const dest =
-    getDestinationData("en").destinationList.find(
-      (d) => d.id === destination.id,
-    )?.location ?? destination.location;
+  // Filtering always uses the English location so it keeps working when
+  // `destination.location` is translated for display.
+  const dest = locationBySlug[destination.slug] ?? destination.location;
   if (dest === locationValue) return true;
   return dest
     .split(/–/)
@@ -144,9 +138,16 @@ function DestinationCard({ destination }: { destination: Destination }) {
   );
 }
 
-function CategorySection({ categoryId }: { categoryId: CategoryId }) {
+function CategorySection({
+  categoryId,
+  destinationList,
+  locationBySlug,
+}: {
+  categoryId: CategoryId;
+  destinationList: Destination[];
+  locationBySlug: Record<string, string>;
+}) {
   const t = useTranslations("destinationsPage");
-  const { destinationList } = useDestinationData();
   const meta = CATEGORY_META[categoryId];
   const categoryLabel = t(`cat.${meta.key}`);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
@@ -159,7 +160,7 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
     if (d.category_id !== categoryId) return false;
     // Chip dengan slug (themes) -> cocokkan tepat satu destination.
     if (selected?.slug) return d.slug === selected.slug;
-    return matchesLocation(d, selectedValue);
+    return matchesLocation(d, selectedValue, locationBySlug);
   });
 
   useEffect(() => {
@@ -358,9 +359,14 @@ function CategorySection({ categoryId }: { categoryId: CategoryId }) {
   );
 }
 
-export default function DestinationsPage() {
+export default function DestinationsPage({
+  destinationList,
+  locationBySlug,
+}: {
+  destinationList: Destination[];
+  locationBySlug: Record<string, string>;
+}) {
   const t = useTranslations("destinationsPage");
-  const { destinationList } = useDestinationData();
 
   const scrollToSection = (anchor: string) => {
     const el = document.getElementById(anchor);
@@ -581,7 +587,12 @@ export default function DestinationsPage() {
       </section>
 
       {(Object.keys(CATEGORY_META) as CategoryId[]).map((categoryId) => (
-        <CategorySection key={categoryId} categoryId={categoryId} />
+        <CategorySection
+          key={categoryId}
+          categoryId={categoryId}
+          destinationList={destinationList}
+          locationBySlug={locationBySlug}
+        />
       ))}
       <PageClosing
         image="https://res.cloudinary.com/dzerxindp/image/upload/v1773318397/destination-closing_eie0gt.png"

@@ -1,36 +1,39 @@
 import { useEffect, useState } from "react";
+
 import { User } from "../types";
 
+/**
+ * Loads the signed-in user from the HttpOnly session cookie.
+ * No token is read from (or written to) localStorage anymore (task 1.2).
+ */
 export function useCurrentUser() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token =
-      localStorage.getItem("token") ??
-      document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="))
-        ?.split("=")[1];
-
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    let cancelled = false;
 
     fetch("/api/auth/me", {
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
+      cache: "no-store",
     })
       .then((res) => {
         if (!res.ok) throw new Error("Unauthorized");
         return res.json();
       })
       .then((json) => {
-        // Support both { data: {...} } envelope and flat response
-        setUser(json.data ?? json);
+        if (!cancelled) setUser(json.data ?? json);
       })
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (!cancelled) setUser(null);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { user, loading };

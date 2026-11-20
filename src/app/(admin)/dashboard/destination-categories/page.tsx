@@ -4,7 +4,7 @@ import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "@/lib/api";
 import {
   Plus,
   Search,
@@ -17,7 +17,6 @@ import {
   ChevronLeft,
   Loader2,
 } from "lucide-react";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { DestinationCategory } from "@/types";
 import {
   destinationCategoryFormSchema,
@@ -190,7 +189,7 @@ function Pagination({
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-primary/20">
-      <p className="text-primary/60 text-xs tracking-wider order-2 sm:order-1">
+      <p className="text-muted-foreground text-xs tracking-wider order-2 sm:order-1">
         Showing{" "}
         <span className="text-primary font-medium">
           {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
@@ -202,7 +201,7 @@ function Pagination({
         <button
           onClick={() => onPageChange(meta.page - 1)}
           disabled={!meta.hasPrev}
-          className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center border border-primary/50 text-muted-foreground hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -211,7 +210,7 @@ function Pagination({
           p === "..." ? (
             <span
               key={`ellipsis-${i}`}
-              className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center text-primary/40 text-sm"
+              className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center text-muted-foreground text-sm"
             >
               …
             </span>
@@ -222,7 +221,7 @@ function Pagination({
               className={`w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
                 meta.page === p
                   ? "bg-primary text-white border border-primary"
-                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+                  : "border border-primary/20 text-muted-foreground hover:border-primary/40 hover:text-primary"
               }`}
             >
               {p}
@@ -233,7 +232,7 @@ function Pagination({
         <button
           onClick={() => onPageChange(meta.page + 1)}
           disabled={!meta.hasNext}
-          className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-9 h-9 sm:w-8 sm:h-8 flex items-center justify-center border border-primary/50 text-muted-foreground hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -258,14 +257,14 @@ function CategoryRow({
       {/* ── Mobile: Card layout ── */}
       <div className="flex sm:hidden items-center gap-3 px-4 py-3.5 border-b border-primary/10 active:bg-primary/5 transition-colors">
         <div className="w-9 h-9 bg-primary/5 flex items-center justify-center shrink-0">
-          <FolderOpen className="w-4 h-4 text-primary/40" />
+          <FolderOpen className="w-4 h-4 text-muted-foreground" />
         </div>
 
         <div className="flex-1 min-w-0">
           <p className="text-primary font-medium text-sm truncate">{category.name}</p>
           <div className="flex items-center gap-1 mt-0.5">
-            <MapPin className="w-3 h-3 text-primary/30 shrink-0" />
-            <span className="text-xs text-primary/50">
+            <MapPin className="w-3 h-3 text-muted-foreground shrink-0" />
+            <span className="text-xs text-muted-foreground">
               {category.destinations.length}{" "}
               {category.destinations.length === 1 ? "destination" : "destinations"}
             </span>
@@ -275,21 +274,21 @@ function CategoryRow({
         <div className="flex items-center gap-0.5 shrink-0">
           <Link
             href={`/dashboard/destination-categories/${category.id}`}
-            className="w-9 h-9 flex items-center justify-center text-primary/40 hover:text-primary active:text-primary active:bg-primary/10 transition-colors"
+            className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-primary active:text-primary active:bg-primary/10 transition-colors"
             title="Edit Category"
           >
             <Pencil className="w-4 h-4" />
           </Link>
           <button
             onClick={() => onDeleteClick(category)}
-            className="w-9 h-9 flex items-center justify-center text-primary/40 hover:text-red-700 active:text-red-700 active:bg-red-50 transition-colors hover:cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-red-700 active:text-red-700 active:bg-red-50 transition-colors hover:cursor-pointer"
             title="Delete Category"
           >
             <Trash2 className="w-4 h-4" />
           </button>
           <Link
             href={`/dashboard/destination-categories/${category.id}`}
-            className="w-9 h-9 flex items-center justify-center text-primary/40 hover:text-primary active:text-primary active:bg-primary/10 transition-colors"
+            className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-primary active:text-primary active:bg-primary/10 transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </Link>
@@ -298,12 +297,12 @@ function CategoryRow({
 
       {/* ── Desktop: Table row ── */}
       <div className="hidden sm:flex items-center gap-4 px-6 py-4 border-b border-primary/10 hover:bg-primary/2 transition-colors group">
-        <span className="w-8 text-xs text-primary/30 font-mono shrink-0">
+        <span className="w-8 text-xs text-muted-foreground font-mono shrink-0">
           {String(index + 1).padStart(2, "0")}
         </span>
 
         <div className="w-9 h-9 bg-primary/5 flex items-center justify-center shrink-0">
-          <FolderOpen className="w-4 h-4 text-primary/40" />
+          <FolderOpen className="w-4 h-4 text-muted-foreground" />
         </div>
 
         <div className="flex-1 min-w-0">
@@ -311,8 +310,8 @@ function CategoryRow({
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <MapPin className="w-3 h-3 text-primary/30" />
-          <span className="text-xs text-primary/50">
+          <MapPin className="w-3 h-3 text-muted-foreground" />
+          <span className="text-xs text-muted-foreground">
             {category.destinations.length}{" "}
             {category.destinations.length === 1 ? "destination" : "destinations"}
           </span>
@@ -321,21 +320,21 @@ function CategoryRow({
         <div className="flex items-center gap-1 shrink-0">
           <Link
             href={`/dashboard/destination-categories/${category.id}`}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:text-primary hover:bg-primary/10 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
             title="Edit Category"
           >
             <Pencil className="w-4 h-4" />
           </Link>
           <button
             onClick={() => onDeleteClick(category)}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:text-red-700 hover:bg-red-50 transition-colors hover:cursor-pointer"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-red-700 hover:bg-red-50 transition-colors hover:cursor-pointer"
             title="Delete Category"
           >
             <Trash2 className="w-4 h-4" />
           </button>
           <Link
             href={`/dashboard/destination-categories/${category.id}`}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:text-primary hover:bg-primary/10 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </Link>
@@ -433,7 +432,6 @@ export default function DashboardDestinationCategoriesPage() {
       dispatch({ type: "CREATE_START" });
       try {
         await axios.post("/api/destination-categories", data, {
-          headers: getAuthHeaders(true),
         });
         toast.success("Category created successfully");
         dispatch({ type: "CREATE_SUCCESS" });
@@ -468,7 +466,6 @@ export default function DashboardDestinationCategoriesPage() {
     dispatch({ type: "DELETE_START" });
     try {
       await axios.delete(`/api/destination-categories/${deleteTarget.id}`, {
-        headers: getAuthHeaders(),
       });
       toast.success(`"${deleteTarget.name}" deleted`);
       dispatch({ type: "DELETE_SUCCESS" });
@@ -509,13 +506,13 @@ export default function DashboardDestinationCategoriesPage() {
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
         <div>
-          <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+          <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
             Content Management
           </p>
-          <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+          <h1 className="font-display text-primary text-2xl md:text-3xl font-semibold tracking-wide">
             Destination Categories
           </h1>
-          <p className="text-primary/80 text-sm mt-1">
+          <p className="text-primary text-sm mt-1">
             {isLoading ? (
               <span className="inline-block w-24 h-3 bg-primary/10 animate-pulse rounded" />
             ) : (
@@ -549,13 +546,13 @@ export default function DashboardDestinationCategoriesPage() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div className="bg-primary text-white p-4 sm:p-5 border border-primary">
-            <p className="text-xs tracking-[0.2em] uppercase text-white/70 mb-1.5">
+            <p className="text-xs tracking-[0.08em] uppercase text-white/70 mb-1.5">
               Total Categories
             </p>
             <p className="text-2xl font-semibold">{totalCategories}</p>
           </div>
           <div className="bg-white border border-primary/20 p-4 sm:p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/60 mb-1.5">
+            <p className="text-xs tracking-[0.08em] uppercase text-muted-foreground mb-1.5">
               Total Destinations
             </p>
             <p className="text-2xl font-semibold text-primary">{totalDestinations}</p>
@@ -566,18 +563,18 @@ export default function DashboardDestinationCategoriesPage() {
       {/* ── Search Bar ── */}
       <div className="bg-white border border-primary/20 p-3 sm:p-4 mb-4 sm:mb-6">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search categories..."
             value={searchTerm}
             onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
-            className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+            className="w-full pl-9 pr-8 py-3 text-sm text-primary placeholder:text-muted-foreground bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {searchTerm && (
             <button
               onClick={() => dispatch({ type: "SET_SEARCH", value: "" })}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 active:text-primary/80 hover:cursor-pointer transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary active:text-primary hover:cursor-pointer transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -587,7 +584,7 @@ export default function DashboardDestinationCategoriesPage() {
 
       {/* ── Results info when searching ── */}
       {hasActiveSearch && !isLoading && paginationMeta && (
-        <p className="text-primary/80 text-sm tracking-wider mb-4">
+        <p className="text-primary text-sm tracking-wider mb-4">
           Showing {paginationMeta.total} categor
           {paginationMeta.total !== 1 ? "ies" : "y"} for &ldquo;{debouncedSearch}&rdquo;
         </p>
@@ -597,22 +594,22 @@ export default function DashboardDestinationCategoriesPage() {
       <div className="bg-white border border-primary/20 overflow-hidden">
         {/* Desktop table header */}
         <div className="hidden sm:flex items-center gap-4 px-6 py-3 bg-primary/3 border-b border-primary/10">
-          <span className="w-8 text-xs tracking-widest uppercase text-primary/40">#</span>
+          <span className="w-8 text-xs tracking-widest uppercase text-muted-foreground">#</span>
           <span className="w-9 shrink-0" />
-          <span className="flex-1 text-xs tracking-widest uppercase text-primary/40">
+          <span className="flex-1 text-xs tracking-widest uppercase text-muted-foreground">
             Name
           </span>
-          <span className="shrink-0 text-xs tracking-widest uppercase text-primary/40">
+          <span className="shrink-0 text-xs tracking-widest uppercase text-muted-foreground">
             Destinations
           </span>
-          <span className="w-24 shrink-0 text-xs tracking-widest uppercase text-primary/40 text-right">
+          <span className="w-24 shrink-0 text-xs tracking-widest uppercase text-muted-foreground text-right">
             Actions
           </span>
         </div>
 
         {/* Mobile list header */}
-        <div className="flex sm:hidden items-center px-4 py-2.5 bg-primary/3 border-b border-primary/10">
-          <span className="text-xs tracking-widest uppercase text-primary/40">
+        <div className="flex sm:hidden items-center px-4 py-3 bg-primary/3 border-b border-primary/10">
+          <span className="text-xs tracking-widest uppercase text-muted-foreground">
             Categories
           </span>
         </div>
@@ -633,10 +630,10 @@ export default function DashboardDestinationCategoriesPage() {
         {!isLoading && categories.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 sm:py-24 text-center px-4">
             <FolderOpen className="w-8 h-8 text-primary/20 mb-4" />
-            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">
+            <p className="text-primary text-xs tracking-widest uppercase mb-2">
               No Results
             </p>
-            <p className="text-primary/60 text-sm">
+            <p className="text-muted-foreground text-sm">
               {debouncedSearch
                 ? `No categories match "${debouncedSearch}"`
                 : "No destination categories yet"}

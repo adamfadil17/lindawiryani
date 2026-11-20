@@ -3,14 +3,20 @@ import { NextRequest } from "next/server";
 import {
   prisma,
   handleError,
+  conflict,
   requireAuth,
   requireRole,
   notFound,
   ok,
   noContent,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
 import { updateVenueSchema } from "@/utils";
-import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { resolveContentAccess } from "@/lib/content/access";
+import {
+  translationsReplace,
+  publicationFields,
+} from "@/lib/content/translations";
 
 const VENUE_INCLUDE = {
   destination: true,
@@ -18,20 +24,26 @@ const VENUE_INCLUDE = {
   gallery: { orderBy: { sort_order: "asc" as const } },
   themes: true,
   portfolios: true,
+  translations: true,
 };
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { id } = await params;
 
     const venue = await prisma.venue.findUnique({
       where: { id },
       include: VENUE_INCLUDE,
     });
-    if (!venue) return notFound("Venue");
+    if (!venue || (!access.isStaff && venue.status !== "published")) {
+      return notFound("Venue");
+    }
     return ok(venue);
   } catch (error) {
     return handleError(error);
@@ -50,26 +62,31 @@ export async function PATCH(
 
     const body = await req.json();
     const dto = updateVenueSchema.parse(body);
+    const { translations, status, ...base } = dto;
 
-    // Auto-regenerate slug jika name ikut diupdate
-    let slug: string | undefined;
-    if (dto.name) {
-      const baseSlug = toSlug(dto.name);
-      slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.venue.findUnique({ where: { slug: s } });
-        // Skip slug milik diri sendiri
-        return !!existing && existing.id !== id;
-      });
+    const current = await prisma.venue.findUnique({
+      where: { id },
+      select: { slug: true, status: true },
+    });
+    if (!current) return notFound("Venue");
+
+    // D2: the slug follows the input and is immutable once published.
+    if (dto.slug && dto.slug !== current.slug && current.status === "published") {
+      return conflict("Slug cannot be changed after publish");
     }
 
     const venue = await prisma.venue.update({
       where: { id },
       data: {
-        ...dto,
-        ...(slug !== undefined && { slug }),
+        ...base,
+        ...publicationFields(status),
+        ...(translations !== undefined
+          ? { translations: translationsReplace("venue", translations) }
+          : {}),
       },
       include: VENUE_INCLUDE,
     });
+    await revalidatePublicContent();
     return ok(venue);
   } catch (error) {
     return handleError(error);
@@ -102,6 +119,7 @@ export async function DELETE(
       await tx.venue.delete({ where: { id } });
     });
 
+    await revalidatePublicContent();
     return noContent();
   } catch (error) {
     return handleError(error);

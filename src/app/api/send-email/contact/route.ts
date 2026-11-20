@@ -1,45 +1,38 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
-// Fungsi untuk verifikasi reCAPTCHA
-async function verifyRecaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-
-  if (!secretKey) {
-    console.error("RECAPTCHA_SECRET_KEY is not set");
-    return false;
-  }
-
-  try {
-    const response = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `secret=${secretKey}&response=${token}`,
-      },
-    );
-
-    const data = await response.json();
-    return data.success === true;
-  } catch (error) {
-    console.error("Error verifying reCAPTCHA:", error);
-    return false;
-  }
-}
+import { prisma } from "@/lib";
+import {
+  createMailer,
+  emailDisabled,
+  escapeHtml,
+  isEmailAddress,
+  sanitizeHeader,
+} from "@/lib/email";
+import { verifyRecaptcha } from "@/lib/recaptcha";
+import {
+  consumeRateLimit,
+  getClientIp,
+  RATE_LIMITS,
+  tooManyRequests,
+} from "@/lib/rate-limit";
+import { contactFormPayloadSchema } from "@/utils/public-form-schemas";
 
 // Helper: render array as comma-separated or "Not provided"
 function listOrEmpty(arr: string[] | undefined | null): string {
   if (!arr || arr.length === 0) return "Not provided";
-  return arr.join(", ");
+  return arr.map((item) => escapeHtml(item)).join(", ");
 }
 
 export async function POST(req: Request) {
   try {
+    const ipLimit = consumeRateLimit({
+      key: `send-email:contact:${getClientIp(req)}`,
+      ...RATE_LIMITS.emailRoute,
+    });
+    if (!ipLimit.allowed) return tooManyRequests(ipLimit);
+
     const formData = await req.json();
-    const { recaptchaToken, ...emailData } = formData;
+    const { recaptchaToken, ...rawData } = formData;
 
     // Verifikasi reCAPTCHA
     if (!recaptchaToken) {
@@ -58,20 +51,47 @@ export async function POST(req: Request) {
       );
     }
 
-    // Konfigurasi transporter nodemailer menggunakan environment variables
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD,
+    const parsed = contactFormPayloadSchema.safeParse(rawData);
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          message: "Please check the form and try again.",
+          errors: parsed.error.flatten().fieldErrors,
+        },
+        { status: 422 },
+      );
+    }
+
+    const emailData = parsed.data;
+
+    // Store first; email is best-effort after the inquiry is safely persisted.
+    await prisma.inquirySubmission.create({
+      data: {
+        full_name: emailData.fullName,
+        email_or_whatsapp: emailData.emailOrWhatsapp,
+        wedding_date: emailData.weddingDate ?? null,
+        number_of_guests: emailData.numberOfGuests ?? null,
+        wedding_location_interest: emailData.weddingLocationInterest,
+        wedding_style: emailData.weddingStyle ?? null,
+        estimated_budget: emailData.estimatedBudget ?? null,
+        services_needed: emailData.servicesNeeded,
+        venue_secured: emailData.venueSecured ?? null,
+        your_vision: emailData.yourVision ?? null,
+        how_did_you_find_us: emailData.howDidYouFindUs ?? null,
+        locale: emailData.locale ?? null,
       },
     });
+
+    const transporter = createMailer();
+    const customerEmail = isEmailAddress(emailData.emailOrWhatsapp)
+      ? emailData.emailOrWhatsapp.trim()
+      : null;
 
     // ── Email untuk Admin ──────────────────────────────────────────────────
     const adminMailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: `New Wedding Enquiry from ${emailData.fullName}`,
+      subject: `New Wedding Enquiry from ${sanitizeHeader(emailData.fullName)}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -181,11 +201,11 @@ export async function POST(req: Request) {
                 <div class="section-title">Contact Information</div>
                 <div class="field">
                   <div class="label">Full Name</div>
-                  <div class="value">${emailData.fullName || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.fullName || "Not provided")}</div>
                 </div>
                 <div class="field">
                   <div class="label">Email / WhatsApp</div>
-                  <div class="value">${emailData.emailOrWhatsapp || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.emailOrWhatsapp || "Not provided")}</div>
                 </div>
               </div>
 
@@ -193,11 +213,11 @@ export async function POST(req: Request) {
                 <div class="section-title">Wedding Details</div>
                 <div class="field">
                   <div class="label">Wedding Date / Preferred Month</div>
-                  <div class="value">${emailData.weddingDate || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.weddingDate || "Not provided")}</div>
                 </div>
                 <div class="field">
                   <div class="label">Number of Guests</div>
-                  <div class="value">${emailData.numberOfGuests || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.numberOfGuests || "Not provided")}</div>
                 </div>
               </div>
 
@@ -211,14 +231,14 @@ export async function POST(req: Request) {
               <div class="section">
                 <div class="section-title">Wedding Style</div>
                 <div class="field">
-                  <div class="value">${emailData.weddingStyle || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.weddingStyle || "Not provided")}</div>
                 </div>
               </div>
 
               <div class="section">
                 <div class="section-title">Estimated Budget</div>
                 <div class="field">
-                  <div class="value">${emailData.estimatedBudget || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.estimatedBudget || "Not provided")}</div>
                 </div>
               </div>
 
@@ -233,21 +253,21 @@ export async function POST(req: Request) {
                 <div class="section-title">Venue Status</div>
                 <div class="field">
                   <div class="label">Have You Secured a Venue?</div>
-                  <div class="value">${emailData.venueSecured || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.venueSecured || "Not provided")}</div>
                 </div>
               </div>
 
               <div class="section">
                 <div class="section-title">Their Vision</div>
                 <div class="field">
-                  <div class="value">${emailData.yourVision || "No additional information provided"}</div>
+                  <div class="value">${escapeHtml(emailData.yourVision || "No additional information provided")}</div>
                 </div>
               </div>
 
               <div class="section">
                 <div class="section-title">How They Found Us</div>
                 <div class="field">
-                  <div class="value">${emailData.howDidYouFindUs || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.howDidYouFindUs || "Not provided")}</div>
                 </div>
               </div>
 
@@ -273,7 +293,7 @@ export async function POST(req: Request) {
     // ── Email untuk Customer (Auto-reply) ──────────────────────────────────
     const customerMailOptions = {
       from: process.env.EMAIL_USER,
-      to: emailData.emailOrWhatsapp,
+      to: customerEmail as string,
       subject: "Thank You for Your Enquiry",
       html: `
         <!DOCTYPE html>
@@ -428,7 +448,7 @@ export async function POST(req: Request) {
 
             <div class="content">
               <div class="greeting">
-                Dear ${emailData.fullName},
+                Dear ${escapeHtml(emailData.fullName)},
               </div>
 
               <div class="message">
@@ -488,20 +508,29 @@ export async function POST(req: Request) {
       `,
     };
 
-    // Kirim email ke admin
-    await transporter.sendMail(adminMailOptions);
-
-    // Kirim email ke customer
-    await transporter.sendMail(customerMailOptions);
+    // Email is best-effort: the inquiry is already stored.
+    if (!emailDisabled()) {
+      try {
+        await transporter.sendMail(adminMailOptions);
+        if (customerEmail) {
+          await transporter.sendMail(customerMailOptions);
+        }
+      } catch (mailError) {
+        console.error("Inquiry stored but email failed:", mailError);
+      }
+    }
 
     return NextResponse.json(
-      { message: "Emails sent successfully" },
+      {
+        message:
+          "Thank you — your inquiry has been received. We will be in touch soon.",
+      },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error processing contact inquiry:", error);
     return NextResponse.json(
-      { message: "Failed to send email", error: String(error) },
+      { message: "We could not save your inquiry. Please try again." },
       { status: 500 },
     );
   }

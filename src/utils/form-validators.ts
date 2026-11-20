@@ -421,33 +421,25 @@ export type SubmissionFormData = z.infer<typeof submissionFormSchema>;
 // ─────────────────────────────────────────────
 
 export const inquirySubmissionFormSchema = z.object({
-  your_name: z
+  full_name: z
     .string()
     .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must be at most 100 characters"),
-  your_email: z.string().email("Invalid email address"),
-  your_address: z.string().min(2, "Address must be at least 2 characters"),
-  telephone: z.string().min(1, "Telephone is required"),
-  name_of_groom: z
+    .max(150, "Name must be at most 150 characters"),
+  // The public form accepts either an email address or a WhatsApp number.
+  email_or_whatsapp: z
     .string()
-    .min(2, "Groom name must be at least 2 characters")
-    .max(100, "Groom name must be at most 100 characters"),
-  religion_of_groom: z.string().min(1, "Groom religion is required"),
-  nationality_of_groom: z.string().min(1, "Groom nationality is required"),
-  name_of_bride: z
-    .string()
-    .min(2, "Bride name must be at least 2 characters")
-    .max(100, "Bride name must be at most 100 characters"),
-  religion_of_bride: z.string().min(1, "Bride religion is required"),
-  nationality_of_bride: z.string().min(1, "Bride nationality is required"),
-  wedding_date: z.string().min(1, "Wedding date is required"),
-  wedding_venue: z.string().min(1, "Wedding venue is required"),
-  number_of_attendance: z.string().min(1, "Number of attendees is required"),
-  approximate_wedding_budget: z.string().min(1, "Budget is required"),
-  hotel_name_in_bali: z.string().min(1, "Hotel name is required"),
-  arrival_date: z.string().min(1, "Arrival date is required"),
-  departure_date: z.string().min(1, "Departure date is required"),
-  your_message: z.string().min(1, "Message is required"),
+    .min(3, "Email or WhatsApp is required")
+    .max(255),
+  wedding_date: z.string().optional(),
+  number_of_guests: z.string().optional(),
+  wedding_location_interest: z.array(z.string()).default([]),
+  wedding_style: z.string().optional(),
+  estimated_budget: z.string().optional(),
+  services_needed: z.array(z.string()).default([]),
+  venue_secured: z.string().optional(),
+  your_vision: z.string().max(5000).optional(),
+  how_did_you_find_us: z.string().optional(),
+  locale: z.string().min(2).max(10).optional(),
 });
 
 export type InquirySubmissionFormData = z.infer<

@@ -1,14 +1,17 @@
 import { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { WeddingExperiencesDetail } from "./components/wedding-experiences-detail";
-import { getWeddingExperienceData } from "@/lib/data/wedding-experience-data";
-import { getVenueData } from "@/lib/data/venue-data";
-import { getWeddingThemeData } from "@/lib/data/wedding-theme-data";
+import {
+  getWeddingExperiences,
+  getVenues,
+  getWeddingThemes,
+  getContentLocales,
+} from "@/lib/content";
 import type { Locale } from "@/i18n/routing";
 import { buildPageMetadata, getPageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
-  const { weddingExperienceList } = getWeddingExperienceData("en");
+  const { weddingExperienceList } = await getWeddingExperiences("en");
   return weddingExperienceList.map((e) => ({ experience_id: e.slug }));
 }
 
@@ -18,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale; experience_id: string }>;
 }): Promise<Metadata> {
   const { locale, experience_id } = await params;
-  const { weddingExperienceList } = getWeddingExperienceData(locale);
+  const { weddingExperienceList } = await getWeddingExperiences(locale);
   const experience = weddingExperienceList.find(
     (e) => e.slug === experience_id,
   );
@@ -29,9 +32,14 @@ export async function generateMetadata({
 
   const tSeo = await getTranslations({ locale, namespace: "seo" });
   const title = tSeo("detail.experienceTitle", { name: experience.name });
+  const alternateLocales = await getContentLocales(
+    "experience",
+    experience.slug,
+  );
   return buildPageMetadata({
     locale,
     path: `/wedding-experiences/${experience.slug}`,
+    alternateLocales,
     title,
     description: experience.hero_desc,
     siteName: tSeo("site.siteName"),
@@ -52,9 +60,12 @@ export default async function WeddingExperiencePage({
   const { locale, experience_id } = await params;
   setRequestLocale(locale);
 
-  const { weddingExperienceList } = getWeddingExperienceData(locale);
-  const { venueList } = getVenueData(locale);
-  const { weddingThemeList } = getWeddingThemeData(locale);
+  const [{ weddingExperienceList }, { venueList }, { weddingThemeList }] =
+    await Promise.all([
+      getWeddingExperiences(locale),
+      getVenues(locale),
+      getWeddingThemes(locale),
+    ]);
 
   const elopementThemes = weddingThemeList.filter(
     (t) => t.type === "ELOPEMENT",
@@ -74,6 +85,7 @@ export default async function WeddingExperiencePage({
       experienceList={weddingExperienceList}
       currentSlug={experience_id}
       allVenues={venueList}
+      weddingThemeList={weddingThemeList}
       elopementThemes={elopementThemes}
       intimateThemes={intimateThemes}
       locations={locations}

@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lindawiryani — Wedding Planner Website & Admin
 
-## Getting Started
+Next.js 15 (App Router) website for Linda Wiryani with a PostgreSQL-backed
+admin dashboard. The public site is fully localized in **English, Indonesian,
+Chinese, French, Japanese, and German**.
 
-First, run the development server:
+## Stack
+
+- Next.js 15 / React 19 / TypeScript / Tailwind 4
+- PostgreSQL + Prisma 7 (`@prisma/adapter-pg`)
+- next-intl 4 (`as-needed` locale prefixes)
+- JWT HS256 in an HttpOnly cookie (`jose`) + bcryptjs
+- TipTap 3 for rich text, `sanitize-html` on write and render
+- Local VPS image uploads (`/uploads`, see `docs/uploads.md`)
+- Gmail SMTP + reCAPTCHA v2 for public forms
+
+## Local setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env          # fill in DATABASE_URL, JWT_SECRET, admin, SMTP, reCAPTCHA
+npm run db:migrate:deploy     # apply migrations
+npm run db:seed               # creates the first admin from ADMIN_EMAIL/ADMIN_PASSWORD
+npm run dev                   # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The public site lives at `/`, `/id`, `/zh`, `/fr`, `/ja`, `/de`.
+The admin is not localized: `/auth/login`, `/dashboard/*`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Content model
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Base tables store English content; `*Translation` tables store `id/zh/fr/ja/de`
+  per field. Missing fields fall back to English.
+- Every content entity has `status` (`draft`/`published`), `sort_order`, and a
+  stable `slug` (immutable after publish).
+- The public site reads the DB directly from Server Components through
+  `src/lib/content`, with a `public-content` cache tag invalidated by admin
+  mutations (`revalidateTag`).
+- Static-only copy (services, our-approach, wedding-concepts, working-with-us
+  vendor copy, portfolio reviews, wedding-experiences page copy) intentionally
+  stays in `src/lib/data`.
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build / start |
+| `npm run db:migrate:deploy` | Apply migrations (production) |
+| `npm run db:seed` | Create the first admin (env-based) |
+| `npm run db:reset-admin` | Rotate an existing admin password |
+| `npm run email:verify` | Check Gmail SMTP connectivity |
+| `bash scripts/smoke-security.sh` | Security + role regression (set `ADMIN_EMAIL`/`ADMIN_PASSWORD` for the authenticated section) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Media
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+New uploads go to local disk (`UPLOAD_DIR`) via the admin-only
+`POST /api/uploads`; nginx serves `/uploads` in production. Existing Cloudinary
+URLs remain valid. Setup, backups, and nginx configuration are documented in
+[`docs/uploads.md`](docs/uploads.md).
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Target: a single Contabo VPS running one Node process behind nginx, with local
+PostgreSQL. See `docs/task.md` Phase 8 for the server, TLS, PM2, backup, and
+release checklist.

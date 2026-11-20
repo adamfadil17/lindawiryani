@@ -8,8 +8,13 @@ import {
   requireRole,
   created,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
+import { resolveContentAccess } from "@/lib/content/access";
+import {
+  translationsCreate,
+  publicationFields,
+} from "@/lib/content/translations";
 import { createVenueSchema, parsePagination, paginateQuery } from "@/utils";
-import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const VENUE_INCLUDE = {
   destination: true,
@@ -21,6 +26,9 @@ const VENUE_INCLUDE = {
 
 export async function GET(req: NextRequest) {
   try {
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const destinationId =
       req.nextUrl.searchParams.get("destinationId") ?? undefined;
@@ -28,6 +36,7 @@ export async function GET(req: NextRequest) {
       req.nextUrl.searchParams.get("experienceId") ?? undefined;
 
     const where: Record<string, unknown> = {};
+    if (!access.isStaff) where.status = "published";
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
@@ -43,11 +52,27 @@ export async function GET(req: NextRequest) {
       (skip, take) =>
         prisma.venue.findMany({
           where,
-          include: VENUE_INCLUDE,
+          ...(access.isStaff
+            ? { include: VENUE_INCLUDE }
+            : {
+                select: {
+                  id: true,
+                  slug: true,
+                  name: true,
+                  slogan: true,
+                  description: true,
+                  image: true,
+                  capacity: true,
+                  starting_price: true,
+                  destination_id: true,
+                  experience_id: true,
+                  published_at: true,
+                },
+              }),
           skip,
           take,
           orderBy: { name: "asc" },
-        }),
+        } as never),
       page,
       limit,
     );
@@ -66,15 +91,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const dto = createVenueSchema.parse(body);
 
-    const baseSlug = toSlug(dto.name);
-    const slug = await ensureUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.venue.findUnique({ where: { slug: s } });
-      return !!existing;
-    });
-
     const venue = await prisma.venue.create({
       data: {
-        slug,
+        slug: dto.slug,
         name: dto.name,
         slogan: dto.slogan,
         description: dto.description,
@@ -83,10 +102,13 @@ export async function POST(req: NextRequest) {
         starting_price: dto.starting_price,
         destination_id: dto.destination_id,
         experience_id: dto.experience_id,
+        ...publicationFields(dto.status),
+        translations: translationsCreate("venue", dto.translations),
       },
       include: VENUE_INCLUDE,
     });
 
+    await revalidatePublicContent();
     return created(venue);
   } catch (error) {
     return handleError(error);

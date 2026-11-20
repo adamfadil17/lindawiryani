@@ -1,21 +1,39 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, created } from "@/lib";
+import {
+  prisma,
+  handleError,
+  paginated,
+  created,
+  badRequest,
+  requireAuth,
+  requireRole,
+} from "@/lib";
+import {
+  consumeRateLimit,
+  getClientIp,
+  RATE_LIMITS,
+  tooManyRequests,
+} from "@/lib/rate-limit";
+import { getRecaptchaToken, verifyRecaptcha } from "@/lib/recaptcha";
 import { createInquirySchema, parsePagination, paginateQuery } from "@/utils";
 
 export async function GET(req: NextRequest) {
   try {
+    // S2: inquiry rows contain PII (names, emails, addresses, phone numbers).
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const status = req.nextUrl.searchParams.get("status") ?? undefined;
 
     const where: Record<string, unknown> = {};
     if (search) {
       where.OR = [
-        { your_name: { contains: search, mode: "insensitive" } },
-        { your_email: { contains: search, mode: "insensitive" } },
-        { name_of_groom: { contains: search, mode: "insensitive" } },
-        { name_of_bride: { contains: search, mode: "insensitive" } },
-        { wedding_venue: { contains: search, mode: "insensitive" } },
+        { full_name: { contains: search, mode: "insensitive" } },
+        { email_or_whatsapp: { contains: search, mode: "insensitive" } },
+        { wedding_style: { contains: search, mode: "insensitive" } },
+        { estimated_budget: { contains: search, mode: "insensitive" } },
       ];
     }
     if (status) where.status = status;
@@ -41,35 +59,41 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // Public endpoint — no auth required (inquiry form from website)
+    // Public endpoint — no auth required (inquiry form from website).
+    const ipLimit = consumeRateLimit({
+      key: `inquiries:post:${getClientIp(req)}`,
+      ...RATE_LIMITS.publicForm,
+    });
+    if (!ipLimit.allowed) return tooManyRequests(ipLimit);
+
     const body = await req.json();
+
+    const recaptchaToken = getRecaptchaToken(body);
+    if (!recaptchaToken) return badRequest("reCAPTCHA token is required");
+    if (!(await verifyRecaptcha(recaptchaToken))) {
+      return badRequest("reCAPTCHA verification failed. Please try again.");
+    }
+
     const dto = createInquirySchema.parse(body);
 
     const inquiry = await prisma.inquirySubmission.create({
       data: {
-        your_name: dto.your_name,
-        your_email: dto.your_email,
-        your_address: dto.your_address,
-        telephone: dto.telephone,
+        full_name: dto.full_name,
+        email_or_whatsapp: dto.email_or_whatsapp,
 
-        name_of_groom: dto.name_of_groom,
-        religion_of_groom: dto.religion_of_groom,
-        nationality_of_groom: dto.nationality_of_groom,
+        wedding_date: dto.wedding_date ?? null,
+        number_of_guests: dto.number_of_guests ?? null,
 
-        name_of_bride: dto.name_of_bride,
-        religion_of_bride: dto.religion_of_bride,
-        nationality_of_bride: dto.nationality_of_bride,
+        wedding_location_interest: dto.wedding_location_interest,
+        wedding_style: dto.wedding_style ?? null,
+        estimated_budget: dto.estimated_budget ?? null,
+        services_needed: dto.services_needed,
+        venue_secured: dto.venue_secured ?? null,
 
-        wedding_date: dto.wedding_date,
-        wedding_venue: dto.wedding_venue,
-        number_of_attendance: dto.number_of_attendance,
-        approximate_wedding_budget: dto.approximate_wedding_budget,
+        your_vision: dto.your_vision ?? null,
+        how_did_you_find_us: dto.how_did_you_find_us ?? null,
 
-        hotel_name_in_bali: dto.hotel_name_in_bali,
-        arrival_date: dto.arrival_date,
-        departure_date: dto.departure_date,
-
-        your_message: dto.your_message,
+        locale: dto.locale ?? null,
       },
     });
 

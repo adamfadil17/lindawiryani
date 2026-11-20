@@ -24,6 +24,8 @@ type ExperienceData = Omit<
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
 import type { Venue, WeddingTheme, Currency } from "@/types";
 import WeddingThemesSection from "@/components/shared/wedding-themes";
+import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
+import { formatPrice } from "@/lib/currency";
 
 function Breadcrumb({ label }: { label: string }) {
   const t = useTranslations("experienceDetail");
@@ -700,56 +702,7 @@ function SectionFaq({ data }: { data: ExperienceData }) {
   );
 }
 
-const useCurrencyConverter = () => {
-  const [exchangeRate, setExchangeRate] = useState<number>(15800);
-  const CACHE_DURATION = 60 * 60 * 1000;
-
-  useEffect(() => {
-    const fetchExchangeRate = async () => {
-      const now = Date.now();
-      const cachedRate = sessionStorage.getItem("exchangeRate");
-      const cachedTime = sessionStorage.getItem("exchangeRateTime");
-
-      if (cachedRate && cachedTime) {
-        const timeDiff = now - Number.parseInt(cachedTime);
-        if (timeDiff < CACHE_DURATION) {
-          setExchangeRate(Number.parseFloat(cachedRate));
-          return;
-        }
-      }
-
-      try {
-        const response = await fetch(
-          "https://api.exchangerate-api.com/v4/latest/USD",
-        );
-        const data = await response.json();
-        const rate = data.rates.IDR;
-        setExchangeRate(rate);
-        sessionStorage.setItem("exchangeRate", rate.toString());
-        sessionStorage.setItem("exchangeRateTime", now.toString());
-      } catch (error) {
-        console.error("Failed to fetch exchange rate:", error);
-      }
-    };
-    fetchExchangeRate();
-  }, []);
-
-  return exchangeRate;
-};
-
-const formatPrice = (
-  price: number | undefined,
-  currency: Currency,
-  rate: number,
-) => {
-  if (!price) return "To Be Confirmed";
-  const finalPrice = currency === "USD" ? price / rate : price;
-  if (currency === "USD") {
-    return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-  return finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
+// Venue card used inside the experience detail page.
 interface VenueCardProps {
   venue: Venue;
   selectedCurrency: Currency;
@@ -824,6 +777,7 @@ function VenueCard({
 interface SectionVenueListProps {
   experience: ExperienceData;
   allVenues: Venue[];
+  weddingThemeList: WeddingTheme[];
   elopementThemes: WeddingTheme[];
   intimateThemes: WeddingTheme[];
   locations: string[];
@@ -832,6 +786,7 @@ interface SectionVenueListProps {
 function SectionVenueList({
   experience,
   allVenues,
+  weddingThemeList,
   elopementThemes,
   intimateThemes,
   locations,
@@ -919,6 +874,8 @@ function SectionVenueList({
     return (
       <>
         <WeddingThemesSection
+          weddingThemeList={weddingThemeList}
+          venueList={allVenues}
           isMobile={isMobile}
           onExploreVenue={(venue) => setSelectedVenueForModal(venue)}
           externalElopementThemes={experienceElopementThemes}
@@ -1197,6 +1154,8 @@ function SectionVenueList({
       {/* Jika experience punya venue DAN tema, tampilkan WeddingThemesSection setelah venue list */}
       {hasThemes && (
         <WeddingThemesSection
+          weddingThemeList={weddingThemeList}
+          venueList={allVenues}
           isMobile={isMobile}
           onExploreVenue={(venue) => setSelectedVenueForModal(venue)}
           externalElopementThemes={experienceElopementThemes}
@@ -1306,6 +1265,7 @@ export function WeddingExperiencesDetail({
   experienceList,
   currentSlug,
   allVenues,
+  weddingThemeList,
   elopementThemes,
   intimateThemes,
   locations,
@@ -1313,6 +1273,7 @@ export function WeddingExperiencesDetail({
   experienceList: WeddingExperience[];
   currentSlug: string;
   allVenues: Venue[];
+  weddingThemeList: WeddingTheme[];
   elopementThemes: WeddingTheme[];
   intimateThemes: WeddingTheme[];
   locations: string[];
@@ -1357,6 +1318,7 @@ export function WeddingExperiencesDetail({
       <SectionVenueList
         experience={experience}
         allVenues={allVenues}
+        weddingThemeList={weddingThemeList}
         elopementThemes={elopementThemes}
         intimateThemes={intimateThemes}
         locations={locations}

@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   Plus,
@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { WeddingExperience } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import type { PaginationMeta } from "@/lib/api-response";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -79,7 +78,7 @@ function ExperienceCard({
         <div className="flex items-start justify-between gap-3 mb-4">
           <div>
             <span
-              className={`inline-flex items-center gap-1.5 text-[10px] tracking-[0.2em] uppercase px-2.5 py-1 font-medium mb-2 ${colors.badge}`}
+              className={`inline-flex items-center gap-1.5 text-xs tracking-[0.08em] uppercase px-2.5 py-1 font-medium mb-2 ${colors.badge}`}
             >
               <Sparkles className="w-3 h-3" />
               {categoryLabel(exp.category)}
@@ -91,7 +90,7 @@ function ExperienceCard({
         </div>
 
         {/* Hero desc */}
-        <p className="text-primary/80 text-sm leading-relaxed line-clamp-2 mb-5">
+        <p className="text-primary text-sm leading-relaxed line-clamp-2 mb-5">
           {exp.hero_desc}
         </p>
 
@@ -107,7 +106,7 @@ function ExperienceCard({
               className="bg-primary/5 border border-primary/10 p-3 text-center"
             >
               <p className="text-2xl font-semibold text-primary">{stat.value}</p>
-              <p className="text-[10px] tracking-[0.2em] uppercase text-primary/40">
+              <p className="text-xs tracking-[0.08em] uppercase text-muted-foreground">
                 {stat.label}
               </p>
             </div>
@@ -119,7 +118,7 @@ function ExperienceCard({
           {["Hero", "Intro", "Approach", "Services", "Closing", "FAQs"].map((s) => (
             <span
               key={s}
-              className="text-[10px] tracking-[0.2em] uppercase px-2 py-0.5 bg-primary/5 text-primary/40 border border-primary/15"
+              className="text-xs tracking-[0.08em] uppercase px-2 py-0.5 bg-primary/5 text-muted-foreground border border-primary/15"
             >
               {s}
             </span>
@@ -128,28 +127,28 @@ function ExperienceCard({
 
         {/* Divider + actions */}
         <div className="border-t border-primary/20 pt-4 flex items-center justify-between">
-          <span className="text-[10px] text-primary/40 tracking-wider font-mono truncate max-w-[120px]">
+          <span className="text-xs text-muted-foreground tracking-wider font-mono truncate max-w-[120px]">
             {exp.slug}
           </span>
           <div className="flex items-center gap-1">
             <Link
               href={`/wedding-experiences/${exp.category}`}
               target="_blank"
-              className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
               title="View Public Page"
             >
               <Eye className="w-4 h-4" />
             </Link>
             <Link
               href={`/dashboard/wedding-experiences/${exp.id}`}
-              className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
               title="Edit Experience"
             >
               <Pencil className="w-4 h-4" />
             </Link>
             <button
               onClick={() => onDelete(exp)}
-              className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
               title="Delete Experience"
             >
               <Trash2 className="w-4 h-4" />
@@ -213,7 +212,7 @@ function Pagination({
 
   return (
     <div className="flex items-center justify-between mt-8 pt-6 border-t border-primary/20">
-      <p className="text-primary/60 text-xs tracking-wider">
+      <p className="text-muted-foreground text-xs tracking-wider">
         Showing{" "}
         <span className="text-primary font-medium">
           {(meta.page - 1) * meta.limit + 1}–
@@ -227,7 +226,7 @@ function Pagination({
         <button
           onClick={() => onPageChange(meta.page - 1)}
           disabled={!meta.hasPrev}
-          className="w-8 h-8 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -236,7 +235,7 @@ function Pagination({
           p === "..." ? (
             <span
               key={`ellipsis-${i}`}
-              className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground text-sm"
             >
               …
             </span>
@@ -247,7 +246,7 @@ function Pagination({
               className={`w-8 h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
                 meta.page === p
                   ? "bg-primary text-white border border-primary"
-                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+                  : "border border-primary/20 text-muted-foreground hover:border-primary/40 hover:text-primary"
               }`}
             >
               {p}
@@ -258,7 +257,7 @@ function Pagination({
         <button
           onClick={() => onPageChange(meta.page + 1)}
           disabled={!meta.hasNext}
-          className="w-8 h-8 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -440,7 +439,6 @@ export default function DashboardExperiencesPage() {
     dispatch({ type: "DELETE_START" });
     try {
       await axios.delete(`/api/wedding-experiences/${deleteTarget.id}`, {
-        headers: getAuthHeaders(),
       });
       const isLastOnPage = experiences.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
@@ -483,13 +481,13 @@ export default function DashboardExperiencesPage() {
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
-          <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+          <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
             Content Management
           </p>
-          <h1 className="text-primary text-2xl font-semibold tracking-wide">
+          <h1 className="font-display text-primary text-2xl font-semibold tracking-wide">
             Wedding Experiences
           </h1>
-          <p className="text-primary/80 text-sm mt-1">
+          <p className="text-primary text-sm mt-1">
             {isLoading ? (
               <span className="inline-block w-24 h-3 bg-primary/10 animate-pulse rounded" />
             ) : (
@@ -531,11 +529,11 @@ export default function DashboardExperiencesPage() {
                 href={`/dashboard/wedding-experiences/${exp?.id ?? stat.id}`}
                 className={`p-5 bg-white border border-primary/20 border-l-4 ${stat.color} hover:border-primary/30 hover:shadow-sm transition-all duration-200`}
               >
-                <p className="text-xs tracking-[0.2em] uppercase text-primary/60 mb-1.5">
+                <p className="text-xs tracking-[0.08em] uppercase text-muted-foreground mb-1.5">
                   {stat.label}
                 </p>
                 <p className="text-2xl font-semibold text-primary">{venueCount}</p>
-                <p className="text-[10px] text-primary/40 tracking-wider mt-0.5">
+                <p className="text-xs text-muted-foreground tracking-wider mt-0.5">
                   venues
                 </p>
               </Link>
@@ -547,25 +545,25 @@ export default function DashboardExperiencesPage() {
       {/* ── Search Bar ── */}
       <div className="bg-white border border-primary/20 p-3 mb-6 flex gap-2 items-center">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search experiences…"
             value={search}
             onChange={(e) => dispatch({ type: "SET_SEARCH", value: e.target.value })}
-            className="w-full pl-9 pr-8 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+            className="w-full pl-9 pr-8 py-3 text-sm text-primary placeholder:text-muted-foreground bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
           />
           {search && (
             <button
               onClick={() => dispatch({ type: "SET_SEARCH", value: "" })}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/30 hover:text-primary/60 transition-colors hover:cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground transition-colors hover:cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
         {hasActiveSearch && !isLoading && (
-          <p className="text-primary/40 text-xs tracking-wider whitespace-nowrap">
+          <p className="text-muted-foreground text-xs tracking-wider whitespace-nowrap">
             {totalCount} results
           </p>
         )}
@@ -581,23 +579,23 @@ export default function DashboardExperiencesPage() {
       ) : experiences.length === 0 ? (
         <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
           <Sparkles className="w-8 h-8 text-primary/20 mb-4" />
-          <p className="text-primary/80 text-xs tracking-[0.2em] uppercase mb-2">
+          <p className="text-primary text-xs tracking-[0.08em] uppercase mb-2">
             {debouncedSearch ? "No Results" : "No Experiences Yet"}
           </p>
           {debouncedSearch ? (
             <>
-              <p className="text-primary/80 text-sm">
+              <p className="text-primary text-sm">
                 No experiences match &ldquo;{debouncedSearch}&rdquo;
               </p>
               <button
                 onClick={() => dispatch({ type: "SET_SEARCH", value: "" })}
-                className="mt-4 text-xs tracking-[0.2em] uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
+                className="mt-4 text-xs tracking-[0.08em] uppercase text-primary border-b hover:cursor-pointer border-primary/30 hover:border-primary transition-colors"
               >
                 Clear Search
               </button>
             </>
           ) : (
-            <p className="text-primary/80 text-sm">
+            <p className="text-primary text-sm">
               Get started by adding your first experience.
             </p>
           )}

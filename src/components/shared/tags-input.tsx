@@ -40,7 +40,7 @@ export default function TagsInput({
             }
           }}
           placeholder={placeholder || "Type and press Enter"}
-          className={`flex-1 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground bg-white border focus:outline-none transition-colors ${
+          className={`flex-1 px-4 py-3 min-h-[42px] text-sm text-foreground placeholder:text-muted-foreground bg-white border focus:outline-none transition-colors ${
             error
               ? "border-red-700 focus:border-red-700 focus:ring-1 focus:ring-red-700"
               : "border-field focus:border-primary focus:ring-1 focus:ring-primary"
@@ -49,7 +49,7 @@ export default function TagsInput({
         <button
           type="button"
           onClick={add}
-          className="px-3 py-2.5 bg-primary/10 text-primary hover:cursor-pointer hover:bg-primary/20 transition-colors"
+          className="px-4 py-3 min-h-[42px] bg-primary/10 text-primary hover:cursor-pointer hover:bg-primary/20 transition-colors"
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -59,7 +59,7 @@ export default function TagsInput({
           {values.map((v, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs px-2.5 py-1 border border-primary/30"
+              className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs px-2.5 py-1.5 border border-primary/30"
             >
               {v}
               <button

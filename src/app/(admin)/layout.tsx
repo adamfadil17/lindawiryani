@@ -15,6 +15,7 @@ import "../globals.css";
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-cormorant",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +29,11 @@ export default function AdminRootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-area="admin" className={cormorant.className}>
+    <html
+      lang="en"
+      data-area="admin"
+      className={`${cormorant.variable} ${cormorant.className}`}
+    >
       <body>
         {children}
         <Toaster />

@@ -8,10 +8,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import {
-  useWorkingWithUsData,
-  getWorkingWithUsData,
-} from "@/lib/data/working-with-us";
+import type { OpenPosition } from "@/types";
 import { ChevronDown } from "lucide-react";
 import PageClosing from "@/components/shared/page-closing";
 import PageHero from "@/components/shared/page-hero";
@@ -42,12 +39,22 @@ interface CareerForm {
   coverLetter: string;
 }
 
-export default function WorkingWithUsPage() {
+interface WorkingWithUsPageProps {
+  openPositions: OpenPosition[];
+  englishPositions: OpenPosition[];
+  vendorCategories: string[];
+  englishVendorCategories: string[];
+  vendorValues: { no: string; title: string; desc: string }[];
+}
+
+export default function WorkingWithUsPage({
+  openPositions,
+  englishPositions,
+  vendorCategories,
+  englishVendorCategories,
+  vendorValues,
+}: WorkingWithUsPageProps) {
   const t = useTranslations("workingWithUsPage");
-  const { openPositions, vendorCategories, vendorValues } =
-    useWorkingWithUsData();
-  // Values sent to the backend/admin stay in English regardless of locale.
-  const enData = getWorkingWithUsData("en");
   const [activeTab, setActiveTab] = useState<Tab>("vendor");
 
   const vendorRecaptchaRef = useRef<ReCAPTCHA>(null);
@@ -602,7 +609,7 @@ export default function WorkingWithUsPage() {
                                 {vendorCategories.map((cat, idx) => (
                                   <option
                                     key={cat}
-                                    value={enData.vendorCategories[idx]}
+                                    value={englishVendorCategories[idx] ?? cat}
                                   >
                                     {cat}
                                   </option>
@@ -825,8 +832,8 @@ export default function WorkingWithUsPage() {
                               <option value="">{t("selectPosition")}</option>
                               {openPositions.map((p, idx) => (
                                 <option
-                                  key={p.title}
-                                  value={enData.openPositions[idx].title}
+                                  key={p.id}
+                                  value={englishPositions[idx]?.title ?? p.title}
                                 >
                                   {p.title}
                                 </option>

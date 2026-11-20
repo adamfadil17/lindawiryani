@@ -9,6 +9,7 @@ import {
   created,
   notFound,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
 import {
   createVenueImageSchema,
   parsePagination,
@@ -78,6 +79,7 @@ export async function POST(
       },
     });
 
+    await revalidatePublicContent();
     return created(image);
   } catch (error) {
     return handleError(error);

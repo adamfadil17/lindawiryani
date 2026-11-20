@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   ChevronLeft,
@@ -20,7 +20,6 @@ import {
 import { z } from "zod";
 
 import { userFormSchema, UserFormData } from "@/utils/form-validators";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { User, Role } from "@/types";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
 
@@ -117,7 +116,6 @@ export default function UserDetailPage() {
     setIsFetching(true);
     try {
       const res = await axios.get<{ data: User }>(`/api/users/${params.id}`, {
-        headers: getAuthHeaders(),
       });
       const user = res.data.data;
       reset({
@@ -147,14 +145,13 @@ export default function UserDetailPage() {
   const onSubmit = async (data: UserFormData) => {
     try {
       if (isNew) {
-        await axios.post("/api/users", data, { headers: getAuthHeaders() });
+        await axios.post("/api/users", data);
         toast.success("User created successfully.");
       } else {
         // Password kosong = tidak diubah, hapus dari payload
         const payload: Partial<UserFormData> = { ...data };
         if (!payload.password) delete payload.password;
         await axios.patch(`/api/users/${params.id}`, payload, {
-          headers: getAuthHeaders(),
         });
         toast.success("User updated successfully.");
       }
@@ -194,16 +191,16 @@ export default function UserDetailPage() {
         <button
           type="button"
           onClick={() => guardedNavigate("/dashboard/users")}
-          className="inline-flex items-center gap-1.5 text-xs tracking-widest uppercase text-primary/50 hover:text-primary transition-colors mb-5"
+          className="inline-flex items-center gap-1.5 text-xs tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors mb-5"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
           Back to Users
         </button>
 
-        <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+        <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
           {isNew ? "New User" : "Edit User"}
         </p>
-        <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+        <h1 className="font-display text-primary text-2xl md:text-3xl font-semibold tracking-wide">
           {isNew ? "Create Account" : "Edit Account"}
         </h1>
       </div>
@@ -212,13 +209,13 @@ export default function UserDetailPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Name */}
         <div>
-          <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
+          <label className="block text-xs tracking-widest uppercase text-muted-foreground mb-1.5">
             Full Name <span className="text-red-600">*</span>
           </label>
           <input
             {...register("name")}
             placeholder="e.g. Jane Doe"
-            className={`w-full px-3 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
+            className={`w-full px-3 py-3 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
               errors.name ? "border-red-400" : "border-primary/30"
             }`}
           />
@@ -229,14 +226,14 @@ export default function UserDetailPage() {
 
         {/* Email */}
         <div>
-          <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
+          <label className="block text-xs tracking-widest uppercase text-muted-foreground mb-1.5">
             Email <span className="text-red-600">*</span>
           </label>
           <input
             {...register("email")}
             type="email"
             placeholder="jane@example.com"
-            className={`w-full px-3 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
+            className={`w-full px-3 py-3 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
               errors.email ? "border-red-400" : "border-primary/30"
             }`}
           />
@@ -247,12 +244,12 @@ export default function UserDetailPage() {
 
         {/* Password */}
         <div>
-          <label className="block text-xs tracking-widest uppercase text-primary/60 mb-1.5">
+          <label className="block text-xs tracking-widest uppercase text-muted-foreground mb-1.5">
             Password{" "}
             {isNew ? (
               <span className="text-red-600">*</span>
             ) : (
-              <span className="normal-case tracking-normal text-primary/30">
+              <span className="normal-case tracking-normal text-muted-foreground">
                 (leave blank to keep current)
               </span>
             )}
@@ -262,14 +259,14 @@ export default function UserDetailPage() {
               {...register("password")}
               type={showPassword ? "text" : "password"}
               placeholder={isNew ? "Min. 8 chars, 1 uppercase, 1 number" : "••••••••"}
-              className={`w-full px-3 py-2.5 pr-10 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
+              className={`w-full px-3 py-3 pr-10 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors ${
                 errors.password ? "border-red-400" : "border-primary/30"
               }`}
             />
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/30 hover:text-primary/60 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground transition-colors"
             >
               {showPassword ? (
                 <EyeOff className="w-4 h-4" />
@@ -285,7 +282,7 @@ export default function UserDetailPage() {
 
         {/* Role */}
         <div>
-          <label className="block text-xs tracking-widest uppercase text-primary/60 mb-2">
+          <label className="block text-xs tracking-widest uppercase text-muted-foreground mb-2">
             Role <span className="text-red-600">*</span>
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -303,7 +300,7 @@ export default function UserDetailPage() {
                   }`}
                 >
                   <span
-                    className={`${isSelected ? "text-white" : "text-primary/50"}`}
+                    className={`${isSelected ? "text-white" : "text-muted-foreground"}`}
                   >
                     {icon}
                   </span>
@@ -311,8 +308,8 @@ export default function UserDetailPage() {
                     {label}
                   </span>
                   <span
-                    className={`text-[10px] leading-tight ${
-                      isSelected ? "text-white/70" : "text-primary/40"
+                    className={`text-xs leading-tight ${
+                      isSelected ? "text-white/70" : "text-muted-foreground"
                     }`}
                   >
                     {desc}
@@ -331,7 +328,7 @@ export default function UserDetailPage() {
           <button
             type="button"
             onClick={() => guardedNavigate("/dashboard/users")}
-            className="text-xs tracking-widest uppercase text-primary/40 hover:text-primary transition-colors"
+            className="text-xs tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors"
           >
             Cancel
           </button>

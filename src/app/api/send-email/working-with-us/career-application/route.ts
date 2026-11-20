@@ -1,39 +1,33 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
-// ─── reCAPTCHA Verification ───────────────────────────────────────────────────
-
-async function verifyRecaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-
-  if (!secretKey) {
-    console.error("RECAPTCHA_SECRET_KEY is not set");
-    return false;
-  }
-
-  try {
-    const response = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `secret=${secretKey}&response=${token}`,
-      },
-    );
-    const data = await response.json();
-    return data.success === true;
-  } catch (error) {
-    console.error("Error verifying reCAPTCHA:", error);
-    return false;
-  }
-}
+import { prisma } from "@/lib";
+import {
+  createMailer,
+  emailDisabled,
+  escapeHtml,
+  sanitizeHeader,
+} from "@/lib/email";
+import { verifyRecaptcha } from "@/lib/recaptcha";
+import {
+  consumeRateLimit,
+  getClientIp,
+  RATE_LIMITS,
+  tooManyRequests,
+} from "@/lib/rate-limit";
+import { careerApplicationPayloadSchema } from "@/utils/public-form-schemas";
 
 // ─── POST Handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: Request) {
   try {
+    const ipLimit = consumeRateLimit({
+      key: `send-email:career:${getClientIp(req)}`,
+      ...RATE_LIMITS.emailRoute,
+    });
+    if (!ipLimit.allowed) return tooManyRequests(ipLimit);
+
     const formData = await req.json();
-    const { recaptchaToken, ...emailData } = formData;
+    const { recaptchaToken, ...rawData } = formData;
 
     if (!recaptchaToken) {
       return NextResponse.json(
@@ -50,20 +44,39 @@ export async function POST(req: Request) {
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD,
+    const parsed = careerApplicationPayloadSchema.safeParse(rawData);
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          message: "Please check the form and try again.",
+          errors: parsed.error.flatten().fieldErrors,
+        },
+        { status: 422 },
+      );
+    }
+    const emailData = parsed.data;
+
+    await prisma.submission.create({
+      data: {
+        type: "career",
+        full_name: emailData.fullName,
+        position: emailData.position,
+        experience: emailData.experience ?? null,
+        linked_in: emailData.linkedIn || null,
+        cover_letter: emailData.coverLetter ?? null,
+        email: emailData.email,
+        phone: emailData.phone ?? null,
       },
     });
+
+    const transporter = createMailer();
 
     // ── Email to Admin ────────────────────────────────────────────────────────
 
     const adminMailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: `New Career Application from ${emailData.fullName} — ${emailData.position}`,
+      subject: `New Career Application from ${sanitizeHeader(emailData.fullName)} — ${sanitizeHeader(emailData.position)}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -174,15 +187,15 @@ export async function POST(req: Request) {
                 <div class="section-title">Applicant Information</div>
                 <div class="field">
                   <div class="label">Full Name</div>
-                  <div class="value">${emailData.fullName}</div>
+                  <div class="value">${escapeHtml(emailData.fullName)}</div>
                 </div>
                 <div class="field">
                   <div class="label">Email</div>
-                  <div class="value">${emailData.email}</div>
+                  <div class="value">${escapeHtml(emailData.email)}</div>
                 </div>
                 <div class="field">
                   <div class="label">Phone</div>
-                  <div class="value">${emailData.phone || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.phone || "Not provided")}</div>
                 </div>
               </div>
 
@@ -190,26 +203,26 @@ export async function POST(req: Request) {
                 <div class="section-title">Application Details</div>
                 <div class="field">
                   <div class="label">Position Applied</div>
-                  <div class="value">${emailData.position}</div>
+                  <div class="value">${escapeHtml(emailData.position)}</div>
                 </div>
                 <div class="field">
                   <div class="label">Years of Experience</div>
-                  <div class="value">${emailData.experience || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.experience || "Not provided")}</div>
                 </div>
                 <div class="field">
                   <div class="label">LinkedIn</div>
-                  <div class="value">${emailData.linkedIn || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.linkedIn || "Not provided")}</div>
                 </div>
                 <div class="field">
                   <div class="label">Portfolio / Website</div>
-                  <div class="value">${emailData.portfolioLink || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.portfolioLink || "Not provided")}</div>
                 </div>
               </div>
 
               <div class="section">
                 <div class="section-title">Cover Letter</div>
                 <div class="field">
-                  <div class="value cover-letter">${emailData.coverLetter || "No cover letter provided"}</div>
+                  <div class="value cover-letter">${escapeHtml(emailData.coverLetter || "No cover letter provided")}</div>
                 </div>
               </div>
             </div>
@@ -371,10 +384,10 @@ export async function POST(req: Request) {
             </div>
 
             <div class="content">
-              <div class="greeting">Dear ${emailData.fullName},</div>
+              <div class="greeting">Dear ${escapeHtml(emailData.fullName)},</div>
 
               <div class="message">
-                Thank you for your interest in joining the Linda Wiryani Design &amp; Event Planning team. We have received your application for the <strong>${emailData.position}</strong> position and truly appreciate the time and thought you've put into it.
+                Thank you for your interest in joining the Linda Wiryani Design &amp; Event Planning team. We have received your application for the <strong>${escapeHtml(emailData.position)}</strong> position and truly appreciate the time and thought you've put into it.
               </div>
 
               <div class="message">
@@ -412,17 +425,23 @@ export async function POST(req: Request) {
       `,
     };
 
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(applicantMailOptions);
+    if (!emailDisabled()) {
+      try {
+        await transporter.sendMail(adminMailOptions);
+        await transporter.sendMail(applicantMailOptions);
+      } catch (mailError) {
+        console.error("Career application stored but email failed:", mailError);
+      }
+    }
 
     return NextResponse.json(
-      { message: "Emails sent successfully" },
+      { message: "Thank you — your application has been received." },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error processing career application:", error);
     return NextResponse.json(
-      { message: "Failed to send email", error: String(error) },
+      { message: "We could not save your application. Please try again." },
       { status: 500 },
     );
   }

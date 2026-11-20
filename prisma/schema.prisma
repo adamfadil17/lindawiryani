@@ -57,6 +57,11 @@ enum InquiryStatus {
   archived
 }
 
+enum ContentStatus {
+  draft
+  published
+}
+
 // ─────────────────────────────────────────────
 // USER
 // ─────────────────────────────────────────────
@@ -67,6 +72,7 @@ model User {
   email      String   @unique
   password   String
   role       String   @default("user") // admin | editor | user
+  token_version Int   @default(0) // bump to revoke all existing JWTs
   created_at DateTime @default(now())
 
   @@map("users")
@@ -78,10 +84,30 @@ model User {
 
 model DestinationCategory {
   id           String        @id @default(uuid())
+  slug         String        @unique
   name         String
-  destinations Destination[]
+  status       ContentStatus @default(draft)
+  published_at DateTime?
+  sort_order   Int           @default(0)
+  updated_at   DateTime      @updatedAt
 
+  destinations Destination[]
+  translations DestinationCategoryTranslation[]
+
+  @@index([status, sort_order])
   @@map("destination_categories")
+}
+
+model DestinationCategoryTranslation {
+  id          String  @id @default(uuid())
+  category_id String
+  locale      String
+  name        String?
+
+  category DestinationCategory @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  @@unique([category_id, locale])
+  @@map("destination_category_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -103,6 +129,11 @@ model Destination {
   image                  String
   guest_capacity         String
 
+  status       ContentStatus @default(draft)
+  published_at DateTime?
+  sort_order   Int           @default(0)
+  updated_at   DateTime      @updatedAt
+
   // JSON arrays
   highlights             Json     // string[]
   best_for               Json     // string[]
@@ -115,8 +146,39 @@ model Destination {
   category   DestinationCategory @relation(fields: [category_id], references: [id])
   venues     Venue[]
   portfolios Portfolio[]
+  translations DestinationTranslation[]
 
+  @@index([category_id])
+  @@index([status, sort_order])
   @@map("destinations")
+}
+
+model DestinationTranslation {
+  id             String  @id @default(uuid())
+  destination_id String
+  locale         String
+
+  name                    String?
+  type                    String?
+  description             String?
+  long_description        String?
+  location                String?
+  atmosphere              String?
+  accessibility_notes     String?
+  seasonal_considerations String?
+  guest_capacity          String?
+  highlights              Json? // string[]
+  best_for                Json? // string[]
+  ceremony_options        Json? // string[]
+  reception_options       Json? // string[]
+  accommodation_nearby    Json? // string[]
+  dining_experiences      Json? // string[]
+  unique_features         Json? // string[]
+
+  destination Destination @relation(fields: [destination_id], references: [id], onDelete: Cascade)
+
+  @@unique([destination_id, locale])
+  @@map("destination_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -169,6 +231,10 @@ model WeddingExperience {
   closing_couple_label String?
   closing_couple_values Json   // string[]
 
+  status       ContentStatus @default(draft)
+  published_at DateTime?
+  sort_order   Int           @default(0)
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -176,8 +242,52 @@ model WeddingExperience {
   venues     Venue[]
   themes     WeddingTheme[]
   portfolios Portfolio[]
+  translations WeddingExperienceTranslation[]
 
+  @@index([status, sort_order])
   @@map("wedding_experiences")
+}
+
+model WeddingExperienceTranslation {
+  id            String @id @default(uuid())
+  experience_id String
+  locale        String
+
+  name       String?
+  hero_desc  String?
+
+  intro_label      String?
+  intro_heading    Json? // [string, string]
+  intro_body       String?
+  intro_list_label String?
+  intro_list       Json? // string[]
+  intro_footnote   String?
+
+  approach_label      String?
+  approach_heading    Json? // [string, string]
+  approach_body       String?
+  approach_list_label String?
+  approach_list       Json? // string[]
+
+  services_label        String?
+  services_heading      Json? // [string, string]
+  services_list         Json? // string[]
+  services_footnote     String?
+  services_dark_label   String?
+  services_dark_heading Json? // [string, string]
+  services_dark_body    String?
+  services_dark_list    Json? // string[]
+
+  closing_label         String?
+  closing_heading       Json? // [string, string]
+  closing_body          String?
+  closing_couple_label  String?
+  closing_couple_values Json? // string[]
+
+  experience WeddingExperience @relation(fields: [experience_id], references: [id], onDelete: Cascade)
+
+  @@unique([experience_id, locale])
+  @@map("wedding_experience_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -186,14 +296,30 @@ model WeddingExperience {
 
 model ExperienceFaq {
   id            String @id @default(uuid())
+  slug          String @unique
   experience_id String
   question      String
   answer        String
   sort_order    Int    @default(0)
 
-  experience WeddingExperience @relation(fields: [experience_id], references: [id])
+  experience   WeddingExperience       @relation(fields: [experience_id], references: [id], onDelete: Cascade)
+  translations ExperienceFaqTranslation[]
 
+  @@index([experience_id])
   @@map("experience_faqs")
+}
+
+model ExperienceFaqTranslation {
+  id      String @id @default(uuid())
+  faq_id  String
+  locale  String
+  question String?
+  answer   String?
+
+  faq ExperienceFaq @relation(fields: [faq_id], references: [id], onDelete: Cascade)
+
+  @@unique([faq_id, locale])
+  @@map("experience_faq_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -212,13 +338,37 @@ model Venue {
   destination_id String
   experience_id  String
 
+  status       ContentStatus @default(draft)
+  published_at DateTime?
+  sort_order   Int           @default(0)
+  updated_at   DateTime      @updatedAt
+
   destination Destination       @relation(fields: [destination_id], references: [id])
   experience  WeddingExperience @relation(fields: [experience_id], references: [id])
   gallery     VenueImage[]
   themes      WeddingTheme[]
   portfolios  Portfolio[]
+  translations VenueTranslation[]
 
+  @@index([destination_id])
+  @@index([experience_id])
+  @@index([status, sort_order])
   @@map("venues")
+}
+
+model VenueTranslation {
+  id       String  @id @default(uuid())
+  venue_id String
+  locale   String
+
+  name        String?
+  slogan      String?
+  description String?
+
+  venue Venue @relation(fields: [venue_id], references: [id], onDelete: Cascade)
+
+  @@unique([venue_id, locale])
+  @@map("venue_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -231,8 +381,9 @@ model VenueImage {
   sort_order Int    @default(0)
   venue_id   String
 
-  venue Venue @relation(fields: [venue_id], references: [id])
+  venue Venue @relation(fields: [venue_id], references: [id], onDelete: Cascade)
 
+  @@index([venue_id])
   @@map("venue_images")
 }
 
@@ -250,11 +401,35 @@ model WeddingTheme {
   venue_id      String?
   experience_id String
 
+  status       ContentStatus @default(draft)
+  published_at DateTime?
+  sort_order   Int           @default(0)
+  updated_at   DateTime      @updatedAt
+
   venue      Venue?              @relation(fields: [venue_id], references: [id])
   experience WeddingExperience  @relation(fields: [experience_id], references: [id])
   gallery    WeddingThemeImage[]
+  translations WeddingThemeTranslation[]
 
+  @@index([venue_id])
+  @@index([experience_id])
+  @@index([status, sort_order])
   @@map("wedding_themes")
+}
+
+model WeddingThemeTranslation {
+  id       String @id @default(uuid())
+  theme_id String
+  locale   String
+
+  title       String?
+  description String?
+  inclusions  Json? // string[]
+
+  theme WeddingTheme @relation(fields: [theme_id], references: [id], onDelete: Cascade)
+
+  @@unique([theme_id, locale])
+  @@map("wedding_theme_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -267,8 +442,9 @@ model WeddingThemeImage {
   sort_order Int    @default(0)
   theme_id   String
 
-  theme WeddingTheme @relation(fields: [theme_id], references: [id])
+  theme WeddingTheme @relation(fields: [theme_id], references: [id], onDelete: Cascade)
 
+  @@index([theme_id])
   @@map("wedding_theme_images")
 }
 
@@ -285,10 +461,30 @@ model Article {
   published_at DateTime
   image        String
   content      String          // TipTap-serialised HTML
+  status       ContentStatus   @default(draft)
+  sort_order   Int             @default(0)
   created_at   DateTime        @default(now())
   updated_at   DateTime        @updatedAt
 
+  translations ArticleTranslation[]
+
+  @@index([status, sort_order])
   @@map("articles")
+}
+
+model ArticleTranslation {
+  id         String @id @default(uuid())
+  article_id String
+  locale     String
+
+  title   String?
+  excerpt String?
+  content String? // TipTap-serialised HTML
+
+  article Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
+
+  @@unique([article_id, locale])
+  @@map("article_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -319,6 +515,10 @@ model Portfolio {
   credit_location_detail String
   credit_couple_origin  String
 
+  status       ContentStatus @default(draft)
+  published_at DateTime?
+  sort_order   Int           @default(0)
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -326,8 +526,35 @@ model Portfolio {
   venue       Venue?             @relation(fields: [venue_id], references: [id])
   experience  WeddingExperience? @relation(fields: [experience_id], references: [id])
   gallery     PortfolioImage[]
+  translations PortfolioTranslation[]
 
+  @@index([destination_id])
+  @@index([venue_id])
+  @@index([experience_id])
+  @@index([status, sort_order])
   @@map("portfolios")
+}
+
+model PortfolioTranslation {
+  id           String @id @default(uuid())
+  portfolio_id String
+  locale       String
+
+  subtitle           String?
+  excerpt            String?
+  origin             String?
+  review             String?
+  content            String?
+  story_sections     Json? // { heading?: string; body: string[] }[]
+  tags               Json? // string[]
+  credit_role        String?
+  credit_location_detail String?
+  credit_couple_origin   String?
+
+  portfolio Portfolio @relation(fields: [portfolio_id], references: [id], onDelete: Cascade)
+
+  @@unique([portfolio_id, locale])
+  @@map("portfolio_translations")
 }
 
 // ─────────────────────────────────────────────
@@ -340,8 +567,9 @@ model PortfolioImage {
   sort_order   Int    @default(0)
   portfolio_id String
 
-  portfolio Portfolio @relation(fields: [portfolio_id], references: [id])
+  portfolio Portfolio @relation(fields: [portfolio_id], references: [id], onDelete: Cascade)
 
+  @@index([portfolio_id])
   @@map("portfolio_images")
 }
 
@@ -387,36 +615,29 @@ model InquirySubmission {
   status       InquiryStatus @default(new)
   submitted_at DateTime      @default(now())
 
-  // Contact Info
-  your_name    String
-  your_email   String
-  your_address String
-  telephone    String
+  // Contact info
+  full_name         String
+  email_or_whatsapp String
 
-  // Groom
-  name_of_groom        String
-  religion_of_groom    String
-  nationality_of_groom String
+  // Wedding details
+  wedding_date     String?
+  number_of_guests String?
 
-  // Bride
-  name_of_bride        String
-  religion_of_bride    String
-  nationality_of_bride String
+  // Preferences (stored as JSON string arrays)
+  wedding_location_interest Json @default("[]")
+  wedding_style             String?
+  estimated_budget          String?
+  services_needed           Json @default("[]")
+  venue_secured             String?
 
-  // Wedding Details
-  wedding_date                  String
-  wedding_venue                 String
-  number_of_attendance          String
-  approximate_wedding_budget    String
+  // Vision & discovery
+  your_vision         String?
+  how_did_you_find_us String?
 
-  // Accommodation & Travel
-  hotel_name_in_bali String
-  arrival_date       String
-  departure_date     String
+  // Locale the inquiry was submitted in
+  locale String?
 
-  // Vision
-  your_message String
-
+  @@index([status, submitted_at])
   @@map("inquiry_submissions")
 }
 
@@ -426,13 +647,37 @@ model InquirySubmission {
 
 model OpenPosition {
   id         String   @id @default(uuid())
+  slug       String   @unique
   title      String
   type       String   // "Full-time" | "Part-time / Freelance"
   level      String   // "Mid–Senior" | "Senior" | etc.
   desc       String
   is_active  Boolean  @default(true)
+
+  status       ContentStatus @default(draft)
+  published_at DateTime?
+  sort_order   Int           @default(0)
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  translations OpenPositionTranslation[]
+
+  @@index([status, sort_order])
   @@map("open_positions")
+}
+
+model OpenPositionTranslation {
+  id          String @id @default(uuid())
+  position_id String
+  locale      String
+  title       String?
+  type        String?
+  level       String?
+  desc        String?
+
+  position OpenPosition @relation(fields: [position_id], references: [id], onDelete: Cascade)
+
+  @@unique([position_id, locale])
+  @@map("open_position_translations")
 }

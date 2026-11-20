@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTranslations } from "next-intl";
 
@@ -8,12 +8,12 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight, MapPin, ChevronDown, ArrowLeft } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { Portfolio } from "@/types";
-import { usePortfolioData } from "@/lib/data/portfolio-data";
-import { useDestinationData } from "@/lib/data/destination-data";
+import { Portfolio, WeddingExperience } from "@/types";
 import PageClosing from "@/components/shared/page-closing";
 import PageHero from "@/components/shared/page-hero";
 import { WHATSAPP_URL } from "@/lib/constants";
+import type { PortfolioReview } from "@/lib/data/static";
+import type { Destination } from "@/types";
 
 const weddingExperiences = [
   {
@@ -186,12 +186,20 @@ function PortfolioCard({ item }: PortfolioCardProps) {
   );
 }
 
-export default function PortfolioPage() {
+export default function PortfolioPage({
+  portfolioItems,
+  reviews,
+  destinationList,
+  weddingExperienceList,
+}: {
+  portfolioItems: Portfolio[];
+  reviews: PortfolioReview[];
+  destinationList: Destination[];
+  weddingExperienceList: WeddingExperience[];
+}) {
   const tHome = useTranslations("home");
   const t = useTranslations("portfolioPage");
   const tNav = useTranslations("nav");
-  const { portfolioItems, reviews } = usePortfolioData();
-  const { destinationList } = useDestinationData();
   const destinations = useMemo(
     () => destinationList.map((d) => ({ label: d.name, slug: d.slug })),
     [destinationList],
@@ -215,21 +223,32 @@ export default function PortfolioPage() {
   const filteredItems = useMemo(() => {
     let list = portfolioItems;
     if (selectedExperience !== "all") {
-      const exp = weddingExperiences.find((e) => e.slug === selectedExperience);
+      const exp = weddingExperienceList.find(
+        (e) => e.slug === selectedExperience,
+      );
       if (exp) {
-        list = list.filter((item) => item.experience_id === exp.id);
+        list = list.filter(
+          (item) =>
+            item.experience_id === exp.id ||
+            item.experience?.slug === exp.slug,
+        );
       }
     }
     if (selectedDestination !== "all") {
       const dest = destinationList.find((d) => d.slug === selectedDestination);
       if (dest) {
-        list = list.filter((item) => item.destination_id === dest.id);
+        list = list.filter(
+          (item) =>
+            item.destination_id === dest.id ||
+            item.destination?.slug === dest.slug,
+        );
       }
     }
     return list;
   }, [
     portfolioItems,
     destinationList,
+    weddingExperienceList,
     selectedExperience,
     selectedDestination,
   ]);
@@ -247,7 +266,7 @@ export default function PortfolioPage() {
     <main className="relative overflow-hidden" onClick={closeDropdowns}>
       <PageHero
         image="https://res.cloudinary.com/dzerxindp/image/upload/v1792801558/edited_hhhrh4.jpg"
-        imageAlt="Portfolio — Real Weddings in Bali"
+        imageAlt="Portfolio â€” Real Weddings in Bali"
         breadcrumb={t("breadcrumb")}
         breadcrumbHref="/portfolio"
         kicker={t("heroKicker")}
@@ -603,7 +622,7 @@ export default function PortfolioPage() {
                 >
                   <div>
                     <span className="text-5xl text-white/90 font-serif leading-none select-none">
-                      "
+                      &ldquo;
                     </span>
                     <p className="text-white leading-relaxed italic mt-2 text-justify">
                       {review.quote}
@@ -634,7 +653,7 @@ export default function PortfolioPage() {
               >
                 <div>
                   <span className="text-5xl text-white/90 font-serif leading-none select-none">
-                    "
+                    &ldquo;
                   </span>
                   <p className="text-white leading-relaxed italic mt-2 text-justify">
                     {reviews[reviewSlide].quote}

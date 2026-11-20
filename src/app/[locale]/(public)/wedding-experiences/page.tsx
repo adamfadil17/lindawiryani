@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getPageMetadata } from "@/lib/seo";
+import { getExperiencePageCopy } from "@/lib/content";
 import WeddingExperiencesPageClient from "./page-client";
 
 interface Props {
@@ -16,5 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <WeddingExperiencesPageClient />;
+
+  const copy = await getExperiencePageCopy(locale);
+  return <WeddingExperiencesPageClient {...copy} />;
 }

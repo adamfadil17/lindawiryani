@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DestinationDetail from "./components/destination-detail";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getDestinationData } from "@/lib/data/destination-data";
+import { getDestinations, getContentLocales } from "@/lib/content";
 import type { Locale } from "@/i18n/routing";
 import { buildPageMetadata, fitTitle } from "@/lib/seo";
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const { destinationList } = getDestinationData("en");
+  const { destinationList } = await getDestinations("en");
   return destinationList.map((destination) => ({
     destination_id: destination.slug,
   }));
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = resolvedParams;
   const t = await getTranslations({ locale, namespace: "destinationDetail" });
   const tSeo = await getTranslations({ locale, namespace: "seo" });
-  const { destinationList } = getDestinationData(locale);
+  const { destinationList } = await getDestinations(locale);
   const destination = destinationList.find(
     (d) => d.slug === resolvedParams.destination_id,
   );
@@ -34,9 +34,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: t("notFound") };
   }
 
+  const alternateLocales = await getContentLocales(
+    "destination",
+    destination.slug,
+  );
+
   return buildPageMetadata({
     locale,
     path: `/destinations/${destination.slug}`,
+    alternateLocales,
     title: fitTitle(
       locale,
       t("metaTitle", { name: destination.name }),
@@ -58,7 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DestinationPage({ params }: Props) {
   const resolvedParams = await params;
   setRequestLocale(resolvedParams.locale);
-  const { destinationList } = getDestinationData(resolvedParams.locale);
+  const { destinationList } = await getDestinations(resolvedParams.locale);
   const destination = destinationList.find(
     (d) => d.slug === resolvedParams.destination_id,
   );

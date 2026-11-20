@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+
 export function useInquiryBadge() {
   const [count, setCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);

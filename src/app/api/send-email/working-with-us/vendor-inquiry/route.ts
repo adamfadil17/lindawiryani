@@ -1,39 +1,33 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
-// ─── reCAPTCHA Verification ───────────────────────────────────────────────────
-
-async function verifyRecaptcha(token: string): Promise<boolean> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-
-  if (!secretKey) {
-    console.error("RECAPTCHA_SECRET_KEY is not set");
-    return false;
-  }
-
-  try {
-    const response = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `secret=${secretKey}&response=${token}`,
-      },
-    );
-    const data = await response.json();
-    return data.success === true;
-  } catch (error) {
-    console.error("Error verifying reCAPTCHA:", error);
-    return false;
-  }
-}
+import { prisma } from "@/lib";
+import {
+  createMailer,
+  emailDisabled,
+  escapeHtml,
+  sanitizeHeader,
+} from "@/lib/email";
+import { verifyRecaptcha } from "@/lib/recaptcha";
+import {
+  consumeRateLimit,
+  getClientIp,
+  RATE_LIMITS,
+  tooManyRequests,
+} from "@/lib/rate-limit";
+import { vendorInquiryPayloadSchema } from "@/utils/public-form-schemas";
 
 // ─── POST Handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: Request) {
   try {
+    const ipLimit = consumeRateLimit({
+      key: `send-email:vendor:${getClientIp(req)}`,
+      ...RATE_LIMITS.emailRoute,
+    });
+    if (!ipLimit.allowed) return tooManyRequests(ipLimit);
+
     const formData = await req.json();
-    const { recaptchaToken, ...emailData } = formData;
+    const { recaptchaToken, ...rawData } = formData;
 
     if (!recaptchaToken) {
       return NextResponse.json(
@@ -50,20 +44,41 @@ export async function POST(req: Request) {
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD,
+    const parsed = vendorInquiryPayloadSchema.safeParse(rawData);
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          message: "Please check the form and try again.",
+          errors: parsed.error.flatten().fieldErrors,
+        },
+        { status: 422 },
+      );
+    }
+    const emailData = parsed.data;
+
+    await prisma.submission.create({
+      data: {
+        type: "vendor",
+        company_name: emailData.companyName,
+        contact_person: emailData.contactPerson,
+        vendor_category: emailData.vendorCategory,
+        years_in_business: emailData.yearsInBusiness ?? null,
+        portfolio_link: emailData.portfolioLink || null,
+        website: emailData.website || null,
+        email: emailData.email,
+        phone: emailData.phone ?? null,
+        message: emailData.message ?? null,
       },
     });
+
+    const transporter = createMailer();
 
     // ── Email to Admin ────────────────────────────────────────────────────────
 
     const adminMailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: `New Vendor Inquiry from ${emailData.companyName}`,
+      subject: `New Vendor Inquiry from ${sanitizeHeader(emailData.companyName)}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -170,23 +185,23 @@ export async function POST(req: Request) {
                 <div class="section-title">Company Information</div>
                 <div class="field">
                   <div class="label">Company Name</div>
-                  <div class="value">${emailData.companyName}</div>
+                  <div class="value">${escapeHtml(emailData.companyName)}</div>
                 </div>
                 <div class="field">
                   <div class="label">Contact Person</div>
-                  <div class="value">${emailData.contactPerson}</div>
+                  <div class="value">${escapeHtml(emailData.contactPerson)}</div>
                 </div>
                 <div class="field">
                   <div class="label">Email</div>
-                  <div class="value">${emailData.email}</div>
+                  <div class="value">${escapeHtml(emailData.email)}</div>
                 </div>
                 <div class="field">
                   <div class="label">Phone</div>
-                  <div class="value">${emailData.phone || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.phone || "Not provided")}</div>
                 </div>
                 <div class="field">
                   <div class="label">Website</div>
-                  <div class="value">${emailData.website || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.website || "Not provided")}</div>
                 </div>
               </div>
 
@@ -194,22 +209,22 @@ export async function POST(req: Request) {
                 <div class="section-title">Vendor Details</div>
                 <div class="field">
                   <div class="label">Category</div>
-                  <div class="value">${emailData.vendorCategory || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.vendorCategory || "Not provided")}</div>
                 </div>
                 <div class="field">
                   <div class="label">Years in Business</div>
-                  <div class="value">${emailData.yearsInBusiness || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.yearsInBusiness || "Not provided")}</div>
                 </div>
                 <div class="field">
                   <div class="label">Portfolio Link</div>
-                  <div class="value">${emailData.portfolioLink || "Not provided"}</div>
+                  <div class="value">${escapeHtml(emailData.portfolioLink || "Not provided")}</div>
                 </div>
               </div>
 
               <div class="section">
                 <div class="section-title">Message</div>
                 <div class="field">
-                  <div class="value">${emailData.message || "No message provided"}</div>
+                  <div class="value">${escapeHtml(emailData.message || "No message provided")}</div>
                 </div>
               </div>
             </div>
@@ -378,7 +393,7 @@ export async function POST(req: Request) {
             </div>
 
             <div class="content">
-              <div class="greeting">Dear ${emailData.contactPerson},</div>
+              <div class="greeting">Dear ${escapeHtml(emailData.contactPerson)},</div>
 
               <div class="message">
                 Thank you for reaching out and expressing your interest in partnering with Linda Wiryani Design &amp; Event Planning. We truly appreciate your time in submitting your vendor inquiry.
@@ -418,17 +433,23 @@ export async function POST(req: Request) {
       `,
     };
 
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(vendorMailOptions);
+    if (!emailDisabled()) {
+      try {
+        await transporter.sendMail(adminMailOptions);
+        await transporter.sendMail(vendorMailOptions);
+      } catch (mailError) {
+        console.error("Vendor inquiry stored but email failed:", mailError);
+      }
+    }
 
     return NextResponse.json(
-      { message: "Emails sent successfully" },
+      { message: "Thank you — your inquiry has been received." },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error processing vendor inquiry:", error);
     return NextResponse.json(
-      { message: "Failed to send email", error: String(error) },
+      { message: "We could not save your inquiry. Please try again." },
       { status: 500 },
     );
   }

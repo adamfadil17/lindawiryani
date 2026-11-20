@@ -11,13 +11,21 @@ import { fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 import { useWeddingConceptsData } from "@/lib/data/wedding-concepts-data";
 import WeddingThemesSection from "@/components/shared/wedding-themes";
 import VenuesSection from "@/components/shared/venues";
-import type { Venue, Currency } from "@/types";
+import type { Venue, Currency, WeddingExperience, WeddingTheme } from "@/types";
 import { useCurrencyConverter } from "@/hook/useCurrencyConverter";
 import PageClosing from "@/components/shared/page-closing";
 import PageHero from "@/components/shared/page-hero";
 import { WHATSAPP_URL } from "@/lib/constants";
 
-export default function WeddingConceptsPage() {
+export default function WeddingConceptsPage({
+  venueList,
+  weddingExperienceList,
+  weddingThemeList,
+}: {
+  venueList: Venue[];
+  weddingExperienceList: WeddingExperience[];
+  weddingThemeList: WeddingTheme[];
+}) {
   const tNav = useTranslations("nav");
   const t = useTranslations("weddingConceptsPage");
   const {
@@ -320,11 +328,16 @@ export default function WeddingConceptsPage() {
       </motion.section>
 
       <WeddingThemesSection
+        weddingThemeList={weddingThemeList}
+        venueList={venueList}
         isMobile={isMobile}
         onExploreVenue={handleExploreVenueFromTheme}
       />
 
       <VenuesSection
+        venueList={venueList}
+        weddingExperienceList={weddingExperienceList}
+        weddingThemeList={weddingThemeList}
         isMobile={isMobile}
         selectedCurrency={selectedCurrency}
         exchangeRate={exchangeRate}

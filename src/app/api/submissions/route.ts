@@ -1,10 +1,28 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+  badRequest,
+} from "@/lib";
+import {
+  consumeRateLimit,
+  getClientIp,
+  RATE_LIMITS,
+  tooManyRequests,
+} from "@/lib/rate-limit";
+import { getRecaptchaToken, verifyRecaptcha } from "@/lib/recaptcha";
 import { createSubmissionSchema, parsePagination, paginateQuery } from "@/utils";
 
 export async function GET(req: NextRequest) {
   try {
+    // S2: vendor/career submissions contain PII (names, emails, phone numbers).
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
 
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const type = req.nextUrl.searchParams.get("type") ?? undefined;
@@ -46,8 +64,21 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // Public endpoint — no auth required (form submission from website)
+    // Public endpoint — no auth required (form submission from website).
+    const ipLimit = consumeRateLimit({
+      key: `submissions:post:${getClientIp(req)}`,
+      ...RATE_LIMITS.publicForm,
+    });
+    if (!ipLimit.allowed) return tooManyRequests(ipLimit);
+
     const body = await req.json();
+
+    const recaptchaToken = getRecaptchaToken(body);
+    if (!recaptchaToken) return badRequest("reCAPTCHA token is required");
+    if (!(await verifyRecaptcha(recaptchaToken))) {
+      return badRequest("reCAPTCHA verification failed. Please try again.");
+    }
+
     const dto = createSubmissionSchema.parse(body);
 
     const submission = await prisma.submission.create({

@@ -8,21 +8,31 @@ import {
   requireRole,
   created,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
+import { resolveContentAccess } from "@/lib/content/access";
 import {
   createOpenPositionSchema,
   parsePagination,
   paginateQuery,
 } from "@/utils";
+import { toSlug } from "@/utils/slug";
+import {
+  translationsCreate,
+  publicationFields,
+} from "@/lib/content/translations";
 
 export async function GET(req: NextRequest) {
   try {
-    // Public endpoint — website visitors need to see available positions
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const type = req.nextUrl.searchParams.get("type") ?? undefined;
     const level = req.nextUrl.searchParams.get("level") ?? undefined;
     const isActive = req.nextUrl.searchParams.get("isActive");
 
     const where: Record<string, unknown> = {};
+    if (!access.isStaff) where.status = "published";
     if (search) {
       where.OR = [
         { title: { contains: search, mode: "insensitive" } },
@@ -32,8 +42,10 @@ export async function GET(req: NextRequest) {
     if (type) where.type = type;
     if (level) where.level = level;
 
-    // Default to active only for public; pass isActive=all to get all (admin use)
-    if (isActive === "all") {
+    // Only staff may request inactive/all positions.
+    if (!access.isStaff) {
+      where.is_active = true;
+    } else if (isActive === "all") {
       // no filter — return all regardless of status
     } else if (isActive === "false") {
       where.is_active = false;
@@ -70,14 +82,18 @@ export async function POST(req: NextRequest) {
 
     const position = await prisma.openPosition.create({
       data: {
+        slug: dto.slug ?? toSlug(dto.title),
         title: dto.title,
         type: dto.type,
         level: dto.level,
         desc: dto.desc,
         is_active: dto.is_active,
+        ...publicationFields(dto.status),
+        translations: translationsCreate("position", dto.translations),
       },
     });
 
+    await revalidatePublicContent();
     return created(position);
   } catch (error) {
     return handleError(error);

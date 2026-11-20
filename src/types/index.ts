@@ -52,6 +52,7 @@ export interface ExperienceFaq {
   question: string;
   answer: string;
   sort_order: number;
+  translations?: { locale: string; [key: string]: unknown }[];
 }
 
 export interface WeddingExperience {
@@ -170,7 +171,11 @@ export interface VenueImage {
 export interface WeddingTheme {
   id: string;
   slug: string;
-  type: ThemeType;
+  /**
+   * UI-only grouping for the static site. The DB column was dropped in
+   * Phase 2; DB-backed themes group by their WeddingExperience.category.
+   */
+  type?: ThemeType;
   title: string;
   description: string;
   image: string;
@@ -383,6 +388,8 @@ export interface Inquiry {
   your_vision: string;
   // Discovery
   how_did_you_find_us: HowDidYouFindUs | "";
+  // Locale the form was submitted in
+  locale?: string;
 }
 
 // ─── INQUIRY SUBMISSION ──────────────────────────────────

@@ -2,14 +2,17 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import PortfolioDetail from "./components/portfolio-detail";
-import { getPortfolioData } from "@/lib/data/portfolio-data";
-import { getDestinationData } from "@/lib/data/destination-data";
-import { getWeddingExperienceData } from "@/lib/data/wedding-experience-data";
+import {
+  getPortfolios,
+  getDestinations,
+  getWeddingExperiences,
+  getContentLocales,
+} from "@/lib/content";
 import type { Locale } from "@/i18n/routing";
 import { buildPageMetadata, getPageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
-  const { portfolioItems } = getPortfolioData("en");
+  const { portfolioItems } = await getPortfolios("en");
   return portfolioItems.map((item) => ({
     portfolio_id: item.slug,
   }));
@@ -21,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale; portfolio_id: string }>;
 }): Promise<Metadata> {
   const { locale, portfolio_id } = await params;
-  const { portfolioItems } = getPortfolioData(locale);
+  const { portfolioItems } = await getPortfolios(locale);
   const item = portfolioItems.find((p) => p.slug === portfolio_id);
 
   if (!item) {
@@ -29,9 +32,11 @@ export async function generateMetadata({
   }
 
   const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const alternateLocales = await getContentLocales("portfolio", item.slug);
   return buildPageMetadata({
     locale,
     path: `/portfolio/${item.slug}`,
+    alternateLocales,
     title: tSeo("detail.portfolioTitle", {
       couple: item.couple,
       subtitle: item.subtitle,
@@ -54,9 +59,9 @@ export default async function PortfolioDetailPage({
   const { locale, portfolio_id } = await params;
   setRequestLocale(locale);
 
-  const { portfolioItems } = getPortfolioData(locale);
-  const { destinationList } = getDestinationData(locale);
-  const { weddingExperienceList } = getWeddingExperienceData(locale);
+  const { portfolioItems } = await getPortfolios(locale);
+  const { destinationList } = await getDestinations(locale);
+  const { weddingExperienceList } = await getWeddingExperiences(locale);
 
   const item = portfolioItems.find((p) => p.slug === portfolio_id);
 

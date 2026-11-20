@@ -9,7 +9,9 @@ import {
   ok,
   noContent,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
 import { updateExperienceFaqSchema } from "@/utils";
+import { translationsReplace } from "@/lib/content/translations";
 
 export async function GET(
   _req: NextRequest,
@@ -20,6 +22,7 @@ export async function GET(
 
     const faq = await prisma.experienceFaq.findUnique({
       where: { id: faqId },
+      include: { translations: true },
     });
     if (!faq || faq.experience_id !== id) return notFound("Experience FAQ");
     return ok(faq);
@@ -48,11 +51,18 @@ export async function PATCH(
 
     const body = await req.json();
     const dto = updateExperienceFaqSchema.parse(body);
+    const { translations, ...base } = dto;
 
     const faq = await prisma.experienceFaq.update({
       where: { id: faqId },
-      data: dto,
+      data: {
+        ...base,
+        ...(translations !== undefined
+          ? { translations: translationsReplace("faq", translations) }
+          : {}),
+      },
     });
+    await revalidatePublicContent();
     return ok(faq);
   } catch (error) {
     return handleError(error);
@@ -78,6 +88,7 @@ export async function DELETE(
       return notFound("Experience FAQ");
 
     await prisma.experienceFaq.delete({ where: { id: faqId } });
+    await revalidatePublicContent();
     return noContent();
   } catch (error) {
     return handleError(error);

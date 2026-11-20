@@ -1,8 +1,11 @@
 import { NextRequest } from "next/server";
-import { prisma, handleError, ok } from "@/lib";
+import { prisma, handleError, ok, requireAuth, requireRole } from "@/lib";
 
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
+
     const raw = await prisma.destinationCategory.findMany({
       // Hanya tampilkan category yang punya minimal 1 destination
       where: {

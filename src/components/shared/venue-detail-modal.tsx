@@ -13,6 +13,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { formatPrice } from "@/lib/currency";
 import type { Venue, WeddingTheme, Currency } from "@/types";
 
 type ExperienceFilter =
@@ -60,22 +61,7 @@ interface VenueDetailModalProps {
   intimateThemes: WeddingTheme[];
 }
 
-const formatPrice = (
-  price: number | undefined,
-  currency: Currency,
-  rate: number,
-) => {
-  if (!price || price === 0) return "To Be Confirmed";
-
-  let finalPrice = price;
-
-  if (currency === "USD") {
-    finalPrice = price / rate;
-  }
-
-  return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
+// Price formatting is shared with the other public price surfaces.
 // Komponen Loading Skeleton
 const ImageLoadingSkeleton = () => (
   <div className="absolute inset-0 bg-stone-200 animate-pulse">

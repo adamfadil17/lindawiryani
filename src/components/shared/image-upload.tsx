@@ -1,5 +1,9 @@
-import { ImageIcon } from "lucide-react";
+import { useState } from "react";
+import { ImageIcon, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+
+const MAX_SIZE_MB = 5;
+const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/webp"];
 
 export default function ImageUpload({
   value,
@@ -12,76 +16,121 @@ export default function ImageUpload({
   error?: string;
   inputId?: string;
 }) {
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // Validate file type - only PNG, JPG, JPEG
-      const allowedTypes = ["image/png", "image/jpeg"];
-      if (!allowedTypes.includes(file.type)) {
-        toast.error("Invalid file type", {
-          description: "Please upload a PNG or JPG image",
-        });
-        return;
+    // Allow selecting the same file again after an error.
+    e.target.value = "";
+    if (!file) return;
+
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      toast.error("Invalid file type", {
+        description: "Please upload a PNG, JPG, or WebP image",
+      });
+      return;
+    }
+
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      toast.error("File too large", {
+        description: `Image must be less than ${MAX_SIZE_MB}MB`,
+      });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/uploads", {
+        method: "POST",
+        body: formData,
+      });
+
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok || !payload?.data?.url) {
+        throw new Error(
+          payload?.error ??
+            (response.status === 401
+              ? "Your session has expired. Please sign in again."
+              : "Upload failed"),
+        );
       }
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("File too large", {
-          description: "Image must be less than 5MB",
-        });
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const dataUrl = event.target?.result as string;
-        onChange(dataUrl);
-        toast.success("Image uploaded successfully!");
-      };
-      reader.onerror = () => {
-        toast.error("Failed to read file", {
-          description: "Please try uploading again",
-        });
-      };
-      reader.readAsDataURL(file);
+      onChange(payload.data.url as string);
+      toast.success("Image uploaded successfully!");
+    } catch (uploadError) {
+      toast.error("Upload failed", {
+        description:
+          uploadError instanceof Error ? uploadError.message : "Please try again",
+      });
+    } finally {
+      setUploading(false);
     }
   };
 
   return (
     <div>
       <div
-        className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-          error
-            ? "border-red-700 bg-red-50/30 hover:bg-red-50/50"
-            : "border-primary/30 bg-primary/5 hover:bg-primary/10"
+        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+          uploading
+            ? "border-primary/30 bg-primary/5 opacity-70"
+            : error
+              ? "border-red-700 bg-red-50/30 hover:bg-red-50/50"
+              : "border-primary/30 bg-primary/5 hover:bg-primary/10"
         }`}
       >
         <input
           type="file"
-          accept=".png,.jpg,.jpeg"
+          accept=".png,.jpg,.jpeg,.webp"
           onChange={handleFileChange}
           className="hidden"
           id={inputId}
+          disabled={uploading}
         />
         <label
           htmlFor={inputId}
-          className="cursor-pointer flex flex-col items-center gap-2"
+          className={`flex flex-col items-center gap-2 ${
+            uploading ? "cursor-wait" : "cursor-pointer"
+          }`}
         >
-          <ImageIcon className="w-8 h-8 text-muted-foreground" />
+          {uploading ? (
+            <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+          ) : (
+            <ImageIcon className="w-8 h-8 text-muted-foreground" />
+          )}
           <div className="text-sm text-primary">
-            <p className="font-medium">Click to upload or drag and drop</p>
-            <p className="text-xs text-foreground/70">PNG or JPG up to 5MB</p>
+            <p className="font-medium">
+              {uploading ? "Uploading…" : "Click to upload or drag and drop"}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              PNG, JPG or WebP up to {MAX_SIZE_MB}MB
+            </p>
           </div>
         </label>
       </div>
+
       {value && (
-        <button
-          type="button"
-          onClick={() => onChange("")}
-          className="mt-2 text-xs text-red-700 hover:text-red-700 hover:cursor-pointer transition-colors"
-        >
-          Remove image
-        </button>
+        <div className="mt-3 flex items-start gap-3">
+          {/* Plain img: works for local /uploads paths and legacy Cloudinary URLs. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={value}
+            alt="Uploaded preview"
+            className="h-20 w-auto max-w-[160px] object-cover border border-primary/20"
+          />
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            disabled={uploading}
+            className="text-xs text-red-700 hover:text-red-700 hover:cursor-pointer transition-colors disabled:opacity-50"
+          >
+            Remove image
+          </button>
+        </div>
       )}
       {error && <p className="text-red-700 text-xs mt-2">{error}</p>}
     </div>

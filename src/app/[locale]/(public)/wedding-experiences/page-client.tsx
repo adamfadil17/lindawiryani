@@ -10,10 +10,12 @@ import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { useWeddingExperienceData } from "@/lib/data/wedding-experience-data";
+import type { ExperiencePageCopy } from "@/lib/data/static";
 import PageClosing from "@/components/shared/page-closing";
 import PageHero from "@/components/shared/page-hero";
 import { WHATSAPP_URL } from "@/lib/constants";
+
+type ExperiencePageCopyLocal = ExperiencePageCopy;
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -35,17 +37,16 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-export default function WeddingExperiencesPage() {
+export default function WeddingExperiencesPage({
+  coupleValues,
+  designFoundation,
+  faqs,
+  fullServiceIncludes,
+  hospitalityValues,
+  subExperiences,
+  whyBali,
+}: ExperiencePageCopyLocal) {
   const t = useTranslations("weddingExperiencesPage");
-  const {
-    coupleValues,
-    designFoundation,
-    faqs,
-    fullServiceIncludes,
-    hospitalityValues,
-    subExperiences,
-    whyBali,
-  } = useWeddingExperienceData();
   return (
     <main className="relative overflow-hidden">
       <PageHero

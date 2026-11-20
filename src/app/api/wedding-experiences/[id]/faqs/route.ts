@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { randomUUID } from "node:crypto";
 
 import {
   prisma,
@@ -9,6 +10,8 @@ import {
   created,
   notFound,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
+import { buildTranslationRows } from "@/lib/content/translations";
 import {
   createExperienceFaqSchema,
   parsePagination,
@@ -83,13 +86,18 @@ export async function POST(
 
     const faq = await prisma.experienceFaq.create({
       data: {
+        slug: dto.slug ?? `faq-${randomUUID()}`,
         experience_id: dto.experience_id,
         question: dto.question,
         answer: dto.answer,
         sort_order: dto.sort_order,
+        translations: {
+          create: buildTranslationRows("faq", dto.translations) as never,
+        },
       },
     });
 
+    await revalidatePublicContent();
     return created(faq);
   } catch (error) {
     return handleError(error);

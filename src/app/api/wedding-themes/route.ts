@@ -8,12 +8,18 @@ import {
   requireRole,
   created,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
+import { resolveContentAccess } from "@/lib/content/access";
+import {
+  translationsCreate,
+  publicationFields,
+} from "@/lib/content/translations";
+import { sanitizeRichText } from "@/lib/sanitize";
 import {
   createWeddingThemeSchema,
   parsePagination,
   paginateQuery,
 } from "@/utils";
-import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const WEDDING_THEME_INCLUDE = {
   venue: true,
@@ -23,14 +29,16 @@ const WEDDING_THEME_INCLUDE = {
 
 export async function GET(req: NextRequest) {
   try {
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
     const venueId = req.nextUrl.searchParams.get("venueId") ?? undefined;
     const experienceId =
       req.nextUrl.searchParams.get("experienceId") ?? undefined;
-    const experienceCategory =
-      req.nextUrl.searchParams.get("experienceCategory") ?? undefined;
 
     const where: Record<string, unknown> = {};
+    if (!access.isStaff) where.status = "published";
     if (search) {
       where.OR = [
         { title: { contains: search, mode: "insensitive" } },
@@ -45,11 +53,25 @@ export async function GET(req: NextRequest) {
       (skip, take) =>
         prisma.weddingTheme.findMany({
           where,
-          include: WEDDING_THEME_INCLUDE,
+          ...(access.isStaff
+            ? { include: WEDDING_THEME_INCLUDE }
+            : {
+                select: {
+                  id: true,
+                  slug: true,
+                  title: true,
+                  description: true,
+                  image: true,
+                  inclusions: true,
+                  venue_id: true,
+                  experience_id: true,
+                  published_at: true,
+                },
+              }),
           skip,
           take,
           orderBy: { title: "asc" },
-        }),
+        } as never),
       page,
       limit,
     );
@@ -68,27 +90,22 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const dto = createWeddingThemeSchema.parse(body);
 
-    const baseSlug = toSlug(dto.title);
-    const slug = await ensureUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.weddingTheme.findUnique({
-        where: { slug: s },
-      });
-      return !!existing;
-    });
-
     const theme = await prisma.weddingTheme.create({
       data: {
-        slug,
+        slug: dto.slug,
         title: dto.title,
-        description: dto.description,
+        description: sanitizeRichText(dto.description),
         image: dto.image,
         inclusions: dto.inclusions,
         venue_id: dto.venue_id ?? null,
         experience_id: dto.experience_id,
+        ...publicationFields(dto.status),
+        translations: translationsCreate("theme", dto.translations),
       },
       include: WEDDING_THEME_INCLUDE,
     });
 
+    await revalidatePublicContent();
     return created(theme);
   } catch (error) {
     return handleError(error);

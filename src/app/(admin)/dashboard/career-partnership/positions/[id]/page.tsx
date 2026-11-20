@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -28,8 +28,11 @@ import TextareaInput from "@/components/shared/text-area-input";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import TranslationsEditor, {
+  ContentStatusField,
+} from "@/components/shared/translations-editor";
+import { useContentEditor } from "@/hook/useContentEditor";
 import { openPositionFormSchema, OpenPositionFormData } from "@/utils/form-validators";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { OpenPosition } from "@/types";
 
 // z.input<>  → type yang resolver terima: is_active?: boolean | undefined (sebelum .default())
@@ -74,7 +77,7 @@ export default function PositionDetailPage() {
     reset,
     trigger,
     formState: { errors: formErrors, isDirty },
-  } = useForm<OpenPositionFormInput, any, OpenPositionFormData>({
+  } = useForm<OpenPositionFormInput, unknown, OpenPositionFormData>({
     resolver: zodResolver(openPositionFormSchema),
     defaultValues: {
       title: "",
@@ -87,7 +90,7 @@ export default function PositionDetailPage() {
 
   // ── setField helper: triggers validation + touch so errors show immediately ──
   const setField = (key: keyof OpenPositionFormData, value: unknown) =>
-    setValue(key as any, value as any, {
+    setValue(key as never, value as never, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -97,6 +100,7 @@ export default function PositionDetailPage() {
 
   // ── Page state ──
   const [isLoading, setIsLoading] = useState(!isNew);
+  const editor = useContentEditor("position");
   const [notFound, setNotFound] = useState(false);
 
   // ── Save state (consolidated): idle | confirm | saving | saved ──
@@ -117,7 +121,7 @@ export default function PositionDetailPage() {
         formData.level ||
         formData.desc
       )
-    : isDirty;
+    : isDirty || editor.dirty;
 
   // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
@@ -159,6 +163,12 @@ export default function PositionDetailPage() {
           desc: String(data.desc ?? ""),
           is_active: Boolean(data.is_active ?? true),
         });
+        editor.load(
+          data as unknown as {
+            status?: string;
+            translations?: { locale: string; [key: string]: unknown }[];
+          },
+        );
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
           setNotFound(true);
@@ -191,11 +201,10 @@ export default function PositionDetailPage() {
   const confirmSave = async () => {
     setSaveStatus("saving");
     try {
-      const payload = { ...formData };
+      const payload = { ...formData, ...editor.payload() };
 
       if (isNew) {
         await axios.post("/api/open-positions", payload, {
-          headers: getAuthHeaders(true),
         });
         setSaveStatus("idle");
         toast.success("Position created!", {
@@ -205,7 +214,6 @@ export default function PositionDetailPage() {
         router.push("/dashboard/career-partnership");
       } else {
         await axios.patch(`/api/open-positions/${id}`, payload, {
-          headers: getAuthHeaders(true),
         });
         setSaveStatus("saved");
         toast.success("Changes saved!", {
@@ -213,6 +221,7 @@ export default function PositionDetailPage() {
         });
         // Re-sync RHF baseline so isDirty becomes false
         reset({ ...formData });
+        editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
     } catch (err) {
@@ -232,7 +241,6 @@ export default function PositionDetailPage() {
     setDeleteStatus("deleting");
     try {
       await axios.delete(`/api/open-positions/${id}`, {
-        headers: getAuthHeaders(),
       });
       setDeleteStatus("idle");
       toast.success("Position deleted!", {
@@ -256,10 +264,10 @@ export default function PositionDetailPage() {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-2">
           Not Found
         </p>
-        <p className="text-primary/80 text-sm mb-6">
+        <p className="text-primary text-sm mb-6">
           This position does not exist.
         </p>
         <Link
@@ -330,15 +338,15 @@ export default function PositionDetailPage() {
           <button
             type="button"
             onClick={() => guardedNavigate("/dashboard/career-partnership")}
-            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+            <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
               {isNew ? "Create New" : "Edit"} · Open Position
             </p>
-            <h1 className="text-primary text-2xl font-semibold tracking-wide">
+            <h1 className="font-display text-primary text-2xl font-semibold tracking-wide">
               {isNew ? "New Position" : formData.title || "Position"}
             </h1>
           </div>
@@ -356,7 +364,7 @@ export default function PositionDetailPage() {
             <button
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -366,7 +374,7 @@ export default function PositionDetailPage() {
           <button
             onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
             disabled={saveStatus === "saving"}
-            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-2.5 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-60"
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
             {saveStatus === "saving" ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -379,6 +387,16 @@ export default function PositionDetailPage() {
       </div>
 
       {/* ── Form ── */}
+      <div className="mb-6">
+        <ContentStatusField
+          value={editor.status}
+          onChange={editor.setStatus}
+          previewHref={
+            editor.status === "published" ? "/working-with-us" : null
+          }
+        />
+      </div>
+
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-[1fr_320px] gap-6 items-start"
@@ -412,7 +430,7 @@ export default function PositionDetailPage() {
                     <select
                       value={formData.type}
                       onChange={(e) => setField("type", e.target.value)}
-                      className={`w-full appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
+                      className={`w-full appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
                         formErrors.type ? "border-red-300" : "border-primary/20"
                       }`}
                     >
@@ -423,7 +441,7 @@ export default function PositionDetailPage() {
                         </option>
                       ))}
                     </select>
-                    <Clock className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                    <Clock className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                   {formErrors.type && (
                     <p className="text-red-700 text-xs mt-1">
@@ -438,7 +456,7 @@ export default function PositionDetailPage() {
                     <select
                       value={formData.level}
                       onChange={(e) => setField("level", e.target.value)}
-                      className={`w-full appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
+                      className={`w-full appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer ${
                         formErrors.level ? "border-red-300" : "border-primary/20"
                       }`}
                     >
@@ -449,7 +467,7 @@ export default function PositionDetailPage() {
                         </option>
                       ))}
                     </select>
-                    <Layers className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                    <Layers className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                   </div>
                   {formErrors.level && (
                     <p className="text-red-700 text-xs mt-1">
@@ -492,7 +510,7 @@ export default function PositionDetailPage() {
                 <p className="text-primary text-sm font-medium">
                   {formData.is_active ? "Active" : "Inactive"}
                 </p>
-                <p className="text-primary/50 text-xs mt-0.5">
+                <p className="text-muted-foreground text-xs mt-0.5">
                   {formData.is_active
                     ? "This position is publicly visible."
                     : "This position is hidden from the public."}
@@ -501,13 +519,13 @@ export default function PositionDetailPage() {
               <button
                 type="button"
                 onClick={() => setField("is_active", !formData.is_active)}
-                className="text-primary hover:text-primary/70 transition-colors hover:cursor-pointer flex-shrink-0"
+                className="text-primary hover:text-muted-foreground transition-colors hover:cursor-pointer flex-shrink-0"
                 aria-label="Toggle visibility"
               >
                 {formData.is_active ? (
                   <ToggleRight className="w-8 h-8 text-green-500" />
                 ) : (
-                  <ToggleLeft className="w-8 h-8 text-primary/30" />
+                  <ToggleLeft className="w-8 h-8 text-muted-foreground" />
                 )}
               </button>
             </div>
@@ -518,33 +536,33 @@ export default function PositionDetailPage() {
             <div className="border border-primary/10 bg-primary/[0.02] p-4">
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center bg-primary/5">
-                  <Briefcase className="w-4 h-4 text-primary/50" />
+                  <Briefcase className="w-4 h-4 text-muted-foreground" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-primary font-semibold text-sm leading-snug">
                     {formData.title || (
-                      <span className="text-primary/30">Position Title</span>
+                      <span className="text-muted-foreground">Position Title</span>
                     )}
                   </p>
-                  <p className="text-primary/50 text-xs tracking-wider mt-0.5">
+                  <p className="text-muted-foreground text-xs tracking-wider mt-0.5">
                     {formData.type || (
-                      <span className="text-primary/30">Employment Type</span>
+                      <span className="text-muted-foreground">Employment Type</span>
                     )}
                   </p>
                 </div>
               </div>
               {formData.level && (
-                <span className="inline-block text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-primary/60 border border-primary/10 mb-3">
+                <span className="inline-block text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-muted-foreground border border-primary/10 mb-3">
                   {formData.level}
                 </span>
               )}
               {formData.desc && (
-                <p className="text-primary/60 text-xs leading-relaxed line-clamp-3">
+                <p className="text-muted-foreground text-xs leading-relaxed line-clamp-3">
                   {formData.desc}
                 </p>
               )}
               {!formData.is_active && (
-                <span className="mt-3 inline-block text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-primary/40 border border-primary/10">
+                <span className="mt-3 inline-block text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-muted-foreground border border-primary/10">
                   Inactive
                 </span>
               )}
@@ -553,7 +571,7 @@ export default function PositionDetailPage() {
 
           {/* Quick Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
+            <p className="text-xs tracking-[0.08em] uppercase text-primary mb-4">
               Summary
             </p>
             <div className="space-y-3">
@@ -567,7 +585,7 @@ export default function PositionDetailPage() {
                   key={item.label}
                   className="flex items-center justify-between gap-2"
                 >
-                  <span className="text-primary/60 text-xs">{item.label}</span>
+                  <span className="text-muted-foreground text-xs">{item.label}</span>
                   <span className="text-primary text-xs font-medium text-right truncate max-w-[140px]">
                     {item.value}
                   </span>
@@ -592,6 +610,14 @@ export default function PositionDetailPage() {
               {isNew ? "Create Position" : "Save Changes"}
             </button>
           </div>
+        </div>
+
+        <div className="lg:col-span-3 space-y-6">
+          <TranslationsEditor
+            entity="position"
+            value={editor.translations}
+            onChange={editor.setTranslations}
+          />
         </div>
       </form>
 

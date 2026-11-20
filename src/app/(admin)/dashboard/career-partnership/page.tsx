@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/lib/api";
 import {
   Search,
   X,
@@ -33,7 +33,6 @@ import {
 } from "@/types";
 import DeleteModal from "@/components/shared/delete-modal";
 import type { PaginationMeta } from "@/lib/api-response";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { toast } from "sonner";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -303,7 +302,7 @@ function Pagination({ meta, onPageChange }: { meta: PaginationMeta; onPageChange
 
   return (
     <div className="flex items-center justify-between mt-8 pt-6 border-t border-primary/20">
-      <p className="text-primary/60 text-xs tracking-wider">
+      <p className="text-muted-foreground text-xs tracking-wider">
         Showing{" "}
         <span className="text-primary font-medium">
           {(meta.page - 1) * meta.limit + 1}–{Math.min(meta.page * meta.limit, meta.total)}
@@ -314,13 +313,13 @@ function Pagination({ meta, onPageChange }: { meta: PaginationMeta; onPageChange
         <button
           onClick={() => onPageChange(meta.page - 1)}
           disabled={!meta.hasPrev}
-          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-muted-foreground hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
         {getVisiblePages().map((p, i) =>
           p === "..." ? (
-            <span key={`e-${i}`} className="w-8 h-8 flex items-center justify-center text-primary/40 text-sm">…</span>
+            <span key={`e-${i}`} className="w-8 h-8 flex items-center justify-center text-muted-foreground text-sm">…</span>
           ) : (
             <button
               key={p}
@@ -328,7 +327,7 @@ function Pagination({ meta, onPageChange }: { meta: PaginationMeta; onPageChange
               className={`w-8 h-8 flex items-center justify-center text-xs tracking-wider transition-colors hover:cursor-pointer ${
                 meta.page === p
                   ? "bg-primary text-white border border-primary"
-                  : "border border-primary/20 text-primary/70 hover:border-primary/40 hover:text-primary"
+                  : "border border-primary/20 text-muted-foreground hover:border-primary/40 hover:text-primary"
               }`}
             >
               {p}
@@ -338,7 +337,7 @@ function Pagination({ meta, onPageChange }: { meta: PaginationMeta; onPageChange
         <button
           onClick={() => onPageChange(meta.page + 1)}
           disabled={!meta.hasNext}
-          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-primary/50 hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center border border-primary/50 text-muted-foreground hover:text-primary hover:border-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -355,41 +354,41 @@ function PositionCard({ position, onDelete }: { position: OpenPosition; onDelete
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-start gap-3 min-w-0">
           <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center mt-0.5 bg-primary/5">
-            <Briefcase className="w-4 h-4 text-primary/50" />
+            <Briefcase className="w-4 h-4 text-muted-foreground" />
           </div>
           <div className="min-w-0">
             <h3 className="text-primary font-semibold text-base leading-snug">{position.title}</h3>
-            <p className="text-primary/50 text-xs tracking-wider mt-0.5">{position.type}</p>
+            <p className="text-muted-foreground text-xs tracking-wider mt-0.5">{position.type}</p>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-          <span className="text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-primary/60 border border-primary/10">
+          <span className="text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-primary/5 text-muted-foreground border border-primary/10">
             {position.level}
           </span>
           {!position.is_active && (
-            <span className="text-xs tracking-widest uppercase px-2 py-0.5 bg-primary/5 text-primary/30 border border-primary/10">
+            <span className="text-xs tracking-widest uppercase px-2 py-0.5 bg-primary/5 text-muted-foreground border border-primary/10">
               Inactive
             </span>
           )}
         </div>
       </div>
-      <p className="text-primary/70 text-sm leading-relaxed line-clamp-2 mb-4">{position.desc}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-4">{position.desc}</p>
       <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <Layers className="w-3 h-3 text-primary/30" />
-          <span className="text-primary/40 text-xs">{position.level}</span>
+          <Layers className="w-3 h-3 text-muted-foreground" />
+          <span className="text-muted-foreground text-xs">{position.level}</span>
         </div>
         <div className="flex items-center gap-1">
           <Link
             href={`/dashboard/career-partnership/positions/${position.id}`}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
             title="Edit Position"
           >
             <Pencil className="w-4 h-4" />
           </Link>
           <button
             onClick={() => onDelete(position)}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
             title="Delete Position"
           >
             <Trash2 className="w-4 h-4" />
@@ -427,16 +426,16 @@ function SubmissionCard({ submission, onDelete }: { submission: Submission; onDe
         <div className="flex items-start gap-3 min-w-0">
           <div className={`w-9 h-9 flex-shrink-0 flex items-center justify-center mt-0.5 ${isVendor ? "bg-primary/10" : "bg-amber-50"}`}>
             {isVendor
-              ? <Briefcase className="w-4 h-4 text-primary/60" />
+              ? <Briefcase className="w-4 h-4 text-muted-foreground" />
               : <UserCheck className="w-4 h-4 text-amber-500" />
             }
           </div>
           <div className="min-w-0">
-            <p className={`text-xs tracking-widest uppercase mb-0.5 ${isVendor ? "text-primary/50" : "text-amber-500/80"}`}>
+            <p className={`text-xs tracking-widest uppercase mb-0.5 ${isVendor ? "text-muted-foreground" : "text-amber-500/80"}`}>
               {isVendor ? "Vendor" : "Career"}
             </p>
             <h3 className="text-primary font-semibold text-base leading-snug truncate">{name}</h3>
-            {subLabel && <p className="text-primary/60 text-xs tracking-wider mt-0.5">{subLabel}</p>}
+            {subLabel && <p className="text-muted-foreground text-xs tracking-wider mt-0.5">{subLabel}</p>}
           </div>
         </div>
         <StatusBadge status={submission.status} />
@@ -444,23 +443,23 @@ function SubmissionCard({ submission, onDelete }: { submission: Submission; onDe
 
       <div className="space-y-1.5 mb-4">
         <div className="flex items-center gap-1.5">
-          <Mail className="w-3 h-3 text-primary/40 flex-shrink-0" />
-          <span className="text-primary/70 text-xs truncate">{submission.email}</span>
+          <Mail className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+          <span className="text-muted-foreground text-xs truncate">{submission.email}</span>
         </div>
         {submission.phone && (
           <div className="flex items-center gap-1.5">
-            <Phone className="w-3 h-3 text-primary/40 flex-shrink-0" />
-            <span className="text-primary/70 text-xs">{submission.phone}</span>
+            <Phone className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+            <span className="text-muted-foreground text-xs">{submission.phone}</span>
           </div>
         )}
         {website && (
           <div className="flex items-center gap-1.5">
-            <ExternalLink className="w-3 h-3 text-primary/40 flex-shrink-0" />
+            <ExternalLink className="w-3 h-3 text-muted-foreground flex-shrink-0" />
             <a
               href={website}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary/70 text-xs truncate hover:text-primary underline-offset-2 hover:underline transition-colors"
+              className="text-muted-foreground text-xs truncate hover:text-primary underline-offset-2 hover:underline transition-colors"
             >
               {website.replace(/^https?:\/\//, "")}
             </a>
@@ -470,20 +469,20 @@ function SubmissionCard({ submission, onDelete }: { submission: Submission; onDe
 
       <div className="border-t border-primary/10 pt-4 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <Clock className="w-3 h-3 text-primary/30" />
-          <span className="text-primary/40 text-xs">{submittedDate}</span>
+          <Clock className="w-3 h-3 text-muted-foreground" />
+          <span className="text-muted-foreground text-xs">{submittedDate}</span>
         </div>
         <div className="flex items-center gap-1">
           <Link
             href={`/dashboard/career-partnership/submissions/${submission.id}`}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-primary hover:bg-primary/10 transition-colors"
             title="View Details"
           >
             <Eye className="w-4 h-4" />
           </Link>
           <button
             onClick={() => onDelete(submission)}
-            className="w-8 h-8 flex items-center justify-center text-primary/50 hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:cursor-pointer hover:text-red-700 hover:bg-red-50 transition-colors"
             title="Delete Submission"
           >
             <Trash2 className="w-4 h-4" />
@@ -628,7 +627,7 @@ export default function CareerPartnershipPage() {
     if (!deleteSubmissionTarget) return;
     dispatch({ type: "DELETE_SUBMISSION_START" });
     try {
-      await axios.delete(`/api/submissions/${deleteSubmissionTarget.id}`, { headers: getAuthHeaders() });
+      await axios.delete(`/api/submissions/${deleteSubmissionTarget.id}`);
       const isLastOnPage = submissions.length === 1 && submissionPage > 1;
       dispatch({ type: "DELETE_SUBMISSION_SUCCESS" });
       if (isLastOnPage) {
@@ -653,7 +652,7 @@ export default function CareerPartnershipPage() {
     if (!deletePositionTarget) return;
     dispatch({ type: "DELETE_POSITION_START" });
     try {
-      await axios.delete(`/api/open-positions/${deletePositionTarget.id}`, { headers: getAuthHeaders() });
+      await axios.delete(`/api/open-positions/${deletePositionTarget.id}`);
       const isLastOnPage = positions.length === 1 && positionPage > 1;
       dispatch({ type: "DELETE_POSITION_SUCCESS" });
       if (isLastOnPage) {
@@ -699,13 +698,13 @@ export default function CareerPartnershipPage() {
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
         <div>
-          <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+          <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
             Content Management
           </p>
-          <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+          <h1 className="font-display text-primary text-2xl md:text-3xl font-semibold tracking-wide">
             Career &amp; Partnership
           </h1>
-          <p className="text-primary/80 text-sm mt-1">
+          <p className="text-primary text-sm mt-1">
             {isSubmissionsLoading ? (
               <span className="inline-block w-32 h-3 bg-primary/10 animate-pulse rounded" />
             ) : (
@@ -739,8 +738,8 @@ export default function CareerPartnershipPage() {
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1.5">
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white/70" : "text-primary/50"}`} />
-                  <p className={`text-xs tracking-[0.2em] uppercase ${isActive ? "text-white/80" : "text-primary/80"}`}>
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white/70" : "text-muted-foreground"}`} />
+                  <p className={`text-xs tracking-[0.08em] uppercase ${isActive ? "text-white/80" : "text-primary"}`}>
                     {item.label}
                   </p>
                 </div>
@@ -769,7 +768,7 @@ export default function CareerPartnershipPage() {
                     : "bg-white border-primary/20 text-primary hover:border-primary/30"
                 }`}
               >
-                <p className={`text-xs tracking-[0.2em] uppercase mb-1.5 ${isActive ? "text-white/80" : "text-primary/80"}`}>
+                <p className={`text-xs tracking-[0.08em] uppercase mb-1.5 ${isActive ? "text-white/80" : "text-primary"}`}>
                   {label}
                 </p>
                 <p className="text-2xl font-semibold">—</p>
@@ -783,12 +782,12 @@ export default function CareerPartnershipPage() {
       <div className="mb-10">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-1">Listings</p>
+            <p className="text-muted-foreground tracking-[0.08em] uppercase text-xs mb-1">Listings</p>
             <h2 className="text-primary text-lg font-semibold tracking-wide">Open Positions</h2>
           </div>
           <Link
             href="/dashboard/career-partnership/positions/new"
-            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-4 py-3 hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             Add Position
@@ -798,18 +797,18 @@ export default function CareerPartnershipPage() {
         {/* Position search bar */}
         <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search positions..."
               value={positionSearch}
               onChange={(e) => dispatch({ type: "SET_POSITION_SEARCH", value: e.target.value })}
-              className="w-full pl-9 pr-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+              className="w-full pl-9 pr-4 py-3 text-sm text-primary placeholder:text-muted-foreground bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
             />
             {positionSearch && (
               <button
                 onClick={() => dispatch({ type: "SET_POSITION_SEARCH", value: "" })}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary hover:cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -819,7 +818,7 @@ export default function CareerPartnershipPage() {
 
         {/* Results info */}
         {positionDebouncedSearch && !isPositionsLoading && positionMeta && (
-          <p className="text-primary/80 text-sm tracking-wider mb-4">
+          <p className="text-primary text-sm tracking-wider mb-4">
             Showing {positionMeta.total} position{positionMeta.total !== 1 ? "s" : ""}
             {positionDebouncedSearch && ` for "${positionDebouncedSearch}"`}
           </p>
@@ -835,8 +834,8 @@ export default function CareerPartnershipPage() {
         ) : positions.length === 0 ? (
           <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-16 text-center">
             <Briefcase className="w-8 h-8 text-primary/20 mb-4" />
-            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">No Positions</p>
-            <p className="text-primary/60 text-sm mb-5">
+            <p className="text-primary text-xs tracking-widest uppercase mb-2">No Positions</p>
+            <p className="text-muted-foreground text-sm mb-5">
               {positionDebouncedSearch
                 ? `No positions match "${positionDebouncedSearch}"`
                 : "No open positions listed yet."}
@@ -878,25 +877,25 @@ export default function CareerPartnershipPage() {
       {/* ── Submissions Section ── */}
       <div>
         <div className="mb-5">
-          <p className="text-primary/60 tracking-[0.2em] uppercase text-xs mb-1">Inbox</p>
+          <p className="text-muted-foreground tracking-[0.08em] uppercase text-xs mb-1">Inbox</p>
           <h2 className="text-primary text-lg font-semibold tracking-wide">Submissions</h2>
         </div>
 
         {/* Submissions search & filter bar */}
         <div className="bg-white border border-primary/20 p-4 mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search by name, company, position, or email..."
               value={submissionSearch}
               onChange={(e) => dispatch({ type: "SET_SUBMISSION_SEARCH", value: e.target.value })}
-              className="w-full pl-9 pr-4 py-2.5 text-sm text-primary placeholder:text-primary/50 bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+              className="w-full pl-9 pr-4 py-3 text-sm text-primary placeholder:text-muted-foreground bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
             />
             {submissionSearch && (
               <button
                 onClick={() => dispatch({ type: "SET_SUBMISSION_SEARCH", value: "" })}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/50 hover:text-primary/80 hover:cursor-pointer transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary hover:cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -908,13 +907,13 @@ export default function CareerPartnershipPage() {
             <select
               value={typeFilter}
               onChange={(e) => handleTypeChange(e.target.value as TypeFilter)}
-              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
+              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
             >
               <option value="All">All Types</option>
               <option value="vendor">Vendor</option>
               <option value="career">Career</option>
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
           </div>
 
           {/* Status filter */}
@@ -922,7 +921,7 @@ export default function CareerPartnershipPage() {
             <select
               value={statusFilter}
               onChange={(e) => handleStatusChange(e.target.value as StatusFilter)}
-              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
+              className="w-full sm:w-40 appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer hover:border-primary/40"
             >
               <option value="All">All Statuses</option>
               <option value="new">New</option>
@@ -930,7 +929,7 @@ export default function CareerPartnershipPage() {
               <option value="contacted">Contacted</option>
               <option value="archived">Archived</option>
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
           </div>
 
           {/* Clear all filters */}
@@ -939,7 +938,7 @@ export default function CareerPartnershipPage() {
               <div className="hidden sm:block w-px h-8 bg-primary/15 self-center" />
               <button
                 onClick={clearSubmissionFilters}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-primary/50 hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors whitespace-nowrap hover:cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
                 Clear
@@ -950,7 +949,7 @@ export default function CareerPartnershipPage() {
 
         {/* Results info */}
         {hasActiveSubmissionFilters && !isSubmissionsLoading && submissionMeta && (
-          <p className="text-primary/80 text-sm tracking-wider mb-4">
+          <p className="text-primary text-sm tracking-wider mb-4">
             Showing {submissionMeta.total} submission{submissionMeta.total !== 1 ? "s" : ""}
             {typeFilter !== "All" && ` · ${typeFilter}`}
             {statusFilter !== "All" && ` · ${submissionStatusConfig[statusFilter].label}`}
@@ -968,8 +967,8 @@ export default function CareerPartnershipPage() {
         ) : submissions.length === 0 ? (
           <div className="bg-white border border-primary/20 flex flex-col items-center justify-center py-24 text-center">
             <Users className="w-8 h-8 text-primary/20 mb-4" />
-            <p className="text-primary/80 text-xs tracking-widest uppercase mb-2">No Results</p>
-            <p className="text-primary/80 text-sm">
+            <p className="text-primary text-xs tracking-widest uppercase mb-2">No Results</p>
+            <p className="text-primary text-sm">
               {submissionDebouncedSearch
                 ? `No submissions match "${submissionDebouncedSearch}"`
                 : "No submissions in this filter yet"}

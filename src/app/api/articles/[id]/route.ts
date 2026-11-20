@@ -3,26 +3,39 @@ import { NextRequest } from "next/server";
 import {
   prisma,
   handleError,
+  conflict,
   requireAuth,
   requireRole,
   notFound,
   ok,
   noContent,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
 import { updateArticleSchema } from "@/utils";
-import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import { resolveContentAccess } from "@/lib/content/access";
+import {
+  translationsReplace,
+  publicationFields,
+} from "@/lib/content/translations";
+import { sanitizeRichText } from "@/lib/sanitize";
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { id } = await params;
 
     const article = await prisma.article.findUnique({
       where: { id },
+      include: { translations: true },
     });
-    if (!article) return notFound("Article");
+    if (!article || (!access.isStaff && article.status !== "published")) {
+      return notFound("Article");
+    }
     return ok(article);
   } catch (error) {
     return handleError(error);
@@ -41,25 +54,33 @@ export async function PATCH(
 
     const body = await req.json();
     const dto = updateArticleSchema.parse(body);
+    const { translations, status, ...base } = dto;
 
-    let slug: string | undefined;
-    if (dto.title) {
-      const baseSlug = toSlug(dto.title);
-      slug = await ensureUniqueSlug(baseSlug, async (s) => {
-        const existing = await prisma.article.findUnique({
-          where: { slug: s },
-        });
-        return !!existing && existing.id !== id;
-      });
+    const current = await prisma.article.findUnique({
+      where: { id },
+      select: { slug: true, status: true },
+    });
+    if (!current) return notFound("Article");
+
+    // D2: the slug follows the input and is immutable once published.
+    if (dto.slug && dto.slug !== current.slug && current.status === "published") {
+      return conflict("Slug cannot be changed after publish");
     }
 
     const article = await prisma.article.update({
       where: { id: id },
       data: {
-        ...dto,
-        ...(slug !== undefined && { slug }),
+        ...base,
+        ...(base.content !== undefined
+          ? { content: sanitizeRichText(base.content) }
+          : {}),
+        ...publicationFields(status),
+        ...(translations !== undefined
+          ? { translations: translationsReplace("article", translations) }
+          : {}),
       },
     });
+    await revalidatePublicContent();
     return ok(article);
   } catch (error) {
     return handleError(error);
@@ -77,6 +98,7 @@ export async function DELETE(
     requireRole(payload, "admin");
 
     await prisma.article.delete({ where: { id } });
+    await revalidatePublicContent();
     return noContent();
   } catch (error) {
     return handleError(error);

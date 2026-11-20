@@ -1,0 +1,572 @@
+{
+  "en": {
+    "whyBali": [
+      "Dramatic ocean cliffs",
+      "Private luxury villas",
+      "Jungle and riverside settings",
+      "White sand beaches",
+      "Boutique resorts and hidden estates"
+    ],
+    "fullServiceIncludes": [
+      "Venue sourcing and evaluation",
+      "Creative direction and design development",
+      "Vendor curation and management",
+      "Budget planning and cost control",
+      "Production schedules and timelines",
+      "Guest experience planning",
+      "Ceremony and reception orchestration",
+      "On-the-day coordination and execution"
+    ],
+    "hospitalityValues": [
+      "Clarity",
+      "Precision",
+      "Guest comfort",
+      "Emotional flow",
+      "Seamless execution"
+    ],
+    "coupleValues": [
+      "Artistic storytelling",
+      "Calm, professional planning",
+      "Refined aesthetics",
+      "Emotional atmosphere",
+      "Thoughtful guest experience"
+    ],
+    "designFoundation": [
+      "Understanding your story",
+      "Defining the emotional atmosphere",
+      "Studying your venue and surroundings",
+      "Designing the flow of the entire celebration"
+    ],
+    "subExperiences": [
+      {
+        "title": "Private Villa Weddings",
+        "subtitle": "in Bali",
+        "tag": "Private Villa",
+        "desc": "Privacy, freedom of design, and an atmosphere that feels personal rather than commercial. Celebrating in spaces that become entirely yours.",
+        "href": "/wedding-experiences/private-villa-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png"
+      },
+      {
+        "title": "Intimate Weddings",
+        "subtitle": "in Bali",
+        "tag": "Intimate",
+        "desc": "Space for connection, presence, and beauty without excess. Designed for couples who value quality over quantity.",
+        "href": "/wedding-experiences/intimate-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
+      },
+      {
+        "title": "Elopement Weddings",
+        "subtitle": "in Bali",
+        "tag": "Elopement",
+        "desc": "An elopement is not a smaller wedding — it is a deeper one. Emotionally rich, visually poetic, and entirely yours.",
+        "href": "/wedding-experiences/elopement-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png"
+      },
+      {
+        "title": "Luxury Weddings",
+        "subtitle": "in Bali",
+        "tag": "Luxury",
+        "desc": "Luxury is not about excess — it is about refinement, care, and experience. Weddings shaped by architecture, atmosphere, and storytelling.",
+        "href": "/wedding-experiences/luxury-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "What does a Bali destination wedding planner do?",
+        "a": "A Bali destination wedding planner manages both the creative design and the full planning process for couples marrying in Bali. This includes venue sourcing, design development, vendor coordination, budgeting guidance, logistics, timelines, and on-the-day execution."
+      },
+      {
+        "q": "Why should we hire a local Bali wedding planner?",
+        "a": "A local Bali wedding planner provides deep knowledge of venues, regulations, cultural considerations, trusted vendors, and on-site production realities — ensuring smoother communication and a higher level of execution than planning remotely."
+      },
+      {
+        "q": "How far in advance should we plan a destination wedding in Bali?",
+        "a": "Most destination weddings in Bali are planned 9–15 months in advance. This allows time for venue availability, design development, vendor booking, guest logistics, and permits. Luxury and private villa weddings often benefit from longer preparation."
+      },
+      {
+        "q": "Do you work with international couples?",
+        "a": "Yes. Linda Wiryani Design and Event Planning specializes in destination weddings for international couples. We guide clients through the full planning journey, including time-zone coordination, online consultations, and detailed planning systems."
+      },
+      {
+        "q": "Can you help us choose the right wedding venue in Bali?",
+        "a": "Yes. We curate and recommend wedding venues based on your vision, guest count, design direction, and experience goals — including private villas, resorts, and hidden locations across Bali."
+      }
+    ]
+  },
+  "id": {
+    "whyBali": [
+      "Tebing samudra yang dramatis",
+      "Vila mewah pribadi",
+      "Lanskap hutan dan tepi sungai",
+      "Pantai berpasir putih",
+      "Resor butik dan properti tersembunyi"
+    ],
+    "fullServiceIncludes": [
+      "Pencarian dan evaluasi venue",
+      "Arahan kreatif dan pengembangan desain",
+      "Kurasi dan pengelolaan vendor",
+      "Perencanaan anggaran dan pengendalian biaya",
+      "Jadwal dan lini masa produksi",
+      "Perencanaan pengalaman tamu",
+      "Orkestrasi upacara dan resepsi",
+      "Koordinasi dan pelaksanaan pada hari-H"
+    ],
+    "hospitalityValues": [
+      "Kejelasan",
+      "Presisi",
+      "Kenyamanan tamu",
+      "Alur emosional",
+      "Eksekusi yang mulus"
+    ],
+    "coupleValues": [
+      "Penceritaan artistik",
+      "Perencanaan yang tenang dan profesional",
+      "Estetika yang halus",
+      "Suasana emosional",
+      "Pengalaman tamu yang penuh perhatian"
+    ],
+    "designFoundation": [
+      "Memahami kisah Anda",
+      "Menentukan suasana emosional",
+      "Mempelajari venue dan lingkungan sekitarnya",
+      "Merancang alur seluruh perayaan"
+    ],
+    "subExperiences": [
+      {
+        "title": "Pernikahan Vila Pribadi",
+        "subtitle": "di Bali",
+        "tag": "Vila Pribadi",
+        "desc": "Privasi, kebebasan desain, dan suasana yang terasa personal, bukan komersial. Merayakan di ruang yang sepenuhnya menjadi milik Anda.",
+        "href": "/wedding-experiences/private-villa-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png"
+      },
+      {
+        "title": "Pernikahan Intim",
+        "subtitle": "di Bali",
+        "tag": "Intim",
+        "desc": "Ruang untuk kedekatan, kehadiran, dan keindahan tanpa berlebihan. Dirancang untuk pasangan yang mengutamakan kualitas di atas kuantitas.",
+        "href": "/wedding-experiences/intimate-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
+      },
+      {
+        "title": "Pernikahan Elopement",
+        "subtitle": "di Bali",
+        "tag": "Elopement",
+        "desc": "Elopement bukanlah pernikahan yang lebih kecil — melainkan yang lebih dalam. Kaya emosi, puitis secara visual, dan sepenuhnya milik Anda.",
+        "href": "/wedding-experiences/elopement-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png"
+      },
+      {
+        "title": "Pernikahan Mewah",
+        "subtitle": "di Bali",
+        "tag": "Mewah",
+        "desc": "Kemewahan bukan soal berlebihan — melainkan tentang kehalusan, kepedulian, dan pengalaman. Pernikahan yang dibentuk oleh arsitektur, suasana, dan penceritaan.",
+        "href": "/wedding-experiences/luxury-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Apa yang dilakukan seorang wedding planner destinasi di Bali?",
+        "a": "Wedding planner destinasi di Bali mengelola desain kreatif sekaligus seluruh proses perencanaan bagi pasangan yang menikah di Bali. Ini mencakup pencarian venue, pengembangan desain, koordinasi vendor, panduan anggaran, logistik, jadwal, dan pelaksanaan pada hari-H."
+      },
+      {
+        "q": "Mengapa kami perlu menyewa wedding planner lokal di Bali?",
+        "a": "Wedding planner lokal di Bali memiliki pengetahuan mendalam tentang venue, regulasi, pertimbangan budaya, vendor tepercaya, dan kenyataan produksi di lokasi — memastikan komunikasi yang lebih lancar dan eksekusi yang lebih baik dibandingkan perencanaan dari jarak jauh."
+      },
+      {
+        "q": "Berapa lama sebelumnya kami sebaiknya merencanakan pernikahan destinasi di Bali?",
+        "a": "Sebagian besar pernikahan destinasi di Bali direncanakan 9–15 bulan sebelumnya. Waktu ini memberi ruang untuk ketersediaan venue, pengembangan desain, pemesanan vendor, logistik tamu, dan perizinan. Pernikahan mewah dan vila pribadi sering kali membutuhkan persiapan yang lebih panjang."
+      },
+      {
+        "q": "Apakah Anda bekerja dengan pasangan internasional?",
+        "a": "Ya. Linda Wiryani Design and Event Planning mengkhususkan diri pada pernikahan destinasi untuk pasangan internasional. Kami memandu klien melalui seluruh perjalanan perencanaan, termasuk koordinasi zona waktu, konsultasi daring, dan sistem perencanaan yang terperinci."
+      },
+      {
+        "q": "Bisakah Anda membantu kami memilih venue pernikahan yang tepat di Bali?",
+        "a": "Ya. Kami mengkurasi dan merekomendasikan venue pernikahan berdasarkan visi, jumlah tamu, arah desain, dan tujuan pengalaman Anda — termasuk vila pribadi, resor, dan lokasi tersembunyi di seluruh Bali."
+      }
+    ]
+  },
+  "zh": {
+    "whyBali": [
+      "壮丽的海边悬崖",
+      "私人奢华别墅",
+      "丛林与河畔景致",
+      "白色沙滩",
+      "精品度假村与隐秘庄园"
+    ],
+    "fullServiceIncludes": [
+      "场地甄选与评估",
+      "创意指导与设计开发",
+      "供应商甄选与管理",
+      "预算规划与成本控制",
+      "制作日程与时间表",
+      "宾客体验规划",
+      "仪式与宴会的整体统筹",
+      "婚礼当天的统筹与执行"
+    ],
+    "hospitalityValues": [
+      "清晰明确",
+      "精准细致",
+      "宾客舒适",
+      "情感流动",
+      "无缝衔接的执行"
+    ],
+    "coupleValues": [
+      "艺术叙事",
+      "从容专业的策划",
+      "精致的美学",
+      "情感氛围",
+      "体贴周到的宾客体验"
+    ],
+    "designFoundation": [
+      "了解您的故事",
+      "确立情感氛围",
+      "研究您的场地及周边环境",
+      "设计整场庆典的流程"
+    ],
+    "subExperiences": [
+      {
+        "title": "私人别墅婚礼",
+        "subtitle": "于巴厘岛",
+        "tag": "私人别墅",
+        "desc": "私密、设计自由，以及个性化而非商业化的氛围。在完全属于您的空间里尽情庆祝。",
+        "href": "/wedding-experiences/private-villa-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png"
+      },
+      {
+        "title": "私密婚礼",
+        "subtitle": "于巴厘岛",
+        "tag": "私密",
+        "desc": "为联结、专注与美好留出空间，不事铺张。专为重质不重量的新人而设计。",
+        "href": "/wedding-experiences/intimate-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
+      },
+      {
+        "title": "私奔婚礼",
+        "subtitle": "于巴厘岛",
+        "tag": "私奔",
+        "desc": "私奔婚礼不是缩小版的婚礼，而是更深刻的婚礼。情感丰盈，视觉如诗，完完全全属于您。",
+        "href": "/wedding-experiences/elopement-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png"
+      },
+      {
+        "title": "奢华婚礼",
+        "subtitle": "于巴厘岛",
+        "tag": "奢华",
+        "desc": "奢华无关铺张，而在于精致、用心与体验。由建筑、氛围与故事塑造的婚礼。",
+        "href": "/wedding-experiences/luxury-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "巴厘岛目的地婚礼策划师负责什么？",
+        "a": "巴厘岛目的地婚礼策划师既负责创意设计，也负责在巴厘岛结婚的新人的全部策划流程，包括场地甄选、设计开发、供应商协调、预算指导、物流、时间表以及婚礼当天的执行。"
+      },
+      {
+        "q": "为什么要聘请巴厘岛本地的婚礼策划师？",
+        "a": "本地的巴厘岛婚礼策划师对场地、法规、文化礼仪、值得信赖的供应商以及现场制作的实际情况了如指掌——相比远程策划，沟通更顺畅，执行水准也更高。"
+      },
+      {
+        "q": "巴厘岛的目的地婚礼应提前多久开始筹备？",
+        "a": "大多数巴厘岛目的地婚礼会提前 9–15 个月筹备，以便留出时间确认场地档期、开发设计、预订供应商、安排宾客行程并办理许可。奢华婚礼和私人别墅婚礼往往需要更长的筹备期。"
+      },
+      {
+        "q": "你们与国际新人合作吗？",
+        "a": "合作。Linda Wiryani Design and Event Planning 专注于为国际新人策划目的地婚礼。我们陪伴客户走完整个策划旅程，包括时差协调、线上咨询以及细致的策划体系。"
+      },
+      {
+        "q": "你们能帮我们挑选合适的巴厘岛婚礼场地吗？",
+        "a": "可以。我们会根据您的愿景、宾客人数、设计方向与体验目标，精选并推荐婚礼场地——包括遍布巴厘岛的私人别墅、度假村和隐秘之地。"
+      }
+    ]
+  },
+  "fr": {
+    "whyBali": [
+      "Falaises océanes spectaculaires",
+      "Villas de luxe privées",
+      "Cadres de jungle et de bord de rivière",
+      "Plages de sable blanc",
+      "Resorts de charme et domaines secrets"
+    ],
+    "fullServiceIncludes": [
+      "Recherche et évaluation des lieux",
+      "Direction créative et développement du design",
+      "Sélection et gestion des prestataires",
+      "Planification budgétaire et maîtrise des coûts",
+      "Calendriers et plannings de production",
+      "Planification de l'expérience des invités",
+      "Orchestration de la cérémonie et de la réception",
+      "Coordination et exécution le jour J"
+    ],
+    "hospitalityValues": [
+      "Clarté",
+      "Précision",
+      "Confort des invités",
+      "Fluidité émotionnelle",
+      "Exécution sans faille"
+    ],
+    "coupleValues": [
+      "Narration artistique",
+      "Une planification sereine et professionnelle",
+      "Une esthétique raffinée",
+      "Une atmosphère émotionnelle",
+      "Une expérience d'invités attentionnée"
+    ],
+    "designFoundation": [
+      "Comprendre votre histoire",
+      "Définir l'atmosphère émotionnelle",
+      "Étudier votre lieu et son environnement",
+      "Concevoir le déroulé de toute la célébration"
+    ],
+    "subExperiences": [
+      {
+        "title": "Mariages en Villa Privée",
+        "subtitle": "à Bali",
+        "tag": "Villa privée",
+        "desc": "Intimité, liberté de conception et atmosphère personnelle plutôt que commerciale. Célébrer dans des espaces qui deviennent entièrement les vôtres.",
+        "href": "/wedding-experiences/private-villa-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png"
+      },
+      {
+        "title": "Mariages Intimes",
+        "subtitle": "à Bali",
+        "tag": "Intime",
+        "desc": "Un espace pour la connexion, la présence et la beauté, sans excès. Conçu pour les couples qui privilégient la qualité à la quantité.",
+        "href": "/wedding-experiences/intimate-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
+      },
+      {
+        "title": "Mariages en Elopement",
+        "subtitle": "à Bali",
+        "tag": "Elopement",
+        "desc": "Un elopement n'est pas un mariage en plus petit — c'est un mariage plus profond. Riche en émotion, d'une poésie visuelle, et entièrement à vous.",
+        "href": "/wedding-experiences/elopement-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png"
+      },
+      {
+        "title": "Mariages de Luxe",
+        "subtitle": "à Bali",
+        "tag": "Luxe",
+        "desc": "Le luxe n'est pas une question d'excès — il tient au raffinement, au soin et à l'expérience. Des mariages façonnés par l'architecture, l'atmosphère et la narration.",
+        "href": "/wedding-experiences/luxury-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Que fait un wedding planner de destination à Bali ?",
+        "a": "Un wedding planner de destination à Bali gère à la fois la conception créative et l'ensemble du processus de planification pour les couples qui se marient à Bali. Cela comprend la recherche du lieu, le développement du design, la coordination des prestataires, les conseils budgétaires, la logistique, les calendriers et l'exécution le jour J."
+      },
+      {
+        "q": "Pourquoi faire appel à un wedding planner local à Bali ?",
+        "a": "Un wedding planner local à Bali possède une connaissance approfondie des lieux, de la réglementation, des considérations culturelles, des prestataires de confiance et des réalités de production sur place — pour une communication plus fluide et une exécution de meilleur niveau qu'une planification à distance."
+      },
+      {
+        "q": "Combien de temps à l'avance faut-il planifier un mariage de destination à Bali ?",
+        "a": "La plupart des mariages de destination à Bali sont planifiés 9 à 15 mois à l'avance, ce qui laisse le temps de vérifier la disponibilité des lieux, de développer le design, de réserver les prestataires, d'organiser la logistique des invités et d'obtenir les autorisations. Les mariages de luxe et en villa privée gagnent souvent à être préparés encore plus tôt."
+      },
+      {
+        "q": "Travaillez-vous avec des couples internationaux ?",
+        "a": "Oui. Linda Wiryani Design and Event Planning est spécialisé dans les mariages de destination pour les couples internationaux. Nous accompagnons nos clients tout au long de la planification, avec coordination des fuseaux horaires, consultations en ligne et systèmes de planification détaillés."
+      },
+      {
+        "q": "Pouvez-vous nous aider à choisir le bon lieu de mariage à Bali ?",
+        "a": "Oui. Nous sélectionnons et recommandons des lieux de mariage selon votre vision, le nombre d'invités, la direction de design et vos objectifs d'expérience — y compris des villas privées, des resorts et des lieux secrets à travers Bali."
+      }
+    ]
+  },
+  "ja": {
+    "whyBali": [
+      "ドラマチックな海辺の断崖",
+      "プライベートなラグジュアリーヴィラ",
+      "ジャングルと川沿いのロケーション",
+      "白い砂浜のビーチ",
+      "ブティックリゾートと隠れ家的エステート"
+    ],
+    "fullServiceIncludes": [
+      "会場の探索と評価",
+      "クリエイティブディレクションとデザインの開発",
+      "ベンダーの選定と管理",
+      "予算計画とコスト管理",
+      "制作スケジュールとタイムライン",
+      "ゲスト体験の設計",
+      "セレモニー＆レセプションのオーケストレーション",
+      "当日のコーディネートと実行"
+    ],
+    "hospitalityValues": [
+      "明晰さ",
+      "精密さ",
+      "ゲストの快適さ",
+      "感情の流れ",
+      "滑らかな実行"
+    ],
+    "coupleValues": [
+      "芸術的なストーリーテリング",
+      "穏やかでプロフェッショナルなプランニング",
+      "洗練された美意識",
+      "感情に響く空気感",
+      "思慮深いゲスト体験"
+    ],
+    "designFoundation": [
+      "お二人の物語を理解する",
+      "感情的な空気感を定義する",
+      "会場と周囲の環境を調べる",
+      "祝福全体の流れをデザインする"
+    ],
+    "subExperiences": [
+      {
+        "title": "プライベートヴィラウェディング",
+        "subtitle": "バリ島で",
+        "tag": "プライベートヴィラ",
+        "desc": "プライバシー、デザインの自由、そして商業的ではなくパーソナルに感じられる空気感。完全にお二人だけのものになる空間での祝福です。",
+        "href": "/wedding-experiences/private-villa-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png"
+      },
+      {
+        "title": "少人数ウェディング",
+        "subtitle": "バリ島で",
+        "tag": "少人数",
+        "desc": "過剰さのない、つながり、存在感、美しさのための余白。量より質を大切にするお二人のためにデザインしました。",
+        "href": "/wedding-experiences/intimate-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
+      },
+      {
+        "title": "エロープメントウェディング",
+        "subtitle": "バリ島で",
+        "tag": "エロープメント",
+        "desc": "エロープメントは、小さなウェディングではなく、より深いウェディングです。感情豊かで、視覚的に詩的で、完全にお二人だけのものです。",
+        "href": "/wedding-experiences/elopement-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png"
+      },
+      {
+        "title": "ラグジュアリーウェディング",
+        "subtitle": "バリ島で",
+        "tag": "ラグジュアリー",
+        "desc": "ラグジュアリーとは、過剰さではなく、洗練、心配り、そして体験のこと。建築、空気感、ストーリーテリングに形づくられたウェディングです。",
+        "href": "/wedding-experiences/luxury-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "バリ島のデスティネーションウェディングプランナーは、何をしてくれますか？",
+        "a": "バリ島のデスティネーションウェディングプランナーは、バリ島で結婚されるお二人のために、クリエイティブなデザインとプランニング全体の両方を担います。会場探し、デザインの開発、ベンダーとの調整、予算のガイダンス、運営面の手配、タイムライン、当日の実行が含まれます。"
+      },
+      {
+        "q": "なぜ、バリ島在住のウェディングプランナーに依頼すべきですか？",
+        "a": "バリ島在住のウェディングプランナーは、会場、規制、文化的な配慮、信頼できるベンダー、現場の制作事情に深い知識をもっています。そのため、遠隔でのプランニングよりも、円滑なコミュニケーションとより高い水準の実行が可能です。"
+      },
+      {
+        "q": "バリ島でのデスティネーションウェディングは、どのくらい前から準備すべきですか？",
+        "a": "バリ島のデスティネーションウェディングの多くは、9〜15か月前からプランニングを始めます。会場の空き状況、デザインの開発、ベンダーの手配、ゲストの手配、許可の取得に時間が必要だからです。ラグジュアリーウェディングやプライベートヴィラウェディングは、さらに長い準備期間が望ましいことが多くあります。"
+      },
+      {
+        "q": "海外のお二人とも仕事をしていますか？",
+        "a": "はい。Linda Wiryani Design and Event Planningは、海外のお二人のためのデスティネーションウェディングを専門としています。時差を考慮したやり取り、オンライン相談、詳細なプランニングの仕組みなど、プランニングの全行程をご案内します。"
+      },
+      {
+        "q": "バリ島で、ふさわしいウェディング会場を選ぶ手伝いはしてもらえますか？",
+        "a": "はい。お二人のビジョン、ゲストの人数、デザインの方向性、体験の目標に基づき、バリ島各地のプライベートヴィラ、リゾート、隠れ家的なロケーションを含め、ウェディング会場を厳選してご提案します。"
+      }
+    ]
+  },
+  "de": {
+    "whyBali": [
+      "Dramatische Klippen am Meer",
+      "Private Luxusvillen",
+      "Schauplätze im Dschungel und am Fluss",
+      "Weiße Sandstrände",
+      "Boutique-Resorts und verborgene Anwesen"
+    ],
+    "fullServiceIncludes": [
+      "Location-Suche und -Bewertung",
+      "Kreative Leitung und Designentwicklung",
+      "Dienstleisterauswahl und -management",
+      "Budgetplanung und Kostenkontrolle",
+      "Produktionspläne und Zeitabläufe",
+      "Planung des Gästeerlebnisses",
+      "Orchestrierung von Zeremonie und Empfang",
+      "Koordination und Umsetzung am Hochzeitstag"
+    ],
+    "hospitalityValues": [
+      "Klarheit",
+      "Präzision",
+      "Gästekomfort",
+      "Emotionaler Fluss",
+      "Nahtlose Umsetzung"
+    ],
+    "coupleValues": [
+      "Künstlerisches Storytelling",
+      "Ruhige, professionelle Planung",
+      "Erlesene Ästhetik",
+      "Emotionale Atmosphäre",
+      "Durchdachtes Gästeerlebnis"
+    ],
+    "designFoundation": [
+      "Ihre Geschichte verstehen",
+      "Die emotionale Atmosphäre definieren",
+      "Ihre Location und Umgebung studieren",
+      "Den Ablauf der gesamten Feier gestalten"
+    ],
+    "subExperiences": [
+      {
+        "title": "Hochzeiten in Privatvillen",
+        "subtitle": "auf Bali",
+        "tag": "Privatvilla",
+        "desc": "Privatsphäre, gestalterische Freiheit und eine Atmosphäre, die persönlich statt kommerziell wirkt. Feiern in Räumen, die ganz Ihnen gehören.",
+        "href": "/wedding-experiences/private-villa-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/private-bg_rloht1.png"
+      },
+      {
+        "title": "Intime Hochzeiten",
+        "subtitle": "auf Bali",
+        "tag": "Intim",
+        "desc": "Raum für Verbundenheit, Präsenz und Schönheit ohne Überfluss. Gestaltet für Paare, denen Qualität wichtiger ist als Quantität.",
+        "href": "/wedding-experiences/intimate-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767878596/BAL_1453_e7hd8w.jpg"
+      },
+      {
+        "title": "Elopement-Hochzeiten",
+        "subtitle": "auf Bali",
+        "tag": "Elopement",
+        "desc": "Ein Elopement ist keine kleinere Hochzeit – es ist eine tiefere. Emotional reich, visuell poetisch und ganz Ihre eigene.",
+        "href": "/wedding-experiences/elopement-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1767345590/Wedding_18_nnx6an.png"
+      },
+      {
+        "title": "Luxushochzeiten",
+        "subtitle": "auf Bali",
+        "tag": "Luxus",
+        "desc": "Bei Luxus geht es nicht um Überfluss, sondern um Raffinesse, Sorgfalt und Erlebnis. Hochzeiten, geprägt von Architektur, Atmosphäre und Storytelling.",
+        "href": "/wedding-experiences/luxury-weddings",
+        "image": "https://res.cloudinary.com/dzerxindp/image/upload/v1793086071/signature-bg_ythzlq.png"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Was macht eine Destination-Wedding-Planerin auf Bali?",
+        "a": "Eine Destination-Wedding-Planerin auf Bali verantwortet sowohl das kreative Design als auch den gesamten Planungsprozess für Paare, die auf Bali heiraten. Dazu gehören Location-Suche, Designentwicklung, Dienstleisterkoordination, Budgetberatung, Logistik, Zeitpläne und die Umsetzung am Hochzeitstag."
+      },
+      {
+        "q": "Warum sollten wir eine lokale Hochzeitsplanerin auf Bali beauftragen?",
+        "a": "Eine lokale Hochzeitsplanerin auf Bali bringt tiefes Wissen über Locations, Vorschriften, kulturelle Besonderheiten, vertrauenswürdige Dienstleister und die Realität der Produktion vor Ort mit – für reibungslosere Kommunikation und eine höhere Umsetzungsqualität als bei Planung aus der Ferne."
+      },
+      {
+        "q": "Wie weit im Voraus sollten wir eine Destination Wedding auf Bali planen?",
+        "a": "Die meisten Destination Weddings auf Bali werden 9–15 Monate im Voraus geplant. So bleibt Zeit für Verfügbarkeit der Location, Designentwicklung, Dienstleisterbuchungen, Gästelogistik und Genehmigungen. Luxushochzeiten und Hochzeiten in Privatvillen profitieren oft von längerer Vorbereitung."
+      },
+      {
+        "q": "Arbeiten Sie mit internationalen Paaren?",
+        "a": "Ja. Linda Wiryani Design and Event Planning ist auf Destination Weddings für internationale Paare spezialisiert. Wir begleiten unsere Kunden durch den gesamten Planungsweg, einschließlich Abstimmung über Zeitzonen, Online-Beratungen und detaillierter Planungssysteme."
+      },
+      {
+        "q": "Können Sie uns bei der Wahl der passenden Hochzeitslocation auf Bali helfen?",
+        "a": "Ja. Wir kuratieren und empfehlen Hochzeitslocations nach Ihrer Vision, Gästezahl, Designrichtung und Ihren Erlebniszielen – darunter Privatvillen, Resorts und verborgene Orte auf ganz Bali."
+      }
+    ]
+  }
+}

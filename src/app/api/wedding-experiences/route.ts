@@ -7,13 +7,20 @@ import {
   requireAuth,
   requireRole,
   created,
+  badRequest,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
+import { resolveContentAccess } from "@/lib/content/access";
+import {
+  translationsCreate,
+  publicationFields,
+} from "@/lib/content/translations";
 import {
   createWeddingExperienceSchema,
   parsePagination,
   paginateQuery,
+  weddingExperienceTypeEnum,
 } from "@/utils";
-import { toSlug, ensureUniqueSlug } from "@/utils/slug";
 
 const WEDDING_EXPERIENCE_INCLUDE = {
   faqs: { orderBy: { sort_order: "asc" as const } },
@@ -24,10 +31,19 @@ const WEDDING_EXPERIENCE_INCLUDE = {
 
 export async function GET(req: NextRequest) {
   try {
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
-    const category = req.nextUrl.searchParams.get("category") ?? undefined;
+    const categoryParam = req.nextUrl.searchParams.get("category") ?? undefined;
+    const categoryCheck = weddingExperienceTypeEnum.safeParse(categoryParam);
+    if (categoryParam && !categoryCheck.success) {
+      return badRequest("Invalid category");
+    }
+    const category = categoryCheck.success ? categoryCheck.data : undefined;
 
     const where: Record<string, unknown> = {};
+    if (!access.isStaff) where.status = "published";
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
@@ -64,17 +80,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const dto = createWeddingExperienceSchema.parse(body);
 
-    const baseSlug = toSlug(dto.name);
-    const slug = await ensureUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.weddingExperience.findUnique({
-        where: { slug: s },
-      });
-      return !!existing;
-    });
-
     const experience = await prisma.weddingExperience.create({
       data: {
-        slug,
+        slug: dto.slug,
         category: dto.category,
         name: dto.name,
 
@@ -117,10 +125,13 @@ export async function POST(req: NextRequest) {
         closing_image: dto.closing_image,
         closing_couple_label: dto.closing_couple_label ?? null,
         closing_couple_values: dto.closing_couple_values,
+        ...publicationFields(dto.status),
+        translations: translationsCreate("experience", dto.translations),
       },
       include: WEDDING_EXPERIENCE_INCLUDE,
     });
 
+    await revalidatePublicContent();
     return created(experience);
   } catch (error) {
     return handleError(error);

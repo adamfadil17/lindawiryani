@@ -1,38 +1,30 @@
 import { useEffect, useState } from "react";
 
+import {
+  FALLBACK_USD_TO_IDR,
+  getUsdToIdr,
+} from "@/lib/currency";
+
+/**
+ * USD→IDR rate for public price displays.
+ *
+ * The request is de-duplicated and cached by `@/lib/currency` (12h in
+ * localStorage, plus a server cache), so mounting this in several components
+ * does not cause several network calls.
+ */
 export function useCurrencyConverter(): number {
-  const [exchangeRate, setExchangeRate] = useState<number>(15800);
-  const CACHE_DURATION = 60 * 60 * 1000;
+  const [exchangeRate, setExchangeRate] = useState<number>(FALLBACK_USD_TO_IDR);
 
   useEffect(() => {
-    const fetchExchangeRate = async () => {
-      const now = Date.now();
-      const cachedRate = sessionStorage.getItem("exchangeRate");
-      const cachedTime = sessionStorage.getItem("exchangeRateTime");
+    let cancelled = false;
 
-      if (cachedRate && cachedTime) {
-        const timeDiff = now - Number.parseInt(cachedTime);
-        if (timeDiff < CACHE_DURATION) {
-          setExchangeRate(Number.parseFloat(cachedRate));
-          return;
-        }
-      }
+    getUsdToIdr().then((rate) => {
+      if (!cancelled) setExchangeRate(rate);
+    });
 
-      try {
-        const response = await fetch(
-          "https://api.exchangerate-api.com/v4/latest/USD",
-        );
-        const data = await response.json();
-        const rate = data.rates.IDR;
-        setExchangeRate(rate);
-        sessionStorage.setItem("exchangeRate", rate.toString());
-        sessionStorage.setItem("exchangeRateTime", now.toString());
-      } catch (error) {
-        console.error("Failed to fetch exchange rate:", error);
-      }
+    return () => {
+      cancelled = true;
     };
-
-    fetchExchangeRate();
   }, []);
 
   return exchangeRate;

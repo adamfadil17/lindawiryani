@@ -8,15 +8,123 @@ const slugSchema = z
   .max(255)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase-kebab-case");
 
-const paginationSchema = z.object({
-  page: z.coerce.number().int().min(1).default(1),
+const paginationSchema = z.object({  page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(10),
-  search: z.string().optional(),
-  sortBy: z.string().optional(),
+  search: z.string().max(200).optional(),
+  sortBy: z.string().max(50).optional(),
   sortOrder: z.enum(["asc", "desc"]).default("desc"),
 });
 
 export type PaginationQuery = z.infer<typeof paginationSchema>;
+
+// ─────────────────────────────────────────────
+// CONTENT I18N / PUBLISH
+// ─────────────────────────────────────────────
+
+export const contentStatusSchema = z.enum(["draft", "published"]);
+export const translationLocaleEnum = z.enum(["id", "zh", "fr", "ja", "de"]);
+
+const optionalText = z.string().max(50000).optional();
+const optionalList = z.array(z.string()).optional();
+const optionalPair = z.tuple([z.string(), z.string()]).optional();
+
+const categoryTranslationSchema = z.object({
+  name: z.string().max(255).optional(),
+});
+
+const destinationTranslationSchema = z.object({
+  name: z.string().max(255).optional(),
+  type: z.string().max(255).optional(),
+  description: optionalText,
+  long_description: optionalText,
+  location: z.string().max(255).optional(),
+  atmosphere: optionalText,
+  accessibility_notes: optionalText,
+  seasonal_considerations: optionalText,
+  guest_capacity: z.string().max(255).optional(),
+  highlights: optionalList,
+  best_for: optionalList,
+  ceremony_options: optionalList,
+  reception_options: optionalList,
+  accommodation_nearby: optionalList,
+  dining_experiences: optionalList,
+  unique_features: optionalList,
+});
+
+const experienceTranslationSchema = z.object({
+  name: z.string().max(255).optional(),
+  hero_desc: optionalText,
+  intro_label: z.string().max(255).optional(),
+  intro_heading: optionalPair,
+  intro_body: optionalText,
+  intro_list_label: z.string().max(255).optional(),
+  intro_list: optionalList,
+  intro_footnote: optionalText,
+  approach_label: z.string().max(255).optional(),
+  approach_heading: optionalPair,
+  approach_body: optionalText,
+  approach_list_label: z.string().max(255).optional(),
+  approach_list: optionalList,
+  services_label: z.string().max(255).optional(),
+  services_heading: optionalPair,
+  services_list: optionalList,
+  services_footnote: optionalText,
+  services_dark_label: z.string().max(255).optional(),
+  services_dark_heading: optionalPair,
+  services_dark_body: optionalText,
+  services_dark_list: optionalList,
+  closing_label: z.string().max(255).optional(),
+  closing_heading: optionalPair,
+  closing_body: optionalText,
+  closing_couple_label: z.string().max(255).optional(),
+  closing_couple_values: optionalList,
+});
+
+const faqTranslationSchema = z.object({
+  question: z.string().max(2000).optional(),
+  answer: z.string().max(20000).optional(),
+});
+
+const venueTranslationSchema = z.object({
+  name: z.string().max(255).optional(),
+  slogan: z.string().max(500).optional(),
+  description: optionalText,
+});
+
+const themeTranslationSchema = z.object({
+  title: z.string().max(255).optional(),
+  description: optionalText,
+  inclusions: optionalList,
+});
+
+const portfolioTranslationSchema = z.object({
+  subtitle: z.string().max(500).optional(),
+  tags: optionalList,
+  excerpt: optionalText,
+  origin: z.string().max(255).optional(),
+  review: optionalText,
+  content: z.string().max(500000).optional(),
+  story_sections: z.array(z.unknown()).optional(),
+  credit_role: z.string().max(500).optional(),
+  credit_location_detail: z.string().max(500).optional(),
+  credit_couple_origin: z.string().max(500).optional(),
+});
+
+const articleTranslationSchema = z.object({
+  title: z.string().max(255).optional(),
+  excerpt: optionalText,
+  content: z.string().max(500000).optional(),
+});
+
+const positionTranslationSchema = z.object({
+  title: z.string().max(255).optional(),
+  type: z.string().max(255).optional(),
+  level: z.string().max(255).optional(),
+  desc: optionalText,
+});
+
+const translationsSchema = <T extends z.ZodTypeAny>(schema: T) =>
+  z.partialRecord(translationLocaleEnum, schema).optional();
 
 export function parsePagination(searchParams: URLSearchParams): PaginationQuery {
   return paginationSchema.parse({
@@ -60,6 +168,9 @@ export type LoginDto = z.infer<typeof loginSchema>;
 
 export const createDestinationCategorySchema = z.object({
   name: z.string().min(2).max(255),
+  slug: slugSchema.optional(),
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(categoryTranslationSchema),
 });
 
 export const updateDestinationCategorySchema = createDestinationCategorySchema.partial();
@@ -91,6 +202,8 @@ export const createDestinationSchema = z.object({
   accommodation_nearby: z.array(z.string()).min(1),
   dining_experiences: z.array(z.string()).min(1),
   unique_features: z.array(z.string()).min(1),
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(destinationTranslationSchema),
 });
 
 export const updateDestinationSchema = createDestinationSchema.partial();
@@ -160,6 +273,8 @@ export const createWeddingExperienceSchema = z.object({
   closing_image: z.string().url(),
   closing_couple_label: z.string().optional(),
   closing_couple_values: z.array(z.string()),
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(experienceTranslationSchema),
 });
 
 export const updateWeddingExperienceSchema = createWeddingExperienceSchema.partial();
@@ -173,9 +288,11 @@ export type UpdateWeddingExperienceDto = z.infer<typeof updateWeddingExperienceS
 
 export const createExperienceFaqSchema = z.object({
   experience_id: uuidSchema,
+  slug: slugSchema.optional(),
   question: z.string().min(2),
   answer: z.string().min(2),
   sort_order: z.number().int().min(0).default(0),
+  translations: translationsSchema(faqTranslationSchema),
 });
 
 export const updateExperienceFaqSchema = createExperienceFaqSchema.omit({ experience_id: true }).partial();
@@ -197,6 +314,8 @@ export const createVenueSchema = z.object({
   starting_price: z.number().positive(),
   destination_id: uuidSchema,
   experience_id: uuidSchema,
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(venueTranslationSchema),
 });
 
 export const updateVenueSchema = createVenueSchema.partial();
@@ -235,6 +354,8 @@ export const createWeddingThemeSchema = z.object({
       .union([uuidSchema, z.literal(""), z.undefined()])
       .transform((v) => v || undefined),
   experience_id: uuidSchema,
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(themeTranslationSchema),
 });
 
 export const updateWeddingThemeSchema = createWeddingThemeSchema.partial();
@@ -278,6 +399,8 @@ export const createArticleSchema = z.object({
   published_at: z.string().datetime(),
   image: z.string().url(),
   content: z.string().min(1),
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(articleTranslationSchema),
 });
 
 export const updateArticleSchema = createArticleSchema.partial();
@@ -318,6 +441,8 @@ export const createPortfolioSchema = z.object({
   credit_planner: z.string().min(1),
   credit_location_detail: z.string().min(1),
   credit_couple_origin: z.string().min(1),
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(portfolioTranslationSchema),
 });
 
 export const updatePortfolioSchema = createPortfolioSchema.partial();
@@ -393,35 +518,27 @@ export type UpdateSubmissionStatusDto = z.infer<typeof updateSubmissionStatusSch
 export const inquiryStatusEnum = z.enum(["new", "reviewed", "quoted", "booked", "archived"]);
 
 export const createInquirySchema = z.object({
-  // Contact Info
-  your_name: z.string().min(2).max(100),
-  your_email: z.string().email(),
-  your_address: z.string().min(2),
-  telephone: z.string().min(1),
+  // Contact info
+  full_name: z.string().min(2).max(150),
+  email_or_whatsapp: z.string().min(3).max(255),
 
-  // Groom
-  name_of_groom: z.string().min(2).max(100),
-  religion_of_groom: z.string().min(1),
-  nationality_of_groom: z.string().min(1),
+  // Wedding details
+  wedding_date: z.string().max(100).optional(),
+  number_of_guests: z.string().max(50).optional(),
 
-  // Bride
-  name_of_bride: z.string().min(2).max(100),
-  religion_of_bride: z.string().min(1),
-  nationality_of_bride: z.string().min(1),
+  // Preferences
+  wedding_location_interest: z.array(z.string()).default([]),
+  wedding_style: z.string().max(100).optional(),
+  estimated_budget: z.string().max(100).optional(),
+  services_needed: z.array(z.string()).default([]),
+  venue_secured: z.string().max(100).optional(),
 
-  // Wedding Details
-  wedding_date: z.string().min(1),
-  wedding_venue: z.string().min(1),
-  number_of_attendance: z.string().min(1),
-  approximate_wedding_budget: z.string().min(1),
+  // Vision & discovery
+  your_vision: z.string().max(5000).optional(),
+  how_did_you_find_us: z.string().max(100).optional(),
 
-  // Accommodation & Travel
-  hotel_name_in_bali: z.string().min(1),
-  arrival_date: z.string().min(1),
-  departure_date: z.string().min(1),
-
-  // Vision
-  your_message: z.string().min(1),
+  // Locale the inquiry was submitted in
+  locale: z.string().min(2).max(10).optional(),
 });
 
 export const updateInquiryStatusSchema = z.object({
@@ -436,11 +553,14 @@ export type UpdateInquiryStatusDto = z.infer<typeof updateInquiryStatusSchema>;
 // ─────────────────────────────────────────────
 
 export const createOpenPositionSchema = z.object({
+  slug: slugSchema.optional(),
   title: z.string().min(2).max(255),
   type: z.string().min(1),
   level: z.string().min(1),
   desc: z.string().min(1),
   is_active: z.boolean().default(true),
+  status: contentStatusSchema.optional(),
+  translations: translationsSchema(positionTranslationSchema),
 });
 
 export const updateOpenPositionSchema = createOpenPositionSchema.partial();

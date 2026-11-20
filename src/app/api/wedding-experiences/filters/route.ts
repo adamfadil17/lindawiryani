@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { prisma, handleError, ok } from "@/lib";
+import { prisma, handleError, ok, requireAuth, requireRole } from "@/lib";
 import { WeddingExperienceType } from "@/../generated/prisma";
 
 // ─── GET /api/wedding-experiences/filters ─────────────────────────────────────
@@ -21,8 +21,11 @@ import { WeddingExperienceType } from "@/../generated/prisma";
 //   }
 // }
 
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
+
     // Ambil semua experience sekaligus dengan count relasi yang dibutuhkan.
     // Prisma tidak mendukung groupBy pada relasi, jadi kita findMany dengan
     // _count lalu kelompokkan per kategori di sisi aplikasi.

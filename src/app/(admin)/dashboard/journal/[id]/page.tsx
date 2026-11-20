@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -28,6 +28,10 @@ import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import TranslationsEditor, {
+  ContentStatusField,
+} from "@/components/shared/translations-editor";
+import { useContentEditor } from "@/hook/useContentEditor";
 import TipTapEditor from "@/components/shared/tiptap-editor";
 import { toSlug } from "@/utils";
 import {
@@ -37,7 +41,6 @@ import {
   //    agar nilai yang dikirim ke API selalu konsisten dengan schema backend
   articleCategoryEnum,
 } from "@/utils/form-validators";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 
 // ─── Derive category list dari enum schema ─────────────────────────────────────
 // articleCategoryEnum.options → ["Guides", "Planning_Advice", "Destination_Knowledge", ...]
@@ -105,7 +108,7 @@ export default function JournalArticleDetailPage() {
 
   // setField helper — validasi + touch langsung saat tiap perubahan field
   const setField = (key: keyof ArticleFormData, value: unknown) =>
-    setValue(key as keyof ArticleFormData, value as any, {
+    setValue(key as keyof ArticleFormData, value as never, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -115,6 +118,7 @@ export default function JournalArticleDetailPage() {
 
   // ── Page state ───────────────────────────────────────────────────────────────
   const [isLoading, setIsLoading] = useState(!isNew);
+  const editor = useContentEditor("article");
   const [notFound, setNotFound] = useState(false);
 
   // ── Save state machine: idle | confirm | saving | saved ──────────────────────
@@ -135,7 +139,7 @@ export default function JournalArticleDetailPage() {
         formData.content ||
         formData.image
       )
-    : isDirty;
+    : isDirty || editor.dirty;
 
   // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
@@ -187,6 +191,7 @@ export default function JournalArticleDetailPage() {
         image: String(data.image ?? ""),
         content: String(data.content ?? ""),
       });
+      editor.load(data);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 404) {
         setNotFound(true);
@@ -231,12 +236,11 @@ export default function JournalArticleDetailPage() {
       // - category    : raw enum value (misal "Planning_Advice"), bukan label
       // - published_at: ISO 8601 full string
       // - image       : URL valid (tidak kosong)
-      const payload: ArticleFormData = { ...formData, slug: slugValue };
+      const payload = { ...formData, slug: slugValue, ...editor.payload() };
 
       if (isNew) {
         // POST /api/articles
         await axios.post("/api/articles", payload, {
-          headers: getAuthHeaders(true),
         });
         setSaveStatus("idle");
         toast.success("Article published!", {
@@ -247,7 +251,6 @@ export default function JournalArticleDetailPage() {
       } else {
         // PATCH /api/articles/:id
         await axios.patch(`/api/articles/${id}`, payload, {
-          headers: getAuthHeaders(true),
         });
         setSaveStatus("saved");
         toast.success("Changes saved!", {
@@ -255,6 +258,7 @@ export default function JournalArticleDetailPage() {
         });
         // Re-sync RHF baseline so isDirty becomes false
         reset({ ...formData, slug: toSlug(formData.title) });
+        editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
     } catch (err) {
@@ -276,7 +280,6 @@ export default function JournalArticleDetailPage() {
     try {
       // DELETE /api/articles/:id
       await axios.delete(`/api/articles/${id}`, {
-        headers: getAuthHeaders(),
       });
       setDeleteStatus("idle");
       toast.success("Article deleted!", {
@@ -322,8 +325,8 @@ export default function JournalArticleDetailPage() {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">Not Found</p>
-        <p className="text-primary/80 text-sm mb-6">This article does not exist.</p>
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-2">Not Found</p>
+        <p className="text-primary text-sm mb-6">This article does not exist.</p>
         <Link
           href="/dashboard/journal"
           className="text-xs tracking-widest uppercase text-primary border-b border-primary/30 hover:border-primary transition-colors"
@@ -384,15 +387,15 @@ export default function JournalArticleDetailPage() {
           <button
             type="button"
             onClick={() => guardedNavigate("/dashboard/journal")}
-            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+            <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
               {isNew ? "Create Article" : "Edit Article"}
             </p>
-            <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+            <h1 className="font-display text-primary text-2xl md:text-3xl font-semibold tracking-wide">
               {isNew ? "New Article" : formData.title || "Untitled"}
             </h1>
           </div>
@@ -410,7 +413,7 @@ export default function JournalArticleDetailPage() {
             <Link
               href={`/journal/${formData.slug}`}
               target="_blank"
-              className="inline-flex items-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-primary/5 transition-colors"
+              className="inline-flex items-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-3 hover:bg-primary/5 transition-colors"
             >
               <BookOpen className="w-4 h-4" />
               View Public
@@ -422,7 +425,7 @@ export default function JournalArticleDetailPage() {
               type="button"
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -433,7 +436,7 @@ export default function JournalArticleDetailPage() {
             type="button"
             onClick={() => handleSubmit(onSubmitForm, onSubmitError)()}
             disabled={saveStatus === "saving"}
-            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-2.5 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-60"
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
             {saveStatus === "saving" ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -446,6 +449,18 @@ export default function JournalArticleDetailPage() {
       </div>
 
       {/* ── Two-column form layout ── */}
+      <div className="mb-6">
+        <ContentStatusField
+          value={editor.status}
+          onChange={editor.setStatus}
+          previewHref={
+            editor.status === "published" && slugPreview
+              ? `/journal/${slugPreview}`
+              : null
+          }
+        />
+      </div>
+
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid lg:grid-cols-3 gap-6"
@@ -464,7 +479,7 @@ export default function JournalArticleDetailPage() {
                     onChange={(e) =>
                       setField("category", e.target.value as ArticleFormData["category"])
                     }
-                    className="w-full px-3 py-2.5 pr-10 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
+                    className="w-full px-3 py-3 pr-10 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors appearance-none"
                   >
                     {ARTICLE_CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>
@@ -473,7 +488,7 @@ export default function JournalArticleDetailPage() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="w-4 h-4 text-primary/50 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <ChevronDown className="w-4 h-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
                 {formErrors.category && (
                   <p className="text-red-700 text-xs mt-1">
@@ -501,7 +516,7 @@ export default function JournalArticleDetailPage() {
                   rows={3}
                   error={formErrors.excerpt ? String(formErrors.excerpt.message) : undefined}
                 />
-                <p className="text-primary/40 text-xs mt-1.5">
+                <p className="text-muted-foreground text-xs mt-1.5">
                   {formData.excerpt.length} / 200 characters recommended
                 </p>
               </FormField>
@@ -540,7 +555,7 @@ export default function JournalArticleDetailPage() {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                     <ImageIcon className="w-8 h-8 text-primary/20" />
-                    <p className="text-primary/30 text-xs tracking-wider">No image set</p>
+                    <p className="text-muted-foreground text-xs tracking-wider">No image set</p>
                   </div>
                 )}
               </div>
@@ -560,11 +575,11 @@ export default function JournalArticleDetailPage() {
           {/* URL & SEO — slug preview read-only, persis seperti venue detail page */}
           <Section title="URL & SEO">
             <div className="space-y-2">
-              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">URL Slug</p>
+              <p className="text-primary text-xs tracking-widest uppercase mb-1">URL Slug</p>
               <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
                 {slugPreview || "—"}
               </p>
-              <p className="text-primary/50 text-xs">Auto-generated from article title</p>
+              <p className="text-muted-foreground text-xs">Auto-generated from article title</p>
             </div>
           </Section>
 
@@ -572,7 +587,7 @@ export default function JournalArticleDetailPage() {
           <Section title="Publication" subtitle="Scheduling and metadata">
             <FormField label="Published Date" required>
               <div className="relative">
-                <CalendarDays className="w-4 h-4 text-primary/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <CalendarDays className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="date"
                   // input[type=date] hanya menerima "YYYY-MM-DD"
@@ -582,7 +597,7 @@ export default function JournalArticleDetailPage() {
                     // agar lolos validasi z.string().datetime()
                     setField("published_at", dateToISO(e.target.value));
                   }}
-                  className={`w-full pl-9 pr-4 py-2.5 text-sm text-primary bg-primary/3 border focus:outline-none focus:border-primary/50 transition-colors ${
+                  className={`w-full pl-9 pr-4 py-3 text-sm text-primary bg-primary/3 border focus:outline-none focus:border-primary/50 transition-colors ${
                     formErrors.published_at ? "border-red-400" : "border-primary/20"
                   }`}
                 />
@@ -597,7 +612,7 @@ export default function JournalArticleDetailPage() {
 
           {/* Quick Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">Summary</p>
+            <p className="text-xs tracking-[0.08em] uppercase text-primary mb-4">Summary</p>
             <div className="space-y-3">
               {[
                 {
@@ -626,7 +641,7 @@ export default function JournalArticleDetailPage() {
                 },
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-primary/80 font-semibold text-xs">{item.label}</span>
+                  <span className="text-primary font-semibold text-xs">{item.label}</span>
                   <span className="text-xs font-medium bg-primary text-white px-2 py-0.5">
                     {item.value}
                   </span>
@@ -634,6 +649,14 @@ export default function JournalArticleDetailPage() {
               ))}
             </div>
           </div>
+        </div>
+
+        <div className="lg:col-span-3 space-y-6">
+          <TranslationsEditor
+            entity="article"
+            value={editor.translations}
+            onChange={editor.setTranslations}
+          />
         </div>
       </form>
 

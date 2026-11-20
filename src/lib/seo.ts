@@ -61,9 +61,10 @@ export function absoluteUrl(locale: Locale, path = ""): string {
 export function buildAlternates(
   locale: Locale,
   path = "",
+  locales: Locale[] = [...routing.locales],
 ): NonNullable<Metadata["alternates"]> {
   const languages: Record<string, string> = {};
-  for (const l of routing.locales) {
+  for (const l of locales) {
     languages[HREFLANG[l]] = absoluteUrl(l, path);
   }
   languages["x-default"] = absoluteUrl(routing.defaultLocale, path);
@@ -128,6 +129,8 @@ interface PageMetaInput {
   ogDescription?: string;
   image?: { url: string; width?: number; height?: number; alt?: string };
   siteName?: string;
+  /** Locales with a real translation; omit for all locales. */
+  alternateLocales?: Locale[];
 }
 
 /**
@@ -146,6 +149,7 @@ export function buildPageMetadata({
   ogDescription,
   image,
   siteName = "Linda Wiryani Design & Event Planning",
+  alternateLocales = [...routing.locales],
 }: PageMetaInput): Metadata {
   const img = image ?? { url: DEFAULT_OG_IMAGE, width: 1200, height: 630 };
   const desc = clip(description, descLimit(locale));
@@ -154,7 +158,7 @@ export function buildPageMetadata({
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description: desc,
-    alternates: buildAlternates(locale, path),
+    alternates: buildAlternates(locale, path, alternateLocales),
     openGraph: {
       title: ogTitle ?? title,
       description: ogDesc,
@@ -162,7 +166,7 @@ export function buildPageMetadata({
       siteName,
       locale: OG_LOCALE[locale],
       alternateLocale: routing.locales
-        .filter((l) => l !== locale)
+        .filter((l) => l !== locale && alternateLocales.includes(l))
         .map((l) => OG_LOCALE[l]),
       type: "website",
       images: [img],

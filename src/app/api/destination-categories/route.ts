@@ -8,11 +8,18 @@ import {
   requireRole,
   created,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
 import {
   createDestinationCategorySchema,
   parsePagination,
   paginateQuery,
 } from "@/utils";
+import { toSlug } from "@/utils/slug";
+import { resolveContentAccess } from "@/lib/content/access";
+import {
+  translationsCreate,
+  publicationFields,
+} from "@/lib/content/translations";
 
 const DESTINATION_CATEGORY_INCLUDE = {
   destinations: true,
@@ -20,9 +27,13 @@ const DESTINATION_CATEGORY_INCLUDE = {
 
 export async function GET(req: NextRequest) {
   try {
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
 
     const where: Record<string, unknown> = {};
+    if (!access.isStaff) where.status = "published";
     if (search) {
       where.name = { contains: search, mode: "insensitive" };
     }
@@ -32,11 +43,13 @@ export async function GET(req: NextRequest) {
       (skip, take) =>
         prisma.destinationCategory.findMany({
           where,
-          include: DESTINATION_CATEGORY_INCLUDE,
+          ...(access.isStaff
+            ? { include: DESTINATION_CATEGORY_INCLUDE }
+            : { select: { id: true, slug: true, name: true, published_at: true } }),
           skip,
           take,
           orderBy: { name: "asc" },
-        }),
+        } as never),
       page,
       limit,
     );
@@ -58,10 +71,14 @@ export async function POST(req: NextRequest) {
     const category = await prisma.destinationCategory.create({
       data: {
         name: dto.name,
+        slug: dto.slug ?? toSlug(dto.name),
+        ...publicationFields(dto.status),
+        translations: translationsCreate("category", dto.translations),
       },
       include: DESTINATION_CATEGORY_INCLUDE,
     });
 
+    await revalidatePublicContent();
     return created(category);
   } catch (error) {
     return handleError(error);

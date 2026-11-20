@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { prisma, handleError, ok } from "@/lib";
+import { prisma, handleError, ok, requireAuth, requireRole } from "@/lib";
 
 /**
  * GET /api/portfolios/filters
@@ -19,8 +19,11 @@ import { prisma, handleError, ok } from "@/lib";
  *
  * File ini ditempatkan di: app/api/portfolios/filters/route.ts
  */
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
+
     const [destinations, venues, experiences] = await Promise.all([
       // Hanya destination yang punya ≥1 portfolio
       prisma.destination.findMany({

@@ -1,15 +1,38 @@
 import { NextRequest } from "next/server";
 
-import { prisma, handleError, paginated, requireAuth, requireRole, created } from "@/lib";
-import { createArticleSchema, parsePagination, paginateQuery } from "@/utils";
-import { toSlug, ensureUniqueSlug } from "@/utils/slug";
+import {
+  prisma,
+  handleError,
+  paginated,
+  requireAuth,
+  requireRole,
+  created,
+  badRequest,
+} from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
+import { createArticleSchema, parsePagination, paginateQuery, articleCategoryEnum } from "@/utils";
+import { resolveContentAccess } from "@/lib/content/access";
+import {
+  translationsCreate,
+  publicationFields,
+} from "@/lib/content/translations";
+import { sanitizeRichText } from "@/lib/sanitize";
 
 export async function GET(req: NextRequest) {
   try {
+    const access = await resolveContentAccess(req);
+    if (access.response) return access.response;
+
     const { page, limit, search } = parsePagination(req.nextUrl.searchParams);
-    const category = req.nextUrl.searchParams.get("category") ?? undefined;
+    const categoryParam = req.nextUrl.searchParams.get("category") ?? undefined;
+    const categoryCheck = articleCategoryEnum.safeParse(categoryParam);
+    if (categoryParam && !categoryCheck.success) {
+      return badRequest("Invalid category");
+    }
+    const category = categoryCheck.success ? categoryCheck.data : undefined;
 
     const where: Record<string, unknown> = {};
+    if (!access.isStaff) where.status = "published";
     if (search) {
       where.OR = [
         { title: { contains: search, mode: "insensitive" } },
@@ -45,24 +68,21 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const dto = createArticleSchema.parse(body);
 
-    const baseSlug = toSlug(dto.title);
-    const slug = await ensureUniqueSlug(baseSlug, async (s) => {
-      const existing = await prisma.article.findUnique({ where: { slug: s } });
-      return !!existing;
-    });
-
     const article = await prisma.article.create({
       data: {
-        slug,
+        slug: dto.slug,
         category: dto.category,
         title: dto.title,
         excerpt: dto.excerpt,
         published_at: dto.published_at,
         image: dto.image,
-        content: dto.content,
+        content: sanitizeRichText(dto.content),
+        ...publicationFields(dto.status),
+        translations: translationsCreate("article", dto.translations),
       },
     });
 
+    await revalidatePublicContent();
     return created(article);
   } catch (error) {
     return handleError(error);

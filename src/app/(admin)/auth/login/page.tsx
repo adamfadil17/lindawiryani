@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface LoginForm {
   email: string;
@@ -18,6 +19,20 @@ export default function LoginPage() {
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaRequired, setCaptchaRequired] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
+  useEffect(() => {
+    const error = new URLSearchParams(window.location.search).get("error");
+    if (error === "forbidden") {
+      toast.error("No dashboard access", {
+        description: "This account is not allowed to use the admin dashboard.",
+      });
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,35 +46,33 @@ export default function LoginPage() {
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          ...(recaptchaToken ? { recaptchaToken } : {}),
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Token ada di dalam envelope: { success: true, data: { token, user, expiresIn } }
-        const token = data.data?.token ?? data.token;
-
-        if (token) {
-          // Simpan ke localStorage (dibaca oleh useCurrentUser)
-          localStorage.setItem("token", token);
-
-          // Simpan ke cookie juga agar konsisten dengan proses logout
-          // max-age: 7 hari (sesuai JWT_EXPIRES_IN default "7d")
-          document.cookie = `token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
-        }
-
+        // The session token is set as an HttpOnly cookie by the server and is
+        // never exposed to JavaScript (task 1.1).
         toast.success("Welcome back!", {
           description: "Redirecting to your dashboard...",
           duration: 2000,
         });
 
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 1000);
+        router.push("/dashboard");
+        router.refresh();
       } else {
-        // Error message ada di data.error (envelope ApiResponse) atau data.message
+        if (data.captchaRequired) {
+          setCaptchaRequired(true);
+          setRecaptchaToken(null);
+          recaptchaRef.current?.reset();
+        }
+
         toast.error("Sign in failed", {
           description:
             data.error ??
@@ -77,9 +90,9 @@ export default function LoginPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 border border-primary/50 bg-transparent focus:outline-none focus:border-primary/50 transition-colors disabled:bg-primary/10 text-primary placeholder:text-primary/50 text-sm";
+    "w-full px-4 py-3 min-h-[44px] border border-primary/50 bg-transparent focus:outline-none focus:border-primary/50 transition-colors disabled:bg-primary/10 text-primary placeholder:text-muted-foreground text-sm";
   const labelClass =
-    "block text-primary tracking-[0.15em] uppercase text-xs mb-2";
+    "block text-primary tracking-[0.04em] text-xs font-semibold mb-2";
 
   return (
     <main className="relative min-h-screen overflow-hidden flex">
@@ -101,10 +114,10 @@ export default function LoginPage() {
         <div className="absolute inset-0 flex flex-col justify-between p-12 xl:p-16">
           {/* Bottom tagline */}
           <div className="max-w-md">
-            <p className="text-white/70 tracking-[0.25em] uppercase text-xs mb-4">
+            <p className="text-white/70 tracking-[0.1em] uppercase text-xs mb-4">
               Studio Portal
             </p>
-            <h2 className="text-3xl xl:text-4xl text-white font-semibold leading-tight">
+            <h2 className="font-display text-3xl xl:text-4xl text-white font-semibold leading-tight">
               Where Every Detail
               <br />
               <span className="italic font-light">Becomes Extraordinary</span>
@@ -144,7 +157,7 @@ export default function LoginPage() {
 
           {/* Heading */}
           <div className="mb-10 text-center">
-            <h1 className="text-2xl md:text-3xl text-primary font-semibold leading-tight">
+            <h1 className="font-display text-2xl md:text-3xl text-primary font-semibold leading-tight">
               Welcome Back
               <br />
               <span className="italic font-light text-xl md:text-2xl">
@@ -200,7 +213,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute inset-y-0 right-4 flex items-center text-primary/40 hover:text-primary/70 transition-colors"
+                  className="absolute inset-y-0 right-4 flex items-center text-muted-foreground hover:text-primary transition-colors"
                   tabIndex={-1}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
@@ -243,12 +256,34 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* reCAPTCHA after repeated failures (task 1.7) */}
+            {captchaRequired && (
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  Too many failed attempts. Please complete the reCAPTCHA.
+                </p>
+                {recaptchaSiteKey ? (
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={recaptchaSiteKey}
+                    onChange={(token) => setRecaptchaToken(token)}
+                    onExpired={() => setRecaptchaToken(null)}
+                  />
+                ) : (
+                  <p className="text-xs text-red-700">
+                    reCAPTCHA is not configured
+                    (NEXT_PUBLIC_RECAPTCHA_SITE_KEY).
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Submit */}
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={submitting}
-                className="w-full bg-primary border border-primary text-white font-semibold py-3 text-sm tracking-widest hover:bg-primary/90 disabled:bg-primary/50 disabled:cursor-not-allowed transition-all duration-300 uppercase"
+                disabled={submitting || (captchaRequired && !recaptchaToken)}
+                className="w-full bg-primary border border-primary text-white font-semibold py-3 min-h-[44px] text-sm tracking-widest hover:bg-primary/90 disabled:bg-primary/50 disabled:cursor-not-allowed transition-all duration-300 uppercase"
               >
                 {submitting ? (
                   <span className="flex items-center justify-center gap-2">
@@ -282,11 +317,11 @@ export default function LoginPage() {
 
           {/* Forgot password */}
           <div className="mt-8 text-center">
-            <p className="text-primary/80 text-sm tracking-wide">
+            <p className="text-primary text-sm tracking-wide">
               Forgot your password?{" "}
               <Link
                 href="/forgot-password"
-                className="text-primary underline underline-offset-2 hover:text-primary/70 transition-colors"
+                className="text-primary underline underline-offset-2 hover:text-muted-foreground transition-colors"
               >
                 Reset here
               </Link>
@@ -297,7 +332,7 @@ export default function LoginPage() {
           <div className="mt-8 text-center">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 text-xs tracking-widest uppercase transition-colors"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary text-xs tracking-widest uppercase transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Website

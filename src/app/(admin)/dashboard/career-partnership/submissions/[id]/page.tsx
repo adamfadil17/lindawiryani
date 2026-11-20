@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -25,7 +25,6 @@ import {
   Loader2,
 } from "lucide-react";
 import DeleteModal from "@/components/shared/delete-modal";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import {
   SubmissionStatus,
   VendorSubmission,
@@ -60,10 +59,10 @@ function InfoRow({
   return (
     <div className="flex items-start gap-3 py-3 border-b border-primary/10 last:border-0">
       <div className="w-8 h-8 flex items-center justify-center bg-primary/5 flex-shrink-0 mt-0.5">
-        <Icon className="w-3.5 h-3.5 text-primary/50" />
+        <Icon className="w-3.5 h-3.5 text-muted-foreground" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-0.5">
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-0.5">
           {label}
         </p>
         {href ? (
@@ -71,7 +70,7 @@ function InfoRow({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary text-sm font-medium hover:text-primary/70 underline underline-offset-2 transition-colors break-all"
+            className="text-primary text-sm font-medium hover:text-muted-foreground underline underline-offset-2 transition-colors break-all"
           >
             {value}
           </a>
@@ -94,7 +93,7 @@ function SectionBlock({
 }) {
   return (
     <div className="bg-white border border-primary/20 p-6">
-      <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
+      <p className="text-muted-foreground text-xs tracking-[0.08em] uppercase mb-5 pb-3 border-b border-primary/10">
         {title}
       </p>
       {children}
@@ -127,7 +126,8 @@ export default function SubmissionDetailPage() {
     setIsLoading(true);
     const getSubmissionById = async () => {
       try {
-        const response = await axios.get(`/api/submissions/${id}`);
+        const response = await axios.get(`/api/submissions/${id}`, {
+        });
         const data = response.data.data ?? response.data;
         setSubmission(data);
       } catch (err) {
@@ -157,7 +157,6 @@ export default function SubmissionDetailPage() {
       await axios.patch(
         `/api/submissions/${id}`,
         { status: newStatus },
-        { headers: getAuthHeaders(true) },
       );
       setSubmission((prev) => (prev ? { ...prev, status: newStatus } : prev));
       toast.success("Status updated", {
@@ -181,7 +180,6 @@ export default function SubmissionDetailPage() {
     setDeleteStatus("deleting");
     try {
       await axios.delete(`/api/submissions/${id}`, {
-        headers: getAuthHeaders(),
       });
       setDeleteStatus("idle");
       toast.success("Submission deleted!", {
@@ -205,10 +203,10 @@ export default function SubmissionDetailPage() {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-2">
           Not Found
         </p>
-        <p className="text-primary/80 text-sm mb-6">
+        <p className="text-primary text-sm mb-6">
           This submission does not exist.
         </p>
         <Link
@@ -297,15 +295,15 @@ export default function SubmissionDetailPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/dashboard/career-partnership"
-            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+            <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
               {isVendor ? "Vendor Submission" : "Career Application"}
             </p>
-            <h1 className="text-primary text-2xl font-semibold tracking-wide">
+            <h1 className="font-display text-primary text-2xl font-semibold tracking-wide">
               {displayName}
             </h1>
           </div>
@@ -315,7 +313,7 @@ export default function SubmissionDetailPage() {
           <button
             onClick={() => setDeleteStatus("confirm")}
             disabled={deleteStatus === "deleting"}
-            className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+            className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
           >
             <Trash2 className="w-4 h-4" />
             Delete
@@ -336,7 +334,7 @@ export default function SubmissionDetailPage() {
                 }`}
               >
                 {isVendor ? (
-                  <Briefcase className="w-6 h-6 text-primary/60" />
+                  <Briefcase className="w-6 h-6 text-muted-foreground" />
                 ) : (
                   <UserCheck className="w-6 h-6 text-amber-500" />
                 )}
@@ -345,7 +343,7 @@ export default function SubmissionDetailPage() {
                 <h2 className="text-primary text-xl font-semibold mb-1">
                   {displayName}
                 </h2>
-                <p className="text-primary/60 text-sm tracking-wider">{subLabel}</p>
+                <p className="text-muted-foreground text-sm tracking-wider">{subLabel}</p>
               </div>
             </div>
 
@@ -441,12 +439,12 @@ export default function SubmissionDetailPage() {
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 flex items-center justify-center bg-primary/5 flex-shrink-0">
                   {isVendor ? (
-                    <MessageSquare className="w-3.5 h-3.5 text-primary/50" />
+                    <MessageSquare className="w-3.5 h-3.5 text-muted-foreground" />
                   ) : (
-                    <BookOpen className="w-3.5 h-3.5 text-primary/50" />
+                    <BookOpen className="w-3.5 h-3.5 text-muted-foreground" />
                   )}
                 </div>
-                <p className="text-primary/80 text-sm leading-relaxed">
+                <p className="text-primary text-sm leading-relaxed">
                   {isVendor ? submission.message : career.cover_letter}
                 </p>
               </div>
@@ -458,7 +456,7 @@ export default function SubmissionDetailPage() {
         <div className="space-y-5">
           {/* Status Manager */}
           <div className="bg-white border border-primary/20 p-6">
-            <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
+            <p className="text-muted-foreground text-xs tracking-[0.08em] uppercase mb-5 pb-3 border-b border-primary/10">
               Submission Status
             </p>
 
@@ -475,7 +473,7 @@ export default function SubmissionDetailPage() {
                 value={submission.status}
                 onChange={(e) => handleStatusChange(e.target.value as SubmissionStatus)}
                 disabled={statusUpdateStatus === "saving"}
-                className="w-full appearance-none pl-4 pr-9 py-2.5 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full appearance-none pl-4 pr-9 py-3 text-sm text-primary bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status_options.map((s) => (
                   <option key={s} value={s}>
@@ -484,30 +482,30 @@ export default function SubmissionDetailPage() {
                 ))}
               </select>
               {statusUpdateStatus === "saving" ? (
-                <Loader2 className="animate-spin absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                <Loader2 className="animate-spin absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               ) : (
-                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               )}
             </div>
 
-            <p className="text-primary/40 text-xs mt-3">
+            <p className="text-muted-foreground text-xs mt-3">
               Update status to track your outreach progress.
             </p>
           </div>
 
           {/* Submission Meta */}
           <div className="bg-white border border-primary/20 p-6">
-            <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
+            <p className="text-muted-foreground text-xs tracking-[0.08em] uppercase mb-5 pb-3 border-b border-primary/10">
               Submission Details
             </p>
             <div className="space-y-4">
               <div>
-                <p className="text-primary/40 text-xs tracking-widest uppercase mb-1">
+                <p className="text-muted-foreground text-xs tracking-widest uppercase mb-1">
                   Type
                 </p>
                 <div className="flex items-center gap-2">
                   {isVendor ? (
-                    <Briefcase className="w-3.5 h-3.5 text-primary/50" />
+                    <Briefcase className="w-3.5 h-3.5 text-muted-foreground" />
                   ) : (
                     <UserCheck className="w-3.5 h-3.5 text-amber-500" />
                   )}
@@ -517,35 +515,35 @@ export default function SubmissionDetailPage() {
                 </div>
               </div>
               <div>
-                <p className="text-primary/40 text-xs tracking-widest uppercase mb-1">
+                <p className="text-muted-foreground text-xs tracking-widest uppercase mb-1">
                   Submitted On
                 </p>
                 <div className="flex items-start gap-2">
-                  <Clock className="w-3.5 h-3.5 text-primary/50 mt-0.5 flex-shrink-0" />
+                  <Clock className="w-3.5 h-3.5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-primary text-sm font-medium">{submittedDate}</p>
-                    <p className="text-primary/50 text-xs">{submittedTime}</p>
+                    <p className="text-muted-foreground text-xs">{submittedTime}</p>
                   </div>
                 </div>
               </div>
               <div>
-                <p className="text-primary/40 text-xs tracking-widest uppercase mb-1">
+                <p className="text-muted-foreground text-xs tracking-widest uppercase mb-1">
                   Submission ID
                 </p>
-                <p className="text-primary/60 text-xs font-mono">{submission.id}</p>
+                <p className="text-muted-foreground text-xs font-mono">{submission.id}</p>
               </div>
             </div>
           </div>
 
           {/* Quick Actions */}
           <div className="bg-white border border-primary/20 p-6">
-            <p className="text-primary/60 text-xs tracking-[0.2em] uppercase mb-5 pb-3 border-b border-primary/10">
+            <p className="text-muted-foreground text-xs tracking-[0.08em] uppercase mb-5 pb-3 border-b border-primary/10">
               Quick Actions
             </p>
             <div className="space-y-2">
               <a
                 href={`mailto:${submission.email}`}
-                className="flex items-center gap-2.5 w-full bg-primary text-white text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-primary/90 transition-colors"
+                className="flex items-center gap-2.5 w-full bg-primary text-white text-xs tracking-widest uppercase px-4 py-3 hover:bg-primary/90 transition-colors"
               >
                 <Mail className="w-3.5 h-3.5" />
                 Send Email
@@ -553,7 +551,7 @@ export default function SubmissionDetailPage() {
               {submission.phone && (
                 <a
                   href={`tel:${submission.phone}`}
-                  className="flex items-center gap-2.5 w-full border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-primary/5 transition-colors"
+                  className="flex items-center gap-2.5 w-full border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-3 hover:bg-primary/5 transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5" />
                   Call

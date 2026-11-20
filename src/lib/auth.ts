@@ -1,39 +1,47 @@
-import * as jose from "jose";
 import { NextRequest } from "next/server";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET ?? "change-me-in-production"
-);
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? "7d";
+import { prisma } from "./prisma";
+import {
+  AUTH_COOKIE,
+  getJwtExpiresIn,
+  getJwtMaxAgeSeconds,
+  getJwtSecret,
+  MIN_JWT_SECRET_LENGTH,
+  signToken,
+  verifyToken,
+} from "./jwt";
+import type { JwtPayload } from "./jwt";
 
-export interface JwtPayload {
-  userId: string;
-  email: string;
-  role: string;
-  iat?: number;
-  exp?: number;
-}
+// Re-export the edge-safe helpers so existing `@/lib` imports keep working.
+export {
+  AUTH_COOKIE,
+  getJwtExpiresIn,
+  getJwtMaxAgeSeconds,
+  getJwtSecret,
+  MIN_JWT_SECRET_LENGTH,
+  signToken,
+  verifyToken,
+};
+export type { JwtPayload };
 
-export async function signToken(payload: Omit<JwtPayload, "iat" | "exp">): Promise<string> {
-  return await new jose.SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime(JWT_EXPIRES_IN)
-    .sign(JWT_SECRET);
-}
+const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
-export async function verifyToken(token: string): Promise<JwtPayload> {
-  const { payload } = await jose.jwtVerify(token, JWT_SECRET);
-  return payload as unknown as JwtPayload;
-}
-
+/**
+ * Reads the session token from the HttpOnly cookie first (browser / admin UI),
+ * then falls back to `Authorization: Bearer` for scripts and the smoke test.
+ */
 export function extractToken(req: NextRequest): string | null {
+  const cookieToken = req.cookies.get(AUTH_COOKIE)?.value;
+  if (cookieToken) return cookieToken;
+
   const authHeader = req.headers.get("Authorization");
   if (!authHeader?.startsWith("Bearer ")) return null;
   return authHeader.slice(7);
 }
 
-export async function getAuthPayload(req: NextRequest): Promise<JwtPayload | null> {
+export async function getAuthPayload(
+  req: NextRequest,
+): Promise<JwtPayload | null> {
   try {
     const token = extractToken(req);
     if (!token) return null;
@@ -43,9 +51,39 @@ export async function getAuthPayload(req: NextRequest): Promise<JwtPayload | nul
   }
 }
 
-export async function requireAuth(req: NextRequest): Promise<JwtPayload> {
+/**
+ * Authenticated request guard.
+ *
+ * For mutating methods it also checks `User.token_version` against the token's
+ * `ver` claim, so rotating the admin password / bumping the version revokes
+ * existing sessions (task 1.5). Read-only requests stay DB-free to keep public
+ * and dashboard GETs cheap.
+ */
+export async function requireAuth(
+  req: NextRequest,
+  options?: { checkVersion?: boolean },
+): Promise<JwtPayload> {
   const payload = await getAuthPayload(req);
   if (!payload) throw new ApiError(401, "Unauthorized — invalid or missing token");
+
+  const shouldCheckVersion =
+    options?.checkVersion === true || MUTATING_METHODS.has(req.method);
+
+  if (shouldCheckVersion) {
+    const user = await prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { token_version: true },
+    });
+
+    if (!user) {
+      throw new ApiError(401, "Unauthorized — user no longer exists");
+    }
+
+    if ((payload.ver ?? 0) !== user.token_version) {
+      throw new ApiError(401, "Unauthorized — session has been revoked");
+    }
+  }
+
   return payload;
 }
 

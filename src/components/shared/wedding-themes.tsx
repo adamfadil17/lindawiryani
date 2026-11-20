@@ -6,8 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { useWeddingThemeData } from "@/lib/data/wedding-theme-data";
-import { useVenueData } from "@/lib/data/venue-data";
 import ThemeDetailModal from "@/components/shared/theme-detail-modal";
 import type { Venue, WeddingTheme } from "@/types";
 
@@ -112,13 +110,13 @@ function ThemeCategoryCard({
 
 interface WeddingThemeCardProps {
   theme: WeddingTheme;
+  venueList: Venue[];
   onClick: () => void;
 }
 
-function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
+function WeddingThemeCard({ theme, venueList, onClick }: WeddingThemeCardProps) {
   const t = useTranslations("wedThemes");
   const tSub = useTranslations("elopementSubtitles");
-  const { venueList } = useVenueData();
   // Lookup nama venue dari venueList menggunakan theme.venue_id (skema baru)
   const venueData = venueList.find((v) => v.id === theme.venue_id);
   const subtitle =
@@ -154,6 +152,8 @@ function WeddingThemeCard({ theme, onClick }: WeddingThemeCardProps) {
 // ─── WeddingThemesSection ─────────────────────────────────────────────────────
 
 interface WeddingThemesSectionProps {
+  weddingThemeList: WeddingTheme[];
+  venueList: Venue[];
   isMobile: boolean;
   onExploreVenue: (venue: Venue) => void;
   externalElopementThemes?: WeddingTheme[];
@@ -164,13 +164,14 @@ interface WeddingThemesSectionProps {
 }
 
 export default function WeddingThemesSection({
+  weddingThemeList,
+  venueList,
   isMobile,
   onExploreVenue,
   externalElopementThemes,
   externalIntimateThemes,
   minimal = false,
 }: WeddingThemesSectionProps) {
-  const { weddingThemeList } = useWeddingThemeData();
   const elopementThemes = useMemo(
     () => weddingThemeList.filter((t) => t.type === "ELOPEMENT"),
     [weddingThemeList],
@@ -425,6 +426,7 @@ export default function WeddingThemesSection({
                   >
                     <WeddingThemeCard
                       theme={currentThemes[currentThemeSlide]}
+                      venueList={venueList}
                       onClick={() =>
                         setSelectedThemeForModal(
                           currentThemes[currentThemeSlide],
@@ -479,6 +481,7 @@ export default function WeddingThemesSection({
                       <WeddingThemeCard
                         key={theme.id}
                         theme={theme}
+                        venueList={venueList}
                         onClick={() => setSelectedThemeForModal(theme)}
                       />
                     ))}

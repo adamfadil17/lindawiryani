@@ -9,6 +9,7 @@ import {
   ok,
   noContent,
 } from "@/lib";
+import { revalidatePublicContent } from "@/lib/content/tags";
 import { updatePortfolioImageSchema } from "@/utils";
 
 export async function GET(
@@ -52,6 +53,7 @@ export async function PATCH(
       where: { id: imageId },
       data: dto,
     });
+    await revalidatePublicContent();
     return ok(image);
   } catch (error) {
     return handleError(error);
@@ -76,6 +78,7 @@ export async function DELETE(
       return notFound("Portfolio Image");
 
     await prisma.portfolioImage.delete({ where: { id: imageId } });
+    await revalidatePublicContent();
     return noContent();
   } catch (error) {
     return handleError(error);

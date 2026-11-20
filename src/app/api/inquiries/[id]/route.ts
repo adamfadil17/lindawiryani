@@ -12,10 +12,13 @@ import {
 import { updateInquiryStatusSchema } from "@/utils";
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const payload = await requireAuth(req);
+    requireRole(payload, "admin", "editor");
+
     const { id } = await params;
 
     const inquiry = await prisma.inquirySubmission.findUnique({

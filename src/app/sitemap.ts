@@ -1,16 +1,16 @@
 import type { MetadataRoute } from "next";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { HREFLANG, absoluteUrl } from "@/lib/seo";
-import { getDestinationData } from "@/lib/data/destination-data";
-import { getArticleData } from "@/lib/data/article-data";
-import { getWeddingExperienceData } from "@/lib/data/wedding-experience-data";
-import { getPortfolioData } from "@/lib/data/portfolio-data";
+import { getSitemapContent } from "@/lib/content";
+
+// Do not prerender at build time: a DB-backed sitemap should not add 500+
+// queries to the build, and it must reflect newly published content.
+export const dynamic = "force-dynamic";
 
 /**
- * Sitemap for the localized public site. One entry per locale per page,
- * each carrying hreflang alternates (incl. x-default) so search engines
- * can pair /id, /fr and /zh with their English counterpart.
- * Slugs are identical across locales, so the English data is the source.
+ * Sitemap for the localized public site. One entry per available locale per
+ * page, with hreflang alternates (incl. x-default). Detail pages only list
+ * locales that actually have a translation in the DB (task 4.4).
  */
 
 type Freq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
@@ -32,36 +32,64 @@ function entries(
   path: string,
   priority: number,
   changeFrequency: Freq,
+  locales: Locale[] = [...routing.locales],
+  lastModified?: Date,
 ): MetadataRoute.Sitemap {
   const languages: Record<string, string> = {};
-  for (const l of routing.locales) languages[HREFLANG[l]] = absoluteUrl(l, path);
+  for (const locale of locales) {
+    languages[HREFLANG[locale]] = absoluteUrl(locale, path);
+  }
   languages["x-default"] = absoluteUrl(routing.defaultLocale, path);
 
-  return routing.locales.map((locale) => ({
+  return locales.map((locale) => ({
     url: absoluteUrl(locale, path),
     changeFrequency,
     priority,
+    lastModified,
     alternates: { languages },
   }));
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const { destinationList } = getDestinationData("en");
-  const { articles } = getArticleData("en");
-  const { weddingExperienceList } = getWeddingExperienceData("en");
-  const { portfolioItems } = getPortfolioData("en");
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const content = await getSitemapContent();
 
   return [
-    ...STATIC_PAGES.flatMap((p) => entries(p.path, p.priority, p.freq)),
-    ...destinationList.flatMap((d) =>
-      entries(`/destinations/${d.slug}`, 0.8, "monthly"),
+    ...STATIC_PAGES.flatMap((page) => entries(page.path, page.priority, page.freq)),
+    ...content.destinations.flatMap((entity) =>
+      entries(
+        `/destinations/${entity.slug}`,
+        0.8,
+        "monthly",
+        entity.locales,
+        entity.updated_at,
+      ),
     ),
-    ...weddingExperienceList.flatMap((e) =>
-      entries(`/wedding-experiences/${e.slug}`, 0.8, "monthly"),
+    ...content.experiences.flatMap((entity) =>
+      entries(
+        `/wedding-experiences/${entity.slug}`,
+        0.8,
+        "monthly",
+        entity.locales,
+        entity.updated_at,
+      ),
     ),
-    ...portfolioItems.flatMap((p) =>
-      entries(`/portfolio/${p.slug}`, 0.6, "yearly"),
+    ...content.portfolios.flatMap((entity) =>
+      entries(
+        `/portfolio/${entity.slug}`,
+        0.6,
+        "yearly",
+        entity.locales,
+        entity.updated_at,
+      ),
     ),
-    ...articles.flatMap((a) => entries(`/journal/${a.slug}`, 0.6, "monthly")),
+    ...content.articles.flatMap((entity) =>
+      entries(
+        `/journal/${entity.slug}`,
+        0.6,
+        "monthly",
+        entity.locales,
+        entity.updated_at,
+      ),
+    ),
   ];
 }

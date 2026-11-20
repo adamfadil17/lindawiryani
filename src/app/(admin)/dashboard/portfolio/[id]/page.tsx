@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "@/lib/api";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -30,6 +30,10 @@ import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
 import UnsavedChangesModal from "@/components/shared/unsaved-changes-modal";
+import TranslationsEditor, {
+  ContentStatusField,
+} from "@/components/shared/translations-editor";
+import { useContentEditor } from "@/hook/useContentEditor";
 import TagsInput from "@/components/shared/tags-input";
 import TipTapEditor from "@/components/shared/tiptap-editor";
 import { toSlug } from "@/utils";
@@ -37,7 +41,6 @@ import {
   portfolioFormSchema,
   PortfolioFormData,
 } from "@/utils/form-validators";
-import { getAuthHeaders } from "@/lib/getAuthHeaders";
 import { PortfolioStory } from "@/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -77,7 +80,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
         const response = await axios.post(
           `/api/portfolios/${portfolioId}/gallery`,
           { url: pendingUrl, sort_order: images.length },
-          { headers: getAuthHeaders(true) },
         );
         onChange([...images, response.data.data ?? response.data]);
         setPendingUrl("");
@@ -109,7 +111,6 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
       try {
         await axios.delete(
           `/api/portfolios/${portfolioId}/gallery/${image.id}`,
-          { headers: getAuthHeaders() },
         );
       } catch (err) {
         const msg =
@@ -165,7 +166,7 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
       {images.length === 0 && (
         <div className="border border-dashed border-primary/20 py-8 flex flex-col items-center justify-center gap-2">
           <ImageIcon className="w-6 h-6 text-primary/20" />
-          <p className="text-primary/30 text-xs tracking-wider">
+          <p className="text-muted-foreground text-xs tracking-wider">
             No gallery images added
           </p>
         </div>
@@ -197,7 +198,7 @@ function GalleryManager({ portfolioId, images, onChange }: GalleryManagerProps) 
               type="button"
               onClick={handleAdd}
               disabled={isAdding}
-              className="w-full flex items-center justify-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase py-2.5 hover:cursor-pointer hover:bg-primary/5 transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase py-3 hover:cursor-pointer hover:bg-primary/5 transition-colors disabled:opacity-50"
             >
               {isAdding ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -266,15 +267,15 @@ function StorySectionsEditor({
         >
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
-              <GripVertical className="w-4 h-4 text-primary/30" />
-              <span className="text-[10px] tracking-[0.2em] uppercase text-primary/50 font-medium">
+              <GripVertical className="w-4 h-4 text-muted-foreground" />
+              <span className="text-xs tracking-[0.08em] uppercase text-muted-foreground font-medium">
                 Section {sIdx + 1}
               </span>
             </div>
             <button
               type="button"
               onClick={() => removeSection(sIdx)}
-              className="w-6 h-6 flex items-center justify-center text-primary/40 hover:text-red-700 hover:cursor-pointer transition-colors"
+              className="w-6 h-6 flex items-center justify-center text-muted-foreground hover:text-red-700 hover:cursor-pointer transition-colors"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -282,7 +283,7 @@ function StorySectionsEditor({
 
           {/* Section Heading (optional) */}
           <div>
-            <label className="text-[10px] tracking-widest uppercase text-primary/60 font-medium block mb-1.5">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground font-medium block mb-1.5">
               Heading <span className="normal-case opacity-60">(optional)</span>
             </label>
             <input
@@ -290,13 +291,13 @@ function StorySectionsEditor({
               value={section.heading ?? ""}
               onChange={(e) => updateHeading(sIdx, e.target.value)}
               placeholder="Section heading…"
-              className="w-full px-3 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
+              className="w-full px-3 py-3 text-sm text-primary placeholder:text-muted-foreground bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors"
             />
           </div>
 
           {/* Paragraphs */}
           <div className="space-y-2">
-            <label className="text-[10px] tracking-widest uppercase text-primary/60 font-medium block">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground font-medium block">
               Paragraphs
             </label>
             {section.body.map((para, bIdx) => (
@@ -306,13 +307,13 @@ function StorySectionsEditor({
                   onChange={(e) => updateBody(sIdx, bIdx, e.target.value)}
                   placeholder={`Paragraph ${bIdx + 1}…`}
                   rows={3}
-                  className="flex-1 px-3 py-2.5 text-sm text-primary placeholder:text-primary/40 bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                  className="flex-1 px-3 py-3 text-sm text-primary placeholder:text-muted-foreground bg-white border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors resize-none"
                 />
                 {section.body.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeBodyParagraph(sIdx, bIdx)}
-                    className="w-8 shrink-0 flex items-center justify-center text-primary/30 hover:text-red-700 hover:cursor-pointer transition-colors"
+                    className="w-8 shrink-0 flex items-center justify-center text-muted-foreground hover:text-red-700 hover:cursor-pointer transition-colors"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -322,7 +323,7 @@ function StorySectionsEditor({
             <button
               type="button"
               onClick={() => addBodyParagraph(sIdx)}
-              className="inline-flex items-center gap-1.5 text-[10px] tracking-widest uppercase text-primary/60 hover:text-primary hover:cursor-pointer transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs tracking-widest uppercase text-muted-foreground hover:text-primary hover:cursor-pointer transition-colors"
             >
               <Plus className="w-3 h-3" />
               Add Paragraph
@@ -334,7 +335,7 @@ function StorySectionsEditor({
       <button
         type="button"
         onClick={addSection}
-        className="w-full border border-dashed border-primary/30 text-primary/60 text-xs tracking-widest uppercase py-3 hover:border-primary/50 hover:text-primary hover:cursor-pointer transition-colors flex items-center justify-center gap-2"
+        className="w-full border border-dashed border-primary/30 text-muted-foreground text-xs tracking-widest uppercase py-3 hover:border-primary/50 hover:text-primary hover:cursor-pointer transition-colors flex items-center justify-center gap-2"
       >
         <Plus className="w-3.5 h-3.5" />
         Add Story Section
@@ -387,7 +388,7 @@ export default function PortfolioDetailPage() {
     key: K,
     value: PortfolioFormData[K],
   ) =>
-    setValue(key, value as any, {
+    setValue(key, value as never, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
@@ -403,6 +404,7 @@ export default function PortfolioDetailPage() {
 
   // ── Page state ───────────────────────────────────────────────────────────────
   const [isLoading, setIsLoading] = useState(!isNew);
+  const editor = useContentEditor("portfolio");
   const [notFound, setNotFound] = useState(false);
 
   // ── Select options state ──────────────────────────────────────────────────────
@@ -438,7 +440,7 @@ export default function PortfolioDetailPage() {
         (formData.tags && formData.tags.length > 0) ||
         galleryImages.length > 0
       )
-    : isDirty;
+    : isDirty || editor.dirty;
 
   // Block browser close / refresh when there are unsaved changes
   useEffect(() => {
@@ -547,6 +549,7 @@ export default function PortfolioDetailPage() {
         credit_location_detail: String(data.credit_location_detail ?? ""),
         credit_couple_origin: String(data.credit_couple_origin ?? ""),
       });
+      editor.load(data);
 
       // Populate galleryImages dari data.gallery (PortfolioImage[] dari PORTFOLIO_INCLUDE)
       // Mengikuti pola VenueDetailPage: map ke GalleryImage { id, url, sort_order }
@@ -612,12 +615,12 @@ export default function PortfolioDetailPage() {
         origin: formData.origin || null,
         review: formData.review || null,
         content: formData.content || null,
+        ...editor.payload(),
       };
 
       if (isNew) {
         // POST /api/portfolios → created(portfolio)
         const res = await axios.post("/api/portfolios", payload, {
-          headers: getAuthHeaders(true),
         });
         const newPortfolioId: string = res.data.data?.id ?? res.data.id;
 
@@ -628,7 +631,6 @@ export default function PortfolioDetailPage() {
             await axios.post(
               `/api/portfolios/${newPortfolioId}/gallery`,
               { url: img.url, sort_order: img.sort_order },
-              { headers: getAuthHeaders(true) },
             );
           } catch {
             // Non-blocking — lanjutkan meski satu gambar gagal
@@ -644,7 +646,6 @@ export default function PortfolioDetailPage() {
       } else {
         // PATCH /api/portfolios/:id → ok(portfolio)
         await axios.patch(`/api/portfolios/${id}`, payload, {
-          headers: getAuthHeaders(true),
         });
         // Gallery sudah di-sync real-time oleh GalleryManager di edit mode
         setSaveStatus("saved");
@@ -653,6 +654,7 @@ export default function PortfolioDetailPage() {
         });
         // Re-sync RHF baseline so isDirty becomes false
         reset({ ...formData, slug: toSlug(formData.couple) });
+        editor.markSaved();
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
     } catch (err) {
@@ -672,7 +674,6 @@ export default function PortfolioDetailPage() {
     setDeleteStatus("deleting");
     try {
       await axios.delete(`/api/portfolios/${id}`, {
-        headers: getAuthHeaders(),
       });
       setDeleteStatus("idle");
       toast.success("Portfolio deleted!", {
@@ -706,10 +707,10 @@ export default function PortfolioDetailPage() {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[400px] text-center">
         <AlertCircle className="w-10 h-10 text-primary/20 mb-4" />
-        <p className="text-primary/50 text-xs tracking-widest uppercase mb-2">
+        <p className="text-muted-foreground text-xs tracking-widest uppercase mb-2">
           Not Found
         </p>
-        <p className="text-primary/80 text-sm mb-6">
+        <p className="text-primary text-sm mb-6">
           This portfolio does not exist.
         </p>
         <Link
@@ -802,15 +803,15 @@ export default function PortfolioDetailPage() {
           <button
             type="button"
             onClick={() => guardedNavigate("/dashboard/portfolio")}
-            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-primary/50 hover:text-primary hover:border-primary/40 transition-colors"
+            className="w-9 h-9 flex items-center justify-center border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <p className="text-primary/80 tracking-[0.25em] uppercase text-xs mb-1.5">
+            <p className="text-primary tracking-[0.1em] uppercase text-xs mb-1.5">
               {isNew ? "Create Portfolio" : "Edit Portfolio"}
             </p>
-            <h1 className="text-primary text-2xl md:text-3xl font-semibold tracking-wide">
+            <h1 className="font-display text-primary text-2xl md:text-3xl font-semibold tracking-wide">
               {isNew ? "New Portfolio" : formData.couple || "Untitled"}
             </h1>
           </div>
@@ -829,7 +830,7 @@ export default function PortfolioDetailPage() {
             <Link
               href={`/portfolio/${formData.slug}`}
               target="_blank"
-              className="inline-flex items-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-2.5 hover:bg-primary/5 transition-colors"
+              className="inline-flex items-center gap-2 border border-primary/30 text-primary text-xs tracking-widest uppercase px-4 py-3 hover:bg-primary/5 transition-colors"
             >
               <BookOpen className="w-4 h-4" />
               View Live
@@ -842,7 +843,7 @@ export default function PortfolioDetailPage() {
               type="button"
               onClick={() => setDeleteStatus("confirm")}
               disabled={deleteStatus === "deleting" || saveStatus === "saving"}
-              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-2.5 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 border border-red-200 text-red-700 text-xs tracking-widest uppercase px-4 py-3 hover:cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-40"
             >
               <Trash2 className="w-4 h-4" />
               Delete
@@ -859,7 +860,7 @@ export default function PortfolioDetailPage() {
               isVenuesLoading ||
               isExperiencesLoading
             }
-            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-2.5 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-60"
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-60"
           >
             {saveStatus === "saving" ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -872,6 +873,18 @@ export default function PortfolioDetailPage() {
       </div>
 
       {/* ── Two Column Layout ── */}
+      <div className="mb-6">
+        <ContentStatusField
+          value={editor.status}
+          onChange={editor.setStatus}
+          previewHref={
+            editor.status === "published" && slugPreview
+              ? `/portfolio/${slugPreview}`
+              : null
+          }
+        />
+      </div>
+
       <form
         onSubmit={handleSubmit(onSubmitForm, onSubmitError)}
         className="grid xl:grid-cols-[1fr_340px] gap-6"
@@ -925,7 +938,7 @@ export default function PortfolioDetailPage() {
                       : undefined
                   }
                 />
-                <p className="text-primary/40 text-xs mt-1.5">
+                <p className="text-muted-foreground text-xs mt-1.5">
                   {(formData.excerpt ?? "").length} / 200 characters recommended
                 </p>
               </FormField>
@@ -959,7 +972,7 @@ export default function PortfolioDetailPage() {
                       )
                     }
                     disabled={isDestinationsLoading}
-                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full appearance-none px-3 py-3 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isDestinationsLoading ? (
                       <option value="" disabled>Loading destinations…</option>
@@ -974,7 +987,7 @@ export default function PortfolioDetailPage() {
                       </>
                     )}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                 </div>
                 {formErrors.destination_id && (
                   <p className="text-red-700 text-xs mt-1">
@@ -995,7 +1008,7 @@ export default function PortfolioDetailPage() {
                       )
                     }
                     disabled={isVenuesLoading}
-                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full appearance-none px-3 py-3 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isVenuesLoading ? (
                       <option value="" disabled>Loading venues…</option>
@@ -1010,7 +1023,7 @@ export default function PortfolioDetailPage() {
                       </>
                     )}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                 </div>
                 {formErrors.venue_id && (
                   <p className="text-red-700 text-xs mt-1">
@@ -1031,7 +1044,7 @@ export default function PortfolioDetailPage() {
                       )
                     }
                     disabled={isExperiencesLoading}
-                    className="w-full appearance-none px-3 py-2.5 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full appearance-none px-3 py-3 pr-9 text-sm text-primary bg-primary/3 border border-primary/20 focus:outline-none focus:border-primary/50 transition-colors hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isExperiencesLoading ? (
                       <option value="" disabled>Loading experiences…</option>
@@ -1046,7 +1059,7 @@ export default function PortfolioDetailPage() {
                       </>
                     )}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary/40" />
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                 </div>
                 {formErrors.experience_id && (
                   <p className="text-red-700 text-xs mt-1">
@@ -1180,7 +1193,7 @@ export default function PortfolioDetailPage() {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                     <ImageIcon className="w-8 h-8 text-primary/20" />
-                    <p className="text-primary/30 text-xs tracking-wider">
+                    <p className="text-muted-foreground text-xs tracking-wider">
                       No image set
                     </p>
                   </div>
@@ -1216,13 +1229,13 @@ export default function PortfolioDetailPage() {
           {/* URL & SEO */}
           <Section title="URL & SEO">
             <div className="space-y-2">
-              <p className="text-primary/80 text-xs tracking-widest uppercase mb-1">
+              <p className="text-primary text-xs tracking-widest uppercase mb-1">
                 URL Slug
               </p>
               <p className="text-sm text-primary bg-primary/5 px-3 py-2 border border-primary/20">
                 {slugPreview || "—"}
               </p>
-              <p className="text-primary/50 text-xs">
+              <p className="text-muted-foreground text-xs">
                 Auto-generated from couple names
               </p>
             </div>
@@ -1230,7 +1243,7 @@ export default function PortfolioDetailPage() {
 
           {/* Quick Summary */}
           <div className="bg-primary/5 border border-primary/20 p-5">
-            <p className="text-xs tracking-[0.2em] uppercase text-primary/80 mb-4">
+            <p className="text-xs tracking-[0.08em] uppercase text-primary mb-4">
               Summary
             </p>
             <div className="space-y-3">
@@ -1292,7 +1305,7 @@ export default function PortfolioDetailPage() {
                   key={item.label}
                   className="flex items-center justify-between"
                 >
-                  <span className="text-primary/80 font-semibold text-xs">
+                  <span className="text-primary font-semibold text-xs">
                     {item.label}
                   </span>
                   <span className="text-xs font-medium bg-primary text-white px-2 py-0.5">
@@ -1302,6 +1315,14 @@ export default function PortfolioDetailPage() {
               ))}
             </div>
           </div>
+        </div>
+
+        <div className="lg:col-span-3 space-y-6">
+          <TranslationsEditor
+            entity="portfolio"
+            value={editor.translations}
+            onChange={editor.setTranslations}
+          />
         </div>
       </form>
 

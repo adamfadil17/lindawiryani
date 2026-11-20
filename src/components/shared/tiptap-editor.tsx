@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import "./tiptap-editor.css";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
@@ -41,7 +41,7 @@ import {
   CodeSquare,
 } from "lucide-react";
 
-// ─── Toolbar Button ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Toolbar Button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function ToolbarBtn({
   onClick,
@@ -77,7 +77,7 @@ function Divider() {
   return <div className="w-px h-5 bg-primary/15 mx-0.5" />;
 }
 
-// ─── Link Modal ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ Link Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function LinkModal({
   initialUrl,
@@ -107,20 +107,20 @@ function LinkModal({
             if (e.key === "Escape") onCancel();
           }}
           placeholder="https://example.com"
-          className="w-full px-3 py-2.5 text-sm text-primary border border-primary/20 focus:outline-none focus:border-primary/50 mb-4"
+          className="w-full px-3 py-3 text-sm text-primary border border-primary/20 focus:outline-none focus:border-primary/50 mb-4"
         />
         <div className="flex gap-2">
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 border border-primary/20 text-primary text-xs uppercase tracking-widest py-2.5 hover:cursor-pointer hover:bg-primary/5 transition-colors"
+            className="flex-1 border border-primary/20 text-primary text-xs uppercase tracking-widest py-3 hover:cursor-pointer hover:bg-primary/5 transition-colors"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={() => onConfirm(url)}
-            className="flex-1 bg-primary text-white text-xs uppercase tracking-widest py-2.5 hover:cursor-pointer hover:bg-primary/90 transition-colors"
+            className="flex-1 bg-primary text-white text-xs uppercase tracking-widest py-3 hover:cursor-pointer hover:bg-primary/90 transition-colors"
           >
             Apply
           </button>
@@ -130,7 +130,7 @@ function LinkModal({
   );
 }
 
-// ─── Image URL Modal ──────────────────────────────────────────────────────────
+// â”€â”€â”€ Image URL Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function ImageModal({
   onConfirm,
@@ -155,22 +155,22 @@ function ImageModal({
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Image URL (https://…)"
-            className="w-full px-3 py-2.5 text-sm text-primary border border-primary/20 focus:outline-none focus:border-primary/50"
+            placeholder="Image URL (https://â€¦)"
+            className="w-full px-3 py-3 text-sm text-primary border border-primary/20 focus:outline-none focus:border-primary/50"
           />
           <input
             type="text"
             value={alt}
             onChange={(e) => setAlt(e.target.value)}
             placeholder="Alt text (optional)"
-            className="w-full px-3 py-2.5 text-sm text-primary border border-primary/20 focus:outline-none focus:border-primary/50"
+            className="w-full px-3 py-3 text-sm text-primary border border-primary/20 focus:outline-none focus:border-primary/50"
           />
         </div>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 border border-primary/20 text-primary text-xs uppercase tracking-widest py-2.5 hover:cursor-pointer hover:bg-primary/5 transition-colors"
+            className="flex-1 border border-primary/20 text-primary text-xs uppercase tracking-widest py-3 hover:cursor-pointer hover:bg-primary/5 transition-colors"
           >
             Cancel
           </button>
@@ -178,7 +178,7 @@ function ImageModal({
             type="button"
             onClick={() => url && onConfirm(url, alt)}
             disabled={!url}
-            className="flex-1 bg-primary text-white text-xs uppercase tracking-widest py-2.5 hover:cursor-pointer hover:bg-primary/90 transition-colors disabled:opacity-40"
+            className="flex-1 bg-primary text-white text-xs uppercase tracking-widest py-3 hover:cursor-pointer hover:bg-primary/90 transition-colors disabled:opacity-40"
           >
             Insert
           </button>
@@ -188,7 +188,7 @@ function ImageModal({
   );
 }
 
-// ─── Main TipTap Editor Component ────────────────────────────────────────────
+// â”€â”€â”€ Main TipTap Editor Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface TipTapEditorProps {
   value: string;
@@ -212,7 +212,7 @@ export default function TipTapEditor({
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
         horizontalRule: false, // use standalone extension below
-        // HTMLAttributes dihapus dari code, codeBlock, blockquote —
+        // HTMLAttributes dihapus dari code, codeBlock, blockquote â€”
         // styling sekarang ditangani oleh prose-* classes di editorProps
       }),
       Underline,
@@ -248,7 +248,7 @@ export default function TipTapEditor({
     },
   });
 
-  // ── Link helpers ──
+  // â”€â”€ Link helpers â”€â”€
   const openLinkModal = useCallback(() => {
     setShowLinkModal(true);
   }, []);
@@ -270,7 +270,7 @@ export default function TipTapEditor({
     editor?.chain().focus().unsetLink().run();
   }, [editor]);
 
-  // ── Image helpers ──
+  // â”€â”€ Image helpers â”€â”€
   const applyImage = useCallback(
     (url: string, alt: string) => {
       setShowImageModal(false);
@@ -279,7 +279,7 @@ export default function TipTapEditor({
     [editor],
   );
 
-  // ── Reactive toolbar state — re-renders saat cursor / selection berpindah ──
+  // â”€â”€ Reactive toolbar state â€” re-renders saat cursor / selection berpindah â”€â”€
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
@@ -337,7 +337,7 @@ export default function TipTapEditor({
           error ? "border-red-400" : "border-primary/20"
         } bg-white`}
       >
-        {/* ── Toolbar ── */}
+        {/* â”€â”€ Toolbar â”€â”€ */}
         <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-primary/15 bg-primary/[0.02]">
           {/* History */}
           <ToolbarBtn
@@ -539,7 +539,7 @@ export default function TipTapEditor({
           </ToolbarBtn>
         </div>
 
-        {/* ── Bubble Menu (appears on text selection) ── */}
+        {/* â”€â”€ Bubble Menu (appears on text selection) â”€â”€ */}
         <BubbleMenu
           editor={editor}
           shouldShow={({ editor, state }) => {
@@ -597,7 +597,7 @@ export default function TipTapEditor({
           ))}
         </BubbleMenu>
 
-        {/* ── Floating Menu (appears on empty line) ── */}
+        {/* â”€â”€ Floating Menu (appears on empty line) â”€â”€ */}
         <FloatingMenu
           editor={editor}
           shouldShow={({ state }) => {
@@ -632,7 +632,7 @@ export default function TipTapEditor({
               action: () => editor.chain().focus().toggleBlockquote().run(),
             },
             {
-              label: "• List",
+              label: "â€¢ List",
               action: () => editor.chain().focus().toggleBulletList().run(),
             },
             {
@@ -651,18 +651,18 @@ export default function TipTapEditor({
           ))}
         </FloatingMenu>
 
-        {/* ── Editor area ── */}
+        {/* â”€â”€ Editor area â”€â”€ */}
         <div className="relative">
           <EditorContent editor={editor} />
         </div>
 
-        {/* ── Footer ── */}
+        {/* â”€â”€ Footer â”€â”€ */}
         <div className="flex items-center justify-between px-4 py-2 border-t border-primary/20 bg-primary/[0.02]">
           <span className="text-xs tracking-widest uppercase text-primary/90">
             Linda Wiryani Weddings Planner
           </span>
           <span className="text-xs text-primary/90">
-            {wordCountFromEditor.toLocaleString()} words ·{" "}
+            {wordCountFromEditor.toLocaleString()} words Â·{" "}
             {charCount.toLocaleString()} chars
           </span>
         </div>
@@ -670,7 +670,7 @@ export default function TipTapEditor({
 
       {error && <p className="text-red-700 text-xs mt-1">{error}</p>}
 
-      {/* ── Modals ── */}
+      {/* â”€â”€ Modals â”€â”€ */}
       {showLinkModal && (
         <LinkModal
           initialUrl={currentLinkUrl}

@@ -1,4 +1,4 @@
-import { Plus, X, Loader2 } from "lucide-react";
+﻿import { Plus, X, Loader2 } from "lucide-react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { DestinationCategoryFormData } from "@/utils/form-validators";
 
@@ -39,7 +39,7 @@ export function CreateModal({
             <Plus className="w-5 h-5 text-primary" />
           )}
         </div>
-        <p className="text-muted-foreground tracking-[0.2em] uppercase text-xs mb-2">
+        <p className="text-muted-foreground tracking-[0.08em] uppercase text-xs mb-2">
           Add New
         </p>
         <h2 className="text-primary text-xl font-semibold mb-3">
@@ -65,7 +65,7 @@ export function CreateModal({
               {...register("name")}
               type="text"
               placeholder="e.g., Beach Resorts"
-              className="w-full px-3 py-2.5 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors"
+              className="w-full px-3 py-3 text-sm text-primary border border-primary/30 focus:outline-none focus:border-primary/60 transition-colors"
               disabled={isLoading}
             />
             {errors.name && (

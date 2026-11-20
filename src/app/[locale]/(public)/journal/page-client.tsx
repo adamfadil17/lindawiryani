@@ -8,8 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { fadeIn, fadeInUp, scaleIn, staggerContainer } from "@/lib/motion";
-import { useArticleData, type ArticleData } from "@/lib/data/article-data";
-import { articleCategories, ArticleCategory } from "@/types";
+import { articleCategories, ArticleCategory, type Article } from "@/types";
 import PageClosing from "@/components/shared/page-closing";
 import PageHero from "@/components/shared/page-hero";
 
@@ -68,7 +67,7 @@ function ArticleCard({
   article,
   index,
 }: {
-  article: ArticleData["articles"][number];
+  article: Article;
   index: number;
 }) {
   const t = useTranslations("journalPage");
@@ -116,7 +115,7 @@ function ArticleCard({
 function FeaturedArticle({
   article,
 }: {
-  article: ArticleData["articles"][number];
+  article: Article;
 }) {
   const t = useTranslations("journalPage");
   const category = useCategoryText();
@@ -160,10 +159,9 @@ function FeaturedArticle({
   );
 }
 
-export default function JournalPage() {
+export default function JournalPage({ articles }: { articles: Article[] }) {
   const t = useTranslations("journalPage");
   const category = useCategoryText();
-  const { articles } = useArticleData();
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>("All");
 
   const filtered =

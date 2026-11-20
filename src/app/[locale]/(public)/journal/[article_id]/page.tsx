@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import { ArticleDetail } from "./components/article-detail";
-import { getArticleData } from "@/lib/data/article-data";
+import { getArticles, getContentLocales } from "@/lib/content";
 import { Metadata } from "next";
 import type { Locale } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { buildPageMetadata, getPageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
-  const { articles } = getArticleData("en");
+  const { articles } = await getArticles("en");
   return articles.map((article) => ({
     article_id: article.slug,
   }));
@@ -19,16 +19,18 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale; article_id: string }>;
 }): Promise<Metadata> {
   const { locale, article_id } = await params;
-  const { articles } = getArticleData(locale);
+  const { articles } = await getArticles(locale);
   const article = articles.find((a) => a.slug === article_id);
   if (!article) {
     return getPageMetadata(locale, "journal", "/journal");
   }
 
   const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const alternateLocales = await getContentLocales("article", article.slug);
   return buildPageMetadata({
     locale,
     path: `/journal/${article.slug}`,
+    alternateLocales,
     title: article.title,
     description: article.excerpt,
     siteName: tSeo("site.siteName"),
@@ -42,7 +44,7 @@ export default async function ArticlePage({
   params: Promise<{ locale: Locale; article_id: string }>;
 }) {
   const { locale, article_id } = await params;
-  const { articles } = getArticleData(locale);
+  const { articles } = await getArticles(locale);
   const article = articles.find((a) => a.slug === article_id);
 
   if (!article) notFound();

@@ -34,7 +34,7 @@ export default function UnsavedChangesModal({
         </div>
 
         {/* Label */}
-        <p className="text-primary/90 tracking-[0.2em] uppercase text-xs mb-2">
+        <p className="text-primary/90 tracking-[0.08em] uppercase text-xs mb-2">
           Unsaved Changes
         </p>
 
@@ -54,13 +54,13 @@ export default function UnsavedChangesModal({
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:bg-primary/10 transition-colors"
+            className="flex-1 border border-primary/30 text-primary text-xs tracking-widest uppercase px-5 py-3 min-h-[42px] hover:cursor-pointer hover:bg-primary/10 transition-colors"
           >
             Keep Editing
           </button>
           <button
             onClick={onConfirmLeave}
-            className="flex-1 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 hover:cursor-pointer hover:primary/80 transition-colors"
+            className="flex-1 bg-primary text-white text-xs tracking-widest uppercase px-5 py-3 min-h-[42px] hover:cursor-pointer hover:bg-primary/80 transition-colors"
           >
             Leave Anyway
           </button>

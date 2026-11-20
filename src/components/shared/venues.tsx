@@ -14,11 +14,9 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
-import { useVenueData } from "@/lib/data/venue-data";
-import { useWeddingExperienceData } from "@/lib/data/wedding-experience-data";
-import { useWeddingThemeData } from "@/lib/data/wedding-theme-data";
+import { formatPrice } from "@/lib/currency";
 import VenueDetailModal from "@/components/shared/venue-detail-modal";
-import type { Venue, Currency } from "@/types";
+import type { Venue, Currency, WeddingExperience, WeddingTheme } from "@/types";
 
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
@@ -45,24 +43,10 @@ const CATEGORY_DESCRIPTION_KEY_MAP: Record<string, string> = {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const formatPrice = (
-  price: number | undefined,
-  currency: Currency,
-  rate: number,
-) => {
-  if (!price) return "To Be Confirmed";
-  const finalPrice = currency === "USD" ? price / rate : price;
-  if (currency === "USD") {
-    return finalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-  return finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
+// Price formatting is shared with the other public price surfaces.
 // ─── ExperienceCard ───────────────────────────────────────────────────────────
 
-type ExperienceItem = ReturnType<
-  typeof useWeddingExperienceData
->["weddingExperienceList"][number];
+type ExperienceItem = WeddingExperience;
 
 type ExperienceCardVariant = "grid" | "wide" | "stacked";
 
@@ -285,6 +269,9 @@ function NoVenuesFound({
 // ─── VenuesSection ────────────────────────────────────────────────────────────
 
 interface VenuesSectionProps {
+  venueList: Venue[];
+  weddingExperienceList: WeddingExperience[];
+  weddingThemeList: WeddingTheme[];
   isMobile: boolean;
   selectedCurrency: Currency;
   exchangeRate: number;
@@ -294,6 +281,9 @@ interface VenuesSectionProps {
 }
 
 export default function VenuesSection({
+  venueList,
+  weddingExperienceList,
+  weddingThemeList,
   isMobile,
   selectedCurrency,
   exchangeRate,
@@ -303,9 +293,6 @@ export default function VenuesSection({
 }: VenuesSectionProps) {
   const tv = useTranslations("venuesSection");
   const tNav = useTranslations("nav");
-  const { venueList } = useVenueData();
-  const { weddingExperienceList } = useWeddingExperienceData();
-  const { weddingThemeList } = useWeddingThemeData();
   const elopementThemes = useMemo(
     () => weddingThemeList.filter((t) => t.type === "ELOPEMENT"),
     [weddingThemeList],

@@ -15,7 +15,7 @@ import {
   Loader2,
 } from "lucide-react";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/lib/api";
 import type { DashboardSummary } from "@/app/api/dashboard/route";
 
 // ─── SVG donut arc helper ─────────────────────────────────────────────────────
@@ -58,22 +58,22 @@ function Panel({
   return (
     <div className="bg-white border border-primary/35 flex flex-col h-full">
       <div className="px-5 py-3.5 border-b border-primary/25 flex items-center justify-between shrink-0">
-        <p className="text-primary/75 tracking-[0.18em] uppercase text-xs font-semibold">
+        <p className="text-muted-foreground tracking-[0.18em] uppercase text-xs font-semibold">
           {title}
         </p>
         <div className="flex items-center gap-2">
           {loading && (
-            <Loader2 className="w-3 h-3 text-primary/40 animate-spin" />
+            <Loader2 className="w-3 h-3 text-muted-foreground animate-spin" />
           )}
           {href ? (
             <Link
               href={href}
-              className="text-primary/55 hover:text-primary/85 transition-colors"
+              className="text-muted-foreground hover:text-primary transition-colors"
             >
               <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           ) : badge ? (
-            <span className="text-primary/60 text-xs tracking-widest uppercase">
+            <span className="text-muted-foreground text-xs tracking-widest uppercase">
               {badge}
             </span>
           ) : null}
@@ -131,7 +131,8 @@ export default function DashboardPage() {
 
   useEffect(() => {
     axios
-      .get<{ data: DashboardSummary }>("/api/dashboard")
+      .get<{ data: DashboardSummary }>("/api/dashboard", {
+      })
       .then((res) => setData(res.data.data))
       .catch((err) => console.error("Dashboard fetch error:", err))
       .finally(() => setLoading(false));
@@ -272,10 +273,10 @@ export default function DashboardPage() {
       >
         {/* ── Welcome ─────────────────────────────────────────────────── */}
         <motion.div variants={fadeInUp}>
-          <p className="text-primary/60 tracking-[0.3em] uppercase text-xs mb-1">
+          <p className="text-muted-foreground tracking-[0.3em] uppercase text-xs mb-1">
             Good morning
           </p>
-          <h2 className="text-2xl md:text-3xl text-primary font-semibold leading-tight">
+          <h2 className="font-display text-2xl md:text-3xl text-primary font-semibold leading-tight">
             Welcome back, <span className="italic font-light">Admin</span>
           </h2>
           <div className="mt-3 w-10 h-px bg-primary/40" />
@@ -294,11 +295,11 @@ export default function DashboardPage() {
             >
               <div className="flex items-center justify-between">
                 <div
-                  className={stat.urgent ? "text-amber-500" : "text-primary/60"}
+                  className={stat.urgent ? "text-amber-500" : "text-muted-foreground"}
                 >
                   {stat.icon}
                 </div>
-                <ArrowUpRight className="w-3 h-3 text-primary/40 group-hover:text-primary/75 transition-colors" />
+                <ArrowUpRight className="w-3 h-3 text-muted-foreground group-hover:text-muted-foreground transition-colors" />
               </div>
 
               <div>
@@ -313,11 +314,11 @@ export default function DashboardPage() {
                     stat.value
                   )}
                 </p>
-                <p className="text-primary/80 uppercase tracking-[0.1em] text-xs mt-2 font-semibold">
+                <p className="text-primary uppercase tracking-[0.1em] text-xs mt-2 font-semibold">
                   {stat.label}
                 </p>
                 {stat.sub && (
-                  <p className="text-primary/60 text-xs mt-1 truncate">
+                  <p className="text-muted-foreground text-xs mt-1 line-clamp-2 leading-snug">
                     {stat.sub}
                   </p>
                 )}
@@ -329,7 +330,7 @@ export default function DashboardPage() {
                     ? "text-amber-500"
                     : stat.up
                       ? "text-emerald-600"
-                      : "text-primary/60"
+                      : "text-muted-foreground"
                 }`}
               >
                 {stat.up && !stat.urgent && <TrendingUp className="w-3 h-3" />}
@@ -369,7 +370,7 @@ export default function DashboardPage() {
                           className="w-[3px] h-3.5 rounded-full flex-shrink-0"
                           style={{ background: step.stroke }}
                         />
-                        <span className="text-xs text-primary/75 capitalize">
+                        <span className="text-xs text-muted-foreground capitalize">
                           {step.status}
                         </span>
                       </div>
@@ -389,7 +390,7 @@ export default function DashboardPage() {
                           {step.count}
                         </span>
                       </div>
-                      <span className="text-xs text-primary/60 w-7 text-right flex-shrink-0 tabular-nums">
+                      <span className="text-xs text-muted-foreground w-7 text-right flex-shrink-0 tabular-nums">
                         {pct}%
                       </span>
                     </div>
@@ -397,7 +398,7 @@ export default function DashboardPage() {
                 })}
               </div>
               <div className="mt-4 pt-3 border-t border-primary/25 flex items-center justify-between">
-                <span className="text-xs text-primary/60 uppercase tracking-widest">
+                <span className="text-xs text-muted-foreground uppercase tracking-widest">
                   Total inquiries
                 </span>
                 <span className="text-sm font-semibold text-primary tabular-nums">
@@ -460,7 +461,7 @@ export default function DashboardPage() {
                     x="38"
                     y="47"
                     textAnchor="middle"
-                    fontSize="0.625rem"
+                    fontSize="0.75rem"
                     fill="#6B7280"
                   >
                     total
@@ -479,7 +480,7 @@ export default function DashboardPage() {
                             className="w-[3px] h-3 rounded-full inline-block"
                             style={{ background: item.color }}
                           />
-                          <span className="text-xs text-primary/75">
+                          <span className="text-xs text-muted-foreground">
                             {item.label}
                           </span>
                         </div>
@@ -516,23 +517,20 @@ export default function DashboardPage() {
                   const pct = Math.round((cat.count / maxArticle) * 100);
                   return (
                     <div key={cat.name} className="flex items-center gap-3">
-                      <span className="text-xs text-primary/70 w-[120px] text-right flex-shrink-0 truncate leading-none">
+                      <span className="text-xs text-muted-foreground w-[120px] text-right flex-shrink-0 truncate leading-none">
                         {cat.name}
                       </span>
-                      <div className="flex-1 h-[20px] bg-primary/[0.08] rounded-[3px] overflow-hidden relative">
-                        <div
-                          className="absolute inset-y-0 left-0 rounded-[3px]"
-                          style={{
-                            width: `${pct}%`,
-                            background: `rgba(217,90,48,${0.3 + (pct / 100) * 0.6})`,
-                          }}
-                        />
-                        <span
-                          className="absolute inset-0 flex items-center justify-end pr-2.5 text-xs tabular-nums font-semibold"
-                          style={{
-                            color: pct > 20 ? "white" : "rgba(217,90,48,0.7)",
-                          }}
-                        >
+                      <div className="flex-1 flex items-center gap-2">
+                        <div className="flex-1 h-[20px] bg-primary/[0.08] rounded-[3px] overflow-hidden">
+                          <div
+                            className="h-full rounded-[3px]"
+                            style={{
+                              width: `${pct}%`,
+                              background: `rgba(217,90,48,${0.3 + (pct / 100) * 0.6})`,
+                            }}
+                          />
+                        </div>
+                        <span className="text-xs text-muted-foreground tabular-nums font-semibold w-6 text-right">
                           {cat.count}
                         </span>
                       </div>
@@ -561,26 +559,20 @@ export default function DashboardPage() {
                       key={d.destinationId}
                       className="flex items-center gap-3"
                     >
-                      <span className="text-xs text-primary/70 w-[58px] flex-shrink-0 leading-none truncate">
+                      <span className="text-xs text-muted-foreground w-[58px] flex-shrink-0 leading-none truncate">
                         {d.destinationName}
                       </span>
-                      <div className="flex-1 h-[20px] bg-primary/[0.08] rounded-[3px] overflow-hidden relative">
-                        <div
-                          className="absolute inset-y-0 left-0 rounded-[3px]"
-                          style={{
-                            width: `${(d.count / maxVenue) * 100}%`,
-                            background: `rgba(37,99,235,${0.2 + (d.count / maxVenue) * 0.55})`,
-                          }}
-                        />
-                        <span
-                          className="absolute inset-0 flex items-center justify-end pr-2.5 text-xs font-semibold tabular-nums"
-                          style={{
-                            color:
-                              (d.count / maxVenue) * 100 > 20
-                                ? "white"
-                                : "rgba(37,99,235,0.7)",
-                          }}
-                        >
+                      <div className="flex-1 flex items-center gap-2">
+                        <div className="flex-1 h-[20px] bg-primary/[0.08] rounded-[3px] overflow-hidden">
+                          <div
+                            className="h-full rounded-[3px]"
+                            style={{
+                              width: `${(d.count / maxVenue) * 100}%`,
+                              background: `rgba(37,99,235,${0.2 + (d.count / maxVenue) * 0.55})`,
+                            }}
+                          />
+                        </div>
+                        <span className="text-xs text-muted-foreground tabular-nums font-semibold w-6 text-right">
                           {d.count}
                         </span>
                       </div>
@@ -601,7 +593,7 @@ export default function DashboardPage() {
                       key={p.short}
                       className="flex flex-col items-center gap-1.5 flex-1"
                     >
-                      <span className="text-xs font-semibold text-primary/75 tabular-nums">
+                      <span className="text-xs font-semibold text-muted-foreground tabular-nums">
                         {p.count}
                       </span>
                       <div
@@ -611,14 +603,14 @@ export default function DashboardPage() {
                           background: p.color,
                         }}
                       />
-                      <span className="text-xs text-primary/60 text-center leading-tight">
+                      <span className="text-xs text-muted-foreground text-center leading-tight">
                         {p.short}
                       </span>
                     </div>
                   ))}
                 </div>
                 <div className="mt-3 pt-3 border-t border-primary/25 flex items-center justify-between">
-                  <span className="text-xs text-primary/60 uppercase tracking-widest">
+                  <span className="text-xs text-muted-foreground uppercase tracking-widest">
                     Total
                   </span>
                   <span className="text-sm font-semibold text-primary tabular-nums">
@@ -639,7 +631,7 @@ export default function DashboardPage() {
                   <span className="text-3xl font-semibold text-primary tabular-nums leading-none">
                     {lastVal}
                   </span>
-                  <span className="text-xs text-primary/60 uppercase tracking-wider ml-2">
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider ml-2">
                     bookings
                   </span>
                 </div>
@@ -674,9 +666,9 @@ export default function DashboardPage() {
                           x={CPX - 4}
                           y={y + 3}
                           textAnchor="end"
-                          fontSize="0.625rem"
+                          fontSize="0.75rem"
                           fill="currentColor"
-                          fillOpacity="0.55"
+                          fillOpacity="0.9"
                           fontFamily="inherit"
                         >
                           {val}
@@ -735,9 +727,9 @@ export default function DashboardPage() {
                           x={x}
                           y={CH + 17}
                           textAnchor="middle"
-                          fontSize="0.625rem"
+                          fontSize="0.75rem"
                           fill="currentColor"
-                          fillOpacity={isLast ? 0.75 : 0.5}
+                          fillOpacity="0.9"
                           fontWeight={isLast ? "600" : "400"}
                         >
                           {d.month}
@@ -753,7 +745,7 @@ export default function DashboardPage() {
 
         {/* ── Footer ──────────────────────────────────────────────────── */}
         <motion.div variants={fadeInUp}>
-          <p className="text-primary/45 text-xs tracking-[0.35em] uppercase text-center">
+          <p className="text-muted-foreground text-xs tracking-[0.35em] uppercase text-center">
             Linda Wiryani Events — Studio Portal
           </p>
         </motion.div>
