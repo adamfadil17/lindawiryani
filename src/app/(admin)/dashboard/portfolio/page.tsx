@@ -1,7 +1,7 @@
 "use client";
 
+import { AdminImage } from "@/components/shared/admin-image";
 import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import axios from "@/lib/api";
 import {
@@ -89,7 +89,7 @@ function PortfolioCard({
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
       {/* Hero Image */}
       <div className="relative aspect-[3/2] overflow-hidden">
-        <Image
+        <AdminImage
           src={portfolio.image || "https://placehold.net/default.svg"}
           alt={portfolio.couple}
           fill

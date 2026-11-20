@@ -1,8 +1,8 @@
 "use client";
 
+import { AdminImage } from "@/components/shared/admin-image";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -745,15 +745,12 @@ export default function DestinationDetailPage() {
           <Section title="Destination Image">
             {formData.image && (
               <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden border border-primary/20 bg-primary/5">
-                <Image
+                <AdminImage
                   src={formData.image}
                   alt={formData.name || "Destination preview"}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
-                  }}
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
             )}

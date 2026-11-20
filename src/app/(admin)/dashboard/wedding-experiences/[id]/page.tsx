@@ -1,8 +1,8 @@
 "use client";
 
+import { AdminImage } from "@/components/shared/admin-image";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -977,7 +977,7 @@ export default function ExperiencesDetailPage() {
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
                     {formData.hero_image ? (
-                      <Image
+                      <AdminImage
                         src={formData.hero_image}
                         alt="Hero preview"
                         fill
@@ -1137,7 +1137,7 @@ export default function ExperiencesDetailPage() {
                     <div key={idx} className="space-y-2">
                       <div className="relative aspect-[4/3] bg-primary/5 border border-primary/20 overflow-hidden">
                         {formData.intro_images[idx] ? (
-                          <Image
+                          <AdminImage
                             src={formData.intro_images[idx]}
                             alt={`Intro image ${idx + 1}`}
                             fill
@@ -1251,7 +1251,7 @@ export default function ExperiencesDetailPage() {
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
                     {formData.approach_image ? (
-                      <Image
+                      <AdminImage
                         src={formData.approach_image}
                         alt="Approach preview"
                         fill
@@ -1479,7 +1479,7 @@ export default function ExperiencesDetailPage() {
                 <div className="space-y-3">
                   <div className="relative aspect-[16/7] bg-primary/5 border border-primary/20 overflow-hidden">
                     {formData.closing_image ? (
-                      <Image
+                      <AdminImage
                         src={formData.closing_image}
                         alt="Closing preview"
                         fill

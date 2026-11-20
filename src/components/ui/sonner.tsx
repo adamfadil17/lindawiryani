@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   CircleCheckIcon,
@@ -6,16 +6,19 @@ import {
   Loader2Icon,
   OctagonXIcon,
   TriangleAlertIcon,
-} from "lucide-react"
-import { useTheme } from "next-themes"
-import { Toaster as Sonner, type ToasterProps } from "sonner"
+} from "lucide-react";
+import { Toaster as Sonner, type ToasterProps } from "sonner";
 
+/**
+ * The admin area is a light-only interface. Leaving Sonner on "system" makes
+ * it apply its dark-theme description colour (#e8e8e8) on top of the light
+ * popover background, which is unreadable. Pin it to light and make the
+ * default toast typography match the admin scale.
+ */
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
-
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme="light"
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,
@@ -23,6 +26,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
         warning: <TriangleAlertIcon className="size-4" />,
         error: <OctagonXIcon className="size-4" />,
         loading: <Loader2Icon className="size-4 animate-spin" />,
+      }}
+      toastOptions={{
+        classNames: {
+          title: "text-sm font-semibold",
+          description: "text-sm text-[#4A3F44]",
+        },
       }}
       style={
         {
@@ -34,7 +43,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }
       {...props}
     />
-  )
-}
+  );
+};
 
-export { Toaster }
+export { Toaster };

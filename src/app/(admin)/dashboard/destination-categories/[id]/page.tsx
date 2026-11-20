@@ -1,9 +1,9 @@
 "use client";
 
+import { AdminImage } from "@/components/shared/admin-image";
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "@/lib/api";
@@ -35,7 +35,7 @@ function DestinationMiniCard({ destination }: { destination: Destination }) {
   return (
     <div className="flex items-center gap-3 p-3 sm:p-4 bg-white border border-primary/20 hover:border-primary/30 hover:shadow-sm transition-all group">
       <div className="relative w-14 h-11 sm:w-16 sm:h-12 shrink-0 overflow-hidden">
-        <Image
+        <AdminImage
           src={destination.image || "https://placehold.net/default.svg"}
           alt={destination.name}
           fill

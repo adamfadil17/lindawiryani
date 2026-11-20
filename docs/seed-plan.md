@@ -1,8 +1,8 @@
-# Content Seed Plan (`prisma/seed-content.ts`)
+# Content Seed Plan (`prisma/seed.ts`)
 
 | | |
 |---|---|
-| **Status** | 📝 Discussion + plan only — no seed code or data snapshot has been added |
+| **Status** | ✅ Implemented and verified on 2026-11-21 — snapshot, exporter, and consolidated `prisma/seed.ts` |
 | **Purpose** | Make it possible to populate a new environment with the site’s content without restoring a full production database dump |
 | **Applies to** | Destinations, categories, experiences, FAQs, venues, themes, portfolios, articles, open positions |
 | **Does not include** | Users, inquiries, submissions, uploaded binaries, static marketing copy that already lives in the repo |
@@ -95,13 +95,13 @@ They ship with the application code.
 | Approach | Best for | Preserves | Drawbacks |
 |---|---|---|---|
 | **Database dump** (`pg_dump` / `pg_restore`) | First VPS launch, exact production clone, recovery | IDs, all content, users, submissions, galleries | Includes PII if users/inquiries are included; large binary-ish dump; not human-editable |
-| **Content seed** (`seed-content.ts`) | Dev/staging, repeatable setup, onboarding | Content by slug, translations, galleries | Needs a maintained snapshot; cannot recreate users/sessions; needs schema updates |
+| **Content seed** (`prisma/seed.ts`) | Dev/staging, repeatable setup, onboarding | Content by slug, translations, galleries | Needs a maintained snapshot; cannot recreate users/sessions; needs schema updates |
 
 **Recommendation**
 
 - Use a **database dump** for the first production VPS.
-- Build `seed-content.ts` for repeatable development/staging environments and as
-  a fallback when a dump is not appropriate.
+- `prisma/seed.ts` now handles content for repeatable development/staging
+  environments and as a fallback when a dump is not appropriate.
 - The two mechanisms are complementary, not replacements for each other.
 
 ---
@@ -256,21 +256,19 @@ The snapshot deliberately excludes:
 
 ---
 
-## 6. Files proposed
+## 6. Files
 
 ```
 scripts/export-content.ts          # DB → prisma/seed-data/content.json
-prisma/seed-content.ts             # JSON → DB, idempotent
-prisma/seed-data/content.json      # snapshot (committed or shipped as artifact)
-prisma/seed.ts                     # unchanged: admin only
+prisma/seed-data/content.json      # content snapshot
+prisma/seed.ts                     # single entrypoint: content + optional admin
 ```
 
-Package scripts to add later:
+Package scripts:
 
 ```json
 "db:export:content": "tsx scripts/export-content.ts",
-"db:seed:content": "tsx prisma/seed-content.ts",
-"db:seed:admin": "tsx prisma/seed.ts"
+"db:seed": "npx prisma db seed"
 ```
 
 ---
@@ -376,7 +374,12 @@ referenced externally, so replacing them is safe.
 
 ---
 
-## 8. Proposed `prisma/seed-content.ts`
+## 8. Proposed `prisma/seed.ts`
+
+> **Implemented.** The real file uses the snapshot’s Prisma-style
+> `snake_case` fields directly and is now consolidated into `prisma/seed.ts`. The
+> sketch below documents the original approach; the implementation also
+> handles FAQs, galleries, publications, and all entity relations.
 
 This is the proposed shape, not an existing file:
 
@@ -593,8 +596,7 @@ On a new environment:
 
 ```bash
 npx prisma migrate deploy
-npm run db:seed:content   # future script
-npm run db:seed:admin     # or npm run db:seed
+npm run db:seed           # content + optional admin
 npm run build
 ```
 
@@ -653,7 +655,7 @@ After seeding:
 5. Allow `--prune` for records removed from the snapshot?
 6. Should the seeder be allowed to overwrite existing content on every run, or
    only create missing rows? (Upsert-by-slug is the proposed default.)
-7. Should `db:seed` remain admin-only, with a separate `db:seed:content`?
+7. ~~Should `db:seed` remain admin-only?~~ Decided: `db:seed` seeds content and optionally the admin.
 
 ---
 
@@ -662,7 +664,81 @@ After seeding:
 For the first VPS deployment, use a **database dump**. It is exact, includes all
 content and translations, and avoids schema/data mapping work.
 
-Add `seed-content.ts` for repeatable development/staging setups and as a
-fallback. Build it from a snapshot exported from the current DB; use the old
+`prisma/seed.ts` now handles both content and the optional admin account. Build it from a snapshot exported from the current DB; use the old
 branch data only if the current DB is unavailable or if an older snapshot is
 intentionally desired.
+
+---
+
+## 15. Decision log — 2026-11-21
+
+### Confirmed decisions
+
+- **Source of truth:** the current database. When the old branch and DB differ,
+  the DB wins.
+- **Old branch:** `origin/lindawiryani-beta` may be read read-only for comparison
+  (`main` contains identical data files). It is not checked out or modified.
+- **Locales:** English base fields + `id`, `zh`, `fr`, `ja`, `de` translations.
+  English is the fallback and is not duplicated inside `translations`.
+- **Status:** everything in the snapshot is `published`.
+- **Enum values:** current Prisma values (`Planning_Advice`, `luxury_weddings`,
+  etc.), not the old display labels.
+- **IDs:** no IDs are exported or inserted. Prisma generates UUIDs for new rows;
+  upserts find existing rows by `slug`.
+- **Snapshot storage:** `prisma/seed-data/content.json`.
+
+### Snapshot implementation
+
+- Exporter: `scripts/export-content.ts`
+  - run with `npx tsx scripts/export-content.ts`
+  - rebuilds the snapshot from the current DB.
+- Snapshot: `prisma/seed-data/content.json`
+  - 2.8 MB
+  - 4 categories, 53 destinations, 4 experiences (+20 FAQs), 24 venues,
+    21 themes, 1 portfolio, 14 articles, 4 positions
+  - no `id`, `created_at`, or `updated_at` fields
+  - relations use slugs: `category_slug`, `destination_slug`,
+    `experience_slug`, `venue_slug`
+  - galleries are `{ url, sort_order }[]`
+  - translations are keyed by locale
+  - field names mirror Prisma (`snake_case`) rather than the camelCase example
+    earlier in this document, to make the future seeder a direct mapping
+
+### Old branch vs DB comparison
+
+Counts match for every entity. One slug differs:
+
+```
+old branch: bali-botanical-garden-wedding
+current DB: bali-botanical-garden
+```
+
+The DB value is used. Old branch article categories use display labels; the
+snapshot uses the current Prisma enum names. All Cloudinary image URLs are
+present in the snapshot; no binaries are needed.
+
+### Built and verified
+
+1. `prisma/seed.ts` — single entrypoint: content plus the optional first-admin
+   seed, using slug upserts and old-ID-free relation maps. If
+   `ADMIN_EMAIL`/`ADMIN_PASSWORD` are not set, the admin step is skipped with a
+   warning and content still seeds.
+2. `scripts/export-content.ts` — implemented; regenerates the snapshot from
+   the current DB.
+3. Package scripts:
+   - `npm run db:export:content`
+   - `npm run db:seed`
+4. Tested against a fresh scratch database:
+   - migrations applied,
+   - seed ran twice without duplicating rows,
+   - counts matched: 4 categories, 53 destinations, 4 experiences + 20 FAQs,
+     24 venues, 21 themes, 1 portfolio, 14 articles, 4 positions,
+   - galleries matched: 1,150 venue, 48 theme, 6 portfolio images,
+   - translations matched for all five locales,
+   - all generated IDs were UUIDs,
+   - venue → destination/experience relations were intact,
+   - all test data remained outside the production DB; scratch DB was dropped.
+
+The seed does not insert any old numeric IDs. Slugs are the only stable keys
+used by the snapshot; Prisma generates UUIDs for new rows.
+

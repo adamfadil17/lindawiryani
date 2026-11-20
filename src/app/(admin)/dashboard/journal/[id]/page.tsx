@@ -1,8 +1,8 @@
 "use client";
 
+import { AdminImage } from "@/components/shared/admin-image";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -538,15 +538,12 @@ export default function JournalArticleDetailPage() {
             <div className="space-y-4">
               <div className="relative aspect-[4/3] bg-primary/5 border border-primary/20 overflow-hidden">
                 {formData.image ? (
-                  <Image
+                  <AdminImage
                     src={formData.image}
                     alt="Cover preview"
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = "none";
-                    }}
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">

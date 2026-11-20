@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ImageIcon, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ImageIcon, ImageOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const MAX_SIZE_MB = 5;
@@ -17,6 +17,18 @@ export default function ImageUpload({
   inputId?: string;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [previewStatus, setPreviewStatus] = useState<
+    "loading" | "loaded" | "error"
+  >("loading");
+  const previewRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    setPreviewStatus("loading");
+    const image = previewRef.current;
+    if (image?.complete) {
+      setPreviewStatus(image.naturalWidth > 0 ? "loaded" : "error");
+    }
+  }, [value]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -116,12 +128,25 @@ export default function ImageUpload({
       {value && (
         <div className="mt-3 flex items-start gap-3">
           {/* Plain img: works for local /uploads paths and legacy Cloudinary URLs. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={value}
-            alt="Uploaded preview"
-            className="h-20 w-auto max-w-[160px] object-cover border border-primary/20"
-          />
+          <div className="relative h-20 w-28 shrink-0 overflow-hidden border border-primary/20 bg-primary/[0.06]">
+            {previewStatus === "loading" && (
+              <Loader2 className="absolute inset-0 m-auto h-5 w-5 animate-spin text-primary/40" />
+            )}
+            {previewStatus === "error" && (
+              <ImageOff className="absolute inset-0 m-auto h-5 w-5 text-muted-foreground" />
+            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={value}
+              alt="Uploaded preview"
+              ref={previewRef}
+              className={`h-full w-full object-cover transition-opacity ${
+                previewStatus === "loaded" ? "opacity-100" : "opacity-0"
+              }`}
+              onLoad={() => setPreviewStatus("loaded")}
+              onError={() => setPreviewStatus("error")}
+            />
+          </div>
           <button
             type="button"
             onClick={() => onChange("")}

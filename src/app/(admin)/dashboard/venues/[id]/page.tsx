@@ -1,8 +1,8 @@
 "use client";
 
+import { AdminImage } from "@/components/shared/admin-image";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -110,15 +110,12 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
         <div className="grid grid-cols-3 gap-2">
           {images.map((img, i) => (
             <div key={img.id} className="relative aspect-square group overflow-hidden border border-primary/20">
-              <Image
+              <AdminImage
                 src={img.url}
                 alt={`Gallery ${i + 1}`}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 768px) 33vw, 15vw"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
+                sizes="(max-width: 768px) 33vw, 15vw"
               />
               <button
                 type="button"
@@ -147,15 +144,12 @@ function GalleryManager({ venueId, images, onChange }: GalleryManagerProps) {
           <>
             {/* Preview sebelum add */}
             <div className="relative w-full aspect-[4/3] overflow-hidden border border-primary/20 bg-primary/5">
-              <Image
+              <AdminImage
                 src={pendingUrl}
                 alt="Gallery preview"
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
             <button
@@ -773,15 +767,12 @@ export default function VenueDetailPage() {
             {/* Preview */}
             <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden border border-primary/20 bg-primary/5">
               {formData.image ? (
-                <Image
+                <AdminImage
                   src={formData.image}
                   alt={formData.name || "Venue preview"}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
-                  }}
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">

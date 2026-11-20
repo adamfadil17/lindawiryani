@@ -1,7 +1,7 @@
 "use client";
 
+import { AdminImage } from "@/components/shared/admin-image";
 import { useEffect, useCallback, useReducer, useRef, useMemo } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import axios from "@/lib/api";
 import {
@@ -191,7 +191,7 @@ function ArticleCard({
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
       {/* Image */}
       <div className="relative aspect-[16/9] overflow-hidden">
-        <Image
+        <AdminImage
           src={article.image || "https://placehold.net/default.svg"}
           alt={article.title}
           fill
