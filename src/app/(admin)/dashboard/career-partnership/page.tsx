@@ -628,6 +628,9 @@ export default function CareerPartnershipPage() {
     dispatch({ type: "DELETE_SUBMISSION_START" });
     try {
       await axios.delete(`/api/submissions/${deleteSubmissionTarget.id}`);
+      toast.success("Submission deleted", {
+        description: "The submission has been removed.",
+      });
       const isLastOnPage = submissions.length === 1 && submissionPage > 1;
       dispatch({ type: "DELETE_SUBMISSION_SUCCESS" });
       if (isLastOnPage) {
@@ -637,6 +640,9 @@ export default function CareerPartnershipPage() {
       }
     } catch (err) {
       console.error("Delete submission failed:", err);
+      toast.error("Failed to delete submission", {
+        description: err instanceof Error ? err.message : undefined,
+      });
       dispatch({ type: "DELETE_SUBMISSION_ERROR" });
     }
   }, [deleteSubmissionTarget, submissions.length, submissionPage, getSubmissions]);
@@ -653,6 +659,9 @@ export default function CareerPartnershipPage() {
     dispatch({ type: "DELETE_POSITION_START" });
     try {
       await axios.delete(`/api/open-positions/${deletePositionTarget.id}`);
+      toast.success(`"${deletePositionTarget.title}" deleted`, {
+        description: "The open position has been removed.",
+      });
       const isLastOnPage = positions.length === 1 && positionPage > 1;
       dispatch({ type: "DELETE_POSITION_SUCCESS" });
       if (isLastOnPage) {
@@ -662,6 +671,9 @@ export default function CareerPartnershipPage() {
       }
     } catch (err) {
       console.error("Delete position failed:", err);
+      toast.error("Failed to delete open position", {
+        description: err instanceof Error ? err.message : undefined,
+      });
       dispatch({ type: "DELETE_POSITION_ERROR" });
     }
   }, [deletePositionTarget, positions.length, positionPage, getPositions]);

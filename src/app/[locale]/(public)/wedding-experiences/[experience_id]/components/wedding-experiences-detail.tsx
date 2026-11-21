@@ -794,7 +794,7 @@ function SectionVenueList({
   const t = useTranslations("experienceDetail");
   const tv = useTranslations("venuesSection");
   const [selectedLocation, setSelectedLocation] = useState<string>("All");
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>("IDR");
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>("USD");
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);

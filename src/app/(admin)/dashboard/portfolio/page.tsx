@@ -85,6 +85,7 @@ function PortfolioCard({
   portfolio: Portfolio;
   onDelete: (portfolio: Portfolio) => void;
 }) {
+  const galleryCount = portfolio.gallery?.length ?? 0;
   return (
     <div className="bg-white border border-primary/20 group hover:border-primary/30 transition-all duration-300 hover:shadow-md">
       {/* Hero Image */}
@@ -96,13 +97,6 @@ function PortfolioCard({
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Gallery count badge */}
-        <div className="absolute top-3 right-3">
-          <span className="inline-flex items-center gap-1 text-xs tracking-widest uppercase px-2.5 py-1 font-medium bg-black/60 text-white backdrop-blur-sm">
-            <Images className="w-3 h-3" />
-            {portfolio.gallery?.length ?? 0}
-          </span>
-        </div>
         {/* Tags */}
         {portfolio.tags && portfolio.tags.length > 0 && (
           <div className="absolute bottom-3 left-3 flex flex-wrap gap-1">
@@ -156,11 +150,18 @@ function PortfolioCard({
               <span className="truncate">{portfolio.origin}</span>
             </div>
           )}
+
+          {galleryCount > 0  && (
+            <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
+              <Images className="w-3 h-3 shrink-0" />
+              <span className="truncate">{galleryCount} photos</span>
+            </div>
+          )}
         </div>
 
         {/* Excerpt */}
         {portfolio.excerpt && (
-          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-4">
+          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 my-4">
             {portfolio.excerpt}
           </p>
         )}
@@ -623,6 +624,9 @@ export default function DashboardPortfolioPage() {
     dispatch({ type: "DELETE_START" });
     try {
       await axios.delete(`/api/portfolios/${deleteTarget.id}`, {
+      });
+      toast.success(`"${deleteTarget.couple}" deleted`, {
+        description: "The portfolio has been removed.",
       });
       const isLastOnPage = portfolios.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });

@@ -237,6 +237,7 @@ export default function DestinationDetailPage() {
   // Called when handleSubmit validation fails — force all errors to show
   const onSubmitError = async () => {
     await trigger();
+    toast.error("Please fix the highlighted fields before saving.");
   };
 
   const confirmSave = async () => {
@@ -250,7 +251,10 @@ export default function DestinationDetailPage() {
         });
         setSaveStatus("idle");
         toast.success("Destination created!", {
-          description: "Your new destination has been added to the system.",
+          description:
+            editor.status === "published"
+              ? "Your new destination is live on the public site."
+              : "Saved as a draft. Set the status to Published to show it on the public site.",
         });
         reset(); // clear dirty state before navigating
         router.push("/dashboard/destinations");
@@ -267,12 +271,21 @@ export default function DestinationDetailPage() {
         setTimeout(() => setSaveStatus("idle"), 3000);
       }
     } catch (err) {
+      const responseData = axios.isAxiosError(err)
+        ? (err.response?.data as
+            | { error?: string; message?: string; errors?: Record<string, string[]> }
+            | undefined)
+        : undefined;
+      const fieldErrors = responseData?.errors
+        ? Object.entries(responseData.errors)
+            .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+            .join(" · ")
+        : "";
       const errorMsg =
-        axios.isAxiosError(err) && err.response?.data?.message
-          ? err.response.data.message
-          : err instanceof Error
-            ? err.message
-            : "Unknown error";
+        fieldErrors ||
+        responseData?.error ||
+        responseData?.message ||
+        (err instanceof Error ? err.message : "Unknown error");
       toast.error("Failed to save", { description: errorMsg });
       setSaveStatus("confirm"); // keep modal open on error
     }
@@ -445,7 +458,10 @@ export default function DestinationDetailPage() {
                 <FormField label="Destination Name" required>
                   <TextInput
                     value={formData.name}
-                    onChange={(v) => setField("name", v)}
+                    onChange={(v) => {
+                      setField("name", v);
+                      setField("slug", toSlug(v));
+                    }}
                     placeholder="e.g. Menjangan"
                     error={
                       formErrors.name

@@ -27,7 +27,7 @@ import FormField from "@/components/shared/from-field";
 import { SelectInput } from "@/components/shared/select-input";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
-import TextareaInput from "@/components/shared/text-area-input";
+import TipTapEditor from "@/components/shared/tiptap-editor";
 import ImageUpload from "@/components/shared/image-upload";
 import SaveModal from "@/components/shared/save-modal";
 import DeleteModal from "@/components/shared/delete-modal";
@@ -622,12 +622,15 @@ export default function VenueDetailPage() {
 
               {/* description — required, min 1 */}
               <FormField label="Description" required>
-                <TextareaInput
+                <TipTapEditor
                   value={formData.description}
                   onChange={(v) => setField("description", v)}
                   placeholder="Describe the venue — the setting, atmosphere, and what makes it unique..."
-                  rows={4}
-                  error={formErrors.description ? String(formErrors.description.message) : undefined}
+                  error={
+                    formErrors.description
+                      ? String(formErrors.description.message)
+                      : undefined
+                  }
                 />
               </FormField>
             </div>

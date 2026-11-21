@@ -6,21 +6,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import TipTapContent from "@/components/shared/tiptap-content";
 import type { Venue, WeddingTheme } from "@/types";
 
 interface ThemeDetailModalProps {
   theme: WeddingTheme;
   onClose: () => void;
   onExploreVenue: (venue: Venue) => void;
-}
-
-function TipTapContent({ html }: { html: string }) {
-  return (
-    <div
-      className="tiptap-content text-primary"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
 }
 
 const ImageLoadingSkeleton = () => (

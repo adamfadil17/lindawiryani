@@ -12,10 +12,13 @@ import {
   Eye,
   X,
   Layers,
+  Building2,
+  Images,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { WeddingTheme } from "@/types";
+import { htmlToPlainText } from "@/lib/html-text";
 import DeleteModal from "@/components/shared/delete-modal";
 import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
@@ -98,12 +101,6 @@ function WeddingThemeCard({
             </span>
           </div>
         )}
-        {/* Gallery count */}
-        {galleryCount > 1 && (
-          <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs tracking-widest uppercase px-2 py-1">
-            +{galleryCount - 1} photos
-          </div>
-        )}
       </div>
 
       {/* Content */}
@@ -117,26 +114,30 @@ function WeddingThemeCard({
           </h3>
         </div>
 
-        <p className="text-primary text-sm leading-relaxed line-clamp-2 mb-4">
-          {theme.description}
-        </p>
-
         {/* Meta */}
-        <div className="flex items-center gap-3 mb-5 text-xs text-primary">
+        <div className="flex items-center gap-3 mb-3 text-xs text-primary">
           {/* <span>{theme.inclusions?.length ?? 0} inclusions</span> */}
           {theme.venue && (
             <>
-              <span className="text-primary/20">·</span>
-              <span>{theme.venue.name}</span>
+              <span className="flex items-center gap-1">
+                <Building2 className="w-3 h-3 text-muted-foreground" />
+                {theme.venue.name}
+              </span>
             </>
           )}
           {galleryCount > 0 && (
             <>
-              <span className="text-primary/20">·</span>
-              <span>{galleryCount} photos</span>
+              <span className="flex items-center gap-1">
+                <Images className="w-3 h-3 text-muted-foreground" />
+                {galleryCount} photos
+              </span>
             </>
           )}
         </div>
+
+        <p className="text-primary text-sm leading-relaxed line-clamp-2 mb-4">
+          {htmlToPlainText(theme.description)}
+        </p>
 
         {/* Divider + Actions */}
         <div className="border-t border-primary/20 pt-4">
@@ -543,6 +544,9 @@ export default function DashboardWeddingThemesPage() {
     try {
       await axios.delete(`/api/wedding-themes/${deleteTarget.id}`, {
       });
+      toast.success(`"${deleteTarget.title}" deleted`, {
+        description: "The wedding theme has been removed.",
+      });
       const isLastOnPage = themes.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
       if (isLastOnPage) {
@@ -553,6 +557,9 @@ export default function DashboardWeddingThemesPage() {
       }
     } catch (err) {
       console.error("Delete failed:", err);
+      toast.error("Failed to delete wedding theme", {
+        description: err instanceof Error ? err.message : undefined,
+      });
       dispatch({ type: "DELETE_ERROR" });
     }
   }, [deleteTarget, themes.length, currentPage, getThemes]);

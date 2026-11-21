@@ -22,7 +22,7 @@ import {
 import FormField from "@/components/shared/from-field";
 import Section from "@/components/shared/section-form";
 import TextInput from "@/components/shared/text-input";
-import TextareaInput from "@/components/shared/text-area-input";
+import TipTapEditor from "@/components/shared/tiptap-editor";
 import TagsInput from "@/components/shared/tags-input";
 import ImageUpload from "@/components/shared/image-upload";
 import { SelectInput } from "@/components/shared/select-input";
@@ -203,7 +203,7 @@ export default function WeddingThemeDetailPage() {
       title: "",
       description: "",
       image: "",
-      // inclusions: [],
+      inclusions: [],
       venue_id: undefined,
       experience_id: "",
     },
@@ -243,7 +243,7 @@ export default function WeddingThemeDetailPage() {
         formData.title ||
         formData.description ||
         formData.image ||
-        // (formData.inclusions && formData.inclusions.length > 0) ||
+        (formData.inclusions && formData.inclusions.length > 0) ||
         galleryImages.length > 0
       )
     : isDirty || editor.dirty;
@@ -329,7 +329,7 @@ export default function WeddingThemeDetailPage() {
         title: String(data.title ?? ""),
         description: String(data.description ?? ""),
         image: String(data.image ?? ""),
-        // inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
+        inclusions: Array.isArray(data.inclusions) ? data.inclusions : [],
         // venue_id may be null when the previously linked venue was deleted
         venue_id: data.venue_id ?? undefined,
         experience_id: String(data.experience_id ?? ""),
@@ -402,7 +402,10 @@ export default function WeddingThemeDetailPage() {
 
         setSaveStatus("idle");
         toast.success("Wedding theme created!", {
-          description: "Your new wedding theme has been added to the system.",
+          description:
+            editor.status === "published"
+              ? "Your new wedding theme is live on the public site."
+              : "Saved as a draft. Set the status to Published to show it on the public site.",
         });
         reset(); // clear dirty state before navigating
         router.push("/dashboard/wedding-themes");
@@ -631,11 +634,10 @@ export default function WeddingThemeDetailPage() {
                 required
                 hint="Describe the atmosphere, style, and experience couples can expect"
               >
-                <TextareaInput
+                <TipTapEditor
                   value={formData.description}
                   onChange={(v) => setField("description", v)}
                   placeholder="Describe this wedding theme — the atmosphere, style, and experience couples can expect..."
-                  rows={4}
                   error={
                     formErrors.description
                       ? String(formErrors.description.message)
@@ -711,7 +713,7 @@ export default function WeddingThemeDetailPage() {
           </Section>
 
           {/* Package Inclusions */}
-          {/* <Section
+          <Section
             title="Package Inclusions"
             subtitle="What is included in this wedding theme package"
           >
@@ -720,6 +722,11 @@ export default function WeddingThemeDetailPage() {
                 values={formData.inclusions}
                 onChange={(v) => setField("inclusions", v)}
                 placeholder="e.g. Professional wedding celebrant"
+                error={
+                  formErrors.inclusions
+                    ? String(formErrors.inclusions.message)
+                    : undefined
+                }
               />
               {formErrors.inclusions && (
                 <p className="text-red-700 text-xs mt-1">
@@ -727,7 +734,7 @@ export default function WeddingThemeDetailPage() {
                 </p>
               )}
             </FormField>
-          </Section> */}
+          </Section>
         </div>
 
         {/* ── Right Column ── */}

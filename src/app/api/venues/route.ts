@@ -14,6 +14,7 @@ import {
   translationsCreate,
   publicationFields,
 } from "@/lib/content/translations";
+import { sanitizeRichText } from "@/lib/sanitize";
 import { createVenueSchema, parsePagination, paginateQuery } from "@/utils";
 
 const VENUE_INCLUDE = {
@@ -96,7 +97,7 @@ export async function POST(req: NextRequest) {
         slug: dto.slug,
         name: dto.name,
         slogan: dto.slogan,
-        description: dto.description,
+        description: sanitizeRichText(dto.description),
         image: dto.image,
         capacity: dto.capacity,
         starting_price: dto.starting_price,

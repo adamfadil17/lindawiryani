@@ -14,11 +14,13 @@ import {
   MapPin,
   Building2,
   Users,
+  Images,
   DollarSign,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { Venue } from "@/types";
+import { htmlToPlainText } from "@/lib/html-text";
 import DeleteModal from "@/components/shared/delete-modal";
 import { FilterSelect } from "@/components/shared/select-input";
 import type { PaginationMeta } from "@/lib/api-response";
@@ -120,13 +122,6 @@ function VenueCard({
             </span>
           </div>
         )}
-
-        {/* Gallery count */}
-        {galleryCount > 0 && (
-          <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs tracking-widest uppercase px-2 py-1">
-            +{galleryCount} photos
-          </div>
-        )}
       </div>
 
       {/* Content */}
@@ -136,7 +131,8 @@ function VenueCard({
             <MapPin className="w-3 h-3" />
             {venue.destination?.name ?? venue.destination_id}
           </div>
-          <h3 className="text-primary font-semibold text-base leading-snug">
+          <h3 className="flex items-center gap-2 text-primary font-semibold text-base leading-snug">
+            <Building2 className="w-4 h-4 shrink-0 text-muted-foreground" />
             {venue.name}
           </h3>
           {venue.slogan && (
@@ -144,32 +140,37 @@ function VenueCard({
           )}
         </div>
 
-        <p className="text-primary text-sm leading-relaxed line-clamp-2 mb-4">
-          {venue.description}
-        </p>
-
         {/* Meta */}
-        <div className="flex items-center gap-3 mb-5 text-xs text-primary">
+        <div className="flex items-center gap-3 mb-3 text-xs text-primary">
           <span className="flex items-center gap-1">
             <Users className="w-3 h-3" />
             {venue.capacity} guests
           </span>
-          <span className="text-primary/20">·</span>
           <span className="flex items-center gap-1">
             <DollarSign className="w-3 h-3" />
-            from ${Number(venue.starting_price).toLocaleString()}
+            from {Number(venue.starting_price).toLocaleString()}
           </span>
+          {galleryCount > 0 && (
+          <span className="flex items-center gap-1">
+            <Images className="w-3 h-3 text-muted-foreground" />
+             {galleryCount} photos
+          </span>
+          )}
         </div>
+
+        <p className="text-primary text-sm leading-relaxed line-clamp-2 mb-5">
+          {htmlToPlainText(venue.description)}
+        </p>
 
         {/* Tags */}
         <div className="flex gap-2 mb-5">
           {venue.experience && (
-            <span className="text-xs tracking-widest uppercase px-2 py-0.5 bg-primary/5 text-muted-foreground border border-primary/20">
+            <span className="text-xs tracking-widest truncate px-2 py-0.5 bg-primary/5 text-muted-foreground border border-primary/20">
               {venue.experience.name}
             </span>
           )}
           {venue.destination && (
-            <span className="text-xs tracking-widest uppercase px-2 py-0.5 bg-primary/10 text-primary border border-primary/20">
+            <span className="text-xs tracking-widest truncate px-2 py-0.5 bg-primary/10 text-primary border border-primary/20">
               {venue.destination.type}
             </span>
           )}
@@ -178,8 +179,8 @@ function VenueCard({
         {/* Divider + Actions */}
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-primary font-semibold tracking-wider">
-              {venue.slug}
+            <span className="text-xs text-primary font-semibold tracking-wider truncate max-w-[140px]">
+              /{venue.slug}
             </span>
             <div className="flex items-center gap-1">
               <Link
@@ -548,6 +549,9 @@ export default function DashboardVenuesPage() {
     dispatch({ type: "DELETE_START" });
     try {
       await axios.delete(`/api/venues/${deleteTarget.id}`);
+      toast.success(`"${deleteTarget.name}" deleted`, {
+        description: "The venue has been removed.",
+      });
       const isLastOnPage = venues.length === 1 && currentPage > 1;
       dispatch({ type: "DELETE_SUCCESS" });
       if (isLastOnPage) {
@@ -557,6 +561,9 @@ export default function DashboardVenuesPage() {
       }
     } catch (err) {
       console.error("Delete failed:", err);
+      toast.error("Failed to delete venue", {
+        description: err instanceof Error ? err.message : undefined,
+      });
       dispatch({ type: "DELETE_ERROR" });
     }
   }, [deleteTarget, venues.length, currentPage, getVenues]);

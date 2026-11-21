@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { formatPrice } from "@/lib/currency";
+import TipTapContent from "@/components/shared/tiptap-content";
 import type { Venue, WeddingTheme, Currency } from "@/types";
 
 type ExperienceFilter =
@@ -474,9 +475,10 @@ export default function VenueDetailModal({
               </button>
             </Link>
 
-            <p className="text-sm md:text-base text-foreground text-justify leading-relaxed mb-6">
-              {venue.description}
-            </p>
+            <TipTapContent
+              html={venue.description}
+              className="text-sm md:text-base text-foreground text-justify leading-relaxed mb-6"
+            />
           </article>
         </div>
       </div>

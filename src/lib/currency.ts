@@ -49,7 +49,9 @@ export function formatPrice(
 ): string {
   if (!price || price <= 0) return "To Be Confirmed";
 
-  const value = currency === "USD" ? price / rate : price;
+  // Admin stores `starting_price` in USD (the field is labelled "Starting
+  // Price (USD)"). Convert only when the visitor switches to IDR.
+  const value = currency === "IDR" ? price * rate : price;
   return Math.round(value)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");

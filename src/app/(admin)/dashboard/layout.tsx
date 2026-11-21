@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
-import { Toaster } from "@/components/ui/sonner";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,7 +27,7 @@ import { useCurrentUser } from "@/hook/useCurrentUser";
 import { useLogout } from "@/hook/useLogout";
 import { useInquiryBadge } from "@/hook/useInquiryBadge";
 
-// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Types ---
 
 interface NavItem {
   label: string;
@@ -99,7 +98,7 @@ const navGroups: NavGroup[] = [
   },
 ];
 
-// â”€â”€â”€ Destinations Nav Item (with dropdown) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Destinations Nav Item (with dropdown) ---
 
 function DestinationsNavItem({
   collapsed,
@@ -199,7 +198,7 @@ function DestinationsNavItem({
   );
 }
 
-// â”€â”€â”€ Sidebar Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Sidebar Component ---
 
 function Sidebar({
   collapsed,
@@ -353,7 +352,7 @@ function Sidebar({
   );
 }
 
-// â”€â”€â”€ Mobile Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Mobile Sidebar ---
 
 function MobileSidebar({
   open,
@@ -479,7 +478,7 @@ function MobileSidebar({
   );
 }
 
-// â”€â”€â”€ Helper: get initials from name â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Helper: get initials from name ---
 
 function getInitials(name: string): string {
   return name
@@ -490,7 +489,7 @@ function getInitials(name: string): string {
     .join("");
 }
 
-// â”€â”€â”€ Header Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Header Component ---
 
 function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
   const pathname = usePathname();
@@ -522,7 +521,7 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
 
   const displayName = loading ? "..." : (user?.name ?? "Admin");
   const displayRole = loading ? "..." : (user?.role ?? "Administrator");
-  const initials = loading ? "â€¢" : user ? getInitials(user.name) : "A";
+  const initials = loading ? "•" : user ? getInitials(user.name) : "A";
 
   return (
     <header className="h-[72px] border-b border-primary/20 bg-white flex items-center justify-between px-6 sticky top-0 z-30">
@@ -570,7 +569,7 @@ function Header({ onMobileMenuOpen }: { onMobileMenuOpen: () => void }) {
   );
 }
 
-// â”€â”€â”€ Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Layout ---
 
 export default function DashboardLayout({
   children,
@@ -598,7 +597,6 @@ export default function DashboardLayout({
 
         {/* Page content */}
         <main className="flex-1 overflow-y-auto">{children}</main>
-        <Toaster />
       </div>
     </div>
   );

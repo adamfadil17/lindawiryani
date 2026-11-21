@@ -41,7 +41,7 @@ import {
   CodeSquare,
 } from "lucide-react";
 
-// â”€â”€â”€ Toolbar Button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Toolbar Button ---
 
 function ToolbarBtn({
   onClick,
@@ -77,7 +77,7 @@ function Divider() {
   return <div className="w-px h-5 bg-primary/15 mx-0.5" />;
 }
 
-// â”€â”€â”€ Link Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Link Modal ---
 
 function LinkModal({
   initialUrl,
@@ -130,7 +130,7 @@ function LinkModal({
   );
 }
 
-// â”€â”€â”€ Image URL Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Image URL Modal ---
 
 function ImageModal({
   onConfirm,
@@ -155,7 +155,7 @@ function ImageModal({
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Image URL (https://â€¦)"
+            placeholder="Image URL (https://...)"
             className="w-full px-3 py-3 text-sm text-primary border border-primary/20 focus:outline-none focus:border-primary/50"
           />
           <input
@@ -188,7 +188,7 @@ function ImageModal({
   );
 }
 
-// â”€â”€â”€ Main TipTap Editor Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Main TipTap Editor Component ---
 
 interface TipTapEditorProps {
   value: string;
@@ -212,7 +212,7 @@ export default function TipTapEditor({
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
         horizontalRule: false, // use standalone extension below
-        // HTMLAttributes dihapus dari code, codeBlock, blockquote â€”
+        // HTMLAttributes dihapus dari code, codeBlock, blockquote -
         // styling sekarang ditangani oleh prose-* classes di editorProps
       }),
       Underline,
@@ -226,7 +226,12 @@ export default function TipTapEditor({
       }),
       Image,
       Placeholder.configure({
-        placeholder,
+        placeholder: ({ node, pos, editor }) => {
+          const isTopLevel = editor.state.doc.resolve(pos).depth === 0;
+          return node.type.name === "paragraph" && isTopLevel
+            ? (placeholder ?? "")
+            : "";
+        },
         emptyEditorClass:
           "before:content-[attr(data-placeholder)] before:text-muted-foreground before:pointer-events-none before:absolute before:top-5 before:left-5",
       }),
@@ -248,7 +253,7 @@ export default function TipTapEditor({
     },
   });
 
-  // â”€â”€ Link helpers â”€â”€
+  // --- Link helpers ---
   const openLinkModal = useCallback(() => {
     setShowLinkModal(true);
   }, []);
@@ -270,7 +275,7 @@ export default function TipTapEditor({
     editor?.chain().focus().unsetLink().run();
   }, [editor]);
 
-  // â”€â”€ Image helpers â”€â”€
+  // --- Image helpers ---
   const applyImage = useCallback(
     (url: string, alt: string) => {
       setShowImageModal(false);
@@ -279,7 +284,7 @@ export default function TipTapEditor({
     [editor],
   );
 
-  // â”€â”€ Reactive toolbar state â€” re-renders saat cursor / selection berpindah â”€â”€
+  // --- Reactive toolbar state - re-renders saat cursor / selection berpindah ---
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
@@ -337,7 +342,7 @@ export default function TipTapEditor({
           error ? "border-red-400" : "border-primary/20"
         } bg-white`}
       >
-        {/* â”€â”€ Toolbar â”€â”€ */}
+        {/* --- Toolbar --- */}
         <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-primary/15 bg-primary/[0.02]">
           {/* History */}
           <ToolbarBtn
@@ -539,7 +544,7 @@ export default function TipTapEditor({
           </ToolbarBtn>
         </div>
 
-        {/* â”€â”€ Bubble Menu (appears on text selection) â”€â”€ */}
+        {/* --- Bubble Menu (appears on text selection) --- */}
         <BubbleMenu
           editor={editor}
           shouldShow={({ editor, state }) => {
@@ -597,7 +602,7 @@ export default function TipTapEditor({
           ))}
         </BubbleMenu>
 
-        {/* â”€â”€ Floating Menu (appears on empty line) â”€â”€ */}
+        {/* --- Floating Menu (appears on empty line) --- */}
         <FloatingMenu
           editor={editor}
           shouldShow={({ state }) => {
@@ -632,7 +637,7 @@ export default function TipTapEditor({
               action: () => editor.chain().focus().toggleBlockquote().run(),
             },
             {
-              label: "â€¢ List",
+              label: "• List",
               action: () => editor.chain().focus().toggleBulletList().run(),
             },
             {
@@ -651,12 +656,12 @@ export default function TipTapEditor({
           ))}
         </FloatingMenu>
 
-        {/* â”€â”€ Editor area â”€â”€ */}
+        {/* --- Editor area --- */}
         <div className="relative">
           <EditorContent editor={editor} />
         </div>
 
-        {/* â”€â”€ Footer â”€â”€ */}
+        {/* --- Footer --- */}
         <div className="flex items-center justify-between px-4 py-2 border-t border-primary/20 bg-primary/[0.02]">
           <span className="text-xs tracking-widest uppercase text-primary/90">
             Linda Wiryani Weddings Planner
@@ -670,7 +675,7 @@ export default function TipTapEditor({
 
       {error && <p className="text-red-700 text-xs mt-1">{error}</p>}
 
-      {/* â”€â”€ Modals â”€â”€ */}
+      {/* --- Modals --- */}
       {showLinkModal && (
         <LinkModal
           initialUrl={currentLinkUrl}

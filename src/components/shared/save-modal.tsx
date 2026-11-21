@@ -30,7 +30,7 @@ export default function SaveModal({
   const isNew = mode === "create";
 
   const defaultDescription = isNew
-    ? `Are you sure you want to create ${itemName ? `"${itemName}"` : `this new ${entityName.toLowerCase()}`}? It will be immediately visible on the public website.`
+    ? `Are you sure you want to create ${itemName ? `"${itemName}"` : `this new ${entityName.toLowerCase()}`}? It will be saved with the currently selected publish status.`
     : `Are you sure you want to update ${itemName ? `"${itemName}"` : `this ${entityName.toLowerCase()}`}? Changes will be reflected immediately on the public website.`;
 
   const title = isNew ? `Create ${entityName}` : `Update ${entityName}`;

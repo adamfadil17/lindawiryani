@@ -31,7 +31,7 @@ export default function Page({
 }: HomePageProps) {
   const t = useTranslations("home");
   const [isMobile, setIsMobile] = useState(false);
-  const [selectedCurrency] = useState<Currency>("IDR");
+  const [selectedCurrency] = useState<Currency>("USD");
   const [reviewSlide, setReviewSlide] = useState(0);
 
   const [venueFromTheme, setVenueFromTheme] = useState<Venue | null>(null);

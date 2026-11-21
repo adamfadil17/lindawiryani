@@ -36,7 +36,7 @@ export default function WeddingConceptsPage({
     planningJourney,
   } = useWeddingConceptsData();
   const [isMobile, setIsMobile] = useState(false);
-  const [selectedCurrency] = useState<Currency>("IDR");
+  const [selectedCurrency] = useState<Currency>("USD");
 
   const [venueFromTheme, setVenueFromTheme] = useState<Venue | null>(null);
 

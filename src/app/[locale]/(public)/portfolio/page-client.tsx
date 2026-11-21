@@ -266,7 +266,7 @@ export default function PortfolioPage({
     <main className="relative overflow-hidden" onClick={closeDropdowns}>
       <PageHero
         image="https://res.cloudinary.com/dzerxindp/image/upload/v1792801558/edited_hhhrh4.jpg"
-        imageAlt="Portfolio â€” Real Weddings in Bali"
+        imageAlt="Portfolio - Real Weddings in Bali"
         breadcrumb={t("breadcrumb")}
         breadcrumbHref="/portfolio"
         kicker={t("heroKicker")}

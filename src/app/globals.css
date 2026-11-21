@@ -83,6 +83,17 @@ html[data-area="admin"] body {
   line-height: 1.55;
 }
 
+/*
+ * Placeholder text should be visibly lighter than typed text in the admin.
+ * `text-muted-foreground` is close to the input text colour and made empty
+ * fields look pre-filled; this token is lighter but still readable.
+ */
+html[data-area="admin"] input::placeholder,
+html[data-area="admin"] textarea::placeholder {
+  color: #8a7c82;
+  opacity: 1;
+}
+
 /* Brand/display headings keep Cormorant; all admin UI text uses the UI sans. */
 html[data-area="admin"] .font-display {
   font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
@@ -412,4 +423,8 @@ html[data-palette="cocoa-taupe"] {
   position: absolute;
   top: 1.25rem;  /* sesuai py-5 */
   left: 1.25rem; /* sesuai px-5 */
+}
+
+html[data-area="admin"] .tiptap-content.is-editor-empty::before {
+  color: #8a7c82;
 }

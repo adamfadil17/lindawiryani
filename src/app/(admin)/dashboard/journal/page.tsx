@@ -485,6 +485,9 @@ export default function DashboardJournalPage() {
     try {
       await axios.delete(`/api/articles/${deleteTarget.id}`, {
       });
+      toast.success(`"${deleteTarget.title}" deleted`, {
+        description: "The article has been removed.",
+      });
       // Jika artikel yang dihapus adalah satu-satunya di halaman terakhir,
       // mundur satu halaman agar tidak stuck di halaman kosong
       const isLastOnPage = articles.length === 1 && currentPage > 1;

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ARTICLE_CATEGORY_VALUES } from "@/lib/article-category";
+import { imageUrlSchema } from "@/lib/image-url";
 
 // ─────────────────────────────────────────────
 // SHARED BASE SCHEMAS
@@ -76,7 +77,7 @@ export const destinationFormSchema = z.object({
     .string()
     .min(1, "Seasonal considerations are required"),
   // backend tidak allow empty string untuk image
-  image: z.string().url("Invalid image URL"),
+  image: imageUrlSchema,
   guest_capacity: z.string().min(1, "Guest capacity is required"),
   // backend: semua array wajib min 1 item
   highlights: z.array(z.string()).min(1, "At least one highlight is required"),
@@ -121,7 +122,7 @@ export const weddingExperienceFormSchema = z.object({
   // Hero Section
   hero_style: z.enum(["split", "centered", "editorial", "bottom"]),
   // backend: url() — no empty string
-  hero_image: z.string().url("Invalid image URL"),
+  hero_image: imageUrlSchema,
   hero_desc: z.string().min(1, "Hero description is required"),
   // Intro Section
   intro_label: z.string().min(1, "Intro label is required"),
@@ -135,7 +136,7 @@ export const weddingExperienceFormSchema = z.object({
   intro_list: z.array(z.string()),
   intro_footnote: z.string().optional(),
   intro_images: z
-    .array(z.string().url("Invalid image URL"))
+    .array(imageUrlSchema)
     .max(2, "Maximum 2 intro images"),
   // Approach Section
   approach_label: z.string().min(1, "Approach label is required"),
@@ -147,7 +148,7 @@ export const weddingExperienceFormSchema = z.object({
   approach_list_label: z.string().optional(),
   approach_list: z.array(z.string()),
   // backend: url() — no empty string
-  approach_image: z.string().url("Invalid image URL"),
+  approach_image: imageUrlSchema,
   // Services Section
   services_label: z.string().min(1, "Services label is required"),
   services_heading: z.tuple([
@@ -173,7 +174,7 @@ export const weddingExperienceFormSchema = z.object({
   ]),
   closing_body: z.string().min(1, "Closing body is required"),
   // backend: url() — no empty string
-  closing_image: z.string().url("Invalid image URL"),
+  closing_image: imageUrlSchema,
   closing_couple_label: z.string().optional(),
   closing_couple_values: z.array(z.string()),
 });
@@ -208,7 +209,7 @@ export const venueFormSchema = z.object({
   slogan: z.string().min(2, "Slogan must be at least 2 characters"),
   description: z.string().min(1, "Description is required"),
   // backend: url() — no empty string
-  image: z.string().url("Invalid image URL"),
+  image: imageUrlSchema,
   capacity: z.number().int().positive("Capacity must be a positive integer"),
   // backend: positive() — price harus > 0, bukan >= 0
   starting_price: z.number().positive("Starting price must be greater than 0"),
@@ -223,7 +224,7 @@ export type VenueFormData = z.infer<typeof venueFormSchema>;
 // ─────────────────────────────────────────────
 
 export const venueImageFormSchema = z.object({
-  url: z.string().url("Invalid image URL"),
+  url: imageUrlSchema,
   sort_order: z.number().int().min(0).default(0),
   venue_id: uuidSchema,
 });
@@ -241,7 +242,7 @@ export const weddingThemeFormSchema = z.object({
     .min(2, "Title must be at least 2 characters")
     .max(255, "Title must be at most 255 characters"),
   description: z.string().min(1, "Description is required"),
-  image: z.string().url("Invalid image URL"),
+  image: imageUrlSchema,
   inclusions: z.array(z.string()).min(1, "At least one inclusion is required"),
   venue_id: z
     .union([uuidSchema, z.literal(""), z.undefined()])
@@ -256,7 +257,7 @@ export type WeddingThemeFormData = z.infer<typeof weddingThemeFormSchema>;
 // ─────────────────────────────────────────────
 
 export const weddingThemeImageFormSchema = z.object({
-  url: z.string().url("Invalid image URL"),
+  url: imageUrlSchema,
   sort_order: z.number().int().min(0).default(0),
   theme_id: uuidSchema,
 });
@@ -285,7 +286,7 @@ export const articleFormSchema = z.object({
     .string()
     .datetime({ message: "Invalid datetime format, use ISO 8601" }),
   // backend: url() — no empty string
-  image: z.string().url("Invalid image URL"),
+  image: imageUrlSchema,
   content: z.string().min(1, "Content is required"),
 });
 
@@ -312,7 +313,7 @@ export const portfolioFormSchema = z.object({
     .union([uuidSchema, z.literal(""), z.undefined()])
     .transform((v) => v || undefined),
   // backend: url() — no empty string
-  image: z.string().url("Invalid image URL"),
+  image: imageUrlSchema,
   tags: z.array(z.string()).min(1, "At least one tag is required"),
   excerpt: z.string().min(1, "Excerpt is required"),
   origin: z.string().optional(),
@@ -342,7 +343,7 @@ export type PortfolioFormData = z.infer<typeof portfolioFormSchema>;
 // ─────────────────────────────────────────────
 
 export const portfolioImageFormSchema = z.object({
-  url: z.string().url("Invalid image URL"),
+  url: imageUrlSchema,
   sort_order: z.number().int().min(0).default(0),
   portfolio_id: uuidSchema,
 });

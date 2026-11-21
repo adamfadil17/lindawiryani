@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "@/lib/api";
+import { toast } from "sonner";
 import {
   ChevronLeft,
   FolderOpen,
@@ -196,12 +197,15 @@ export default function DestinationCategoryDetailPage() {
       editor.load(response.data.data);
       setIsEditing(false);
       setShowSaveModal(false);
+      toast.success("Category updated", {
+        description: "The category name and slug have been saved.",
+      });
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setApiError("Failed to save. Please try again.");
-      } else {
-        setApiError("Failed to save. Please try again.");
-      }
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error ?? "Failed to save. Please try again."
+        : "Failed to save. Please try again.";
+      setApiError(message);
+      toast.error("Failed to save category", { description: message });
     } finally {
       setIsSaving(false);
     }
@@ -217,8 +221,15 @@ export default function DestinationCategoryDetailPage() {
       );
       setCategory(response.data.data);
       editor.markSaved();
-    } catch {
-      setApiError("Failed to save translations. Please try again.");
+      toast.success("Category settings saved", {
+        description: "Translations and publish status have been updated.",
+      });
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error ?? "Failed to save translations."
+        : "Failed to save translations.";
+      setApiError(message);
+      toast.error("Failed to save category settings", { description: message });
     } finally {
       setIsSaving(false);
     }
@@ -230,13 +241,16 @@ export default function DestinationCategoryDetailPage() {
     try {
       await axios.delete(`/api/destination-categories/${id}`, {
       });
+      toast.success("Category deleted", {
+        description: `"${category?.name ?? "Category"}" has been removed.`,
+      });
       router.push("/dashboard/destination-categories");
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setApiError("Failed to delete category.");
-      } else {
-        setApiError("Failed to delete category.");
-      }
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error ?? "Failed to delete category."
+        : "Failed to delete category.";
+      setApiError(message);
+      toast.error("Failed to delete category", { description: message });
       setIsDeleting(false);
       setShowDeleteModal(false);
     }
@@ -248,7 +262,7 @@ export default function DestinationCategoryDetailPage() {
     setIsEditing(false);
   };
 
-  // ── Loading ──────────────────────────────────────────────────────────────��─
+  // ── Loading ──────────────────────────────────────────────────────────────--─
 
   if (isLoadingData) {
     return (
@@ -506,8 +520,9 @@ export default function DestinationCategoryDetailPage() {
             type="button"
             onClick={saveCategoryMeta}
             disabled={!editor.dirty || isSaving}
-            className="bg-primary text-white text-xs tracking-widest uppercase px-6 py-3 hover:bg-primary/90 transition-colors disabled:opacity-40"
+            className="bg-primary text-white text-xs tracking-widest uppercase px-6 py-3 hover:bg-primary/90 transition-colors disabled:opacity-40 inline-flex items-center gap-2"
           >
+            {isSaving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
             {isSaving ? "Saving..." : "Save translations & status"}
           </button>
         </div>

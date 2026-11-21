@@ -11,6 +11,7 @@ import {
   Pencil,
   Trash2,
   Eye,
+  Users,
   ChevronLeft,
   ChevronRight,
   X,
@@ -211,10 +212,15 @@ function DestinationCard({
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 mb-3">
-          <MapPin className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-          <span className="text-primary text-sm truncate">
+        {/* Meta */}
+        <div className="flex items-center gap-3 mb-3 text-xs text-primary">
+          <span className="flex items-center gap-1">
+          <MapPin className="w-3 h-3" />
             {destination.location}
+          </span>
+          <span className="flex items-center gap-1">
+          <Users className="w-3 h-3" />
+            {destination.guest_capacity} guests
           </span>
         </div>
 
@@ -224,8 +230,8 @@ function DestinationCard({
 
         <div className="border-t border-primary/20 pt-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-primary font-semibold tracking-wider uppercase">
-              {destination.guest_capacity ?? "—"}
+            <span className="text-xs text-primary font-semibold tracking-wider truncate max-w-[140px]">
+              /{destination.slug}
             </span>
             <div className="flex items-center gap-1">
               <Link
@@ -474,6 +480,9 @@ export default function DashboardDestinationsPage() {
     dispatch({ type: "DELETE_START" });
     try {
       await axios.delete(`/api/destinations/${deleteTarget.id}`);
+      toast.success(`"${deleteTarget.name}" deleted`, {
+        description: "The destination has been removed.",
+      });
       // Jika destination yang dihapus adalah satu-satunya di halaman terakhir,
       // mundur satu halaman agar tidak stuck di halaman kosong
       const isLastOnPage = destinations.length === 1 && currentPage > 1;

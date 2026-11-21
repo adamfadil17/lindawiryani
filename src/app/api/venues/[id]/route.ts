@@ -16,6 +16,7 @@ import {
   translationsReplace,
   publicationFields,
 } from "@/lib/content/translations";
+import { sanitizeRichText } from "@/lib/sanitize";
 
 const VENUE_INCLUDE = {
   destination: true,
@@ -73,6 +74,9 @@ export async function PATCH(
       where: { id },
       data: {
         ...base,
+        ...(typeof base.description === "string"
+          ? { description: sanitizeRichText(base.description) }
+          : {}),
         ...publicationFields(status, current.first_published_at),
         ...(translations !== undefined
           ? { translations: translationsReplace("venue", translations) }
