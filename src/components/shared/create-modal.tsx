@@ -1,4 +1,4 @@
-﻿import { Plus, X, Loader2 } from "lucide-react";
+import { Plus, X, Loader2 } from "lucide-react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { DestinationCategoryFormData } from "@/utils/form-validators";
 

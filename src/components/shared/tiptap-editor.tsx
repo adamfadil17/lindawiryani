@@ -667,7 +667,7 @@ export default function TipTapEditor({
             Linda Wiryani Weddings Planner
           </span>
           <span className="text-xs text-primary/90">
-            {wordCountFromEditor.toLocaleString()} words Â·{" "}
+            {wordCountFromEditor.toLocaleString()} words · {" "}
             {charCount.toLocaleString()} chars
           </span>
         </div>
